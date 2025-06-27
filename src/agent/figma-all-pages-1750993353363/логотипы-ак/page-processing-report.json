@@ -1,0 +1,257 @@
+{
+  "pageName": "Логотипы АК",
+  "timestamp": "2025-06-27T04:12:49.923Z",
+  "context": null,
+  "summary": {
+    "totalAssets": 19,
+    "assetsWithVariants": 4,
+    "averageConfidence": 0.9605263157894733,
+    "uniqueTags": [
+      "авиаперевозки",
+      "Оман",
+      "путешествие",
+      "Гульф Эйр",
+      "акции",
+      "Эфиопия",
+      "авиация",
+      "Emirates",
+      "скидки",
+      "Турция",
+      "Аэрофлот"
+    ]
+  },
+  "assets": [
+    {
+      "id": "2927:3",
+      "originalName": "Oman Air",
+      "newName": "авиаперевозки-оман-путешествие",
+      "tags": [
+        "авиаперевозки",
+        "Оман",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2927:2",
+      "originalName": "Gulf Air",
+      "newName": "авиаперевозки-путешествие-гульфэйр",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "Гульф Эйр"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2927:4",
+      "originalName": "FlyArna",
+      "newName": "авиаперевозки-путешествие-акции",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "акции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2927:5",
+      "originalName": "Ethopian",
+      "newName": "авиаперевозки-эфиопия-путешествие",
+      "tags": [
+        "авиаперевозки",
+        "Эфиопия",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2927:6",
+      "originalName": "Azal",
+      "newName": "авиация-путешествие",
+      "tags": [
+        "авиация",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2927:7",
+      "originalName": "Emirates",
+      "newName": "авиаперевозки-путешествие-emirates",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "Emirates"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2926:3923",
+      "originalName": "Nordwind",
+      "newName": "Nordwind",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2926:3924",
+      "originalName": "Nordwind=2",
+      "newName": "авиаперевозки-путешествие-акции",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "акции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2926:3922",
+      "originalName": "Nordwind=1",
+      "newName": "авиаперевозки-путешествие-скидки",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "скидки"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2935:136",
+      "originalName": "Turkish airlines",
+      "newName": "Turkish airlines",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2935:110",
+      "originalName": "Turkish airlines=1",
+      "newName": "авиаперевозки-путешествие-турция",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "Турция"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2935:137",
+      "originalName": "Turkish airlines=2",
+      "newName": "авиаперевозки-путешествие-турция-акции",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "Турция",
+        "акции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2935:163",
+      "originalName": "Аэрофлот",
+      "newName": "Аэрофлот",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2926:3811",
+      "originalName": "Аэрофлот=1",
+      "newName": "авиация-путешествие-аэрофлот-скидки",
+      "tags": [
+        "авиация",
+        "путешествие",
+        "Аэрофлот",
+        "скидки"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2935:164",
+      "originalName": "Аэрофлот=2",
+      "newName": "аэрофлот-авиаперевозки-путешествие",
+      "tags": [
+        "Аэрофлот",
+        "авиаперевозки",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2935:187",
+      "originalName": "Аэрофлот",
+      "newName": "авиаперевозки-путешествие-аэрофлот",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "Аэрофлот"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "6548:52",
+      "originalName": "Utair",
+      "newName": "Utair",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "6548:51",
+      "originalName": "Property 1=Default",
+      "newName": "авиаперевозки-путешествие-скидки",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "скидки"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "6548:53",
+      "originalName": "Property 1=Variant2",
+      "newName": "авиаперевозки-путешествие-скидки",
+      "tags": [
+        "авиаперевозки",
+        "путешествие",
+        "скидки"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    }
+  ]
+}

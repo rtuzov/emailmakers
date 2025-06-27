@@ -111,7 +111,7 @@ export async function splitFigmaVariants(params: FigmaVariantSplitterParams): Pr
     };
 
   } catch (error) {
-    return handleToolError('splitFigmaVariants', error, params);
+    return handleToolError('splitFigmaVariants', error);
   }
 }
 

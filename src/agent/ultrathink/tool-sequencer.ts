@@ -1,8 +1,17 @@
-import { ToolSequence, ToolStep } from './types';
-import { EmailGenerationRequest } from '../agent';
+import { ToolSequence, ToolStep, QualityControlConfig } from './types';
+import { EmailGenerationRequest } from '../types';
+import { SmartQualityController } from './quality-controller';
 
 export class ToolSequencer {
+  private static qualityController: SmartQualityController | null = null;
   
+  /**
+   * Initialize quality controller for enforced sequences
+   */
+  static initializeQualityControl(config?: Partial<QualityControlConfig>): void {
+    this.qualityController = new SmartQualityController(config);
+  }
+
   /**
    * Optimize tool execution sequence based on request context
    */
@@ -16,6 +25,31 @@ export class ToolSequencer {
       estimatedDuration,
       strategy
     };
+  }
+
+  /**
+   * Create enforced sequence with mandatory quality checks
+   */
+  static createEnforcedSequence(request: EmailGenerationRequest): ToolSequence {
+    // Initialize quality controller if not already done
+    if (!this.qualityController) {
+      this.initializeQualityControl();
+    }
+
+    // Create base sequence
+    const baseSequence = this.optimizeSequence(request);
+    
+    // Enforce quality checks using SmartQualityController
+    const enforcedSequence = this.qualityController!.createEnforcedSequence(baseSequence);
+
+    console.log('🛡️ ToolSequencer: Created enforced sequence with quality gates', {
+      originalSteps: baseSequence.steps.length,
+      enforcedSteps: enforcedSequence.steps.length,
+      hasQualityCheck: enforcedSequence.steps.some(s => s.tool === 'ai_quality_consultant'),
+      sequence: enforcedSequence.steps.map(s => s.tool).join(' → ')
+    });
+
+    return enforcedSequence;
   }
 
   /**
@@ -161,24 +195,52 @@ export class ToolSequencer {
   private static addQualitySteps(steps: ToolStep[], strategy: 'speed' | 'quality' | 'balanced'): void {
     const basePriority = this.getLastPriority(steps) + 1;
 
+    // MANDATORY: ai_quality_consultant is required for ALL strategies
+    steps.push({
+      tool: 'ai_quality_consultant',
+      priority: basePriority,
+      condition: 'always_mandatory',
+      fallback: 'none' // Cannot be skipped
+    });
+
     if (strategy === 'quality') {
-      // Full quality pipeline
+      // Full quality pipeline after mandatory AI consultant
       steps.push(
         {
           tool: 'diff_html',
-          priority: basePriority,
+          priority: basePriority + 1,
           condition: 'has_html'
         },
         {
           tool: 'patch_html',
-          priority: basePriority + 1,
+          priority: basePriority + 2,
           condition: 'diff_issues_detected'
         },
         {
           tool: 'percy_snap',
-          priority: basePriority + 2,
+          priority: basePriority + 3,
           condition: 'has_html',
           fallback: 'skip_visual_testing'
+        },
+        {
+          tool: 'render_test',
+          priority: basePriority + 4,
+          condition: 'has_html',
+          fallback: 'skip_render_testing'
+        }
+      );
+    } else if (strategy === 'balanced') {
+      // Essential quality checks after mandatory AI consultant
+      steps.push(
+        {
+          tool: 'diff_html',
+          priority: basePriority + 1,
+          condition: 'has_html'
+        },
+        {
+          tool: 'patch_html',
+          priority: basePriority + 2,
+          condition: 'diff_issues_detected'
         },
         {
           tool: 'render_test',
@@ -187,31 +249,11 @@ export class ToolSequencer {
           fallback: 'skip_render_testing'
         }
       );
-    } else if (strategy === 'balanced') {
-      // Essential quality checks
-      steps.push(
-        {
-          tool: 'diff_html',
-          priority: basePriority,
-          condition: 'has_html'
-        },
-        {
-          tool: 'patch_html',
-          priority: basePriority + 1,
-          condition: 'diff_issues_detected'
-        },
-        {
-          tool: 'render_test',
-          priority: basePriority + 2,
-          condition: 'has_html',
-          fallback: 'skip_render_testing'
-        }
-      );
     } else {
-      // Speed: minimal quality checks
+      // Speed: minimal quality checks after mandatory AI consultant
       steps.push({
         tool: 'diff_html',
-        priority: basePriority,
+        priority: basePriority + 1,
         condition: 'has_html'
       });
     }

@@ -7,7 +7,7 @@ import {
   SimpleDataProvider,
   ContextEnricher
 } from './index';
-import { EmailGenerationRequest } from '../agent';
+import { EmailGenerationRequest } from '../types';
 
 describe('UltraThink Phase 1 Components', () => {
   

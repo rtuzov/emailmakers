@@ -1,0 +1,358 @@
+{
+  "timestamp": "2025-06-27T04:43:11.373Z",
+  "globalStats": {
+    "totalFolders": 10,
+    "totalFiles": 498,
+    "enrichedFiles": 498,
+    "successRate": 100
+  },
+  "folderAnalysis": [
+    {
+      "folderName": "айдентика",
+      "totalFiles": 18,
+      "enrichedFiles": 18,
+      "statistics": {
+        "formats": {
+          "png": 18
+        },
+        "orientations": {
+          "portrait": 9,
+          "landscape": 4,
+          "square": 5
+        },
+        "flags": {
+          "icons": 0,
+          "large": 10,
+          "square": 5,
+          "wide": 4,
+          "tall": 0
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 664,
+            "max": 2124,
+            "avg": 1179
+          },
+          "heightRange": {
+            "min": 334,
+            "max": 2526,
+            "avg": 1093
+          },
+          "fileSizeRange": {
+            "min": 15525,
+            "max": 225840,
+            "avg": 56477
+          }
+        }
+      }
+    },
+    {
+      "folderName": "зайцы-новости",
+      "totalFiles": 23,
+      "enrichedFiles": 23,
+      "statistics": {
+        "formats": {
+          "png": 23
+        },
+        "orientations": {
+          "portrait": 14,
+          "landscape": 9
+        },
+        "flags": {
+          "icons": 0,
+          "large": 20,
+          "square": 0,
+          "wide": 7,
+          "tall": 4
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 99,
+            "max": 2276,
+            "avg": 1534
+          },
+          "heightRange": {
+            "min": 141,
+            "max": 3162,
+            "avg": 1458
+          },
+          "fileSizeRange": {
+            "min": 3322,
+            "max": 225968,
+            "avg": 111805
+          }
+        }
+      }
+    },
+    {
+      "folderName": "зайцы-общие",
+      "totalFiles": 126,
+      "enrichedFiles": 126,
+      "statistics": {
+        "formats": {
+          "png": 126
+        },
+        "orientations": {
+          "landscape": 45,
+          "portrait": 81
+        },
+        "flags": {
+          "icons": 5,
+          "large": 106,
+          "square": 0,
+          "wide": 10,
+          "tall": 44
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 44,
+            "max": 1944,
+            "avg": 1000
+          },
+          "heightRange": {
+            "min": 58,
+            "max": 1763,
+            "avg": 1222
+          },
+          "fileSizeRange": {
+            "min": 139,
+            "max": 178971,
+            "avg": 92791
+          }
+        }
+      }
+    },
+    {
+      "folderName": "зайцы-подборка",
+      "totalFiles": 90,
+      "enrichedFiles": 90,
+      "statistics": {
+        "formats": {
+          "png": 90
+        },
+        "orientations": {
+          "portrait": 60,
+          "landscape": 30
+        },
+        "flags": {
+          "icons": 0,
+          "large": 90,
+          "square": 0,
+          "wide": 4,
+          "tall": 34
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 720,
+            "max": 2061,
+            "avg": 1172
+          },
+          "heightRange": {
+            "min": 892,
+            "max": 1725,
+            "avg": 1358
+          },
+          "fileSizeRange": {
+            "min": 63509,
+            "max": 152348,
+            "avg": 102784
+          }
+        }
+      }
+    },
+    {
+      "folderName": "зайцы-прочее",
+      "totalFiles": 9,
+      "enrichedFiles": 9,
+      "statistics": {
+        "formats": {
+          "png": 9
+        },
+        "orientations": {
+          "portrait": 9
+        },
+        "flags": {
+          "icons": 0,
+          "large": 9,
+          "square": 0,
+          "wide": 0,
+          "tall": 9
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 471,
+            "max": 1098,
+            "avg": 722
+          },
+          "heightRange": {
+            "min": 1495,
+            "max": 2906,
+            "avg": 1961
+          },
+          "fileSizeRange": {
+            "min": 59717,
+            "max": 133350,
+            "avg": 84425
+          }
+        }
+      }
+    },
+    {
+      "folderName": "зайцы-эмоции",
+      "totalFiles": 24,
+      "enrichedFiles": 24,
+      "statistics": {
+        "formats": {
+          "png": 24
+        },
+        "orientations": {
+          "portrait": 24
+        },
+        "flags": {
+          "icons": 0,
+          "large": 19,
+          "square": 0,
+          "wide": 0,
+          "tall": 14
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 509,
+            "max": 984,
+            "avg": 817
+          },
+          "heightRange": {
+            "min": 943,
+            "max": 1461,
+            "avg": 1229
+          },
+          "fileSizeRange": {
+            "min": 54528,
+            "max": 101907,
+            "avg": 79352
+          }
+        }
+      }
+    },
+    {
+      "folderName": "иконки-допуслуг",
+      "totalFiles": 52,
+      "enrichedFiles": 52,
+      "statistics": {
+        "formats": {
+          "png": 52
+        },
+        "orientations": {
+          "square": 43,
+          "portrait": 8,
+          "landscape": 1
+        },
+        "flags": {
+          "icons": 0,
+          "large": 0,
+          "square": 43,
+          "wide": 0,
+          "tall": 0
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 136,
+            "max": 138,
+            "avg": 136
+          },
+          "heightRange": {
+            "min": 136,
+            "max": 137,
+            "avg": 136
+          },
+          "fileSizeRange": {
+            "min": 3218,
+            "max": 6231,
+            "avg": 4961
+          }
+        }
+      }
+    },
+    {
+      "folderName": "иллюстрации",
+      "totalFiles": 141,
+      "enrichedFiles": 141,
+      "statistics": {
+        "formats": {
+          "png": 141
+        },
+        "orientations": {
+          "landscape": 95,
+          "portrait": 46
+        },
+        "flags": {
+          "icons": 0,
+          "large": 3,
+          "square": 0,
+          "wide": 36,
+          "tall": 11
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 129,
+            "max": 1404,
+            "avg": 623
+          },
+          "heightRange": {
+            "min": 75,
+            "max": 930,
+            "avg": 541
+          },
+          "fileSizeRange": {
+            "min": 167,
+            "max": 66251,
+            "avg": 25255
+          }
+        }
+      }
+    },
+    {
+      "folderName": "логотипы-ак",
+      "totalFiles": 15,
+      "enrichedFiles": 15,
+      "statistics": {
+        "formats": {
+          "png": 15
+        },
+        "orientations": {
+          "landscape": 15
+        },
+        "flags": {
+          "icons": 0,
+          "large": 0,
+          "square": 0,
+          "wide": 14,
+          "tall": 0
+        },
+        "dimensions": {
+          "widthRange": {
+            "min": 324,
+            "max": 860,
+            "avg": 622
+          },
+          "heightRange": {
+            "min": 64,
+            "max": 273,
+            "avg": 177
+          },
+          "fileSizeRange": {
+            "min": 2597,
+            "max": 30457,
+            "avg": 13931
+          }
+        }
+      }
+    },
+    {
+      "folderName": "цвета",
+      "totalFiles": 0,
+      "enrichedFiles": 0,
+      "statistics": null
+    }
+  ]
+}

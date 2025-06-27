@@ -12,7 +12,7 @@ import {
   DateValidator,
   SimpleDataProvider 
 } from './index';
-import { EmailGenerationRequest } from '../agent';
+import { EmailGenerationRequest } from '../types';
 
 async function demonstrateUltraThink() {
   console.log('🧠 UltraThink Phase 1 Demonstration\n');

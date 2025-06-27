@@ -33,10 +33,25 @@ export class EmailFolderManager {
   /**
    * Создает новую папку для email кампании
    */
-  static async createEmailFolder(topic: string, campaignType: string = 'promotional'): Promise<EmailFolder> {
+  static async createEmailFolder(
+    topic: string, 
+    campaignType: string = 'promotional',
+    traceId?: string
+  ): Promise<EmailFolder> {
     const timestamp = Date.now();
-    const shortId = Math.random().toString(36).substring(2, 10);
-    const campaignId = `email-${timestamp}-${shortId}`;
+    
+    // Используем trace_id если предоставлен, иначе генерируем короткий ID
+    let campaignId: string;
+    if (traceId) {
+      // Извлекаем первые 8 символов из trace_id для краткости
+      // trace_id имеет формат trace_<32_alphanumeric>, поэтому берем символы после "trace_"
+      const traceIdWithoutPrefix = traceId.startsWith('trace_') ? traceId.substring(6) : traceId;
+      const shortTraceId = traceIdWithoutPrefix.substring(0, 8);
+      campaignId = `email-${shortTraceId}-${timestamp}`;
+    } else {
+      const shortId = Math.random().toString(36).substring(2, 10);
+      campaignId = `email-${timestamp}-${shortId}`;
+    }
     
     const basePath = path.resolve(process.cwd(), 'mails', campaignId);
     const assetsPath = path.join(basePath, 'assets');

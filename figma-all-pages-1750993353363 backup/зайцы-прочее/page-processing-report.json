@@ -1,0 +1,189 @@
+{
+  "pageName": "Зайцы прочее",
+  "timestamp": "2025-06-27T03:37:43.735Z",
+  "context": null,
+  "summary": {
+    "totalAssets": 15,
+    "assetsWithVariants": 1,
+    "averageConfidence": 0.9533333333333331,
+    "uniqueTags": [
+      "кролик",
+      "дизайн",
+      "заяц",
+      "креатив",
+      "персонаж",
+      "креативный дизайн",
+      "веселье"
+    ]
+  },
+  "assets": [
+    {
+      "id": "9622:1481",
+      "originalName": "Component 5",
+      "newName": "кролик",
+      "tags": [
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1483",
+      "originalName": "Component 5",
+      "newName": "кролик-дизайн",
+      "tags": [
+        "кролик",
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1485",
+      "originalName": "Component 5",
+      "newName": "кролик",
+      "tags": [
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1487",
+      "originalName": "Component 5",
+      "newName": "кролик-дизайн",
+      "tags": [
+        "кролик",
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1489",
+      "originalName": "Component 5",
+      "newName": "заяц-дизайн",
+      "tags": [
+        "заяц",
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1494",
+      "originalName": "Component 5",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1496",
+      "originalName": "Component 5",
+      "newName": "дизайн",
+      "tags": [
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1498",
+      "originalName": "Component 5",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1500",
+      "originalName": "Component 5",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "9622:1502",
+      "originalName": "Component 5",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "4732:326",
+      "originalName": "Component 5",
+      "newName": "Component 5",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 4
+    },
+    {
+      "id": "4732:327",
+      "originalName": "Property 1=1",
+      "newName": "персонаж-креативныйдизайн",
+      "tags": [
+        "персонаж",
+        "креативный дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "4732:392",
+      "originalName": "Property 1=2",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "4732:423",
+      "originalName": "Property 1=run 1",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "4732:454",
+      "originalName": "Property 1=Run 2",
+      "newName": "креатив-веселье",
+      "tags": [
+        "креатив",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    }
+  ]
+}

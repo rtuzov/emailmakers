@@ -1,5 +1,6 @@
 import { DateValidation, SeasonalContext } from './types';
 import { RouteValidator } from './route-validator';
+import { InputSanitizer } from './input-sanitizer';
 
 export class DateValidator {
   // Public holidays from open sources (major holidays only)
@@ -85,8 +86,30 @@ export class DateValidator {
    * Validate date range and provide contextual information
    */
   static validateDateRange(dateRange: string, destination?: string): DateValidation {
+    // Security: Rate limiting check
+    if (!InputSanitizer.checkRateLimit('date_validation')) {
+      return {
+        valid: false,
+        issue: 'rate_limit_exceeded',
+        suggestion: 'Too many validation requests. Please try again later.'
+      };
+    }
+
+    // Security: Input sanitization and validation
+    const sanitizedDateRange = InputSanitizer.validateDateRange(dateRange);
+    if (!sanitizedDateRange) {
+      return {
+        valid: false,
+        issue: 'invalid_date_format',
+        suggestion: 'Date range must be in format YYYY-MM-DD,YYYY-MM-DD'
+      };
+    }
+
+    // Sanitize destination if provided
+    const sanitizedDestination = destination ? InputSanitizer.validateCityCode(destination) : undefined;
+
     try {
-      const [startDateStr, endDateStr] = dateRange.split(',');
+      const [startDateStr, endDateStr] = sanitizedDateRange.split(',');
       const startDate = new Date(startDateStr);
       const endDate = new Date(endDateStr);
       const now = new Date();
@@ -101,18 +124,18 @@ export class DateValidator {
       // Get seasonal context
       const seasonalContext = this.getSeasonalContext(startDate);
       
-      // Check holidays
-      const isHoliday = this.checkHoliday(startDate, destination);
+      // Check holidays (use sanitized destination)
+      const isHoliday = this.checkHoliday(startDate, sanitizedDestination);
       
-      // Destination-specific validation
-      const destinationWarnings = this.getDestinationWarnings(startDate, destination);
+      // Destination-specific validation (use sanitized destination)
+      const destinationWarnings = this.getDestinationWarnings(startDate, sanitizedDestination);
 
       return {
         valid: true,
         seasonalContext,
         isHoliday,
         warning: destinationWarnings.length > 0 ? destinationWarnings.join('; ') : undefined,
-        suggestion: this.generateDateSuggestion(startDate, endDate, seasonalContext, isHoliday, destination)
+        suggestion: this.generateDateSuggestion(startDate, endDate, seasonalContext, isHoliday, sanitizedDestination)
       };
 
     } catch (error) {

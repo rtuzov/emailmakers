@@ -1,0 +1,284 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2025-06-27T03:36:01.503Z",
+  "updatedAt": "2025-06-27T03:37:43.733Z",
+  "totalFiles": 9,
+  "totalTags": 10,
+  "uniqueTags": [
+    "анимация",
+    "веселье",
+    "дизайн",
+    "дружелюбный",
+    "заяц",
+    "иллюстрация",
+    "креатив",
+    "креативный дизайн",
+    "кролик",
+    "персонаж"
+  ],
+  "entries": {
+    "кролик": {
+      "originalName": "Component 5",
+      "shortName": "кролик",
+      "allTags": [
+        "кролик",
+        "иллюстрация",
+        "дружелюбный"
+      ],
+      "selectedTags": [
+        "кролик"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация дружелюбного кролика, подходящая для маркетинговых материалов.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе дружелюбного образа кролика, который может привлечь внимание и создать положительное впечатление в email-маркетинге."
+      },
+      "metadata": {
+        "figmaNodeId": "9622:1485",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:36:16.212Z"
+      }
+    },
+    "кролик-дизайн": {
+      "originalName": "Component 5",
+      "shortName": "кролик-дизайн",
+      "allTags": [
+        "кролик",
+        "иллюстрация",
+        "дизайн"
+      ],
+      "selectedTags": [
+        "кролик",
+        "дизайн"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация кролика в минималистичном стиле.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов и стиля изображения, что делает его подходящим для дружелюбных и креативных email-кампаний."
+      },
+      "metadata": {
+        "figmaNodeId": "9622:1487",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:36:20.070Z"
+      }
+    },
+    "заяц-дизайн": {
+      "originalName": "Component 5",
+      "shortName": "заяц-дизайн",
+      "allTags": [
+        "иллюстрация",
+        "заяц",
+        "дизайн"
+      ],
+      "selectedTags": [
+        "заяц",
+        "дизайн"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация заяца в минималистичном стиле.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов изображения, которые могут привлечь внимание в email-маркетинге, а также отражают дружелюбный и игривый тон иллюстрации."
+      },
+      "metadata": {
+        "figmaNodeId": "9622:1489",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:36:24.883Z"
+      }
+    },
+    "креатив": {
+      "originalName": "Property 1=run 1",
+      "shortName": "креатив",
+      "allTags": [
+        "креатив",
+        "иллюстрация",
+        "анимация"
+      ],
+      "selectedTags": [
+        "креатив"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация персонажа с ушами, создающая игривое настроение.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуального стиля и эмоционального восприятия изображения, что делает его подходящим для креативных и дружелюбных email-кампаний."
+      },
+      "metadata": {
+        "figmaNodeId": "4732:423",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:37:34.490Z"
+      }
+    },
+    "дизайн": {
+      "originalName": "Component 5",
+      "shortName": "дизайн",
+      "allTags": [
+        "иллюстрация",
+        "анимация",
+        "дизайн"
+      ],
+      "selectedTags": [
+        "дизайн"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Силуэт персонажа с длинными ушами, создающий игривое настроение.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "маркетинговая кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов, которые могут привлечь внимание и создать положительное восприятие в email-кампаниях."
+      },
+      "metadata": {
+        "figmaNodeId": "9622:1496",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:36:37.118Z"
+      }
+    },
+    "креатив-персонаж": {
+      "originalName": "Property 1=1",
+      "shortName": "креатив-персонаж",
+      "allTags": [
+        "иллюстрация",
+        "креатив",
+        "персонаж"
+      ],
+      "selectedTags": [
+        "креатив",
+        "персонаж"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Креативная иллюстрация персонажа с ушами зайца, подходящая для маркетинговых материалов.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуального стиля и дружелюбного образа персонажа, который может привлечь внимание в email-маркетинге."
+      },
+      "metadata": {
+        "figmaNodeId": "4732:327",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:36:55.985Z"
+      }
+    },
+    "креатив-дизайн": {
+      "originalName": "Property 1=2",
+      "shortName": "креатив-дизайн",
+      "allTags": [
+        "иллюстрация",
+        "креатив",
+        "дизайн"
+      ],
+      "selectedTags": [
+        "креатив",
+        "дизайн"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Стильная иллюстрация персонажа с кроличьими ушами.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуального стиля и дружелюбного образа персонажа, что делает его подходящим для креативных email-кампаний."
+      },
+      "metadata": {
+        "figmaNodeId": "4732:392",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:37:04.390Z"
+      }
+    },
+    "креатив-веселье": {
+      "originalName": "Property 1=Run 2",
+      "shortName": "креатив-веселье",
+      "allTags": [
+        "креатив",
+        "анимация",
+        "веселье"
+      ],
+      "selectedTags": [
+        "креатив",
+        "веселье"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация персонажа с ушами, создающая игривое настроение.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе игривого и креативного характера изображения, что подходит для дружелюбных и развлекательных email-кампаний."
+      },
+      "metadata": {
+        "figmaNodeId": "4732:454",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:37:43.731Z"
+      }
+    },
+    "персонаж-креативныйдизайн": {
+      "originalName": "Property 1=1",
+      "shortName": "персонаж-креативныйдизайн",
+      "allTags": [
+        "иллюстрация",
+        "персонаж",
+        "креативный дизайн"
+      ],
+      "selectedTags": [
+        "персонаж",
+        "креативный дизайн"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Силуэт персонажа с ушами зайца, выполненный в минималистичном стиле.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов, которые могут привлечь внимание и вызвать интерес у аудитории. Дружелюбный тон подходит для креативных и развлекательных кампаний."
+      },
+      "metadata": {
+        "figmaNodeId": "4732:327",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:37:23.647Z"
+      }
+    }
+  }
+}

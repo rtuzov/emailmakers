@@ -88,4 +88,39 @@ export interface UltraThinkConfig {
   enableErrorIntelligence: boolean;
   fallbackToUnsplash: boolean;
   debugMode: boolean;
+  enableQualityControl: boolean;
+}
+
+// Quality Control types
+export interface QualityGate {
+  stage: 'post-render' | 'pre-upload' | 'final';
+  required: boolean;
+  tool: string;
+  timeout: number;
+  retries: number;
+}
+
+export interface QualityControlResult {
+  passed: boolean;
+  score?: number;
+  issues: QualityIssue[];
+  recommendations: string[];
+  shouldProceed: boolean;
+  requiresRegeneration: boolean;
+}
+
+export interface QualityIssue {
+  type: 'content' | 'technical' | 'design' | 'accessibility';
+  severity: 'critical' | 'major' | 'minor';
+  description: string;
+  autoFixable: boolean;
+  location?: string;
+}
+
+export interface QualityControlConfig {
+  enforceAiConsultant: boolean;
+  minimumScore: number;
+  criticalIssueThreshold: number;
+  autoRetryCount: number;
+  requireManualReview: boolean;
 }

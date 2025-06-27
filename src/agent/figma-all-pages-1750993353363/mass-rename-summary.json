@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-06-27T07:29:58.651Z",
+  "totalFolders": 10,
+  "successfulFolders": 9,
+  "failedFolders": 1,
+  "totalFiles": 498,
+  "totalRenamed": 436,
+  "totalSkipped": 62,
+  "results": [
+    {
+      "success": true,
+      "folderName": "айдентика",
+      "totalFiles": 18,
+      "renamedFiles": 3,
+      "skippedFiles": 15
+    },
+    {
+      "success": true,
+      "folderName": "зайцы-новости",
+      "totalFiles": 23,
+      "renamedFiles": 22,
+      "skippedFiles": 1
+    },
+    {
+      "success": true,
+      "folderName": "зайцы-общие",
+      "totalFiles": 126,
+      "renamedFiles": 113,
+      "skippedFiles": 13
+    },
+    {
+      "success": true,
+      "folderName": "зайцы-подборка",
+      "totalFiles": 90,
+      "renamedFiles": 80,
+      "skippedFiles": 10
+    },
+    {
+      "success": true,
+      "folderName": "зайцы-прочее",
+      "totalFiles": 9,
+      "renamedFiles": 7,
+      "skippedFiles": 2
+    },
+    {
+      "success": true,
+      "folderName": "зайцы-эмоции",
+      "totalFiles": 24,
+      "renamedFiles": 20,
+      "skippedFiles": 4
+    },
+    {
+      "success": true,
+      "folderName": "иконки-допуслуг",
+      "totalFiles": 52,
+      "renamedFiles": 51,
+      "skippedFiles": 1
+    },
+    {
+      "success": true,
+      "folderName": "иллюстрации",
+      "totalFiles": 141,
+      "renamedFiles": 127,
+      "skippedFiles": 14
+    },
+    {
+      "success": true,
+      "folderName": "логотипы-ак",
+      "totalFiles": 15,
+      "renamedFiles": 13,
+      "skippedFiles": 2
+    },
+    {
+      "success": false,
+      "reason": "No PNG files"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ import {
   ExecutionResult
 } from './types';
 import { logger } from '../../core/logger';
+import { getUsageModel } from '../../../shared/utils/model-config';
 
 export class AIQualityConsultant {
   private analyzer: SmartEmailAnalyzer;
@@ -361,7 +362,7 @@ export class AIQualityConsultant {
       max_total_execution_time: 300,
       
       // AI model configuration
-      ai_model: 'gpt-4o-mini',
+      ai_model: getUsageModel(),
       analysis_temperature: 0.3,
       max_recommendations: 10,
       

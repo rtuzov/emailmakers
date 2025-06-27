@@ -24,6 +24,21 @@ export class SimpleDataProvider {
     'AE': ['2025-01-01', '2025-04-10', '2025-04-11', '2025-04-12', '2025-06-16', '2025-06-17', '2025-12-02', '2025-12-03']
   };
 
+  // Optimized holiday lookup using Set for O(1) performance
+  private static holidaySets: Record<string, Set<string>> | null = null;
+
+  /**
+   * Initialize holiday Sets for O(1) lookup performance
+   */
+  private static initializeHolidaySets(): void {
+    if (this.holidaySets === null) {
+      this.holidaySets = {};
+      for (const [countryCode, holidays] of Object.entries(this.holidays)) {
+        this.holidaySets[countryCode] = new Set(holidays);
+      }
+    }
+  }
+
   // Seasonal pricing patterns based on travel industry data
   static readonly seasonalPricing: Record<string, SeasonalContext> = {
     'spring': { 
@@ -123,12 +138,15 @@ export class SimpleDataProvider {
 
   /**
    * Check if a date is a holiday in a specific country
+   * Optimized with Set lookup for O(1) performance
    */
   static isHoliday(date: string, countryCode: string): boolean {
-    const countryHolidays = this.holidays[countryCode];
-    if (!countryHolidays) return false;
+    this.initializeHolidaySets();
     
-    return countryHolidays.includes(date);
+    const countryHolidaySet = this.holidaySets![countryCode];
+    if (!countryHolidaySet) return false;
+    
+    return countryHolidaySet.has(date);
   }
 
   /**
@@ -262,8 +280,12 @@ export class SimpleDataProvider {
    * Get all holidays for a year
    */
   static getYearlyHolidays(year: number, countryCode: string): string[] {
-    const holidays = this.holidays[countryCode] || [];
-    return holidays.filter(date => date.startsWith(year.toString()));
+    this.initializeHolidaySets();
+    
+    const countryHolidaySet = this.holidaySets![countryCode];
+    if (!countryHolidaySet) return [];
+    
+    return Array.from(countryHolidaySet).filter(date => date.startsWith(year.toString()));
   }
 
   /**

@@ -1,71 +1,47 @@
-import { Agent, run, tool } from '@openai/agents';
+import { Agent, run, tool, withTrace, generateTraceId, getCurrentTrace } from '@openai/agents';
 import { z } from 'zod';
 
-// Import custom tools
-import { getCurrentDate } from './tools/date';
-import { getFigmaAssets } from './tools/figma';
-import { getPrices } from './tools/prices';
-import { generateCopy } from './tools/copy';
-import { renderMjml } from './tools/mjml';
-import { diffHtml } from './tools/diff';
-import { patchHtml } from './tools/patch';
-import { percySnap } from './tools/percy';
-import { renderTest } from './tools/render-test';
-import { uploadToS3 } from './tools/upload';
-import { splitFigmaSprite } from './tools/figma-sprite-splitter';
-import { renderComponent } from './tools/react-renderer';
-import { qualityValidation } from './tools/quality-validation';
-import { aiQualityConsultant, aiQualityConsultantSchema } from './tools/ai-quality-consultant';
-import { performanceMonitor } from './tools/performance-monitor';
-import { advancedComponentSystem } from './tools/advanced-component-system';
-import { seasonalComponentSystem } from './tools/seasonal-component-system';
-import { initializeEmailFolder, loadEmailFolder } from './tools/email-folder-initializer';
 
-// UltraThink temporarily disabled due to circular import issue
-// import { UltraThinkEngine, createUltraThink } from './ultrathink';
+// Import consolidated tools
+import { campaignManager, campaignManagerSchema } from './tools/consolidated/campaign-manager';
+import { figmaAssetManager, figmaAssetManagerSchema } from './tools/consolidated/figma-asset-manager';
+import { pricingIntelligence, pricingIntelligenceSchema } from './tools/consolidated/pricing-intelligence';
+import { contentGenerator, contentGeneratorSchema } from './tools/consolidated/content-generator';
+import { emailRenderer, emailRendererSchema } from './tools/consolidated/email-renderer';
+import { qualityController, qualityControllerSchema } from './tools/consolidated/quality-controller';
+import { deliveryManager, deliveryManagerSchema } from './tools/consolidated/delivery-manager';
+import { contextProvider, contextProviderSchema } from './tools/consolidated/context-provider';
+import { getUsageModel } from '../shared/utils/model-config';
 
-export interface EmailGenerationRequest {
-  topic: string;
-  content_brief?: string;
-  origin?: string;
-  destination?: string;
-  date_range?: string;
-  cabin_class?: 'economy' | 'business' | 'first';
-  target_audience?: string;
-  campaign_type?: 'promotional' | 'informational' | 'seasonal';
-  tone?: string;
-  language?: string;
-  brand?: string;
-  figma_url?: string;
-}
+// UltraThink now activated - circular import issue resolved
+import { UltraThinkEngine, createUltraThink, SmartQualityController } from './ultrathink';
 
-export interface EmailGenerationResponse {
-  status: 'success' | 'error';
-  html_url?: string;
-  layout_regression?: 'pass' | 'fail';
-  render_testing?: 'pass' | 'fail';
-  generation_time?: number;
-  token_usage?: number;
-  error_message?: string;
-  report_urls?: {
-    layout_regression?: string;
-    render_test_report?: string;
-    percy_screenshots?: string;
-  };
-  campaign_metadata?: {
-    topic: string;
-    routes_analyzed: string[];
-    date_ranges: string[];
-    prices_found: number;
-    content_variations: number;
-  };
-}
+// Import new orchestration components
+import { StateManager } from './core/state-manager';
+import { AgentHandoffsCoordinator, WorkflowExecutionInput, WorkflowExecutionOutput } from './core/agent-handoffs';
+import { BriefAnalyzer } from './core/brief-analyzer';
+
+// Import types from shared location
+import { EmailGenerationRequest, EmailGenerationResponse } from './types';
+export type {
+  EmailGenerationRequest,
+  EmailGenerationResponse,
+  EmailGenerationState,
+  PriceData,
+  AssetData,
+  ContentData,
+  CampaignMetadata
+} from './types';
 
 export class EmailGeneratorAgent {
   private agent: Agent;
   private retryCount: number = 0;
   private maxRetries: number = 3;
-  // private ultraThink?: UltraThinkEngine;
+  private ultraThink?: UltraThinkEngine;
+  private briefAnalyzer: BriefAnalyzer;
+  private agentHandoffsCoordinator: AgentHandoffsCoordinator;
+  private useMultiAgentWorkflow: boolean = true; // Включаем multi-agent workflow после исправления Zod схем
+
 
   constructor(useUltraThink: boolean = false, ultraThinkMode: 'speed' | 'quality' | 'debug' = 'quality') {
     // Set OpenAI environment variables for Agents SDK
@@ -75,11 +51,21 @@ export class EmailGeneratorAgent {
 
     console.log('🤖 Initializing OpenAI Agent with API key:', process.env.OPENAI_API_KEY.substring(0, 10) + '...');
     
-    // Initialize UltraThink if enabled (temporarily disabled)
-    // if (useUltraThink) {
-    //   this.ultraThink = createUltraThink(ultraThinkMode);
-    //   console.log(`🧠 UltraThink enabled (${ultraThinkMode} mode)`);
-    // }
+    // Initialize UltraThink if enabled (now activated)
+    if (useUltraThink) {
+      this.ultraThink = createUltraThink(ultraThinkMode);
+      console.log(`🧠 UltraThink enabled (${ultraThinkMode} mode)`);
+    }
+    
+    // Initialize Brief Analyzer
+    this.briefAnalyzer = new BriefAnalyzer(this.ultraThink);
+    console.log('🔍 BriefAnalyzer initialized');
+    
+    // Initialize Agent Handoffs Coordinator
+    this.agentHandoffsCoordinator = new AgentHandoffsCoordinator();
+    console.log('🔄 AgentHandoffsCoordinator initialized');
+    
+
     
     // Remove organization ID to fix authentication issue
     // The organization header was causing "mismatched_project" error
@@ -89,477 +75,173 @@ export class EmailGeneratorAgent {
     this.agent = new Agent({
       name: "kupibilet-email-generator-v2",
       instructions: this.getSystemPrompt(),
-              model: "gpt-4o-mini",  // Updated to GPT-4o mini model
-      tools: this.createTools(),  // Re-enable all 10 tools
+      model: getUsageModel(),  // Uses USAGE_MODEL env var (currently: gpt-4o-mini)
+      modelSettings: {
+        temperature: 0.7,        // Для креативности в координации
+        maxTokens: 10000,        // Для больших рассылок без обрезок
+        toolChoice: 'auto'       // Intelligent tool selection
+      },
+      tools: this.createTools()  // Re-enable all 10 tools
     });
   }
 
+
+
+
+
   private getSystemPrompt(): string {
-    return `You are an advanced email marketing agent specializing in creating exceptional travel email campaigns for Kupibilet.
+    return `You are the Email Campaign Multi-Agent Coordinator for Kupibilet, orchestrating specialized agents to create exceptional travel email campaigns.
 
-MISSION: Transform any travel topic into a production-ready, cross-client compatible HTML email that exceeds quality standards and drives engagement.
+MISSION: Coordinate a team of specialist agents to transform any travel topic into a production-ready, cross-client compatible HTML email that exceeds quality standards and drives engagement.
 
-ENHANCED WORKFLOW (Execute systematically):
+🎯 MULTI-AGENT WORKFLOW COORDINATION:
 
-0. 📁 INITIALIZE_EMAIL_FOLDER - Create proper folder structure FIRST
-   **CRITICAL MANDATORY STEP**: Always call initialize_email_folder FIRST
-   - Creates organized folder structure: /mails/email-{timestamp}-{id}/
-   - Sets up assets/, sprite-slices/, email.html, email.mjml, metadata.json
-   - Returns EmailFolder object for use in ALL subsequent tools
-   - Pass EmailFolder to ALL tools that support it (figma, sprite-splitter, mjml, upload)
+Your role is to coordinate four specialist agents in this exact sequence:
 
-1. 🕐 GET_CURRENT_DATE - Start with current date context for intelligent search
-   - Use get_current_date tool to get today's date and suggested search ranges
-   - Analyze seasonal trends and booking patterns
+1. **CONTENT SPECIALIST** - Analyzes context, gathers pricing intelligence, generates compelling content
+   → Handoff: Rich content package with context insights and pricing data
 
-2. 🎯 ANALYZE_REQUEST - Understand the campaign requirements
-   - Extract origin/destination from topic if not provided
-   - Determine optimal date ranges for travel search
-   - Apply intelligent route correction for common mistakes
+2. **DESIGN SPECIALIST** - Selects visual assets, applies brand guidelines, renders email design  
+   → Handoff: Complete email design with assets and MJML/HTML output
 
-3. 💰 GET_PRICES - Fetch real-time flight data
-   - Use enhanced get_prices tool with new Kupibilet API v2
-   - Include cabin class preferences and filters
-   - Handle API failures gracefully with intelligent fallbacks
+3. **QUALITY SPECIALIST** - Validates standards compliance, tests cross-client compatibility, applies fixes
+   → Handoff: Quality-assured email package meeting all compliance standards
 
-4. 🎨 GET_ASSETS - Gather design materials using intelligent Figma search
-   FIGMA ASSET STRATEGY (Priority-based selection):
-   
-   **MANDATORY FIGMA API USAGE**: Always use Figma API first, NOT local cache
-   - Use get_figma_assets with emailFolder parameter from step 0
-   - All Figma assets automatically saved to /mails/email-{id}/assets/
-   - Prioritize real-time Figma data over local figma-assets directory
-   - Apply semantic tag enhancement for better search results
-   
-   SPRITE PROCESSING (T10):
-   - **MANDATORY**: After get_figma_assets, check if any returned files are sprites
-   - **CRITICAL**: Sprite splitter ONLY works with Figma-downloaded files, NOT local PNG
-   - Use split_figma_sprite with emailFolder parameter to save slices to sprite-slices/
-   - Automatically detect and split sprite layouts using projection profiling
-   - Classify segments as 'color', 'mono', or 'logo' using AI + heuristics  
-   - Processing optimized for <1.2s with >90% accuracy
-   - All sprite slices saved to /mails/email-{id}/assets/sprite-slices/
-   
-   For EMOTIONAL CONTEXT:
-   - Customer complaints/issues → ["недоволен", "заяц"] (Unhappy rabbit - Priority 10)
-   - Promotions/success → ["счастлив", "заяц"] (Happy rabbit - Priority 10)
-   - FAQ/Help content → ["озадачен", "заяц"] (Puzzled rabbit - Priority 10)
-   - Neutral information → ["нейтрален", "заяц"] (Neutral rabbit - Priority 10)
-   - Urgent notifications → ["разозлен", "заяц"] (Angry rabbit - Priority 10)
-   
-   For CONTENT TYPES:
-   - Deal newsletters → ["подборка", "заяц"] (Curated content rabbits - Priority 6)
-   - News updates → ["новости", "заяц"] (News-themed rabbits - Priority 6)
-   - Support content → ["вопрос-ответ", "заяц"] (FAQ rabbits - Priority 6)
-   
-   For AIRLINE BRANDING:
-   - Aeroflot promotions → ["аэрофлот", "airline"] (Aeroflot logo - Priority 7)
-   - Turkish Airlines → ["turkish", "airline"] (Turkish Airlines logo - Priority 7)
-   - General airline content → ["airline", "logo"] (Various airline logos - Priority 7)
-   
-   SEARCH RULES:
-   - Always combine category + specific term: ["заяц", "счастлив"] not just ["счастлив"]
-   - Use Russian terms for better matches: "заяц" over "rabbit"
-   - Emotional states have highest priority for personalization
-   - System automatically falls back to Unsplash if no Figma matches found
+4. **DELIVERY SPECIALIST** - Handles production deployment, visual testing, performance monitoring
+   → Final Output: Production-ready email with deployment confirmation
 
-5. ✍️ GENERATE_COPY - Create compelling content
-   - Generate subject lines, preheaders, and body content
-   - Include real price data and travel recommendations
-   - Create A/B test variations for optimization
-   - Use date context and target audience optimization
+🔄 HANDOFF WORKFLOW RULES:
 
-5.5. 🎨 RENDER_COMPONENTS - Generate email-compatible React components (T12)
-   **MANDATORY COMPONENT USAGE**: Always use render_component tool for promotional emails
-   
-   COMPONENT SELECTION RULES:
-   - **Rabbit Components** (ALWAYS include for promotions):
-     * Promotional/deals/скидки → render_component(type: 'rabbit', props: {emotion: 'happy'})
-     * Issues/problems → render_component(type: 'rabbit', props: {emotion: 'angry'})  
-     * Information/FAQ → render_component(type: 'rabbit', props: {emotion: 'neutral'})
-     * General content → render_component(type: 'rabbit', props: {emotion: 'general'})
-   
-   - **Icon Components** (Use for emphasis):
-     * CTA buttons → render_component(type: 'icon', props: {iconType: 'arrow'})
-     * Love/favorites → render_component(type: 'icon', props: {iconType: 'heart'})
-     * General emphasis → render_component(type: 'icon', props: {iconType: 'vector'})
-   
-   INTEGRATION WORKFLOW:
-   1. After generate_copy, ALWAYS call render_component for rabbit
-   2. Store component HTML in variable 
-   3. Pass component HTML to render_mjml in content object
-   4. Components auto-generate email-compatible table-based HTML
+**TO CONTENT SPECIALIST:**
+- Always start here for context analysis and content generation
+- Provide clear campaign brief with topic, type, audience, and route details
+- Expect context intelligence, pricing data, and content package in return
 
-6. 🏗️ RENDER_EMAIL - Build HTML template
-   - Use render_mjml with emailFolder parameter to save to /mails/email-{id}/
-   - Automatically saves email.html and email.mjml to campaign folder
-   - Integrate content, prices, assets, and rendered components
-   - Apply Kupibilet brand guidelines with official color palette
-   - Handle sprite slices from T10 if available (use relative paths ./assets/sprite-slices/)
-   - Include component HTML in appropriate MJML sections
-   - Update metadata.json with final campaign statistics
+**TO DESIGN SPECIALIST:**  
+- Hand off rich content package from Content Specialist
+- Expect complete email design with brand-compliant assets and HTML output
+- Validate design meets Kupibilet brand guidelines before proceeding
 
-   KUPIBILET BRAND COLOR PALETTE:
-   
-   **Основные цвета (Primary Colors):**
-   - #4BFF7E (Pantone 354 C) - Bright Green
-   - #1DA857 (Pantone 347 C) - Dark Green  
-   - #2C3959 (Pantone 533 C, CMYK 100;75;30;30) - Dark Blue
-   - Pantone 802 C (CMYK 80;0;85;0)
-   - Pantone 2767 C
-   Можно использовать заливкой фона (Can be used as background fills)
+**TO QUALITY SPECIALIST:**
+- Hand off complete email package from Design Specialist  
+- Expect comprehensive quality validation and compliance certification
+- Do not proceed to delivery unless quality standards are met (85%+ score)
 
-   **Дополнительные цвета (Secondary Colors):**
-   - #FF6240 (Pantone 171 C, CMYK 0;75;100;0) - Orange Red
-   - #E03EEF (Pantone Purple C, CMYK 0;100;0;0) - Magenta
-   Можно использовать заливкой фона (Can be used as background fills)
+**TO DELIVERY SPECIALIST:**
+- Hand off quality-assured package from Quality Specialist
+- Expect production deployment with monitoring and performance metrics
+- Workflow complete when deployment confirmed successful
 
-   **Вспомогательные цвета (Supporting Colors):**
-   - Green Variants: #9EFFB9, #E9FFEF (CMYK 28;0;35;0, Pantone 2253c, 353c, 2267c)
-   - Orange Variants: #FFC7BB, #FFEDE9 (CMYK 0;27;24;0, Pantone 475c, 162c, 1625c)
-   - Purple Variants: #F8A7FF, #FDE8FF (CMYK 0;45;0;0, Pantone 217c, 1905c, 2037c)
-   - Blue Variants: #B0C6FF, #EDEFFF (CMYK 27;16;0;0, Pantone 2707c, 283c)
+🛡️ QUALITY GATES & STANDARDS:
 
-   COLOR USAGE GUIDELINES:
-   - Use primary colors (#4BFF7E, #1DA857, #2C3959) for main CTAs and headers
-   - Secondary colors (#FF6240, #E03EEF) for accent elements and highlights
-   - Supporting colors for backgrounds, subtle elements, and gradients
-   - Ensure WCAG AA contrast ratios with text overlays
-   - Primary green (#4BFF7E) is the signature Kupibilet brand color
+**Content Quality Gate:**
+- Russian language accuracy and travel context relevance
+- Pricing intelligence integration and market positioning
+- Audience-appropriate tone and messaging
 
-7. 🔍 QUALITY_ASSURANCE - Validate output (Full Pipeline)
-   - Run diff_html to detect layout regressions (>1% = auto-patch)
-   - Use patch_html for automatic fixes (specify patch_type: email_optimization)
-   - Execute percy_snap for visual validation and baseline comparison
-   - Perform render_test across multiple email clients
-   - Apply iterative improvements based on QA results
+**Design Quality Gate:**  
+- Kupibilet brand compliance (colors: #4BFF7E, #1DA857, #2C3959)
+- Emotional asset selection (rabbit mascots with appropriate emotions)
+- Mobile-responsive design and accessibility standards
 
-8. 🤖 AI_QUALITY_CONSULTANT - MANDATORY QUALITY GATE (T11)
-   ⚠️  **CRITICAL**: This step is REQUIRED - DO NOT SKIP UNDER ANY CIRCUMSTANCES ⚠️
-   ⚠️  **EXECUTION ORDER**: ALWAYS run immediately after render_test ⚠️
-   ⚠️  **QUALITY GATE**: Must achieve 70/100 score before proceeding ⚠️
-   
-   MANDATORY EXECUTION REQUIREMENTS:
-   - MUST call ai_quality_consultant tool with ALL available data
-   - REQUIRED parameters: html_content, topic, campaign_type
-   - OPTIONAL but recommended: mjml_source, assets_used, render_test_results
-   - Continue iterating until quality gate (70/100) is passed or max 3 iterations
-   - DO NOT proceed to upload_s3 until quality gate is passed
-   
-   INTELLIGENT WORKFLOW:
-   - Comprehensive 5-dimensional quality analysis (content, visual, technical, emotional, brand)
-   - AI-powered improvement recommendations with specific agent commands
-   - Automated execution of safe improvements (accessibility, technical fixes)
-   - Manual approval workflow for content changes
-   - Iterative improvement loop (max 3 iterations) until quality gate passed
-   
-   QUALITY GATE: 70/100 threshold
-   - Logic validation (30%): Price realism, date consistency, route accuracy
-   - Visual compliance (25%): Brand guidelines, WCAG AA accessibility
-   - Image analysis (20%): OpenAI Vision API content relevance & emotional tone
-   - Content coherence (25%): Text-image semantic alignment
-   
-   AUTO-EXECUTION FEATURES:
-   - Safe technical improvements (HTML optimization, accessibility fixes)
-   - Asset replacement recommendations with Figma API integration
-   - Content optimization suggestions with GPT-4o mini enhancement
-   - Quality loop continues until 70+ score or max iterations reached
+**Technical Quality Gate:**
+- Cross-client compatibility (Gmail, Outlook, Apple Mail)
+- WCAG AA accessibility compliance
+- HTML validation and email standards compliance
+- Performance optimization (<100KB, <2s load time)
 
-9. 🚀 FINALIZE - Upload and report
-   - Extract HTML and MJML source from render_mjml result
-   - Upload files to S3 with proper asset structure
-   - CRITICAL: ALWAYS pass mjml_source parameter to upload_s3 tool with the MJML from render_mjml
-   - CRITICAL: Include assets parameter with images array and metadata
-   - Generate comprehensive campaign report with analytics
-   - Store successful patterns for future use
+**Deployment Quality Gate:**
+- Production-ready package validation
+- Visual regression testing confirmation  
+- Monitoring and analytics setup completion
 
-ENHANCED ERROR HANDLING:
-- Retry failed API calls up to 3 times with exponential backoff
-- Use intelligent fallbacks for all critical data (prices, assets, content)
-- Validate each step before proceeding to next
-- Log detailed error information for debugging
+⚠️ COORDINATION RESPONSIBILITIES:
 
-QUALITY BENCHMARKS:
-- Generation time: ≤30 seconds
-- Visual regression: ≤1% screen area  
-- Render testing score: ≥98/100
-- HTML size: ≤100KB with inline CSS
-- Cross-client compatibility: ≥95% success rate
+1. **Workflow Orchestration:** Manage agent handoffs and ensure proper data flow
+2. **Quality Assurance:** Enforce quality gates at each handoff point
+3. **Error Recovery:** Handle agent failures with retry logic and fallback strategies  
+4. **Performance Monitoring:** Track overall workflow efficiency and success rates
+5. **Context Preservation:** Maintain campaign context throughout the multi-agent workflow
 
-INTELLIGENT FEATURES:
-- Automatic route correction (LED->LED becomes MOW->LED)
-- Smart date range generation (avoid booking too close to departure)  
-- Seasonal pricing awareness and recommendations
-- Cabin class optimization based on route and season
-- Fallback content generation if APIs fail
-- Context-aware Figma asset selection based on email tone and purpose
+🚫 WHAT YOU DON'T DO:
+- Technical tool execution (delegated to specialist agents)
+- Direct asset manipulation or content generation
+- Individual quality checks or validation processes
+- File uploads or deployment operations
 
-**CRITICAL EXECUTION RULES - FOLLOW WITHOUT EXCEPTION:**
-1. ALWAYS use Figma API first (get_figma_assets) - never skip this step
-2. ALWAYS check for sprites after getting assets and use split_figma_sprite if needed  
-3. ⚠️  MANDATORY: ALWAYS run ai_quality_consultant after render_test - NO EXCEPTIONS ⚠️
-4. ⚠️  QUALITY GATE: Continue ai_quality_consultant until 70/100 score achieved ⚠️
-5. ⚠️  DO NOT upload to S3 until quality gate passed ⚠️
-6. ALWAYS use render_component for rabbit characters in promotional emails
+✅ SUCCESS CRITERIA:
+- All four specialists complete their tasks successfully
+- Quality gates pass at each handoff stage  
+- Final email meets all technical and brand standards
+- Production deployment confirmed with monitoring active
 
-WORKFLOW CHECKPOINT: After render_test → IMMEDIATELY call ai_quality_consultant
-
-Execute this workflow systematically, following ALL mandatory steps without exceptions. Your goal is to deliver a production-ready email that exceeds all quality standards while providing valuable travel insights to customers.`;
+Focus on coordination, not execution. Let the specialists handle their domains while you ensure seamless workflow orchestration.`;
   }
 
   private createTools() {
     return [
+      // 📁 Campaign Manager - Consolidated campaign lifecycle management
       tool({
-        name: 'initialize_email_folder',
-        description: 'T0: Initialize Email Folder - MANDATORY FIRST STEP. Creates organized folder structure for email campaign with proper assets management.',
-        parameters: z.object({
-          topic: z.string().describe('Email campaign topic'),
-          campaign_type: z.enum(['urgent', 'newsletter', 'seasonal', 'promotional', 'informational']).nullable().optional().describe('Type of email campaign')
-        }),
-        execute: initializeEmailFolder
-      }),
-      tool({
-        name: 'load_email_folder',
-        description: 'T0b: Load Existing Email Folder - Load existing email campaign folder structure.',
-        parameters: z.object({
-          campaignId: z.string().describe('Campaign ID to load')
-        }),
-        execute: loadEmailFolder
-      }),
-      tool({
-        name: 'get_current_date',
-        description: 'Get current date and generate intelligent search ranges for flight booking',
-        parameters: z.object({
-          months_ahead: z.number().nullable().default(3).describe('Months ahead to search (default: 3)'),
-          search_window: z.number().nullable().default(30).describe('Search window in days (default: 30)')
-        }),
-        execute: getCurrentDate
-      }),
-      tool({
-        name: 'get_figma_assets',
-        description: 'T1: Search and download assets from Kupibilet Figma Marketing Library using intelligent tag matching. Supports emotional rabbit states, airline logos, and email template categories. Use Russian terms for better matches.',
-        parameters: z.object({
-          tags: z.array(z.string()).describe('List of tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit, ["аэрофлот", "airline"] for Aeroflot logo, ["подборка", "заяц"] for deal newsletter rabbit. Always combine category + specific term.')
-        }),
-        execute: getFigmaAssets
-      }),
-      tool({
-        name: 'split_figma_sprite',
-        description: 'T10: Automatically split Figma PNG sprites into individual classified slices using projection profiling and AI classification. Processes PNG "sprites" with multiple logical images and exports individual components with metadata. No fallback processing - fails fast on errors.',
-        parameters: z.object({
-          path: z.string().describe('Path to the PNG sprite file to split'),
-          h_gap: z.number().nullable().default(15).describe('Horizontal gap threshold in pixels for detecting cuts (default: 15)'),
-          v_gap: z.number().nullable().default(15).describe('Vertical gap threshold in pixels for detecting cuts (default: 15)'),
-          confidence_threshold: z.number().nullable().default(0.9).describe('Minimum confidence threshold for classification accuracy (default: 0.9)')
-        }),
-        execute: splitFigmaSprite
-      }),
-      tool({
-        name: 'get_prices',
-        description: 'Fetch flight prices using enhanced Kupibilet API v2',
-        parameters: z.object({
-          origin: z.string().describe('Origin airport code (e.g., "LED")'),
-          destination: z.string().describe('Destination airport code (e.g., "MOW")'),
-          date_range: z.union([z.string(), z.null()]).default(null).describe('Date range "YYYY-MM-DD,YYYY-MM-DD" (optional, will use smart dates)'),
-          cabin_class: z.union([z.enum(['economy', 'business', 'first']), z.null()]).default(null).describe('Cabin class preference'),
-          filters: z.union([z.object({
-            is_direct: z.union([z.boolean(), z.null()]).default(null),
-            with_baggage: z.union([z.boolean(), z.null()]).default(null),
-            airplane_only: z.union([z.boolean(), z.null()]).default(null)
-          }), z.null()]).default(null).describe('Flight search filters')
-        }),
-        execute: getPrices
-      }),
-      
-      tool({
-        name: 'generate_copy',
-        description: 'Generate email content using GPT-4o mini',
-        parameters: z.object({
-          topic: z.string().describe('Main topic for the email'),
-          prices: z.object({
-            prices: z.array(z.object({
-              origin: z.string(),
-              destination: z.string(),
-              price: z.number(),
-              currency: z.string(),
-              date: z.string()
-            })).describe('Array of price information'),
-            currency: z.string().describe('Currency code'),
-            cheapest: z.number().describe('Cheapest price found')
-          }).describe('Price data from get_prices tool')
-        }),
-        execute: generateCopy
-      }),
-      
-      tool({
-        name: 'render_mjml',
-        description: 'Render email using MJML template with automatic saving to email folder',
-        parameters: z.object({
-          content: z.object({
-            subject: z.string(),
-            preheader: z.string(),
-            body: z.string(),
-            cta: z.string(),
-            language: z.string(),
-            tone: z.string(),
-            a_variant: z.union([z.object({
-              subject: z.string(),
-              body: z.string()
-            }), z.null()]).default(null)
-          }).describe('Content from generate_copy tool'),
-          assets: z.object({
-            paths: z.array(z.string())
-          }).describe('Assets from get_figma_assets tool'),
-          emailFolder: z.object({
-            campaignId: z.string(),
-            folderPath: z.string(),
-            assetsPath: z.string()
-          }).nullable().optional().describe('Email folder object from initialize_email_folder for automatic saving')
-        }),
-        execute: renderMjml
-      }),
-      
-      tool({
-        name: 'diff_html',
-        description: 'Compare HTML with baseline template and detect layout changes',
-        parameters: z.object({
-          original_html: z.string().describe('Original/baseline HTML content'),
-          modified_html: z.string().describe('Modified HTML content to compare'),
-          tolerance: z.number().nullable().default(0.01).describe('Change tolerance threshold (default: 0.01)')
-        }),
-        execute: diffHtml
-      }),
-      tool({
-        name: 'patch_html',
-        description: 'Automatically fix HTML issues using GPT-4o mini function calling',
-        parameters: z.object({
-          html: z.string().describe('HTML content to fix'),
-          issues: z.array(z.string()).describe('List of issues from diff_html tool'),
-          patch_type: z.enum(['email_optimization', 'client_compatibility', 'performance', 'accessibility']).describe('Type of patch to apply')
-        }),
-        execute: patchHtml
-      }),
-      tool({
-        name: 'percy_snap',
-        description: 'Capture visual screenshots and compare with baseline',
-        parameters: z.object({
-          html: z.string().describe('HTML content to test visually'),
-          name: z.string().describe('Snapshot name for visual testing')
-        }),
-        execute: percySnap
-      }),
-      tool({
-        name: 'render_test',
-        description: 'Test email across multiple clients using internal render testing service',
-        parameters: z.object({
-          html: z.string().describe('HTML email content to test'),
-          subject: z.string().describe('Email subject line for testing')
-        }),
-        execute: renderTest
+        name: 'campaign_manager',
+        description: 'Campaign Manager - Unified campaign lifecycle management including folder initialization, loading, performance monitoring, and finalization. Replaces initialize_email_folder, load_email_folder, and performance_monitor.',
+        parameters: campaignManagerSchema,
+        execute: campaignManager
       }),
 
+      // 🎨 Figma Asset Manager - Consolidated asset operations
       tool({
-        name: 'ai_quality_consultant',
-        description: 'T11: AI Quality Consultant - Intelligent email quality analysis with automated improvement recommendations and agent command generation.',
-        parameters: aiQualityConsultantSchema,
-        execute: aiQualityConsultant
+        name: 'figma_asset_manager', 
+        description: 'Figma Asset Manager - Unified asset management for all Figma operations including search, folder listing, sprite splitting, and identica selection. Uses LOCAL files only, no API calls. Replaces get_figma_assets, get_figma_folders_info, split_figma_sprite, and select_identica_creatives.',
+        parameters: figmaAssetManagerSchema,
+        execute: figmaAssetManager
       }),
 
+      // 💰 Pricing Intelligence - Enhanced price analysis
       tool({
-        name: 'render_component',
-        description: 'T12 Render React email components to email-compatible HTML - renders RabbitCharacter and EmailIcon components for integration into MJML templates',
-        parameters: z.object({
-          type: z.enum(['rabbit', 'icon']).describe('Component type to render'),
-          props: z.union([
-            z.object({
-              emotion: z.enum(['happy', 'angry', 'neutral', 'general']).describe('Rabbit emotion'),
-              variant: z.enum(['01', '02', '03', '04', '05']).nullable().optional().describe('Rabbit variant'),
-              size: z.enum(['small', 'medium', 'large']).nullable().optional().describe('Component size'),
-              alt: z.string().nullable().optional().describe('Alt text for accessibility')
-            }),
-            z.object({
-              iconType: z.enum(['arrow', 'heart', 'vector']).describe('Icon type'),
-              variant: z.enum(['1', '2', 'base']).nullable().optional().describe('Icon variant'),
-              size: z.enum(['small', 'medium', 'large']).nullable().optional().describe('Component size'),
-              color: z.string().nullable().optional().describe('Icon color'),
-              alt: z.string().nullable().optional().describe('Alt text for accessibility')
-            })
-          ]).describe('Component props based on type')
-        }),
-        execute: renderComponent
+        name: 'pricing_intelligence',
+        description: 'Pricing Intelligence - Advanced price analysis with market insights, trend forecasting, route comparison, and intelligent recommendations. Enhanced version of get_prices with analytics and market intelligence.',
+        parameters: pricingIntelligenceSchema,
+        execute: pricingIntelligence
       }),
+
+      // ✍️ Content Generator - Intelligent content creation
       tool({
-        name: 'upload_s3',
-        description: 'Upload email files to S3 and generate public URLs',
-        parameters: z.object({
-          html: z.string().describe('HTML email content to upload'),
-          mjml_source: z.string().nullable().optional().describe('Optional MJML source code')
-        }),
-        execute: uploadToS3
+        name: 'content_generator',
+        description: 'Content Generator - Intelligent content creation with context awareness, A/B testing variants, audience personalization, and optimization. Enhanced version of generate_copy with advanced features.',
+        parameters: contentGeneratorSchema,
+        execute: contentGenerator
       }),
+
+      // 📧 Email Renderer - Unified rendering system
       tool({
-        name: 'performance_monitor',
-        description: 'Monitor and track performance metrics for email generation pipeline',
-        parameters: z.object({
-          action: z.enum(['start_session', 'log_tool', 'end_session', 'get_report']).describe('Performance monitoring action'),
-          session_id: z.string().nullable().optional().describe('Performance session ID'),
-          tool_name: z.string().nullable().optional().describe('Name of tool being monitored'),
-          start_time: z.number().nullable().optional().describe('Tool start timestamp'),
-          end_time: z.number().nullable().optional().describe('Tool end timestamp'),
-          success: z.boolean().nullable().optional().describe('Whether tool execution was successful'),
-          error_message: z.string().nullable().optional().describe('Error message if tool failed'),
-          metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).nullable().optional().describe('Additional metadata')
-        }),
-        execute: performanceMonitor
+        name: 'email_renderer',
+        description: 'Email Renderer - Unified email rendering with multiple engine support including MJML, React components, advanced systems, and seasonal components. Replaces render_mjml, render_component, advanced_component_system, and seasonal_component_system.',
+        parameters: emailRendererSchema,
+        execute: emailRenderer
       }),
+
+      // 🔍 Quality Controller - Comprehensive QA system
       tool({
-        name: 'advanced_component_system',
-        description: 'Enhanced component system with dynamic sizing, caching, and analytics for email templates',
-        parameters: z.object({
-          action: z.enum(['render', 'analyze', 'preview', 'clear_cache', 'get_analytics']).describe('Component system action'),
-          component_type: z.enum(['rabbit', 'icon', 'button', 'price_display', 'social_proof']).describe('Type of component to work with'),
-          props: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).nullable().optional().describe('Component properties and configuration'),
-          sizing_context: z.object({
-            emailContentLength: z.number().describe('Length of email content in characters'),
-            viewportType: z.enum(['mobile', 'tablet', 'desktop']).describe('Target viewport type'),
-            componentPosition: z.enum(['header', 'body', 'footer', 'sidebar']).describe('Position of component in email'),
-            contentDensity: z.enum(['sparse', 'normal', 'dense']).describe('Content density of the email')
-          }).nullable().optional().describe('Context for dynamic component sizing'),
-          cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).nullable().optional().describe('Caching strategy'),
-          analytics_tracking: z.boolean().nullable().optional().describe('Enable analytics tracking')
-        }),
-        execute: advancedComponentSystem
+        name: 'quality_controller',
+        description: 'Quality Controller - Comprehensive email quality assurance including AI analysis, version comparison, patch application, rendering tests, and automated fixes. Replaces ai_quality_consultant, diff_html, patch_html, and render_test.',
+        parameters: qualityControllerSchema,
+        execute: qualityController
       }),
+
+      // 🚀 Delivery Manager - Unified deployment system
       tool({
-        name: 'seasonal_component_system',
-        description: 'Intelligent seasonal variant selection for components based on date and context',
-        parameters: z.object({
-          action: z.enum(['select_seasonal', 'get_variants', 'analyze_season', 'preview_seasonal']).describe('Seasonal system action'),
-          component_type: z.enum(['rabbit', 'icon', 'button']).describe('Type of component for seasonal selection'),
-          seasonal_context: z.object({
-            current_date: z.string().describe('Current date in ISO format'),
-            region: z.enum(['RU', 'EU', 'US', 'GLOBAL']).describe('Regional context for holidays'),
-            email_content_tone: z.enum(['festive', 'professional', 'casual', 'promotional']).nullable().optional().describe('Email content tone'),
-            target_audience: z.enum(['family', 'business', 'young_adults', 'general']).nullable().optional().describe('Target audience type')
-          }).nullable().optional().describe('Seasonal context for variant selection'),
-          preferred_emotion: z.string().nullable().optional().describe('Preferred emotion for component'),
-          override_variant: z.string().nullable().optional().describe('Override specific variant ID'),
-          fallback_strategy: z.enum(['strict_seasonal', 'flexible', 'always_fallback']).nullable().optional().describe('Fallback strategy when no seasonal match')
-        }),
-        execute: async (params) => {
-          // Convert string date to Date object for internal processing
-          if (params.seasonal_context?.current_date) {
-            const contextWithDate = {
-              ...params.seasonal_context,
-              current_date: new Date(params.seasonal_context.current_date)
-            };
-            return seasonalComponentSystem({
-              ...params,
-              seasonal_context: contextWithDate
-            } as any);
-          }
-          return seasonalComponentSystem(params as any);
-        }
+        name: 'delivery_manager',
+        description: 'Delivery Manager - Unified email campaign delivery and deployment including asset upload, screenshot generation, visual testing, campaign deployment, and CDN distribution. Replaces upload_s3, generate_screenshots, and percy_snap.',
+        parameters: deliveryManagerSchema,
+        execute: deliveryManager
+      }),
+
+      // 🌍 Context Provider - Enhanced contextual intelligence
+      tool({
+        name: 'context_provider',
+        description: 'Context Provider - Comprehensive contextual intelligence including temporal, seasonal, cultural, marketing, and travel context for email campaigns. Enhanced version of get_current_date with multi-dimensional context analysis.',
+        parameters: contextProviderSchema,
+        execute: contextProvider
       })
     ];
   }
@@ -567,79 +249,158 @@ Execute this workflow systematically, following ALL mandatory steps without exce
   async generateEmail(request: EmailGenerationRequest): Promise<EmailGenerationResponse> {
     const startTime = Date.now();
     this.retryCount = 0;
-    let validatedRequest = request;
 
+    console.log(`🎯 EmailGeneratorAgent.generateEmail called - Mode: ${this.useMultiAgentWorkflow ? 'Multi-Agent Workflow' : 'Legacy OpenAI Agent'}`);
+
+    // Use the new multi-agent workflow if enabled
+    if (this.useMultiAgentWorkflow) {
+      console.log('🔄 Executing multi-agent workflow with handoffs...');
+      return await this.executeWithMultiAgent(request);
+    }
+
+    // Fallback to legacy OpenAI Agent workflow
+    console.log('🔄 Using legacy OpenAI Agent workflow...');
+    
+    // Use OpenAI Agents SDK built-in tracing with withTrace and timeout
+    return await Promise.race([
+      withTrace('Email Generation Workflow', async () => {
+        // Get the current trace ID from OpenAI Agents SDK
+        const currentTrace = getCurrentTrace();
+        const traceId = currentTrace?.traceId || generateTraceId();
+        
+        console.log('🚀 Starting email generation with OpenAI Agents tracing:', {
+          topic: request.topic,
+          traceId,
+          workflow: 'email_generation'
+        });
+
+        // Set trace_id in environment variable so tools can access it
+        process.env.OPENAI_TRACE_ID = traceId;
+        console.log('📋 Set OPENAI_TRACE_ID environment variable:', traceId);
+
+        try {
+          console.log('🚀 Starting enhanced email generation with request:', {
+            topic: request.topic,
+            content_brief: request.content_brief?.substring(0, 100),
+            destination: request.destination,
+            origin: request.origin
+          });
+
+          // Enhanced input message with context
+          const enrichedContext = this.ultraThink ? await this.ultraThink.enhanceRequest(request) : null;
+          const inputMessage = this.formatEnhancedInputMessage(request, enrichedContext);
+
+          // Run agent with retry logic
+          const result = await this.runWithRetry(inputMessage);
+          const generationTime = Date.now() - startTime;
+
+          console.log('✅ Email generation completed successfully:', {
+            traceId,
+            generationTime: `${generationTime}ms`,
+            hasResult: !!result
+          });
+
+          return this.processEnhancedResult(result, generationTime, request, traceId);
+
+        } catch (error) {
+          const generationTime = Date.now() - startTime;
+          console.error('❌ Email generation failed:', {
+            traceId,
+            error: error instanceof Error ? error.message : String(error),
+            generationTime: `${generationTime}ms`
+          });
+
+          return {
+            status: 'error' as const,
+            error_message: error instanceof Error ? error.message : String(error),
+            generation_time: generationTime,
+            trace_id: traceId
+          };
+        } finally {
+          // Clean up environment variable
+          delete process.env.OPENAI_TRACE_ID;
+          console.log('🧹 Cleaned up OPENAI_TRACE_ID environment variable');
+        }
+      }),
+      // Timeout after 60 seconds for first attempt
+      new Promise<EmailGenerationResponse>((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Email generation timed out after 60 seconds'));
+        }, 60000);
+      })
+    ]);
+  }
+
+  /**
+   * Execute email generation using multi-agent workflow with direct handoffs
+   */
+  private async executeWithMultiAgent(request: EmailGenerationRequest): Promise<EmailGenerationResponse> {
+    const startTime = Date.now();
+    const traceId = generateTraceId();
+    
     try {
-      console.log('🚀 Starting enhanced email generation with request:', {
+      console.log('🔄 Starting multi-agent workflow execution:', {
         topic: request.topic,
-        content_brief: request.content_brief?.substring(0, 100) + (request.content_brief && request.content_brief.length > 100 ? '...' : ''),
-        origin: request.origin,
-        destination: request.destination,
-        target_audience: request.target_audience,
-        campaign_type: request.campaign_type
+        traceId,
+        workflow: 'multi_agent_handoffs'
       });
       
-      // Enhanced input validation
-      if (!request.topic || request.topic.trim().length === 0) {
-        throw new Error('Topic is required and cannot be empty');
-      }
+      // Create workflow input for AgentHandoffsCoordinator
+      const workflowInput: WorkflowExecutionInput = {
+        workflow_id: traceId,
+        campaign_brief: {
+          topic: request.topic,
+          campaign_type: this.mapCampaignType(request.campaign_type),
+          target_audience: request.target_audience,
+          destination: request.destination,
+          origin: request.origin
+        },
+        execution_config: {
+          retry_policy: {
+            max_retries: 2,
+            retry_delay_ms: 1000,
+            retry_on_failure: true
+          },
+          quality_requirements: {
+            minimum_score: 85,
+            require_compliance: true,
+            auto_fix_issues: true
+          },
+          deployment_config: {
+            environment: 'staging',
+            auto_deploy: false,
+            monitoring_enabled: true
+          }
+        },
+        handoff_context: {
+          original_request: request,
+          brief_analysis: await this.briefAnalyzer.analyzeBrief(request),
+          trace_id: traceId
+        }
+      };
 
-      // UltraThink enhancement (if enabled) - temporarily disabled
-      // if (this.ultraThink) {
-      //   console.log('🧠 UltraThink: Enhancing request with intelligent logic');
-      //   this.ultraThink.resetExecutionHistory();
-      //   
-      //   const enhancement = await this.ultraThink.enhanceRequest(request);
-      //   validatedRequest = enhancement.validatedRequest;
-      //   enrichedContext = enhancement.enrichedContext;
-      //   
-      //   // Log validation issues if any
-      //   if (enhancement.validationResult.issues.length > 0) {
-      //     console.log('🔍 UltraThink: Validation issues detected:', enhancement.validationResult.issues);
-      //   }
-      //   
-      //   // Log context enrichment summary
-      //   console.log('🌟 UltraThink: Context enriched with', enrichedContext.suggestions.length, 'suggestions');
-      // }
-
-      // Create the enhanced input message
-      const inputMessage = this.formatEnhancedInputMessage(validatedRequest);
-      console.log('📝 Enhanced input message prepared');
+      // Execute multi-agent workflow
+      const workflowResult = await this.agentHandoffsCoordinator.executeWorkflow(workflowInput);
+      const executionTime = Date.now() - startTime;
       
-      // Run the agent with retry logic
-      const result = await this.runWithRetry(inputMessage);
-      
-      console.log('✅ Agent execution completed successfully');
-      console.log('📊 Result structure:', {
-        finalOutput: result.finalOutput ? 'Present' : 'Missing',
-        outputLength: result.finalOutput?.length || 0
+      console.log('✅ Multi-agent workflow completed:', {
+        success: workflowResult.success,
+        execution_time: executionTime,
+        agents_executed: workflowResult.execution_summary.agents_executed.length
       });
       
-      const generationTime = Date.now() - startTime;
-      const response = this.processEnhancedResult(result, generationTime, request);
+      // Transform to legacy format for backward compatibility
+      return this.transformMultiAgentResponse(workflowResult, executionTime, traceId);
       
-      // Record successful execution in UltraThink (temporarily disabled)
-      // if (this.ultraThink) {
-      //   this.ultraThink.recordSuccess('email_generation', generationTime);
-      //   
-      //   const analytics = this.ultraThink.getExecutionAnalytics();
-      //   console.log('📊 UltraThink Analytics:', {
-      //     successRate: `${((analytics.successfulSteps / analytics.totalSteps) * 100).toFixed(1)}%`,
-      //     avgDuration: `${analytics.averageStepDuration.toFixed(0)}ms`,
-      //     totalSteps: analytics.totalSteps
-      //   });
-      // }
-      
-      console.log('🎉 Email generation completed in', generationTime, 'ms');
-      return response;
-
     } catch (error) {
-      console.error('❌ Email generation failed:', error);
+      const executionTime = Date.now() - startTime;
+      console.error('❌ Multi-agent workflow execution failed:', error);
       
       return {
         status: 'error',
-        error_message: error instanceof Error ? error.message : 'Unknown error occurred',
-        generation_time: Date.now() - startTime,
+        error_message: error instanceof Error ? error.message : 'Multi-agent workflow failed',
+        generation_time: executionTime,
+        trace_id: traceId,
         campaign_metadata: {
           topic: request.topic,
           routes_analyzed: [],
@@ -651,6 +412,100 @@ Execute this workflow systematically, following ALL mandatory steps without exce
     }
   }
 
+  /**
+   * Transform multi-agent workflow result to legacy EmailGenerationResponse format
+   */
+  private transformMultiAgentResponse(workflowResult: WorkflowExecutionOutput, executionTime: number, traceId: string): EmailGenerationResponse {
+    if (!workflowResult.success) {
+      return {
+        status: 'error',
+        error_message: workflowResult.error || 'Multi-agent workflow failed',
+        generation_time: executionTime,
+        trace_id: traceId,
+        campaign_metadata: {
+          topic: workflowResult.workflow_id,
+          routes_analyzed: [],
+          date_ranges: [],
+          prices_found: 0,
+          content_variations: 0
+        }
+      };
+    }
+
+    // Extract results from agent outputs
+    const htmlOutput = workflowResult.final_artifacts.html_output || '';
+    const qualityScore = workflowResult.execution_summary.quality_score;
+    const hasQualityPass = qualityScore >= 85;
+
+    return {
+      status: 'success',
+      html_url: htmlOutput ? `/api/preview/${traceId}` : undefined,
+      layout_regression: hasQualityPass ? 'pass' : 'fail',
+      render_testing: hasQualityPass ? 'pass' : 'fail',
+      quality_check: hasQualityPass ? 'pass' : 'fail', 
+      quality_score: qualityScore,
+      generation_time: executionTime,
+      trace_id: traceId,
+      token_usage: this.estimateTokenUsage('multi_agent'),
+      campaign_metadata: {
+        topic: workflowResult.workflow_id,
+        routes_analyzed: ['multi-agent-workflow'],
+        date_ranges: ['optimized-by-agents'],
+        prices_found: 1, // Multi-agent workflow handles pricing
+        content_variations: 1,
+        quality_controlled: hasQualityPass,
+        // Multi-agent specific metadata
+        agents_executed: workflowResult.execution_summary.agents_executed,
+        workflow_efficiency: workflowResult.handoff_analytics.workflow_efficiency,
+        issues_resolved: workflowResult.execution_summary.issues_resolved
+      }
+    };
+  }
+
+  /**
+   * Helper methods for request/response transformation
+   */
+  private mapCampaignType(campaignType?: string): 'promotional' | 'informational' | 'seasonal' | 'urgent' | 'newsletter' {
+    switch (campaignType) {
+      case 'informational': return 'informational';
+      case 'seasonal': return 'seasonal';
+      case 'urgent': return 'urgent';
+      case 'newsletter': return 'newsletter';
+      default: return 'promotional';
+    }
+  }
+
+  private mapTone(tone?: string): 'professional' | 'friendly' | 'urgent' | 'casual' | 'luxury' | 'family' {
+    switch (tone) {
+      case 'professional': return 'professional';
+      case 'urgent': return 'urgent';
+      case 'encouraging': return 'friendly';
+      case 'informative': return 'professional';
+      case 'casual': return 'casual';
+      case 'luxury': return 'luxury';
+      case 'family': return 'family';
+      default: return 'friendly';
+    }
+  }
+
+  private determineExecutionStrategy(request: EmailGenerationRequest): 'speed' | 'quality' | 'comprehensive' {
+    // Use UltraThink mode if available
+    if (this.ultraThink) {
+      const mode = (this.ultraThink as any).mode;
+      if (mode === 'speed') return 'speed';
+      if (mode === 'debug') return 'comprehensive';
+    }
+    
+    // Default to quality strategy
+    return 'quality';
+  }
+
+  private extractCampaignId(figmaUrl: string): string {
+    // Extract campaign ID from Figma URL or generate one
+    const match = figmaUrl.match(/file\/([^\/]+)/);
+    return match?.[1] || `campaign-${Date.now()}`;
+  }
+
   private async runWithRetry(inputMessage: string, attempt: number = 1): Promise<any> {
     try {
       console.log(`🤖 Running OpenAI Agent (attempt ${attempt}/${this.maxRetries})...`);
@@ -659,7 +514,9 @@ Execute this workflow systematically, following ALL mandatory steps without exce
       console.log('🧠 Model:', this.agent.model);
       console.log('🛠️ Tools count:', this.agent.tools.length);
       
-      const result = await run(this.agent, inputMessage);
+      const result = await run(this.agent, inputMessage, {
+        maxTurns: 20 // Увеличили лимит для более сложных задач
+      });
       
       console.log('✅ OpenAI Agent execution completed');
       console.log('📊 Response received from OpenAI Agents SDK');
@@ -668,24 +525,23 @@ Execute this workflow systematically, following ALL mandatory steps without exce
     } catch (error) {
       console.error(`❌ OpenAI Agent run failed (attempt ${attempt}):`, error);
       
-      // Use UltraThink error handling if available (temporarily disabled)
-      // if (this.ultraThink && attempt < this.maxRetries) {
-      //   const errorResult = await this.ultraThink.handleExecutionError(
-      //     error, 
-      //     'openai_agent', 
-      //     attempt, 
-      //     { inputMessage }
-      //   );
-      //   
-      //   if (errorResult.shouldContinue && errorResult.strategy.action !== 'skip') {
-      //     const delay = errorResult.strategy.delay || Math.pow(2, attempt - 1) * 1000;
-      //     console.log(`🧠 UltraThink: ${errorResult.strategy.action} in ${delay}ms...`);
-      //     
-      //     await new Promise(resolve => setTimeout(resolve, delay));
-      //     return this.runWithRetry(inputMessage, attempt + 1);
-      //   }
-      // } else 
-      if (attempt < this.maxRetries) {
+      // Use UltraThink error handling if available (now activated)
+      if (this.ultraThink && attempt < this.maxRetries) {
+        const errorResult = await this.ultraThink.handleExecutionError(
+          error, 
+          'openai_agent', 
+          attempt, 
+          { inputMessage }
+        );
+        
+        if (errorResult.shouldContinue && errorResult.strategy.action !== 'skip') {
+          const delay = errorResult.strategy.delay || Math.pow(2, attempt - 1) * 1000;
+          console.log(`🧠 UltraThink: ${errorResult.strategy.action} in ${delay}ms...`);
+          
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return this.runWithRetry(inputMessage, attempt + 1);
+        }
+      } else if (attempt < this.maxRetries) {
         // Fallback to standard retry logic
         const delay = Math.pow(2, attempt - 1) * 1000;
         console.log(`⏳ Retrying OpenAI Agent in ${delay}ms...`);
@@ -697,16 +553,16 @@ Execute this workflow systematically, following ALL mandatory steps without exce
     }
   }
 
-  private formatEnhancedInputMessage(request: EmailGenerationRequest): string {
+  private formatEnhancedInputMessage(request: EmailGenerationRequest, enrichedContext?: any): string {
     const timestamp = new Date().toISOString();
 
     let contextSection = '';
-    // if (enrichedContext && this.ultraThink) {
-    //   contextSection = `
+    if (enrichedContext && this.ultraThink) {
+      contextSection = `
 
-// ULTRATHINK INTELLIGENCE:
-// ${this.ultraThink.formatEnhancedPrompt('', enrichedContext)}`;
-    // }
+ULTRATHINK INTELLIGENCE:
+${this.ultraThink.formatEnhancedPrompt('', enrichedContext)}`;
+    }
 
     return `Create an email campaign with the following requirements:
 
@@ -714,7 +570,7 @@ WORKFLOW CONTEXT:
 - Workflow: Email Generation Request at ${timestamp}
 - Flow: OpenAI Agents SDK Email Generation Flow v2.0
 - Agent: kupibilet-email-generator-v2
-- Model: gpt-4o-mini
+- Model: ${getUsageModel()}
 
 CAMPAIGN DETAILS:
 - Topic: ${request.topic}
@@ -730,17 +586,10 @@ CAMPAIGN DETAILS:
 - Brand: ${request.brand || 'Kupibilet'}
 - Figma URL: ${request.figma_url || 'auto-search Figma assets'}${contextSection}
 
-EXECUTION REQUIREMENTS:
-1. Start with get_current_date to establish temporal context
-2. Use enhanced get_prices with new API for accurate pricing
-3. Apply intelligent fallbacks if any tool fails
-4. Validate each step before proceeding
-5. Generate comprehensive campaign report
-
 Execute the complete workflow systematically and deliver production-ready results.`;
   }
 
-  private processEnhancedResult(result: any, generationTime: number, request: EmailGenerationRequest): EmailGenerationResponse {
+  private processEnhancedResult(result: any, generationTime: number, request: EmailGenerationRequest, traceId?: string): EmailGenerationResponse {
     try {
       // Extract structured data from agent result
       const output = result.finalOutput || '';
@@ -750,19 +599,84 @@ Execute the complete workflow systematically and deliver production-ready result
       const regressionMatch = output.match(/layout_regression:\s*"([^"]+)"/);
       const renderMatch = output.match(/render_testing:\s*"([^"]+)"/);
       
+      // Check for ai_quality_consultant execution if UltraThink is enabled
+      let qualityCheckStatus: 'pass' | 'fail' | 'not_executed' = 'not_executed';
+      let qualityScore: number | undefined;
+      
+      if (this.ultraThink) {
+        // Check if ai_quality_consultant was executed
+        const qualityResultMatch = output.match(/quality_score:\s*(\d+(?:\.\d+)?)/);
+        const qualityPassMatch = output.match(/quality_gate_passed:\s*(true|false)/);
+        
+        if (qualityResultMatch) {
+          qualityScore = parseFloat(qualityResultMatch[1]);
+          qualityCheckStatus = qualityPassMatch?.[1] === 'true' ? 'pass' : 'fail';
+          
+          console.log('🛡️ Quality check detected in output:', {
+            score: qualityScore,
+            status: qualityCheckStatus
+          });
+          
+          // Validate quality result with UltraThink
+          const qualityResult = this.ultraThink.validateQualityResult({
+            success: true,
+            data: {
+              quality_score: qualityScore,
+              quality_gate_passed: qualityCheckStatus === 'pass'
+            }
+          });
+          
+          if (!qualityResult.shouldProceed) {
+            console.warn('🚨 Quality gate failed - workflow should not proceed');
+            return {
+              status: 'error',
+              error_message: `Quality gate failed: Score ${qualityScore} below threshold or critical issues found`,
+              generation_time: generationTime,
+              trace_id: traceId,
+              campaign_metadata: {
+                topic: request.topic,
+                routes_analyzed: [],
+                date_ranges: [],
+                prices_found: 0,
+                content_variations: 0
+              }
+            };
+          }
+        } else if (this.ultraThink.shouldContinueWorkflow('final') === false) {
+          console.warn('🚨 UltraThink detected missing quality check - execution should not proceed');
+          return {
+            status: 'error',
+            error_message: 'Mandatory quality check (ai_quality_consultant) was not executed',
+            generation_time: generationTime,
+            trace_id: traceId,
+            campaign_metadata: {
+              topic: request.topic,
+              routes_analyzed: [],
+              date_ranges: [],
+              prices_found: 0,
+              content_variations: 0
+            }
+          };
+        }
+      }
+      
       return {
         status: 'success',
         html_url: htmlUrlMatch?.[1],
         layout_regression: (regressionMatch?.[1] as 'pass' | 'fail') || 'pass',
         render_testing: (renderMatch?.[1] as 'pass' | 'fail') || 'pass',
+        quality_check: qualityCheckStatus,
+        quality_score: qualityScore,
         generation_time: generationTime,
+        trace_id: traceId,
         token_usage: this.estimateTokenUsage(output),
         campaign_metadata: {
           topic: request.topic,
           routes_analyzed: this.extractRoutes(output),
           date_ranges: this.extractDateRanges(output),
           prices_found: this.extractPriceCount(output),
-          content_variations: this.extractVariationCount(output)
+          content_variations: this.extractVariationCount(output),
+          quality_controlled: this.ultraThink ? true : false
         }
       };
     } catch (error) {
@@ -772,6 +686,7 @@ Execute the complete workflow systematically and deliver production-ready result
         status: 'error',
         error_message: 'Failed to process agent result',
         generation_time: generationTime,
+        trace_id: traceId,
         campaign_metadata: {
           topic: request.topic,
           routes_analyzed: [],
@@ -803,9 +718,403 @@ Execute the complete workflow systematically and deliver production-ready result
     return variationMatch ? parseInt(variationMatch[1], 10) : 1;
   }
 
-  private estimateTokenUsage(output: string): number {
+  private estimateTokenUsage(output: string | 'multi_agent'): number {
+    if (output === 'multi_agent') {
+      // Estimate for multi-agent workflow (distributed LLM usage)
+      return 2500; // Estimated tokens for specialized agent prompts
+    }
     // Rough estimate: 4 characters per token
     return Math.ceil(output.length / 4);
+  }
+
+  /**
+   * Toggle between multi-agent and legacy workflow
+   */
+  setUseMultiAgentWorkflow(use: boolean): void {
+    this.useMultiAgentWorkflow = use;
+    console.log(`🔄 Switched to ${use ? 'multi-agent' : 'legacy'} workflow mode`);
+  }
+
+  /**
+   * Get current workflow mode
+   */
+  getWorkflowMode(): 'multi_agent' | 'legacy' {
+    return this.useMultiAgentWorkflow ? 'multi_agent' : 'legacy';
+  }
+
+  /**
+   * Автоматическая оптимизация брифа на основе анализа
+   */
+  private async optimizeBriefAutomatically(
+    original: EmailGenerationRequest, 
+    analysis: any
+  ): Promise<EmailGenerationRequest> {
+    const optimized = { ...original };
+    
+    // Автоматические улучшения для критических проблем
+    const criticalIssues = analysis.issues.filter((i: any) => i.severity === 'critical');
+    
+    for (const issue of criticalIssues) {
+      switch (issue.field) {
+        case 'topic':
+          if (!optimized.topic && issue.suggestions.length > 0) {
+            // В реальной реализации можно попробовать извлечь тему из других полей
+            console.log('⚠️ Critical: Topic missing, using default enhancement');
+          }
+          break;
+          
+        case 'route':
+          if (optimized.origin === optimized.destination) {
+            console.log('🔧 Fixed conflicting route: clearing destination');
+            optimized.destination = undefined;
+          }
+          break;
+      }
+    }
+    
+    // Автоматические улучшения для высокоприоритетных проблем
+    const highIssues = analysis.issues.filter((i: any) => i.severity === 'high');
+    
+    for (const issue of highIssues) {
+      switch (issue.field) {
+        case 'target_audience':
+          if (!optimized.target_audience) {
+            // Попытка определить аудиторию из типа кампании
+            if (optimized.campaign_type === 'promotional') {
+              optimized.target_audience = 'general travelers';
+              console.log('🔧 Auto-assigned target audience based on campaign type');
+            }
+          }
+          break;
+          
+        case 'campaign_tone':
+          // Исправление несовместимости тона и типа кампании
+          if (optimized.tone === 'casual') {
+            optimized.tone = 'friendly';
+            console.log('🔧 Adjusted tone from casual to friendly for better compatibility');
+          }
+          break;
+      }
+    }
+    
+    // Оптимизационные улучшения
+    const optimizationIssues = analysis.issues.filter((i: any) => i.type === 'optimization_opportunity');
+    
+    for (const issue of optimizationIssues.slice(0, 2)) { // Применяем только 2 лучшие оптимизации
+      switch (issue.field) {
+        case 'date_range':
+          if (!optimized.date_range) {
+            // Устанавливаем разумный диапазон дат
+            const today = new Date();
+            const futureDate = new Date(today);
+            futureDate.setMonth(futureDate.getMonth() + 2);
+            
+            const startDate = today.toISOString().split('T')[0];
+            const endDate = futureDate.toISOString().split('T')[0];
+            optimized.date_range = `${startDate},${endDate}`;
+            console.log('🔧 Auto-assigned date range for better pricing');
+          }
+          break;
+      }
+    }
+    
+    console.log(`✅ Brief optimization complete: applied ${Object.keys(optimized).length - Object.keys(original).length} improvements`);
+    
+    return optimized;
+  }
+
+  /**
+   * 🚀 META-METHODS: Упрощенные методы для популярных сценариев
+   */
+
+  /**
+   * Создание промо-кампании с автоматической оптимизацией
+   */
+  async generatePromotionalEmail(params: {
+    destination?: string;
+    discount?: string;
+    urgency?: 'high' | 'medium' | 'low';
+    audience?: 'families' | 'business' | 'young_adults' | 'luxury';
+    season?: 'summer' | 'winter' | 'spring' | 'autumn';
+  }): Promise<EmailGenerationResponse> {
+    console.log('🎯 Generating promotional email with auto-optimization...');
+    
+    const request: EmailGenerationRequest = {
+      topic: this.buildPromotionalTopic(params),
+      campaign_type: 'promotional',
+      target_audience: this.mapAudience(params.audience),
+      tone: this.determineTone(params.urgency),
+      destination: params.destination,
+      origin: 'MOW', // Moscow as default departure
+      date_range: this.generateSeasonalDateRange(params.season)
+    };
+    
+    console.log('📋 Auto-generated promotional brief:', JSON.stringify(request, null, 2));
+    return this.generateEmail(request);
+  }
+
+  /**
+   * Создание сезонной кампании
+   */
+  async generateSeasonalEmail(params: {
+    season: 'summer' | 'winter' | 'spring' | 'autumn';
+    destinations?: string[];
+    theme?: 'vacation' | 'holidays' | 'business_travel';
+    priceRange?: 'budget' | 'mid_range' | 'luxury';
+  }): Promise<EmailGenerationResponse> {
+    console.log('🌟 Generating seasonal email campaign...');
+    
+    const request: EmailGenerationRequest = {
+      topic: this.buildSeasonalTopic(params),
+      campaign_type: 'seasonal',
+      target_audience: this.mapThemeToAudience(params.theme),
+      tone: 'friendly',
+      destination: params.destinations?.[0],
+      date_range: this.generateSeasonalDateRange(params.season)
+    };
+    
+    console.log('📋 Auto-generated seasonal brief:', JSON.stringify(request, null, 2));
+    return this.generateEmail(request);
+  }
+
+  /**
+   * Создание срочной кампании с ограниченным временем
+   */
+  async generateUrgentEmail(params: {
+    offer: string;
+    deadline: string; // YYYY-MM-DD
+    destination?: string;
+    discount?: string;
+  }): Promise<EmailGenerationResponse> {
+    console.log('⚡ Generating urgent email campaign...');
+    
+    const request: EmailGenerationRequest = {
+      topic: this.buildUrgentTopic(params),
+      campaign_type: 'promotional',
+      target_audience: 'price-sensitive travelers',
+      tone: 'urgent',
+      destination: params.destination,
+      date_range: this.generateUrgentDateRange(params.deadline)
+    };
+    
+    console.log('📋 Auto-generated urgent brief:', JSON.stringify(request, null, 2));
+    return this.generateEmail(request);
+  }
+
+  /**
+   * Создание информационной рассылки
+   */
+  async generateNewsletterEmail(params: {
+    topic: 'travel_tips' | 'destination_spotlight' | 'seasonal_guide' | 'price_trends';
+    destinations?: string[];
+    audience?: 'all' | 'frequent_travelers' | 'new_users';
+  }): Promise<EmailGenerationResponse> {
+    console.log('📰 Generating newsletter email...');
+    
+    const request: EmailGenerationRequest = {
+      topic: this.buildNewsletterTopic(params),
+      campaign_type: 'informational',
+      target_audience: this.mapNewsletterAudience(params.audience),
+      tone: 'informative',
+      destination: params.destinations?.[0]
+    };
+    
+    console.log('📋 Auto-generated newsletter brief:', JSON.stringify(request, null, 2));
+    return this.generateEmail(request);
+  }
+
+  /**
+   * Экспресс-генерация с минимальными параметрами
+   */
+  async generateQuickEmail(destination: string, theme?: string): Promise<EmailGenerationResponse> {
+    console.log('⚡ Quick email generation...');
+    
+    const request: EmailGenerationRequest = {
+      topic: theme || `Отличные предложения в ${destination}`,
+      campaign_type: 'promotional',
+      target_audience: 'general travelers',
+      tone: 'friendly',
+      destination: destination,
+      origin: 'MOW'
+    };
+    
+    return this.generateEmail(request);
+  }
+
+  /**
+   * Вспомогательные методы для мета-методов
+   */
+
+  private buildPromotionalTopic(params: any): string {
+    let topic = '';
+    
+    if (params.discount) {
+      topic += `Скидки ${params.discount} `;
+    } else {
+      topic += 'Специальные предложения ';
+    }
+    
+    if (params.destination) {
+      topic += `на авиабилеты в ${params.destination} `;
+    } else {
+      topic += 'на авиабилеты ';
+    }
+    
+    if (params.urgency === 'high') {
+      topic += '- только до конца недели!';
+    } else if (params.urgency === 'medium') {
+      topic += '- ограниченное время!';
+    }
+    
+    return topic.trim();
+  }
+
+  private buildSeasonalTopic(params: any): string {
+    const seasonalThemes = {
+      summer: 'Летние направления 2025',
+      winter: 'Зимние каникулы и горнолыжные курорты',
+      spring: 'Весенние путешествия и цветение',
+      autumn: 'Осенняя краса и теплые направления'
+    };
+    
+    let topic = seasonalThemes[params.season] || 'Сезонные предложения';
+    
+    if (params.destinations && params.destinations.length > 0) {
+      topic += `: ${params.destinations.slice(0, 2).join(' и ')}`;
+    }
+    
+    if (params.priceRange === 'budget') {
+      topic += ' - бюджетные варианты';
+    } else if (params.priceRange === 'luxury') {
+      topic += ' - премиум класс';
+    }
+    
+    return topic;
+  }
+
+  private buildUrgentTopic(params: any): string {
+    let topic = `🔥 ${params.offer}`;
+    
+    if (params.discount) {
+      topic += ` со скидкой ${params.discount}`;
+    }
+    
+    if (params.destination) {
+      topic += ` в ${params.destination}`;
+    }
+    
+    topic += ` - только до ${this.formatDate(params.deadline)}!`;
+    
+    return topic;
+  }
+
+  private buildNewsletterTopic(params: any): string {
+    const newsletterThemes = {
+      travel_tips: 'Советы путешественникам: как сэкономить и путешествовать лучше',
+      destination_spotlight: 'В фокусе: лучшие направления этого месяца',
+      seasonal_guide: 'Сезонный гид: когда и куда лучше лететь',
+      price_trends: 'Анализ цен: лучшее время для покупки билетов'
+    };
+    
+    let topic = newsletterThemes[params.topic] || 'Новости путешествий';
+    
+    if (params.destinations && params.destinations.length > 0) {
+      topic += ` (${params.destinations.join(', ')})`;
+    }
+    
+    return topic;
+  }
+
+  private mapAudience(audience?: string): string {
+    const audienceMap = {
+      families: 'семьи с детьми',
+      business: 'бизнес-путешественники', 
+      young_adults: 'молодежь 25-35 лет',
+      luxury: 'состоятельные путешественники'
+    };
+    
+    return audience ? audienceMap[audience as keyof typeof audienceMap] || 'general travelers' : 'general travelers';
+  }
+
+  private mapThemeToAudience(theme?: string): string {
+    const themeMap = {
+      vacation: 'семьи и пары',
+      holidays: 'семьи с детьми',
+      business_travel: 'бизнес-путешественники'
+    };
+    
+    return theme ? themeMap[theme as keyof typeof themeMap] || 'general travelers' : 'general travelers';
+  }
+
+  private mapNewsletterAudience(audience?: string): string {
+    const audienceMap = {
+      all: 'все подписчики',
+      frequent_travelers: 'частые путешественники',
+      new_users: 'новые пользователи'
+    };
+    
+    return audience ? audienceMap[audience as keyof typeof audienceMap] || 'все подписчики' : 'все подписчики';
+  }
+
+  private determineTone(urgency?: string): string {
+    switch (urgency) {
+      case 'high': return 'urgent';
+      case 'medium': return 'encouraging';
+      case 'low': return 'friendly';
+      default: return 'friendly';
+    }
+  }
+
+  private generateSeasonalDateRange(season?: string): string {
+    const today = new Date();
+    let startDate: Date;
+    let endDate: Date;
+    
+    switch (season) {
+      case 'summer':
+        startDate = new Date(today.getFullYear(), 5, 1); // June
+        endDate = new Date(today.getFullYear(), 7, 31); // August
+        break;
+      case 'winter':
+        startDate = new Date(today.getFullYear(), 11, 1); // December
+        endDate = new Date(today.getFullYear() + 1, 1, 28); // February
+        break;
+      case 'spring':
+        startDate = new Date(today.getFullYear(), 2, 1); // March
+        endDate = new Date(today.getFullYear(), 4, 31); // May
+        break;
+      case 'autumn':
+        startDate = new Date(today.getFullYear(), 8, 1); // September
+        endDate = new Date(today.getFullYear(), 10, 30); // November
+        break;
+      default:
+        startDate = new Date(today);
+        startDate.setMonth(startDate.getMonth() + 1);
+        endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + 2);
+    }
+    
+    return `${startDate.toISOString().split('T')[0]},${endDate.toISOString().split('T')[0]}`;
+  }
+
+  private generateUrgentDateRange(deadline: string): string {
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+    
+    // Диапазон от сегодня до дедлайна + 1 месяц
+    const startDate = today.toISOString().split('T')[0];
+    const endDate = new Date(deadlineDate);
+    endDate.setMonth(endDate.getMonth() + 1);
+    
+    return `${startDate},${endDate.toISOString().split('T')[0]}`;
+  }
+
+  private formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('ru-RU', { 
+      day: 'numeric', 
+      month: 'long' 
+    });
   }
 }
 

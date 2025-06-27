@@ -1,4 +1,5 @@
 import { CityInfo, RouteValidation } from './types';
+import { InputSanitizer } from './input-sanitizer';
 
 export class RouteValidator {
   // Static database of popular cities with metadata (from open sources)
@@ -68,19 +69,40 @@ export class RouteValidator {
    * Validate route logic and suggest corrections
    */
   static validateRoute(origin: string, destination: string): RouteValidation {
+    // Security: Rate limiting check
+    if (!InputSanitizer.checkRateLimit('route_validation')) {
+      return {
+        valid: false,
+        issues: ['rate_limit_exceeded'],
+        suggestion: 'Too many validation requests. Please try again later.'
+      };
+    }
+
+    // Security: Input sanitization and validation
+    const sanitizedOrigin = InputSanitizer.validateCityCode(origin);
+    const sanitizedDestination = InputSanitizer.validateCityCode(destination);
+    
+    if (!sanitizedOrigin || !sanitizedDestination) {
+      return {
+        valid: false,
+        issues: ['invalid_input_format'],
+        suggestion: 'Airport codes must be 2-5 alphanumeric characters (e.g., MOW, LED, JFK)'
+      };
+    }
+
     const issues: string[] = [];
-    let correctedOrigin = origin;
-    let correctedDestination = destination;
+    let correctedOrigin = sanitizedOrigin;
+    let correctedDestination = sanitizedDestination;
 
     // Check 1: Same city validation
-    if (origin === destination) {
+    if (correctedOrigin === correctedDestination) {
       issues.push('same_origin_destination');
-      correctedDestination = this.suggestAlternativeDestination(origin);
+      correctedDestination = this.suggestAlternativeDestination(correctedOrigin);
     }
 
     // Check 2: City existence
-    const originInfo = this.cityDatabase[origin];
-    const destinationInfo = this.cityDatabase[destination];
+    const originInfo = this.cityDatabase[correctedOrigin];
+    const destinationInfo = this.cityDatabase[correctedDestination];
 
     if (!originInfo) {
       issues.push('unknown_origin');

@@ -1,30 +1,6 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Glass Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-3xl font-bold text-white">
-              Email<span className="text-primary">Makers</span>
-            </h1>
-            <nav className="hidden md:flex space-x-4">
-              <a href="/" className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-accent transition-colors">
-                Dashboard
-              </a>
-              <a href="/templates" className="px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-accent transition-colors">
-                Templates
-              </a>
-              <a href="/create" className="px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-accent transition-colors">
-                Create
-              </a>
-            </nav>
-          </div>
-        </div>
-      </header>
-      
-      {/* Main Content */}
-      <main className="relative">
+    <main className="relative">
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-12">
@@ -172,6 +148,5 @@ export default function Home() {
           </div>
         </div>
       </main>
-    </div>
   )
 }

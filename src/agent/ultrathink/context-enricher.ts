@@ -1,8 +1,9 @@
 import { ContextEnrichment, ValidationResult, ValidationIssue } from './types';
-import { EmailGenerationRequest } from '../agent';
+import { EmailGenerationRequest } from '../types';
 import { RouteValidator } from './route-validator';
 import { DateValidator } from './date-validator';
 import { SimpleDataProvider } from './simple-data-provider';
+import { SecureLogger } from './secure-logger';
 
 export class ContextEnricher {
 
@@ -10,7 +11,7 @@ export class ContextEnricher {
    * Enrich request with contextual intelligence
    */
   static async enrichContext(request: EmailGenerationRequest): Promise<ContextEnrichment> {
-    console.log('🧠 ContextEnricher: Enriching context for request');
+    SecureLogger.contextEnrichment('request_enrichment', { hasOrigin: !!request.origin, hasDestination: !!request.destination });
 
     // Initialize enrichment object
     const enrichment: ContextEnrichment = {
@@ -39,11 +40,18 @@ export class ContextEnricher {
       // Generate smart suggestions
       this.generateSmartSuggestions(request, enrichment);
 
-      console.log('✅ ContextEnricher: Context enriched successfully');
+      SecureLogger.contextEnrichment('enrichment_completed', { 
+        suggestionsCount: enrichment.suggestions.length,
+        warningsCount: enrichment.warnings.length,
+        season: enrichment.seasonal.season
+      });
       return enrichment;
 
     } catch (error) {
-      console.error('❌ ContextEnricher: Error enriching context:', error);
+      SecureLogger.error('Context enrichment failed', { 
+        component: 'context_enricher',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
       
       // Return basic enrichment on error
       return {

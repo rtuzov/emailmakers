@@ -86,18 +86,64 @@ export async function getPrices(params: PricesParams): Promise<ToolResult> {
     try {
       console.log('T2: Getting flight prices with new API:', params);
 
+      // Add tracing
+      const { logger } = await import('../core/logger');
+      const traceId = `get_prices_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      logger.startTrace(traceId, {
+        tool: 'get_prices',
+        origin: params.origin,
+        destination: params.destination,
+        date_range: params.date_range,
+        cabin_class: params.cabin_class
+      });
+
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'validate_parameters',
+        params: { origin: params.origin, destination: params.destination }
+      });
+
     // Валидация параметров
     if (!params.origin || !params.destination) {
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'validate_parameters',
+        error: 'Origin and destination are required'
+      });
       throw new Error('Origin and destination are required');
     }
     
     // Дополнительная проверка целостности параметров
     if (typeof params.origin !== 'string' || typeof params.destination !== 'string') {
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'validate_parameters',
+        error: 'Origin and destination must be strings'
+      });
       throw new Error('Origin and destination must be strings');
     }
 
+    logger.addTraceStep(traceId, {
+      tool: 'get_prices',
+      action: 'parameters_validated',
+      result: { valid: true }
+    });
+
     // Интеллектуальная коррекция маршрута с использованием CSV данных
+    logger.addTraceStep(traceId, {
+      tool: 'get_prices',
+      action: 'correct_route',
+      params: { original_origin: params.origin, original_destination: params.destination }
+    });
+
     const { origin, destination, metadata: routeMetadata } = correctRoute(params.origin, params.destination);
+
+    logger.addTraceStep(traceId, {
+      tool: 'get_prices',
+      action: 'route_corrected',
+      result: { corrected_origin: origin, corrected_destination: destination, metadata: routeMetadata }
+    });
     
     // Генерация умного диапазона дат если не указан
     const dateRange = params.date_range || generateSmartDateRange();
@@ -115,10 +161,30 @@ export async function getPrices(params: PricesParams): Promise<ToolResult> {
 
     try {
       // Попытка получить данные через реальный API
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'fetch_from_api',
+        params: { api_request: apiRequest }
+      });
+
+      const apiStartTime = Date.now();
       const pricesResult = await fetchFromKupibiletV2(apiRequest);
+      const apiDuration = Date.now() - apiStartTime;
+
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'api_response_received',
+        result: { 
+          prices_count: pricesResult.prices.length,
+          cheapest_price: pricesResult.cheapest,
+          currency: pricesResult.currency
+        },
+        duration: apiDuration
+      });
       
       console.log('✅ Kupibilet API success, returning real data');
-      return {
+      
+      const result = {
         success: true,
         data: pricesResult,
         metadata: {
@@ -132,7 +198,17 @@ export async function getPrices(params: PricesParams): Promise<ToolResult> {
         }
       };
 
+      await logger.endTrace(traceId, result);
+      return result;
+
     } catch (apiError) {
+      logger.addTraceStep(traceId, {
+        tool: 'get_prices',
+        action: 'api_error',
+        error: apiError instanceof Error ? apiError.message : String(apiError)
+      });
+      
+      await logger.endTrace(traceId, undefined, apiError);
       throw new Error(`Kupibilet API failed: ${apiError instanceof Error ? apiError.message : String(apiError)}`);
     }
 

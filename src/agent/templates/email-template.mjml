@@ -144,7 +144,7 @@
     <mj-section background-color="#ffffff" padding="20px 0">
       <mj-column>
         <mj-image 
-          src="https://kupibilet.ru/static/img/logo.svg" 
+          src="https://kupibilet.ru/assets/logo.png" 
           alt="Kupibilet - дешевые авиабилеты" 
           width="200px"
           css-class="header-logo"
@@ -196,6 +196,9 @@
           css-class="dark-mode-text">
           {{body}}
         </mj-text>
+        
+        <!-- Rabbit Component (если есть) -->
+        {{rabbit_component}}
       </mj-column>
     </mj-section>
     
@@ -314,7 +317,7 @@
       <mj-column>
         <!-- Логотип в футере -->
         <mj-image 
-          src="https://kupibilet.ru/static/img/logo-white.svg" 
+          src="https://kupibilet.ru/assets/logo-white.png" 
           alt="Kupibilet" 
           width="150px"
           padding-bottom="20px" />

@@ -1,0 +1,1074 @@
+{
+  "pageName": "Зайцы подборка",
+  "timestamp": "2025-06-27T03:48:18.759Z",
+  "context": null,
+  "summary": {
+    "totalAssets": 87,
+    "assetsWithVariants": 26,
+    "averageConfidence": 0.9649425287356332,
+    "uniqueTags": [
+      "креатив",
+      "веселье",
+      "креативный дизайн",
+      "кролик",
+      "игра",
+      "велосипед",
+      "животные",
+      "экологичность",
+      "активный образ жизни",
+      "вело",
+      "экологичный транспорт",
+      "забавный персонаж",
+      "космос",
+      "приключение",
+      "праздник",
+      "креативный",
+      "путешествие",
+      "друзья",
+      "приключения",
+      "мультфильм",
+      "музыка",
+      "вокал",
+      "развлечение",
+      "подводное плавание",
+      "лето",
+      "забавные персонажи",
+      "арт",
+      "кино",
+      "забавный",
+      "мультяшный",
+      "акция",
+      "время",
+      "срочно",
+      "вдохновение",
+      "скейтбординг",
+      "дизайн",
+      "досуг",
+      "молодежь",
+      "спорт",
+      "вопрос",
+      "размышления",
+      "креативность",
+      "загадка",
+      "анализ",
+      "интерактивность",
+      "вовлечение",
+      "задайте вопрос",
+      "поиск",
+      "информация",
+      "покупки",
+      "шопинг",
+      "праздничные предложения",
+      "акции",
+      "домашний уют",
+      "удобство",
+      "работа из дома",
+      "садоводство",
+      "летний",
+      "отдых",
+      "удаленная работа",
+      "заяц",
+      "вино",
+      "коктейли",
+      "вечеринка"
+    ]
+  },
+  "assets": [
+    {
+      "id": "2016:535",
+      "originalName": "заяц «Подборка»17",
+      "newName": "заяц «Подборка»17",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2016:534",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив-веселье",
+      "tags": [
+        "креатив",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:536",
+      "originalName": "Property 1=Variant2",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:480",
+      "originalName": "заяц «Подборка»16",
+      "newName": "заяц «Подборка»16",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2016:507",
+      "originalName": "Property 1=Variant2",
+      "newName": "креатив-веселье",
+      "tags": [
+        "креатив",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2643:276",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив-веселье",
+      "tags": [
+        "креатив",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:377",
+      "originalName": "заяц «Подборка»15",
+      "newName": "заяц «Подборка»15",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2016:376",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:378",
+      "originalName": "Property 1=Variant2",
+      "newName": "креативныйдизайн",
+      "tags": [
+        "креативный дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:333",
+      "originalName": "заяц «Подборка»14",
+      "newName": "заяц «Подборка»14",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2016:332",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2653:404",
+      "originalName": "Property 1=Variant2",
+      "newName": "креатив",
+      "tags": [
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2653:492",
+      "originalName": "Property 1=Variant3",
+      "newName": "кролик-игра-веселье",
+      "tags": [
+        "кролик",
+        "игра",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6867",
+      "originalName": "заяц «Подборка»13",
+      "newName": "заяц «Подборка»13",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2014:6866",
+      "originalName": "Property 1=Variant1",
+      "newName": "велосипед-животные-экологичность-активныйобразжизни",
+      "tags": [
+        "велосипед",
+        "животные",
+        "экологичность",
+        "активный образ жизни"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6868",
+      "originalName": "Property 1=Variant2",
+      "newName": "вело-экологичныйтранспорт-активныйобразжизни",
+      "tags": [
+        "вело",
+        "экологичный транспорт",
+        "активный образ жизни"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6911",
+      "originalName": "Property 1=Variant3",
+      "newName": "велосипед-забавныйперсонаж-активныйобразжизни",
+      "tags": [
+        "велосипед",
+        "забавный персонаж",
+        "активный образ жизни"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6814",
+      "originalName": "заяц «Подборка»12",
+      "newName": "заяц «Подборка»12",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6813",
+      "originalName": "Property 1=Variant1",
+      "newName": "космос-приключение",
+      "tags": [
+        "космос",
+        "приключение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2642:307",
+      "originalName": "Property 1=Variant2",
+      "newName": "приключение-космос",
+      "tags": [
+        "приключение",
+        "космос"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6734",
+      "originalName": "заяц «Подборка»10",
+      "newName": "заяц «Подборка»10",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6733",
+      "originalName": "Property 1=Variant1",
+      "newName": "веселье-праздник-креатив",
+      "tags": [
+        "веселье",
+        "праздник",
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6735",
+      "originalName": "Property 1=Variant2",
+      "newName": "веселье-праздник-креативный",
+      "tags": [
+        "веселье",
+        "праздник",
+        "креативный"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6658",
+      "originalName": "заяц «Подборка»09",
+      "newName": "заяц «Подборка»09",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2014:6657",
+      "originalName": "Property 1=Variant1",
+      "newName": "кролик-путешествие-приключение",
+      "tags": [
+        "кролик",
+        "путешествие",
+        "приключение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6659",
+      "originalName": "Property 1=Variant2",
+      "newName": "друзья-приключения-путешествие",
+      "tags": [
+        "друзья",
+        "приключения",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2016:415",
+      "originalName": "Property 1=Variant3",
+      "newName": "мультфильм-приключения-путешествие",
+      "tags": [
+        "мультфильм",
+        "приключения",
+        "путешествие"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6566",
+      "originalName": "заяц «Подборка»08",
+      "newName": "заяц «Подборка»08",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6565",
+      "originalName": "Property 1=Variant1",
+      "newName": "музыка-вокал-развлечение",
+      "tags": [
+        "музыка",
+        "вокал",
+        "развлечение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6567",
+      "originalName": "Property 1=Variant2",
+      "newName": "музыка-веселье-развлечение",
+      "tags": [
+        "музыка",
+        "веселье",
+        "развлечение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6469",
+      "originalName": "заяц «Подборка»07",
+      "newName": "заяц «Подборка»07",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6468",
+      "originalName": "Property 1=Variant1",
+      "newName": "подводноеплавание-приключения-лето",
+      "tags": [
+        "подводное плавание",
+        "приключения",
+        "лето"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6470",
+      "originalName": "Property 1=Variant2",
+      "newName": "подводноеплавание-приключения-забавныеперсонажи",
+      "tags": [
+        "подводное плавание",
+        "приключения",
+        "забавные персонажи"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6372",
+      "originalName": "заяц «Подборка»06",
+      "newName": "заяц «Подборка»06",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6371",
+      "originalName": "Property 1=Variant1",
+      "newName": "музыка-животные-арт",
+      "tags": [
+        "музыка",
+        "животные",
+        "арт"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6373",
+      "originalName": "Property 1=Variant2",
+      "newName": "музыка-креатив-животные",
+      "tags": [
+        "музыка",
+        "креатив",
+        "животные"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2242:1014",
+      "originalName": "заяц «Подборка»05",
+      "newName": "заяц «Подборка»05",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6319",
+      "originalName": "Property 1=Default",
+      "newName": "кролик-кино-развлечение",
+      "tags": [
+        "кролик",
+        "кино",
+        "развлечение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2242:1015",
+      "originalName": "Property 1=Variant2",
+      "newName": "забавный-мультяшный-развлечение",
+      "tags": [
+        "забавный",
+        "мультяшный",
+        "развлечение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6286",
+      "originalName": "заяц «Подборка»04",
+      "newName": "заяц «Подборка»04",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:5109",
+      "originalName": "Property 1=Variant1",
+      "newName": "забавный-креативный",
+      "tags": [
+        "забавный",
+        "креативный"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6287",
+      "originalName": "Property 1=Variant2",
+      "newName": "кролик",
+      "tags": [
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6252",
+      "originalName": "заяц «Подборка»03",
+      "newName": "заяц «Подборка»03",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6251",
+      "originalName": "Property 1=Variant1",
+      "newName": "акция-время-забавный",
+      "tags": [
+        "акция",
+        "время",
+        "забавный"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6253",
+      "originalName": "Property 1=Variant2",
+      "newName": "акция-время-срочно",
+      "tags": [
+        "акция",
+        "время",
+        "срочно"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6176",
+      "originalName": "заяц «Подборка»02",
+      "newName": "заяц «Подборка»02",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6175",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив-приключение",
+      "tags": [
+        "креатив",
+        "приключение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6177",
+      "originalName": "Property 1=Variant2",
+      "newName": "креатив-приключение-вдохновение",
+      "tags": [
+        "креатив",
+        "приключение",
+        "вдохновение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6083",
+      "originalName": "заяц «Подборка»01",
+      "newName": "заяц «Подборка»01",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6082",
+      "originalName": "Property 1=Variant1",
+      "newName": "скейтбординг-животные-дизайн",
+      "tags": [
+        "скейтбординг",
+        "животные",
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:6084",
+      "originalName": "Property 1=Variant2",
+      "newName": "скейтбординг-животные-досуг-молодежь-спорт",
+      "tags": [
+        "скейтбординг",
+        "животные",
+        "досуг",
+        "молодежь",
+        "спорт"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2272:477",
+      "originalName": "заяц «Вопрос-ответ» 05",
+      "newName": "заяц «Вопрос-ответ» 05",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2021:391",
+      "originalName": "Property 1=Group 567644",
+      "newName": "креатив-вопрос",
+      "tags": [
+        "креатив",
+        "вопрос"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2272:478",
+      "originalName": "Property 1=Variant2",
+      "newName": "креатив-вопрос",
+      "tags": [
+        "креатив",
+        "вопрос"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:3375",
+      "originalName": "заяц «Вопрос-ответ» 04",
+      "newName": "заяц «Вопрос-ответ» 04",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:3374",
+      "originalName": "Property 1=Variant1",
+      "newName": "вопрос-размышления",
+      "tags": [
+        "вопрос",
+        "размышления"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:3376",
+      "originalName": "Property 1=Variant2",
+      "newName": "вопрос-размышления-креативность",
+      "tags": [
+        "вопрос",
+        "размышления",
+        "креативность"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4503",
+      "originalName": "заяц «Вопрос-ответ» 03",
+      "newName": "заяц «Вопрос-ответ» 03",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:16",
+      "originalName": "Property 1=Variant1",
+      "newName": "вопрос-загадка",
+      "tags": [
+        "вопрос",
+        "загадка"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4504",
+      "originalName": "Property 1=Variant2",
+      "newName": "вопрос-анализ-интерактивность",
+      "tags": [
+        "вопрос",
+        "анализ",
+        "интерактивность"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4224",
+      "originalName": "заяц «Вопрос-ответ» 02",
+      "newName": "заяц «Вопрос-ответ» 02",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:11",
+      "originalName": "Property 1=Variant1",
+      "newName": "вопрос-вовлечение",
+      "tags": [
+        "вопрос",
+        "вовлечение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4225",
+      "originalName": "Property 1=Variant2",
+      "newName": "вопрос",
+      "tags": [
+        "вопрос"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4165",
+      "originalName": "заяц «Вопрос-ответ» 01",
+      "newName": "заяц «Вопрос-ответ» 01",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2014:9",
+      "originalName": "Property 1=Default",
+      "newName": "вопрос-интерактивность-задайтевопрос",
+      "tags": [
+        "вопрос",
+        "интерактивность",
+        "задайте вопрос"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2014:4166",
+      "originalName": "Property 1=Variant2",
+      "newName": "вопрос-поиск-интерактивность",
+      "tags": [
+        "вопрос",
+        "поиск",
+        "интерактивность"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2643:303",
+      "originalName": "Property 1=Variant3",
+      "newName": "вопрос-поиск-информация",
+      "tags": [
+        "вопрос",
+        "поиск",
+        "информация"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:334",
+      "originalName": "заяц «Подборка»18",
+      "newName": "заяц «Подборка»18",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2461:333",
+      "originalName": "Property 1=variant 1",
+      "newName": "покупки-шопинг",
+      "tags": [
+        "покупки",
+        "шопинг"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:335",
+      "originalName": "Property 1=Variant2",
+      "newName": "шопинг-праздничныепредложения-акции",
+      "tags": [
+        "шопинг",
+        "праздничные предложения",
+        "акции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:673",
+      "originalName": "Property 1=Variant3",
+      "newName": "шопинг-праздничныепредложения-покупки",
+      "tags": [
+        "шопинг",
+        "праздничные предложения",
+        "покупки"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:401",
+      "originalName": "заяц «Подборка»19",
+      "newName": "заяц «Подборка»19",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2461:400",
+      "originalName": "Property 1=Variant1",
+      "newName": "креатив-домашнийуют-удобство",
+      "tags": [
+        "креатив",
+        "домашний уют",
+        "удобство"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:402",
+      "originalName": "Property 1=Variant2",
+      "newName": "дизайн-креатив",
+      "tags": [
+        "дизайн",
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:506",
+      "originalName": "Property 1=Group 567584",
+      "newName": "мультфильм-домашнийуют-работаиздома-креативность",
+      "tags": [
+        "мультфильм",
+        "домашний уют",
+        "работа из дома",
+        "креативность"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:509",
+      "originalName": "заяц «Подборка»20",
+      "newName": "заяц «Подборка»20",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "2461:508",
+      "originalName": "Property 1=Default",
+      "newName": "дизайн",
+      "tags": [
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:507",
+      "originalName": "Property 1=Default2",
+      "newName": "кролик-садоводство",
+      "tags": [
+        "кролик",
+        "садоводство"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:566",
+      "originalName": "Property 1=Variant3",
+      "newName": "кролик-летний",
+      "tags": [
+        "кролик",
+        "летний"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:512",
+      "originalName": "заяц «Подборка»21",
+      "newName": "заяц «Подборка»21",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 4
+    },
+    {
+      "id": "2461:511",
+      "originalName": "Property 1=variant 1",
+      "newName": "дизайн-креатив",
+      "tags": [
+        "дизайн",
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:513",
+      "originalName": "Property 1=Variant2",
+      "newName": "отдых-удаленнаяработа-креативность",
+      "tags": [
+        "отдых",
+        "удаленная работа",
+        "креативность"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2461:563",
+      "originalName": "Property 1=variant 3",
+      "newName": "дизайн-креатив",
+      "tags": [
+        "дизайн",
+        "креатив"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2508:537",
+      "originalName": "Property 1=Variant4",
+      "newName": "креатив-дизайн",
+      "tags": [
+        "креатив",
+        "дизайн"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2642:333",
+      "originalName": "заяц «Подборка»11",
+      "newName": "заяц «Подборка»11",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2014:6787",
+      "originalName": "Property 1=Default",
+      "newName": "заяц-вино-веселье",
+      "tags": [
+        "заяц",
+        "вино",
+        "веселье"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2642:334",
+      "originalName": "Property 1=Variant2",
+      "newName": "коктейли-вечеринка-забавныйперсонаж",
+      "tags": [
+        "коктейли",
+        "вечеринка",
+        "забавный персонаж"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    }
+  ]
+}

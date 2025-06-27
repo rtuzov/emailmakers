@@ -38,16 +38,22 @@
 
 ---
 
-## 🛠️ AGENT TOOLS PATTERNS (REAL COUNT: 7)
+## 🛠️ AGENT TOOLS PATTERNS (MANDATORY SEQUENCE: 8 TOOLS)
 
-### WORKING TOOLS
-1. **get_current_date** - ⚠️ Schema issues
-2. **get_figma_assets** - ✅ Functional
-3. **split_figma_sprite** - ✅ Complete T10 implementation
-4. **get_prices** - ✅ Functional
-5. **generate_copy** - ✅ Functional
-6. **render_mjml** - ✅ Functional
-7. **upload_s3** - ✅ Functional
+### 🎯 ОБЯЗАТЕЛЬНАЯ ПОСЛЕДОВАТЕЛЬНОСТЬ
+1. **initialize_email_folder** - ✅ Создание структуры кампании
+2. **get_current_date** - ✅ Временной контекст
+3. **get_figma_assets** - ✅ Дизайн-ассеты
+4. **get_prices** - ✅ Ценовые данные
+5. **generate_copy** - ✅ Генерация контента  
+6. **render_mjml** - ✅ Email HTML рендеринг
+7. **ai_quality_consultant** - ✅ **MANDATORY** качественная проверка
+8. **upload_s3** - ✅ Финальная загрузка
+
+### 🛡️ КАЧЕСТВЕННЫЕ ВОРОТА
+- **ai_quality_consultant** - НИКОГДА не пропускается
+- **Минимальный порог**: 70/100 баллов
+- **Блокировка upload_s3** при неуспешной проверке
 
 ### PATTERN: Tool Integration
 ```typescript

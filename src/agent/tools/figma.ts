@@ -9,6 +9,7 @@ import * as fs from 'fs/promises';
 import OpenAI from 'openai';
 import { splitFigmaVariants } from './figma-variant-splitter';
 import EmailFolderManager, { EmailFolder } from './email-folder-manager';
+import { getUsageModel } from '../../shared/utils/model-config';
 
 interface FigmaAssetParams {
   tags: string[];
@@ -308,68 +309,92 @@ const NODE_CATEGORIES = {
  * T1: Get Figma Assets Tool
  * Search and download assets from Figma project by tags with AI-powered selection and diversity
  */
+
 export async function getFigmaAssets(params: FigmaAssetParams): Promise<ToolResult> {
   try {
-    console.log('T1: Getting Figma assets with enhanced selection:', params);
+    console.log('🎯 Getting Figma assets with LOCAL-ONLY mode (API disabled):', params);
 
     // Validate parameters
     if (!params.tags || params.tags.length === 0) {
       throw new Error('Tags array is required and cannot be empty');
     }
 
-    const figmaToken = process.env.FIGMA_ACCESS_TOKEN || process.env.FIGMA_TOKEN;
-    const figmaProjectId = process.env.FIGMA_PROJECT_ID;
-
-    if (!figmaToken || !figmaProjectId) {
-      throw new Error('Figma credentials not found. FIGMA_ACCESS_TOKEN and FIGMA_PROJECT_ID environment variables are required.');
-    }
-
-    try {
-      // PRIORITY 1: Always try Figma API first for real-time data
-      console.log('🌐 Fetching fresh assets from Figma API (priority source)...');
-      
-      try {
-        const figmaResult = await fetchFromFigmaWithAI(figmaToken, figmaProjectId, params.tags, params.emailFolder);
-        
-        if (figmaResult.paths.length > 0) {
-          console.log(`✅ Found ${figmaResult.paths.length} assets from Figma API`);
-          return {
-            success: true,
-            data: figmaResult,
-            metadata: {
-              source: 'figma-api',
-              tags: params.tags,
-              timestamp: new Date().toISOString()
-            }
-          };
-        }
-      } catch (apiError) {
-        console.log(`⚠️ Figma API failed: ${apiError.message}, falling back to local cache...`);
+    // FORCE LOCAL-ONLY MODE - API disabled as requested
+    console.log('🔍 Using LOCAL-ONLY mode - Figma API disabled');
+    
+    // Import the new local processor
+    const { getLocalFigmaAssets } = await import('./figma-local-processor');
+    
+    // Convert parameters to match local processor interface
+    const localParams = {
+      tags: params.tags,
+      context: {
+        campaign_type: params.context?.campaign_type as 'seasonal' | 'promotional' | 'informational' | undefined,
+        target_count: params.context?.target_count || 2,
+        diversity_mode: params.context?.diversity_mode || false,
+        preferred_emotion: params.context?.emotional_tone === 'positive' ? 'happy' as const : 
+                          params.context?.emotional_tone === 'urgent' ? 'angry' as const :
+                          params.context?.emotional_tone === 'neutral' ? 'neutral' as const : undefined,
+        use_local_only: true
       }
+    };
+    
+    console.log('📋 Calling local processor with params:', localParams);
+    
+    const localResult = await getLocalFigmaAssets(localParams);
+    
+    if (localResult.success && localResult.data) {
+      console.log(`✅ Found ${localResult.data.length} local Figma assets`);
       
-      // FALLBACK: Only use local assets if Figma API fails or returns no results
-      console.log('🔍 Fallback: Searching local figma-assets directory...');
-      const localResult = await searchLocalFigmaAssetsEnhanced(params.tags, params.context);
+      // Convert local result to expected format
+      const paths = localResult.data.map((asset: any) => asset.filePath);
+      const metadata: Record<string, AssetInfo> = {};
       
-      if (localResult.paths.length > 0) {
-        console.log(`✅ Found ${localResult.paths.length} local Figma assets as fallback`);
-        return {
-          success: true,
-          data: localResult,
+      localResult.data.forEach((asset: any) => {
+        metadata[asset.fileName] = {
+          path: asset.filePath,
+          url: `/${asset.filePath}`,
+          width: asset.metadata?.technical?.width || 400,
+          height: asset.metadata?.technical?.height || 300,
           metadata: {
-            source: 'figma-local-fallback',
+            fileName: asset.fileName,
+            folderName: asset.folderName,
+            relevanceScore: asset.relevanceScore,
+            matchedTags: asset.matchedTags,
+            allTags: asset.allTags,
+            description: asset.description,
+            tone: asset.tone,
+            confidence: asset.confidence,
+            source: 'figma-local-processor',
             tags: params.tags,
-            context: params.context,
-            timestamp: new Date().toISOString()
+            context: params.context
           }
         };
-      }
+      });
       
-      throw new Error('No assets found in both Figma API and local cache');
-
-    } catch (error) {
-      throw new Error(`Asset search failed: ${error.message}`);
+      return {
+        success: true,
+        data: {
+          paths,
+          metadata,
+          selection_strategy: {
+            strategy_used: 'local-figma-processor',
+            reasoning: 'Using intelligent local Figma asset search with context awareness',
+            diversity_applied: localParams.context.diversity_mode,
+            randomization_factor: 0
+          }
+        },
+        metadata: {
+          source: 'figma-local-processor',
+          tags: params.tags,
+          context: params.context,
+          timestamp: new Date().toISOString(),
+          total_found: localResult.data.length
+        }
+      };
     }
+    
+    throw new Error('No assets found in local Figma directory');
 
   } catch (error) {
     return handleToolError('get_figma_assets', error);
@@ -473,7 +498,7 @@ async function searchLocalFigmaAssetsEnhanced(
                   extractionMethod: 'figma_api_variants'
                 },
                 source: 'figma-api-enhanced-with-variants'
-              };
+              } as any; // Type assertion to allow variantInfo property
             } else {
               console.log(`⚠️ Варианты не найдены в Figma API для ${item.file}, используем локальный файл`);
             }
@@ -1153,7 +1178,7 @@ async function analyzeImageWithOpenAI(imageUrl: string, candidate: ScoredAsset, 
     console.log(`🔍 Analyzing: ${candidate.name} (${candidate.type})`);
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: getUsageModel(),
       messages: [
         {
           role: 'user',
@@ -1245,7 +1270,7 @@ async function downloadImage(url: string, fileName: string, emailFolder?: EmailF
     const mailsDir = path.join(process.cwd(), 'mails');
     await fs.mkdir(mailsDir, { recursive: true });
     const filePath = path.join(mailsDir, fileName);
-    await fs.writeFile(filePath, buffer);
+    await fs.writeFile(filePath, Buffer.from(buffer));
     console.log(`✅ Downloaded to mails folder: ${fileName} -> ${filePath}`);
     return filePath;
   }

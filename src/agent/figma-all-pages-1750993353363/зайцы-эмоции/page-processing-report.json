@@ -1,0 +1,317 @@
+{
+  "pageName": "Зайцы эмоции",
+  "timestamp": "2025-06-27T03:53:21.084Z",
+  "context": null,
+  "summary": {
+    "totalAssets": 25,
+    "assetsWithVariants": 8,
+    "averageConfidence": 0.9647999999999998,
+    "uniqueTags": [
+      "недовольство",
+      "эмоции",
+      "персонаж",
+      "грустный",
+      "задумчивость",
+      "забавный",
+      "кролик",
+      "гнев",
+      "реакция",
+      "раздражение",
+      "бабочки",
+      "радость",
+      "креативный",
+      "животные",
+      "счастье",
+      "лето",
+      "отдых",
+      "природа",
+      "грусть",
+      "оранжевый",
+      "забота",
+      "помощь"
+    ]
+  },
+  "assets": [
+    {
+      "id": "2997:290",
+      "originalName": "Недоволен",
+      "newName": "Недоволен",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:291",
+      "originalName": "Недоволен=1",
+      "newName": "недовольство-эмоции-персонаж",
+      "tags": [
+        "недовольство",
+        "эмоции",
+        "персонаж"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:325",
+      "originalName": "Недоволен=2",
+      "newName": "грустный-персонаж",
+      "tags": [
+        "грустный",
+        "персонаж"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:359",
+      "originalName": "Озадачен",
+      "newName": "Озадачен",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:360",
+      "originalName": "Property 1=Озадачен 1",
+      "newName": "задумчивость-персонаж",
+      "tags": [
+        "задумчивость",
+        "персонаж"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:379",
+      "originalName": "Property 1=Озадачен 2",
+      "newName": "забавный-кролик",
+      "tags": [
+        "забавный",
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:399",
+      "originalName": "Нейтрален",
+      "newName": "Нейтрален",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:400",
+      "originalName": "Property 1=Нейтрален 1",
+      "newName": "кролик",
+      "tags": [
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:428",
+      "originalName": "Нейтрален=Нейтрален 2",
+      "newName": "кролик",
+      "tags": [
+        "кролик"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:456",
+      "originalName": "Разозлен",
+      "newName": "Разозлен",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:457",
+      "originalName": "Property 1=Разозлен v1 - 1",
+      "newName": "гнев-эмоции",
+      "tags": [
+        "гнев",
+        "эмоции"
+      ],
+      "confidence": 0.92,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:486",
+      "originalName": "Property 1=Разозлен v1 - 2",
+      "newName": "гнев-эмоции",
+      "tags": [
+        "гнев",
+        "эмоции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:515",
+      "originalName": "Разозлен 2",
+      "newName": "Разозлен 2",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:516",
+      "originalName": "Property 1=Разозлен v2 - 1",
+      "newName": "реакция-недовольство-эмоции",
+      "tags": [
+        "реакция",
+        "недовольство",
+        "эмоции"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:545",
+      "originalName": "Property 1=Разозлен v2 - 2",
+      "newName": "эмоции-раздражение",
+      "tags": [
+        "эмоции",
+        "раздражение"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:574",
+      "originalName": "Счастлив 3",
+      "newName": "Счастлив 3",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:575",
+      "originalName": "Property 1=Default",
+      "newName": "кролик-бабочки-радость",
+      "tags": [
+        "кролик",
+        "бабочки",
+        "радость"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:621",
+      "originalName": "Property 1=Default",
+      "newName": "креативный-животные",
+      "tags": [
+        "креативный",
+        "животные"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:667",
+      "originalName": "Счастлив 4",
+      "newName": "Счастлив 4",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 2
+    },
+    {
+      "id": "2997:668",
+      "originalName": "Счастлив 2=1",
+      "newName": "счастье-лето-отдых",
+      "tags": [
+        "счастье",
+        "лето",
+        "отдых"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "2997:727",
+      "originalName": "Счастлив 2=Счастлив 22",
+      "newName": "счастье-отдых-природа",
+      "tags": [
+        "счастье",
+        "отдых",
+        "природа"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "5587:775",
+      "originalName": "Грустный",
+      "newName": "Грустный",
+      "tags": [],
+      "confidence": 1,
+      "hasVariants": true,
+      "variantCount": 3
+    },
+    {
+      "id": "5587:774",
+      "originalName": "Property 1=белый",
+      "newName": "грусть-персонаж",
+      "tags": [
+        "грусть",
+        "персонаж"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "5587:776",
+      "originalName": "Property 1=оранжевый",
+      "newName": "оранжевый-грусть-животные",
+      "tags": [
+        "оранжевый",
+        "грусть",
+        "животные"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    },
+    {
+      "id": "5587:793",
+      "originalName": "Property 1=зеленый",
+      "newName": "грусть-забота-помощь",
+      "tags": [
+        "грусть",
+        "забота",
+        "помощь"
+      ],
+      "confidence": 0.95,
+      "hasVariants": false,
+      "variantCount": 0
+    }
+  ]
+}

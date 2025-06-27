@@ -9,6 +9,9 @@ import { ToolResult, handleToolError } from './index';
 import OpenAI from 'openai';
 import { TagDictionaryManager, generateShortFileName, TagDictionary } from './figma-tag-dictionary';
 
+// Импортируем систему оптимизации тегов
+import { TagOptimizationService } from './tag-optimization-service';
+
 interface NewsRabbitsProcessorParams {
   figmaUrl: string;
   outputDirectory?: string;
@@ -102,6 +105,9 @@ export async function processNewsRabbits(params: NewsRabbitsProcessorParams): Pr
     // Создаем менеджер словаря тегов
     const tagDictionaryManager = new TagDictionaryManager(outputDir);
     const tagDictionary = await tagDictionaryManager.loadOrCreateDictionary();
+    
+    // Создаем сервис оптимизации тегов
+    const tagOptimizer = new TagOptimizationService();
 
     const processedAssets: ProcessedAsset[] = [];
 
@@ -117,7 +123,8 @@ export async function processNewsRabbits(params: NewsRabbitsProcessorParams): Pr
           outputDir,
           params.context,
           tagDictionary,
-          tagDictionaryManager
+          tagDictionaryManager,
+          tagOptimizer
         );
         
         processedAssets.push(processedAsset);
@@ -276,13 +283,14 @@ async function processRabbitComponent(
   outputDir: string,
   context?: NewsRabbitsProcessorParams['context'],
   tagDictionary?: TagDictionary,
-  tagDictionaryManager?: TagDictionaryManager
+  tagDictionaryManager?: TagDictionaryManager,
+  tagOptimizer?: any
 ): Promise<ProcessedAsset> {
   
   // Если это COMPONENT_SET с вариантами, обрабатываем каждый вариант отдельно
   if (component.type === 'COMPONENT_SET' && component.children) {
     console.log(`🎨 Анализируем варианты для "${component.name}"`);
-    const variants = await analyzeComponentVariants(token, fileId, component, outputDir, context, tagDictionary, tagDictionaryManager);
+    const variants = await analyzeComponentVariants(token, fileId, component, outputDir, context, tagDictionary, tagDictionaryManager, tagOptimizer);
     
     return {
       id: component.id,
@@ -326,8 +334,30 @@ async function processRabbitComponent(
     context
   );
 
-  // Генерируем короткое имя файла и записываем в словарь тегов
-  const { shortName, selectedTags } = generateShortFileName(aiAnalysis.suggestedTags);
+  // Оптимизируем теги с помощью нового сервиса
+  let optimizedTags = aiAnalysis.suggestedTags;
+  let shortName = '';
+  
+  if (tagOptimizer) {
+    // Проверяем, есть ли заяц на изображении
+    const hasRabbit = component.name.toLowerCase().includes('заяц') || 
+                     aiAnalysis.suggestedTags.some(tag => tag.toLowerCase().includes('заяц')) ||
+                     aiAnalysis.contentDescription.toLowerCase().includes('заяц');
+    
+    const optimizationResult = tagOptimizer.optimizeTags(aiAnalysis.suggestedTags, hasRabbit);
+    optimizedTags = optimizationResult.optimizedTags;
+    shortName = optimizationResult.shortFileName;
+    
+    console.log(`🎯 Оптимизация тегов для "${component.name}":`);
+    console.log(`   Исходные теги (${optimizationResult.originalTags.length}): ${optimizationResult.originalTags.slice(0, 3).join(', ')}...`);
+    console.log(`   Оптимизированные теги (${optimizedTags.length}): ${optimizedTags.join(', ')}`);
+    console.log(`   Удалено тегов: ${optimizationResult.removedDuplicates.length}`);
+    console.log(`   Применено синонимов: ${Object.keys(optimizationResult.appliedSynonyms).length}`);
+  } else {
+    // Фоллбэк к старой системе
+    const result = generateShortFileName(aiAnalysis.suggestedTags);
+    shortName = result.shortName;
+  }
 
   // Переименовываем файл
   const newImagePath = await renameImageFile(mainImagePath, shortName);
@@ -338,7 +368,7 @@ async function processRabbitComponent(
       shortName,
       component.name,
       aiAnalysis.suggestedTags, // ВСЕ теги от GPT-4
-      selectedTags, // Теги, использованные в имени файла
+      optimizedTags, // Оптимизированные теги, использованные в имени файла
       {
         contentDescription: aiAnalysis.contentDescription,
         emotionalTone: aiAnalysis.emotionalTone,
@@ -355,13 +385,22 @@ async function processRabbitComponent(
     );
 
     tagDictionary.entries[shortName] = dictionaryEntry;
+    
+    // 🔄 АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ: Сохраняем словарь после каждого файла
+    await tagDictionaryManager.saveDictionary(tagDictionary);
+    
+    // 📤 ЭКСПОРТ ДЛЯ АГЕНТА: Создаем упрощенную версию для агента
+    const agentExportPath = `${outputDir}/agent-file-mapping.json`;
+    await tagDictionaryManager.exportForAgent(tagDictionary, agentExportPath);
+    
+    console.log(`💾 Словарь сохранен и экспортирован после обработки: ${shortName}`);
   }
 
   return {
     id: component.id,
     originalName: component.name,
     newName: shortName,
-    tags: aiAnalysis.suggestedTags, // Возвращаем ВСЕ теги
+    tags: optimizedTags, // Возвращаем оптимизированные теги
     variants: [],
     selectedVariant: undefined,
     filePath: newImagePath,
@@ -410,7 +449,8 @@ async function analyzeComponentVariants(
   outputDir: string,
   context?: NewsRabbitsProcessorParams['context'],
   tagDictionary?: TagDictionary,
-  tagDictionaryManager?: TagDictionaryManager
+  tagDictionaryManager?: TagDictionaryManager,
+  tagOptimizer?: any
 ): Promise<VariantInfo[]> {
   
   if (!component.children) return [];
@@ -457,8 +497,24 @@ async function analyzeComponentVariants(
       context
     );
 
-    // Генерируем короткое имя файла и записываем в словарь тегов
-    const { shortName, selectedTags } = generateShortFileName(aiAnalysis.suggestedTags);
+    // Оптимизируем теги с помощью нового сервиса
+    let optimizedTags = aiAnalysis.suggestedTags;
+    let shortName = '';
+    
+    if (tagOptimizer) {
+      // Проверяем, есть ли заяц на изображении
+      const hasRabbit = child.name.toLowerCase().includes('заяц') || 
+                       aiAnalysis.suggestedTags.some(tag => tag.toLowerCase().includes('заяц')) ||
+                       aiAnalysis.contentDescription.toLowerCase().includes('заяц');
+      
+      const optimizationResult = tagOptimizer.optimizeTags(aiAnalysis.suggestedTags, hasRabbit);
+      optimizedTags = optimizationResult.optimizedTags;
+      shortName = optimizationResult.shortFileName;
+    } else {
+      // Фоллбэк к старой системе
+      const result = generateShortFileName(aiAnalysis.suggestedTags);
+      shortName = result.shortName;
+    }
 
     // Переименовываем файл варианта
     const newVariantPath = await renameImageFile(variantPath, shortName);
@@ -469,7 +525,7 @@ async function analyzeComponentVariants(
         shortName,
         child.name,
         aiAnalysis.suggestedTags, // ВСЕ теги от GPT-4
-        selectedTags, // Теги, использованные в имени файла
+        optimizedTags, // Оптимизированные теги, использованные в имени файла
         {
           contentDescription: aiAnalysis.contentDescription,
           emotionalTone: aiAnalysis.emotionalTone,
@@ -486,13 +542,22 @@ async function analyzeComponentVariants(
       );
 
       tagDictionary.entries[shortName] = dictionaryEntry;
+      
+      // 🔄 АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ: Сохраняем словарь после каждого варианта
+      await tagDictionaryManager.saveDictionary(tagDictionary);
+      
+      // 📤 ЭКСПОРТ ДЛЯ АГЕНТА: Создаем упрощенную версию для агента
+      const agentExportPath = `${outputDir}/agent-file-mapping.json`;
+      await tagDictionaryManager.exportForAgent(tagDictionary, agentExportPath);
+      
+      console.log(`💾 Словарь сохранен и экспортирован после обработки варианта: ${shortName}`);
     }
 
     variants.push({
       id: child.id,
       name: child.name,
       newName: shortName,
-      tags: aiAnalysis.suggestedTags, // Возвращаем ВСЕ теги
+      tags: optimizedTags, // Возвращаем оптимизированные теги
       properties: child.variantProperties || {},
       filePath: newVariantPath,
       confidence: aiAnalysis.confidence,

@@ -11,6 +11,9 @@ export { ToolSequencer } from './tool-sequencer';
 export { SmartErrorHandler } from './smart-error-handler';
 export { SimpleDataProvider } from './simple-data-provider';
 export { ContextEnricher } from './context-enricher';
+export { SmartQualityController } from './quality-controller';
+export { InputSanitizer } from './input-sanitizer';
+export { SecureLogger } from './secure-logger';
 
 // Import for internal use
 import { RouteValidator } from './route-validator';
@@ -28,6 +31,10 @@ export type {
   ToolSequence,
   ErrorStrategy,
   ContextEnrichment,
+  QualityGate,
+  QualityControlResult,
+  QualityIssue,
+  QualityControlConfig,
   ValidationResult,
   ValidationIssue,
   UltraThinkConfig

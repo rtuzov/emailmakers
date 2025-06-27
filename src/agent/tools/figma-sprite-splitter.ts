@@ -6,6 +6,7 @@ import { OpenAI } from 'openai';
 import { createTempDir, ensureDirectoryExists } from '../utils/file-system';
 import { performance } from 'perf_hooks';
 import EmailFolderManager, { EmailFolder } from './email-folder-manager';
+import { getUsageModel } from '../../shared/utils/model-config';
 
 // ===== INTERFACES & TYPES (from Creative Phase Architecture) =====
 
@@ -383,7 +384,7 @@ class SegmentClassifier {
       const base64 = segment.imageData.toString('base64');
       
       const response = await this.openaiClient.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: getUsageModel(),
         messages: [
           {
             role: "user",

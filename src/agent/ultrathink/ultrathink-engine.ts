@@ -1,14 +1,17 @@
-import { UltraThinkConfig, ContextEnrichment, ValidationResult, ToolSequence } from './types';
-import { EmailGenerationRequest } from '../agent';
+import { UltraThinkConfig, ContextEnrichment, ValidationResult, ToolSequence, QualityControlResult, QualityControlConfig } from './types';
+import { EmailGenerationRequest } from '../types';
 import { RouteValidator } from './route-validator';
 import { DateValidator } from './date-validator';
 import { ToolSequencer } from './tool-sequencer';
 import { SmartErrorHandler } from './smart-error-handler';
 import { SimpleDataProvider } from './simple-data-provider';
 import { ContextEnricher } from './context-enricher';
+import { SmartQualityController } from './quality-controller';
+import { TIME_CONSTANTS, LIMITS, QUALITY_CONSTANTS } from './constants';
 
 export class UltraThinkEngine {
   private config: UltraThinkConfig;
+  private qualityController: SmartQualityController;
   private executionHistory: Array<{
     step: string;
     success: boolean;
@@ -16,6 +19,10 @@ export class UltraThinkEngine {
     error?: any;
     timestamp: number;
   }> = [];
+  
+  // Memory management settings
+  private readonly MAX_HISTORY_SIZE = LIMITS.MAX_EXECUTION_HISTORY_SIZE;
+  private readonly HISTORY_TTL_MS = TIME_CONSTANTS.EXECUTION_HISTORY_TTL_MS;
 
   constructor(config: Partial<UltraThinkConfig> = {}) {
     this.config = {
@@ -25,11 +32,22 @@ export class UltraThinkEngine {
       enableErrorIntelligence: true,
       fallbackToUnsplash: true,
       debugMode: false,
+      enableQualityControl: true,
       ...config
     };
 
+    // Initialize SmartQualityController with quality-focused configuration
+    this.qualityController = new SmartQualityController({
+      enforceAiConsultant: true,
+      minimumScore: QUALITY_CONSTANTS.DEFAULT_MINIMUM_SCORE,
+      criticalIssueThreshold: QUALITY_CONSTANTS.DEFAULT_CRITICAL_ISSUE_THRESHOLD,
+      autoRetryCount: QUALITY_CONSTANTS.DEFAULT_AUTO_RETRY_COUNT,
+      requireManualReview: false
+    });
+
     if (this.config.debugMode) {
       console.log('🧠 UltraThink Engine initialized with config:', this.config);
+      console.log('🛡️ Quality Control enabled:', this.config.enableQualityControl);
     }
   }
 
@@ -80,11 +98,18 @@ export class UltraThinkEngine {
         }
       }
 
-      // Step 3: Optimize tool sequence
+      // Step 3: Optimize tool sequence with quality control enforcement
       let optimizedSequence: ToolSequence;
       
       if (this.config.enableSmartSequencing) {
-        optimizedSequence = ToolSequencer.optimizeSequence(validatedRequest);
+        if (this.config.enableQualityControl) {
+          // Create enforced sequence with mandatory quality checks
+          optimizedSequence = ToolSequencer.createEnforcedSequence(validatedRequest);
+          console.log('🛡️ UltraThink: Created enforced sequence with quality gates');
+        } else {
+          // Standard optimized sequence without quality enforcement
+          optimizedSequence = ToolSequencer.optimizeSequence(validatedRequest);
+        }
         
         if (this.config.debugMode) {
           const stats = ToolSequencer.getSequenceStats(optimizedSequence);
@@ -199,8 +224,49 @@ export class UltraThinkEngine {
       timestamp: Date.now()
     });
 
+    // Auto-cleanup to prevent memory leaks
+    this.cleanupOldHistory();
+
     if (this.config.debugMode) {
       console.log(`✅ UltraThink: ${tool} completed successfully in ${duration}ms`);
+    }
+  }
+
+  /**
+   * Clean up old execution history to prevent memory leaks
+   */
+  private cleanupOldHistory(): void {
+    const now = Date.now();
+    
+    // Remove entries older than TTL
+    this.executionHistory = this.executionHistory.filter(
+      entry => (now - entry.timestamp) < this.HISTORY_TTL_MS
+    );
+    
+    // Limit total size to prevent excessive memory usage
+    if (this.executionHistory.length > this.MAX_HISTORY_SIZE) {
+      this.executionHistory = this.executionHistory.slice(-this.MAX_HISTORY_SIZE);
+    }
+
+    // Also cleanup InputSanitizer rate limit history to prevent memory leaks
+    const { InputSanitizer } = require('./input-sanitizer');
+    InputSanitizer.cleanupRateLimitHistory();
+  }
+
+  /**
+   * Clear all execution history (for testing/cleanup)
+   */
+  clearExecutionHistory(): void {
+    this.executionHistory = [];
+  }
+
+  /**
+   * Set maximum history size
+   */
+  setMaxHistorySize(size: number): void {
+    if (size > 0) {
+      (this as any).MAX_HISTORY_SIZE = size;
+      this.cleanupOldHistory();
     }
   }
 
@@ -370,8 +436,68 @@ ${contextSection}
       enableSmartSequencing: true,
       enableErrorIntelligence: true,
       fallbackToUnsplash: true,
-      debugMode: false
+      debugMode: false,
+      enableQualityControl: true
     });
+  }
+
+  /**
+   * Validate quality result from ai_quality_consultant
+   */
+  validateQualityResult(toolResult: any): QualityControlResult {
+    if (!this.config.enableQualityControl) {
+      return {
+        passed: true,
+        issues: [],
+        recommendations: [],
+        shouldProceed: true,
+        requiresRegeneration: false
+      };
+    }
+
+    return this.qualityController.validateQualityResult(toolResult);
+  }
+
+  /**
+   * Check if workflow should continue based on quality gates
+   */
+  shouldContinueWorkflow(stage: string): boolean {
+    if (!this.config.enableQualityControl) {
+      return true;
+    }
+
+    return this.qualityController.shouldContinueWorkflow(stage);
+  }
+
+  /**
+   * Create mandatory quality command for ai_quality_consultant
+   */
+  createMandatoryQualityCommand(htmlContent: string, mjmlSource?: string, assets?: any): any {
+    if (!this.config.enableQualityControl) {
+      return null;
+    }
+
+    return this.qualityController.createMandatoryQualityCommand(htmlContent, mjmlSource, assets);
+  }
+
+  /**
+   * Get quality control statistics
+   */
+  getQualityStats() {
+    if (!this.config.enableQualityControl) {
+      return { qualityControlDisabled: true };
+    }
+
+    return this.qualityController.getQualityStats();
+  }
+
+  /**
+   * Reset quality controller for new workflow
+   */
+  resetQualityController() {
+    if (this.config.enableQualityControl) {
+      this.qualityController.resetForNewWorkflow();
+    }
   }
 
   static createDebugMode(): UltraThinkEngine {

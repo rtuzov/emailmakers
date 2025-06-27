@@ -119,11 +119,11 @@ async function testAgentTools() {
     });
     
     console.log('✅ AI Quality Consultant Result:');
-    console.log(`   Overall Score: ${consultantResult.overall_score}/100`);
-    console.log(`   Quality Grade: ${consultantResult.quality_grade}`);
-    console.log(`   Recommendations: ${consultantResult.recommendations_count || 0}`);
-    console.log(`   Should Continue: ${consultantResult.should_continue}`);
-    console.log(`   Next Action: ${consultantResult.next_action || 'None'}`);
+    console.log(`   Overall Score: ${(consultantResult as any).score}/100`);
+    console.log(`   Quality Grade: ${(consultantResult as any).grade || 'N/A'}`);
+    console.log(`   Recommendations: ${(consultantResult as any).recommendations?.length || 0}`);
+    console.log(`   Should Continue: ${(consultantResult as any).should_continue || false}`);
+    console.log(`   Next Action: ${(consultantResult as any).next_action || 'None'}`);
     
   } catch (error) {
     console.log('❌ AI Quality Consultant failed:', error.message);
@@ -156,7 +156,7 @@ async function testAgentTools() {
       new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Timeout after 60 seconds')), 60000)
       )
-    ]);
+    ]) as any; // Type assertion for testing
     
     console.log('✅ Full Agent Result:');
     console.log(`   Status: ${result.status}`);

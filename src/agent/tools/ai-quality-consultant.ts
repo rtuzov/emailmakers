@@ -14,16 +14,25 @@ import {
   QualityAnalysisResult,
   ImprovementIteration
 } from './ai-consultant/types';
+import { getUsageModel } from '../../shared/utils/model-config';
 
 // Zod schema for agent tool parameters
 export const aiQualityConsultantSchema = z.object({
-  // Email content
-  html_content: z.string().describe('Generated email HTML content'),
-  mjml_source: z.string().nullable().optional().describe('Original MJML source code'),
+  // Email content (может быть сокращенным для оптимизации)
+  html_content: z.string().describe('Generated email HTML content (может быть сокращенным с ...[truncated])'),
+  mjml_source: z.string().nullable().optional().nullable().describe('Original MJML source code'),
+  campaign_id: z.string().nullable().optional().nullable().describe('Campaign ID для загрузки полного HTML из файла'),
   topic: z.string().describe('Email campaign topic'),
   
+  // Скриншоты для визуального анализа
+  screenshots: z.object({
+    desktop: z.string().nullable().optional().nullable().describe('Base64 encoded desktop screenshot'),
+    mobile: z.string().nullable().optional().nullable().describe('Base64 encoded mobile screenshot'),
+    tablet: z.string().nullable().optional().nullable().describe('Base64 encoded tablet screenshot')
+  }).nullable().optional().nullable().describe('Screenshots from generate_screenshots tool'),
+  
   // Campaign context
-  target_audience: z.string().nullable().optional().describe('Target audience for the campaign'),
+  target_audience: z.string().nullable().optional().nullable().describe('Target audience for the campaign'),
   campaign_type: z.enum(['promotional', 'informational', 'seasonal']).default('promotional'),
   
   // Assets from previous tools
@@ -44,7 +53,7 @@ export const aiQualityConsultantSchema = z.object({
     cheapest_price: z.number().nullable().optional(),
     currency: z.string().nullable().optional(),
     date_range: z.string().nullable().optional()
-  }).nullable().optional().describe('Price data from get_prices tool'),
+  }).nullable().optional().nullable().describe('Price data from get_prices tool'),
   
   // Content metadata from T3
   content_metadata: z.object({
@@ -52,14 +61,14 @@ export const aiQualityConsultantSchema = z.object({
     tone: z.string().nullable().optional(),
     language: z.string().nullable().optional(),
     word_count: z.number().nullable().optional()
-  }).nullable().optional().describe('Content metadata from generate_copy tool'),
+  }).nullable().optional().nullable().describe('Content metadata from generate_copy tool'),
   
   // Render test results from T8
   render_test_results: z.object({
     overall_score: z.number(),
     client_compatibility: z.record(z.number()).nullable().optional(),
     issues_found: z.array(z.string()).nullable().optional()
-  }).nullable().optional().describe('Results from render_test tool'),
+  }).nullable().optional().nullable().describe('Results from render_test tool'),
   
   // Improvement iteration tracking
   iteration_count: z.number().default(0).describe('Current improvement iteration number'),
@@ -67,7 +76,7 @@ export const aiQualityConsultantSchema = z.object({
     overall_score: z.number(),
     quality_grade: z.enum(['A', 'B', 'C', 'D', 'F']),
     recommendations: z.array(z.string())
-  }).nullable().optional().describe('Previous quality analysis results'),
+  }).nullable().optional().nullable().describe('Previous quality analysis results'),
   improvement_history: z.array(z.object({
     iteration: z.number(),
     score: z.number(),
@@ -80,7 +89,7 @@ export const aiQualityConsultantSchema = z.object({
     max_iterations: z.number().nullable().optional(),
     enable_auto_execution: z.boolean().nullable().optional(),
     max_recommendations: z.number().nullable().optional()
-  }).nullable().optional().describe('Configuration overrides for AI consultant')
+  }).nullable().optional().nullable().describe('Configuration overrides for AI consultant')
 });
 
 export type AIQualityConsultantParams = z.infer<typeof aiQualityConsultantSchema>;
@@ -95,13 +104,30 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
   try {
     console.log(`🤖 T11: AI Quality Consultant starting for topic: ${params.topic}`);
     
+    // Получаем полный HTML если он сокращен
+    let fullHtml = params.html_content;
+    if (params.html_content?.includes('...[truncated]') && params.campaign_id) {
+      console.log('🔄 T11: HTML is truncated, loading full version from file...');
+      try {
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const htmlPath = path.join(process.cwd(), 'mails', params.campaign_id, 'email.html');
+        fullHtml = await fs.readFile(htmlPath, 'utf8');
+        console.log(`✅ T11: Loaded full HTML from file: ${fullHtml.length} characters`);
+      } catch (error) {
+        console.warn('⚠️ T11: Could not load full HTML from file, using provided HTML:', error.message);
+        // Пытаемся восстановить HTML убрав маркер truncated
+        fullHtml = params.html_content.replace('...[truncated]', '');
+      }
+    }
+    
     // Create AI consultant with configuration
     const config: Partial<AIConsultantConfig> = {
       quality_gate_threshold: params.config_overrides?.quality_gate_threshold || 70,
       max_iterations: params.config_overrides?.max_iterations || 3,
       enable_auto_execution: params.config_overrides?.enable_auto_execution ?? true,
       max_recommendations: params.config_overrides?.max_recommendations || 10,
-      ai_model: 'gpt-4o-mini',
+      ai_model: getUsageModel(),
       analysis_temperature: 0.3,
       enable_image_analysis: true,
       enable_brand_compliance: true,
@@ -112,7 +138,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     
     // Prepare consultant request
     const consultantRequest: AIConsultantRequest = {
-      html_content: params.html_content,
+      html_content: fullHtml, // Используем полный HTML
       mjml_source: params.mjml_source || '',
       topic: params.topic,
       target_audience: params.target_audience || undefined,
@@ -181,6 +207,12 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     // Get AI consultation with detailed logging
     console.log(`🔍 T11: Starting AI quality analysis...`);
     console.log(`📋 T11: Request details: Topic="${params.topic}", Campaign="${params.campaign_type}", Iteration=${params.iteration_count}`);
+    console.log(`📸 T11: Screenshots available: Desktop=${!!params.screenshots?.desktop}, Mobile=${!!params.screenshots?.mobile}, Tablet=${!!params.screenshots?.tablet}`);
+    
+    // Добавляем скриншоты в запрос консультанта
+    if (params.screenshots) {
+      consultantRequest.screenshots = params.screenshots;
+    }
     
     const consultation = await consultant.consultOnQuality(consultantRequest);
     

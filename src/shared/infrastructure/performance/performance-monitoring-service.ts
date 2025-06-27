@@ -41,7 +41,7 @@ export class PerformanceMonitoringService {
   // Enhanced performance thresholds
   private readonly thresholds = {
     maxRequestDuration: 5000, // 5 seconds
-    maxMemoryUsage: 512 * 1024 * 1024, // 512MB
+    maxMemoryUsage: 2048 * 1024 * 1024, // 2GB (increased from 512MB)
     maxCpuUsage: 80, // 80%
     maxErrorRate: 0.05, // 5%
     maxDiskUsage: 0.85, // 85%

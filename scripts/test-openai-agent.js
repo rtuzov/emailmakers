@@ -77,7 +77,7 @@ async function main() {
       console.log('\n🎯 OpenAI Traces Status:');
       console.log('   • Check your OpenAI dashboard at: https://platform.openai.com/');
       console.log('   • Look for traces from agent: kupibilet-email-generator-v2');
-      console.log('   • Model used: gpt-4o-mini');
+      console.log(`   • Model used: ${process.env.USAGE_MODEL || 'gpt-4o-mini'}`);
       console.log(`   • Request time: ${new Date().toISOString()}`);
       
     } else {

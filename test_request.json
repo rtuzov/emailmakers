@@ -1,0 +1,9 @@
+{
+  "topic": "Путешествие на Камчатку осенью",
+  "destination": "PKC",
+  "origin": "MOW",
+  "options": {
+    "use_real_apis": false,
+    "mock_mode": true
+  }
+}

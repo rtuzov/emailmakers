@@ -9,8 +9,9 @@ import { ToolResult, handleToolError } from './index';
 import { randomUUID } from 'crypto';
 
 interface UploadParams {
-  html: string;
+  html: string; // Может быть сокращенным с ...[truncated]
   mjml_source?: string | null;
+  campaign_id?: string; // ID кампании для загрузки полного HTML из файла
   assets?: {
     images?: string[];
     metadata?: Record<string, any>;
@@ -32,9 +33,34 @@ interface UploadResult {
 export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
   try {
     console.log('T9: Uploading files to S3');
+    console.log('🔍 T9: Input params validation:', {
+      hasHtml: !!params.html,
+      htmlLength: params.html?.length || 0,
+      htmlType: typeof params.html,
+      hasMjmlSource: !!params.mjml_source,
+      hasAssets: !!params.assets,
+      htmlPreview: params.html?.substring(0, 100) + '...',
+      htmlIsTruncated: params.html?.includes('...[truncated]'),
+      campaignId: params.campaign_id
+    });
+
+    // Проверяем, если HTML сокращен, пытаемся загрузить полный из файла
+    let fullHtml = params.html;
+    if (params.html?.includes('...[truncated]') && params.campaign_id) {
+      console.log('🔄 T9: HTML is truncated, loading full version from file...');
+      try {
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const htmlPath = path.join(process.cwd(), 'mails', params.campaign_id, 'email.html');
+        fullHtml = await fs.readFile(htmlPath, 'utf8');
+        console.log(`✅ T9: Loaded full HTML from file: ${fullHtml.length} characters`);
+      } catch (error) {
+        console.warn('⚠️ T9: Could not load full HTML from file, using provided HTML:', error.message);
+      }
+    }
 
     // Validate parameters
-    if (!params.html) {
+    if (!fullHtml || fullHtml.trim() === '') {
       throw new Error('HTML content is required');
     }
 
@@ -95,8 +121,9 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
   if (mjmlUrl) console.log(`📄 MJML file: ${mjmlSize.toFixed(2)}KB`);
   console.log(`🖼️ Assets: ${assetUrls.length} files`);
 
-  // Save files locally for now (in production, upload to S3)
-  await saveToLocal(params, campaignId);
+      // Save files locally for now (in production, upload to S3)
+    const optimizedParams = { ...params, html: fullHtml };
+    await saveToLocal(optimizedParams, campaignId);
 
   return {
     html_url: htmlUrl,
@@ -112,8 +139,12 @@ function generateLocalUrls(params: UploadParams): ToolResult {
   const campaignId = `local-${Date.now()}-${randomUUID().substring(0, 8)}`;
   const baseUrl = `http://localhost:3000/generated/${campaignId}`;
   
+  // Use full HTML for size calculation
+  const htmlToUse = params.html?.includes('...[truncated]') ? 
+    params.html.replace('...[truncated]', '') : params.html;
+  
   // Calculate file sizes
-  const htmlSize = Buffer.byteLength(params.html, 'utf8') / 1024;
+  const htmlSize = Buffer.byteLength(htmlToUse, 'utf8') / 1024;
   const mjmlSize = params.mjml_source ? Buffer.byteLength(params.mjml_source, 'utf8') / 1024 : 0;
   const totalSize = htmlSize + mjmlSize;
   
@@ -165,7 +196,10 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
       for (const placeholder of figmaAssetPlaceholders) {
         const filename = placeholder.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/)?.[1];
         
-        if (filename) {
+        console.log(`🔍 T9: Processing placeholder: ${placeholder}`);
+        console.log(`🔍 T9: Extracted filename: "${filename}" (type: ${typeof filename})`);
+        
+        if (filename && typeof filename === 'string' && filename.trim()) {
           let sourceAssetPath: string | null = null;
           
           // Try multiple locations for the Figma asset
@@ -175,15 +209,24 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
             path.join(process.cwd(), filename)
           ];
           
+          console.log(`🔍 T9: Generated possible paths for "${filename}":`, possiblePaths);
+          
           // Find the asset in one of the possible locations
-          for (const possiblePath of possiblePaths) {
+          console.log(`🔍 T9: Searching for asset "${filename}" in ${possiblePaths.length} locations`);
+          for (let i = 0; i < possiblePaths.length; i++) {
+            const possiblePath = possiblePaths[i];
+            console.log(`🔍 T9: Checking path ${i + 1}/${possiblePaths.length}: ${possiblePath} (type: ${typeof possiblePath})`);
             try {
-              await fs.access(possiblePath);
-              sourceAssetPath = possiblePath;
-              console.log(`📍 Found Figma asset at: ${possiblePath}`);
-              break;
+              if (possiblePath && typeof possiblePath === 'string') {
+                await fs.access(possiblePath);
+                sourceAssetPath = possiblePath;
+                console.log(`📍 Found Figma asset at: ${possiblePath}`);
+                break;
+              } else {
+                console.warn(`⚠️ T9: Invalid path at index ${i}: ${possiblePath}`);
+              }
             } catch (error) {
-              // Continue searching
+              console.log(`❌ T9: Asset not found at: ${possiblePath}`);
             }
           }
           
@@ -203,14 +246,16 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
             if (fallbackAsset) {
               const fallbackPath = path.join(process.cwd(), 'figma-assets', fallbackAsset);
               try {
-                await fs.access(fallbackPath);
-                const destinationPath = path.join(`${localDir}/assets`, fallbackAsset);
-                await fs.copyFile(fallbackPath, destinationPath);
+                if (fallbackPath && typeof fallbackPath === 'string') {
+                  await fs.access(fallbackPath);
+                  const destinationPath = path.join(`${localDir}/assets`, fallbackAsset);
+                  await fs.copyFile(fallbackPath, destinationPath);
                 
-                const assetUrl = `http://localhost:3000/api/mock/s3/mails/${campaignId}/assets/${fallbackAsset}`;
-                processedHtml = processedHtml.replace(placeholder, assetUrl);
-                
-                console.log(`⚠️ Used fallback asset: ${filename} -> ${fallbackAsset}`);
+                  const assetUrl = `http://localhost:3000/api/mock/s3/mails/${campaignId}/assets/${fallbackAsset}`;
+                  processedHtml = processedHtml.replace(placeholder, assetUrl);
+                  
+                  console.log(`⚠️ Used fallback asset: ${filename} -> ${fallbackAsset}`);
+                }
               } catch (error) {
                 console.warn(`⚠️ Fallback asset also not found: ${fallbackAsset}, removing placeholder`);
                 processedHtml = processedHtml.replace(placeholder, '');

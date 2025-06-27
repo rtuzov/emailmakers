@@ -1,152 +1,162 @@
-// Load environment variables
-import { config } from 'dotenv';
+/**
+ * Airport Data Loader
+ * Loads airport data from CSV and provides airport to city code mapping
+ */
+
+import fs from 'fs';
 import path from 'path';
 
-// Load .env.local file
-config({ path: path.resolve(process.cwd(), '.env.local') });
-
-import * as fs from 'fs';
-
-export interface AirportData {
+interface AirportData {
   code: string;
-  cityCode: string;
-  countryCode: string;
-  timeZone: string;
-  iataType: string;
-  flightable: boolean;
+  city_code: string;
+  country_code: string;
+  time_zone: string;
+  iata_type: string;
+  flightable: string;
   name: string;
-  nameEn: string;
-  lat: number;
-  lon: number;
+  name_en: string;
+  lat: string;
+  lon: string;
 }
 
-let airportToCity: Map<string, string> | null = null;
-let cityToCountry: Map<string, string> | null = null;
+interface DestinationInfo {
+  originalCode: string;
+  finalCode: string;
+  countryCode: string;
+  isInternational: boolean;
+  wasConverted: boolean;
+}
+
+let airportsData: Map<string, AirportData> | null = null;
 
 /**
- * Загружает данные из airports.csv и создает индекс аэропорт → город
+ * Load airports data from CSV file
  */
-export function loadAirportsData(): { airportToCity: Map<string, string>; cityToCountry: Map<string, string> } {
-  if (airportToCity && cityToCountry) {
-    return { airportToCity, cityToCountry };
+function loadAirportsData(): Map<string, AirportData> {
+  if (airportsData) {
+    return airportsData;
   }
 
-  console.log('📂 Loading airports data from CSV...');
+  const csvPath = path.resolve(process.cwd(), 'airports.csv');
   
   try {
-    const csvPath = path.resolve(process.cwd(), 'airports.csv');
     const csvContent = fs.readFileSync(csvPath, 'utf-8');
     const lines = csvContent.split('\n');
     
-    // Пропускаем заголовок
+    // Skip header line
     const dataLines = lines.slice(1).filter(line => line.trim());
     
-    airportToCity = new Map();
-    cityToCountry = new Map();
-    
-    let processedCount = 0;
-    let airportCount = 0;
+    airportsData = new Map();
     
     for (const line of dataLines) {
+      // Split by semicolon as per CSV format
       const columns = line.split(';');
       
       if (columns.length >= 10) {
-        const code = columns[0]?.trim();
-        const cityCode = columns[1]?.trim();
-        const countryCode = columns[2]?.trim();
-        const iataType = columns[4]?.trim();
-        const flightableStr = columns[5]?.trim();
+        const airport: AirportData = {
+          code: columns[0].trim(),
+          city_code: columns[1].trim(),
+          country_code: columns[2].trim(),
+          time_zone: columns[3].trim(),
+          iata_type: columns[4].trim(),
+          flightable: columns[5].trim(),
+          name: columns[6].trim(),
+          name_en: columns[7].trim(),
+          lat: columns[8].trim(),
+          lon: columns[9].trim()
+        };
         
-        if (code && cityCode && code !== cityCode) {
-          // Добавляем только если это аэропорт и он отличается от кода города
-          if (iataType === 'airport' && flightableStr === 'True') {
-            airportToCity.set(code, cityCode);
-            airportCount++;
-          }
-          
-          // Сохраняем связь город → страна
-          if (cityCode && countryCode) {
-            cityToCountry.set(cityCode, countryCode);
-          }
-          
-          processedCount++;
-        }
+        airportsData.set(airport.code, airport);
       }
     }
     
-    console.log(`✅ Loaded ${airportCount} airport mappings from ${processedCount} total records`);
-    console.log(`📊 Country mappings: ${cityToCountry.size} cities`);
-    
-    return { airportToCity, cityToCountry };
+    console.log(`✈️ Loaded ${airportsData.size} airports from CSV`);
+    return airportsData;
     
   } catch (error) {
-    console.error('❌ Failed to load airports data:', error);
-    
-    // Возвращаем пустые Maps в случае ошибки
-    airportToCity = new Map();
-    cityToCountry = new Map();
-    
-    return { airportToCity, cityToCountry };
+    console.error('❌ Failed to load airports.csv:', error);
+    // Return empty map as fallback
+    airportsData = new Map();
+    return airportsData;
   }
 }
 
 /**
- * Конвертирует код аэропорта в код города на основе загруженных данных
+ * Convert airport code to city code using CSV data
  */
-export function convertAirportToCity(airportCode: string): { cityCode: string; wasConverted: boolean; countryCode?: string } {
-  const { airportToCity: mappings, cityToCountry: countries } = loadAirportsData();
+export function convertAirportToCity(airportCode: string): string {
+  const airports = loadAirportsData();
+  const airport = airports.get(airportCode);
   
-  const cityCode = mappings.get(airportCode);
-  
-  if (cityCode) {
-    const countryCode = countries.get(cityCode);
-    return {
-      cityCode,
-      wasConverted: true,
-      countryCode
-    };
-  } else {
-    // Если конвертация не найдена, возвращаем исходный код
-    const countryCode = countries.get(airportCode);
-    return {
-      cityCode: airportCode,
-      wasConverted: false,
-      countryCode
-    };
+  if (airport && airport.city_code) {
+    return airport.city_code;
   }
+  
+  // Return original code if not found
+  return airportCode;
 }
 
 /**
- * Проверяет, является ли код международным направлением (не Россия/СНГ)
+ * Get comprehensive destination information
  */
-export function isInternationalDestination(code: string): boolean {
-  const { cityToCountry } = loadAirportsData();
-  const countryCode = cityToCountry.get(code);
+export function getDestinationInfo(destination: string): DestinationInfo {
+  const airports = loadAirportsData();
+  const airport = airports.get(destination);
   
-  // Коды стран России и СНГ
-  const domesticCountries = ['RU', 'BY', 'KZ', 'KG', 'TJ', 'UZ', 'AM', 'AZ', 'GE', 'MD'];
+  const originalCode = destination;
+  const finalCode = airport?.city_code || destination;
+  const countryCode = airport?.country_code || 'UNKNOWN';
   
-  return countryCode ? !domesticCountries.includes(countryCode) : false;
-}
-
-/**
- * Получает информацию о направлении
- */
-export function getDestinationInfo(code: string): {
-  originalCode: string;
-  finalCode: string;
-  cityName?: string;
-  countryCode?: string;
-  isInternational: boolean;
-  wasConverted: boolean;
-} {
-  const conversion = convertAirportToCity(code);
+  // Russian airports based on country code
+  const isRussianDestination = countryCode === 'RU';
   
   return {
-    originalCode: code,
-    finalCode: conversion.cityCode,
-    countryCode: conversion.countryCode,
-    isInternational: isInternationalDestination(conversion.cityCode),
-    wasConverted: conversion.wasConverted
+    originalCode,
+    finalCode,
+    countryCode,
+    isInternational: !isRussianDestination,
+    wasConverted: originalCode !== finalCode
   };
-} 
+}
+
+/**
+ * Get airport details by code
+ */
+export function getAirportDetails(airportCode: string): AirportData | null {
+  const airports = loadAirportsData();
+  return airports.get(airportCode) || null;
+}
+
+/**
+ * Search airports by name (Russian or English)
+ */
+export function searchAirportsByName(searchTerm: string): AirportData[] {
+  const airports = loadAirportsData();
+  const results: AirportData[] = [];
+  const searchLower = searchTerm.toLowerCase();
+  
+  for (const airport of airports.values()) {
+    if (airport.name.toLowerCase().includes(searchLower) || 
+        airport.name_en.toLowerCase().includes(searchLower)) {
+      results.push(airport);
+    }
+  }
+  
+  return results;
+}
+
+/**
+ * Get all airports in a country
+ */
+export function getAirportsByCountry(countryCode: string): AirportData[] {
+  const airports = loadAirportsData();
+  const results: AirportData[] = [];
+  
+  for (const airport of airports.values()) {
+    if (airport.country_code === countryCode) {
+      results.push(airport);
+    }
+  }
+  
+  return results;
+}

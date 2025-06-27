@@ -7,6 +7,7 @@ config({ path: path.resolve(process.cwd(), '.env.local') });
 
 import { ToolResult, handleToolError } from './index';
 import { OpenAI } from 'openai';
+import { getUsageModel } from '../../shared/utils/model-config';
 
 interface PatchParams {
   html: string;
@@ -102,7 +103,7 @@ ${html}
 Please fix these issues while maintaining the original design and content. Return only the corrected HTML.`;
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: getUsageModel(),
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }

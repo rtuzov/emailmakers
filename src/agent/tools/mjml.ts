@@ -1,17 +1,33 @@
 import { ToolResult, ContentInfo, AssetInfo, handleToolError } from './index';
 import * as path from 'path';
-import EmailFolderManager, { EmailFolder } from './email-folder-manager';
+import { EmailFolderManager, EmailFolder } from './email-folder-manager';
 
 interface MjmlParams {
-  content: any;
-  assets: any;
+  content: ContentInfo;
+  assets: MjmlAssetInfo;
+  identica_assets?: {
+    selected_assets: Array<{
+      fileName: string;
+      filePath: string;
+      tags: string[];
+      description: string;
+    }>;
+  };
   emailFolder?: EmailFolder;
 }
 
+interface MjmlAssetInfo {
+  paths?: string[]; // Array of valid file paths (strings only)
+  metadata?: Record<string, any>;
+}
+
 interface MjmlResult {
-  html: string;
+  html: string; // Сокращенная версия для агента
   size_kb: number;
-  mjml_source: string;
+  mjml_source: string; // Сокращенная версия для агента
+  full_html_saved?: boolean; // Индикатор что полный HTML сохранен
+  html_length?: number; // Полная длина HTML
+  mjml_length?: number; // Полная длина MJML
 }
 
 /**
@@ -21,6 +37,35 @@ interface MjmlResult {
 export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
   try {
     console.log('T4: Rendering MJML template');
+    console.log('🔍 T4: Input params validation:', {
+      hasContent: !!params.content,
+      hasAssets: !!params.assets,
+      hasEmailFolder: !!params.emailFolder,
+      contentType: typeof params.content,
+      assetsType: typeof params.assets
+    });
+
+    // Add tracing
+    const { logger } = await import('../core/logger');
+    const traceId = `render_mjml_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    logger.startTrace(traceId, {
+      tool: 'render_mjml',
+      hasContent: !!params.content,
+      hasAssets: !!params.assets,
+      hasEmailFolder: !!params.emailFolder,
+      assetsCount: params.assets?.paths?.length || 0
+    });
+
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'validate_parameters',
+      params: {
+        contentType: typeof params.content,
+        assetsType: typeof params.assets,
+        hasEmailFolder: !!params.emailFolder
+      }
+    });
 
     // Validate parameters with proper null checks
     if (!params.content) {
@@ -35,19 +80,102 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       };
     }
     
-    // Ensure assets.paths exists and is an array
+    // Ensure assets.paths exists and is an array with valid string values
     if (!params.assets.paths) {
       params.assets.paths = [];
+    } else if (Array.isArray(params.assets.paths)) {
+      // Filter out undefined, null, or non-string values
+      const originalLength = params.assets.paths.length;
+      params.assets.paths = params.assets.paths.filter(path => 
+        path && typeof path === 'string' && path.trim().length > 0
+      );
+      console.log('🔍 T4: Filtered asset paths:', {
+        originalLength,
+        filteredLength: params.assets.paths.length,
+        removedCount: originalLength - params.assets.paths.length,
+        validPaths: params.assets.paths
+      });
     }
 
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'parameters_validated',
+      result: { valid: true, assetsCount: params.assets.paths.length }
+    });
+
     // Load base MJML template
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'load_mjml_template',
+      params: {}
+    });
+
     const mjmlTemplate = await loadMjmlTemplate();
+
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'mjml_template_loaded',
+      result: { templateLength: mjmlTemplate.length }
+    });
     
     // Render template with content and assets
-    const renderedMjml = await renderTemplate(mjmlTemplate, params.content, params.assets);
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'render_template',
+      params: {
+        contentSubject: params.content.subject,
+        assetsCount: params.assets.paths.length,
+        hasIdenticaAssets: !!params.identica_assets
+      }
+    });
+
+    const renderStartTime = Date.now();
+    const renderedMjml = await renderTemplate(mjmlTemplate, params.content, params.assets, params.identica_assets);
+    const renderDuration = Date.now() - renderStartTime;
+
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'template_rendered',
+      result: { renderedMjmlLength: renderedMjml.length },
+      duration: renderDuration
+    });
     
     // Compile MJML to HTML
-    const html = await compileMjmlToHtml(renderedMjml);
+    console.log('🔄 T4: Starting MJML compilation...');
+    console.log('🔍 T4: MJML content preview:', renderedMjml.substring(0, 500) + '...');
+    
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'compile_mjml_to_html',
+      params: { mjmlLength: renderedMjml.length }
+    });
+    
+    let html: string;
+    try {
+      const compileStartTime = Date.now();
+      html = await compileMjmlToHtml(renderedMjml);
+      const compileDuration = Date.now() - compileStartTime;
+      
+      console.log('✅ T4: MJML compilation completed, HTML length:', html.length);
+      
+      logger.addTraceStep(traceId, {
+        tool: 'render_mjml',
+        action: 'mjml_compiled',
+        result: { htmlLength: html.length },
+        duration: compileDuration
+      });
+    } catch (compilationError) {
+      console.error('❌ T4: MJML compilation failed:', compilationError);
+      
+      logger.addTraceStep(traceId, {
+        tool: 'render_mjml',
+        action: 'mjml_compilation_failed',
+        error: compilationError.message
+      });
+      
+      await logger.endTrace(traceId, undefined, compilationError);
+      throw new Error(`MJML compilation failed: ${compilationError.message}`);
+    }
     
     // Calculate size
     const sizeKb = Buffer.byteLength(html, 'utf8') / 1024;
@@ -58,24 +186,113 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
 
     // Save to email folder if provided
     if (params.emailFolder) {
-      await EmailFolderManager.saveHtml(params.emailFolder, html);
-      await EmailFolderManager.saveMjml(params.emailFolder, renderedMjml);
+      console.log('🔍 T4: EmailFolder object received:', params.emailFolder);
+      
+      // Проверяем и дополняем emailFolder если нужно
+      let emailFolder = params.emailFolder;
+      
+      // Если это неполный объект, создаем полный
+      if (!emailFolder.htmlPath || !emailFolder.mjmlPath || !emailFolder.metadataPath) {
+        console.log('🔧 T4: Converting incomplete emailFolder to complete EmailFolder interface');
+        
+        const emailFolderAny = emailFolder as any;
+        
+        // Определяем базовый путь
+        let basePath = emailFolder.basePath;
+        if (!basePath && emailFolderAny.folderPath) {
+          // Если folderPath не является полным путем, создаем полный путь
+          if (!emailFolderAny.folderPath.startsWith('/')) {
+            basePath = path.join(process.cwd(), 'mails', emailFolder.campaignId);
+          } else {
+            basePath = emailFolderAny.folderPath;
+          }
+        }
+        if (!basePath) {
+          basePath = path.join(process.cwd(), 'mails', emailFolder.campaignId);
+        }
+        
+        // Определяем путь к ассетам
+        let assetsPath = emailFolder.assetsPath;
+        if (!assetsPath || !assetsPath.startsWith('/')) {
+          assetsPath = path.join(basePath, 'assets');
+        }
+        
+        console.log('🔍 T4: Path construction:', {
+          originalBasePath: emailFolder.basePath,
+          originalFolderPath: emailFolderAny.folderPath,
+          originalAssetsPath: emailFolder.assetsPath,
+          computedBasePath: basePath,
+          computedAssetsPath: assetsPath,
+          campaignId: emailFolder.campaignId
+        });
+        
+        // Дополнительная проверка путей перед созданием объекта
+        if (!basePath || typeof basePath !== 'string') {
+          throw new Error(`Invalid basePath: ${basePath} (type: ${typeof basePath})`);
+        }
+        if (!assetsPath || typeof assetsPath !== 'string') {
+          throw new Error(`Invalid assetsPath: ${assetsPath} (type: ${typeof assetsPath})`);
+        }
+        
+        emailFolder = {
+          campaignId: emailFolder.campaignId,
+          basePath: basePath,
+          assetsPath: assetsPath,
+          spritePath: path.join(assetsPath, 'sprite-slices'),
+          htmlPath: path.join(basePath, 'email.html'),
+          mjmlPath: path.join(basePath, 'email.mjml'),
+          metadataPath: path.join(basePath, 'metadata.json')
+        };
+        
+        console.log('✅ T4: Created complete EmailFolder:', emailFolder);
+      }
+      
+      await EmailFolderManager.saveHtml(emailFolder, html);
+      await EmailFolderManager.saveMjml(emailFolder, renderedMjml);
       
       // Update metadata with rendering info
-      await EmailFolderManager.updateMetadata(params.emailFolder, {
+      await EmailFolderManager.updateMetadata(emailFolder, {
         status: 'processing'
       });
       
-      console.log(`💾 T4: Saved HTML and MJML to email folder: ${params.emailFolder.campaignId}`);
+      console.log(`💾 T4: Saved HTML and MJML to email folder: ${emailFolder.campaignId}`);
     }
 
+    // Агрессивная оптимизация: возвращаем минимум данных агенту
+    const htmlPreview = html.substring(0, 200) + '...[truncated]';
+    const mjmlPreview = renderedMjml.substring(0, 150) + '...[truncated]';
+    
     const result: MjmlResult = {
-      html,
+      html: htmlPreview, // Сокращенная версия для агента
       size_kb: Math.round(sizeKb * 10) / 10,
-      mjml_source: renderedMjml
+      mjml_source: mjmlPreview, // Сокращенная версия для агента
+      full_html_saved: !!params.emailFolder, // Индикатор что полный HTML сохранен
+      html_length: html.length,
+      mjml_length: renderedMjml.length
     };
 
-    return {
+    console.log('✅ T4: MJML rendering completed successfully:', {
+      htmlLength: html.length,
+      sizeKb: result.size_kb,
+      mjmlLength: renderedMjml.length,
+      hasValidHtml: html.includes('<html>') && html.includes('</html>')
+    });
+
+    console.log(`🔄 T4: Response optimization: HTML ${html.length}→${htmlPreview.length} chars (${Math.round((1-htmlPreview.length/html.length)*100)}% reduction)`);
+    console.log(`💾 T4: Full HTML saved to file: ${!!params.emailFolder}`);
+
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'create_result',
+      result: {
+        htmlLength: html.length,
+        sizeKb: result.size_kb,
+        mjmlLength: renderedMjml.length,
+        fullHtmlSaved: result.full_html_saved
+      }
+    });
+
+    const finalResult = {
       success: true,
       data: result,
       metadata: {
@@ -88,7 +305,12 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       }
     };
 
+    await logger.endTrace(traceId, finalResult);
+    return finalResult;
+
   } catch (error) {
+    // Error will be automatically traced by OpenAI Agents SDK
+    console.error('❌ MJML rendering failed:', error);
     return handleToolError('render_mjml', error);
   }
 }
@@ -180,7 +402,7 @@ async function loadMjmlTemplate(): Promise<string> {
 </mjml>`;
 }
 
-async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets: any): Promise<string> {
+async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets: any, identica_assets?: { selected_assets: Array<{ fileName: string; filePath: string; tags: string[]; description: string; }> }): Promise<string> {
   // Debug logging for assets
   console.log('🔍 T4: Analyzing assets structure:', {
     assets: assets ? 'Present' : 'Missing',
@@ -199,6 +421,19 @@ async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets
   if (assetPaths.length > 0) {
     // Get the first asset path - downloaded Figma asset
     const firstAsset = assetPaths[0];
+    
+    // Validate firstAsset with detailed error reporting
+    if (!firstAsset || typeof firstAsset !== 'string') {
+      console.error('🚨 T4: Invalid asset detected:', {
+        firstAsset,
+        firstAssetType: typeof firstAsset,
+        allAssetPaths: assetPaths,
+        assetTypes: assetPaths.map(path => typeof path),
+        originalAssetsObject: assets
+      });
+      throw new Error(`Invalid first asset: received ${typeof firstAsset} (${firstAsset}) instead of string. This usually means the OpenAI agent passed undefined/null values in the assets.paths array. Asset paths: ${JSON.stringify(assetPaths)}`);
+    }
+    
     console.log(`🎨 Using Figma asset for header: ${firstAsset}`);
     
     // Check if it's a local file path and convert to proper URL
@@ -234,7 +469,18 @@ async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets
       console.log(`🔗 Using direct URL for asset: ${firstAsset}`);
     }
   } else {
-    throw new Error('No Figma assets available. Figma assets are required for email generation.');
+    console.warn('🚨 T4: No valid Figma assets available after filtering. Using fallback image.');
+    console.log('🔍 T4: Asset debugging info:', {
+      originalAssets: assets,
+      filteredPaths: assetPaths,
+      pathsLength: assetPaths.length,
+      assetsProvided: !!assets?.paths,
+      originalPathsLength: assets?.paths?.length || 0
+    });
+    
+    // Use fallback image instead of throwing error
+    headerImage = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=300&fit=crop';
+    console.log('📷 Using fallback header image due to missing/invalid Figma assets');
   }
 
   // Ensure content properties exist
@@ -277,7 +523,7 @@ async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets
       rabbitAssetPath = assetPaths.find(path => path.includes('заяц') || path.includes('rabbit')) || '';
     }
     
-    if (rabbitAssetPath) {
+    if (rabbitAssetPath && typeof rabbitAssetPath === 'string') {
       // Extract filename for placeholder
       const filename = rabbitAssetPath.split('/').pop() || 'rabbit-asset.png';
       const rabbitUrl = `{{FIGMA_ASSET_URL:${filename}}}`;
@@ -298,14 +544,38 @@ async function renderTemplate(mjmlTemplate: string, content: ContentInfo, assets
     console.log(`🚫 No component needed - not a promotional email and no specific rabbit requests`);
   }
 
+  // Process identica assets for logo
+  let logoUrl = 'https://kupibilet.ru/assets/logo.png'; // default logo
+  
+  if (identica_assets?.selected_assets && identica_assets.selected_assets.length > 0) {
+    console.log('🎨 T4: Processing identica assets:', identica_assets.selected_assets.length);
+    
+    // Find logo asset (prefer assets with 'логотип' tag or description containing 'логотип')
+    const logoAsset = identica_assets.selected_assets.find(asset => 
+      asset.tags.some(tag => tag.toLowerCase().includes('логотип')) ||
+      asset.description.toLowerCase().includes('логотип') ||
+      asset.fileName.toLowerCase().includes('логотип')
+    ) || identica_assets.selected_assets[0]; // fallback to first asset
+    
+    if (logoAsset) {
+      const filename = logoAsset.fileName;
+      logoUrl = `{{IDENTICA_ASSET_URL:${filename}}}`;
+      console.log(`🏷️ Using identica asset for logo: ${filename}`);
+    }
+  } else {
+    console.log('🏷️ No identica assets provided, using default logo');
+  }
+
   // Template variables
   const variables = {
     subject: safeContent.subject,
     preheader: safeContent.preheader,
     body: safeContent.body.replace(/\n/g, '</mj-text><mj-text>'),
     cta: safeContent.cta,
-    logo_url: 'https://kupibilet.ru/assets/logo.png',
-    header_image: headerImage,
+    cta_text: safeContent.cta,
+    logo_url: logoUrl, // Use identica logo if available
+    hero_image: headerImage, // Changed from header_image to hero_image to match template
+    destination_name: 'Travel Destination', // For alt text in hero image
     price_text: 'Специальные цены на билеты в Париж!',
     cta_url: 'https://kupibilet.ru/search?origin=LED&destination=CDG',
     unsubscribe_url: 'https://kupibilet.ru/unsubscribe',
@@ -338,6 +608,11 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
   try {
     const fs = await import('fs/promises');
     const path = await import('path');
+    
+    // Validate imagePath parameter
+    if (!imagePath || typeof imagePath !== 'string') {
+      throw new Error(`Invalid image path: ${imagePath}`);
+    }
     
     // Check if file exists
     await fs.access(imagePath);

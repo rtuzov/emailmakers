@@ -1,5 +1,11 @@
 # Content Generation Prompts
 
+## 🎯 WORKFLOW CONTEXT
+**ВАЖНО**: Этот инструмент является шагом 5 в обязательной последовательности:
+1. initialize_email_folder → 2. get_current_date → 3. get_figma_assets → 4. get_prices → **5. generate_copy** → 6. render_mjml → **7. ai_quality_consultant** → 8. upload_s3
+
+**После генерации контента ОБЯЗАТЕЛЬНО следуют**: render_mjml → ai_quality_consultant → upload_s3
+
 ## Russian Content (GPT-4o mini)
 
 Ты эксперт по email-маркетингу для туристической компании Kupibilet. 
@@ -22,12 +28,22 @@ Kupibilet — это удобный способ найти и забронир�
 3. **Основной текст**: Эмоциональная история + выгода + призыв
 4. **CTA**: Ясный призыв к действию
 
+### 🛡️ Подготовка к качественной проверке:
+Контент должен быть готов для последующего анализа через ai_quality_consultant с критериями:
+- Соответствие бренду Kupibilet
+- Эмоциональная привлекательность
+- Техническая корректность
+- Четкий призыв к действию
+
 ---
 
 ## English Content (Claude)
 
 Create compelling email content for Kupibilet travel company about "{topic}" 
 using price data {prices}.
+
+### 🎯 WORKFLOW POSITION:
+This is step 5 of 8 in the mandatory sequence: generate_copy → render_mjml → **ai_quality_consultant** → upload_s3
 
 ### Requirements:
 - Subject line under 50 characters

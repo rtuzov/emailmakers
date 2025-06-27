@@ -6,6 +6,7 @@ config({ path: path.resolve(process.cwd(), '.env.local') });
 
 import { ToolResult, ContentInfo, PriceInfo, handleToolError } from './index';
 import { OpenAI } from 'openai';
+import { getUsageModel } from '../../shared/utils/model-config';
 // import ABTestingService from '../../lib/ab-testing'; // DISABLED - A/B testing framework disabled
 
 // Helper function to clean API keys
@@ -39,7 +40,7 @@ interface CopyParams {
  */
 export async function generateCopy(params: CopyParams): Promise<ToolResult> {
   try {
-    console.log('T3: Generating copy for topic:', params.topic);
+    console.log('🖋️ Генерация контента для темы:', params.topic);
 
     // Validate parameters
     if (!params.topic || !params.prices) {
@@ -60,11 +61,8 @@ export async function generateCopy(params: CopyParams): Promise<ToolResult> {
       // Test connectivity with a simple request
       await testOpenAIConnectivity(openai);
 
-      // Generate Russian content using GPT-4o mini
+      // Generate Russian content only
       const russianContent = await generateRussianContent(openai, params.topic, params.prices);
-      
-      // Generate English A-variant using GPT-4o mini
-      const englishContent = await generateEnglishContent(params.topic, params.prices);
 
       const result: ContentInfo = {
         subject: russianContent.subject,
@@ -72,8 +70,7 @@ export async function generateCopy(params: CopyParams): Promise<ToolResult> {
         body: russianContent.body,
         cta: russianContent.cta,
         language: 'ru',
-        tone: 'friendly',
-        a_variant: englishContent
+        tone: 'friendly'
       };
 
       return {
@@ -99,7 +96,7 @@ async function generateRussianContent(
   openai: OpenAI, 
   topic: string, 
   prices: { prices: PriceInfo[]; currency: string; cheapest: number }
-): Promise<Omit<ContentInfo, 'language' | 'tone' | 'a_variant'>> {
+): Promise<Omit<ContentInfo, 'language' | 'tone'>> {
   
   // Defensive checks for prices
   const pricesList = prices?.prices || [];
@@ -153,7 +150,7 @@ ${priceContext}
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: getUsageModel(),
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
       max_tokens: 1000
@@ -179,70 +176,6 @@ ${priceContext}
     
   } catch (apiError: any) {
     throw new Error(`OpenAI API failed: ${apiError.message}`);
-  }
-}
-
-async function generateEnglishContent(
-  topic: string, 
-  prices: { prices: PriceInfo[]; currency: string; cheapest: number }
-): Promise<{ subject: string; body: string }> {
-  
-  try {
-    // Use only GPT-4o mini (Claude disabled)
-    console.log('🤖 Generating English content with GPT-4o mini only...');
-    return await generateEnglishWithGPT(topic, prices);
-  } catch (gptError: any) {
-    throw new Error(`English content generation failed: ${gptError.message}`);
-  }
-}
-
-// Claude API removed - using only GPT-4o mini for content generation
-
-async function generateEnglishWithGPT(
-  topic: string, 
-  prices: { prices: PriceInfo[]; currency: string; cheapest: number }
-): Promise<{ subject: string; body: string }> {
-  
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-
-  const prompt = `Create compelling email content for Kupibilet travel company about "${topic}" 
-using price data from ${prices.cheapest} ${prices.currency}.
-
-REQUIREMENTS:
-- Subject line under 50 characters with price
-- Body content 200-300 words
-- Tone: friendly, motivating
-- Focus on benefits and emotions
-
-RESPONSE FORMAT (JSON ONLY):
-{
-  "subject": "...",
-  "body": "..."
-}`;
-
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 0.7,
-    max_tokens: 800
-  });
-
-  const content = response.choices[0]?.message?.content;
-  if (!content) {
-    throw new Error('No content generated from GPT-4o mini for English variant');
-  }
-
-  try {
-    const cleanedContent = cleanMarkdownJson(content);
-    const parsed = JSON.parse(cleanedContent);
-    return {
-      subject: parsed.subject,
-      body: parsed.body
-    };
-  } catch (parseError) {
-    throw new Error(`Failed to parse English content response: ${parseError.message}`);
   }
 }
 

@@ -145,6 +145,9 @@ export class SmartEmailAnalyzer {
       target_audience: request.target_audience || 'general',
       campaign_type: request.campaign_type || 'promotional',
       
+      // Скриншоты для визуального анализа
+      screenshots: request.screenshots || {},
+      
       // Context data
       assets_info: this.extractAssetInfo(request.assets_used),
       pricing_info: this.extractPricingInfo(request.prices),
@@ -169,8 +172,8 @@ TOPIC: ${context.topic}
 TARGET AUDIENCE: ${context.target_audience}
 CAMPAIGN TYPE: ${context.campaign_type}
 
-EMAIL CONTENT:
-${context.html_content}
+EMAIL CONTENT (TRUNCATED FOR SPEED):
+${context.html_content.substring(0, 1500)}...
 
 EVALUATION CRITERIA:
 1. Clarity and readability (25%)
@@ -212,15 +215,21 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
   }
 
   /**
-   * Analyze visual appeal using GPT-4o mini
+   * Analyze visual appeal using GPT-4o mini with screenshot support
    */
   private async analyzeVisualAppeal(context: any): Promise<{ score: number; issues: string[]; insights: string[] }> {
-    const prompt = `
+    // Подготавливаем сообщения для анализа
+    const messages: any[] = [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: `
 Analyze the visual appeal of this email design:
 
-EMAIL HTML:
-${context.html_content}
-
+TOPIC: ${context.topic}
+CAMPAIGN TYPE: ${context.campaign_type}
 ASSETS USED: ${JSON.stringify(context.assets_info)}
 
 EVALUATION CRITERIA:
@@ -229,6 +238,11 @@ EVALUATION CRITERIA:
 3. Typography and readability (20%)
 4. Image quality and relevance (20%)
 5. Mobile responsiveness (15%)
+
+${context.screenshots.desktop || context.screenshots.mobile ? 'I will provide screenshots of the actual email rendering.' : 'Analyzing based on HTML code only.'}
+
+EMAIL HTML CODE (TRUNCATED):
+${context.html_content.substring(0, 1000)}...
 
 Provide:
 1. Score (0-100)
@@ -240,17 +254,50 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
   "score": number,
   "issues": ["issue1", "issue2", "issue3"],
   "insights": ["insight1", "insight2", "insight3"]
-}`;
+}`
+          }
+        ]
+      }
+    ];
+
+    // Добавляем скриншоты если доступны
+    if (context.screenshots.desktop) {
+      messages[0].content.push({
+        type: 'image_url',
+        image_url: {
+          url: `data:image/png;base64,${context.screenshots.desktop}`,
+          detail: 'high'
+        }
+      });
+      messages[0].content[0].text += '\n\n📱 DESKTOP SCREENSHOT: Provided above for visual analysis.';
+    }
+
+    if (context.screenshots.mobile) {
+      messages[0].content.push({
+        type: 'image_url',
+        image_url: {
+          url: `data:image/png;base64,${context.screenshots.mobile}`,
+          detail: 'high'
+        }
+      });
+      messages[0].content[0].text += '\n\n📱 MOBILE SCREENSHOT: Provided above for mobile responsive analysis.';
+    }
 
     try {
+      // Используем GPT-4 Vision только если есть скриншоты, иначе GPT-4o mini для скорости
+      const model = (context.screenshots?.desktop || context.screenshots?.mobile) ? 'gpt-4o' : this.config.ai_model;
+      
       const response = await this.openai.chat.completions.create({
-        model: this.config.ai_model,
-        messages: [{ role: 'user', content: prompt }],
+        model,
+        messages,
         temperature: this.config.analysis_temperature,
         max_tokens: 1000
       });
 
       const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 65, issues: ['Visual analysis temporarily unavailable'], insights: [] });
+      
+      console.log(`📸 Visual analysis completed with ${context.screenshots.desktop ? 'desktop' : 'no'} and ${context.screenshots.mobile ? 'mobile' : 'no'} screenshots`);
+      
       return {
         score: Math.max(0, Math.min(100, result.score)),
         issues: result.issues || [],

@@ -12,6 +12,9 @@ export { uploadToS3 } from './upload';
 export { percySnap } from './percy';
 export { renderTest } from './render-test';
 
+// T16: Identica Creative Selector
+export { selectIdenticaCreatives, identicaSelectorSchema } from './identica-selector';
+
 // Common types for tools
 export interface ToolResult {
   success: boolean;
@@ -53,10 +56,6 @@ export interface ContentInfo {
   cta: string;
   language: string;
   tone: string;
-  a_variant?: {
-    subject: string;
-    body: string;
-  };
 }
 
 export interface TestResult {
