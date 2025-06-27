@@ -1,0 +1,73 @@
+# Gmail Chrome Render Worker
+# This container simulates Gmail's rendering environment using Chrome
+FROM node:18-slim
+
+# Install Chrome and dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    ca-certificates \
+    apt-transport-https \
+    software-properties-common \
+    --no-install-recommends
+
+# Add Chrome repository
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+# Install Chrome
+RUN apt-get update && apt-get install -y \
+    google-chrome-stable \
+    fonts-liberation \
+    libappindicator3-1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libdrm2 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libxss1 \
+    libxtst6 \
+    xdg-utils \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY src/ ./src/
+COPY gmail-worker/ ./gmail-worker/
+
+# Create non-root user
+RUN groupadd -r renderuser && useradd -r -g renderuser -G audio,video renderuser \
+    && mkdir -p /home/renderuser/Downloads \
+    && chown -R renderuser:renderuser /home/renderuser \
+    && chown -R renderuser:renderuser /app
+
+# Switch to non-root user
+USER renderuser
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV CHROME_BIN=/usr/bin/google-chrome-stable
+ENV CHROME_PATH=/usr/bin/google-chrome-stable
+ENV DISPLAY=:99
+ENV WORKER_TYPE=gmail-chrome
+ENV WORKER_ID=gmail-chrome-${HOSTNAME}
+
+# Expose port for health checks
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD node ./src/health-check.js
+
+# Start the worker
+CMD ["node", "./src/gmail-worker.js"] 

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: email-makers-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: email_makers
+      POSTGRES_USER: email_makers_user
+      POSTGRES_PASSWORD: email_makers_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - email-makers-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  email-makers-network:
+    driver: bridge 

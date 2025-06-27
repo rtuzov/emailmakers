@@ -1,0 +1,361 @@
+/**
+ * Phase 13.1: T11 AI Quality Consultant Tool
+ * 
+ * Agent tool wrapper for the AI Quality Consultant system.
+ * Integrates intelligent quality improvement into the email generation pipeline.
+ */
+
+import { z } from 'zod';
+import { AIQualityConsultant } from './ai-consultant/ai-consultant';
+import { 
+  AIConsultantRequest,
+  AIConsultantResponse,
+  AIConsultantConfig,
+  QualityAnalysisResult,
+  ImprovementIteration
+} from './ai-consultant/types';
+
+// Zod schema for agent tool parameters
+export const aiQualityConsultantSchema = z.object({
+  // Email content
+  html_content: z.string().describe('Generated email HTML content'),
+  mjml_source: z.string().nullable().optional().describe('Original MJML source code'),
+  topic: z.string().describe('Email campaign topic'),
+  
+  // Campaign context
+  target_audience: z.string().nullable().optional().describe('Target audience for the campaign'),
+  campaign_type: z.enum(['promotional', 'informational', 'seasonal']).default('promotional'),
+  
+  // Assets from previous tools
+  assets_used: z.object({
+    original_assets: z.array(z.string()).default([]),
+    processed_assets: z.array(z.string()).default([]),
+    sprite_metadata: z.string().nullable().optional()
+  }).default({
+    original_assets: [],
+    processed_assets: [],
+    sprite_metadata: null
+  }).describe('Assets used from T1/T10 tools'),
+  
+  // Pricing data from T2
+  prices: z.object({
+    origin: z.string().nullable().optional(),
+    destination: z.string().nullable().optional(),
+    cheapest_price: z.number().nullable().optional(),
+    currency: z.string().nullable().optional(),
+    date_range: z.string().nullable().optional()
+  }).nullable().optional().describe('Price data from get_prices tool'),
+  
+  // Content metadata from T3
+  content_metadata: z.object({
+    subject: z.string().nullable().optional(),
+    tone: z.string().nullable().optional(),
+    language: z.string().nullable().optional(),
+    word_count: z.number().nullable().optional()
+  }).nullable().optional().describe('Content metadata from generate_copy tool'),
+  
+  // Render test results from T8
+  render_test_results: z.object({
+    overall_score: z.number(),
+    client_compatibility: z.record(z.number()).nullable().optional(),
+    issues_found: z.array(z.string()).nullable().optional()
+  }).nullable().optional().describe('Results from render_test tool'),
+  
+  // Improvement iteration tracking
+  iteration_count: z.number().default(0).describe('Current improvement iteration number'),
+  previous_analysis: z.object({
+    overall_score: z.number(),
+    quality_grade: z.enum(['A', 'B', 'C', 'D', 'F']),
+    recommendations: z.array(z.string())
+  }).nullable().optional().describe('Previous quality analysis results'),
+  improvement_history: z.array(z.object({
+    iteration: z.number(),
+    score: z.number(),
+    changes_made: z.array(z.string())
+  })).default([]).describe('History of improvement iterations'),
+  
+  // Configuration overrides
+  config_overrides: z.object({
+    quality_gate_threshold: z.number().nullable().optional(),
+    max_iterations: z.number().nullable().optional(),
+    enable_auto_execution: z.boolean().nullable().optional(),
+    max_recommendations: z.number().nullable().optional()
+  }).nullable().optional().describe('Configuration overrides for AI consultant')
+});
+
+export type AIQualityConsultantParams = z.infer<typeof aiQualityConsultantSchema>;
+
+/**
+ * T11 AI Quality Consultant Tool
+ * 
+ * Provides intelligent quality analysis and improvement recommendations
+ * for email campaigns with automated execution capabilities.
+ */
+export async function aiQualityConsultant(params: AIQualityConsultantParams) {
+  try {
+    console.log(`🤖 T11: AI Quality Consultant starting for topic: ${params.topic}`);
+    
+    // Create AI consultant with configuration
+    const config: Partial<AIConsultantConfig> = {
+      quality_gate_threshold: params.config_overrides?.quality_gate_threshold || 70,
+      max_iterations: params.config_overrides?.max_iterations || 3,
+      enable_auto_execution: params.config_overrides?.enable_auto_execution ?? true,
+      max_recommendations: params.config_overrides?.max_recommendations || 10,
+      ai_model: 'gpt-4o-mini',
+      analysis_temperature: 0.3,
+      enable_image_analysis: true,
+      enable_brand_compliance: true,
+      enable_accessibility_checks: true
+    };
+    
+    const consultant = new AIQualityConsultant(config);
+    
+    // Prepare consultant request
+    const consultantRequest: AIConsultantRequest = {
+      html_content: params.html_content,
+      mjml_source: params.mjml_source || '',
+      topic: params.topic,
+      target_audience: params.target_audience || undefined,
+      campaign_type: params.campaign_type,
+      assets_used: {
+        original_assets: params.assets_used?.original_assets || [],
+        processed_assets: params.assets_used?.processed_assets || [],
+        sprite_metadata: params.assets_used?.sprite_metadata || undefined
+      },
+      prices: params.prices ? {
+        origin: params.prices.origin,
+        destination: params.prices.destination,
+        cheapest_price: params.prices.cheapest_price,
+        currency: params.prices.currency,
+        date_range: params.prices.date_range
+      } : undefined,
+      content_metadata: params.content_metadata ? {
+        subject: params.content_metadata.subject,
+        tone: params.content_metadata.tone,
+        language: params.content_metadata.language,
+        word_count: params.content_metadata.word_count
+      } : undefined,
+      render_test_results: params.render_test_results ? {
+        overall_score: params.render_test_results.overall_score,
+        client_compatibility: params.render_test_results.client_compatibility,
+        issues_found: params.render_test_results.issues_found
+      } : undefined,
+      previous_analysis: params.previous_analysis ? {
+        overall_score: params.previous_analysis.overall_score,
+        quality_grade: params.previous_analysis.quality_grade,
+        quality_gate_passed: params.previous_analysis.overall_score >= 70,
+        dimension_scores: {
+          content_quality: 0,
+          visual_appeal: 0,
+          technical_compliance: 0,
+          emotional_resonance: 0,
+          brand_alignment: 0
+        },
+        recommendations: [],
+        auto_executable_count: 0,
+        manual_approval_count: 0,
+        critical_issues_count: 0,
+        improvement_potential: 0,
+        estimated_final_score: params.previous_analysis.overall_score,
+        max_achievable_score: 100,
+        analysis_time: 0,
+        confidence_level: 0.8,
+        analyzed_elements: []
+      } : undefined,
+      iteration_count: params.iteration_count,
+      improvement_history: (params.improvement_history || []).map(item => ({
+        iteration_number: item.iteration,
+        timestamp: new Date(),
+        initial_score: item.score,
+        final_score: item.score,
+        score_improvement: 0,
+        recommendations_applied: item.changes_made,
+        execution_results: [],
+        total_time: 0,
+        success: true,
+        error_message: undefined,
+        consultant_response: undefined
+      }))
+    };
+    
+    // Get AI consultation with detailed logging
+    console.log(`🔍 T11: Starting AI quality analysis...`);
+    console.log(`📋 T11: Request details: Topic="${params.topic}", Campaign="${params.campaign_type}", Iteration=${params.iteration_count}`);
+    
+    const consultation = await consultant.consultOnQuality(consultantRequest);
+    
+    // Log detailed analysis results
+    console.log(`\n🤖 === AI QUALITY CONSULTANT ANALYSIS ===`);
+    console.log(`📊 Overall Score: ${consultation.analysis.overall_score}/100`);
+    console.log(`🎯 Quality Grade: ${consultation.analysis.quality_grade}`);
+    console.log(`🔍 Issues Found: ${consultation.analysis.critical_issues_count} critical`);
+    
+    if (consultation.analysis.critical_issues_count > 0) {
+      console.log(`\n⚠️ Critical Issues Identified: ${consultation.analysis.critical_issues_count}`);
+    }
+    
+    console.log(`\n💡 Recommendations (${consultation.analysis.recommendations.length}):`);
+    consultation.analysis.recommendations.forEach((rec, i) => {
+      console.log(`  ${i + 1}. [${rec.priority}] ${rec.title}`);
+      console.log(`     📝 ${rec.description}`);
+      console.log(`     📈 Expected improvement: ${rec.estimated_improvement}%`);
+      console.log(`     ⏱️ Estimated time: ${rec.estimated_time}`);
+      if (rec.auto_execute) {
+        console.log(`     🤖 Auto-executable: ${rec.agent_command || 'Yes'}`);
+      }
+    });
+    
+    console.log(`\n🎯 Next Actions:`);
+    consultation.next_actions.forEach((action, i) => {
+      console.log(`  ${i + 1}. ${action.type}: ${action.description}`);
+    });
+    
+    console.log(`🚦 Quality Gate: ${consultation.analysis.overall_score >= 70 ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(`🔄 Should Continue: ${consultation.should_continue ? 'Yes' : 'No'}`);
+    console.log(`📝 Completion Reason: ${consultation.completion_reason}`);
+    console.log(`🤖 === END AI CONSULTANT ANALYSIS ===\n`);
+    
+    // Format response for agent
+    const response = formatConsultationResponse(consultation, params);
+    
+    console.log(`✅ T11: Analysis complete - Score: ${consultation.analysis.overall_score}/100, Grade: ${consultation.analysis.quality_grade}`);
+    console.log(`🎯 T11: ${consultation.analysis.recommendations.length} recommendations generated`);
+    
+    return response;
+    
+  } catch (error) {
+    console.error('❌ T11: AI Quality Consultant failed:', error);
+    
+    // Return fallback response
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+      quality_gate_passed: false,
+      score: 0,
+      recommendations: [],
+      next_action: 'escalate',
+      message: 'AI Quality Consultant encountered an error - manual review required'
+    };
+  }
+}
+
+/**
+ * Format consultation response for agent consumption
+ */
+function formatConsultationResponse(consultation: AIConsultantResponse, params: AIQualityConsultantParams) {
+  const { analysis, execution_plan, next_actions, should_continue, completion_reason } = consultation;
+  
+  // Determine primary next action
+  const primaryAction = next_actions[0];
+  let nextActionType = 'complete';
+  let actionDescription = 'Email quality is acceptable';
+  
+  if (primaryAction) {
+    nextActionType = primaryAction.type;
+    actionDescription = primaryAction.description;
+  }
+  
+  // Format recommendations for easy consumption
+  const formattedRecommendations = analysis.recommendations.map(rec => ({
+    id: rec.id,
+    type: rec.type,
+    priority: rec.priority,
+    category: rec.category,
+    title: rec.title,
+    description: rec.description,
+    reasoning: rec.reasoning,
+    estimated_improvement: rec.estimated_improvement,
+    estimated_time: rec.estimated_time,
+    auto_execute: rec.auto_execute,
+    requires_approval: rec.requires_approval,
+    agent_command: rec.agent_command
+  }));
+  
+  // Create execution summary
+  const executionSummary = {
+    total_recommendations: execution_plan.total_recommendations,
+    auto_executable: execution_plan.auto_execute_actions.length,
+    manual_approval: execution_plan.manual_approval_actions.length,
+    critical_review: execution_plan.critical_review_actions.length,
+    estimated_time: execution_plan.estimated_total_time
+  };
+  
+  return {
+    // Core results
+    success: true,
+    quality_gate_passed: analysis.quality_gate_passed,
+    score: analysis.overall_score,
+    grade: analysis.quality_grade,
+    confidence: analysis.confidence_level,
+    
+    // Dimensional breakdown
+    dimension_scores: analysis.dimension_scores,
+    improvement_potential: analysis.improvement_potential,
+    estimated_final_score: analysis.estimated_final_score,
+    
+    // Recommendations and actions
+    recommendations: formattedRecommendations,
+    execution_summary: executionSummary,
+    next_action: nextActionType,
+    action_description: actionDescription,
+    
+    // Workflow control
+    should_continue: should_continue,
+    completion_reason: completion_reason,
+    iteration_count: params.iteration_count,
+    
+    // Auto-execution commands (if any)
+    auto_execute_commands: execution_plan.auto_execute_actions,
+    manual_approval_commands: execution_plan.manual_approval_actions,
+    
+    // Analytics
+    analysis_time: analysis.analysis_time,
+    analyzed_elements: analysis.analyzed_elements.length,
+    
+    // Status message
+    message: generateStatusMessage(analysis, nextActionType, should_continue)
+  };
+}
+
+/**
+ * Generate human-readable status message
+ */
+function generateStatusMessage(analysis: QualityAnalysisResult, nextAction: string, shouldContinue: boolean): string {
+  const score = analysis.overall_score;
+  const grade = analysis.quality_grade;
+  const recCount = analysis.recommendations.length;
+  
+  if (analysis.quality_gate_passed) {
+    return `✅ Quality gate passed! Score: ${score}/100 (Grade ${grade}). Email ready for upload.`;
+  }
+  
+  if (nextAction === 'auto_execute') {
+    return `🔄 Score: ${score}/100 (Grade ${grade}). ${analysis.auto_executable_count} improvements will be applied automatically.`;
+  }
+  
+  if (nextAction === 'request_approval') {
+    return `👤 Score: ${score}/100 (Grade ${grade}). ${analysis.manual_approval_count} improvements need your approval.`;
+  }
+  
+  if (nextAction === 'escalate') {
+    return `⚠️ Score: ${score}/100 (Grade ${grade}). Critical issues detected - manual review required.`;
+  }
+  
+  if (!shouldContinue) {
+    return `🏁 Final score: ${score}/100 (Grade ${grade}). ${recCount} recommendations generated. Ready for upload.`;
+  }
+  
+  return `📊 Score: ${score}/100 (Grade ${grade}). ${recCount} recommendations generated for improvement.`;
+}
+
+// Export the tool configuration
+export const aiQualityConsultantTool = {
+  name: 'ai_quality_consultant',
+  description: 'T11: Intelligent email quality analysis and improvement recommendations with automated execution',
+  parameters: aiQualityConsultantSchema,
+  function: aiQualityConsultant
+};
+
+// Type exports for use in other modules
+export { AIQualityConsultant } from './ai-consultant/ai-consultant';
+export * from './ai-consultant/types'; 

@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Custom Brand Colors === */
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 20, 28, 40;     /* Much darker background */
+  --background-end-rgb: 20, 28, 40;       /* Much darker background */
+  
+  /* Brand Colors (comma-separated for better compatibility) */
+  --color-primary: 29, 168, 87;          /* #1DA857 - logo green */
+  --color-primary-dark: 20, 120, 62;     /* darker green */
+  --color-accent: 75, 255, 126;          /* #4BFF7E - glowing green */
+  --color-warning: 255, 200, 0;          /* #FFC800 */
+  --color-background: 20, 28, 40;        /* Much darker background */
+  --color-background-light: 30, 38, 50;  /* lighter variant */
+  --color-primary-foreground: 255, 255, 255;
+  --color-accent-foreground: 0, 0, 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 20, 28, 40;
+    --background-end-rgb: 20, 28, 40;
+    /* Keep same colors for dark mode */
+    --color-primary: 29, 168, 87;
+    --color-primary-dark: 20, 120, 62;
+    --color-accent: 75, 255, 126;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+}

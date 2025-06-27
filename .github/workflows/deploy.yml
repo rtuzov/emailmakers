@@ -1,0 +1,319 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18.x'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    name: Test & Quality Checks
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: emailmakers_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run type checking
+        run: npm run type-check
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Run unit tests
+        run: npm run test:coverage
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/emailmakers_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-jwt-secret
+          ENCRYPTION_SECRET: test-encryption-secret-32-chars-long
+      
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/emailmakers_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-jwt-secret
+          ENCRYPTION_SECRET: test-encryption-secret-32-chars-long
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run security audit
+        run: npm audit --audit-level moderate
+      
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+      
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  build:
+    name: Build & Push Docker Image
+    needs: [test, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: staging
+      url: https://staging.emailmakers.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # In a real scenario, this would deploy to your staging environment
+          # Example: kubectl apply -f k8s/staging/ or docker-compose up -d
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.STAGING_DEPLOY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"image": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"}' \
+            ${{ secrets.STAGING_DEPLOY_WEBHOOK_URL }}
+      
+      - name: Run staging health check
+        run: |
+          sleep 60  # Wait for deployment to complete
+          curl -f https://staging.emailmakers.com/api/health || exit 1
+      
+      - name: Run E2E tests against staging
+        run: npm run test:e2e:staging
+        env:
+          E2E_BASE_URL: https://staging.emailmakers.com
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [deploy-staging]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: production
+      url: https://emailmakers.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.PRODUCTION_DEPLOY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "image": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}",
+              "strategy": "rolling",
+              "health_check_url": "/api/health"
+            }' \
+            ${{ secrets.PRODUCTION_DEPLOY_WEBHOOK_URL }}
+      
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for deployment to complete..."
+          timeout 600 bash -c 'until curl -f https://emailmakers.com/api/health; do sleep 10; done'
+      
+      - name: Run production health check
+        run: |
+          # Comprehensive health check
+          response=$(curl -s https://emailmakers.com/api/health)
+          status=$(echo $response | jq -r '.status')
+          
+          if [ "$status" != "healthy" ]; then
+            echo "Production health check failed: $status"
+            exit 1
+          fi
+          
+          echo "Production deployment successful!"
+      
+      - name: Run smoke tests
+        run: npm run test:smoke:production
+        env:
+          E2E_BASE_URL: https://emailmakers.com
+      
+      - name: Notify deployment success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: |
+            🚀 Production deployment successful!
+            
+            **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
+            **Author:** ${{ github.actor }}
+            **URL:** https://emailmakers.com
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  rollback:
+    name: Rollback on Failure
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    if: failure() && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Rollback production deployment
+        run: |
+          echo "Rolling back production deployment..."
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.PRODUCTION_DEPLOY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"action": "rollback"}' \
+            ${{ secrets.PRODUCTION_ROLLBACK_WEBHOOK_URL }}
+      
+      - name: Notify rollback
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            ⚠️ Production deployment failed and was rolled back!
+            
+            **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
+            **Author:** ${{ github.actor }}
+            **Logs:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  performance-monitoring:
+    name: Performance Monitoring
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Run performance tests
+        run: |
+          echo "Running performance monitoring..."
+          # Example: Run Lighthouse CI, load testing, etc.
+          npx lighthouse-ci autorun --upload.target=temporary-public-storage
+      
+      - name: Check performance metrics
+        run: |
+          # Check key performance metrics
+          response=$(curl -s https://emailmakers.com/api/health)
+          avg_response_time=$(echo $response | jq -r '.metrics.averageResponseTime')
+          
+          if (( $(echo "$avg_response_time > 2000" | bc -l) )); then
+            echo "Warning: Average response time is high: ${avg_response_time}ms"
+          fi 

@@ -1,0 +1,79 @@
+{
+  "description": "PostgreSQL MCP configurations for different databases",
+  "configurations": {
+    "trading": {
+      "mcpServers": {
+        "postgres-trading": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/trading"
+          }
+        }
+      }
+    },
+    "keycloak": {
+      "mcpServers": {
+        "postgres-keycloak": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/keycloak"
+          }
+        }
+      }
+    },
+    "analytics": {
+      "mcpServers": {
+        "postgres-analytics": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/analytics"
+          }
+        }
+      }
+    },
+    "temporal": {
+      "mcpServers": {
+        "postgres-temporal": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/temporal"
+          }
+        }
+      }
+    },
+    "multiple-databases": {
+      "mcpServers": {
+        "postgres-trading": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/trading"
+          }
+        },
+        "postgres-keycloak": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/keycloak"
+          }
+        },
+        "postgres-analytics": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-postgres"],
+          "env": {
+            "POSTGRES_CONNECTION_STRING": "postgresql://postgres:9ca27feda02835c9fa2b0145893d0bd100234d5c452a30f7d86b4cfe51dba5a3@localhost:5432/analytics"
+          }
+        }
+      }
+    }
+  },
+  "usage_instructions": {
+    "single_database": "Copy the desired configuration from above and merge it into your .cursor/mcp.json file",
+    "multiple_databases": "Use the multiple-databases configuration to connect to all databases simultaneously",
+    "switching_databases": "Replace the mcpServers section in .cursor/mcp.json with the desired configuration"
+  }
+} 

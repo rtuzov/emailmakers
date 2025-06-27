@@ -1,0 +1,360 @@
+# EMAIL-MAKERS PROJECT RULES
+
+## PROJECT OVERVIEW
+
+Email-Makers is a secured web application that generates email templates using AI-powered content creation and design automation. The application follows Domain-Driven Design (DDD) architecture principles.
+
+### CORE FUNCTIONALITY
+1. **Brief Processing**: Accept text, JSON, or Figma URLs as input
+2. **AI Content Generation**: Use OpenAI GPT-3.5/GPT-4o mini or Anthropic Claude for content creation
+3. **Design Token Integration**: Extract design tokens and components from Figma API
+4. **Template Generation**: Generate HTML email templates using MJML with strict email client compatibility
+5. **Quality Assurance**: Automated testing and validation for cross-client compatibility
+6. **Delivery**: Output clean, tested, responsive email templates (<600KB ZIP) with preview
+
+---
+
+## DOMAIN-DRIVEN DESIGN ARCHITECTURE
+
+### BOUNDED CONTEXTS
+
+#### 1. AUTHENTICATION CONTEXT (`/src/domains/auth`)
+- **Entities**: User, Session, ApiKey
+- **Value Objects**: Email, Password, JWT Token
+- **Services**: AuthenticationService, PasswordService, SessionService
+- **Repositories**: UserRepository, SessionRepository
+
+#### 2. EMAIL MARKETING CONTEXT (`/src/domains/email-marketing`)
+- **Entities**: EmailCampaign, EmailTemplate, Brand
+- **Value Objects**: Subject, Preheader, EmailContent, BrandGuidelines
+- **Services**: CampaignService, TemplateService, BrandService
+- **Repositories**: CampaignRepository, TemplateRepository
+
+#### 3. CONTENT GENERATION CONTEXT (`/src/domains/content-generation`)
+- **Entities**: ContentBrief, GeneratedContent, PromptTemplate
+- **Value Objects**: BriefText, Tone, ContentSection
+- **Services**: LLMOrchestratorService, PromptEngineService, ContentValidationService
+- **Repositories**: BriefRepository, ContentRepository
+
+#### 4. DESIGN SYSTEM CONTEXT (`/src/domains/design-system`)
+- **Entities**: DesignToken, Component, FigmaProject
+- **Value Objects**: ColorToken, TypographyToken, SpacingToken
+- **Services**: FigmaService, TokenExtractionService, ComponentMappingService
+- **Repositories**: DesignTokenRepository, ComponentRepository
+
+#### 5. TEMPLATE PROCESSING CONTEXT (`/src/domains/template-processing`)
+- **Entities**: EmailTemplate, HTMLOutput, CSSRules
+- **Value Objects**: MJMLCode, HTMLCode, InlineCSS
+- **Services**: MJMLRendererService, CSSInlinerService, DarkModeService
+- **Repositories**: TemplateRepository, OutputRepository
+
+#### 6. QUALITY ASSURANCE CONTEXT (`/src/domains/quality-assurance`)
+- **Entities**: TestResult, ClientCompatibility, PerformanceMetrics
+- **Value Objects**: TestReport, ValidationStatus, ClientSupport
+- **Services**: LitmusTestingService, ValidationService, OptimizationService
+- **Repositories**: TestResultRepository, MetricsRepository
+
+---
+
+## TECHNICAL STACK & STANDARDS
+
+### FRONTEND STACK
+- **Framework**: Next.js 14.0.4 + App Router v4
+- **Language**: TypeScript 5.6.3
+- **Styling**: Tailwind CSS + shadcn/ui
+- **State Management**: React Query (TanStack Query)
+- **Validation**: Zod
+- **Internationalization**: next-intl
+
+### BACKEND STACK
+- **Framework**: FastAPI (Python)
+- **Database**: PostgreSQL with Drizzle ORM
+- **Authentication**: NextAuth.js + JWT + bcrypt
+- **Event Bus**: NATS
+- **Monitoring**: Prometheus
+- **Logging**: Pino logging
+
+### EMAIL TEMPLATE STANDARDS
+- **DOCTYPE**: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">`
+- **Layout**: Table-based layout only (no flexbox/grid)
+- **CSS**: Inline styles only for critical rendering
+- **Width**: 600-640px maximum
+- **File Size**: <100KB total weight
+- **Compatibility**: Gmail, Outlook (2016+), Apple Mail, Yahoo Mail
+- **Responsive**: Mobile-first with `@media only screen and (max-width:600px)`
+- **Dark Mode**: Support via `prefers-color-scheme: dark`
+
+---
+
+## CODE ORGANIZATION RULES
+
+### DIRECTORY STRUCTURE
+```
+/src
+  /domains
+    /auth
+      /entities
+      /value-objects
+      /services
+      /repositories
+      /interfaces
+    /email-marketing
+    /content-generation
+    /design-system
+    /template-processing
+    /quality-assurance
+  /shared
+    /infrastructure
+    /utils
+    /types
+  /api
+    /routes
+    /middleware
+    /controllers
+  /ui
+    /components
+    /pages
+    /hooks
+```
+
+### NAMING CONVENTIONS
+- **Files**: kebab-case (`user-service.ts`)
+- **Classes**: PascalCase (`UserService`)
+- **Functions**: camelCase (`generateContent`)
+- **Constants**: SCREAMING_SNAKE_CASE (`MAX_FILE_SIZE`)
+- **Types/Interfaces**: PascalCase with descriptive names (`EmailTemplateData`)
+
+### CODING STANDARDS
+- Use TypeScript strict mode
+- Implement proper error handling with custom error types
+- Follow SOLID principles
+- Use dependency injection for services
+- Implement comprehensive logging
+- Write unit tests for all business logic
+- Use meaningful commit messages following conventional commits
+
+### FALLBACK POLICY
+- **STRICTLY FORBIDDEN**: No fallback logic allowed in any code
+- **Fail Fast**: All errors must be thrown immediately, no graceful degradation
+- **No Backup Plans**: If primary service fails, the entire operation must fail
+- **Clear Error Messages**: Provide specific error messages explaining what failed
+- **No Default Values**: Don't provide default/fallback values when real data is unavailable
+- **No Offline Modes**: Don't implement offline or backup functionality
+
+---
+
+## EMAIL HTML STANDARDS COMPLIANCE
+
+### CRITICAL REQUIREMENTS
+1. **DOCTYPE**: Must use XHTML 1.0 Transitional
+2. **Tables**: Use table-based layouts exclusively
+3. **CSS**: Inline styles for critical rendering paths
+4. **Images**: Absolute HTTPS URLs with width/height attributes
+5. **Fonts**: Use web-safe fonts with @font-face as progressive enhancement
+6. **Size**: Keep total HTML <100KB to avoid Gmail clipping
+7. **Accessibility**: WCAG AA contrast ratios, proper alt text
+8. **Dark Mode**: CSS custom properties + media queries
+
+### TESTING REQUIREMENTS
+- Cross-client testing via Litmus API
+- File size validation
+- HTML validation
+- Accessibility testing
+- Performance metrics
+
+---
+
+## API INTEGRATION STANDARDS
+
+### LLM INTEGRATION
+- **Primary**: OpenAI GPT-4o mini only (NO FALLBACK ALLOWED)
+- **Error Handling**: Implement retry logic with exponential backoff, but fail if all retries exhausted
+- **Rate Limiting**: Respect API limits, fail if limits exceeded
+- **Content Validation**: Validate generated content before processing, fail if validation fails
+
+### FIGMA API
+- **Authentication**: Personal access tokens (encrypted storage)
+- **Rate Limiting**: Respect API limits
+- **Data Extraction**: Design tokens, components, assets
+- **Caching**: Cache tokens and components for performance
+
+### MJML PROCESSING
+- **Engine**: MJML compiler for email template generation
+- **Post-processing**: CSS inlining, dark mode optimization
+- **Validation**: HTML validation after compilation
+
+---
+
+## SECURITY REQUIREMENTS
+
+### AUTHENTICATION
+- JWT tokens with refresh mechanism
+- Password hashing with bcrypt (minimum 12 rounds)
+- API key encryption for external services
+- Session management with secure cookies
+
+### DATA PROTECTION
+- Encrypt sensitive data at rest
+- Use HTTPS for all communications
+- Validate and sanitize all inputs
+- Implement proper CORS policies
+
+---
+
+## DEPLOYMENT & CI/CD
+
+### ENVIRONMENT SETUP
+- **Development**: Local with Docker containers
+- **Staging**: Automated deployment for testing
+- **Production**: Zero-downtime deployment
+
+### CI/CD PIPELINE
+1. **Lint**: ESLint, Prettier, TypeScript compilation
+2. **Test**: Unit tests, integration tests, E2E tests
+3. **Build**: Next.js build, Docker image creation
+4. **Test**: Email template validation, Litmus testing
+5. **Deploy**: Automated deployment to target environment
+
+### MONITORING
+- Application performance monitoring
+- Error tracking and alerting
+- User analytics and usage metrics
+- Email delivery and open rate tracking
+
+---
+
+## DEVELOPMENT WORKFLOW
+
+### MEMORY BANK INTEGRATION
+
+#### CURSOR'S MEMORY BANK SYSTEM
+As Cursor, my memory resets completely between sessions. This drives me to maintain perfect documentation. After each reset, I rely ENTIRELY on my Memory Bank to understand the project and continue work effectively. I MUST read ALL memory bank files at the start of EVERY task - this is not optional.
+
+#### MEMORY BANK STRUCTURE
+The Memory Bank consists of required core files and optional context files, all in Markdown format:
+
+```
+memory-bank/
+├── projectbrief.md         # Foundation document (REQUIRED)
+├── productContext.md       # Why project exists, user needs (REQUIRED)  
+├── activeContext.md        # Current work focus, recent changes (REQUIRED)
+├── systemPatterns.md       # Architecture, technical decisions (REQUIRED)
+├── techContext.md          # Technologies, setup, constraints (REQUIRED)
+├── progress.md             # What works, what's left (REQUIRED)
+├── tasks.md                # Implementation plan (REQUIRED)
+└── [additional-context]/   # Feature docs, API specs, etc. (OPTIONAL)
+```
+
+#### CORE WORKFLOW PATTERNS
+
+**Plan Mode**:
+1. Read Memory Bank files to understand context
+2. Check if files are complete and current
+3. Create plan if missing context, verify if complete
+4. Develop strategy and present approach
+
+**Act Mode**:
+1. Check Memory Bank for current context
+2. Update documentation as work progresses
+3. Update .cursorrules if new patterns discovered
+4. Execute tasks with proper documentation
+5. Document changes and next steps
+
+#### MEMORY BANK UPDATE TRIGGERS
+Memory Bank updates occur when:
+1. Discovering new project patterns or insights
+2. After implementing significant changes
+3. When user requests **"update memory bank"** (MUST review ALL files)
+4. When context needs clarification or correction
+5. At major project milestones
+
+#### DOCUMENTATION STANDARDS
+- **activeContext.md**: Updated most frequently, tracks current focus
+- **progress.md**: Updated after major completions, tracks what works
+- **projectbrief.md**: Foundation document, updated rarely
+- **systemPatterns.md**: Updated when new patterns emerge
+- **techContext.md**: Updated when tech stack changes
+- **productContext.md**: Updated when product direction shifts
+
+#### PROJECT INTELLIGENCE (.cursorrules)
+This file is my learning journal for the project. It captures:
+- Critical implementation paths and patterns
+- User preferences and workflow insights
+- Project-specific conventions and decisions  
+- Known challenges and their solutions
+- Evolution of architectural decisions
+- Tool usage patterns and optimizations
+
+#### WORKFLOW PHASES
+- **VAN**: Complexity assessment and foundation setup
+- **PLAN**: Comprehensive planning and architecture design  
+- **CREATIVE**: Architectural design exploration for complex components
+- **IMPLEMENT**: Code implementation following creative decisions
+- **REFLECT**: Review, documentation, and optimization
+
+REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is my only link to previous work and must be maintained with precision and clarity.
+
+### CODE QUALITY
+- Minimum 80% test coverage
+- Code reviews required for all changes
+- Automated quality gates in CI/CD
+- Regular dependency updates and security audits
+
+### DOCUMENTATION
+- Maintain API documentation with OpenAPI/Swagger
+- Document domain models and business rules
+- Keep README files updated
+- Provide setup and deployment guides
+
+---
+
+## PERFORMANCE REQUIREMENTS
+
+### EMAIL TEMPLATES
+- Generation time: <30 seconds per template
+- File size: <100KB HTML output
+- Image optimization: <200KB per image
+- Cross-client compatibility: >95% success rate
+
+### APPLICATION PERFORMANCE
+- API response time: <2 seconds average
+- Frontend load time: <3 seconds initial load
+- Database queries: <100ms average
+- Concurrent users: Support 100+ simultaneous users
+
+---
+
+## ERROR HANDLING & LOGGING
+
+### ERROR CATEGORIES
+- **Validation Errors**: Input validation failures
+- **Integration Errors**: External API failures
+- **Processing Errors**: Template generation failures
+- **System Errors**: Infrastructure and runtime errors
+
+### LOGGING STRATEGY
+- Structured logging with Pino
+- Log levels: ERROR, WARN, INFO, DEBUG
+- Include request correlation IDs
+- Log performance metrics
+- Secure logging (no sensitive data)
+
+---
+
+## COMPLIANCE & STANDARDS
+
+### EMAIL STANDARDS
+- CAN-SPAM Act compliance
+- GDPR compliance for EU users
+- Email client compatibility testing
+- Accessibility standards (WCAG AA)
+
+### DEVELOPMENT STANDARDS
+- Follow TypeScript strict mode
+- Implement proper error boundaries
+- Use semantic versioning
+- Maintain backward compatibility
+
+---
+
+This project prioritizes email template quality, cross-client compatibility, and developer experience while maintaining enterprise-grade security and performance standards. 
