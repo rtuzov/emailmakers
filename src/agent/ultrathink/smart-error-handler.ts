@@ -470,4 +470,27 @@ export class SmartErrorHandler {
   static resetRateLimitTracking(): void {
     this.rateLimitTracker = {};
   }
+
+  // Interface methods for IErrorHandler compatibility
+  static getErrorStrategy(tool: string, error: any): ErrorStrategy {
+    const errorType = this.identifyErrorType(error, tool);
+    const toolPatterns = this.errorPatterns[tool];
+    if (toolPatterns && toolPatterns[errorType]) {
+      return { ...toolPatterns[errorType] };
+    }
+    return this.getGenericStrategy(error, tool, 1);
+  }
+
+  static analyzeErrorContext(tool: string, error: any, context?: any): any {
+    return {
+      errorType: this.identifyErrorType(error, tool),
+      isRecoverable: this.isRecoverable(error, tool),
+      fallbackTool: this.getFallbackTool(tool),
+      context: context || {}
+    };
+  }
+
+  static async handleExecutionError(error: any, tool: string, attempt: number, context?: any): Promise<any> {
+    return await this.handleError(error, tool, attempt, context);
+  }
 }

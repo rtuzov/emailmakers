@@ -76,8 +76,7 @@ export async function POST(request: NextRequest) {
       
       const renderResult = await renderTest({
         html: testHtml,
-        subject: 'Test Email Subject',
-        test_name: 'Layout Validation Test'
+        subject: 'Test Email Subject'
       });
       results.render_test = renderResult;
     }
@@ -102,8 +101,7 @@ export async function POST(request: NextRequest) {
       
       const badRenderResult = await renderTest({
         html: badTestHtml,
-        subject: 'Bad Email Subject',
-        test_name: 'Bad Layout Validation Test'
+        subject: 'Bad Email Subject'
       });
       results.render_test_bad = badRenderResult;
     }

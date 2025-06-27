@@ -17,12 +17,12 @@ export const autoFixSchema = z.object({
     auto_fixable: z.boolean().describe('Whether this issue can be auto-fixed')
   })).describe('List of issues to automatically fix'),
   fix_preferences: z.object({
-    aggressive_fixes: z.boolean().default(false).describe('Apply aggressive fixes that might change layout'),
-    preserve_styling: z.boolean().default(true).describe('Try to preserve existing styling'),
-    optimize_for_client: z.enum(['outlook', 'gmail', 'apple_mail', 'universal']).default('universal').describe('Optimize specifically for email client'),
-    backup_original: z.boolean().default(true).describe('Keep reference to original content')
+    aggressive_fixes: z.boolean().describe('Apply aggressive fixes that might change layout'),
+    preserve_styling: z.boolean().describe('Try to preserve existing styling'),
+    optimize_for_client: z.enum(['outlook', 'gmail', 'apple_mail', 'universal']).describe('Optimize specifically for email client'),
+    backup_original: z.boolean().describe('Keep reference to original content')
   }).optional().nullable().describe('Preferences for fix application'),
-  validation_after_fix: z.boolean().default(true).describe('Validate HTML after applying fixes')
+  validation_after_fix: z.boolean().describe('Validate HTML after applying fixes')
 });
 
 export type AutoFixParams = z.infer<typeof autoFixSchema>;
@@ -74,10 +74,15 @@ export async function autoFix(params: AutoFixParams): Promise<AutoFixResult> {
   const originalSize = params.html_content.length;
   
   try {
+    // Validate required parameters - fail if missing
+    if (!params.validation_after_fix && params.validation_after_fix !== false) {
+      throw new Error('validation_after_fix parameter is required');
+    }
+    
     console.log('🔧 Starting auto-fix process:', {
       issues_count: params.issues_to_fix.length,
       fixable_issues: params.issues_to_fix.filter(i => i.auto_fixable).length,
-      optimize_for: params.fix_preferences?.optimize_for_client || 'universal'
+      optimize_for: params.fix_preferences?.optimize_for_client
     });
 
     let currentHtml = params.html_content;
@@ -101,7 +106,7 @@ export async function autoFix(params: AutoFixParams): Promise<AutoFixResult> {
       const fixResult = await applySingleFix(
         currentHtml, 
         issue, 
-        params.fix_preferences || {}
+        params.fix_preferences
       );
 
       if (fixResult.success) {
@@ -336,16 +341,13 @@ async function applySingleFix(
     if (issue.severity === 'critical' && fixedHtml === html) {
       try {
         const patchResult = await patchHtml({
-          original_html: html,
-          fixes_to_apply: [{
-            issue_type: issue.issue_type,
-            description: issue.description,
-            fix_strategy: 'automated'
-          }]
+          html: html,
+          issues: [issue.description],
+          patch_type: 'email_optimization'
         });
         
-        if (patchResult.success) {
-          fixedHtml = patchResult.patched_html;
+        if (patchResult.success && patchResult.data) {
+          fixedHtml = patchResult.data.patched_html;
           fixAction = 'Applied patch fix';
           impact = 'moderate';
         }

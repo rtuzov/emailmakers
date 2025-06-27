@@ -154,7 +154,7 @@ class UltraThinkComprehensiveTest {
       
       // Check if UltraThink is properly initialized
       const workflowMode = agent.getWorkflowMode();
-      if (workflowMode !== 'orchestrated') {
+      if (workflowMode !== 'multi_agent') {
         throw new Error('Agent not using orchestrated workflow');
       }
 
@@ -263,7 +263,7 @@ class UltraThinkComprehensiveTest {
       // Read from cache
       const cachedData = await cacheManager.get(testKey);
       
-      if (!cachedData || cachedData.test !== testData.test) {
+      if (!cachedData || (cachedData as any).test !== testData.test) {
         throw new Error('Cache write/read failed');
       }
 

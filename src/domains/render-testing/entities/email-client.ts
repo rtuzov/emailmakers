@@ -118,8 +118,8 @@ export const EmailClientSchema = z.object({
   testConfig: ClientTestConfigSchema,
   automationConfig: z.object({
     workerType: z.enum(['docker', 'vm', 'browser']),
-    containerImage: z.string().optional(),
-    vmTemplate: z.string().optional(),
+      containerImage: z.string().optional(),
+  vmTemplate: z.string().optional(),
     browserConfig: z.object({
       browser: z.enum(['chrome', 'firefox', 'safari', 'edge']).optional(),
       headless: z.boolean().default(true),

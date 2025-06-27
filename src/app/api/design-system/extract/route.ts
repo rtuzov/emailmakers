@@ -7,10 +7,10 @@ const ExtractDesignSystemSchema = z.object({
   figmaUrl: z.string().url('Invalid Figma URL format'),
   options: z.object({
     skipCache: z.boolean().optional(),
-    includeAssets: z.boolean().default(true),
-    includeComponents: z.boolean().default(true),
-    includeTokens: z.boolean().default(true),
-    optimizeForEmail: z.boolean().default(true)
+    includeAssets: z.boolean().optional(),
+    includeComponents: z.boolean().optional(),
+    includeTokens: z.boolean().optional(),
+    optimizeForEmail: z.boolean().optional()
   }).optional()
 });
 
@@ -21,105 +21,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Validate input
     const validatedData = ExtractDesignSystemSchema.parse(body);
     
-    // Mock response for demonstration - in production this would use FigmaService
-    const mockResponse = {
-      success: true,
-      data: {
-        designSystem: {
-          tokens: {
-            colors: [
-              {
-                name: 'primary',
-                value: '#007bff',
-                emailSafe: true,
-                darkModeVariant: '#0d6efd'
-              },
-              {
-                name: 'secondary',
-                value: '#6c757d',
-                emailSafe: true,
-                darkModeVariant: '#495057'
-              }
-            ],
-            typography: [
-              {
-                name: 'heading',
-                fontFamily: 'Arial',
-                fontSize: 24,
-                fontWeight: 700,
-                lineHeight: 1.2,
-                emailSafe: true,
-                fallbacks: ['Helvetica', 'sans-serif']
-              },
-              {
-                name: 'body',
-                fontFamily: 'Arial',
-                fontSize: 16,
-                fontWeight: 400,
-                lineHeight: 1.5,
-                emailSafe: true,
-                fallbacks: ['Helvetica', 'sans-serif']
-              }
-            ],
-            spacing: [
-              {
-                name: 'small',
-                value: 8,
-                emailSafe: true
-              },
-              {
-                name: 'medium',
-                value: 16,
-                emailSafe: true
-              },
-              {
-                name: 'large',
-                value: 32,
-                emailSafe: true
-              }
-            ]
-          },
-          components: [
-            {
-              id: 'button-primary',
-              name: 'Primary Button',
-              type: 'button',
-              emailMapping: {
-                htmlStructure: 'table',
-                cssProperties: {
-                  'background-color': '#007bff',
-                  'color': '#ffffff',
-                  'padding': '12px 24px',
-                  'border-radius': '4px'
-                },
-                darkModeSupport: true
-              },
-              mjmlEquivalent: 'mj-button'
-            }
-          ],
-          assets: [
-            {
-              id: 'logo',
-              name: 'Company Logo',
-              url: 'https://example.com/logo.png',
-              type: 'image',
-              optimized: true,
-              emailSafe: true
-            }
-          ],
-          metadata: {
-            projectId: 'mock-project-id',
-            extractedAt: new Date(),
-            version: '1.0.0',
-            totalTokens: 5,
-            totalComponents: 1,
-            totalAssets: 1
-          }
-        }
-      }
-    };
+    // Import FigmaService - fail fast if not available
+    const { FigmaService } = await import('@/domains/design-system/services/figma-service');
     
-    return NextResponse.json(mockResponse);
+    // Extract design system from Figma - no fallback, fail if service fails
+    const figmaService = new FigmaService({
+      accessToken: process.env.FIGMA_ACCESS_TOKEN || '',
+      rateLimitBuffer: 10,
+      cacheTimeout: 300000, // 5 minutes
+      maxRetries: 3,
+      emailCompatibilityChecks: true
+    });
+    const designSystem = await figmaService.extractDesignSystem(
+      validatedData.figmaUrl
+    );
+    
+    return NextResponse.json({
+      success: true,
+      data: { designSystem }
+    });
     
   } catch (error) {
     console.error('Design system extraction error:', error);
@@ -163,7 +83,7 @@ export async function GET(): Promise<NextResponse> {
   return NextResponse.json({
     message: 'Design System Extraction API',
     version: '1.0.0',
-    status: 'active (mock)',
+    status: 'active',
     endpoint: 'POST /api/design-system/extract',
     description: 'Extract design tokens, components, and assets from Figma URLs',
     supportedFeatures: [
@@ -175,7 +95,6 @@ export async function GET(): Promise<NextResponse> {
       'Dark mode variant generation'
     ],
     requiredFields: ['figmaUrl'],
-    optionalFields: ['options'],
-    note: 'This is currently a mock implementation. Full Figma integration will be available in production.'
+    optionalFields: ['options']
   });
 } 

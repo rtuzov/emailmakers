@@ -162,9 +162,9 @@ export class PerformanceAnalysisService {
     const performanceTiming = await page.evaluate(() => {
       const perf = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       return {
-        domContentLoaded: perf?.domContentLoadedEventEnd - perf?.domContentLoadedEventStart || 0,
-        loadComplete: perf?.loadEventEnd - perf?.loadEventStart || 0,
-        renderTime: perf?.domInteractive - perf?.domLoading || 0,
+        domContentLoaded: (perf?.domContentLoadedEventEnd || 0) - (perf?.domContentLoadedEventStart || 0),
+        loadComplete: (perf?.loadEventEnd || 0) - (perf?.loadEventStart || 0),
+        renderTime: (perf?.domInteractive || 0) - (perf?.fetchStart || 0),
       };
     });
 

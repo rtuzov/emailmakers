@@ -14,16 +14,16 @@ import { RenderJobConfigSchema } from '@/domains/render-testing/entities/render-
 const CreateRenderJobSchema = z.object({
   htmlContent: z.string().min(1, 'HTML content is required'),
   config: RenderJobConfigSchema,
-  templateId: z.string().uuid().optional(),
-  subject: z.string().optional(),
-  preheader: z.string().optional(),
-  priority: z.number().min(1).max(5).optional()
+  templateId: z.string().uuid().optional().nullable(),
+  subject: z.string().optional().nullable(),
+  preheader: z.string().optional().nullable(),
+  priority: z.number().min(1).max(5).optional().nullable()
 });
 
 const ListJobsQuerySchema = z.object({
-  limit: z.string().transform(val => parseInt(val)).pipe(z.number().min(1).max(100)).optional(),
-  offset: z.string().transform(val => parseInt(val)).pipe(z.number().min(0)).optional(),
-  status: z.string().optional()
+  limit: z.string().transform(val => parseInt(val)).pipe(z.number().min(1).max(100)).optional().nullable(),
+  offset: z.string().transform(val => parseInt(val)).pipe(z.number().min(0)).optional().nullable(),
+  status: z.string().optional().nullable()
 });
 
 // Response schemas
@@ -33,17 +33,17 @@ const RenderJobResponseSchema = z.object({
   progress: z.object({
     percentage: z.number(),
     currentStep: z.string(),
-    estimatedTimeRemaining: z.number().optional()
+    estimatedTimeRemaining: z.number().optional().nullable()
   }),
   config: RenderJobConfigSchema,
-  templateId: z.string().optional(),
-  subject: z.string().optional(),
-  preheader: z.string().optional(),
+  templateId: z.string().optional().nullable(),
+  subject: z.string().optional().nullable(),
+  preheader: z.string().optional().nullable(),
   priority: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  estimatedDuration: z.number().optional(),
-  actualDuration: z.number().optional()
+  estimatedDuration: z.number().optional().nullable(),
+  actualDuration: z.number().optional().nullable()
 });
 
 const JobSummaryResponseSchema = z.object({
@@ -52,13 +52,13 @@ const JobSummaryResponseSchema = z.object({
   progress: z.object({
     percentage: z.number(),
     currentStep: z.string(),
-    estimatedTimeRemaining: z.number().optional()
+    estimatedTimeRemaining: z.number().optional().nullable()
   }),
   overallScore: z.number(),
   clientCount: z.number(),
   screenshotCount: z.number(),
   createdAt: z.string(),
-  estimatedCompletion: z.string().optional()
+  estimatedCompletion: z.string().optional().nullable()
 });
 
 // Initialize service (in real implementation, this would be dependency injected)
@@ -94,6 +94,13 @@ export async function POST(request: NextRequest) {
     // Create render job
     const job = await renderOrchestrationService.createRenderJob({
       userId,
+      htmlContent: validatedData.htmlContent || '<html><body>Test</body></html>',
+      config: validatedData.config || {
+        clients: ['gmail', 'outlook'],
+        viewports: [{ width: 600, height: 800, devicePixelRatio: 1, name: 'desktop' }],
+        darkModeEnabled: false,
+        screenshotQuality: 80
+      },
       ...validatedData
     });
 

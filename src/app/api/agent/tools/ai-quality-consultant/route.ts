@@ -22,10 +22,10 @@ export async function POST(request: NextRequest) {
     
     console.log('✅ AI Quality Consultant completed successfully');
     console.log('📊 Result summary:', {
-      status: result.status,
+      success: result.success,
       quality_gate_passed: result.quality_gate_passed,
       recommendations_count: result.recommendations?.length || 0,
-      analysis_score: result.analysis?.overall_score
+      overall_score: result.score
     });
     
     return NextResponse.json({

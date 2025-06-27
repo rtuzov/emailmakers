@@ -262,12 +262,11 @@ async function testEmailOnDevice(
   try {
     // Use existing render test tool if available
     const renderTestParams = {
-      html_content: htmlContent,
-      test_clients: [client],
-      test_devices: [device],
-      include_screenshots: testSettings?.take_screenshots || false,
-      test_settings: {
-        timeout: testSettings?.timeout_seconds || 30,
+      html: htmlContent,
+      subject: 'Email Test',
+      email_clients: [client].filter(c => ['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'].includes(c)) as Array<'gmail' | 'outlook' | 'apple_mail' | 'yahoo' | 'thunderbird'>,
+      test_options: {
+        timeout_seconds: testSettings?.timeout_seconds || 30,
         check_images: testSettings?.test_image_blocking || true
       }
     };
@@ -407,8 +406,8 @@ function checkClientDeviceSpecificIssues(client: string, device: string, htmlCon
     }
     
     // Check for touch-friendly buttons
-    const buttonMatches = htmlContent.match(/<a[^>]*>/gi) || [];
-    const hasTouchFriendlyButtons = buttonMatches.some(button => 
+    const buttonMatches: string[] = htmlContent.match(/<a[^>]*>/gi) || [];
+    const hasTouchFriendlyButtons = buttonMatches.some((button: string) => 
       button.includes('padding') || button.includes('height')
     );
     
@@ -488,9 +487,15 @@ function analyzeCrossClientResults(clientResults: Record<string, any>): any {
   // Calculate consistency score
   const clientScores = clients.map(client => {
     const deviceResults = Object.values(clientResults[client].device_results || {});
-    const avgScore = deviceResults.reduce((sum: number, result: any) => 
-      sum + (result.functionality_score + result.visual_score) / 2, 0) / deviceResults.length || 0;
-    return avgScore;
+    if (deviceResults.length === 0) return 0;
+    
+    const totalScore = deviceResults.reduce((sum: number, result: any) => {
+      const funcScore = typeof result.functionality_score === 'number' ? result.functionality_score : 0;
+      const visualScore = typeof result.visual_score === 'number' ? result.visual_score : 0;
+      const score = (funcScore + visualScore) / 2;
+      return sum + score;
+    }, 0);
+    return deviceResults.length > 0 ? (typeof totalScore === "number" ? totalScore : 0) / deviceResults.length : 0;
   });
 
   const maxScore = Math.max(...clientScores);

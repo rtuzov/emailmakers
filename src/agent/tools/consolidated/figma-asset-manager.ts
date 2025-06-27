@@ -22,21 +22,21 @@ export const figmaAssetManagerSchema = z.object({
   // For search action (replaces get_figma_assets)
   tags: z.array(z.string()).optional().nullable().describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
   search_context: z.object({
-    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).nullable().optional().nullable().describe('Type of email campaign'),
-    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).nullable().optional().nullable().describe('Emotional tone of the campaign'),
-    target_count: z.number().nullable().optional().nullable().describe('Number of assets to return (default: 2)'),
-    diversity_mode: z.boolean().nullable().optional().nullable().describe('Select diverse assets from different categories'),
-    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).nullable().optional().nullable().describe('Preferred rabbit emotion'),
-    airline: z.string().nullable().optional().nullable().describe('Specific airline for logo search'),
-    use_local_only: z.boolean().nullable().optional().nullable().describe('Force local-only search (always true now)')
-  }).nullable().optional().nullable().describe('Search context for intelligent asset selection'),
+    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).optional().nullable().describe('Type of email campaign'),
+    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).optional().nullable().describe('Emotional tone of the campaign'),
+    target_count: z.number().optional().nullable().describe('Number of assets to return (default: 2)'),
+    diversity_mode: z.boolean().optional().nullable().describe('Select diverse assets from different categories'),
+    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).optional().nullable().describe('Preferred rabbit emotion'),
+    airline: z.string().optional().nullable().describe('Specific airline for logo search'),
+    use_local_only: z.boolean().optional().nullable().describe('Force local-only search (always true now)')
+  }).optional().nullable().describe('Search context for intelligent asset selection'),
   
   // For split_sprite action
   sprite_path: z.string().optional().nullable().describe('Path to the PNG sprite file to split'),
   split_options: z.object({
-    h_gap: z.number().nullable().default(15).describe('Horizontal gap threshold in pixels'),
-    v_gap: z.number().nullable().default(15).describe('Vertical gap threshold in pixels'),
-    confidence_threshold: z.number().nullable().default(0.9).describe('Minimum confidence threshold for classification')
+    h_gap: z.number().default(15).describe('Horizontal gap threshold in pixels'),
+    v_gap: z.number().default(15).describe('Vertical gap threshold in pixels'),
+    confidence_threshold: z.number().default(0.9).describe('Minimum confidence threshold for classification')
   }).optional().nullable().describe('Sprite splitting options'),
   
   // For select_identica action
@@ -53,7 +53,7 @@ export const figmaAssetManagerSchema = z.object({
   // For bulk_process action
   bulk_operations: z.array(z.object({
     operation: z.enum(['search', 'split', 'analyze']),
-    parameters: z.object({}).optional().nullable()
+    parameters: z.object({}).passthrough().optional().nullable()
   })).optional().nullable().describe('Multiple operations to perform in sequence'),
   
   // Common options
@@ -211,7 +211,7 @@ async function handleAssetSearch(params: FigmaAssetManagerParams, startTime: num
 async function handleListFolders(params: FigmaAssetManagerParams, startTime: number): Promise<FigmaAssetManagerResult> {
   console.log('📁 Listing Figma folders information');
   
-  const foldersResult = await getLocalFigmaFoldersInfo({});
+  const foldersResult = await getLocalFigmaFoldersInfo();
   
   if (!foldersResult.success) {
     throw new Error(`Failed to get folders info: ${foldersResult.error}`);
@@ -257,16 +257,16 @@ async function handleSpriteSpitting(params: FigmaAssetManagerParams, startTime: 
     throw new Error(`Sprite splitting failed: ${splitResult.error}`);
   }
   
-  console.log(`✅ Sprite split into ${splitResult.data?.slices?.length || 0} components`);
+  console.log(`✅ Sprite split into ${splitResult.manifest?.slices?.length || 0} components`);
   
   return {
     success: true,
     action: 'split_sprite',
-    data: splitResult.data,
-    sprite_results: splitResult.data,
+    data: splitResult,
+    sprite_results: splitResult,
     analytics: params.include_analytics ? {
       execution_time: Date.now() - startTime,
-      assets_found: splitResult.data?.slices?.length || 0,
+      assets_found: splitResult.manifest?.slices?.length || 0,
       operations_performed: 1
     } : undefined
   };
@@ -377,7 +377,7 @@ async function handleAssetAnalysis(params: FigmaAssetManagerParams, startTime: n
   console.log('📊 Analyzing available assets');
   
   // Get comprehensive folder info
-  const foldersResult = await getLocalFigmaFoldersInfo({});
+  const foldersResult = await getLocalFigmaFoldersInfo();
   
   if (!foldersResult.success) {
     throw new Error(`Failed to analyze assets: ${foldersResult.error}`);

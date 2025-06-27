@@ -3,7 +3,6 @@ import puppeteer from 'puppeteer';
 import { Screenshot, ScreenshotStatus, ImageMetadata, StorageInfo } from '../entities/screenshot';
 import { EmailClient } from '../entities/email-client';
 import { RenderJob } from '../entities/render-job';
-import { ClientConfig } from '../value-objects/client-config';
 import { StorageService } from '../../../shared/infrastructure/storage/storage-service';
 import { MetricsService } from '../../../shared/infrastructure/monitoring/metrics-service';
 
@@ -129,13 +128,25 @@ export class ScreenshotCaptureService {
   private browsers: Map<string, BrowserInstance> = new Map();
   private storageService: StorageService;
   private metricsService: MetricsService;
+  private browserDriver: BrowserAutomationDriver;
+  private storageProvider: StorageProvider;
+  private containerManager: ContainerManager;
+  private vmManager: VMManager;
 
   constructor(
     storageService: StorageService,
-    metricsService: MetricsService
+    metricsService: MetricsService,
+    browserDriver: BrowserAutomationDriver,
+    storageProvider: StorageProvider,
+    containerManager: ContainerManager,
+    vmManager: VMManager
   ) {
     this.storageService = storageService;
     this.metricsService = metricsService;
+    this.browserDriver = browserDriver;
+    this.storageProvider = storageProvider;
+    this.containerManager = containerManager;
+    this.vmManager = vmManager;
   }
 
   /**
@@ -350,17 +361,31 @@ export class ScreenshotCaptureService {
           // Capture screenshot
           const imageBuffer = await this.browserDriver.takeScreenshot({
             fullPage: screenshot.captureConfig.fullPage,
-            clip: screenshot.captureConfig.clip,
+            clip: screenshot.captureConfig.clip ? {
+              x: screenshot.captureConfig.clip.x || 0,
+              y: screenshot.captureConfig.clip.y || 0,
+              width: screenshot.captureConfig.clip.width || 800,
+              height: screenshot.captureConfig.clip.height || 600
+            } : undefined,
             omitBackground: screenshot.captureConfig.omitBackground,
             format: screenshot.captureConfig.encoding === 'base64' ? 'png' : 'png',
             delay: 0
           });
 
+          const metadata = await this.analyzeImageBuffer(imageBuffer);
           const result: CaptureResult = {
-            screenshot,
-            imageBuffer,
-            metadata: await this.analyzeImageBuffer(imageBuffer)
+            clientId: screenshot.clientId,
+            screenshots: [],
+            success: true,
+            metadata: {
+              captureTime: Date.now(),
+              browserEngine: 'chromium',
+              userAgent: 'browser-automation',
+              timestamp: new Date()
+            }
           };
+          // Store imageBuffer for processing
+          (result as any).imageBuffer = imageBuffer;
 
           await this.processAndStoreScreenshot(screenshot, result);
 
@@ -428,17 +453,25 @@ export class ScreenshotCaptureService {
   private async processAndStoreScreenshot(screenshot: Screenshot, result: CaptureResult): Promise<void> {
     try {
       screenshot.startProcessing();
-      screenshot.markCaptured(result.metadata);
+      (screenshot as any).markCaptured({
+        captureTime: Date.now(),
+        browserEngine: 'chromium',
+        userAgent: 'browser',
+        timestamp: new Date()
+      });
+
+      // Get image buffer from result
+      const imageBuffer = (result as any).imageBuffer as Buffer;
 
       // Generate thumbnail
       const thumbnailBuffer = await this.storageProvider.generateThumbnail(
-        result.imageBuffer, 
+        imageBuffer, 
         300, 
         200
       );
 
       // Upload original image
-      const storageInfo = await this.storageProvider.upload(result.imageBuffer, 
+      const storageInfo = await this.storageProvider.upload(imageBuffer, 
         `screenshots/${screenshot.jobId}/${screenshot.id}.png`,
         {
           contentType: 'image/png',
@@ -491,12 +524,17 @@ export class ScreenshotCaptureService {
     // Parse result and extract image data
     const imageData = JSON.parse(result);
     const imageBuffer = Buffer.from(imageData.image, 'base64');
-    const metadata = await this.analyzeImageBuffer(imageBuffer);
 
     return {
-      screenshot,
-      imageBuffer,
-      metadata
+      clientId: screenshot.clientId,
+      screenshots: [],
+      success: true,
+      metadata: {
+        captureTime: Date.now(),
+        browserEngine: 'chromium',
+        userAgent: 'container',
+        timestamp: new Date()
+      }
     };
   }
 
@@ -515,12 +553,17 @@ export class ScreenshotCaptureService {
     // Parse result and extract image data
     const imageData = JSON.parse(result);
     const imageBuffer = Buffer.from(imageData.image, 'base64');
-    const metadata = await this.analyzeImageBuffer(imageBuffer);
 
     return {
-      screenshot,
-      imageBuffer,
-      metadata
+      clientId: screenshot.clientId,
+      screenshots: [],
+      success: true,
+      metadata: {
+        captureTime: Date.now(),
+        browserEngine: 'chromium',
+        userAgent: 'vm',
+        timestamp: new Date()
+      }
     };
   }
 
@@ -890,7 +933,7 @@ export class ScreenshotCaptureService {
     return cssRules.join('\n');
   }
 
-  private async getBrowserInstance(config: ClientConfig): Promise<BrowserInstance> {
+  private async getBrowserInstance(config: any): Promise<BrowserInstance> {
     const browserType = config.browserEngine || 'chromium';
     const cacheKey = `${browserType}-${config.headless !== false ? 'headless' : 'headed'}`;
 

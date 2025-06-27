@@ -30,7 +30,7 @@ describe('UltraThink Service Registry', () => {
     
     expect(instance1).toBeDefined();
     expect(instance2).toBeDefined();
-    expect(instance1.id).not.toBe(instance2.id); // Different instances
+    expect((instance1 as any).id).not.toBe((instance2 as any).id); // Different instances
   });
 
   /**
@@ -44,7 +44,7 @@ describe('UltraThink Service Registry', () => {
     
     expect(instance1).toBeDefined();
     expect(instance2).toBeDefined();
-    expect(instance1.id).toBe(instance2.id); // Same instance
+    expect((instance1 as any).id).toBe((instance2 as any).id); // Same instance
     expect(container.isSingleton('SingletonService')).toBe(true);
   });
 
@@ -79,19 +79,19 @@ describe('UltraThink Service Registry', () => {
     // Test resolving core services
     const engine = container.resolve(SERVICE_TOKENS.UltraThinkEngine);
     expect(engine).toBeDefined();
-    expect(typeof engine.enhanceRequest).toBe('function');
+    expect(typeof (engine as any).enhanceRequest).toBe('function');
 
     const qualityController = container.resolve(SERVICE_TOKENS.QualityController);
     expect(qualityController).toBeDefined();
-    expect(typeof qualityController.validateQualityResult).toBe('function');
+    expect(typeof (qualityController as any).validateQualityResult).toBe('function');
 
     const logger = container.resolve(SERVICE_TOKENS.Logger);
     expect(logger).toBeDefined();
-    expect(typeof logger.log).toBe('function');
+    expect(typeof (logger as any).log).toBe('function');
 
     const configProvider = container.resolve(SERVICE_TOKENS.ConfigProvider);
     expect(configProvider).toBeDefined();
-    expect(typeof configProvider.getTimeConstants).toBe('function');
+    expect(typeof (configProvider as any).getTimeConstants).toBe('function');
   });
 
   /**
@@ -102,15 +102,15 @@ describe('UltraThink Service Registry', () => {
     
     const configProvider = container.resolve(SERVICE_TOKENS.ConfigProvider);
     
-    const timeConstants = configProvider.getTimeConstants();
+    const timeConstants = (configProvider as any).getTimeConstants();
     expect(timeConstants.EXECUTION_HISTORY_TTL_MS).toBe(3600000); // 1 hour
     expect(timeConstants.STANDARD_RETRY_DELAY_MS).toBe(1000); // 1 second
 
-    const limits = configProvider.getLimits();
+    const limits = (configProvider as any).getLimits();
     expect(limits.MAX_EXECUTION_HISTORY_SIZE).toBe(100);
     expect(limits.MAX_STRING_LENGTH).toBe(100);
 
-    const qualityConstants = configProvider.getQualityConstants();
+    const qualityConstants = (configProvider as any).getQualityConstants();
     expect(qualityConstants.DEFAULT_MINIMUM_SCORE).toBe(70);
     expect(qualityConstants.DEFAULT_AUTO_RETRY_COUNT).toBe(2);
   });
@@ -154,11 +154,11 @@ describe('UltraThink Service Registry', () => {
     
     const instance1 = container.resolve('ResetService');
     const instance2 = container.resolve('ResetService');
-    expect(instance1.id).toBe(instance2.id);
+    expect((instance1 as any).id).toBe((instance2 as any).id);
 
     container.resetSingleton('ResetService');
     const instance3 = container.resolve('ResetService');
-    expect(instance3.id).not.toBe(instance1.id); // New instance after reset
+    expect((instance3 as any).id).not.toBe((instance1 as any).id); // New instance after reset
   });
 
   /**
@@ -168,9 +168,9 @@ describe('UltraThink Service Registry', () => {
     const engine = UltraThinkServiceFactory.createConfiguredEngine({}, container);
     
     expect(engine).toBeDefined();
-    expect(typeof engine.enhanceRequest).toBe('function');
-    expect(typeof engine.validateQualityResult).toBe('function');
-    expect(typeof engine.handleExecutionError).toBe('function');
+    expect(typeof (engine as any).enhanceRequest).toBe('function');
+    expect(typeof (engine as any).validateQualityResult).toBe('function');
+    expect(typeof (engine as any).handleExecutionError).toBe('function');
 
     // Verify that the container is configured
     expect(container.isRegistered(SERVICE_TOKENS.UltraThinkEngine)).toBe(true);

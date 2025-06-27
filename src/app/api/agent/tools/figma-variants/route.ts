@@ -41,16 +41,19 @@ export async function POST(request: NextRequest) {
     const assets = result.data.paths || [];
     const metadata = result.data.metadata || {};
     
-    const variantInfo = Object.entries(metadata).map(([key, value]) => ({
-      filename: key,
-      path: value.path,
-      hasVariants: value.metadata?.variantInfo ? true : false,
-      variantDetails: value.metadata?.variantInfo || null,
-      score: value.metadata?.score,
-      category: value.metadata?.category,
-      emotionalTone: value.metadata?.emotionalTone,
-      selectionReason: value.metadata?.selectionReason
-    }));
+    const variantInfo = Object.entries(metadata).map(([key, value]) => {
+      const valueObj = value as any; // Type assertion for unknown metadata
+      return {
+        filename: key,
+        path: valueObj.path,
+        hasVariants: valueObj.metadata?.variantInfo ? true : false,
+        variantDetails: valueObj.metadata?.variantInfo || null,
+        score: valueObj.metadata?.score,
+        category: valueObj.metadata?.category,
+        emotionalTone: valueObj.metadata?.emotionalTone,
+        selectionReason: valueObj.metadata?.selectionReason
+      };
+    });
 
     const response = {
       success: true,

@@ -346,7 +346,7 @@ export class VisualValidator {
   private checkBrandFonts(htmlContent: string): { valid: boolean; details: any } {
     // Check for web-safe fonts and proper font stack
     const fontFamilyPattern = /font-family\s*:\s*([^;]+)/gi;
-    const matches = htmlContent.match(fontFamilyPattern) || [];
+    const matches: string[] = htmlContent.match(fontFamilyPattern) || [];
     
     const safeStacks = [
       'Arial, sans-serif',
@@ -358,7 +358,7 @@ export class VisualValidator {
     let hasValidFonts = true;
     const fontDetails: string[] = [];
     
-    matches.forEach(match => {
+    matches.forEach((match: string) => {
       const fontStack = match.replace('font-family:', '').trim();
       fontDetails.push(fontStack);
       
@@ -441,10 +441,10 @@ export class VisualValidator {
   
   private checkImageAltText(htmlContent: string): { valid: boolean; details: any } {
     // Check for images without alt text
-    const imgTags = htmlContent.match(/<img[^>]*>/gi) || [];
+    const imgTags: string[] = htmlContent.match(/<img[^>]*>/gi) || [];
     const imagesWithoutAlt: string[] = [];
     
-    imgTags.forEach(img => {
+    imgTags.forEach((img: string) => {
       if (!img.includes('alt=') || /alt\s*=\s*["']?\s*["']?/i.test(img)) {
         imagesWithoutAlt.push(img);
       }
@@ -477,13 +477,14 @@ export class VisualValidator {
   private checkTextReadability(htmlContent: string): { valid: boolean; details: any } {
     // Check font sizes and line spacing
     const fontSizePattern = /font-size\s*:\s*(\d+)px/gi;
-    const matches = htmlContent.match(fontSizePattern) || [];
+    const matches: string[] = htmlContent.match(fontSizePattern) || [];
     
     let hasReadableFonts = true;
     const smallFonts: number[] = [];
     
-    matches.forEach(match => {
-      const size = parseInt(match.match(/\d+/)?.[0] || '0');
+    matches.forEach((match: string) => {
+      const sizeMatch = match.match(/\d+/);
+      const size = parseInt(sizeMatch?.[0] || '0');
       if (size < 14) {
         hasReadableFonts = false;
         smallFonts.push(size);

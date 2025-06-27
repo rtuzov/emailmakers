@@ -71,8 +71,8 @@ export const ClientTestResultSchema = z.object({
     severity: z.enum(['critical', 'major', 'minor', 'info']),
     category: z.enum(['css', 'html', 'images', 'fonts', 'layout', 'interactive']),
     description: z.string(),
-    recommendation: z.string().optional(),
-    affectedElements: z.array(z.string()).optional()
+      recommendation: z.string().optional(),
+  affectedElements: z.array(z.string()).optional()
   })),
   renderTime: z.number().positive(), // milliseconds
   errorMessage: z.string().optional(),
@@ -136,10 +136,10 @@ export const PerformanceResultSchema = z.object({
     implementation: z.string()
   })),
   metrics: z.object({
-    firstContentfulPaint: z.number().positive().optional(),
-    largestContentfulPaint: z.number().positive().optional(),
-    cumulativeLayoutShift: z.number().min(0).optional(),
-    totalBlockingTime: z.number().positive().optional()
+      firstContentfulPaint: z.number().positive().optional(),
+  largestContentfulPaint: z.number().positive().optional(),
+  cumulativeLayoutShift: z.number().min(0).optional(),
+  totalBlockingTime: z.number().positive().optional()
   }),
   timestamp: z.date()
 });
@@ -159,9 +159,9 @@ export const SpamResultSchema = z.object({
   })),
   deliverabilityScore: z.number().min(0).max(100),
   authenticationChecks: z.object({
-    spf: z.enum(['pass', 'fail', 'neutral', 'none']).optional(),
-    dkim: z.enum(['pass', 'fail', 'none']).optional(),
-    dmarc: z.enum(['pass', 'fail', 'none']).optional()
+      spf: z.enum(['pass', 'fail', 'neutral', 'none']).optional(),
+  dkim: z.enum(['pass', 'fail', 'none']).optional(),
+  dmarc: z.enum(['pass', 'fail', 'none']).optional()
   }),
   recommendations: z.array(z.object({
     priority: z.enum(['critical', 'high', 'medium', 'low']),

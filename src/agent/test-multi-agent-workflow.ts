@@ -8,14 +8,15 @@
  * - Backward compatibility testing
  */
 
-import { WorkflowOrchestrator, EmailGenerationRequest, EmailGenerationResponse } from './core/workflow-orchestrator';
+import { AgentHandoffsCoordinator, WorkflowExecutionInput, WorkflowExecutionOutput } from './core/agent-handoffs';
 import { UltraThinkEngine, createUltraThink } from './ultrathink';
+import { EmailGenerationResponse } from './types';
 
 // Test configuration interface
 interface TestConfig {
   test_name: string;
   description: string;
-  request: EmailGenerationRequest;
+  request: WorkflowExecutionInput;
   expected_outcomes: {
     should_succeed: boolean;
     min_quality_score: number;
@@ -40,7 +41,7 @@ interface TestResult {
 }
 
 export class MultiAgentWorkflowTester {
-  private orchestrator: WorkflowOrchestrator;
+  private coordinator: AgentHandoffsCoordinator;
   private ultraThink?: UltraThinkEngine;
   private testResults: TestResult[] = [];
 
@@ -51,11 +52,11 @@ export class MultiAgentWorkflowTester {
       console.log('🧠 UltraThink enabled for enhanced testing');
     }
     
-    // Initialize WorkflowOrchestrator with UltraThink
-    this.orchestrator = new WorkflowOrchestrator(this.ultraThink);
+    // Initialize AgentHandoffsCoordinator
+    this.coordinator = new AgentHandoffsCoordinator();
     
     console.log('🧪 Multi-Agent Workflow Tester initialized');
-    console.log('🎯 Architecture:', this.orchestrator.getOrchestratorCapabilities().architecture);
+    console.log('🎯 Architecture:', this.coordinator.getCoordinatorCapabilities().specialization);
   }
 
   /**
@@ -107,11 +108,14 @@ export class MultiAgentWorkflowTester {
         test_name: 'basic_email_generation',
         description: 'Generate basic promotional email with minimal configuration',
         request: {
-          topic: 'Летние предложения в Сочи',
-          campaign_type: 'promotional',
-          target_audience: 'families',
-          destination: 'Сочи',
-          origin: 'Москва'
+          workflow_id: 'test-basic-1',
+          campaign_brief: {
+            topic: 'Летние предложения в Сочи',
+            campaign_type: 'promotional',
+            target_audience: 'families',
+            destination: 'Сочи',
+            origin: 'Москва'
+          }
         },
         expected_outcomes: {
           should_succeed: true,
@@ -125,12 +129,11 @@ export class MultiAgentWorkflowTester {
         test_name: 'informational_newsletter',
         description: 'Generate informational newsletter without pricing',
         request: {
-          topic: 'Новые маршруты и направления 2024',
-          campaign_type: 'informational',
-          target_audience: 'travel_enthusiasts',
-          content_preferences: {
-            tone: 'professional',
-            language: 'ru'
+          workflow_id: 'test-info-1',
+          campaign_brief: {
+            topic: 'Новые маршруты и направления 2024',
+            campaign_type: 'informational',
+            target_audience: 'travel_enthusiasts'
           }
         },
         expected_outcomes: {
@@ -145,15 +148,12 @@ export class MultiAgentWorkflowTester {
         test_name: 'urgent_campaign',
         description: 'Generate urgent campaign with fast execution',
         request: {
-          topic: 'Последние места на рейсы в Дубай',
-          campaign_type: 'urgent',
-          execution_strategy: 'speed',
-          destination: 'Дубай',
-          origin: 'Москва',
-          output_requirements: {
-            formats: ['html'],
-            quality_level: 'basic',
-            compliance_level: 'basic'
+          workflow_id: 'test-urgent-1',
+          campaign_brief: {
+            topic: 'Последние места на рейсы в Дубай',
+            campaign_type: 'urgent',
+            destination: 'Дубай',
+            origin: 'Москва'
           }
         },
         expected_outcomes: {
@@ -178,11 +178,14 @@ export class MultiAgentWorkflowTester {
     console.log('\n⚡ Stage 2: Execution Strategy Tests');
     console.log('-'.repeat(40));
 
-    const baseRequest: EmailGenerationRequest = {
-      topic: 'Зимний отдых в горах',
-      campaign_type: 'seasonal',
-      destination: 'Красная Поляна',
-      origin: 'Москва'
+    const baseRequest: WorkflowExecutionInput = {
+      workflow_id: 'test-strategy-base',
+      campaign_brief: {
+        topic: 'Зимний отдых в горах',
+        campaign_type: 'seasonal',
+        destination: 'Красная Поляна',
+        origin: 'Москва'
+      }
     };
 
     const strategies = ['speed', 'quality', 'comprehensive'] as const;
@@ -193,11 +196,12 @@ export class MultiAgentWorkflowTester {
         description: `Test ${strategy} execution strategy`,
         request: {
           ...baseRequest,
-          execution_strategy: strategy,
-          output_requirements: {
-            formats: ['html', 'mjml'],
-            quality_level: strategy === 'speed' ? 'basic' : strategy === 'quality' ? 'standard' : 'enterprise',
-            compliance_level: strategy === 'speed' ? 'basic' : 'enterprise'
+          execution_config: {
+            quality_requirements: {
+              minimum_score: strategy === 'speed' ? 60 : strategy === 'quality' ? 80 : 90,
+              require_compliance: strategy !== 'speed',
+              auto_fix_issues: strategy === 'comprehensive'
+            }
           }
         },
         expected_outcomes: {
@@ -225,29 +229,24 @@ export class MultiAgentWorkflowTester {
         test_name: 'enterprise_quality',
         description: 'Test enterprise-grade quality requirements',
         request: {
-          topic: 'Премиум туры в Японию',
-          campaign_type: 'promotional',
-          destination: 'Токио',
-          origin: 'Москва',
-          execution_strategy: 'comprehensive',
-          output_requirements: {
-            formats: ['html', 'mjml', 'preview'],
-            quality_level: 'enterprise',
-            compliance_level: 'enterprise'
+          workflow_id: 'test-enterprise-quality',
+          campaign_brief: {
+            topic: 'Премиум туры в Японию',
+            campaign_type: 'promotional',
+            destination: 'Токио',
+            origin: 'Москва'
           },
-          technical_specs: {
-            email_clients: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-            device_targets: ['desktop', 'mobile', 'tablet'],
-            performance_targets: {
-              max_load_time: 2000,
-              max_file_size: 100000,
-              min_compatibility: 95
+          execution_config: {
+            quality_requirements: {
+              minimum_score: 90,
+              require_compliance: true,
+              auto_fix_issues: true
             },
-            accessibility_level: 'WCAG_AA'
-          },
-          workflow_config: {
-            enable_quality_gates: true,
-            monitoring_enabled: true
+            deployment_config: {
+              environment: 'production',
+              auto_deploy: false,
+              monitoring_enabled: true
+            }
           }
         },
         expected_outcomes: {
@@ -262,21 +261,17 @@ export class MultiAgentWorkflowTester {
         test_name: 'accessibility_compliance',
         description: 'Test WCAG AAA accessibility compliance',
         request: {
-          topic: 'Доступные путешествия для всех',
-          campaign_type: 'informational',
-          technical_specs: {
-            email_clients: ['gmail', 'outlook', 'apple_mail'],
-            device_targets: ['desktop', 'mobile'],
-            performance_targets: {
-              max_load_time: 1500,
-              max_file_size: 80000,
-              min_compatibility: 98
-            },
-            accessibility_level: 'WCAG_AAA'
+          workflow_id: 'test-accessibility-compliance',
+          campaign_brief: {
+            topic: 'Доступные путешествия для всех',
+            campaign_type: 'informational'
           },
-          content_preferences: {
-            tone: 'professional',
-            language: 'ru'
+          execution_config: {
+            quality_requirements: {
+              minimum_score: 85,
+              require_compliance: true,
+              auto_fix_issues: true
+            }
           }
         },
         expected_outcomes: {
@@ -316,31 +311,24 @@ export class MultiAgentWorkflowTester {
       test_name: 'performance_benchmark',
       description: 'Performance benchmark with comprehensive configuration',
       request: {
-        topic: 'Luxury Travel Experience',
-        campaign_type: 'promotional',
-        destination: 'Мальдивы',
-        origin: 'Москва',
-        execution_strategy: 'quality',
-        content_preferences: {
-          tone: 'luxury',
-          language: 'ru',
-          personalization_level: 'advanced',
-          a_b_testing: true
+        workflow_id: 'test-performance-benchmark',
+        campaign_brief: {
+          topic: 'Luxury Travel Experience',
+          campaign_type: 'promotional',
+          destination: 'Мальдивы',
+          origin: 'Москва'
         },
-        technical_specs: {
-          email_clients: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-          device_targets: ['desktop', 'mobile', 'tablet'],
-          performance_targets: {
-            max_load_time: 2000,
-            max_file_size: 100000,
-            min_compatibility: 95
+        execution_config: {
+          quality_requirements: {
+            minimum_score: 85,
+            require_compliance: true,
+            auto_fix_issues: false
           },
-          accessibility_level: 'WCAG_AA'
-        },
-        workflow_config: {
-          use_parallel_processing: true,
-          enable_quality_gates: true,
-          monitoring_enabled: true
+          deployment_config: {
+            environment: 'test',
+            auto_deploy: false,
+            monitoring_enabled: true
+          }
         }
       },
       expected_outcomes: {
@@ -361,22 +349,28 @@ export class MultiAgentWorkflowTester {
   private async runConcurrentExecutionTest(): Promise<void> {
     console.log('\n🔄 Testing concurrent execution...');
     
-    const concurrentRequests: EmailGenerationRequest[] = [
+    const concurrentRequests: WorkflowExecutionInput[] = [
       {
-        topic: 'Отдых в Турции',
-        campaign_type: 'promotional',
-        destination: 'Анталья',
-        execution_strategy: 'speed'
+        workflow_id: 'concurrent-1',
+        campaign_brief: {
+          topic: 'Отдых в Турции',
+          campaign_type: 'promotional',
+          destination: 'Анталья'
+        }
       },
       {
-        topic: 'Бизнес поездки в Европу',
-        campaign_type: 'informational',
-        execution_strategy: 'quality'
+        workflow_id: 'concurrent-2',
+        campaign_brief: {
+          topic: 'Бизнес поездки в Европу',
+          campaign_type: 'informational'
+        }
       },
       {
-        topic: 'Новогодние туры',
-        campaign_type: 'seasonal',
-        execution_strategy: 'quality'
+        workflow_id: 'concurrent-3',
+        campaign_brief: {
+          topic: 'Новогодние туры',
+          campaign_type: 'seasonal'
+        }
       }
     ];
 
@@ -384,15 +378,15 @@ export class MultiAgentWorkflowTester {
     
     try {
       const promises = concurrentRequests.map(async (request, index) => {
-        console.log(`🚀 Starting concurrent request ${index + 1}: ${request.topic}`);
-        return await this.orchestrator.generateEmail(request);
+        console.log(`🚀 Starting concurrent request ${index + 1}: ${request.campaign_brief.topic}`);
+        return await this.coordinator.executeWorkflow(request);
       });
 
       const results = await Promise.all(promises);
       const totalTime = Date.now() - startTime;
       
       const successCount = results.filter(r => r.success).length;
-      const avgExecutionTime = results.reduce((sum, r) => sum + r.execution_analytics.total_execution_time, 0) / results.length;
+      const avgExecutionTime = results.reduce((sum, r) => sum + r.execution_summary.total_execution_time, 0) / results.length;
       
       console.log(`✅ Concurrent execution completed:`);
       console.log(`   - Total time: ${totalTime}ms`);
@@ -404,10 +398,10 @@ export class MultiAgentWorkflowTester {
         test_name: 'concurrent_execution',
         success: successCount === results.length,
         execution_time: totalTime,
-        quality_score: results.reduce((sum, r) => sum + r.quality_metrics.overall_score, 0) / results.length,
+        quality_score: results.reduce((sum, r) => sum + r.execution_summary.quality_score, 0) / results.length,
         agents_executed: ['multiple'],
         artifacts_generated: ['html_output'],
-        errors: results.filter(r => !r.success).map(r => r.error?.message || 'Unknown error'),
+        errors: results.filter(r => !r.success).map(r => r.error || 'Unknown error'),
         warnings: [],
         performance_metrics: {
           concurrent_requests: results.length,
@@ -447,8 +441,11 @@ export class MultiAgentWorkflowTester {
         test_name: 'invalid_request_handling',
         description: 'Test handling of invalid request parameters',
         request: {
-          topic: '', // Invalid empty topic
-          campaign_type: 'promotional'
+          workflow_id: 'test-invalid-request',
+          campaign_brief: {
+            topic: '', // Invalid empty topic
+            campaign_type: 'promotional'
+          }
         },
         expected_outcomes: {
           should_succeed: false,
@@ -462,22 +459,17 @@ export class MultiAgentWorkflowTester {
         test_name: 'fallback_strategy',
         description: 'Test fallback when high complexity meets speed strategy',
         request: {
-          topic: 'Сложная многосегментная кампания с персонализацией',
-          campaign_type: 'promotional',
-          execution_strategy: 'speed',
-          content_preferences: {
-            personalization_level: 'dynamic',
-            a_b_testing: true
+          workflow_id: 'test-fallback-strategy',
+          campaign_brief: {
+            topic: 'Сложная многосегментная кампания с персонализацией',
+            campaign_type: 'promotional'
           },
-          technical_specs: {
-            email_clients: ['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'],
-            device_targets: ['desktop', 'mobile'],
-            performance_targets: {
-              max_load_time: 2000,
-              max_file_size: 100000,
-              min_compatibility: 95
-            },
-            accessibility_level: 'WCAG_AAA'
+          execution_config: {
+            quality_requirements: {
+              minimum_score: 75,
+              require_compliance: false,
+              auto_fix_issues: true
+            }
           }
         },
         expected_outcomes: {
@@ -502,47 +494,50 @@ export class MultiAgentWorkflowTester {
     console.log('\n🔄 Stage 6: Legacy Compatibility Tests');
     console.log('-'.repeat(40));
 
-    const legacyRequest: EmailGenerationRequest = {
-      topic: 'Тест обратной совместимости',
-      campaign_type: 'promotional',
-      destination: 'Сочи',
-      origin: 'Москва'
+    const legacyRequest: WorkflowExecutionInput = {
+      workflow_id: 'legacy-test',
+      campaign_brief: {
+        topic: 'Тест обратной совместимости',
+        campaign_type: 'promotional',
+        destination: 'Сочи',
+        origin: 'Москва'
+      }
     };
 
     try {
       console.log('🔄 Testing legacy orchestrate() method...');
       const startTime = Date.now();
       
-      // Test legacy method
-      const legacyResult = await this.orchestrator.orchestrate(legacyRequest);
+      // Test legacy method compatibility
+      const legacyResult = await this.coordinator.executeWorkflow(legacyRequest);
       const executionTime = Date.now() - startTime;
       
-      // Validate legacy format
+      // Validate legacy format - adapt to new coordinator result format
       const hasRequiredFields = !!(
         legacyResult.success !== undefined &&
-        legacyResult.finalState &&
-        legacyResult.duration !== undefined &&
-        legacyResult.stats
+        legacyResult.final_artifacts &&
+        legacyResult.execution_summary &&
+        legacyResult.handoff_analytics
       );
       
       console.log(`✅ Legacy compatibility test:`);
       console.log(`   - Success: ${legacyResult.success}`);
       console.log(`   - Execution time: ${executionTime}ms`);
       console.log(`   - Has required fields: ${hasRequiredFields}`);
-      console.log(`   - Final state keys: ${Object.keys(legacyResult.finalState || {}).join(', ')}`);
+      console.log(`   - Result keys: ${Object.keys(legacyResult).join(', ')}`);
       
       this.testResults.push({
         test_name: 'legacy_compatibility',
         success: legacyResult.success && hasRequiredFields,
         execution_time: executionTime,
-        quality_score: legacyResult.finalState?.qa_score || 0,
+        quality_score: legacyResult.execution_summary?.quality_score || 0,
         agents_executed: ['legacy_interface'],
-        artifacts_generated: legacyResult.finalState?.html ? ['html'] : [],
+        artifacts_generated: legacyResult.final_artifacts?.html_output ? ['html'] : [],
         errors: legacyResult.success ? [] : [legacyResult.error || 'Legacy execution failed'],
         warnings: [],
         performance_metrics: {
           legacy_compatibility: hasRequiredFields,
-          stats: legacyResult.stats
+          handoff_analytics: legacyResult.handoff_analytics
         },
         recommendations: hasRequiredFields ? [] : ['Review legacy interface compatibility']
       });
@@ -575,7 +570,7 @@ export class MultiAgentWorkflowTester {
     const startTime = Date.now();
     
     try {
-      const result = await this.orchestrator.generateEmail(test.request);
+      const result = await this.coordinator.executeWorkflow(test.request);
       const executionTime = Date.now() - startTime;
       
       // Validate test outcomes
@@ -583,8 +578,8 @@ export class MultiAgentWorkflowTester {
       
       console.log(`   ${validation.success ? '✅' : '❌'} Result: ${validation.success ? 'PASSED' : 'FAILED'}`);
       console.log(`   Execution time: ${executionTime}ms (max: ${test.expected_outcomes.max_execution_time}ms)`);
-      console.log(`   Quality score: ${result.quality_metrics.overall_score} (min: ${test.expected_outcomes.min_quality_score})`);
-      console.log(`   Agents executed: ${result.execution_analytics.agent_breakdown.map(a => a.agent).join(', ')}`);
+      console.log(`   Quality score: ${result.execution_summary.quality_score} (min: ${test.expected_outcomes.min_quality_score})`);
+      console.log(`   Agents executed: ${result.execution_summary.agents_executed.join(', ')}`);
       
       if (!validation.success) {
         console.log(`   Issues: ${validation.issues.join(', ')}`);
@@ -595,13 +590,13 @@ export class MultiAgentWorkflowTester {
         test_name: test.test_name,
         success: validation.success,
         execution_time: executionTime,
-        quality_score: result.quality_metrics.overall_score,
-        agents_executed: result.execution_analytics.agent_breakdown.map(a => a.agent),
-        artifacts_generated: Object.keys(result.email_artifacts).filter(key => result.email_artifacts[key as keyof typeof result.email_artifacts]),
-        errors: result.success ? [] : [result.error?.message || 'Unknown error'],
-        warnings: result.warnings || [],
-        performance_metrics: result.execution_analytics,
-        recommendations: result.recommendations.content_optimizations.slice(0, 2)
+        quality_score: result.execution_summary.quality_score,
+        agents_executed: result.execution_summary.agents_executed,
+        artifacts_generated: Object.keys(result.final_artifacts).filter(key => result.final_artifacts[key as keyof typeof result.final_artifacts]),
+        errors: result.success ? [] : [result.error || 'Unknown error'],
+        warnings: [],
+        performance_metrics: result.handoff_analytics,
+        recommendations: result.recommendations.workflow_optimizations?.slice(0, 2) || []
       });
       
     } catch (error) {
@@ -631,7 +626,7 @@ export class MultiAgentWorkflowTester {
   /**
    * Validate test result against expected outcomes
    */
-  private validateTestResult(result: EmailGenerationResponse, expected: TestConfig['expected_outcomes']): { success: boolean; issues: string[] } {
+  private validateTestResult(result: WorkflowExecutionOutput, expected: TestConfig['expected_outcomes']): { success: boolean; issues: string[] } {
     const issues: string[] = [];
     
     // Check basic success expectation
@@ -641,24 +636,24 @@ export class MultiAgentWorkflowTester {
     
     if (expected.should_succeed && result.success) {
       // Check quality score
-      if (result.quality_metrics.overall_score < expected.min_quality_score) {
-        issues.push(`Quality score ${result.quality_metrics.overall_score} below minimum ${expected.min_quality_score}`);
+      if (result.execution_summary.quality_score < expected.min_quality_score) {
+        issues.push(`Quality score ${result.execution_summary.quality_score} below minimum ${expected.min_quality_score}`);
       }
       
       // Check execution time
-      if (result.execution_analytics.total_execution_time > expected.max_execution_time) {
-        issues.push(`Execution time ${result.execution_analytics.total_execution_time}ms exceeds maximum ${expected.max_execution_time}ms`);
+      if (result.execution_summary.total_execution_time > expected.max_execution_time) {
+        issues.push(`Execution time ${result.execution_summary.total_execution_time}ms exceeds maximum ${expected.max_execution_time}ms`);
       }
       
       // Check required artifacts
       for (const artifact of expected.required_artifacts) {
-        if (!result.email_artifacts[artifact as keyof typeof result.email_artifacts]) {
+        if (!result.final_artifacts[artifact as keyof typeof result.final_artifacts]) {
           issues.push(`Missing required artifact: ${artifact}`);
         }
       }
       
       // Check expected agents
-      const executedAgents = result.execution_analytics.agent_breakdown.map(a => a.agent);
+      const executedAgents = result.execution_summary.agents_executed;
       for (const expectedAgent of expected.expected_agents) {
         if (!executedAgents.includes(expectedAgent)) {
           issues.push(`Expected agent not executed: ${expectedAgent}`);
@@ -724,11 +719,11 @@ export class MultiAgentWorkflowTester {
     // Architecture capabilities summary
     console.log('\n🏗️ ARCHITECTURE CAPABILITIES');
     console.log('-'.repeat(40));
-    const capabilities = this.orchestrator.getOrchestratorCapabilities();
-    console.log(`Architecture: ${capabilities.architecture}`);
-    console.log(`Supported strategies: ${capabilities.supported_strategies.join(', ')}`);
-    console.log(`Expected success rate: ${capabilities.performance_metrics.success_rate}`);
-    console.log(`UltraThink integration: ${capabilities.features.ultrathink_integration ? 'Enabled' : 'Disabled'}`);
+    const capabilities = this.coordinator.getCoordinatorCapabilities();
+    console.log(`Architecture: ${capabilities.specialization}`);
+    console.log(`Coordinator ID: ${capabilities.coordinator_id}`);
+    console.log(`Multi-agent workflow: Enabled`);
+    console.log(`UltraThink integration: ${this.ultraThink ? 'Enabled' : 'Disabled'}`);
     
     // Final verdict
     console.log('\n🎯 FINAL VERDICT');
@@ -756,10 +751,10 @@ export class MultiAgentWorkflowTester {
   }
 
   /**
-   * Get orchestrator instance for external testing
+   * Get coordinator instance for external testing
    */
-  getOrchestrator(): WorkflowOrchestrator {
-    return this.orchestrator;
+  getCoordinator(): AgentHandoffsCoordinator {
+    return this.coordinator;
   }
 }
 

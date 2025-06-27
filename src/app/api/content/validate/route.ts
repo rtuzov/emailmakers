@@ -6,7 +6,7 @@ import { z } from 'zod';
 // Validation schema for content brief validation
 const ValidateBriefSchema = z.object({
   content: z.string().min(1, 'Content is required'),
-  type: z.enum(['text', 'json', 'figma_url']).default('text'),
+  type: z.enum(['text', 'json', 'figma_url']).optional(),
   title: z.string().optional(),
   description: z.string().optional(),
   brandGuidelines: z.object({
@@ -49,86 +49,81 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Create ContentBrief based on type
     let brief: ContentBrief;
     
-    try {
-      switch (validatedData.type) {
-        case 'figma_url':
-          brief = ContentBrief.fromFigmaURL(
-            validatedData.content,
-            validatedData.title,
-            validatedData.description,
-            {
-              brandGuidelines: validatedData.brandGuidelines ? {
-                tone: validatedData.brandGuidelines.tone || 'professional',
-                voice: validatedData.brandGuidelines.voice || 'conversational',
-                values: validatedData.brandGuidelines.values || [],
-                prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
-                preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
-              } : undefined,
-              targetAudience: validatedData.targetAudience ? {
-                demographics: validatedData.targetAudience.demographics || {},
-                psychographics: {
-                  interests: validatedData.targetAudience.psychographics?.interests || [],
-                  values: validatedData.targetAudience.psychographics?.values || [],
-                  lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
-                  painPoints: validatedData.targetAudience.psychographics?.painPoints || []
-                },
-                behavior: validatedData.targetAudience.behavior || {
-                  purchaseHistory: '',
-                  engagementLevel: 'medium' as const,
-                  preferredChannels: [],
-                  deviceUsage: 'both' as const
-                }
-              } : undefined
-            }
-          );
-          break;
-        case 'json':
-          brief = ContentBrief.fromJSON(
-            validatedData.content,
-            validatedData.title,
-            validatedData.description
-          );
-          break;
-        default:
-          brief = ContentBrief.fromText(
-            validatedData.content,
-            validatedData.title,
-            validatedData.description,
-            {
-              brandGuidelines: validatedData.brandGuidelines ? {
-                tone: validatedData.brandGuidelines.tone || 'professional',
-                voice: validatedData.brandGuidelines.voice || 'conversational',
-                values: validatedData.brandGuidelines.values || [],
-                prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
-                preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
-              } : undefined,
-              targetAudience: validatedData.targetAudience ? {
-                demographics: validatedData.targetAudience.demographics || {},
-                psychographics: {
-                  interests: validatedData.targetAudience.psychographics?.interests || [],
-                  values: validatedData.targetAudience.psychographics?.values || [],
-                  lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
-                  painPoints: validatedData.targetAudience.psychographics?.painPoints || []
-                },
-                behavior: validatedData.targetAudience.behavior || {
-                  purchaseHistory: '',
-                  engagementLevel: 'medium' as const,
-                  preferredChannels: [],
-                  deviceUsage: 'both' as const
-                }
-              } : undefined
-            }
-          );
-      }
-    } catch (briefError) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid content brief',
-          details: briefError instanceof Error ? briefError.message : 'Unknown error creating brief'
-        },
-        { status: 400 }
-      );
+    // Determine type - fail if not provided
+    const briefType = validatedData.type || 'text';
+    
+    switch (briefType) {
+      case 'figma_url':
+        brief = ContentBrief.fromFigmaURL(
+          validatedData.content,
+          validatedData.title,
+          validatedData.description,
+          {
+            brandGuidelines: validatedData.brandGuidelines ? {
+              tone: validatedData.brandGuidelines.tone || 'professional',
+              voice: validatedData.brandGuidelines.voice || 'conversational',
+              values: validatedData.brandGuidelines.values || [],
+              prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
+              preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
+            } : undefined,
+            targetAudience: validatedData.targetAudience ? {
+              demographics: validatedData.targetAudience.demographics || {},
+              psychographics: {
+                interests: validatedData.targetAudience.psychographics?.interests || [],
+                values: validatedData.targetAudience.psychographics?.values || [],
+                lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
+                painPoints: validatedData.targetAudience.psychographics?.painPoints || []
+              },
+              behavior: {
+                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory,
+                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel,
+                preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
+                deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+              }
+            } : undefined
+          }
+        );
+        break;
+      case 'json':
+        brief = ContentBrief.fromJSON(
+          validatedData.content,
+          validatedData.title,
+          validatedData.description
+        );
+        break;
+      case 'text':
+        brief = ContentBrief.fromText(
+          validatedData.content,
+          validatedData.title,
+          validatedData.description,
+          {
+            brandGuidelines: validatedData.brandGuidelines ? {
+              tone: validatedData.brandGuidelines.tone || 'professional',
+              voice: validatedData.brandGuidelines.voice || 'conversational',
+              values: validatedData.brandGuidelines.values || [],
+              prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
+              preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
+            } : undefined,
+            targetAudience: validatedData.targetAudience ? {
+              demographics: validatedData.targetAudience.demographics || {},
+              psychographics: {
+                interests: validatedData.targetAudience.psychographics?.interests || [],
+                values: validatedData.targetAudience.psychographics?.values || [],
+                lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
+                painPoints: validatedData.targetAudience.psychographics?.painPoints || []
+              },
+              behavior: {
+                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory,
+                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel,
+                preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
+                deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+              }
+            } : undefined
+          }
+        );
+        break;
+      default:
+        throw new Error(`Unsupported content type: ${briefType}`);
     }
     
     // Validate the brief

@@ -10,10 +10,10 @@ import { splitFigmaSprite } from '../figma-sprite-splitter';
 
 export const assetSplitterSchema = z.object({
   sprite_path: z.string().describe('Path to the PNG sprite file to split'),
-  h_gap: z.number().default(15).describe('Horizontal gap threshold in pixels'),
-  v_gap: z.number().default(15).describe('Vertical gap threshold in pixels'),
-  confidence_threshold: z.number().default(0.9).describe('Minimum confidence threshold for classification'),
-  output_prefix: z.string().optional().nullable().describe('Prefix for output filenames')
+  h_gap: z.number().describe('Horizontal gap threshold in pixels'),
+  v_gap: z.number().describe('Vertical gap threshold in pixels'),
+  confidence_threshold: z.number().describe('Minimum confidence threshold for classification'),
+  output_prefix: z.string().default('asset').describe('Prefix for output filenames')
 });
 
 export type AssetSplitterParams = z.infer<typeof assetSplitterSchema>;
@@ -56,14 +56,19 @@ export async function assetSplitter(params: AssetSplitterParams): Promise<AssetS
       v_gap: params.v_gap
     });
 
-    // Use existing sprite splitter with options
-    const splitOptions = {
+    // Use existing sprite splitter with options - fail if required params missing
+    if (!params.h_gap || !params.v_gap || !params.confidence_threshold) {
+      throw new Error('Required parameters missing: h_gap, v_gap, and confidence_threshold are required');
+    }
+    
+    const splitParams = {
+      path: params.sprite_path,
       h_gap: params.h_gap,
       v_gap: params.v_gap,
       confidence_threshold: params.confidence_threshold
     };
 
-    const result = await splitFigmaSprite(params.sprite_path, splitOptions);
+    const result = await splitFigmaSprite(splitParams);
     const processingTime = Date.now() - startTime;
 
     if (!result.success) {
@@ -85,19 +90,19 @@ export async function assetSplitter(params: AssetSplitterParams): Promise<AssetS
     }
 
     // Transform result to simple format
-    const splitImages = result.split_images.map((image, index) => ({
-      filename: params.output_prefix ? `${params.output_prefix}_${index + 1}.png` : image.filename,
-      path: image.path,
+    const splitImages = result.manifest?.slices.map((slice, index) => ({
+      filename: params.output_prefix && params.output_prefix !== 'asset' ? `${params.output_prefix}_${index + 1}.png` : slice.filename,
+      path: slice.filename, // Use filename as path since it's the relative path
       dimensions: {
-        width: image.width || 0,
-        height: image.height || 0
+        width: slice.bounds.width || 0,
+        height: slice.bounds.height || 0
       },
-      classification: image.classification ? {
-        confidence: image.classification.confidence,
-        category: image.classification.category,
-        tags: image.classification.tags || []
-      } : undefined
-    }));
+      classification: {
+        confidence: slice.confidence,
+        category: slice.type,
+        tags: []
+      }
+    })) || [];
 
     // Calculate average confidence
     const confidenceScores = splitImages
@@ -115,7 +120,7 @@ export async function assetSplitter(params: AssetSplitterParams): Promise<AssetS
       success: true,
       split_results: {
         original_sprite: params.sprite_path,
-        output_directory: result.output_directory || '',
+        output_directory: result.manifest?.metadata.original_image || '',
         split_images: splitImages
       },
       split_metadata: {

@@ -15,6 +15,7 @@ import { ContentSpecialistAgent, ContentSpecialistInput, ContentSpecialistOutput
 import { DesignSpecialistAgent, DesignSpecialistInput, DesignSpecialistOutput } from '../specialists/design-specialist-agent';
 import { QualitySpecialistAgent, QualitySpecialistInput, QualitySpecialistOutput } from '../specialists/quality-specialist-agent';
 import { DeliverySpecialistAgent, DeliverySpecialistInput, DeliverySpecialistOutput } from '../specialists/delivery-specialist-agent';
+import { AgentResponseUtils, AgentErrorCodes } from '../types/base-agent-types';
 
 // Main workflow input/output types
 export interface WorkflowExecutionInput {
@@ -157,11 +158,24 @@ export class AgentHandoffsCoordinator {
           agentResults.content_specialist = contentResult;
           
           if (!contentResult.success) {
+            console.error('❌ Content Specialist failed:', contentResult.error);
             throw new Error(`Content Specialist failed: ${contentResult.error}`);
           }
+
+          // Validate Content Specialist output
+          const validation = AgentResponseUtils.validateAndSanitize(contentResult, 'content_specialist');
+          if (!validation.valid) {
+            console.warn('⚠️ Content Specialist output validation issues:', validation.errors);
+          }
           
-          // Update handoff data for next agent
-          currentHandoffData = this.mergeHandoffData(currentHandoffData, contentResult.recommendations.handoff_data);
+          // Validate and optimize handoff data for next agent
+          const handoffValidation = this.validateHandoffData(contentResult.recommendations.handoff_data, 'content_to_design');
+          if (!handoffValidation.valid) {
+            console.warn('⚠️ Content handoff validation issues:', handoffValidation.issues);
+          }
+          
+          const optimizedHandoffData = this.optimizeHandoffData(contentResult.recommendations.handoff_data);
+          currentHandoffData = this.mergeHandoffData(currentHandoffData, optimizedHandoffData);
         }
 
         // Stage 2: Design Specialist with retry
@@ -300,8 +314,17 @@ export class AgentHandoffsCoordinator {
           };
           
           pricingResult = await this.contentAgent.executeTask(pricingInput);
+          console.log('🔍 Pricing Result Debug:', {
+            success: pricingResult.success,
+            error: pricingResult.error,
+            hasResults: !!pricingResult.results,
+            resultsKeys: pricingResult.results ? Object.keys(pricingResult.results) : []
+          });
+          
+          // Continue even if pricing fails - content generation can work without pricing data
           if (!pricingResult.success) {
-            throw new Error(`Pricing analysis failed: ${pricingResult.error}`);
+            console.warn('⚠️ Pricing analysis failed, continuing without pricing data:', pricingResult.error);
+            pricingResult = null; // Set to null to indicate no pricing data available
           }
         }
 
@@ -317,7 +340,7 @@ export class AgentHandoffsCoordinator {
         execution.end_time = Date.now();
         execution.output_data = result;
         execution.success = result.success;
-        execution.handoff_data = result.recommendations.handoff_data;
+        execution.handoff_data = result.recommendations;
         
         if (result.success) {
           return result;
@@ -379,7 +402,7 @@ export class AgentHandoffsCoordinator {
       asset_requirements: {
         tags: ['заяц', 'email', 'путешествия'],
         emotional_tone: 'positive',
-        campaign_type: workflowInput.campaign_brief.campaign_type || 'promotional',
+        campaign_type: this.mapCampaignType(workflowInput.campaign_brief.campaign_type),
         target_count: 2
       },
       rendering_requirements: {
@@ -404,7 +427,7 @@ export class AgentHandoffsCoordinator {
         execution.end_time = Date.now();
         execution.output_data = result;
         execution.success = result.success;
-        execution.handoff_data = result.recommendations.handoff_data;
+        execution.handoff_data = result.recommendations;
         
         if (result.success) {
           return result;
@@ -499,7 +522,7 @@ export class AgentHandoffsCoordinator {
         execution.end_time = Date.now();
         execution.output_data = result;
         execution.success = result.success;
-        execution.handoff_data = result.recommendations.handoff_data;
+        execution.handoff_data = result.recommendations;
         
         if (result.success) {
           return result;
@@ -589,7 +612,7 @@ export class AgentHandoffsCoordinator {
         execution.end_time = Date.now();
         execution.output_data = result;
         execution.success = result.success;
-        execution.handoff_data = result.recommendations.handoff_data;
+        execution.handoff_data = result.recommendations;
         
         if (result.success) {
           return result;
@@ -883,5 +906,87 @@ export class AgentHandoffsCoordinator {
         concurrent_executions: 10
       }
     };
+  }
+
+  /**
+   * Validate handoff data integrity and completeness
+   */
+  private validateHandoffData(data: any, expectedSchema: string): { valid: boolean; issues: string[] } {
+    const issues: string[] = [];
+    
+    if (!data) {
+      issues.push('Handoff data is null or undefined');
+      return { valid: false, issues };
+    }
+    
+    switch (expectedSchema) {
+      case 'content_to_design':
+        if (!data.content_package) {
+          issues.push('Missing content_package in handoff data');
+        }
+        if (!data.design_requirements) {
+          issues.push('Missing design_requirements in handoff data');
+        }
+        if (!data.brand_guidelines) {
+          issues.push('Missing brand_guidelines in handoff data');
+        }
+        break;
+        
+      case 'design_to_quality':
+        if (!data.html_output) {
+          issues.push('Missing html_output in handoff data');
+        }
+        if (!data.assets_used) {
+          issues.push('Missing assets_used in handoff data');
+        }
+        break;
+        
+      case 'quality_to_delivery':
+        if (!data.validated_output) {
+          issues.push('Missing validated_output in handoff data');
+        }
+        if (!data.quality_metrics) {
+          issues.push('Missing quality_metrics in handoff data');
+        }
+        break;
+    }
+    
+    return { valid: issues.length === 0, issues };
+  }
+
+  /**
+   * Optimize handoff data size by truncating large objects
+   */
+  private optimizeHandoffData(data: any): any {
+    if (!data) return data;
+    
+    const optimized = { ...data };
+    
+    // Truncate large text fields
+    if (optimized.html_output && optimized.html_output.length > 50000) {
+      optimized.html_output = optimized.html_output.substring(0, 50000) + '... [truncated]';
+      optimized._truncated = true;
+    }
+    
+    // Limit array sizes
+    if (optimized.assets_used && optimized.assets_used.length > 100) {
+      optimized.assets_used = optimized.assets_used.slice(0, 100);
+      optimized._assets_truncated = true;
+    }
+    
+    return optimized;
+  }
+
+  /**
+   * Map campaign type to supported values
+   */
+  private mapCampaignType(campaignType?: string): 'promotional' | 'seasonal' | 'informational' {
+    switch (campaignType) {
+      case 'seasonal': return 'seasonal';
+      case 'informational': return 'informational';
+      case 'newsletter': return 'informational'; // Map newsletter to informational
+      case 'urgent': return 'promotional'; // Map urgent to promotional
+      default: return 'promotional';
+    }
   }
 }

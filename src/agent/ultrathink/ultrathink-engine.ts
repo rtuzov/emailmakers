@@ -1,5 +1,4 @@
-import { UltraThinkConfig, ContextEnrichment, ValidationResult, ToolSequence, QualityControlResult, QualityControlConfig } from './types';
-import { EmailGenerationRequest } from '../types';
+import { UltraThinkConfig, ContextEnrichment, ValidationResult, ToolSequence, QualityControlResult, QualityControlConfig, EmailGenerationRequest } from './types';
 import { RouteValidator } from './route-validator';
 import { DateValidator } from './date-validator';
 import { ToolSequencer } from './tool-sequencer';

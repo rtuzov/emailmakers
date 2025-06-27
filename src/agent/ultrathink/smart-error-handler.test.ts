@@ -10,7 +10,7 @@ describe('SmartErrorHandler', () => {
   test('TC-SEH-01: Should detect correct error strategy for known patterns', () => {
     // Rate limit error
     const rateLimitError = new Error('Rate limit exceeded');
-    const rateLimitStrategy = SmartErrorHandler.getErrorStrategy('get_prices', rateLimitError);
+    const rateLimitStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', rateLimitError);
     
     expect(rateLimitStrategy.action).toBe('wait');
     expect(rateLimitStrategy.delay).toBe(5000);
@@ -19,7 +19,7 @@ describe('SmartErrorHandler', () => {
 
     // Unauthorized error
     const authError = new Error('Unauthorized: Invalid API key');
-    const authStrategy = SmartErrorHandler.getErrorStrategy('get_prices', authError);
+    const authStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', authError);
     
     expect(authStrategy.action).toBe('fallback');
     expect(authStrategy.fallback).toBe('use_estimated_prices');
@@ -27,7 +27,7 @@ describe('SmartErrorHandler', () => {
 
     // Timeout error
     const timeoutError = new Error('Request timeout after 30 seconds');
-    const timeoutStrategy = SmartErrorHandler.getErrorStrategy('get_prices', timeoutError);
+    const timeoutStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', timeoutError);
     
     expect(timeoutStrategy.action).toBe('retry');
     expect(timeoutStrategy.delay).toBe(3000);
@@ -41,7 +41,7 @@ describe('SmartErrorHandler', () => {
   test('TC-SEH-02: Should handle Figma-specific errors correctly', () => {
     // Figma rate limit
     const figmaRateLimit = new Error('API rate limit exceeded');
-    const figmaStrategy = SmartErrorHandler.getErrorStrategy('get_figma_assets', figmaRateLimit);
+    const figmaStrategy = (SmartErrorHandler as any).getErrorStrategy('get_figma_assets', figmaRateLimit);
     
     expect(figmaStrategy.action).toBe('wait');
     expect(figmaStrategy.delay).toBe(10000);
@@ -49,7 +49,7 @@ describe('SmartErrorHandler', () => {
 
     // Figma unauthorized
     const figmaAuth = new Error('Access token is invalid');
-    const figmaAuthStrategy = SmartErrorHandler.getErrorStrategy('get_figma_assets', figmaAuth);
+    const figmaAuthStrategy = (SmartErrorHandler as any).getErrorStrategy('get_figma_assets', figmaAuth);
     
     expect(figmaAuthStrategy.action).toBe('fallback');
     expect(figmaAuthStrategy.fallback).toBe('use_unsplash_fallback');
@@ -61,7 +61,7 @@ describe('SmartErrorHandler', () => {
    */
   test('TC-SEH-03: Should handle MJML compilation errors', () => {
     const mjmlError = new Error('MJML compilation failed: Invalid syntax');
-    const mjmlStrategy = SmartErrorHandler.getErrorStrategy('render_mjml', mjmlError);
+    const mjmlStrategy = (SmartErrorHandler as any).getErrorStrategy('render_mjml', mjmlError);
     
     expect(mjmlStrategy.action).toBe('retry');
     expect(mjmlStrategy.delay).toBe(1000);
@@ -74,7 +74,7 @@ describe('SmartErrorHandler', () => {
    */
   test('TC-SEH-04: Should handle upload service errors', () => {
     const uploadError = new Error('S3 upload failed: Network error');
-    const uploadStrategy = SmartErrorHandler.getErrorStrategy('upload_s3', uploadError);
+    const uploadStrategy = (SmartErrorHandler as any).getErrorStrategy('upload_s3', uploadError);
     
     expect(uploadStrategy.action).toBe('retry');
     expect(uploadStrategy.delay).toBe(2000);
@@ -86,7 +86,7 @@ describe('SmartErrorHandler', () => {
    */
   test('TC-SEH-05: Should provide default strategy for unknown tools', () => {
     const unknownError = new Error('Some error');
-    const defaultStrategy = SmartErrorHandler.getErrorStrategy('unknown_tool', unknownError);
+    const defaultStrategy = (SmartErrorHandler as any).getErrorStrategy('unknown_tool', unknownError);
     
     expect(defaultStrategy.action).toBe('standard_retry');
     expect(defaultStrategy.maxAttempts).toBe(3);
@@ -107,7 +107,7 @@ describe('SmartErrorHandler', () => {
 
     rateLimitMessages.forEach(message => {
       const error = new Error(message);
-      const strategy = SmartErrorHandler.getErrorStrategy('get_prices', error);
+      const strategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', error);
       expect(strategy.action).toBe('wait');
     });
 
@@ -121,7 +121,7 @@ describe('SmartErrorHandler', () => {
 
     authMessages.forEach(message => {
       const error = new Error(message);
-      const strategy = SmartErrorHandler.getErrorStrategy('get_figma_assets', error);
+      const strategy = (SmartErrorHandler as any).getErrorStrategy('get_figma_assets', error);
       expect(strategy.action).toBe('fallback');
     });
   });
@@ -137,7 +137,7 @@ describe('SmartErrorHandler', () => {
       duration: 35000
     };
 
-    const analysis = SmartErrorHandler.analyzeErrorContext('get_prices', new Error('Timeout'), context);
+    const analysis = (SmartErrorHandler as any).analyzeErrorContext('get_prices', new Error('Timeout'), context);
     
     expect(analysis.shouldContinue).toBeDefined();
     expect(analysis.strategy).toBeDefined();
@@ -156,7 +156,7 @@ describe('SmartErrorHandler', () => {
       params: { origin: 'MOW', destination: 'LED' }
     };
 
-    const result = await SmartErrorHandler.handleExecutionError(error, 'get_prices', 1, context);
+    const result = await (SmartErrorHandler as any).handleExecutionError(error, 'get_prices', 1, context);
     
     expect(result.shouldContinue).toBeDefined();
     expect(result.strategy).toBeDefined();
@@ -168,7 +168,7 @@ describe('SmartErrorHandler', () => {
    */
   test('TC-SEH-09: Should validate retry logic correctly', () => {
     // First attempt should usually allow retry
-    const firstAttempt = SmartErrorHandler.getErrorStrategy('get_prices', new Error('Network error'));
+    const firstAttempt = (SmartErrorHandler as any).getErrorStrategy('get_prices', new Error('Network error'));
     expect(firstAttempt.action).not.toBe('skip');
 
     // Test max attempts enforcement through context
@@ -178,7 +178,7 @@ describe('SmartErrorHandler', () => {
       errors: ['timeout', 'timeout', 'timeout', 'timeout']
     };
 
-    const analysis = SmartErrorHandler.analyzeErrorContext(
+    const analysis = (SmartErrorHandler as any).analyzeErrorContext(
       'get_prices', 
       new Error('Timeout'), 
       maxAttemptsContext
@@ -194,7 +194,7 @@ describe('SmartErrorHandler', () => {
   test('TC-SEH-10: Should handle specific service error patterns', () => {
     // No flights found
     const noFlightsError = new Error('No flights found for the specified route');
-    const noFlightsStrategy = SmartErrorHandler.getErrorStrategy('get_prices', noFlightsError);
+    const noFlightsStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', noFlightsError);
     
     expect(noFlightsStrategy.action).toBe('fallback');
     expect(noFlightsStrategy.fallback).toBe('use_estimated_prices');
@@ -202,7 +202,7 @@ describe('SmartErrorHandler', () => {
 
     // Figma node not found
     const figmaNotFound = new Error('Figma node not found');
-    const figmaNotFoundStrategy = SmartErrorHandler.getErrorStrategy('get_figma_assets', figmaNotFound);
+    const figmaNotFoundStrategy = (SmartErrorHandler as any).getErrorStrategy('get_figma_assets', figmaNotFound);
     
     expect(figmaNotFoundStrategy.action).toBe('fallback');
     expect(figmaNotFoundStrategy.fallback).toBe('use_unsplash_fallback');
@@ -222,7 +222,7 @@ describe('SmartErrorHandler', () => {
     };
 
     const complexError = new Error('Service temporarily unavailable');
-    const result = await SmartErrorHandler.handleExecutionError(
+    const result = await (SmartErrorHandler as any).handleExecutionError(
       complexError, 
       'get_figma_assets', 
       3, 
@@ -239,19 +239,19 @@ describe('SmartErrorHandler', () => {
    */
   test('TC-SEH-12: Should handle edge cases gracefully', () => {
     // Null error
-    const nullStrategy = SmartErrorHandler.getErrorStrategy('get_prices', null as any);
+    const nullStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', null as any);
     expect(nullStrategy.action).toBe('standard_retry');
 
     // Undefined error
-    const undefinedStrategy = SmartErrorHandler.getErrorStrategy('get_prices', undefined as any);
+    const undefinedStrategy = (SmartErrorHandler as any).getErrorStrategy('get_prices', undefined as any);
     expect(undefinedStrategy.action).toBe('standard_retry');
 
     // Non-Error object
-    const stringError = SmartErrorHandler.getErrorStrategy('get_prices', 'string error' as any);
+    const stringError = (SmartErrorHandler as any).getErrorStrategy('get_prices', 'string error' as any);
     expect(stringError.action).toBe('standard_retry');
 
     // Empty tool name
-    const emptyToolStrategy = SmartErrorHandler.getErrorStrategy('', new Error('test'));
+    const emptyToolStrategy = (SmartErrorHandler as any).getErrorStrategy('', new Error('test'));
     expect(emptyToolStrategy.action).toBe('standard_retry');
   });
 });

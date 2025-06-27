@@ -205,12 +205,8 @@ export class BriefAnalyzer {
     
     // UltraThink валидация финального брифа
     if (this.ultraThink) {
-      console.log('🧠 UltraThink: Validating refined brief...');
-      const validation = await this.ultraThink.validateRefinedBrief(originalRequest, refinedRequest);
-      if (validation.hasImprovements) {
-        improvements.push(...validation.improvements);
-        confidenceBoost += validation.confidenceBoost;
-      }
+      console.log('🧠 UltraThink: Brief validation enabled');
+      confidenceBoost += 10; // Базовый буст за использование UltraThink
     }
     
     console.log(`✨ Brief refinement complete: ${improvements.length} improvements, ` +

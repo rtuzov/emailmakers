@@ -91,6 +91,7 @@ describe('UltraThink Phase 1 Components', () => {
       topic: 'Путешествие в Сочи',
       origin: 'MOW',
       destination: 'AER',
+      departure_date: '2025-07-15',
       date_range: '2025-07-15,2025-07-22',
       campaign_type: 'seasonal'
     };
@@ -111,6 +112,7 @@ describe('UltraThink Phase 1 Components', () => {
       topic: 'Поездка',
       origin: 'LED',
       destination: 'LED', // Same as origin
+      departure_date: '2020-01-01',
       date_range: '2020-01-01,2020-01-07' // Past date
     };
 
@@ -132,6 +134,7 @@ describe('UltraThink Phase 1 Components', () => {
       topic: 'Летний отпуск в Сочи',
       origin: 'MOW',
       destination: 'AER',
+      departure_date: '2025-08-15',
       date_range: '2025-08-15,2025-08-22'
     };
 
@@ -229,6 +232,7 @@ describe('UltraThink Phase 1 Components', () => {
       topic: 'Бизнес поездка в Санкт-Петербург',
       origin: 'MOW',
       destination: 'LED',
+      departure_date: '2025-06-15',
       date_range: '2025-06-15,2025-06-17'
     };
 

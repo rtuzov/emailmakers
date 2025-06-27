@@ -218,4 +218,17 @@ export class SecureLogger {
       isSlow
     });
   }
+
+  // Interface methods for ILogger compatibility
+  static logInterface(level: 'info' | 'warn' | 'error' | 'debug', message: string, context?: any): void {
+    this.log(level, message, context);
+  }
+
+  static logSecure(level: 'info' | 'warn' | 'error' | 'debug', message: string, context?: any): void {
+    this.log(level, message, context);
+  }
+
+  static sanitizeForLogging(data: any): any {
+    return this.sanitizeContext(data);
+  }
 }

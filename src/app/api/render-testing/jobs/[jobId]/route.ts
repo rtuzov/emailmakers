@@ -14,7 +14,7 @@ import { RenderOrchestrationService } from '@/domains/render-testing/services/re
 const JobIdSchema = z.string().uuid();
 
 const RetryJobSchema = z.object({
-  priority: z.number().min(1).max(5).optional()
+  priority: z.number().min(1).max(5).optional().nullable()
 });
 
 // Response schemas
@@ -27,8 +27,8 @@ const JobDetailsResponseSchema = z.object({
       currentStep: z.string(),
       totalSteps: z.number(),
       completedSteps: z.number(),
-      estimatedTimeRemaining: z.number().optional(),
-      details: z.string().optional()
+      estimatedTimeRemaining: z.number().optional().nullable(),
+      details: z.string().optional().nullable()
     }),
     config: z.object({
       clients: z.array(z.string()),
@@ -46,17 +46,17 @@ const JobDetailsResponseSchema = z.object({
       screenshotQuality: z.number()
     }),
     htmlContent: z.string(),
-    templateId: z.string().optional(),
-    subject: z.string().optional(),
-    preheader: z.string().optional(),
+    templateId: z.string().optional().nullable(),
+    subject: z.string().optional().nullable(),
+    preheader: z.string().optional().nullable(),
     priority: z.number(),
-    estimatedDuration: z.number().optional(),
-    actualDuration: z.number().optional(),
-    errorMessage: z.string().optional(),
+    estimatedDuration: z.number().optional().nullable(),
+    actualDuration: z.number().optional().nullable(),
+    errorMessage: z.string().optional().nullable(),
     createdAt: z.string(),
     updatedAt: z.string(),
-    startedAt: z.string().optional(),
-    completedAt: z.string().optional()
+    startedAt: z.string().optional().nullable(),
+    completedAt: z.string().optional().nullable()
   }),
   result: z.object({
     id: z.string(),
@@ -83,12 +83,12 @@ const JobDetailsResponseSchema = z.object({
         severity: z.string(),
         category: z.string(),
         description: z.string(),
-        recommendation: z.string().optional()
+        recommendation: z.string().optional().nullable()
       })),
       screenshots: z.array(z.object({
         id: z.string(),
         url: z.string(),
-        thumbnailUrl: z.string().optional(),
+        thumbnailUrl: z.string().optional().nullable(),
         darkMode: z.boolean(),
         viewport: z.object({
           width: z.number(),
@@ -107,7 +107,7 @@ const JobDetailsResponseSchema = z.object({
         description: z.string(),
         help: z.string()
       }))
-    }).optional(),
+    }).optional().nullable(),
     performanceResult: z.object({
       totalSize: z.number(),
       loadTime: z.number(),
@@ -116,9 +116,9 @@ const JobDetailsResponseSchema = z.object({
         type: z.string(),
         priority: z.string(),
         description: z.string(),
-        potentialSavings: z.number().optional()
+        potentialSavings: z.number().optional().nullable()
       }))
-    }).optional(),
+    }).optional().nullable(),
     spamResult: z.object({
       score: z.number(),
       status: z.string(),
@@ -129,18 +129,18 @@ const JobDetailsResponseSchema = z.object({
         description: z.string(),
         solution: z.string()
       }))
-    }).optional(),
+    }).optional().nullable(),
     createdAt: z.string(),
     updatedAt: z.string(),
-    completedAt: z.string().optional()
-  }).optional(),
+    completedAt: z.string().optional().nullable()
+  }).optional().nullable(),
   screenshots: z.array(z.object({
     id: z.string(),
     clientId: z.string(),
     clientName: z.string(),
     status: z.string(),
-    url: z.string().optional(),
-    thumbnailUrl: z.string().optional(),
+    url: z.string().optional().nullable(),
+    thumbnailUrl: z.string().optional().nullable(),
     darkMode: z.boolean(),
     viewport: z.object({
       width: z.number(),
@@ -148,9 +148,9 @@ const JobDetailsResponseSchema = z.object({
       devicePixelRatio: z.number(),
       name: z.string()
     }),
-    fileSize: z.number().optional(),
-    errorMessage: z.string().optional(),
-    capturedAt: z.string().optional()
+    fileSize: z.number().optional().nullable(),
+    errorMessage: z.string().optional().nullable(),
+    capturedAt: z.string().optional().nullable()
   }))
 });
 

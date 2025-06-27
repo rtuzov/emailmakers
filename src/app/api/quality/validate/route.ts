@@ -29,86 +29,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Validate input
     const validatedData = ValidateQualitySchema.parse(body);
     
-    // Mock response for demonstration - in production this would use QualityAssuranceService
-    const fileSize = Buffer.byteLength(validatedData.html, 'utf8');
-    const wordCount = validatedData.html.split(/\s+/).length;
+    // Import QualityAssuranceService - fail fast if not available
+    const { QualityAssuranceService } = await import('@/domains/quality-assurance/services/quality-assurance-service');
     
-    const mockResponse = {
-      success: true,
-      data: {
-        overallScore: 0.85,
-        crossClientCompatibility: {
-          score: 0.9,
-          supportedClients: ['gmail', 'outlook_2016', 'outlook_365', 'apple_mail', 'yahoo_mail'],
-          issues: [],
-          recommendations: [
-            'Consider using table-based layout for better Outlook compatibility',
-            'Test with dark mode enabled clients'
-          ]
-        },
-        htmlValidation: {
-          isValid: true,
-          errors: [],
-          warnings: [
-            'Consider adding DOCTYPE declaration',
-            'Missing viewport meta tag for mobile optimization'
-          ],
-          score: 0.85
-        },
-        accessibility: {
-          score: 0.8,
-          issues: [
-            'Missing alt attributes on images',
-            'Insufficient color contrast ratio in some elements'
-          ],
-          recommendations: [
-            'Add alt text to all images',
-            'Ensure minimum 4.5:1 contrast ratio for normal text',
-            'Use semantic HTML elements where possible'
-          ],
-          wcagLevel: 'AA'
-        },
-        performance: {
-          score: 0.85,
-          metrics: {
-            fileSize,
-            loadTime: fileSize < 50000 ? 0.3 : fileSize < 100000 ? 0.8 : 1.5,
-            imageOptimization: 0.9,
-            cssOptimization: 0.8
-          },
-          recommendations: fileSize > 100000 ? [
-            'Reduce HTML file size',
-            'Optimize images',
-            'Minimize inline CSS'
-          ] : [
-            'Good file size optimization',
-            'Consider image compression for faster loading'
-          ]
-        },
-        autoFixSuggestions: [
-          {
-            type: 'accessibility',
-            priority: 'high',
-            description: 'Add alt attributes to images',
-            fix: 'Add alt="" for decorative images or descriptive alt text for content images'
-          },
-          {
-            type: 'compatibility',
-            priority: 'medium',
-            description: 'Use table-based layout',
-            fix: 'Replace div-based layouts with table structures for better email client support'
-          }
-        ],
-        summary: {
-          totalIssues: 2,
-          criticalIssues: 1,
-          passesMinimumThreshold: true,
-          readyForProduction: true
-        }
+    // Validate quality - no fallback, fail if service fails
+    const qualityService = new QualityAssuranceService();
+    const validationResult = await qualityService.runQualityAssurance(
+      validatedData.html,
+      {
+        includeAccessibility: !validatedData.options?.skipAccessibilityTest,
+        includePerformance: !validatedData.options?.skipPerformanceTest,
+        strictMode: true,
+        targetClients: validatedData.options?.targetClients
       }
-    };
+    );
     
-    return NextResponse.json(mockResponse);
+    return NextResponse.json({
+      success: true,
+      data: validationResult
+    });
     
   } catch (error) {
     console.error('Quality validation error:', error);
@@ -152,7 +91,7 @@ export async function GET(): Promise<NextResponse> {
   return NextResponse.json({
     message: 'Quality Assurance Validation API',
     version: '1.0.0',
-    status: 'active (mock)',
+    status: 'active',
     endpoint: 'POST /api/quality/validate',
     description: 'Validate email templates for cross-client compatibility, accessibility, and performance',
     validationTypes: [
@@ -172,7 +111,6 @@ export async function GET(): Promise<NextResponse> {
       productionReady: 0.8
     },
     requiredFields: ['html'],
-    optionalFields: ['mjml', 'options'],
-    note: 'This is currently a mock implementation. Full quality assurance integration will be available in production.'
+    optionalFields: ['mjml', 'options']
   });
 } 

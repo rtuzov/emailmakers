@@ -3,10 +3,11 @@ export interface EmailGenerationRequest {
   content_brief?: string;
   origin?: string;
   destination?: string;
+  departure_date?: string;
   date_range?: string;
   cabin_class?: 'economy' | 'business' | 'first';
   target_audience?: string;
-  campaign_type?: 'promotional' | 'informational' | 'seasonal';
+  campaign_type?: 'promotional' | 'informational' | 'seasonal' | 'urgent' | 'newsletter';
   tone?: string;
   language?: string;
   brand?: string;
@@ -30,12 +31,17 @@ export interface EmailGenerationResponse {
     percy_screenshots?: string;
   };
   campaign_metadata?: {
+    campaign_id?: string;
     topic: string;
     routes_analyzed: string[];
     date_ranges: string[];
     prices_found: number;
     content_variations: number;
     quality_controlled?: boolean;
+    // Multi-agent specific metadata
+    agents_executed?: string[];
+    workflow_efficiency?: number;
+    issues_resolved?: number;
   };
 }
 

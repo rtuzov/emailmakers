@@ -202,11 +202,11 @@ async function captureSingleScreenshot(
 
     const result = await generateScreenshots(screenshotParams);
     
-    if (!result.success || !result.screenshots?.[0]) {
+    if (!result.success || !result.data?.screenshots?.[0]) {
       return null;
     }
 
-    const screenshot = result.screenshots[0];
+    const screenshot = result.data.screenshots[0];
     const issuesDetected = analyzeScreenshotIssues(screenshot, client, device);
 
     return {

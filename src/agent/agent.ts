@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 
 // Import consolidated tools
-import { campaignManager, campaignManagerSchema } from './tools/consolidated/campaign-manager';
+
 import { figmaAssetManager, figmaAssetManagerSchema } from './tools/consolidated/figma-asset-manager';
 import { pricingIntelligence, pricingIntelligenceSchema } from './tools/consolidated/pricing-intelligence';
 import { contentGenerator, contentGeneratorSchema } from './tools/consolidated/content-generator';
@@ -145,7 +145,7 @@ Your role is to coordinate four specialist agents in this exact sequence:
 - Mobile-responsive design and accessibility standards
 
 **Technical Quality Gate:**
-- Cross-client compatibility (Gmail, Outlook, Apple Mail)
+- Cross-client compatibility (Gmail, Outlook, Apple Mail, Yandex Mail)
 - WCAG AA accessibility compliance
 - HTML validation and email standards compliance
 - Performance optimization (<100KB, <2s load time)
@@ -180,13 +180,7 @@ Focus on coordination, not execution. Let the specialists handle their domains w
 
   private createTools() {
     return [
-      // 📁 Campaign Manager - Consolidated campaign lifecycle management
-      tool({
-        name: 'campaign_manager',
-        description: 'Campaign Manager - Unified campaign lifecycle management including folder initialization, loading, performance monitoring, and finalization. Replaces initialize_email_folder, load_email_folder, and performance_monitor.',
-        parameters: campaignManagerSchema,
-        execute: campaignManager
-      }),
+
 
       // 🎨 Figma Asset Manager - Consolidated asset operations
       tool({
@@ -246,89 +240,20 @@ Focus on coordination, not execution. Let the specialists handle their domains w
     ];
   }
 
+  /**
+   * Generate email using AI-powered content creation
+   * @param request Email generation request
+   * @returns Promise resolving to email generation response
+   */
   async generateEmail(request: EmailGenerationRequest): Promise<EmailGenerationResponse> {
     const startTime = Date.now();
     this.retryCount = 0;
 
-    console.log(`🎯 EmailGeneratorAgent.generateEmail called - Mode: ${this.useMultiAgentWorkflow ? 'Multi-Agent Workflow' : 'Legacy OpenAI Agent'}`);
+    console.log(`🎯 EmailGeneratorAgent.generateEmail called - Mode: Multi-Agent Workflow Only`);
 
-    // Use the new multi-agent workflow if enabled
-    if (this.useMultiAgentWorkflow) {
-      console.log('🔄 Executing multi-agent workflow with handoffs...');
-      return await this.executeWithMultiAgent(request);
-    }
-
-    // Fallback to legacy OpenAI Agent workflow
-    console.log('🔄 Using legacy OpenAI Agent workflow...');
-    
-    // Use OpenAI Agents SDK built-in tracing with withTrace and timeout
-    return await Promise.race([
-      withTrace('Email Generation Workflow', async () => {
-        // Get the current trace ID from OpenAI Agents SDK
-        const currentTrace = getCurrentTrace();
-        const traceId = currentTrace?.traceId || generateTraceId();
-        
-        console.log('🚀 Starting email generation with OpenAI Agents tracing:', {
-          topic: request.topic,
-          traceId,
-          workflow: 'email_generation'
-        });
-
-        // Set trace_id in environment variable so tools can access it
-        process.env.OPENAI_TRACE_ID = traceId;
-        console.log('📋 Set OPENAI_TRACE_ID environment variable:', traceId);
-
-        try {
-          console.log('🚀 Starting enhanced email generation with request:', {
-            topic: request.topic,
-            content_brief: request.content_brief?.substring(0, 100),
-            destination: request.destination,
-            origin: request.origin
-          });
-
-          // Enhanced input message with context
-          const enrichedContext = this.ultraThink ? await this.ultraThink.enhanceRequest(request) : null;
-          const inputMessage = this.formatEnhancedInputMessage(request, enrichedContext);
-
-          // Run agent with retry logic
-          const result = await this.runWithRetry(inputMessage);
-          const generationTime = Date.now() - startTime;
-
-          console.log('✅ Email generation completed successfully:', {
-            traceId,
-            generationTime: `${generationTime}ms`,
-            hasResult: !!result
-          });
-
-          return this.processEnhancedResult(result, generationTime, request, traceId);
-
-        } catch (error) {
-          const generationTime = Date.now() - startTime;
-          console.error('❌ Email generation failed:', {
-            traceId,
-            error: error instanceof Error ? error.message : String(error),
-            generationTime: `${generationTime}ms`
-          });
-
-          return {
-            status: 'error' as const,
-            error_message: error instanceof Error ? error.message : String(error),
-            generation_time: generationTime,
-            trace_id: traceId
-          };
-        } finally {
-          // Clean up environment variable
-          delete process.env.OPENAI_TRACE_ID;
-          console.log('🧹 Cleaned up OPENAI_TRACE_ID environment variable');
-        }
-      }),
-      // Timeout after 60 seconds for first attempt
-      new Promise<EmailGenerationResponse>((_, reject) => {
-        setTimeout(() => {
-          reject(new Error('Email generation timed out after 60 seconds'));
-        }, 60000);
-      })
-    ]);
+    // Use the multi-agent workflow - no fallback allowed
+    console.log('🔄 Executing multi-agent workflow with handoffs...');
+    return await this.executeWithMultiAgent(request);
   }
 
   /**
@@ -542,7 +467,7 @@ Focus on coordination, not execution. Let the specialists handle their domains w
           return this.runWithRetry(inputMessage, attempt + 1);
         }
       } else if (attempt < this.maxRetries) {
-        // Fallback to standard retry logic
+        // No fallback - fail fast after max retries
         const delay = Math.pow(2, attempt - 1) * 1000;
         console.log(`⏳ Retrying OpenAI Agent in ${delay}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));

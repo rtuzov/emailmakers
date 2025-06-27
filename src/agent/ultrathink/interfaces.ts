@@ -16,7 +16,12 @@ import {
 
 // Core Engine Interface
 export interface IUltraThinkEngine {
-  enhanceRequest(request: EmailGenerationRequest): Promise<ContextEnrichment>;
+  enhanceRequest(request: EmailGenerationRequest): Promise<{
+    validatedRequest: EmailGenerationRequest;
+    enrichedContext: ContextEnrichment;
+    optimizedSequence: ToolSequence;
+    validationResult: ValidationResult;
+  }>;
   validateQualityResult(toolResult: any): QualityControlResult;
   shouldContinueWorkflow(phase: string): boolean;
   handleExecutionError(error: any, tool: string, attempt: number, context?: any): Promise<any>;

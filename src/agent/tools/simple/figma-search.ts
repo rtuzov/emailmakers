@@ -10,10 +10,10 @@ import { getLocalFigmaAssets } from '../figma-local-processor';
 
 export const figmaSearchSchema = z.object({
   tags: z.array(z.string()).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
-  emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).optional().nullable().describe('Emotional tone of the campaign'),
+  emotional_tone: z.string().default('positive').describe('Emotional tone of the campaign: positive, neutral, urgent, friendly'),
   target_count: z.number().default(2).describe('Number of assets to return'),
-  preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).optional().nullable().describe('Preferred rabbit emotion'),
-  airline: z.string().optional().nullable().describe('Specific airline for logo search')
+  preferred_emotion: z.string().default('').describe('Preferred rabbit emotion: happy, angry, neutral, sad, confused'),
+  airline: z.string().default('').describe('Specific airline for logo search')
 });
 
 export type FigmaSearchParams = z.infer<typeof figmaSearchSchema>;
@@ -48,17 +48,28 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
     });
 
     // Use existing local processor with search context
+    const emotionalTone = params.emotional_tone || 'positive';
+    const validTones = ['positive', 'neutral', 'urgent', 'friendly'];
+    const normalizedTone = validTones.includes(emotionalTone) ? emotionalTone : 'positive';
+    
+    const preferredEmotion = params.preferred_emotion || '';
+    const validEmotions = ['neutral', 'happy', 'angry', 'sad', 'confused'];
+    const normalizedEmotion = validEmotions.includes(preferredEmotion) ? preferredEmotion : undefined;
+    
     const searchContext = {
       campaign_type: 'promotional' as const,
-      emotional_tone: params.emotional_tone || 'positive' as const,
+      emotional_tone: normalizedTone as "positive" | "neutral" | "urgent" | "friendly",
       target_count: params.target_count,
       diversity_mode: true,
-      preferred_emotion: params.preferred_emotion,
-      airline: params.airline,
+      preferred_emotion: normalizedEmotion as "neutral" | "happy" | "angry" | "sad" | "confused" | undefined,
+      airline: params.airline || undefined,
       use_local_only: true
     };
 
-    const result = await getLocalFigmaAssets(params.tags, searchContext);
+    const result = await getLocalFigmaAssets({
+      tags: params.tags,
+      context: searchContext
+    });
     const searchTime = Date.now() - startTime;
 
     if (!result.success) {
@@ -76,13 +87,13 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
     }
 
     // Transform result to simple format
-    const assets = result.assets.map(asset => ({
-      fileName: asset.fileName,
-      filePath: asset.filePath,
-      tags: asset.tags,
-      description: asset.description,
-      emotion: asset.metadata?.emotion,
-      category: asset.metadata?.category
+    const assets = Object.entries(result.data.metadata).map(([fileName, asset]: [string, any]) => ({
+      fileName: fileName,
+      filePath: asset.path,
+      tags: asset.metadata.allTags || [],
+      description: asset.metadata.description || '',
+      emotion: asset.metadata.aiAnalysis?.emotionalTone,
+      category: asset.metadata.folderName
     }));
 
     // Generate search recommendations
@@ -129,11 +140,11 @@ function generateSearchRecommendations(assets: any[], params: FigmaSearchParams)
     recommendations.push('Good asset selection found');
   }
 
-  if (params.preferred_emotion && !assets.some(a => a.emotion === params.preferred_emotion)) {
+  if (params.preferred_emotion && params.preferred_emotion.trim() !== '' && !assets.some(a => a.emotion === params.preferred_emotion)) {
     recommendations.push(`No ${params.preferred_emotion} emotion found - consider alternatives`);
   }
 
-  if (params.airline && !assets.some(a => a.description.toLowerCase().includes(params.airline.toLowerCase()))) {
+  if (params.airline && params.airline.trim() !== '' && !assets.some(a => a.description.toLowerCase().includes(params.airline.toLowerCase()))) {
     recommendations.push(`No ${params.airline} airline assets found - check available logos`);
   }
 

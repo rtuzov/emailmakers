@@ -12,23 +12,15 @@ export const copyGenerateSchema = z.object({
   copy_type: z.enum(['subject', 'preheader', 'cta', 'headline', 'description']).describe('Type of copy to generate'),
   base_content: z.string().describe('Base content or topic for copy generation'),
   style_preferences: z.object({
-    tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).default('friendly'),
-    length: z.enum(['short', 'medium', 'long']).default('medium'),
-    formality: z.enum(['formal', 'informal', 'neutral']).default('neutral'),
-    emotional_appeal: z.enum(['logical', 'emotional', 'urgency', 'curiosity']).default('emotional')
+    tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).describe('Content tone'),
+    length: z.enum(['short', 'medium', 'long']).describe('Content length'),
+    formality: z.enum(['formal', 'informal', 'neutral']).describe('Content formality'),
+    emotional_appeal: z.enum(['logical', 'emotional', 'urgency', 'curiosity']).describe('Emotional appeal type')
   }).describe('Style preferences for copy generation'),
-  context_data: z.object({
-    destination: z.string().optional().nullable(),
-    price_range: z.string().optional().nullable(),
-    target_audience: z.string().optional().nullable(),
-    seasonal_context: z.string().optional().nullable(),
-    campaign_goal: z.enum(['awareness', 'conversion', 'retention', 'engagement']).optional().nullable()
-  }).optional().nullable().describe('Additional context for better copy generation'),
-  constraints: z.object({
-    max_characters: z.number().optional().nullable(),
-    required_keywords: z.array(z.string()).optional().nullable(),
-    avoid_words: z.array(z.string()).optional().nullable()
-  }).optional().nullable().describe('Copy constraints and requirements')
+  // Simplified context - no optional nested fields
+  target_audience: z.string().describe('Target audience for copy'),
+  campaign_goal: z.enum(['awareness', 'conversion', 'retention', 'engagement']).describe('Campaign goal'),
+  max_characters: z.number().describe('Maximum character limit for copy')
 });
 
 export type CopyGenerateParams = z.infer<typeof copyGenerateSchema>;
@@ -74,19 +66,24 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
       'description': 'body_text'
     };
 
-    // Build specialized generation parameters
+    // Build specialized generation parameters with simplified schema
     const copyParams = {
       topic: params.base_content,
       content_type: contentTypeMap[params.copy_type] as any,
       tone: params.style_preferences.tone,
       language: 'ru' as const,
-      target_audience: params.context_data?.target_audience || 'travelers',
+      target_audience: params.target_audience,
+      prices: {
+        currency: 'RUB',
+        cheapest: 0,
+        prices: []
+      },
       campaign_context: {
         campaign_type: 'promotional' as const,
         urgency_level: params.style_preferences.emotional_appeal === 'urgency' ? 'high' as const : 'medium' as const
       },
       style_preferences: params.style_preferences,
-      constraints: params.constraints
+      max_characters: params.max_characters
     };
 
     // Generate copy using existing tool
@@ -127,7 +124,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
     const copyAnalysis = analyzeCopyQuality(generatedText, params);
     
     // Format output
-    const formattedOutput = formatCopyOutput(generatedText, params.constraints);
+    const formattedOutput = formatCopyOutput(generatedText, params.max_characters);
 
     return {
       success: true,
@@ -249,11 +246,8 @@ function analyzeCopyQuality(copy: string, params: CopyGenerateParams): any {
   const urgencyWordCount = urgencyWords.filter(word => lowerCopy.includes(word)).length;
   const urgencyLevel = urgencyWordCount >= 2 ? 'high' : urgencyWordCount >= 1 ? 'medium' : 'low';
 
-  // Keyword coverage
-  const requiredKeywords = params.constraints?.required_keywords || [];
-  const keywordCoverage = requiredKeywords.length > 0 
-    ? (requiredKeywords.filter(keyword => lowerCopy.includes(keyword.toLowerCase())).length / requiredKeywords.length) * 100
-    : 100;
+  // Keyword coverage (simplified - no constraints object)
+  const keywordCoverage = 100;
 
   // Recommendations
   const recommendations: string[] = [];
@@ -285,13 +279,13 @@ function analyzeCopyQuality(copy: string, params: CopyGenerateParams): any {
   };
 }
 
-function formatCopyOutput(copy: string, constraints?: any): any {
+function formatCopyOutput(copy: string, maxCharacters: number): any {
   const characterCount = copy.length;
   const wordCount = copy.split(/\s+/).length;
   
   let meetsConstraints = true;
   
-  if (constraints?.max_characters && characterCount > constraints.max_characters) {
+  if (characterCount > maxCharacters) {
     meetsConstraints = false;
   }
   

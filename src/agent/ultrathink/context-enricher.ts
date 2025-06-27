@@ -448,4 +448,70 @@ export class ContextEnricher {
 
     return sections.join('\n');
   }
+
+  // Interface methods for IContextEnricher compatibility
+  async enrichContext(request: EmailGenerationRequest): Promise<ContextEnrichment> {
+    return ContextEnricher.enrichContext(request);
+  }
+
+  async analyzeDestination(destination: string): Promise<any> {
+    const destinationInfo = RouteValidator.getCityInfo(destination);
+    if (!destinationInfo) {
+      return { valid: false, info: null };
+    }
+
+    return {
+      valid: true,
+      info: destinationInfo,
+      tips: SimpleDataProvider.getDestinationTips(destinationInfo.country),
+      advisory: SimpleDataProvider.getTravelAdvisory(destinationInfo.country)
+    };
+  }
+
+  async analyzeRoute(origin: string, destination: string): Promise<any> {
+    const routeValidation = RouteValidator.validateRoute(origin, destination);
+    const popularity = SimpleDataProvider.getRoutePopularity(origin, destination);
+    
+    return {
+      validation: routeValidation,
+      popularity,
+      timezoneDiff: routeValidation.timezoneDiff || 0
+    };
+  }
+
+  async analyzeDateContext(dateRange: string): Promise<any> {
+    const dateValidation = DateValidator.validateDateRange(dateRange);
+    
+    return {
+      validation: dateValidation,
+      seasonal: dateValidation.seasonalContext,
+      isHoliday: dateValidation.isHoliday
+    };
+  }
+
+  async analyzeSeasonalFactors(destination: string, dateRange: string): Promise<any> {
+    const dateValidation = DateValidator.validateDateRange(dateRange, destination);
+    
+    return {
+      seasonal: dateValidation.seasonalContext,
+      priceFactor: dateValidation.seasonalContext?.priceFactor || 1.0,
+      recommendations: dateValidation.suggestion ? [dateValidation.suggestion] : []
+    };
+  }
+
+  async analyzePricingContext(origin: string, destination: string, dateRange: string): Promise<any> {
+    const routePopularity = SimpleDataProvider.getRoutePopularity(origin, destination);
+    const dateValidation = DateValidator.validateDateRange(dateRange, destination);
+    
+    return {
+      routePopularity,
+      seasonalFactor: dateValidation.seasonalContext?.priceFactor || 1.0,
+      isHoliday: dateValidation.isHoliday,
+      priceMultiplier: SimpleDataProvider.getPriceMultiplier(
+        new Date(dateRange.split(',')[0]),
+        origin,
+        destination
+      )
+    };
+  }
 }

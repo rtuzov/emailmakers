@@ -24,7 +24,7 @@ export const deliveryManagerSchema = z.object({
       file_path: z.string().describe('Local file path to upload'),
       destination_key: z.string().optional().nullable().describe('S3 key (auto-generated if not provided)'),
       content_type: z.string().optional().nullable().describe('MIME type (auto-detected if not provided)'),
-      metadata: z.record(z.string()).optional().nullable().describe('Additional metadata for the file')
+      metadata: z.object({}).passthrough().optional().nullable().describe('Additional metadata for the file')
     })).describe('Files to upload'),
     bucket_config: z.object({
       bucket_name: z.string().optional().nullable().describe('S3 bucket name (defaults to configured bucket)'),
@@ -49,7 +49,7 @@ export const deliveryManagerSchema = z.object({
       viewport_sizes: z.array(z.object({
         width: z.number(),
         height: z.number(),
-        device_name: z.string().optional()
+        device_name: z.string().optional().nullable()
       })).default([
         { width: 1200, height: 800, device_name: 'desktop' },
         { width: 375, height: 667, device_name: 'mobile' }
@@ -279,12 +279,13 @@ async function handleAssetUpload(params: DeliveryManagerParams, startTime: numbe
   for (const file of params.upload_config.files) {
     try {
       const uploadResult = await uploadToS3({
-        filePath: file.file_path,
-        destinationKey: file.destination_key,
-        contentType: file.content_type,
-        metadata: file.metadata,
-        bucketConfig: params.upload_config.bucket_config,
-        options: params.upload_config.upload_options
+        html: file.file_path, // Required field - using file_path as html content path
+        mjml_source: file.destination_key,
+        campaign_id: params.campaign_id,
+        assets: {
+          images: [file.file_path],
+          metadata: file.metadata
+        }
       });
       
       if (uploadResult.success) {
@@ -357,10 +358,12 @@ async function handleScreenshotGeneration(params: DeliveryManagerParams, startTi
   console.log('📸 Generating email screenshots across multiple clients and viewports');
   
   const screenshotResult = await generateScreenshots({
-    content: params.screenshot_config.target_content,
-    contentType: params.screenshot_config.content_type,
-    captureOptions: params.screenshot_config.capture_options,
-    outputConfig: params.screenshot_config.output_config
+    html_content: params.screenshot_config.target_content,
+    campaign_id: params.campaign_id,
+    viewport_width: params.screenshot_config.capture_options?.viewport_sizes?.[0]?.width,
+    viewport_height: params.screenshot_config.capture_options?.viewport_sizes?.[0]?.height,
+    full_page: params.screenshot_config.capture_options?.capture_full_page,
+    devices: ['desktop', 'mobile']
   });
   
   if (!screenshotResult.success) {

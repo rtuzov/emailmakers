@@ -376,14 +376,14 @@ export class MetricsService {
    * Record accessibility test completion
    */
   recordAccessibilityTest(score: number, violationCount: number, success: boolean): void {
-    this.recordCounter('accessibility_tests_total', { success: success.toString() });
-    this.recordGauge('accessibility_score', score);
-    this.recordGauge('accessibility_violations', violationCount);
+    this.incrementCounter('accessibility_tests_total', { success: success.toString() });
+    this.setGauge('accessibility_score', score);
+    this.setGauge('accessibility_violations', violationCount);
     
     if (success) {
-      this.recordCounter('accessibility_tests_success_total');
+      this.incrementCounter('accessibility_tests_success_total');
     } else {
-      this.recordCounter('accessibility_tests_failure_total');
+      this.incrementCounter('accessibility_tests_failure_total');
     }
   }
 

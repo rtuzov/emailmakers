@@ -12,11 +12,11 @@ import { EmailClientFactory } from '@/domains/render-testing/entities/email-clie
 
 // Query schemas
 const ListClientsQuerySchema = z.object({
-  type: z.enum(['web', 'desktop', 'mobile']).optional(),
-  platform: z.string().optional(),
-  active: z.string().transform(val => val === 'true').optional(),
-  popular: z.string().transform(val => val === 'true').optional(),
-  capability: z.string().optional()
+  type: z.enum(['web', 'desktop', 'mobile']).optional().nullable(),
+  platform: z.string().optional().nullable(),
+  active: z.string().transform(val => val === 'true').optional().nullable(),
+  popular: z.string().transform(val => val === 'true').optional().nullable(),
+  capability: z.string().optional().nullable()
 });
 
 // Response schemas
@@ -25,11 +25,11 @@ const EmailClientResponseSchema = z.object({
   name: z.string(),
   displayName: z.string(),
   vendor: z.string(),
-  version: z.string().optional(),
+  version: z.string().optional().nullable(),
   type: z.string(),
   platform: z.string(),
   renderingEngine: z.string(),
-  marketShare: z.number().optional(),
+  marketShare: z.number().optional().nullable(),
   capabilities: z.object({
     darkMode: z.boolean(),
     responsiveDesign: z.boolean(),
@@ -42,8 +42,8 @@ const EmailClientResponseSchema = z.object({
     animations: z.boolean(),
     interactiveElements: z.boolean(),
     customProperties: z.boolean(),
-    maxEmailWidth: z.number().optional(),
-    maxEmailHeight: z.number().optional(),
+    maxEmailWidth: z.number().optional().nullable(),
+    maxEmailHeight: z.number().optional().nullable(),
     imageFormats: z.array(z.string()),
     videoSupport: z.boolean(),
     accessibilityFeatures: z.boolean()
@@ -66,13 +66,13 @@ const EmailClientResponseSchema = z.object({
   }),
   automationConfig: z.object({
     workerType: z.string(),
-    containerImage: z.string().optional(),
-    vmTemplate: z.string().optional(),
+    containerImage: z.string().optional().nullable(),
+    vmTemplate: z.string().optional().nullable(),
     browserConfig: z.object({
-      browser: z.string().optional(),
+      browser: z.string().optional().nullable(),
       headless: z.boolean(),
-      args: z.array(z.string()).optional()
-    }).optional()
+      args: z.array(z.string()).optional().nullable()
+    }).optional().nullable()
   }),
   isActive: z.boolean(),
   tags: z.array(z.string()),
@@ -94,7 +94,7 @@ const ClientSummaryResponseSchema = z.object({
   isActive: z.boolean(),
   supportsDarkMode: z.boolean(),
   estimatedDuration: z.number(),
-  marketShare: z.number().optional(),
+  marketShare: z.number().optional().nullable(),
   tags: z.array(z.string())
 });
 

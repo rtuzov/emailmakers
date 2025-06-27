@@ -4,7 +4,7 @@
  * Comprehensive type definitions for intelligent quality analysis and improvement system
  */
 
-import { getUsageModel } from '../../../shared/utils/model-config';
+import { getValidatedUsageModel } from '../../../shared/utils/model-config';
 
 // ================================
 // CORE INTERFACES
@@ -229,7 +229,7 @@ export interface AIConsultantConfig {
   max_total_execution_time: number; // Default: 300 seconds
   
   // AI model configuration
-  ai_model: 'gpt-4o-mini' | 'gpt-4' | 'gpt-4o' | 'gpt-3.5-turbo';
+  ai_model: 'gpt-4o-mini' | 'gpt-4' | 'gpt-4o' | 'gpt-3.5-turbo' | 'claude-3-5-sonnet-20241022';
   analysis_temperature: number; // Default: 0.3 (more deterministic)
   max_recommendations: number; // Default: 10
   
@@ -328,7 +328,7 @@ export const DEFAULT_AI_CONSULTANT_CONFIG: AIConsultantConfig = {
   max_total_execution_time: 300,
   
   // AI model configuration
-  ai_model: getUsageModel(),
+  ai_model: getValidatedUsageModel(),
   analysis_temperature: 0.3,
   max_recommendations: 10,
   

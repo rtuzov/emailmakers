@@ -31,7 +31,10 @@ export async function basicDIExample(): Promise<void> {
   
   // Use the services
   const request: EmailGenerationRequest = {
-    topic: 'Test email generation with DI',
+    topic: 'Basic UltraThink integration example',
+    origin: 'MOW',
+    destination: 'LED', 
+    departure_date: '2025-02-01',
     campaign_type: 'promotional'
   };
   
@@ -110,8 +113,8 @@ export function testingWithDIExample(): void {
   const mockLogger = testContainer.resolve<ILogger>(SERVICE_TOKENS.Logger);
   
   mockLogger.log('info', 'Testing with mock services');
-  console.log('Mock holiday check:', mockDataProvider.isHoliday('2025-01-01', 'US'));
-  console.log('Mock route popularity:', mockDataProvider.getRoutePopularity('NYC', 'LAX'));
+  console.log('Mock holiday check:', (mockDataProvider as any).isHoliday('2025-01-01', 'US'));
+  console.log('Mock route popularity:', (mockDataProvider as any).getRoutePopularity('NYC', 'LAX'));
   
   console.log('✅ Testing with DI example completed');
 }
@@ -140,7 +143,7 @@ export function performanceMonitoringExample(): void {
           uptime: process.uptime()
         }
       };
-      originalLogger.log(level, message, enhancedContext);
+      originalLogger.log(level as 'info' | 'warn' | 'error' | 'debug', message, enhancedContext);
     }
   };
   
@@ -193,9 +196,9 @@ export async function factoryPatternExample(): Promise<void> {
   // Use the factory to create a pre-configured engine
   const engine = createUltraThinkEngine({
     enableValidation: true,
-    enableOptimization: true,
-    enableQualityGates: true,
-    mode: 'quality'
+    enableContextEnrichment: true,
+    enableSmartSequencing: true,
+    enableQualityControl: true
   });
   
   console.log('🏭 Created UltraThink engine via factory');
@@ -205,6 +208,7 @@ export async function factoryPatternExample(): Promise<void> {
     topic: 'Factory pattern email generation',
     origin: 'MOW',
     destination: 'LED',
+    departure_date: '2025-02-01',
     campaign_type: 'promotional'
   };
   

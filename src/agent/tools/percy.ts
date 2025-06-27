@@ -158,8 +158,8 @@ function analyzeEmailLayout(html: string): {
   }
 
   // 4. Images with proper attributes
-  const images = html.match(/<img[^>]*>/g) || [];
-  images.forEach((img, index) => {
+  const images: string[] = html.match(/<img[^>]*>/g) || [];
+  images.forEach((img: string, index: number) => {
     if (!img.includes('alt=')) {
       issues.push(`Image ${index + 1} missing alt attribute`);
       score -= 0.05;

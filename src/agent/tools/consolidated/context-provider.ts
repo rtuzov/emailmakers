@@ -8,80 +8,69 @@
  * - Маркетинговые инсайты
  * 
  * Единый интерфейс для всех контекстуальных данных
+ * 
+ * ВАЖНО: Схема переписана для полной совместимости с OpenAI Structured Outputs
+ * Убраны все вложенные optional/nullable паттерны, которые вызывали ошибки валидации
  */
 
 import { z } from 'zod';
 import { getCurrentDate } from '../date';
 
-// Unified schema for all context provision operations
+// ПРОСТАЯ СХЕМА ДЛЯ OPENAI СОВМЕСТИМОСТИ - БЕЗ ВЛОЖЕННЫХ ОБЪЕКТОВ
 export const contextProviderSchema = z.object({
   action: z.enum(['get_current_context', 'get_seasonal_context', 'get_cultural_context', 'get_marketing_context', 'get_travel_context', 'get_comprehensive_context']).describe('Context provision operation'),
   
-  // Core context parameters
-  target_date: z.string().nullable().default(null).describe('Target date for context (ISO format, defaults to current date)'),
+  // Базовые параметры (только простые типы)
+  target_date: z.string().default('').describe('Target date for context (ISO format, empty for current date)'),
   timezone: z.string().default('Europe/Moscow').describe('Timezone for date/time context'),
   locale: z.enum(['ru-RU', 'en-US', 'en-GB', 'de-DE', 'fr-FR']).default('ru-RU').describe('Locale for cultural context'),
   
-  // Geographic context
-  geographic_scope: z.object({
-    primary_market: z.enum(['russia', 'europe', 'global', 'cis']).default('russia').describe('Primary geographic market'),
-    target_cities: z.array(z.string()).optional().nullable().describe('Specific cities for localized context'),
-    include_weather: z.boolean().default(true).describe('Include weather context'),
-    include_events: z.boolean().default(true).describe('Include local events context')
-  }).optional().nullable().describe('Geographic context configuration'),
+  // География (упрощено)
+  primary_market: z.enum(['russia', 'europe', 'global', 'cis']).default('russia').describe('Primary geographic market'),
+  target_cities: z.array(z.string()).default([]).describe('Specific cities for localized context'),
+  include_weather: z.boolean().default(true).describe('Include weather context'),
+  include_events: z.boolean().default(true).describe('Include local events context'),
   
-  // Seasonal and holiday context
-  seasonal_scope: z.object({
-    include_holidays: z.boolean().default(true).describe('Include holiday information'),
-    include_seasons: z.boolean().default(true).describe('Include seasonal context'),
-    holiday_types: z.array(z.enum(['national', 'religious', 'cultural', 'commercial', 'travel'])).default(['national', 'cultural', 'travel']).describe('Types of holidays to include'),
-    seasonal_depth: z.enum(['basic', 'detailed', 'comprehensive']).default('detailed').describe('Depth of seasonal analysis')
-  }).optional().nullable().describe('Seasonal context configuration'),
+  // Сезонность (упрощено)
+  include_holidays: z.boolean().default(true).describe('Include holiday information'),
+  include_seasons: z.boolean().default(true).describe('Include seasonal context'),
+  holiday_types: z.array(z.enum(['national', 'religious', 'cultural', 'commercial', 'travel'])).default(['national', 'cultural', 'travel']).describe('Types of holidays to include'),
+  seasonal_depth: z.enum(['basic', 'detailed', 'comprehensive']).default('detailed').describe('Depth of seasonal analysis'),
   
-  // Cultural context
-  cultural_scope: z.object({
-    cultural_events: z.boolean().default(true).describe('Include cultural events and celebrations'),
-    regional_preferences: z.boolean().default(true).describe('Include regional travel preferences'),
-    demographic_insights: z.boolean().default(true).describe('Include demographic trend data'),
-    language_nuances: z.boolean().default(true).describe('Include language and communication preferences')
-  }).optional().nullable().describe('Cultural context configuration'),
+  // Культура (упрощено)
+  cultural_events: z.boolean().default(true).describe('Include cultural events and celebrations'),
+  regional_preferences: z.boolean().default(true).describe('Include regional travel preferences'),
+  demographic_insights: z.boolean().default(true).describe('Include demographic trend data'),
+  language_nuances: z.boolean().default(true).describe('Include language and communication preferences'),
   
-  // Marketing and travel context
-  marketing_scope: z.object({
-    travel_trends: z.boolean().default(true).describe('Include current travel trends'),
-    pricing_trends: z.boolean().default(true).describe('Include pricing trend context'),
-    competitor_analysis: z.boolean().default(false).describe('Include competitor context'),
-    campaign_optimization: z.boolean().default(true).describe('Include campaign optimization suggestions'),
-    urgency_factors: z.boolean().default(true).describe('Analyze urgency and timing factors')
-  }).optional().nullable().describe('Marketing context configuration'),
+  // Маркетинг (упрощено)
+  travel_trends: z.boolean().default(true).describe('Include current travel trends'),
+  pricing_trends: z.boolean().default(true).describe('Include pricing trend context'),
+  competitor_analysis: z.boolean().default(false).describe('Include competitor context'),
+  campaign_optimization: z.boolean().default(true).describe('Include campaign optimization suggestions'),
+  urgency_factors: z.boolean().default(true).describe('Analyze urgency and timing factors'),
   
-  // Travel industry context
-  travel_scope: z.object({
-    seasonal_demand: z.boolean().default(true).describe('Include seasonal travel demand patterns'),
-    destination_trends: z.boolean().default(true).describe('Include popular destination trends'),
-    booking_patterns: z.boolean().default(true).describe('Include booking behavior patterns'),
-    airline_insights: z.boolean().default(true).describe('Include airline industry insights'),
-    visa_requirements: z.boolean().default(false).describe('Include visa and travel requirement updates')
-  }).optional().nullable().describe('Travel industry context configuration'),
+  // Путешествия (упрощено)
+  seasonal_demand: z.boolean().default(true).describe('Include seasonal travel demand patterns'),
+  destination_trends: z.boolean().default(true).describe('Include popular destination trends'),
+  booking_patterns: z.boolean().default(true).describe('Include booking behavior patterns'),
+  airline_insights: z.boolean().default(true).describe('Include airline industry insights'),
+  visa_requirements: z.boolean().default(false).describe('Include visa and travel requirement updates'),
   
-  // Content and campaign context
-  campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).optional().nullable().describe('Type of email campaign'),
-    target_audience: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers']).optional().nullable().describe('Primary target audience'),
-    content_tone: z.enum(['formal', 'casual', 'friendly', 'urgent', 'premium']).optional().nullable().describe('Desired content tone'),
-    brand_voice: z.enum(['professional', 'approachable', 'innovative', 'trustworthy', 'adventurous']).optional().nullable().describe('Brand voice alignment')
-  }).optional().nullable().describe('Campaign-specific context'),
+  // Кампания (упрощено)
+  campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter', 'none']).default('none').describe('Type of email campaign'),
+  target_audience: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers', 'general']).default('general').describe('Primary target audience'),
+  content_tone: z.enum(['formal', 'casual', 'friendly', 'urgent', 'premium']).default('friendly').describe('Desired content tone'),
+  brand_voice: z.enum(['professional', 'approachable', 'innovative', 'trustworthy', 'adventurous']).default('professional').describe('Brand voice alignment'),
   
-  // Data enrichment options
-  enrichment_options: z.object({
-    include_analytics: z.boolean().default(true).describe('Include contextual analytics'),
-    include_recommendations: z.boolean().default(true).describe('Include actionable recommendations'),
-    include_predictions: z.boolean().default(true).describe('Include trend predictions'),
-    historical_comparison: z.boolean().default(true).describe('Include historical context comparisons'),
-    real_time_data: z.boolean().default(true).describe('Include real-time data where available')
-  }).optional().nullable().describe('Data enrichment configuration'),
+  // Обогащение данных (упрощено)
+  include_analytics: z.boolean().default(true).describe('Include contextual analytics'),
+  include_recommendations: z.boolean().default(true).describe('Include actionable recommendations'),
+  include_predictions: z.boolean().default(true).describe('Include trend predictions'),
+  historical_comparison: z.boolean().default(true).describe('Include historical context comparisons'),
+  real_time_data: z.boolean().default(true).describe('Include real-time data where available'),
   
-  // Output formatting
+  // Форматирование вывода
   output_format: z.enum(['structured', 'narrative', 'bullet_points', 'json', 'markdown']).default('structured').describe('Output format preference'),
   detail_level: z.enum(['minimal', 'standard', 'detailed', 'comprehensive']).default('standard').describe('Level of detail in context')
 });
@@ -218,7 +207,7 @@ export async function contextProvider(params: ContextProviderParams): Promise<Co
       success: false,
       action: params.action,
       error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.enrichment_options?.include_analytics ? {
+      analytics: params.include_analytics ? {
         context_freshness: 0,
         data_sources: 0,
         confidence_score: 0,
@@ -237,9 +226,8 @@ async function handleCurrentContext(params: ContextProviderParams, startTime: nu
   
   // Get basic date/time using existing tool
   const currentDateResult = await getCurrentDate({
-    timezone: params.timezone,
-    format: 'iso',
-    include_metadata: true
+    months_ahead: 3,
+    search_window: 30
   });
   
   if (!currentDateResult.success) {
@@ -261,8 +249,25 @@ async function handleCurrentContext(params: ContextProviderParams, startTime: nu
     },
     temporal_context: enhancedTemporal,
     seasonal_context: basicSeasonal,
-    recommendations: await generateBasicRecommendations(enhancedTemporal, basicSeasonal),
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        'Emphasize seasonal relevance',
+        'Include urgency for holiday bookings'
+      ],
+      timing_optimization: [
+        'Send during business hours',
+        'Avoid weekend sends'
+      ],
+      audience_targeting: [
+        'Target family segments for holiday travel',
+        'Focus on price-conscious travelers'
+      ],
+      creative_direction: [
+        'Use seasonal visuals and themes',
+        'Incorporate travel imagery'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 100,
       data_sources: 2,
       confidence_score: 95,
@@ -280,13 +285,17 @@ async function handleSeasonalContext(params: ContextProviderParams, startTime: n
   
   const temporalData = await getCurrentDateData(params);
   const seasonalData = await generateSeasonalContext(temporalData, params);
-  const holidayData = await getHolidayContext(temporalData, params);
-  const travelSeasonality = await getTravelSeasonality(temporalData, params);
+  const holidayData = await getUpcomingHolidays(params);
   
   const comprehensiveSeasonal = {
-    ...seasonalData,
-    holidays: holidayData,
-    travel_patterns: travelSeasonality
+    current_season: seasonalData.current_season,
+    season_progress: seasonalData.season_progress,
+    upcoming_holidays: holidayData,
+    seasonal_trends: {
+      travel_demand: getSeasonalTravelDemand(seasonalData.current_season),
+      popular_destinations: getSeasonalDestinations(seasonalData.current_season),
+      pricing_patterns: getSeasonalPricing(seasonalData.current_season)
+    }
   };
   
   console.log(`✅ Seasonal context retrieved - Current season: ${comprehensiveSeasonal.current_season}`);
@@ -296,8 +305,25 @@ async function handleSeasonalContext(params: ContextProviderParams, startTime: n
     action: 'get_seasonal_context',
     data: comprehensiveSeasonal,
     seasonal_context: comprehensiveSeasonal,
-    recommendations: await generateSeasonalRecommendations(comprehensiveSeasonal, params),
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        `Leverage ${comprehensiveSeasonal.current_season} travel appeal`,
+        'Highlight seasonal destinations'
+      ],
+      timing_optimization: [
+        'Align with seasonal booking patterns',
+        'Consider holiday booking deadlines'
+      ],
+      audience_targeting: [
+        'Target seasonal travelers',
+        'Focus on weather-driven segments'
+      ],
+      creative_direction: [
+        'Use seasonal imagery and colors',
+        'Include weather-based messaging'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 90,
       data_sources: 4,
       confidence_score: 88,
@@ -318,9 +344,9 @@ async function handleCulturalContext(params: ContextProviderParams, startTime: n
   const demographicData = await getDemographicInsights(params);
   
   const comprehensiveCultural = {
-    ...culturalData,
-    regional_insights: regionalData,
-    demographic_trends: demographicData
+    primary_culture: culturalData.primary_culture,
+    active_cultural_events: culturalData.active_cultural_events,
+    regional_preferences: regionalData
   };
   
   console.log(`✅ Cultural context retrieved for ${params.locale}`);
@@ -330,8 +356,25 @@ async function handleCulturalContext(params: ContextProviderParams, startTime: n
     action: 'get_cultural_context',
     data: comprehensiveCultural,
     cultural_context: comprehensiveCultural,
-    recommendations: await generateCulturalRecommendations(comprehensiveCultural, params),
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        'Use culturally appropriate messaging',
+        'Include regional destination preferences'
+      ],
+      timing_optimization: [
+        'Respect cultural communication patterns',
+        'Align with local business hours'
+      ],
+      audience_targeting: [
+        'Segment by cultural preferences',
+        'Adapt communication style'
+      ],
+      creative_direction: [
+        'Use culturally relevant imagery',
+        'Adapt visual design to cultural preferences'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 85,
       data_sources: 3,
       confidence_score: 82,
@@ -350,14 +393,16 @@ async function handleMarketingContext(params: ContextProviderParams, startTime: 
   const trendData = await getCurrentTrends(params);
   const urgencyData = await analyzeUrgencyFactors(params);
   const timingData = await getOptimalTiming(params);
-  const competitorData = params.marketing_scope?.competitor_analysis ? 
-    await getCompetitorContext(params) : null;
   
   const comprehensiveMarketing = {
-    trends: trendData,
-    urgency_analysis: urgencyData,
-    timing_insights: timingData,
-    competitor_landscape: competitorData
+    current_trends: trendData,
+    urgency_factors: urgencyData,
+    optimal_timing: timingData,
+    content_suggestions: [
+      'Incorporate trending topics',
+      'Address urgency factors',
+      'Highlight competitive advantages'
+    ]
   };
   
   console.log(`✅ Marketing context retrieved with ${trendData.length} current trends`);
@@ -367,10 +412,27 @@ async function handleMarketingContext(params: ContextProviderParams, startTime: 
     action: 'get_marketing_context',
     data: comprehensiveMarketing,
     marketing_context: comprehensiveMarketing,
-    recommendations: await generateMarketingRecommendations(comprehensiveMarketing, params),
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        'Incorporate trending topics',
+        'Address urgency factors'
+      ],
+      timing_optimization: [
+        'Align with optimal sending windows',
+        'Consider booking behavior patterns'
+      ],
+      audience_targeting: [
+        'Leverage trend-based segmentation',
+        'Target based on urgency sensitivity'
+      ],
+      creative_direction: [
+        'Use trending visual elements',
+        'Create urgency-driven designs'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 95,
-      data_sources: params.marketing_scope?.competitor_analysis ? 4 : 3,
+      data_sources: params.competitor_analysis ? 4 : 3,
       confidence_score: 90,
       execution_time: Date.now() - startTime,
       cache_efficiency: 80
@@ -387,14 +449,11 @@ async function handleTravelContext(params: ContextProviderParams, startTime: num
   const demandData = await getTravelDemandData(params);
   const destinationData = await getDestinationTrends(params);
   const bookingData = await getBookingInsights(params);
-  const airlineData = params.travel_scope?.airline_insights ? 
-    await getAirlineInsights(params) : null;
   
   const comprehensiveTravel = {
-    demand_patterns: demandData,
-    destination_trends: destinationData,
-    booking_behaviors: bookingData,
-    airline_landscape: airlineData
+    seasonal_demand: demandData,
+    popular_destinations: destinationData,
+    booking_insights: bookingData
   };
   
   console.log(`✅ Travel context retrieved - Demand level: ${demandData.level}`);
@@ -404,10 +463,27 @@ async function handleTravelContext(params: ContextProviderParams, startTime: num
     action: 'get_travel_context',
     data: comprehensiveTravel,
     travel_context: comprehensiveTravel,
-    recommendations: await generateTravelRecommendations(comprehensiveTravel, params),
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        'Highlight popular destinations',
+        'Address seasonal demand patterns'
+      ],
+      timing_optimization: [
+        'Align with booking windows',
+        'Consider travel season timing'
+      ],
+      audience_targeting: [
+        'Target based on booking behaviors',
+        'Segment by travel preferences'
+      ],
+      creative_direction: [
+        'Use destination-focused imagery',
+        'Create demand-driven urgency'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 92,
-      data_sources: params.travel_scope?.airline_insights ? 4 : 3,
+      data_sources: params.airline_insights ? 4 : 3,
       confidence_score: 87,
       execution_time: Date.now() - startTime,
       cache_efficiency: 78
@@ -447,7 +523,6 @@ async function handleComprehensiveContext(params: ContextProviderParams, startTi
   
   // Generate cross-context insights
   const crossContextInsights = await generateCrossContextInsights(comprehensiveData, params);
-  const holisticRecommendations = await generateHolisticRecommendations(comprehensiveData, crossContextInsights, params);
   
   console.log('✅ Comprehensive context analysis completed');
   
@@ -463,8 +538,27 @@ async function handleComprehensiveContext(params: ContextProviderParams, startTi
     cultural_context: comprehensiveData.cultural,
     marketing_context: comprehensiveData.marketing,
     travel_context: comprehensiveData.travel,
-    recommendations: holisticRecommendations,
-    analytics: params.enrichment_options?.include_analytics ? {
+    recommendations: {
+      content_optimization: [
+        'Create seasonal content with cultural sensitivity',
+        'Integrate travel trends with urgency messaging',
+        'Personalize based on combined context factors'
+      ],
+      timing_optimization: [
+        'Optimize send time for cultural and behavioral patterns',
+        'Align campaign duration with booking windows'
+      ],
+      audience_targeting: [
+        'Multi-dimensional segmentation using all context types',
+        'Dynamic targeting based on real-time context changes'
+      ],
+      creative_direction: [
+        'Seasonal imagery with cultural relevance',
+        'Destination-focused creative aligned with trends',
+        'Urgency messaging balanced with cultural communication style'
+      ]
+    },
+    analytics: params.include_analytics ? {
       context_freshness: 88,
       data_sources: 15,
       confidence_score: 91,
@@ -480,8 +574,8 @@ async function handleComprehensiveContext(params: ContextProviderParams, startTi
 
 async function getCurrentDateData(params: ContextProviderParams) {
   const dateResult = await getCurrentDate({
-    timezone: params.timezone,
-    format: 'iso'
+    months_ahead: 3,
+    search_window: 30
   });
   return dateResult.data;
 }
@@ -540,7 +634,6 @@ async function generateCulturalContext(params: ContextProviderParams) {
 }
 
 async function getCurrentTrends(params: ContextProviderParams) {
-  // Simulate current travel and marketing trends
   return [
     'Sustainable travel',
     'Last-minute bookings',
@@ -619,32 +712,26 @@ function getSeasonProgress(date: Date): number {
   const season = getCurrentSeason(date);
   const month = date.getMonth();
   
-  // Calculate progress within current season (0-100%)
   const seasonMonths = {
-    spring: [2, 3, 4], // Mar, Apr, May
-    summer: [5, 6, 7], // Jun, Jul, Aug
-    autumn: [8, 9, 10], // Sep, Oct, Nov
-    winter: [11, 0, 1]  // Dec, Jan, Feb
+    spring: [2, 3, 4],
+    summer: [5, 6, 7],
+    autumn: [8, 9, 10],
+    winter: [11, 0, 1]
   };
   
   const months = seasonMonths[season as keyof typeof seasonMonths];
   const seasonStart = months[0];
   const currentMonth = month;
   
-  // Simplified calculation
   return Math.round(((currentMonth - seasonStart + 12) % 12) / 3 * 100);
 }
 
 async function isHoliday(date: Date, locale: string): Promise<boolean> {
-  // Simplified holiday detection
   const holidays = {
     'ru-RU': [
-      '01-01', '01-02', '01-03', '01-08', // New Year
-      '02-23', // Defender of the Fatherland Day
-      '03-08', // International Women's Day
-      '05-01', '05-09', // Labour Day, Victory Day
-      '06-12', // Russia Day
-      '11-04'  // Unity Day
+      '01-01', '01-02', '01-03', '01-08',
+      '02-23', '03-08', '05-01', '05-09',
+      '06-12', '11-04'
     ]
   };
   
@@ -732,88 +819,19 @@ async function getDemographicInsights(params: ContextProviderParams) {
   };
 }
 
-async function getCompetitorContext(params: ContextProviderParams) {
+function getSeasonalCharacteristics(season: string, locale: string) {
   return {
-    competitive_landscape: 'Highly competitive with price wars',
-    key_differentiators: 'Customer service and booking convenience',
-    market_opportunities: 'Personalized travel packages'
+    weather_patterns: `Typical ${season} weather for ${locale}`,
+    travel_motivation: `${season} travel drivers`,
+    cultural_activities: `${season} cultural events`
   };
 }
 
-async function getAirlineInsights(params: ContextProviderParams) {
+function getSeasonalTravelImplications(season: string) {
   return {
-    capacity_trends: 'Recovering to pre-pandemic levels',
-    route_changes: 'New direct routes to popular destinations',
-    pricing_strategies: 'Dynamic pricing with frequent adjustments'
-  };
-}
-
-async function generateBasicRecommendations(temporal: any, seasonal: any) {
-  return {
-    content_optimization: [
-      'Emphasize seasonal relevance',
-      'Include urgency for holiday bookings'
-    ],
-    timing_optimization: [
-      'Send during business hours',
-      'Avoid weekend sends'
-    ],
-    audience_targeting: [
-      'Target family segments for holiday travel',
-      'Focus on price-conscious travelers'
-    ]
-  };
-}
-
-async function generateSeasonalRecommendations(seasonal: any, params: ContextProviderParams) {
-  return {
-    content_optimization: [
-      `Leverage ${seasonal.current_season} travel appeal`,
-      'Highlight seasonal destinations'
-    ],
-    creative_direction: [
-      'Use seasonal imagery and colors',
-      'Include weather-based messaging'
-    ]
-  };
-}
-
-async function generateCulturalRecommendations(cultural: any, params: ContextProviderParams) {
-  return {
-    content_optimization: [
-      'Use culturally appropriate messaging',
-      'Include regional destination preferences'
-    ],
-    audience_targeting: [
-      'Segment by cultural preferences',
-      'Adapt communication style'
-    ]
-  };
-}
-
-async function generateMarketingRecommendations(marketing: any, params: ContextProviderParams) {
-  return {
-    content_optimization: [
-      'Incorporate trending topics',
-      'Address urgency factors'
-    ],
-    timing_optimization: [
-      'Align with optimal sending windows',
-      'Consider booking behavior patterns'
-    ]
-  };
-}
-
-async function generateTravelRecommendations(travel: any, params: ContextProviderParams) {
-  return {
-    content_optimization: [
-      'Highlight popular destinations',
-      'Address seasonal demand patterns'
-    ],
-    audience_targeting: [
-      'Target based on booking behaviors',
-      'Segment by travel preferences'
-    ]
+    demand_level: 'medium',
+    pricing_trend: 'stable',
+    popular_activities: [`${season} activities`]
   };
 }
 
@@ -827,29 +845,6 @@ async function generateCrossContextInsights(data: any, params: ContextProviderPa
     optimization_opportunities: [
       'Combine seasonal appeal with cultural preferences',
       'Leverage travel trends for content personalization'
-    ]
-  };
-}
-
-async function generateHolisticRecommendations(data: any, insights: any, params: ContextProviderParams) {
-  return {
-    content_optimization: [
-      'Create seasonal content with cultural sensitivity',
-      'Integrate travel trends with urgency messaging',
-      'Personalize based on combined context factors'
-    ],
-    timing_optimization: [
-      'Optimize send time for cultural and behavioral patterns',
-      'Align campaign duration with booking windows'
-    ],
-    audience_targeting: [
-      'Multi-dimensional segmentation using all context types',
-      'Dynamic targeting based on real-time context changes'
-    ],
-    creative_direction: [
-      'Seasonal imagery with cultural relevance',
-      'Destination-focused creative aligned with trends',
-      'Urgency messaging balanced with cultural communication style'
     ]
   };
 }

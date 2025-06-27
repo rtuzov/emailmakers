@@ -11,7 +11,7 @@ import { getLocalFigmaFoldersInfo } from '../figma-local-processor';
 export const figmaFoldersSchema = z.object({
   include_stats: z.boolean().default(true).describe('Include folder statistics (file counts, etc.)'),
   include_priority: z.boolean().default(true).describe('Include priority information for folders'),
-  filter_by_priority: z.number().optional().nullable().describe('Filter folders by minimum priority level')
+  filter_by_priority: z.number().default(0).describe('Filter folders by minimum priority level (0 = no filter)')
 });
 
 export type FigmaFoldersParams = z.infer<typeof figmaFoldersSchema>;
@@ -62,18 +62,19 @@ export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFol
     }
 
     // Transform and filter folders
-    let folders = result.folders.map(folder => ({
-      name: folder.name,
+    let folders = Object.entries(result.data.folders).map(([name, folder]: [string, any]) => ({
+      name: name,
       priority: folder.priority,
       description: folder.description,
-      file_count: folder.file_count,
+      file_count: folder.totalFiles || 0,
       categories: folder.categories || [],
       usage_examples: folder.usage_examples || []
     }));
 
+
     // Apply priority filter if specified
-    if (params.filter_by_priority) {
-      folders = folders.filter(folder => folder.priority >= params.filter_by_priority!);
+    if (params.filter_by_priority > 0) {
+      folders = folders.filter(folder => folder.priority >= params.filter_by_priority);
     }
 
     // Sort by priority (highest first)

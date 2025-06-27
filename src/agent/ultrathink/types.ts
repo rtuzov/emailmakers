@@ -124,3 +124,22 @@ export interface QualityControlConfig {
   autoRetryCount: number;
   requireManualReview: boolean;
 }
+
+// Email generation request type for UltraThink integration
+export interface EmailGenerationRequest {
+  topic: string;
+  origin?: string;
+  destination?: string;
+  departure_date?: string;
+  return_date?: string;
+  passengers?: number;
+  cabin_class?: 'economy' | 'business' | 'first';
+  flexible_dates?: boolean;
+  budget_range?: string;
+  content_type?: 'promotional' | 'informational' | 'urgent' | 'newsletter';
+  brand_guidelines?: any;
+  target_audience?: any;
+  campaign_context?: any;
+  campaign_type?: 'promotional' | 'informational' | 'seasonal' | 'urgent' | 'newsletter';
+  date_range?: string;
+}

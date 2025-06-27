@@ -26,7 +26,7 @@ export const qualityControllerSchema = z.object({
     mjml: z.string().optional().nullable().describe('MJML content to analyze'),
     subject: z.string().optional().nullable().describe('Email subject line'),
     text_version: z.string().optional().nullable().describe('Text version of email'),
-    metadata: z.record(z.any()).optional().nullable().describe('Additional content metadata')
+    metadata: z.object({}).passthrough().optional().nullable().describe('Additional content metadata')
   }).optional().nullable().describe('Content for quality analysis'),
   
   analysis_scope: z.object({
@@ -56,7 +56,7 @@ export const qualityControllerSchema = z.object({
       type: z.enum(['replace', 'insert', 'delete', 'modify']).describe('Type of patch operation'),
       selector: z.string().describe('CSS selector or XPath for target element'),
       content: z.string().optional().nullable().describe('New content (for replace/insert operations)'),
-      attributes: z.record(z.string()).optional().nullable().describe('Attributes to modify'),
+      attributes: z.object({}).passthrough().optional().nullable().describe('Attributes to modify'),
       position: z.enum(['before', 'after', 'inside', 'replace']).optional().nullable().describe('Position for insertion')
     })).describe('Array of patch operations to apply'),
     validation_after_patch: z.boolean().default(true).describe('Validate HTML after applying patches'),
@@ -97,9 +97,9 @@ export const qualityControllerSchema = z.object({
   
   // Context and metadata
   campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).optional(),
-    target_audience: z.string().optional(),
-    brand_guidelines: z.object({}).optional()
+    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).optional().nullable(),
+    target_audience: z.string().optional().nullable(),
+    brand_guidelines: z.object({}).optional().nullable()
   }).optional().nullable().describe('Campaign context for quality assessment')
 });
 
@@ -228,20 +228,23 @@ async function handleQualityAnalysis(params: QualityControllerParams, startTime:
   
   // Use existing AI quality consultant with enhanced parameters
   const aiAnalysisResult = await aiQualityConsultant({
-    html: params.content_to_analyze.html || '',
-    subject: params.content_to_analyze.subject || '',
-    text_version: params.content_to_analyze.text_version || '',
-    analysis_scope: params.analysis_scope || {},
-    quality_threshold: params.quality_threshold,
-    campaign_context: params.campaign_context
+    html_content: params.content_to_analyze.html || '',
+    topic: params.content_to_analyze.subject || 'Email Campaign Quality Analysis',
+    campaign_type: 'promotional',
+    target_audience: 'general',
+    assets_used: {
+      original_assets: [],
+      processed_assets: []
+    },
+    iteration_count: 0
   });
   
   if (!aiAnalysisResult.success) {
-    throw new Error(`AI quality analysis failed: ${aiAnalysisResult.error}`);
+    throw new Error(`AI quality analysis failed: ${aiAnalysisResult.message || 'Unknown error'}`);
   }
   
   // Enhance analysis with additional quality checks
-  const enhancedAnalysis = await enhanceQualityAnalysis(aiAnalysisResult.data, params);
+  const enhancedAnalysis = await enhanceQualityAnalysis(aiAnalysisResult, params);
   const qualityReport = await generateQualityReport(enhancedAnalysis, params);
   
   console.log(`✅ Quality analysis completed - Score: ${qualityReport.overall_score}/100`);
@@ -318,11 +321,8 @@ async function handlePatchApplication(params: QualityControllerParams, startTime
   
   const patchResult = await patchHtml({
     html: params.patch_operations.target_html,
-    patches: params.patch_operations.patches,
-    options: {
-      validate_after_patch: params.patch_operations.validation_after_patch,
-      backup_original: params.patch_operations.backup_original
-    }
+    issues: params.patch_operations.patches.map(p => p.content || 'Optimization needed'),
+    patch_type: 'email_optimization'
   });
   
   if (!patchResult.success) {
@@ -361,13 +361,8 @@ async function handleRenderingTests(params: QualityControllerParams, startTime: 
   
   const renderTestResult = await renderTest({
     html: params.rendering_tests.test_content,
-    test_clients: params.rendering_tests.test_clients,
-    test_devices: params.rendering_tests.test_devices,
-    options: {
-      screenshot_comparison: params.rendering_tests.screenshot_comparison,
-      performance_metrics: params.rendering_tests.performance_metrics,
-      accessibility_testing: params.rendering_tests.accessibility_testing
-    }
+    subject: 'Quality Control Test',
+    email_clients: params.rendering_tests.test_clients.filter(client => client !== 'all') as Array<'gmail' | 'outlook' | 'apple_mail' | 'yahoo' | 'thunderbird'>
   });
   
   if (!renderTestResult.success) {
@@ -375,14 +370,14 @@ async function handleRenderingTests(params: QualityControllerParams, startTime: 
   }
   
   // Enhanced test result analysis
-  const enhancedTestResults = await enhanceRenderingTestResults(renderTestResult.data, params);
+  const enhancedTestResults = await enhanceRenderingTestResults(renderTestResult.test_results, params);
   
   console.log(`✅ Rendering tests completed - Average compatibility: ${calculateAverageCompatibility(enhancedTestResults)}%`);
   
   return {
     success: true,
     action: 'test_rendering',
-    data: renderTestResult.data,
+    data: renderTestResult.test_results,
     test_results: enhancedTestResults,
     analytics: params.include_analytics ? {
       execution_time: Date.now() - startTime,

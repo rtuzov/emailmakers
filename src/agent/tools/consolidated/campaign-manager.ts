@@ -32,7 +32,7 @@ export const campaignManagerSchema = z.object({
   end_time: z.number().optional().nullable().describe('Tool end timestamp'),
   success: z.boolean().optional().nullable().describe('Whether tool execution was successful'),
   error_message: z.string().optional().nullable().describe('Error message if tool failed'),
-  metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional().nullable().describe('Additional metadata'),
+  metadata: z.object({}).passthrough().optional().nullable().describe('Additional metadata'),
   
   // For finalize action
   final_results: z.object({}).optional().nullable().describe('Final campaign results for archiving'),
@@ -267,7 +267,6 @@ async function handleFinalize(params: CampaignManagerParams): Promise<CampaignMa
   
   const finalizationData = {
     finalized_at: new Date().toISOString(),
-    final_results: params.final_results,
     performance_report: finalPerformanceReport?.data
   };
   

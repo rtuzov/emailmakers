@@ -10,15 +10,17 @@ import { aiQualityConsultant } from '../ai-quality-consultant';
 
 export const htmlValidateSchema = z.object({
   html_content: z.string().describe('HTML content to validate'),
-  validation_level: z.enum(['basic', 'standard', 'strict']).default('standard').describe('Validation strictness level'),
-  email_standards: z.object({
-    check_doctype: z.boolean().default(true),
-    check_table_layout: z.boolean().default(true),
-    check_inline_styles: z.boolean().default(true),
-    check_image_alt: z.boolean().default(true),
-    check_email_width: z.boolean().default(true)
-  }).optional().nullable().describe('Email-specific validation checks'),
-  target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).default(['gmail', 'outlook']).describe('Target email clients for validation')
+  validation_options: z.object({
+    validation_level: z.enum(['basic', 'standard', 'strict']).describe('Validation strictness level'),
+    specific_checks: z.object({
+      check_doctype: z.boolean().optional().nullable(),
+      check_table_layout: z.boolean().optional().nullable(),
+      check_inline_styles: z.boolean().optional().nullable(),
+      check_image_alt: z.boolean().optional().nullable(),
+      check_email_width: z.boolean().optional().nullable()
+    }).optional().nullable(),
+    target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).describe('Target email clients for validation')
+  }).describe('Validation configuration options')
 });
 
 export type HtmlValidateParams = z.infer<typeof htmlValidateSchema>;
@@ -64,31 +66,31 @@ export async function htmlValidate(params: HtmlValidateParams): Promise<HtmlVali
   try {
     console.log('✅ Validating HTML content:', {
       html_size: params.html_content.length,
-      validation_level: params.validation_level,
-      target_clients: params.target_clients
+      validation_level: params.validation_options.validation_level,
+      target_clients: params.validation_options.target_clients
     });
 
     // Basic HTML structure validation
     const structureValidation = validateHtmlStructure(params.html_content);
     
     // Email standards validation
-    const emailStandardsValidation = validateEmailStandards(params.html_content, params.email_standards);
+    const emailStandardsValidation = validateEmailStandards(params.html_content, params.validation_options.specific_checks);
     
     // Client compatibility check
-    const clientCompatibility = checkClientCompatibility(params.html_content, params.target_clients);
+    const clientCompatibility = checkClientCompatibility(params.html_content, params.validation_options.target_clients);
     
     // Use AI quality consultant for advanced validation if needed
     let aiValidation = null;
-    if (params.validation_level === 'strict') {
+    if (params.validation_options.validation_level === 'strict') {
       try {
         aiValidation = await aiQualityConsultant({
-          action: 'analyze',
           html_content: params.html_content,
-          analysis_type: 'comprehensive',
-          focus_areas: ['email_compatibility', 'html_validation', 'accessibility'],
-          client_requirements: {
-            email_clients: params.target_clients,
-            accessibility_level: 'WCAG_AA'
+          topic: 'HTML Validation Analysis',
+          campaign_type: 'informational',
+          assets_used: {
+            original_assets: [],
+            processed_assets: [],
+            sprite_metadata: null
           }
         });
       } catch (error) {

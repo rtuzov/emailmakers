@@ -14,7 +14,7 @@ import {
   QualityAnalysisResult,
   ImprovementIteration
 } from './ai-consultant/types';
-import { getUsageModel } from '../../shared/utils/model-config';
+import { getValidatedUsageModel } from '../../shared/utils/model-config';
 
 // Zod schema for agent tool parameters
 export const aiQualityConsultantSchema = z.object({
@@ -33,45 +33,41 @@ export const aiQualityConsultantSchema = z.object({
   
   // Campaign context
   target_audience: z.string().nullable().optional().nullable().describe('Target audience for the campaign'),
-  campaign_type: z.enum(['promotional', 'informational', 'seasonal']).default('promotional'),
+  campaign_type: z.enum(['promotional', 'informational', 'seasonal']),
   
   // Assets from previous tools
   assets_used: z.object({
-    original_assets: z.array(z.string()).default([]),
-    processed_assets: z.array(z.string()).default([]),
-    sprite_metadata: z.string().nullable().optional()
-  }).default({
-    original_assets: [],
-    processed_assets: [],
-    sprite_metadata: null
-  }).describe('Assets used from T1/T10 tools'),
+    original_assets: z.array(z.string()),
+    processed_assets: z.array(z.string()),
+    sprite_metadata: z.string().nullable().optional().nullable()
+  }).optional().nullable().describe('Assets used from T1/T10 tools'),
   
   // Pricing data from T2
   prices: z.object({
-    origin: z.string().nullable().optional(),
-    destination: z.string().nullable().optional(),
-    cheapest_price: z.number().nullable().optional(),
-    currency: z.string().nullable().optional(),
-    date_range: z.string().nullable().optional()
+    origin: z.string().nullable().optional().nullable(),
+    destination: z.string().nullable().optional().nullable(),
+    cheapest_price: z.number().nullable().optional().nullable(),
+    currency: z.string().nullable().optional().nullable(),
+    date_range: z.string().nullable().optional().nullable()
   }).nullable().optional().nullable().describe('Price data from get_prices tool'),
   
   // Content metadata from T3
   content_metadata: z.object({
-    subject: z.string().nullable().optional(),
-    tone: z.string().nullable().optional(),
-    language: z.string().nullable().optional(),
-    word_count: z.number().nullable().optional()
+    subject: z.string().nullable().optional().nullable(),
+    tone: z.string().nullable().optional().nullable(),
+    language: z.string().nullable().optional().nullable(),
+    word_count: z.number().nullable().optional().nullable()
   }).nullable().optional().nullable().describe('Content metadata from generate_copy tool'),
   
   // Render test results from T8
   render_test_results: z.object({
     overall_score: z.number(),
-    client_compatibility: z.record(z.number()).nullable().optional(),
-    issues_found: z.array(z.string()).nullable().optional()
+    client_compatibility: z.object({}).passthrough().nullable().optional(),
+    issues_found: z.array(z.string()).nullable().optional().nullable()
   }).nullable().optional().nullable().describe('Results from render_test tool'),
   
   // Improvement iteration tracking
-  iteration_count: z.number().default(0).describe('Current improvement iteration number'),
+  iteration_count: z.number().describe('Current improvement iteration number'),
   previous_analysis: z.object({
     overall_score: z.number(),
     quality_grade: z.enum(['A', 'B', 'C', 'D', 'F']),
@@ -81,14 +77,14 @@ export const aiQualityConsultantSchema = z.object({
     iteration: z.number(),
     score: z.number(),
     changes_made: z.array(z.string())
-  })).default([]).describe('History of improvement iterations'),
+  })).optional().nullable().describe('History of improvement iterations'),
   
   // Configuration overrides
   config_overrides: z.object({
-    quality_gate_threshold: z.number().nullable().optional(),
-    max_iterations: z.number().nullable().optional(),
-    enable_auto_execution: z.boolean().nullable().optional(),
-    max_recommendations: z.number().nullable().optional()
+    quality_gate_threshold: z.number().nullable().optional().nullable(),
+    max_iterations: z.number().nullable().optional().nullable(),
+    enable_auto_execution: z.boolean().nullable().optional().nullable(),
+    max_recommendations: z.number().nullable().optional().nullable()
   }).nullable().optional().nullable().describe('Configuration overrides for AI consultant')
 });
 
@@ -127,7 +123,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
       max_iterations: params.config_overrides?.max_iterations || 3,
       enable_auto_execution: params.config_overrides?.enable_auto_execution ?? true,
       max_recommendations: params.config_overrides?.max_recommendations || 10,
-      ai_model: getUsageModel(),
+      ai_model: getValidatedUsageModel(),
       analysis_temperature: 0.3,
       enable_image_analysis: true,
       enable_brand_compliance: true,

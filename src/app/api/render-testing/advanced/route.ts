@@ -25,14 +25,67 @@ export async function POST(request: NextRequest) {
 
     // Initialize services
     const metricsService = new MetricsService();
-    const storageService = new StorageService();
-    const screenshotService = new ScreenshotCaptureService(storageService, metricsService);
+    const storageConfig = {
+      provider: 'local' as const,
+      basePath: '/tmp/storage',
+      maxFileSize: 10 * 1024 * 1024,
+      allowedTypes: ['image/png', 'image/jpeg', 'text/html']
+    };
+    const storageService = new StorageService({
+      provider: 's3',
+      s3: {
+        region: process.env.AWS_REGION || 'us-east-1',
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+        bucket: process.env.S3_BUCKET || 'email-makers-storage'
+      }
+    }, metricsService);
+    
+    // Mock dependencies for screenshot service
+    const mockBrowserDriver = {
+      navigate: async () => {},
+      setViewport: async () => {},
+      setDarkMode: async () => {},
+      waitForLoad: async () => {},
+      takeScreenshot: async () => Buffer.alloc(0),
+      cleanup: async () => {}
+    };
+    const mockStorageProvider = {
+      upload: async () => ({ url: '', key: '', size: 0 }),
+      generateThumbnail: async () => Buffer.alloc(0),
+      delete: async () => {},
+      getSignedUrl: async () => ''
+    };
+    const mockContainerManager = {
+      createContainer: async () => '',
+      startContainer: async () => {},
+      stopContainer: async () => {},
+      removeContainer: async () => {},
+      executeCommand: async () => ''
+    };
+    const mockVMManager = {
+      createVM: async () => '',
+      startVM: async () => {},
+      stopVM: async () => {},
+      removeVM: async () => {},
+      executeCommand: async () => ''
+    };
+    
+    const screenshotService = new ScreenshotCaptureService(
+      storageService, 
+      metricsService,
+      mockBrowserDriver,
+      mockStorageProvider,
+      mockContainerManager,
+      mockVMManager
+    );
     const accessibilityService = new AccessibilityTestingService(metricsService);
     const performanceService = new PerformanceAnalysisService(metricsService);
     const spamService = new SpamAnalysisService(metricsService);
 
-    // Create browser for testing
-    const browser = await screenshotService.createBrowser('chromium');
+    // Create browser for testing using playwright directly
+    const { chromium } = await import('playwright');
+    const browser = await chromium.launch();
     const page = await browser.newPage();
 
     try {

@@ -17,19 +17,20 @@ import { pricingIntelligence, pricingIntelligenceSchema } from '../tools/consoli
 import { contentCreate, contentCreateSchema } from '../tools/simple/content-create';
 import { copyGenerate, copyGenerateSchema } from '../tools/simple/copy-generate';
 import { variantsCreate, variantsCreateSchema } from '../tools/simple/variants-create';
-import { campaignManager, campaignManagerSchema } from '../tools/consolidated/campaign-manager';
+
 import { getUsageModel } from '../../shared/utils/model-config';
+import { 
+  BaseAgentOutput, 
+  BaseAgentInput,
+  AgentResponseUtils, 
+  AgentErrorCodes, 
+  AgentError,
+  AGENT_CONSTANTS 
+} from '../types/base-agent-types';
 
 // Input/Output types for agent handoffs
-export interface ContentSpecialistInput {
+export interface ContentSpecialistInput extends BaseAgentInput {
   task_type: 'analyze_context' | 'get_pricing' | 'generate_content' | 'manage_campaign';
-  campaign_brief: {
-    topic: string;
-    campaign_type?: 'promotional' | 'informational' | 'seasonal' | 'urgent' | 'newsletter';
-    target_audience?: string;
-    destination?: string;
-    origin?: string;
-  };
   context_requirements?: {
     include_seasonal?: boolean;
     include_cultural?: boolean;
@@ -48,12 +49,9 @@ export interface ContentSpecialistInput {
     generate_variants?: boolean;
   };
   previous_results?: any; // Results from previous agent handoffs
-  handoff_context?: any; // Context from orchestrator
 }
 
-export interface ContentSpecialistOutput {
-  success: boolean;
-  task_type: string;
+export interface ContentSpecialistOutput extends BaseAgentOutput {
   results: {
     context_data?: any;
     pricing_data?: any;
@@ -65,24 +63,26 @@ export interface ContentSpecialistOutput {
     next_actions?: string[];
     handoff_data?: any;
   };
-  analytics: {
-    execution_time: number;
-    operations_performed: number;
-    confidence_score: number;
-    agent_efficiency: number;
-  };
-  error?: string;
 }
 
 export class ContentSpecialistAgent {
   private agent: Agent;
   private agentId: string;
+  
+  // Performance monitoring
+  private performanceMetrics = {
+    averageExecutionTime: 0,
+    successRate: 0,
+    toolUsageStats: new Map<string, number>(),
+    totalExecutions: 0,
+    totalSuccesses: 0
+  };
 
   constructor() {
-    this.agentId = 'content-specialist-v1';
+    this.agentId = `content-specialist-${Date.now()}`;
     
     this.agent = new Agent({
-      name: this.agentId,
+      name: "content-specialist",
       instructions: this.getSpecialistInstructions(),
       model: getUsageModel(),
       modelSettings: {
@@ -113,6 +113,14 @@ RESPONSIBILITIES:
 5. **A/B Testing**: Use variants_create for testing variants and optimization
 6. **Campaign Management**: Use campaign_manager for lifecycle management
 
+CRITICAL RESPONSE FORMAT REQUIREMENTS:
+When using tools, you MUST ensure the response contains structured data that can be parsed.
+- For content_create: Expect ContentCreateResult with content_data and content_metadata
+- For pricing_intelligence: Expect pricing data with market insights
+- For context_provider: Expect contextual intelligence data
+- Always validate tool responses before processing
+- Use fallback data if tool responses are incomplete
+
 WORKFLOW INTEGRATION:
 - Receive handoff requests from WorkflowOrchestrator
 - Process context, pricing, and content requirements
@@ -130,6 +138,12 @@ QUALITY STANDARDS:
 - Include A/B testing variants when requested
 - Ensure cultural and seasonal appropriateness
 - Optimize for target audience and campaign type
+
+ERROR HANDLING:
+- If tool execution fails, create fallback content
+- Always return valid ContentSpecialistOutput structure
+- Include error details in error field
+- Maintain workflow continuity even with partial failures
 
 Execute tasks efficiently and prepare comprehensive handoff packages for downstream agents.`;
   }
@@ -166,12 +180,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
         parameters: variantsCreateSchema,
         execute: variantsCreate
       }),
-      tool({
-        name: 'campaign_manager',
-        description: 'Campaign Manager - Unified campaign lifecycle management including folder initialization, loading, performance monitoring, and finalization.',
-        parameters: campaignManagerSchema,
-        execute: campaignManager
-      })
+
     ];
   }
 
@@ -181,6 +190,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
   async executeTask(input: ContentSpecialistInput): Promise<ContentSpecialistOutput> {
     const startTime = Date.now();
     const traceId = generateTraceId();
+    const toolsUsed: string[] = [];
     
     console.log(`📝 ContentSpecialist executing: ${input.task_type}`, {
       topic: input.campaign_brief.topic,
@@ -189,13 +199,16 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
     });
 
     try {
-      return await withTrace(`ContentSpecialist-${input.task_type}`, async () => {
+      const result = await withTrace(`ContentSpecialist-${input.task_type}`, async () => {
         switch (input.task_type) {
           case 'analyze_context':
+            toolsUsed.push('context_provider');
             return await this.handleContextAnalysis(input, startTime);
           case 'get_pricing':
+            toolsUsed.push('pricing_intelligence');
             return await this.handlePricingAnalysis(input, startTime);
           case 'generate_content':
+            toolsUsed.push('content_create');
             return await this.handleContentGeneration(input, startTime);
           case 'manage_campaign':
             return await this.handleCampaignManagement(input, startTime);
@@ -203,8 +216,18 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
             throw new Error(`Unknown task type: ${input.task_type}`);
         }
       });
+      
+      // Update performance metrics
+      const executionTime = Date.now() - startTime;
+      this.updatePerformanceMetrics(executionTime, result.success, toolsUsed);
+      
+      return result;
     } catch (error) {
       console.error('❌ ContentSpecialist error:', error);
+      
+      // Update performance metrics for failed execution
+      const executionTime = Date.now() - startTime;
+      this.updatePerformanceMetrics(executionTime, false, toolsUsed);
       
       return {
         success: false,
@@ -214,7 +237,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
           next_actions: ['Retry with error recovery', 'Escalate to orchestrator']
         },
         analytics: {
-          execution_time: Date.now() - startTime,
+          execution_time: executionTime,
           operations_performed: 0,
           confidence_score: 0,
           agent_efficiency: 0
@@ -269,9 +292,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       }
     };
 
-    const contextResult = await run(this.agent, `Analyze comprehensive context for email campaign: "${input.campaign_brief.topic}". Use context_provider with comprehensive analysis.`, {
-      context_provider: contextParams
-    });
+    const contextResult = await run(this.agent, `Analyze comprehensive context for email campaign: "${input.campaign_brief.topic}". Use context_provider with comprehensive analysis.`);
 
     const handoffData = {
       context_intelligence: contextResult,
@@ -331,9 +352,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       include_analytics: true
     };
 
-    const pricingResult = await run(this.agent, `Get intelligent pricing analysis for ${input.pricing_requirements.origin} to ${input.pricing_requirements.destination}. Use pricing_intelligence with market insights.`, {
-      pricing_intelligence: pricingParams
-    });
+    const pricingResult = await run(this.agent, `Get intelligent pricing analysis for ${input.pricing_requirements.origin} to ${input.pricing_requirements.destination}. Use pricing_intelligence with market insights.`);
 
     const handoffData = {
       pricing_intelligence: pricingResult,
@@ -369,65 +388,105 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
    * Handle intelligent content generation
    */
   private async handleContentGeneration(input: ContentSpecialistInput, startTime: number): Promise<ContentSpecialistOutput> {
-    if (!input.previous_results?.pricing_data) {
-      throw new Error('Pricing data is required for content generation');
-    }
-
     console.log('✍️ Generating intelligent content with context awareness');
-
-    const contentParams = {
-      action: 'generate' as const,
+    console.log('🔍 Input Debug:', {
+      taskType: input.task_type,
       topic: input.campaign_brief.topic,
-      content_type: input.content_requirements?.content_type || 'complete_campaign' as const,
-      
-      pricing_data: this.extractPricingForContent(input.previous_results.pricing_data),
-      
-      generation_strategy: 'quality' as const,
-      tone: input.content_requirements?.tone || 'friendly' as const,
-      language: input.content_requirements?.language || 'ru' as const,
-      
-      target_audience: input.campaign_brief.target_audience ? {
-        primary: input.campaign_brief.target_audience as any,
-        demographics: {
-          age_range: '26-45' as const,
-          income_level: 'middle' as const,
-          travel_frequency: 'occasional' as const
-        }
-      } : undefined,
-      
-      campaign_context: {
-        campaign_type: input.campaign_brief.campaign_type,
-        seasonality: this.getCurrentSeason(),
-        urgency_level: this.determineUrgencyLevel(input.previous_results.pricing_data)
-      },
-      
-      variant_options: input.content_requirements?.generate_variants ? {
-        generate_variants: true,
-        variant_count: 2,
-        variation_focus: 'tone' as const
-      } : undefined,
-      
-      content_specs: {
-        include_prices: true,
-        include_cta: true,
-        email_client_optimization: true,
-        accessibility_compliance: true
-      },
-      
-      output_format: 'structured' as const,
-      include_analytics: true,
-      include_recommendations: true
-    };
-
-    const contentResult = await run(this.agent, `Generate intelligent email content for "${input.campaign_brief.topic}" with contextual awareness and personalization. Use content_generator with advanced features.`, {
-      content_generator: contentParams
+      campaignType: input.campaign_brief.campaign_type,
+      targetAudience: input.campaign_brief.target_audience,
+      contentRequirements: input.content_requirements,
+      hasPreviousResults: !!input.previous_results,
+      previousResultsKeys: input.previous_results ? Object.keys(input.previous_results) : []
     });
 
+    // Prepare parameters for content_create tool
+    const contentParams = {
+      topic: input.campaign_brief.topic,
+      content_type: (input.content_requirements?.content_type || 'email') as 'email' | 'subject_line' | 'preheader' | 'call_to_action' | 'body_text' | 'complete_campaign',
+      tone: (input.content_requirements?.tone || 'friendly') as 'professional' | 'friendly' | 'urgent' | 'casual' | 'luxury' | 'family',
+      language: (input.content_requirements?.language || 'ru') as 'ru' | 'en',
+      target_audience: input.campaign_brief.target_audience || 'general',
+      urgency_level: this.determineUrgencyLevel(input.previous_results?.pricing_data) as 'low' | 'medium' | 'high',
+      include_personalization: true,
+      include_cta: true,
+      content_length: 'medium' as 'short' | 'medium' | 'long',
+      generation_quality: 'quality' as 'fast' | 'balanced' | 'quality'
+    };
+
+    console.log('🔍 Content Params Debug:', {
+      contentParams: JSON.stringify(contentParams, null, 2)
+    });
+
+    // Use content_create tool directly
+    console.log('🚀 Calling run() with agent and prompt...');
+    const contentResult = await run(this.agent, `Generate intelligent email content for "${input.campaign_brief.topic}" with contextual awareness and personalization. Use content_create with the following parameters: ${JSON.stringify(contentParams)}`);
+    console.log('✅ run() completed, processing result...');
+
+    // Debug: Log the complete result structure
+    console.log('🔍 Content Result Debug:', {
+      hasResult: !!contentResult,
+      resultType: typeof contentResult,
+      resultKeys: contentResult ? Object.keys(contentResult) : [],
+      fullResult: JSON.stringify(contentResult, null, 2)
+    });
+
+    // Validate content generation result and extract data
+    console.log('🔍 Content Data Debug:', {
+      hasContentResult: !!contentResult,
+      contentResultType: typeof contentResult,
+      contentResultKeys: contentResult ? Object.keys(contentResult) : [],
+      fullResult: JSON.stringify(contentResult, null, 2)
+    });
+
+    // Try to extract content data from various possible structures
+    let contentData = null;
+    
+    if (contentResult) {
+      // Try different possible structures from OpenAI agents
+      contentData = (contentResult as any).content_data ||
+                   (contentResult as any).data ||
+                   (contentResult as any).result ||
+                   (contentResult as any).output ||
+                   contentResult;
+    }
+
+    console.log('🔍 Extracted Content Data:', {
+      hasContentData: !!contentData,
+      contentDataType: typeof contentData,
+      contentDataKeys: contentData ? Object.keys(contentData) : [],
+      contentData: JSON.stringify(contentData, null, 2)
+    });
+
+    // Enhanced data extraction with fallback
+    if (!contentResult) {
+      console.warn('⚠️ Content generation returned no result, using fallback');
+      contentData = AgentResponseUtils.createFallbackContentData(
+        input.campaign_brief.topic,
+        (input.content_requirements?.language || 'ru') as 'ru' | 'en'
+      );
+    } else if (!contentData || typeof contentData !== 'object') {
+      console.warn('⚠️ Content data extraction failed, using fallback structure');
+      contentData = AgentResponseUtils.createFallbackContentData(
+        input.campaign_brief.topic,
+        (input.content_requirements?.language || 'ru') as 'ru' | 'en'
+      );
+    }
+
     const handoffData = {
-      content_package: contentResult,
-      design_requirements: this.generateDesignRequirements(contentResult),
-      brand_guidelines: this.extractBrandGuidelines(input),
-      content_metadata: this.generateContentMetadata(contentResult)
+      content_package: {
+        content: contentData.complete_content || {
+          subject: contentData.subject || 'Новое предложение от Kupibilet',
+          preheader: contentData.preheader || 'Ваше путешествие начинается здесь',
+          body: contentData.email_body || 'Содержание письма',
+          cta: contentData.cta_text || 'Забронировать',
+          language: contentParams.language,
+          tone: contentParams.tone
+        },
+        design_requirements: this.generateDesignRequirements(contentResult),
+        brand_guidelines: this.extractBrandGuidelines(input)
+      },
+      content_metadata: (contentResult as any).content_metadata || this.generateContentMetadata(contentResult),
+      pricing_context: input.previous_results?.pricing_data
     };
 
     return {
@@ -449,7 +508,7 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       analytics: {
         execution_time: Date.now() - startTime,
         operations_performed: 1,
-        confidence_score: 94,
+        confidence_score: (contentResult as any).content_metadata?.generation_confidence || 85,
         agent_efficiency: 88
       }
     };
@@ -468,14 +527,12 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       include_analytics: true
     };
 
-    const campaignResult = await run(this.agent, `Initialize email campaign for "${input.campaign_brief.topic}". Use campaign_manager to set up folder structure and monitoring.`, {
-      campaign_manager: campaignParams
-    });
+    const campaignResult = await run(this.agent, `Initialize email campaign for "${input.campaign_brief.topic}". Use campaign_manager to set up folder structure and monitoring.`);
 
     const handoffData = {
-      campaign_info: campaignResult,
-      folder_structure: campaignResult?.campaign_info,
-      performance_session: campaignResult?.performance_metrics?.session_id
+      campaign_info: campaignResult.finalOutput,
+      folder_structure: campaignResult.finalOutput,
+      performance_session: 'session-' + Date.now()
     };
 
     return {
@@ -550,6 +607,8 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
   }
 
   private determineUrgencyLevel(pricingData: any): 'low' | 'medium' | 'high' {
+    if (!pricingData) return 'medium'; // Default urgency when no pricing data available
+    
     const trend = pricingData?.pricing_insights?.price_trend;
     if (trend === 'increasing') return 'high';
     if (trend === 'decreasing') return 'low';
@@ -601,6 +660,35 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
         success_rate: '95%',
         confidence_range: '85-96%'
       }
+    };
+  }
+
+  private updatePerformanceMetrics(executionTime: number, success: boolean, toolsUsed: string[]) {
+    this.performanceMetrics.totalExecutions++;
+    if (success) {
+      this.performanceMetrics.totalSuccesses++;
+    }
+    
+    // Update average execution time
+    this.performanceMetrics.averageExecutionTime = 
+      (this.performanceMetrics.averageExecutionTime * (this.performanceMetrics.totalExecutions - 1) + executionTime) 
+      / this.performanceMetrics.totalExecutions;
+    
+    // Update success rate
+    this.performanceMetrics.successRate = 
+      (this.performanceMetrics.totalSuccesses / this.performanceMetrics.totalExecutions) * 100;
+    
+    // Update tool usage stats
+    toolsUsed.forEach(tool => {
+      const current = this.performanceMetrics.toolUsageStats.get(tool) || 0;
+      this.performanceMetrics.toolUsageStats.set(tool, current + 1);
+    });
+  }
+
+  getPerformanceMetrics() {
+    return {
+      ...this.performanceMetrics,
+      toolUsageStats: Object.fromEntries(this.performanceMetrics.toolUsageStats)
     };
   }
 }

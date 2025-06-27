@@ -42,23 +42,23 @@ export class UltraThinkServiceFactory implements IUltraThinkFactory {
   }
 
   createToolSequencer(): IToolSequencer {
-    return ToolSequencer;
+    return ToolSequencer as any;
   }
 
   createErrorHandler(): IErrorHandler {
-    return SmartErrorHandler;
+    return SmartErrorHandler as any;
   }
 
   createDataProvider(): IDataProvider {
-    return SimpleDataProvider;
+    return SimpleDataProvider as any;
   }
 
   createContextEnricher(): IContextEnricher {
-    return new ContextEnricher();
+    return new ContextEnricher() as any;
   }
 
   createLogger(): ILogger {
-    return SecureLogger;
+    return SecureLogger as any;
   }
 
   /**

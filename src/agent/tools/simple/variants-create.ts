@@ -10,24 +10,11 @@ import { generateCopy } from '../copy';
 
 export const variantsCreateSchema = z.object({
   base_content: z.string().describe('Base content to create variants from'),
-  variant_count: z.number().min(1).max(5).default(2).describe('Number of variants to create'),
-  variation_focus: z.enum(['tone', 'length', 'approach', 'urgency', 'emotional_appeal']).default('tone').describe('Primary focus for variation'),
-  content_elements: z.object({
-    subject: z.string().optional().nullable(),
-    preheader: z.string().optional().nullable(),
-    body: z.string().optional().nullable(),
-    cta: z.string().optional().nullable()
-  }).optional().nullable().describe('Specific content elements to vary'),
-  testing_hypothesis: z.object({
-    test_goal: z.enum(['open_rate', 'click_rate', 'conversion', 'engagement']).default('click_rate'),
-    target_audience_segments: z.array(z.string()).optional().nullable(),
-    expected_winner: z.enum(['variant_a', 'variant_b', 'uncertain']).optional().nullable()
-  }).optional().nullable().describe('A/B testing configuration'),
-  variation_constraints: z.object({
-    maintain_core_message: z.boolean().default(true),
-    keep_same_length: z.boolean().default(false),
-    preserve_keywords: z.array(z.string()).optional().nullable()
-  }).optional().nullable().describe('Constraints for variant generation')
+  variant_count: z.number().min(1).max(5).describe('Number of variants to create'),
+  variation_focus: z.enum(['tone', 'length', 'approach', 'urgency', 'emotional_appeal']).describe('Primary focus for variation'),
+  test_goal: z.enum(['open_rate', 'click_rate', 'conversion', 'engagement']).describe('Primary A/B testing goal'),
+  maintain_core_message: z.boolean().describe('Keep core message consistent across variants'),
+  keep_same_length: z.boolean().describe('Maintain similar length across variants')
 });
 
 export type VariantsCreateParams = z.infer<typeof variantsCreateSchema>;
@@ -143,6 +130,11 @@ async function generateSingleVariant(
       style_preferences: {
         length: strategy.length,
         emotional_appeal: strategy.emotional_appeal
+      },
+      prices: {
+        prices: [],
+        currency: 'RUB',
+        cheapest: 0
       }
     };
 
@@ -152,7 +144,7 @@ async function generateSingleVariant(
       return null;
     }
 
-    const content = extractVariantContent(result.data, params.content_elements);
+    const content = extractVariantContent(result.data);
     const changesMade = analyzeChanges(content, params, strategy);
 
     return {
@@ -273,24 +265,13 @@ function getVariationStrategy(focus: string, variantIndex: number): any {
   return focusStrategies[variantIndex % focusStrategies.length];
 }
 
-function extractVariantContent(data: any, contentElements?: any): any {
+function extractVariantContent(data: any): any {
   const content: any = {};
   
-  if (!contentElements || contentElements.subject) {
-    content.subject = data.subject || data.content?.subject || 'Новое предложение';
-  }
-  
-  if (!contentElements || contentElements.preheader) {
-    content.preheader = data.preheader || data.content?.preheader || 'Узнайте больше';
-  }
-  
-  if (!contentElements || contentElements.body) {
-    content.body = data.body || data.email_body || data.content?.body || 'Содержание письма';
-  }
-  
-  if (!contentElements || contentElements.cta) {
-    content.cta = data.cta || data.cta_text || data.content?.cta || 'Действие';
-  }
+  content.subject = data.subject || data.content?.subject || 'Новое предложение';
+  content.preheader = data.preheader || data.content?.preheader || 'Узнайте больше';
+  content.body = data.body || data.email_body || data.content?.body || 'Содержание письма';
+  content.cta = data.cta || data.cta_text || data.content?.cta || 'Действие';
 
   return content;
 }
@@ -324,7 +305,7 @@ function analyzeChanges(content: any, params: VariantsCreateParams, strategy: an
 }
 
 function generateTestingSetup(params: VariantsCreateParams, variants: any[]): any {
-  const testGoal = params.testing_hypothesis?.test_goal || 'click_rate';
+  const testGoal = params.test_goal || 'click_rate';
   
   // Calculate recommended test duration
   const testDurationDays = variants.length <= 2 ? 7 : 14;

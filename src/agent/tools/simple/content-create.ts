@@ -8,22 +8,18 @@
 import { z } from 'zod';
 import { generateCopy } from '../copy';
 
+// МАКСИМАЛЬНО ПРОСТАЯ СХЕМА ДЛЯ OPENAI СОВМЕСТИМОСТИ
 export const contentCreateSchema = z.object({
   topic: z.string().describe('Main topic for email content'),
-  content_type: z.enum(['email', 'subject_line', 'preheader', 'body_text', 'complete_campaign']).default('complete_campaign').describe('Type of content to generate'),
-  tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).default('friendly').describe('Content tone'),
-  language: z.enum(['ru', 'en']).default('ru').describe('Content language'),
-  target_audience: z.string().optional().nullable().describe('Target audience for personalization'),
-  pricing_data: z.object({
-    prices: z.array(z.any()).optional().nullable(),
-    currency: z.string().default('RUB'),
-    cheapest: z.number().default(0)
-  }).optional().nullable().describe('Pricing information to include in content'),
-  campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).optional().nullable(),
-    seasonality: z.enum(['spring', 'summer', 'autumn', 'winter']).optional().nullable(),
-    urgency_level: z.enum(['low', 'medium', 'high']).optional().nullable()
-  }).optional().nullable().describe('Campaign context for content optimization')
+  content_type: z.enum(['email', 'subject_line', 'preheader', 'body_text', 'complete_campaign']).describe('Type of content to generate'),
+  tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).describe('Content tone'),
+  language: z.enum(['ru', 'en']).describe('Content language'),
+  target_audience: z.string().describe('Target audience for personalization'),
+  urgency_level: z.enum(['low', 'medium', 'high']).describe('Campaign urgency level'),
+  include_personalization: z.boolean().describe('Include personalization elements'),
+  include_cta: z.boolean().describe('Include call-to-action'),
+  content_length: z.enum(['short', 'medium', 'long']).describe('Desired content length'),
+  generation_quality: z.enum(['fast', 'balanced', 'quality']).describe('Generation quality vs speed')
 });
 
 export type ContentCreateParams = z.infer<typeof contentCreateSchema>;
@@ -70,21 +66,30 @@ export async function contentCreate(params: ContentCreateParams): Promise<Conten
       language: params.language
     });
 
-    // Build generation parameters for the copy tool
+    // Build generation parameters for the copy tool with simplified schema
     const copyParams = {
       topic: params.topic,
       tone: params.tone,
       language: params.language,
       content_type: params.content_type,
-      target_audience: params.target_audience || 'general travelers',
-      pricing_data: params.pricing_data,
-      campaign_context: params.campaign_context
+      target_audience: params.target_audience,
+      prices: {
+        currency: 'RUB',
+        cheapest: 0,
+        prices: []
+      },
+      campaign_context: {
+        campaign_type: 'promotional' as const,
+        seasonality: 'general' as const,
+        urgency_level: params.urgency_level
+      }
     };
 
     // Use existing copy generation tool
     const result = await generateCopy(copyParams);
     
     if (!result.success) {
+      console.error('❌ Copy generation failed:', result.error);
       return {
         success: false,
         content_data: {},
@@ -103,6 +108,30 @@ export async function contentCreate(params: ContentCreateParams): Promise<Conten
           recommendations: ['Check generation parameters', 'Verify content requirements']
         },
         error: result.error || 'Content generation failed'
+      };
+    }
+
+    // Validate that we have proper content data
+    if (!result.data || typeof result.data !== 'object') {
+      console.warn('⚠️ Copy generation returned invalid data structure');
+      return {
+        success: false,
+        content_data: {},
+        content_metadata: {
+          content_type: params.content_type,
+          tone: params.tone,
+          language: params.language,
+          word_count: 0,
+          generation_confidence: 0,
+          content_structure: {
+            has_personalization: false,
+            includes_pricing: false,
+            urgency_indicators: [],
+            call_to_action_strength: 'weak'
+          },
+          recommendations: ['Invalid data structure from copy generation']
+        },
+        error: 'Invalid data structure returned from copy generation'
       };
     }
 
@@ -144,7 +173,8 @@ export async function contentCreate(params: ContentCreateParams): Promise<Conten
 function extractContentData(result: any, contentType: string): any {
   const data = result.data || {};
   
-  if (contentType === 'complete_campaign') {
+  // Handle email content type (complete email content)
+  if (contentType === 'email' || contentType === 'complete_campaign') {
     return {
       complete_content: {
         subject: data.subject || data.content?.subject || 'Новое предложение от Kupibilet',
@@ -155,12 +185,35 @@ function extractContentData(result: any, contentType: string): any {
     };
   }
 
-  return {
-    subject: contentType === 'subject_line' ? data.subject : undefined,
-    preheader: contentType === 'preheader' ? data.preheader : undefined,
-    email_body: contentType === 'body_text' ? data.body || data.email_body : undefined,
-    cta_text: contentType === 'call_to_action' ? data.cta || data.cta_text : undefined
-  };
+  // Handle specific content types
+  switch (contentType) {
+    case 'subject_line':
+      return {
+        subject: data.subject || 'Новое предложение от Kupibilet'
+      };
+    case 'preheader':
+      return {
+        preheader: data.preheader || 'Ваше путешествие начинается здесь'
+      };
+    case 'body_text':
+      return {
+        email_body: data.body || data.email_body || 'Содержание письма'
+      };
+    case 'call_to_action':
+      return {
+        cta_text: data.cta || data.cta_text || 'Забронировать'
+      };
+    default:
+      // Fallback for unknown content types - return complete content
+      return {
+        complete_content: {
+          subject: data.subject || 'Новое предложение от Kupibilet',
+          preheader: data.preheader || 'Ваше путешествие начинается здесь',
+          body: data.body || data.email_body || 'Содержание письма',
+          cta: data.cta || data.cta_text || 'Забронировать'
+        }
+      };
+  }
 }
 
 function analyzeContentStructure(contentData: any, params: ContentCreateParams): any {
@@ -168,7 +221,7 @@ function analyzeContentStructure(contentData: any, params: ContentCreateParams):
   const wordCount = allText.split(/\s+/).length;
   
   // Analyze content characteristics
-  const hasPersonalization = /вы|ваш|для вас|персонально/i.test(allText);
+  const hasPersonalization = params.include_personalization && /вы|ваш|для вас|персонально/i.test(allText);
   const includesPricing = /руб|₽|цена|стоимость|от \d+/i.test(allText);
   
   // Find urgency indicators
@@ -196,15 +249,15 @@ function analyzeContentStructure(contentData: any, params: ContentCreateParams):
   // Generate recommendations
   const recommendations: string[] = [];
   
-  if (!hasPersonalization && params.target_audience) {
+  if (!hasPersonalization && params.include_personalization) {
     recommendations.push('Consider adding personalization elements');
   }
   
-  if (params.pricing_data && !includesPricing) {
+  if (!includesPricing && params.urgency_level === 'high') {
     recommendations.push('Include pricing information for better conversion');
   }
   
-  if (urgencyIndicators.length === 0 && params.campaign_context?.urgency_level === 'high') {
+  if (urgencyIndicators.length === 0 && params.urgency_level === 'high') {
     recommendations.push('Add urgency indicators for high-priority campaigns');
   }
   

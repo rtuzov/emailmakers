@@ -13,7 +13,7 @@ import { Agent, run, tool, withTrace, generateTraceId, getCurrentTrace } from '@
 import { z } from 'zod';
 import { figmaSearch, figmaSearchSchema } from '../tools/simple/figma-search';
 import { figmaFolders, figmaFoldersSchema } from '../tools/simple/figma-folders';
-import { assetSplitter, assetSplitterSchema } from '../tools/simple/asset-splitter';
+// import { assetSplitter, assetSplitterSchema } from '../tools/simple/asset-splitter'; // Temporarily disabled due to schema issues
 import { emailRenderer, emailRendererSchema } from '../tools/consolidated/email-renderer';
 import { getUsageModel } from '../../shared/utils/model-config';
 
@@ -123,7 +123,7 @@ export class DesignSpecialistAgent {
 
 SPECIALIZATION: Visual Design & Email Rendering
 - Asset discovery with figma_search and figma_folders
-- Sprite processing with asset_splitter when needed
+- Sprite processing capabilities (when available)
 - Advanced email rendering with email_renderer
 - Visual optimization for email clients
 - Design consistency and brand alignment
@@ -131,7 +131,7 @@ SPECIALIZATION: Visual Design & Email Rendering
 RESPONSIBILITIES:
 1. **Asset Discovery**: Use figma_search to find appropriate visual assets by tags and emotion
 2. **Folder Navigation**: Use figma_folders to understand asset organization and priorities
-3. **Asset Processing**: Use asset_splitter for sprite files when individual assets needed
+3. **Asset Processing**: Process visual assets for optimal email integration
 4. **Email Rendering**: Use email_renderer to create production-ready HTML emails
 
 WORKFLOW INTEGRATION:
@@ -177,12 +177,12 @@ Execute design tasks with attention to detail and prepare complete packages for 
         parameters: figmaFoldersSchema,
         execute: figmaFolders
       }),
-      tool({
-        name: 'asset_splitter',
-        description: 'Asset Splitter - Split PNG sprite files into individual images with intelligent classification.',
-        parameters: assetSplitterSchema,
-        execute: assetSplitter
-      }),
+      // tool({
+      //   name: 'asset_splitter',
+      //   description: 'Asset Splitter - Split PNG sprite files into individual images with intelligent classification.',
+      //   parameters: assetSplitterSchema,
+      //   execute: assetSplitter
+      // }), // Temporarily disabled due to schema issues
       tool({
         name: 'email_renderer',
         description: 'Email Renderer - Unified email rendering with multiple engine support including MJML, React components, advanced systems, and seasonal components.',
@@ -286,13 +286,9 @@ Execute design tasks with attention to detail and prepare complete packages for 
       }
     };
 
-    const assetsResult = await run(this.agent, `Select intelligent visual assets for email campaign. Use figma_asset_manager to find assets matching the content tone and campaign type.`, {
-      figma_asset_manager: assetParams
-    });
+    const assetsResult = await run(this.agent, `Select intelligent visual assets for email campaign. Use figma_asset_manager to find assets matching the content tone and campaign type.`);
 
-    const identicaResult = await run(this.agent, `Select brand identity assets. Use figma_asset_manager for identica selection.`, {
-      figma_asset_manager: identicaParams
-    });
+    const identicaResult = await run(this.agent, `Select brand identity assets. Use figma_asset_manager for identica selection.`);
 
     const combinedAssets = this.combineAssetResults(assetsResult, identicaResult);
     
@@ -397,9 +393,7 @@ Execute design tasks with attention to detail and prepare complete packages for 
       render_metadata: true
     };
 
-    const renderingResult = await run(this.agent, `Render professional email template with advanced features. Use email_renderer with comprehensive optimization.`, {
-      email_renderer: renderingParams
-    });
+    const renderingResult = await run(this.agent, `Render professional email template with advanced features. Use email_renderer with comprehensive optimization.`);
 
     const designArtifacts = this.extractDesignArtifacts(renderingResult);
     
@@ -464,9 +458,7 @@ Execute design tasks with attention to detail and prepare complete packages for 
       include_analytics: true
     };
 
-    const hybridResult = await run(this.agent, `Create advanced hybrid email template with multiple rendering systems. Use email_renderer for sophisticated template creation.`, {
-      email_renderer: hybridParams
-    });
+    const hybridResult = await run(this.agent, `Create advanced hybrid email template with multiple rendering systems. Use email_renderer for sophisticated template creation.`);
 
     const templateArtifacts = this.generateTemplateArtifacts(hybridResult);
     
@@ -528,9 +520,7 @@ Execute design tasks with attention to detail and prepare complete packages for 
       include_analytics: true
     };
 
-    const optimizationResult = await run(this.agent, `Optimize email design for performance and compatibility. Use email_renderer for comprehensive optimization.`, {
-      email_renderer: optimizationParams
-    });
+    const optimizationResult = await run(this.agent, `Optimize email design for performance and compatibility. Use email_renderer for comprehensive optimization.`);
 
     const optimizationArtifacts = this.generateOptimizationArtifacts(optimizationResult);
     

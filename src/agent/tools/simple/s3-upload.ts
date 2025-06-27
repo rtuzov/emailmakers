@@ -9,21 +9,12 @@ import { z } from 'zod';
 import { uploadToS3 } from '../upload';
 
 export const s3UploadSchema = z.object({
-  file_content: z.string().describe('File content to upload (HTML, image data, etc.)'),
-  file_name: z.string().describe('Name for the uploaded file'),
-  file_type: z.enum(['html', 'image', 'pdf', 'json', 'text']).describe('Type of file being uploaded'),
-  upload_config: z.object({
-    bucket_path: z.string().optional().nullable().describe('S3 bucket path (defaults to email-templates)'),
-    public_access: z.boolean().default(false).describe('Whether file should be publicly accessible'),
-    cache_control: z.string().optional().nullable().describe('Cache control headers'),
-    content_encoding: z.string().optional().nullable().describe('Content encoding (gzip, etc.)')
-  }).optional().nullable().describe('Upload configuration options'),
-  metadata: z.object({
-    campaign_id: z.string().optional(),
-    template_version: z.string().optional(),
-    created_by: z.string().optional(),
-    tags: z.array(z.string()).optional()
-  }).optional().nullable().describe('File metadata for organization')
+  file_path: z.string().describe('Local file path to upload'),
+  s3_key: z.string().describe('S3 object key (path in bucket)'),
+  bucket: z.string().optional().nullable().describe('S3 bucket name (uses default if not specified)'),
+  content_type: z.string().optional().nullable().describe('MIME type of the file'),
+  public_access: z.boolean().optional().nullable().describe('Whether file should be publicly accessible'),
+  metadata: z.object({}).passthrough().optional().nullable().describe('Additional metadata for the file')
 });
 
 export type S3UploadParams = z.infer<typeof s3UploadSchema>;
@@ -60,19 +51,19 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
   
   try {
     console.log('☁️ Uploading to S3:', {
-      file_name: params.file_name,
-      file_type: params.file_type,
-      size_kb: Math.round(params.file_content.length / 1024)
+      file_name: params.file_path,
+      file_type: params.content_type,
+      size_kb: Math.round(params.file_path.length / 1024)
     });
 
     // Prepare file content and determine content type
-    const contentType = getContentType(params.file_type);
-    let processedContent = params.file_content;
+    const contentType = getContentType(params.content_type);
+    let processedContent = params.file_path;
     let compressionRatio = undefined;
 
     // Apply compression if beneficial
-    if (shouldCompress(params.file_type, params.file_content.length)) {
-      const compressed = await compressContent(params.file_content, params.file_type);
+    if (shouldCompress(params.content_type, params.file_path.length)) {
+      const compressed = await compressContent(params.file_path, params.content_type);
       if (compressed.success) {
         processedContent = compressed.content;
         compressionRatio = compressed.ratio;
@@ -80,7 +71,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
     }
 
     // Security scan for malicious content
-    const securityScan = performSecurityScan(processedContent, params.file_type);
+    const securityScan = performSecurityScan(processedContent, params.content_type);
     if (!securityScan.safe) {
       return {
         success: false,
@@ -95,7 +86,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
         },
         upload_metadata: {
           upload_duration: Date.now() - startTime,
-          compression_ratio,
+          compression_ratio: compressionRatio,
           security_scan: securityScan,
           access_info: {}
         },
@@ -105,19 +96,20 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
 
     // Build upload parameters
     const uploadParams = {
+      html: processedContent,
       file_content: processedContent,
-      file_name: params.file_name,
+      file_name: params.file_path,
       content_type: contentType,
-      bucket_path: params.upload_config?.bucket_path || 'email-templates',
-      public_read: params.upload_config?.public_access || false,
+      bucket_path: params.bucket || 'email-templates',
+      public_read: params.public_access || false,
       metadata: {
         ...params.metadata,
-        original_size: params.file_content.length.toString(),
+        original_size: params.file_path.length.toString(),
         upload_timestamp: new Date().toISOString(),
-        file_type: params.file_type
+        file_type: params.content_type
       },
-      cache_control: params.upload_config?.cache_control,
-      content_encoding: params.upload_config?.content_encoding
+      cache_control: params.content_type,
+      content_encoding: params.content_type
     };
 
     // Perform the actual upload
@@ -137,7 +129,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
         },
         upload_metadata: {
           upload_duration: Date.now() - startTime,
-          compression_ratio,
+          compression_ratio: compressionRatio,
           security_scan: securityScan,
           access_info: {}
         },
@@ -146,24 +138,24 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
     }
 
     // Generate access information
-    const accessInfo = generateAccessInfo(uploadResult, params.upload_config);
+    const accessInfo = generateAccessInfo(uploadResult, params.public_access);
 
     const uploadDuration = Date.now() - startTime;
 
     return {
       success: true,
       upload_result: {
-        file_url: uploadResult.file_url,
-        bucket_name: uploadResult.bucket || 'email-makers-assets',
-        key: uploadResult.key || params.file_name,
+        file_url: uploadResult.data?.html_url || '',
+        bucket_name: uploadResult.data?.bucket_name || 'email-makers-assets',
+        key: uploadResult.data?.key || params.file_path,
         size_bytes: processedContent.length,
         content_type: contentType,
         last_modified: new Date().toISOString(),
-        etag: uploadResult.etag || generateETag(processedContent)
+        etag: uploadResult.data?.etag || generateETag(processedContent)
       },
       upload_metadata: {
         upload_duration: uploadDuration,
-        compression_ratio,
+        compression_ratio: compressionRatio,
         security_scan: securityScan,
         access_info: accessInfo
       }
@@ -296,10 +288,10 @@ function performSecurityScan(content: string, fileType: string): { safe: boolean
   };
 }
 
-function generateAccessInfo(uploadResult: any, uploadConfig?: any): any {
+function generateAccessInfo(uploadResult: any, public_access: boolean | undefined): any {
   const accessInfo: any = {};
 
-  if (uploadConfig?.public_access) {
+  if (public_access) {
     accessInfo.public_url = uploadResult.file_url;
   } else {
     // Generate signed URL for private access (simplified)

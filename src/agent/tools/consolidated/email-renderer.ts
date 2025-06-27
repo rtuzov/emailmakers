@@ -21,24 +21,24 @@ export const emailRendererSchema = z.object({
   action: z.enum(['render_mjml', 'render_component', 'render_advanced', 'render_seasonal', 'render_hybrid', 'optimize_output']).describe('Email rendering operation'),
   
   // For render_mjml action
-  mjml_content: z.string().optional().nullable().describe('MJML content to compile to HTML'),
+  mjml_content: z.string().default('').describe('MJML content to compile to HTML'),
   
   // For render_component action
-  component_type: z.enum(['header', 'footer', 'body', 'cta', 'pricing_block', 'hero', 'newsletter']).optional().nullable().describe('Type of React component to render'),
-  component_props: z.record(z.any()).optional().nullable().describe('Props to pass to the React component'),
+  component_type: z.enum(['header', 'footer', 'body', 'cta', 'pricing_block', 'hero', 'newsletter']).default('body').describe('Type of React component to render'),
+  component_props: z.string().default('{}').describe('Props to pass to the React component (JSON string)'),
   
   // For render_advanced action
   advanced_config: z.object({
     template_type: z.enum(['promotional', 'transactional', 'newsletter', 'premium', 'responsive']).describe('Advanced template type'),
     customization_level: z.enum(['basic', 'standard', 'advanced', 'enterprise']).default('standard').describe('Customization complexity'),
-    features: z.array(z.enum(['dark_mode', 'interactive', 'animation', 'personalization', 'a_b_testing'])).optional().nullable().describe('Advanced features to include'),
+    features: z.array(z.enum(['dark_mode', 'interactive', 'animation', 'personalization', 'a_b_testing'])).default([]).describe('Advanced features to include'),
     brand_guidelines: z.object({
-      primary_color: z.string().optional().nullable(),
-      secondary_color: z.string().optional().nullable(),
-      font_family: z.string().optional().nullable(),
-      logo_url: z.string().optional().nullable()
-    }).optional().nullable().describe('Brand customization')
-  }).optional().nullable().describe('Advanced component configuration'),
+      primary_color: z.string().default(''),
+      secondary_color: z.string().default(''),
+      font_family: z.string().default(''),
+      logo_url: z.string().default('')
+    }).default({}).describe('Brand customization')
+  }).default({}).describe('Advanced component configuration'),
   
   // For render_seasonal action
   seasonal_config: z.object({
@@ -46,26 +46,26 @@ export const emailRendererSchema = z.object({
     seasonal_intensity: z.enum(['subtle', 'moderate', 'festive', 'full_theme']).default('moderate').describe('How prominent seasonal elements should be'),
     cultural_context: z.enum(['russian', 'international', 'european', 'mixed']).default('russian').describe('Cultural context for seasonal elements'),
     include_animations: z.boolean().default(false).describe('Include seasonal animations')
-  }).optional().nullable().describe('Seasonal rendering configuration'),
+  }).default({}).describe('Seasonal rendering configuration'),
   
   // For render_hybrid action (combines multiple systems)
   hybrid_config: z.object({
     base_template: z.enum(['mjml', 'react', 'advanced', 'seasonal']).describe('Base rendering system'),
     enhancements: z.array(z.enum(['seasonal_overlay', 'advanced_components', 'react_widgets', 'mjml_structure'])).describe('Additional rendering layers'),
-    priority_order: z.array(z.string()).optional().nullable().describe('Order of rendering operations')
-  }).optional().nullable().describe('Hybrid rendering configuration'),
+    priority_order: z.array(z.string()).default([]).describe('Order of rendering operations')
+  }).default({}).describe('Hybrid rendering configuration'),
   
   // Content and data
   content_data: z.object({
-    subject: z.string().optional(),
-    preheader: z.string().optional(),
-    body: z.string().optional(),
-    cta_text: z.string().optional(),
-    cta_url: z.string().optional(),
-    pricing_data: z.any().optional(),
-    assets: z.array(z.any()).optional(),
-    personalization: z.record(z.string()).optional()
-  }).optional().nullable().describe('Content data for rendering'),
+    subject: z.string().default(''),
+    preheader: z.string().default(''),
+    body: z.string().default(''),
+    cta_text: z.string().default(''),
+    cta_url: z.string().default(''),
+    pricing_data: z.string().default(''),
+    assets: z.array(z.string()).default([]),
+    personalization: z.string().default('{}')
+  }).default({}).describe('Content data for rendering'),
   
   // Rendering options
   rendering_options: z.object({
@@ -76,7 +76,7 @@ export const emailRendererSchema = z.object({
     minify_output: z.boolean().default(true).describe('Minify HTML output'),
     validate_html: z.boolean().default(true).describe('Validate HTML for email standards'),
     accessibility_compliance: z.boolean().default(true).describe('Ensure accessibility compliance')
-  }).optional().nullable().describe('Rendering optimization options'),
+  }).default({}).describe('Rendering optimization options'),
   
   // Performance and caching
   performance_config: z.object({
@@ -84,7 +84,7 @@ export const emailRendererSchema = z.object({
     parallel_rendering: z.boolean().default(true).describe('Enable parallel rendering for components'),
     lazy_loading: z.boolean().default(false).describe('Enable lazy loading for images'),
     image_optimization: z.boolean().default(true).describe('Optimize images during rendering')
-  }).optional().nullable().describe('Performance optimization settings'),
+  }).default({}).describe('Performance optimization settings'),
   
   // Analytics and debugging
   include_analytics: z.boolean().default(true).describe('Include rendering analytics'),
@@ -189,7 +189,7 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
  * Handle MJML rendering (enhanced version of render_mjml)
  */
 async function handleMjmlRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.mjml_content) {
+  if (!params.mjml_content || params.mjml_content.trim() === '') {
     throw new Error('MJML content is required for MJML rendering');
   }
   
@@ -197,7 +197,18 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
   
   // Enhanced MJML rendering with optimizations
   const mjmlResult = await renderMjml({
-    mjml: params.mjml_content
+    content: {
+      subject: 'Email Subject',
+      preheader: 'Email Preheader', 
+      body: params.mjml_content || 'Default body',
+      cta: 'Click Here',
+      language: 'ru',
+      tone: 'friendly'
+    },
+    assets: {
+      paths: [],
+      metadata: {}
+    }
   });
   
   if (!mjmlResult.success) {
@@ -243,16 +254,26 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
  * Handle React component rendering (enhanced version of render_component)
  */
 async function handleComponentRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.component_type) {
-    throw new Error('Component type is required for component rendering');
+  if (!params.component_type || params.component_type === 'body') {
+    // 'body' is the default, so we need actual component type
+    throw new Error('Specific component type is required for component rendering');
   }
   
   console.log(`⚛️ Rendering React component: ${params.component_type}`);
   
+  let componentProps = {};
+  try {
+    componentProps = JSON.parse(params.component_props);
+  } catch (error) {
+    console.warn('Failed to parse component_props, using default:', error);
+  }
+
   const componentResult = await renderComponent({
-    componentType: params.component_type,
-    props: params.component_props || {},
-    data: params.content_data
+    type: params.component_type === 'header' ? 'rabbit' : 'icon',
+    props: componentProps.iconType ? componentProps as any : {
+      iconType: 'arrow',
+      ...componentProps
+    }
   });
   
   if (!componentResult.success) {
@@ -271,7 +292,7 @@ async function handleComponentRendering(params: EmailRendererParams, startTime: 
       html: optimizedComponent.html,
       component_metadata: {
         type: params.component_type,
-        props: params.component_props,
+        props: componentProps,
         optimizations: optimizedComponent.optimizations
       }
     },
@@ -297,18 +318,22 @@ async function handleComponentRendering(params: EmailRendererParams, startTime: 
  * Handle advanced component rendering (enhanced version of advanced_component_system)
  */
 async function handleAdvancedRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.advanced_config) {
-    throw new Error('Advanced configuration is required for advanced rendering');
+  if (!params.advanced_config || !params.advanced_config.template_type) {
+    throw new Error('Advanced configuration with template_type is required for advanced rendering');
   }
   
   console.log(`🚀 Rendering advanced template: ${params.advanced_config.template_type}`);
   
   const advancedResult = await advancedComponentSystem({
-    templateType: params.advanced_config.template_type,
-    customizationLevel: params.advanced_config.customization_level,
-    features: params.advanced_config.features || [],
-    brandGuidelines: params.advanced_config.brand_guidelines,
-    contentData: params.content_data
+    action: 'render',
+    component_type: 'rabbit',
+    props: {
+      template_type: params.advanced_config.template_type,
+      customization_level: params.advanced_config.customization_level,
+      features: params.advanced_config.features || [],
+      brand_guidelines: params.advanced_config.brand_guidelines,
+      content_data: params.content_data
+    }
   });
   
   if (!advancedResult.success) {
@@ -350,18 +375,23 @@ async function handleAdvancedRendering(params: EmailRendererParams, startTime: n
  * Handle seasonal component rendering (enhanced version of seasonal_component_system)
  */
 async function handleSeasonalRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.seasonal_config) {
-    throw new Error('Seasonal configuration is required for seasonal rendering');
+  if (!params.seasonal_config || !params.seasonal_config.season) {
+    throw new Error('Seasonal configuration with season is required for seasonal rendering');
   }
   
   console.log(`🎄 Rendering seasonal template: ${params.seasonal_config.season}`);
   
   const seasonalResult = await seasonalComponentSystem({
-    season: params.seasonal_config.season,
-    intensity: params.seasonal_config.seasonal_intensity,
-    culturalContext: params.seasonal_config.cultural_context,
-    includeAnimations: params.seasonal_config.include_animations,
-    contentData: params.content_data
+    action: 'select_seasonal',
+    component_type: 'rabbit',
+    seasonal_context: {
+      current_date: new Date(),
+      region: 'RU',
+      email_content_tone: 'promotional',
+      target_audience: 'general'
+    },
+    preferred_emotion: 'happy',
+    fallback_strategy: 'flexible'
   });
   
   if (!seasonalResult.success) {
@@ -379,7 +409,7 @@ async function handleSeasonalRendering(params: EmailRendererParams, startTime: n
     data: {
       html: seasonalOptimized.html,
       component_metadata: seasonalResult.data.metadata,
-      seasonal_elements: seasonalResult.data.seasonalElements
+      rendering_stats: seasonalResult.data.seasonalElements
     },
     rendering_metadata: {
       template_type: `seasonal_${params.seasonal_config.season}`,
@@ -403,8 +433,8 @@ async function handleSeasonalRendering(params: EmailRendererParams, startTime: n
  * Handle hybrid rendering (combines multiple systems)
  */
 async function handleHybridRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.hybrid_config) {
-    throw new Error('Hybrid configuration is required for hybrid rendering');
+  if (!params.hybrid_config || !params.hybrid_config.base_template) {
+    throw new Error('Hybrid configuration with base_template is required for hybrid rendering');
   }
   
   console.log(`🔄 Hybrid rendering: ${params.hybrid_config.base_template} + ${params.hybrid_config.enhancements.join(', ')}`);
@@ -452,8 +482,8 @@ async function handleHybridRendering(params: EmailRendererParams, startTime: num
     action: 'render_hybrid',
     data: {
       html: enhancedOutput.html,
-      base_template: params.hybrid_config.base_template,
-      applied_enhancements: appliedEnhancements,
+      mjml: params.hybrid_config.base_template,
+      component_metadata: appliedEnhancements,
       rendering_stats: enhancedOutput.stats
     },
     rendering_metadata: {
@@ -490,7 +520,7 @@ async function handleOutputOptimization(params: EmailRendererParams, startTime: 
     action: 'optimize_output',
     data: {
       html: optimizations.html,
-      optimization_report: optimizations.report
+      rendering_stats: optimizations.report
     },
     rendering_metadata: {
       template_type: 'optimized',

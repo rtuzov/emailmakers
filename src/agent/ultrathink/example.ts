@@ -76,6 +76,7 @@ async function demonstrateUltraThink() {
     topic: 'Летний отпуск в Сочи',
     origin: 'LED', // Will be kept as-is (valid)
     destination: 'LED', // Will be corrected to valid destination
+    departure_date: '2025-07-15',
     date_range: '2025-07-15,2025-07-22',
     campaign_type: 'seasonal',
     target_audience: 'семьи с детьми'

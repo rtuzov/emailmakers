@@ -5,19 +5,19 @@ import { z } from 'zod';
 // Схема валидации запроса
 const ProcessNewsRabbitsSchema = z.object({
   figmaUrl: z.string().url('Неверный формат Figma URL'),
-  outputDirectory: z.string().optional(),
+  outputDirectory: z.string().optional().nullable(),
   context: z.object({
-    campaign_type: z.enum(['urgent', 'newsletter', 'seasonal', 'promotional', 'informational']).optional(),
-    content_theme: z.string().optional(),
-    target_audience: z.string().optional(),
-    brand_guidelines: z.array(z.string()).optional(),
-  }).optional(),
+    campaign_type: z.enum(['urgent', 'newsletter', 'seasonal', 'promotional', 'informational']).optional().nullable(),
+    content_theme: z.string().optional().nullable(),
+    target_audience: z.string().optional().nullable(),
+    brand_guidelines: z.array(z.string()).optional().nullable(),
+  }).optional().nullable(),
   options: z.object({
     includeVariants: z.boolean().default(true),
     generateReport: z.boolean().default(true),
     aiAnalysis: z.boolean().default(true),
     maxAssets: z.number().min(1).max(50).default(20),
-  }).optional(),
+  }).optional().nullable(),
 });
 
 type ProcessNewsRabbitsRequest = z.infer<typeof ProcessNewsRabbitsSchema>;

@@ -121,9 +121,9 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
   if (mjmlUrl) console.log(`📄 MJML file: ${mjmlSize.toFixed(2)}KB`);
   console.log(`🖼️ Assets: ${assetUrls.length} files`);
 
-      // Save files locally for now (in production, upload to S3)
-    const optimizedParams = { ...params, html: fullHtml };
-    await saveToLocal(optimizedParams, campaignId);
+  // Save files locally for now (in production, upload to S3)
+  const optimizedParams = { ...params, html: params.html };
+  await saveToLocal(optimizedParams, campaignId);
 
   return {
     html_url: htmlUrl,
@@ -196,75 +196,31 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
       for (const placeholder of figmaAssetPlaceholders) {
         const filename = placeholder.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/)?.[1];
         
-        console.log(`🔍 T9: Processing placeholder: ${placeholder}`);
-        console.log(`🔍 T9: Extracted filename: "${filename}" (type: ${typeof filename})`);
+        console.log(`🔍 Processing placeholder: ${placeholder}`);
+        console.log(`🔍 Extracted filename: "${filename}"`);
         
-        if (filename && typeof filename === 'string' && filename.trim()) {
-          let sourceAssetPath: string | null = null;
+        if (!filename || typeof filename !== 'string' || !filename.trim()) {
+          throw new Error(`Invalid filename extracted from placeholder: ${placeholder}`);
+        }
+        
+        // Try to find the asset in figma-assets directory
+        const assetPath = path.join(process.cwd(), 'figma-assets', filename);
+        
+        try {
+          await fs.access(assetPath);
           
-          // Try multiple locations for the Figma asset
-          const possiblePaths = [
-            path.join(process.cwd(), 'figma-assets', filename),
-            path.join(process.cwd(), 'mails', filename),
-            path.join(process.cwd(), filename)
-          ];
+          // Copy the asset to the local assets directory
+          const destinationPath = path.join(`${localDir}/assets`, filename);
+          await fs.copyFile(assetPath, destinationPath);
           
-          console.log(`🔍 T9: Generated possible paths for "${filename}":`, possiblePaths);
+          // Create production URL (no mock URLs)
+          const assetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/generated/${campaignId}/assets/${filename}`;
+          processedHtml = processedHtml.replace(placeholder, assetUrl);
           
-          // Find the asset in one of the possible locations
-          console.log(`🔍 T9: Searching for asset "${filename}" in ${possiblePaths.length} locations`);
-          for (let i = 0; i < possiblePaths.length; i++) {
-            const possiblePath = possiblePaths[i];
-            console.log(`🔍 T9: Checking path ${i + 1}/${possiblePaths.length}: ${possiblePath} (type: ${typeof possiblePath})`);
-            try {
-              if (possiblePath && typeof possiblePath === 'string') {
-                await fs.access(possiblePath);
-                sourceAssetPath = possiblePath;
-                console.log(`📍 Found Figma asset at: ${possiblePath}`);
-                break;
-              } else {
-                console.warn(`⚠️ T9: Invalid path at index ${i}: ${possiblePath}`);
-              }
-            } catch (error) {
-              console.log(`❌ T9: Asset not found at: ${possiblePath}`);
-            }
-          }
+          console.log(`✅ Integrated Figma asset: ${filename} -> ${assetUrl}`);
           
-          if (sourceAssetPath) {
-            // Copy the asset to the local assets directory
-            const destinationPath = path.join(`${localDir}/assets`, filename);
-            await fs.copyFile(sourceAssetPath, destinationPath);
-            
-            // Create S3-compatible URL
-            const assetUrl = `http://localhost:3000/api/mock/s3/mails/${campaignId}/assets/${filename}`;
-            processedHtml = processedHtml.replace(placeholder, assetUrl);
-            
-            console.log(`✅ Integrated Figma asset: ${filename} -> ${assetUrl}`);
-          } else {
-            // Use fallback - try to find a similar real asset
-            const fallbackAsset = findFallbackAsset(filename);
-            if (fallbackAsset) {
-              const fallbackPath = path.join(process.cwd(), 'figma-assets', fallbackAsset);
-              try {
-                if (fallbackPath && typeof fallbackPath === 'string') {
-                  await fs.access(fallbackPath);
-                  const destinationPath = path.join(`${localDir}/assets`, fallbackAsset);
-                  await fs.copyFile(fallbackPath, destinationPath);
-                
-                  const assetUrl = `http://localhost:3000/api/mock/s3/mails/${campaignId}/assets/${fallbackAsset}`;
-                  processedHtml = processedHtml.replace(placeholder, assetUrl);
-                  
-                  console.log(`⚠️ Used fallback asset: ${filename} -> ${fallbackAsset}`);
-                }
-              } catch (error) {
-                console.warn(`⚠️ Fallback asset also not found: ${fallbackAsset}, removing placeholder`);
-                processedHtml = processedHtml.replace(placeholder, '');
-              }
-            } else {
-              console.warn(`⚠️ No fallback found for: ${filename}, removing placeholder`);
-              processedHtml = processedHtml.replace(placeholder, '');
-            }
-          }
+        } catch (error) {
+          throw new Error(`Required Figma asset not found: ${filename}. Please ensure all assets are available in figma-assets directory.`);
         }
       }
     }
@@ -296,6 +252,7 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
 
   } catch (error) {
     console.error('Failed to save files locally:', error);
+    throw error;
   }
 }
 

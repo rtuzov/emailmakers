@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { GlassCard, GlassButton, GlassInput } from '../glass'
 
 // Icons
@@ -46,275 +46,200 @@ interface Template {
   name: string
   category: string
   description: string
-  thumbnail: string
+  thumbnail?: string
   createdAt: string
-  status: 'draft' | 'published'
+  status: 'published' | 'draft'
   openRate?: number
   clickRate?: number
 }
 
-const mockTemplates: Template[] = [
-  {
-    id: '1',
-    name: 'Welcome Email Series',
-    category: 'Onboarding',
-    description: 'A beautiful welcome email template for new subscribers with personalized greeting and company introduction',
-    thumbnail: '',
-    createdAt: 'January 27, 2025',
-    status: 'published',
-    openRate: 85.2,
-    clickRate: 12.4
-  },
-  {
-    id: '2',
-    name: 'Product Launch Announcement',
-    category: 'Marketing',
-    description: 'Eye-catching template for product launches and announcements with compelling visuals and clear CTAs',
-    thumbnail: '',
-    createdAt: 'January 26, 2025',
-    status: 'published',
-    openRate: 78.9,
-    clickRate: 15.6
-  },
-  {
-    id: '3',
-    name: 'Monthly Newsletter',
-    category: 'Newsletter',
-    description: 'Clean and professional monthly newsletter template featuring company updates, industry news, and insights',
-    thumbnail: '',
-    createdAt: 'January 25, 2025',
-    status: 'draft'
-  },
-  {
-    id: '4',
-    name: 'Promotional Campaign',
-    category: 'Sales',
-    description: 'High-converting promotional email template with discount codes, urgency elements, and social proof',
-    thumbnail: '',
-    createdAt: 'January 24, 2025',
-    status: 'published',
-    openRate: 92.1,
-    clickRate: 18.3
-  },
-  {
-    id: '5',
-    name: 'Customer Feedback Survey',
-    category: 'Marketing',
-    description: 'Engaging survey email template to collect customer feedback with incentive offers',
-    thumbnail: '',
-    createdAt: 'January 23, 2025',
-    status: 'published',
-    openRate: 67.8,
-    clickRate: 8.9
-  },
-  {
-    id: '6',
-    name: 'Event Invitation',
-    category: 'Marketing',
-    description: 'Professional event invitation template with RSVP functionality and event details',
-    thumbnail: '',
-    createdAt: 'January 22, 2025',
-    status: 'draft'
+// No mock data - templates must be fetched from API
+export function TemplatesPage() {
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchTemplates()
+  }, [])
+
+  const fetchTemplates = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/templates')
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch templates: ${response.status} ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load templates')
+      }
+      
+      setTemplates(data.templates || [])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error occurred')
+    } finally {
+      setLoading(false)
+    }
   }
-]
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-white/70">Loading templates...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Failed to Load Templates</h2>
+          <p className="text-white/70 mb-6">{error}</p>
+          <button
+            onClick={fetchTemplates}
+            className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent/80 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (templates.length === 0) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <h1 className="text-3xl font-bold text-white">
+                Email<span className="text-primary">Makers</span>
+              </h1>
+            </div>
+          </div>
+        </header>
+        
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center py-20">
+            <div className="text-white/40 text-8xl mb-6">📧</div>
+            <h2 className="text-3xl font-bold text-white mb-4">No Templates Found</h2>
+            <p className="text-white/70 mb-8 max-w-md mx-auto">
+              You haven't created any email templates yet. Start by creating your first template.
+            </p>
+            <a
+              href="/create"
+              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white rounded-lg hover:bg-accent/80 transition-colors font-medium"
+            >
+              Create Your First Template
+            </a>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <h1 className="text-3xl font-bold text-white">
+              Email<span className="text-primary">Makers</span>
+            </h1>
+          </div>
+        </div>
+      </header>
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-2">Email Templates</h2>
+          <p className="text-white/70">Manage and browse your professional email templates</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {templates.map((template) => (
+            <TemplateCard key={template.id} template={template} />
+          ))}
+        </div>
+      </main>
+    </div>
+  )
+}
 
 interface TemplateCardProps {
   template: Template
 }
 
-const TemplateCard: React.FC<TemplateCardProps> = ({ template }) => {
-  const handlePreview = () => {
-    console.log('Preview template:', template.id)
-    // TODO: Implement preview modal
-  }
-
-  const handleEdit = () => {
-    console.log('Edit template:', template.id)
-    // TODO: Navigate to edit page
-  }
-
-  const handleDownload = () => {
-    console.log('Download template:', template.id)
-    // TODO: Implement download functionality
-  }
-
+function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <GlassCard hover className="overflow-hidden">
-      {/* Template Preview */}
-      <div className="aspect-[3/2] bg-background-light relative">
+    <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass hover:shadow-glass-lg hover:scale-[1.02] hover:border-glass-border overflow-hidden">
+      <div className="aspect-[3/2] bg-background-light/20 relative">
         <div className="absolute inset-0 flex items-center justify-center text-white/60">
           <div className="text-center">
-            <div className="w-12 h-12 mx-auto mb-2">
-              <MailIcon />
+            <div className="w-16 h-16 mx-auto mb-3 bg-accent/20 rounded-lg flex items-center justify-center">
+              📧
             </div>
-            <p className="text-xs">Email Template</p>
+            <p className="text-sm font-medium">Email Template</p>
           </div>
         </div>
-        <div className="absolute top-2 right-2">
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+        <div className="absolute top-3 right-3">
+          <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
             template.status === 'published' 
-              ? 'bg-brand-accent/20 text-brand-accent border border-brand-accent/30' 
-              : 'bg-brand-warning/20 text-brand-warning border border-brand-warning/30'
+              ? 'bg-primary/20 text-primary border-primary/30' 
+              : 'bg-warning/20 text-warning border-warning/30'
           }`}>
             {template.status}
           </span>
         </div>
       </div>
       
-      {/* Template Info */}
       <div className="p-6">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-lg font-semibold text-white truncate">{template.name}</h3>
-          <span className="text-xs text-white/60 bg-glass-secondary px-2 py-1 rounded">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white line-clamp-1">{template.name}</h3>
+          <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded ml-2 whitespace-nowrap">
             {template.category}
           </span>
         </div>
         
         <p className="text-white/70 text-sm mb-4 line-clamp-2">{template.description}</p>
         
-        {/* Metrics */}
         {template.openRate && (
           <div className="flex gap-4 mb-4 text-sm">
-            <div>
-              <span className="text-white/60">Open Rate:</span>
-              <span className="text-brand-accent ml-1 font-medium">{template.openRate}%</span>
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-primary rounded-full mr-2"></div>
+              <span className="text-white/60">Open:</span>
+              <span className="text-primary ml-1 font-medium">{template.openRate}%</span>
             </div>
-            <div>
-              <span className="text-white/60">Click Rate:</span>
-              <span className="text-brand-accent ml-1 font-medium">{template.clickRate}%</span>
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-accent rounded-full mr-2"></div>
+              <span className="text-white/60">Click:</span>
+              <span className="text-accent ml-1 font-medium">{template.clickRate}%</span>
             </div>
           </div>
         )}
         
-        {/* Actions */}
-        <div className="flex gap-2">
-          <GlassButton 
-            variant="ghost" 
-            size="sm" 
-            className="flex-1"
-            onClick={handlePreview}
-          >
-            <EyeIcon />
-            Preview
-          </GlassButton>
-          <GlassButton 
-            variant="ghost" 
-            size="sm"
-            onClick={handleEdit}
-          >
-            <EditIcon />
-          </GlassButton>
-          <GlassButton 
-            variant="ghost" 
-            size="sm"
-            onClick={handleDownload}
-          >
-            <DownloadIcon />
-          </GlassButton>
-        </div>
-        
-        <div className="mt-3 text-xs text-white/50">
+        <div className="text-xs text-white/50 mb-4">
           Created {template.createdAt}
         </div>
-      </div>
-    </GlassCard>
-  )
-}
-
-export const TemplatesPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  
-  const categories = ['all', 'onboarding', 'marketing', 'newsletter', 'sales']
-  
-  const filteredTemplates = mockTemplates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || 
-                           template.category.toLowerCase() === selectedCategory
-    return matchesSearch && matchesCategory
-  })
-
-  return (
-    <div className="container mx-auto px-6 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Email Templates</h1>
-        <p className="text-white/70">
-          Manage and create beautiful email templates with AI-powered generation
-        </p>
-      </div>
-
-      {/* Controls */}
-      <GlassCard className="p-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-          <div className="flex flex-col sm:flex-row gap-4 flex-1">
-            <GlassInput
-              placeholder="Search templates..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={<SearchIcon />}
-              className="md:max-w-xs"
-            />
-            
-            <div className="flex gap-2">
-              <GlassButton
-                variant="ghost"
-                size="sm"
-                leftIcon={<FilterIcon />}
-              >
-                Filter
-              </GlassButton>
-              
-              {categories.map(category => (
-                <GlassButton
-                  key={category}
-                  variant={selectedCategory === category ? 'primary' : 'ghost'}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </GlassButton>
-              ))}
-            </div>
-          </div>
-          
-          <GlassButton 
-            variant="primary"
-            onClick={() => window.location.href = '/create'}
-          >
-            Create New Template
-          </GlassButton>
+        
+        <div className="flex gap-2">
+          <button className="flex-1 px-3 py-1.5 text-sm bg-primary/20 border border-primary/30 text-primary rounded-lg hover:bg-primary/30 transition-colors">
+            Preview
+          </button>
+          <button className="flex-1 px-3 py-1.5 text-sm bg-white/5 border border-white/10 text-white rounded-lg hover:bg-accent/10 transition-colors">
+            Edit
+          </button>
         </div>
-      </GlassCard>
-
-      {/* Templates Grid */}
-      {filteredTemplates.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredTemplates.map(template => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
-        </div>
-      ) : (
-        <GlassCard className="p-12 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 text-white/40">
-            <MailIcon />
-          </div>
-          <h3 className="text-xl font-semibold text-white mb-2">No templates found</h3>
-          <p className="text-white/70 mb-6">
-            {searchTerm || selectedCategory !== 'all' 
-              ? 'Try adjusting your search or filter criteria'
-              : 'Get started by creating your first email template'
-            }
-          </p>
-          <GlassButton 
-            variant="primary"
-            onClick={() => window.location.href = '/create'}
-          >
-            Create Your First Template
-          </GlassButton>
-        </GlassCard>
-      )}
+      </div>
     </div>
   )
 } 

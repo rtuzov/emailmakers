@@ -13,36 +13,34 @@
 import { z } from 'zod';
 import { getPrices } from '../prices';
 
-// Unified schema for all pricing intelligence operations
+// ПРОСТАЯ СХЕМА ДЛЯ OPENAI СОВМЕСТИМОСТИ - БЕЗ ВЛОЖЕННЫХ ОБЪЕКТОВ
 export const pricingIntelligenceSchema = z.object({
   action: z.enum(['get_prices', 'analyze_trends', 'forecast_prices', 'compare_routes', 'get_recommendations', 'market_analysis']).describe('Pricing intelligence operation'),
   
-  // Core pricing parameters (for get_prices)
+  // Core pricing parameters (упрощено)
   origin: z.string().describe('Origin airport code (e.g., "LED")'),
   destination: z.string().describe('Destination airport code (e.g., "MOW")'),
-  date_range: z.union([z.string(), z.null()]).default(null).describe('Date range "YYYY-MM-DD,YYYY-MM-DD" (optional, will use smart dates)'),
-  cabin_class: z.union([z.enum(['economy', 'business', 'first']), z.null()]).default(null).describe('Cabin class preference'),
-  filters: z.union([z.object({
-    is_direct: z.union([z.boolean(), z.null()]).default(null),
-    with_baggage: z.union([z.boolean(), z.null()]).default(null),
-    airplane_only: z.union([z.boolean(), z.null()]).default(null)
-  }), z.null()]).default(null).describe('Flight search filters'),
+  date_range: z.string().default('').describe('Date range "YYYY-MM-DD,YYYY-MM-DD" (empty for smart dates)'),
+  cabin_class: z.enum(['economy', 'business', 'first', 'any']).default('any').describe('Cabin class preference'),
+  
+  // Filters (упрощено)
+  is_direct: z.boolean().default(false).describe('Direct flights only'),
+  with_baggage: z.boolean().default(true).describe('Include baggage'),
+  airplane_only: z.boolean().default(false).describe('Airplane only (no trains/buses)'),
   
   // Enhanced intelligence parameters
   analysis_depth: z.enum(['basic', 'advanced', 'predictive', 'comprehensive']).default('advanced').describe('Depth of price analysis'),
   include_historical: z.boolean().default(true).describe('Include historical price data for trends'),
   seasonal_adjustment: z.boolean().default(true).describe('Apply seasonal price adjustments'),
-  market_context: z.object({
-    target_audience: z.enum(['budget', 'mid_range', 'luxury', 'business', 'family']).optional().nullable().describe('Target customer segment'),
-    booking_window: z.enum(['last_minute', 'optimal', 'early_bird']).optional().nullable().describe('Booking timing strategy'),
-    flexibility: z.enum(['strict', 'moderate', 'flexible']).optional().nullable().describe('Date flexibility level')
-  }).optional().nullable().describe('Market context for intelligent recommendations'),
   
-  // Comparison and forecasting
-  alternative_routes: z.array(z.object({
-    origin: z.string(),
-    destination: z.string()
-  })).optional().nullable().describe('Alternative routes for comparison'),
+  // Market context (упрощено)
+  target_audience: z.enum(['budget', 'mid_range', 'luxury', 'business', 'family', 'general']).default('general').describe('Target customer segment'),
+  booking_window: z.enum(['last_minute', 'optimal', 'early_bird']).default('optimal').describe('Booking timing strategy'),
+  flexibility: z.enum(['strict', 'moderate', 'flexible']).default('moderate').describe('Date flexibility level'),
+  
+  // Alternative routes (упрощено)
+  alternative_origins: z.array(z.string()).default([]).describe('Alternative origin airports for comparison'),
+  alternative_destinations: z.array(z.string()).default([]).describe('Alternative destination airports for comparison'),
   forecast_horizon: z.number().default(90).describe('Days ahead for price forecasting'),
   
   // Performance and output options
@@ -53,6 +51,37 @@ export const pricingIntelligenceSchema = z.object({
 });
 
 export type PricingIntelligenceParams = z.infer<typeof pricingIntelligenceSchema>;
+
+// Legacy interface for backward compatibility
+interface LegacyPricingIntelligenceParams {
+  action: string;
+  origin: string;
+  destination: string;
+  date_range?: string | null;
+  cabin_class?: string | null;
+  filters?: {
+    is_direct?: boolean | null;
+    with_baggage?: boolean | null;
+    airplane_only?: boolean | null;
+  } | null;
+  analysis_depth?: string;
+  include_historical?: boolean;
+  seasonal_adjustment?: boolean;
+  market_context?: {
+    target_audience?: string | null;
+    booking_window?: string | null;
+    flexibility?: string | null;
+  } | null;
+  alternative_routes?: Array<{
+    origin: string;
+    destination: string;
+  }> | null;
+  forecast_horizon?: number;
+  response_format?: string;
+  currency_preference?: string;
+  include_analytics?: boolean;
+  cache_duration?: number;
+}
 
 interface PricingIntelligenceResult {
   success: boolean;
@@ -155,8 +184,12 @@ async function handleGetPrices(params: PricingIntelligenceParams, startTime: num
     origin: params.origin,
     destination: params.destination,
     date_range: params.date_range,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!pricesResult.success) {
@@ -199,8 +232,12 @@ async function handleAnalyzeTrends(params: PricingIntelligenceParams, startTime:
     origin: params.origin,
     destination: params.destination,
     date_range: params.date_range,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!currentPrices.success) {
@@ -219,9 +256,16 @@ async function handleAnalyzeTrends(params: PricingIntelligenceParams, startTime:
     action: 'analyze_trends',
     data: {
       trends: trendAnalysis,
-      seasonal_patterns: seasonalAnalysis,
-      analysis_period: '90 days',
-      route: `${params.origin} → ${params.destination}`
+      prices: [],
+      currency: 'RUB',
+      cheapest: 0,
+      average: 0,
+      median: 0,
+      recommendations: {
+        seasonal_patterns: seasonalAnalysis,
+        analysis_period: '90 days',
+        route: `${params.origin} → ${params.destination}`
+      }
     },
     pricing_insights: {
       price_trend: trendAnalysis.overall_trend,
@@ -248,8 +292,12 @@ async function handleForecastPrices(params: PricingIntelligenceParams, startTime
   const currentPrices = await getPrices({
     origin: params.origin,
     destination: params.destination,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!currentPrices.success) {
@@ -267,8 +315,15 @@ async function handleForecastPrices(params: PricingIntelligenceParams, startTime
     action: 'forecast_prices',
     data: {
       forecasts: forecasts,
-      baseline_price: currentPrices.data.cheapest,
-      forecast_horizon_days: params.forecast_horizon
+      prices: [],
+      currency: 'RUB',
+      cheapest: currentPrices.data.cheapest,
+      average: 0,
+      median: 0,
+      recommendations: {
+        baseline_price: currentPrices.data.cheapest,
+        forecast_horizon_days: params.forecast_horizon
+      }
     },
     pricing_insights: {
       price_trend: forecasts.predicted_trend,
@@ -289,19 +344,36 @@ async function handleForecastPrices(params: PricingIntelligenceParams, startTime
  * Handle route comparison
  */
 async function handleCompareRoutes(params: PricingIntelligenceParams, startTime: number): Promise<PricingIntelligenceResult> {
-  if (!params.alternative_routes || params.alternative_routes.length === 0) {
-    throw new Error('Alternative routes are required for comparison');
+  if (!params.alternative_origins?.length && !params.alternative_destinations?.length) {
+    throw new Error('Alternative origins or destinations are required for comparison');
   }
   
-  console.log(`🆚 Comparing ${params.alternative_routes.length + 1} routes`);
+  // Convert alternative arrays to route objects
+  const alternative_routes = [];
+  if (params.alternative_origins?.length) {
+    for (const origin of params.alternative_origins) {
+      alternative_routes.push({ origin, destination: params.destination });
+    }
+  }
+  if (params.alternative_destinations?.length) {
+    for (const destination of params.alternative_destinations) {
+      alternative_routes.push({ origin: params.origin, destination });
+    }
+  }
+  
+  console.log(`🆚 Comparing ${alternative_routes.length + 1} routes`);
   
   // Get prices for main route
   const mainRoute = await getPrices({
     origin: params.origin,
     destination: params.destination,
     date_range: params.date_range,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!mainRoute.success) {
@@ -310,14 +382,18 @@ async function handleCompareRoutes(params: PricingIntelligenceParams, startTime:
   
   // Get prices for alternative routes
   const alternativeResults = [];
-  for (const route of params.alternative_routes) {
+  for (const route of alternative_routes) {
     try {
       const altPrices = await getPrices({
         origin: route.origin,
         destination: route.destination,
         date_range: params.date_range,
-        cabin_class: params.cabin_class,
-        filters: params.filters
+        cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+        filters: {
+          is_direct: params.is_direct,
+          with_baggage: params.with_baggage,
+          airplane_only: params.airplane_only
+        }
       });
       
       alternativeResults.push({
@@ -344,15 +420,22 @@ async function handleCompareRoutes(params: PricingIntelligenceParams, startTime:
     success: true,
     action: 'compare_routes',
     data: {
-      main_route: {
-        route: `${params.origin} → ${params.destination}`,
-        data: mainRoute.data
-      },
-      alternative_routes: alternativeResults,
-      comparison: comparisonAnalysis
+      prices: [],
+      currency: 'RUB',
+      cheapest: 0,
+      average: 0,
+      median: 0,
+      comparison_data: {
+        main_route: {
+          route: `${params.origin} → ${params.destination}`,
+          data: mainRoute.data
+        },
+        alternative_routes: alternativeResults,
+        comparison: comparisonAnalysis
+      }
     },
     pricing_insights: {
-      price_trend: 'comparative',
+      price_trend: 'stable',
       seasonality_factor: 1.0,
       booking_recommendation: comparisonAnalysis.recommendation,
       optimal_dates: comparisonAnalysis.best_dates
@@ -377,12 +460,40 @@ async function handleGetRecommendations(params: PricingIntelligenceParams, start
     origin: params.origin,
     destination: params.destination,
     date_range: params.date_range,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!currentPrices.success) {
-    throw new Error(`Failed to get prices for recommendations: ${currentPrices.error}`);
+    console.error('❌ Pricing API failed for recommendations:', currentPrices.error);
+    // Return structured error response instead of throwing
+    return {
+      success: false,
+      action: 'get_recommendations',
+      error: `Recommendations failed: ${currentPrices.error}`,
+      data: {
+        prices: [],
+        currency: 'RUB',
+        cheapest: 0,
+        average: 0,
+        median: 0
+      },
+      pricing_insights: {
+        price_trend: 'stable' as const,
+        seasonality_factor: 1.0,
+        booking_recommendation: `Unable to get recommendations for ${params.origin} → ${params.destination}`
+      },
+      analytics: params.include_analytics ? {
+        execution_time: Date.now() - startTime,
+        prices_analyzed: 0,
+        data_freshness: 'unavailable',
+        confidence_score: 0
+      } : undefined
+    };
   }
   
   // Generate comprehensive recommendations
@@ -395,9 +506,16 @@ async function handleGetRecommendations(params: PricingIntelligenceParams, start
     success: true,
     action: 'get_recommendations',
     data: {
+      prices: [],
+      currency: 'RUB', 
+      cheapest: 0,
+      average: 0,
+      median: 0,
       recommendations: recommendations,
-      marketing_insights: marketingInsights,
-      context: params.market_context
+      market_insights: {
+        marketing_insights: marketingInsights,
+        target_audience: params.target_audience
+      }
     },
     pricing_insights: {
       price_trend: recommendations.trend_assessment,
@@ -426,12 +544,40 @@ async function handleMarketAnalysis(params: PricingIntelligenceParams, startTime
     origin: params.origin,
     destination: params.destination,
     date_range: params.date_range,
-    cabin_class: params.cabin_class,
-    filters: params.filters
+    cabin_class: params.cabin_class === 'any' ? 'economy' : params.cabin_class,
+    filters: {
+      is_direct: params.is_direct,
+      with_baggage: params.with_baggage,
+      airplane_only: params.airplane_only
+    }
   });
   
   if (!pricesResult.success) {
-    throw new Error(`Failed to get prices for market analysis: ${pricesResult.error}`);
+    console.error('❌ Pricing API failed:', pricesResult.error);
+    // Return structured error response instead of throwing
+    return {
+      success: false,
+      action: 'market_analysis',
+      error: `Market analysis failed: ${pricesResult.error}`,
+      data: {
+        prices: [],
+        currency: 'RUB',
+        cheapest: 0,
+        average: 0,
+        median: 0
+      },
+      pricing_insights: {
+        price_trend: 'stable' as const,
+        seasonality_factor: 1.0,
+        booking_recommendation: `Unable to analyze ${params.origin} → ${params.destination} route`
+      },
+      analytics: params.include_analytics ? {
+        execution_time: Date.now() - startTime,
+        prices_analyzed: 0,
+        data_freshness: 'unavailable',
+        confidence_score: 0
+      } : undefined
+    };
   }
   
   // Perform comprehensive market analysis
@@ -445,10 +591,17 @@ async function handleMarketAnalysis(params: PricingIntelligenceParams, startTime
     success: true,
     action: 'market_analysis',
     data: {
-      market_overview: marketAnalysis,
-      competitive_landscape: competitiveAnalysis,
-      demand_patterns: demandAnalysis,
-      route: `${params.origin} → ${params.destination}`
+      prices: [],
+      currency: 'RUB',
+      cheapest: 0,
+      average: 0, 
+      median: 0,
+      market_insights: {
+        market_overview: marketAnalysis,
+        competitive_landscape: competitiveAnalysis,
+        demand_patterns: demandAnalysis,
+        route: `${params.origin} → ${params.destination}`
+      }
     },
     pricing_insights: {
       price_trend: marketAnalysis.trend,

@@ -1,5 +1,5 @@
 import { Page } from 'playwright';
-import AxeBuilder from '@axe-core/playwright';
+import { AxeBuilder } from '@axe-core/playwright';
 import { MetricsService } from '../../../shared/infrastructure/monitoring/metrics-service';
 
 export interface AccessibilityViolation {
@@ -57,10 +57,7 @@ export class AccessibilityTestingService {
       // Set HTML content
       await page.setContent(htmlContent, { waitUntil: 'networkidle' });
 
-      // Inject axe-core
-      await injectAxe(page);
-
-      // Configure axe for email testing
+      // Create axe builder for email testing
       const axeBuilder = await this.configureAxeForEmail(page, options);
 
       // Run accessibility tests
@@ -148,7 +145,7 @@ export class AccessibilityTestingService {
           helpUrl: violation.helpUrl,
           tags: violation.tags,
           nodes: violation.nodes.map(node => ({
-            target: node.target,
+            target: Array.isArray(node.target) ? node.target.map(String) : [String(node.target)],
             html: node.html,
             failureSummary: node.failureSummary || '',
           })),
