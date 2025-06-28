@@ -297,7 +297,9 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
     const handoffData = {
       context_intelligence: contextResult,
       campaign_brief: input.campaign_brief,
-      recommendations: this.generateContextRecommendations(contextResult)
+      recommendations: this.generateContextRecommendations(contextResult),
+      design_requirements: this.generateDesignRequirements(contextResult),
+      brand_guidelines: this.extractBrandGuidelines(input)
     };
 
     return {
@@ -357,7 +359,9 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
     const handoffData = {
       pricing_intelligence: pricingResult,
       market_insights: this.extractMarketInsights(pricingResult),
-      content_suggestions: this.generatePricingContentSuggestions(pricingResult)
+      content_suggestions: this.generatePricingContentSuggestions(pricingResult),
+      design_requirements: this.generateDesignRequirements(pricingResult),
+      brand_guidelines: this.extractBrandGuidelines(input)
     };
 
     return {
@@ -481,10 +485,10 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
           cta: contentData.cta_text || 'Забронировать',
           language: contentParams.language,
           tone: contentParams.tone
-        },
-        design_requirements: this.generateDesignRequirements(contentResult),
-        brand_guidelines: this.extractBrandGuidelines(input)
+        }
       },
+      design_requirements: this.generateDesignRequirements(contentResult),
+      brand_guidelines: this.extractBrandGuidelines(input),
       content_metadata: (contentResult as any).content_metadata || this.generateContentMetadata(contentResult),
       pricing_context: input.previous_results?.pricing_data
     };
@@ -532,7 +536,9 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
     const handoffData = {
       campaign_info: campaignResult.finalOutput,
       folder_structure: campaignResult.finalOutput,
-      performance_session: 'session-' + Date.now()
+      performance_session: 'session-' + Date.now(),
+      design_requirements: this.generateDesignRequirements(campaignResult),
+      brand_guidelines: this.extractBrandGuidelines(input)
     };
 
     return {
@@ -621,7 +627,16 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       style: 'modern_travel',
       color_scheme: 'warm_inviting',
       imagery_focus: 'destination_highlights',
-      layout_priority: 'mobile_first'
+      layout_priority: 'mobile_first',
+      // Дополнительные требования для дизайна
+      template_type: 'promotional',
+      visual_hierarchy: 'header_content_cta',
+      responsive_breakpoints: ['mobile', 'tablet', 'desktop'],
+      accessibility_requirements: {
+        contrast_ratio: 'AA',
+        font_size_min: '14px',
+        alt_text_required: true
+      }
     };
   }
 
@@ -630,7 +645,24 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       brand_voice: 'trustworthy_expert',
       visual_style: 'clean_professional',
       color_palette: ['#2B5CE6', '#FF6B6B', '#4ECDC4'],
-      typography: 'readable_accessible'
+      typography: 'readable_accessible',
+      // Дополнительные брендинговые требования
+      brand_name: 'Kupibilet',
+      logo_requirements: {
+        position: 'header',
+        size: 'medium',
+        variant: 'color'
+      },
+      tone_guidelines: {
+        primary_tone: input.content_requirements?.tone || 'friendly',
+        voice_attributes: ['helpful', 'trustworthy', 'professional'],
+        language: input.content_requirements?.language || 'ru'
+      },
+      visual_guidelines: {
+        imagery_style: 'authentic_travel',
+        icon_style: 'outlined',
+        button_style: 'rounded_modern'
+      }
     };
   }
 

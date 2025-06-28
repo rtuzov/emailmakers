@@ -15,6 +15,7 @@ import { figmaSearch, figmaSearchSchema } from '../tools/simple/figma-search';
 import { figmaFolders, figmaFoldersSchema } from '../tools/simple/figma-folders';
 // import { assetSplitter, assetSplitterSchema } from '../tools/simple/asset-splitter'; // Temporarily disabled due to schema issues
 import { emailRenderer, emailRendererSchema } from '../tools/consolidated/email-renderer';
+import { mjmlValidator, mjmlValidatorTool } from '../tools/simple/mjml-validator';
 import { getUsageModel } from '../../shared/utils/model-config';
 
 // Input/Output types for agent handoffs
@@ -133,6 +134,36 @@ RESPONSIBILITIES:
 2. **Folder Navigation**: Use figma_folders to understand asset organization and priorities
 3. **Asset Processing**: Process visual assets for optimal email integration
 4. **Email Rendering**: Use email_renderer to create production-ready HTML emails
+5. **MJML Validation**: Use mjml_validator to ensure MJML code quality and email client compatibility
+
+📧 MJML RENDERING STANDARDS:
+When using email_renderer tool, ALWAYS follow these MJML response standards:
+
+**MJML Structure Requirements:**
+- Use complete, valid MJML syntax with proper opening/closing tags
+- Include all required sections: <mjml>, <mj-head>, <mj-body>
+- Apply Kupibilet brand colors: #4BFF7E (primary), #1DA857 (secondary), #2C3959 (dark)
+- Use responsive design with mobile-first approach
+
+**Response Format Standards:**
+- Return structured StandardMjmlResponse with all required fields
+- Include MJML source code in mjml.source field
+- Provide HTML output in html.content field
+- Add validation results in validation section
+- Include performance metrics (file size, client compatibility)
+
+**Quality Validation:**
+- MJML syntax must be valid (no compilation errors)
+- HTML output must be cross-client compatible (Gmail, Outlook, Apple Mail)
+- File size must be under 100KB for optimal deliverability
+- Include accessibility features (alt text, proper contrast)
+- Apply email-safe CSS (inline styles, table-based layout)
+
+**Error Handling:**
+- If MJML compilation fails, use mjml_validator to identify and fix issues
+- Provide specific error messages with fix suggestions
+- Never return truncated or incomplete MJML code
+- Ensure all dynamic content placeholders are properly formatted
 
 WORKFLOW INTEGRATION:
 - Receive content package from ContentSpecialist
@@ -188,6 +219,12 @@ Execute design tasks with attention to detail and prepare complete packages for 
         description: 'Email Renderer - Unified email rendering with multiple engine support including MJML, React components, advanced systems, and seasonal components.',
         parameters: emailRendererSchema,
         execute: emailRenderer
+      }),
+      tool({
+        name: 'mjml_validator',
+        description: 'MJML Validator - Validate MJML code for syntax, structure, and email client compatibility with auto-fix suggestions.',
+        parameters: mjmlValidatorTool.inputSchema,
+        execute: mjmlValidator
       })
     ];
   }
@@ -346,21 +383,26 @@ Execute design tasks with attention to detail and prepare complete packages for 
         cta_text: input.content_package.content.cta,
         cta_url: '#book-now',
         assets: input.handoff_data?.visual_assets?.assets || [],
-        personalization: {
+        personalization: JSON.stringify({
           tone: input.content_package.content.tone,
           language: input.content_package.content.language
-        }
+        })
       },
       
-      // MJML content if using MJML rendering
-      mjml_content: renderingAction === 'render_mjml' ? this.generateMjmlTemplate(input) : undefined,
+      // MJML content - let email_renderer use its own template instead of generating here
+      mjml_content: '',
       
       // Advanced template configuration
       advanced_config: renderingAction === 'render_advanced' ? {
         template_type: input.rendering_requirements?.template_type || 'promotional' as const,
         customization_level: 'advanced' as const,
-        features: ['dark_mode', 'responsive', 'personalization'] as const,
-        brand_guidelines: input.content_package.brand_guidelines
+        features: ['dark_mode', 'personalization'] as ('dark_mode' | 'interactive' | 'animation' | 'personalization' | 'a_b_testing')[],
+        brand_guidelines: {
+          primary_color: input.content_package.brand_guidelines?.color_palette?.[0] || '',
+          secondary_color: input.content_package.brand_guidelines?.color_palette?.[1] || '',
+          font_family: input.content_package.brand_guidelines?.typography || '',
+          logo_url: ''
+        }
       } : undefined,
       
       // Seasonal configuration if needed
@@ -369,6 +411,13 @@ Execute design tasks with attention to detail and prepare complete packages for 
         seasonal_intensity: 'moderate' as const,
         cultural_context: input.content_package.content.language === 'ru' ? 'russian' as const : 'international' as const,
         include_animations: false
+      } : undefined,
+
+      // Hybrid configuration for render_hybrid action
+      hybrid_config: renderingAction === 'render_hybrid' ? {
+        base_template: 'mjml' as const,
+        enhancements: ['seasonal_overlay', 'advanced_components', 'react_widgets'] as ('seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure')[],
+        priority_order: ['structure', 'content', 'styling', 'interactivity']
       } : undefined,
       
       // Rendering options
@@ -393,7 +442,19 @@ Execute design tasks with attention to detail and prepare complete packages for 
       render_metadata: true
     };
 
-    const renderingResult = await run(this.agent, `Render professional email template with advanced features. Use email_renderer with comprehensive optimization.`);
+    // Debug: Log the MJML content before calling emailRenderer
+    console.log('🔍 MJML content being passed:', renderingParams.mjml_content?.substring(0, 200) + '...');
+    console.log('🔍 MJML content length:', renderingParams.mjml_content?.length);
+    console.log('🔍 Rendering action:', renderingAction);
+    console.log('🔍 Input content package:', {
+      subject: input.content_package.content.subject,
+      preheader: input.content_package.content.preheader,
+      body: input.content_package.content.body?.substring(0, 100) + '...',
+      cta: input.content_package.content.cta
+    });
+    
+    // Call email_renderer directly instead of using run() to ensure proper tool execution
+    const renderingResult = await emailRenderer(renderingParams);
 
     const designArtifacts = this.extractDesignArtifacts(renderingResult);
     
@@ -443,7 +504,7 @@ Execute design tasks with attention to detail and prepare complete packages for 
       
       hybrid_config: {
         base_template: 'mjml' as const,
-        enhancements: ['seasonal_overlay', 'advanced_components', 'react_widgets'] as const,
+        enhancements: ['seasonal_overlay', 'advanced_components', 'react_widgets'] as ('seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure')[],
         priority_order: ['structure', 'content', 'styling', 'interactivity']
       },
       
@@ -458,7 +519,8 @@ Execute design tasks with attention to detail and prepare complete packages for 
       include_analytics: true
     };
 
-    const hybridResult = await run(this.agent, `Create advanced hybrid email template with multiple rendering systems. Use email_renderer for sophisticated template creation.`);
+    // Call email_renderer directly for hybrid template creation
+    const hybridResult = await emailRenderer(hybridParams);
 
     const templateArtifacts = this.generateTemplateArtifacts(hybridResult);
     
@@ -520,7 +582,8 @@ Execute design tasks with attention to detail and prepare complete packages for 
       include_analytics: true
     };
 
-    const optimizationResult = await run(this.agent, `Optimize email design for performance and compatibility. Use email_renderer for comprehensive optimization.`);
+    // Call email_renderer directly for optimization
+    const optimizationResult = await emailRenderer(optimizationParams);
 
     const optimizationArtifacts = this.generateOptimizationArtifacts(optimizationResult);
     
@@ -598,18 +661,22 @@ Execute design tasks with attention to detail and prepare complete packages for 
   }
 
   private generateMjmlTemplate(input: DesignSpecialistInput): string {
-    // Generate basic MJML template structure
-    return `
-<mjml>
+    // Generate basic MJML template structure with fallbacks
+    const subject = input.content_package.content.subject || 'Email Subject';
+    const preheader = input.content_package.content.preheader || 'Email preview text';
+    const body = input.content_package.content.body || 'Email content body';
+    const cta = input.content_package.content.cta || 'Click Here';
+    
+    return `<mjml>
   <mj-head>
-    <mj-title>${input.content_package.content.subject}</mj-title>
-    <mj-preview>${input.content_package.content.preheader}</mj-preview>
+    <mj-title>${subject}</mj-title>
+    <mj-preview>${preheader}</mj-preview>
   </mj-head>
   <mj-body>
     <mj-section>
       <mj-column>
-        <mj-text>${input.content_package.content.body}</mj-text>
-        <mj-button href="#book-now">${input.content_package.content.cta}</mj-button>
+        <mj-text>${body}</mj-text>
+        <mj-button href="#book-now">${cta}</mj-button>
       </mj-column>
     </mj-section>
   </mj-body>

@@ -17,11 +17,11 @@ export const autoFixSchema = z.object({
     auto_fixable: z.boolean().describe('Whether this issue can be auto-fixed')
   })).describe('List of issues to automatically fix'),
   fix_preferences: z.object({
-    aggressive_fixes: z.boolean().describe('Apply aggressive fixes that might change layout'),
-    preserve_styling: z.boolean().describe('Try to preserve existing styling'),
-    optimize_for_client: z.enum(['outlook', 'gmail', 'apple_mail', 'universal']).describe('Optimize specifically for email client'),
-    backup_original: z.boolean().describe('Keep reference to original content')
-  }).optional().nullable().describe('Preferences for fix application'),
+    aggressive_fixes: z.boolean().default(false).describe('Apply aggressive fixes that might change layout'),
+    preserve_styling: z.boolean().default(true).describe('Try to preserve existing styling'),
+    optimize_for_client: z.enum(['outlook', 'gmail', 'apple_mail', 'universal']).default('universal').describe('Optimize specifically for email client'),
+    backup_original: z.boolean().default(true).describe('Keep reference to original content')
+  }).default({}).describe('Preferences for fix application'),
   validation_after_fix: z.boolean().describe('Validate HTML after applying fixes')
 });
 
@@ -82,13 +82,13 @@ export async function autoFix(params: AutoFixParams): Promise<AutoFixResult> {
     console.log('🔧 Starting auto-fix process:', {
       issues_count: params.issues_to_fix.length,
       fixable_issues: params.issues_to_fix.filter(i => i.auto_fixable).length,
-      optimize_for: params.fix_preferences?.optimize_for_client
+      optimize_for: params.fix_preferences.optimize_for_client
     });
 
     let currentHtml = params.html_content;
     const fixesApplied: any[] = [];
     const fixesSkipped: any[] = [];
-    let backupHtml = params.fix_preferences?.backup_original ? params.html_content : '';
+    let backupHtml = params.fix_preferences.backup_original ? params.html_content : '';
 
     // Process each fixable issue
     for (const issue of params.issues_to_fix) {

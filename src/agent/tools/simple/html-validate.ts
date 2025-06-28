@@ -13,12 +13,12 @@ export const htmlValidateSchema = z.object({
   validation_options: z.object({
     validation_level: z.enum(['basic', 'standard', 'strict']).describe('Validation strictness level'),
     specific_checks: z.object({
-      check_doctype: z.boolean().optional().nullable(),
-      check_table_layout: z.boolean().optional().nullable(),
-      check_inline_styles: z.boolean().optional().nullable(),
-      check_image_alt: z.boolean().optional().nullable(),
-      check_email_width: z.boolean().optional().nullable()
-    }).optional().nullable(),
+      check_doctype: z.boolean().default(true),
+      check_table_layout: z.boolean().default(true),
+      check_inline_styles: z.boolean().default(true),
+      check_image_alt: z.boolean().default(true),
+      check_email_width: z.boolean().default(true)
+    }).default({}),
     target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).describe('Target email clients for validation')
   }).describe('Validation configuration options')
 });

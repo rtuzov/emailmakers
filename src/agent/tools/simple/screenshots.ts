@@ -14,18 +14,18 @@ export const screenshotsSchema = z.object({
     clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).default(['gmail', 'outlook']).describe('Email clients to capture'),
     devices: z.array(z.enum(['desktop', 'mobile', 'tablet'])).default(['desktop', 'mobile']).describe('Device types to capture'),
     capture_modes: z.array(z.enum(['light', 'dark', 'images_blocked', 'images_enabled'])).default(['light', 'images_enabled']).describe('Rendering modes')
-  }).optional().nullable().describe('Screenshot capture configuration'),
+  }).default({}).describe('Screenshot capture configuration'),
   output_settings: z.object({
     format: z.enum(['png', 'jpg', 'webp']).default('png').describe('Image format'),
     quality: z.number().min(50).max(100).default(90).describe('Image quality percentage'),
     resolution: z.enum(['standard', 'high', 'retina']).default('standard').describe('Screenshot resolution'),
     include_annotations: z.boolean().default(false).describe('Add client/device annotations')
-  }).optional().nullable().describe('Output format settings'),
+  }).default({}).describe('Output format settings'),
   comparison_options: z.object({
     enable_comparison: z.boolean().default(true).describe('Generate comparison views'),
     highlight_differences: z.boolean().default(true).describe('Highlight rendering differences'),
     baseline_client: z.enum(['gmail', 'outlook', 'apple_mail']).default('gmail').describe('Reference client for comparison')
-  }).optional().nullable().describe('Cross-client comparison options')
+  }).default({}).describe('Cross-client comparison options')
 });
 
 export type ScreenshotsParams = z.infer<typeof screenshotsSchema>;
@@ -71,15 +71,15 @@ export interface ScreenshotsResult {
 export async function screenshots(params: ScreenshotsParams): Promise<ScreenshotsResult> {
   try {
     console.log('📸 Generating email screenshots:', {
-      clients: params.screenshot_config?.clients || ['gmail', 'outlook'],
-      devices: params.screenshot_config?.devices || ['desktop', 'mobile'],
+      clients: params.screenshot_config.clients,
+      devices: params.screenshot_config.devices,
       html_size: params.html_content.length
     });
 
-    const config = params.screenshot_config || {};
-    const clients = config.clients || ['gmail', 'outlook'];
-    const devices = config.devices || ['desktop', 'mobile'];
-    const modes = config.capture_modes || ['light', 'images_enabled'];
+    const config = params.screenshot_config;
+    const clients = config.clients;
+    const devices = config.devices;
+    const modes = config.capture_modes;
 
     const screenshots: any[] = [];
     const captureErrors: string[] = [];
@@ -189,14 +189,14 @@ async function captureSingleScreenshot(
         images_enabled: mode === 'images_enabled'
       },
       capture_settings: {
-        format: outputSettings?.format || 'png',
-        quality: outputSettings?.quality || 90,
+        format: outputSettings.format,
+        quality: outputSettings.quality,
         full_page: true,
         wait_for_load: true
       },
       output_config: {
         include_metadata: true,
-        add_annotations: outputSettings?.include_annotations || false
+        add_annotations: outputSettings.include_annotations
       }
     };
 

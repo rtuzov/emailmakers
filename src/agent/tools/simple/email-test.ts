@@ -18,13 +18,13 @@ export const emailTestSchema = z.object({
     performance_tests: z.array(z.enum(['load_time', 'rendering_speed', 'image_loading'])).default(['load_time']),
     accessibility_tests: z.array(z.enum(['screen_reader', 'keyboard_navigation', 'color_contrast'])).default(['screen_reader']),
     visual_tests: z.array(z.enum(['layout_consistency', 'image_display', 'text_rendering', 'spacing_accuracy'])).default(['layout_consistency'])
-  }).optional().nullable().describe('Specific test criteria to check'),
+  }).default({}).describe('Specific test criteria to check'),
   test_settings: z.object({
     timeout_seconds: z.number().default(30).describe('Maximum time to wait for rendering'),
     take_screenshots: z.boolean().default(true).describe('Capture screenshots for visual comparison'),
     check_dark_mode: z.boolean().default(false).describe('Test dark mode compatibility'),
     test_image_blocking: z.boolean().default(true).describe('Test with images blocked')
-  }).optional().nullable().describe('Test execution settings')
+  }).default({}).describe('Test execution settings')
 });
 
 export type EmailTestParams = z.infer<typeof emailTestSchema>;

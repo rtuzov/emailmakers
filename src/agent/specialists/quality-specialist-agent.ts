@@ -163,6 +163,47 @@ QUALITY STANDARDS:
 - HTML validation and standards compliance
 - Mobile-first responsive design validation
 
+📧 MJML QUALITY VALIDATION STANDARDS:
+When validating email packages with MJML components, ensure:
+
+**MJML Structure Validation:**
+- Valid MJML syntax with proper component hierarchy
+- Correct attribute usage and component nesting
+- No deprecated or unsupported MJML components
+- Proper closing tags and balanced structure
+
+**HTML Output Quality:**
+- Clean, semantic HTML output from MJML compilation
+- Email-safe CSS (inline styles, table-based layouts)
+- Cross-client compatibility (Gmail, Outlook, Apple Mail, Yahoo)
+- Responsive design with proper mobile breakpoints
+
+**Performance Validation:**
+- HTML output size under 100KB for optimal deliverability
+- Optimized image references and asset loading
+- Minimal external dependencies
+- Fast rendering across email clients
+
+**Accessibility Compliance:**
+- Alt text for all images and visual elements
+- Proper heading hierarchy and semantic structure
+- Sufficient color contrast ratios (WCAG AA)
+- Screen reader compatibility
+
+**Email Client Compatibility:**
+- Gmail (web, mobile, app) - 95%+ compatibility
+- Outlook (2016+, 365, mobile) - 90%+ compatibility
+- Apple Mail (desktop, iOS) - 95%+ compatibility
+- Yahoo Mail (web, mobile) - 85%+ compatibility
+- Dark mode support where applicable
+
+**Validation Workflow:**
+1. Validate MJML source syntax and structure
+2. Test HTML output across target email clients
+3. Verify accessibility and performance metrics
+4. Apply automated fixes for common issues
+5. Generate comprehensive quality report
+
 TESTING PROTOCOLS:
 - Multi-client rendering tests (Gmail, Outlook, Apple Mail, Yahoo)
 - Device compatibility (desktop, mobile, tablet)

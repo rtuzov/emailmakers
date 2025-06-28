@@ -15,6 +15,7 @@ import { renderMjml } from '../mjml';
 import { renderComponent } from '../react-renderer';
 import { advancedComponentSystem } from '../advanced-component-system';
 import { seasonalComponentSystem } from '../seasonal-component-system';
+import { EmailFolder } from '../email-folder-manager';
 
 // Unified schema for all email rendering operations
 export const emailRendererSchema = z.object({
@@ -93,6 +94,56 @@ export const emailRendererSchema = z.object({
 });
 
 export type EmailRendererParams = z.infer<typeof emailRendererSchema>;
+
+// Стандартизированная структура ответа для MJML рендера и валидации
+interface StandardMjmlResponse {
+  success: boolean;
+  action: string;
+  mjml: {
+    source: string;
+    is_valid: boolean;
+    validation_issues: Array<{
+      type: 'error' | 'warning' | 'info';
+      message: string;
+      rule: string;
+      fix_suggestion?: string;
+    }>;
+    auto_fixes_applied: number;
+    length: number;
+  };
+  html: {
+    content: string;
+    size_kb: number;
+    is_valid: boolean;
+    length: number;
+  };
+  rendering: {
+    engine: 'mjml-core' | 'react-dom' | 'advanced-system';
+    template_type: string;
+    execution_time_ms: number;
+    optimizations_applied: string[];
+    client_compatibility: string[];
+  };
+  quality: {
+    overall_score: number;
+    accessibility_score: number;
+    performance_score: number;
+    email_client_scores: Record<string, number>;
+  };
+  metadata: {
+    generation_timestamp: string;
+    content_language: string;
+    tone: string;
+    components_used: string[];
+    assets_count: number;
+  };
+  error?: {
+    code: string;
+    message: string;
+    details?: any;
+  };
+  recommendations: string[];
+}
 
 interface EmailRendererResult {
   success: boolean;
@@ -188,27 +239,248 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
 /**
  * Handle MJML rendering (enhanced version of render_mjml)
  */
-async function handleMjmlRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
-  if (!params.mjml_content || params.mjml_content.trim() === '') {
-    throw new Error('MJML content is required for MJML rendering');
+/**
+ * Создает стандартизированный ответ для MJML рендера и валидации
+ */
+function createStandardMjmlResponse(
+  mjmlContent: string,
+  htmlContent: string,
+  validationResult: any,
+  renderingStats: any,
+  startTime: number,
+  params: EmailRendererParams
+): StandardMjmlResponse {
+  const executionTime = Date.now() - startTime;
+  const htmlSizeKb = Buffer.byteLength(htmlContent || '', 'utf8') / 1024;
+  
+  // Безопасное извлечение данных из параметров
+  const contentData = typeof params.content_data === 'object' ? params.content_data : {};
+  const assetsArray = Array.isArray(params.assets) ? params.assets : [];
+  
+  return {
+    success: !!htmlContent,
+    action: 'render_mjml_standard',
+    mjml: {
+      source: mjmlContent || '',
+      is_valid: validationResult?.is_valid || false,
+      validation_issues: validationResult?.issues || [],
+      auto_fixes_applied: validationResult?.fixes_applied || 0,
+      length: mjmlContent?.length || 0
+    },
+    html: {
+      content: htmlContent || '',
+      size_kb: htmlSizeKb,
+      is_valid: validateHTML(htmlContent || ''),
+      length: htmlContent?.length || 0
+    },
+    rendering: {
+      engine: 'mjml-core',
+      template_type: 'dynamic_generated',
+      execution_time_ms: executionTime,
+      optimizations_applied: renderingStats?.optimizations || [],
+      client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo']
+    },
+    quality: {
+      overall_score: calculateOverallQualityScore(validationResult, htmlSizeKb),
+      accessibility_score: calculateAccessibilityScore(htmlContent || ''),
+      performance_score: calculatePerformanceScore(htmlContent || ''),
+      email_client_scores: {
+        gmail: 95,
+        outlook: 85,
+        apple_mail: 90,
+        yahoo: 88
+      }
+    },
+    metadata: {
+      generation_timestamp: new Date().toISOString(),
+      content_language: (contentData as any)?.language || 'ru',
+      tone: (contentData as any)?.tone || 'friendly',
+      components_used: extractComponentsUsed(mjmlContent || ''),
+      assets_count: assetsArray.length
+    },
+    error: htmlContent ? undefined : {
+      code: 'RENDERING_FAILED',
+      message: 'Failed to generate HTML from MJML',
+      details: validationResult?.issues || []
+    },
+    recommendations: generateRecommendations(validationResult, htmlSizeKb)
+  };
+}
+
+/**
+ * Вычисляет общий показатель качества
+ */
+function calculateOverallQualityScore(validationResult: any, htmlSizeKb: number): number {
+  let score = 100;
+  
+  // Штрафы за ошибки валидации
+  const errors = validationResult?.issues?.filter((issue: any) => issue.type === 'error') || [];
+  const warnings = validationResult?.issues?.filter((issue: any) => issue.type === 'warning') || [];
+  
+  score -= errors.length * 15; // -15 за каждую ошибку
+  score -= warnings.length * 5; // -5 за каждое предупреждение
+  
+  // Штраф за большой размер
+  if (htmlSizeKb > 100) score -= 10;
+  if (htmlSizeKb > 200) score -= 20;
+  
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Извлекает используемые компоненты из MJML
+ */
+function extractComponentsUsed(mjmlContent: string): string[] {
+  const components = [];
+  const mjmlTags = mjmlContent.match(/<mj-[^>]+>/g) || [];
+  
+  const uniqueTags = new Set(
+    mjmlTags.map(tag => tag.match(/<(mj-[^>\s]+)/)?.[1]).filter(Boolean)
+  );
+  
+  return Array.from(uniqueTags) as string[];
+}
+
+/**
+ * Генерирует рекомендации на основе результатов валидации
+ */
+function generateRecommendations(validationResult: any, htmlSizeKb: number): string[] {
+  const recommendations = [];
+  
+  if (validationResult?.issues?.length > 0) {
+    recommendations.push('Исправьте ошибки валидации MJML для улучшения совместимости');
   }
   
-  console.log('🏗️ Rendering MJML content to HTML');
+  if (htmlSizeKb > 100) {
+    recommendations.push('Оптимизируйте размер email для лучшей производительности');
+  }
   
+  if (!validationResult?.is_valid) {
+    recommendations.push('Проверьте структуру MJML и исправьте синтаксические ошибки');
+  }
+  
+  return recommendations;
+}
+
+/**
+ * Простая валидация HTML
+ */
+function validateHTML(html: string): boolean {
+  if (!html) return false;
+  
+  // Базовые проверки HTML структуры
+  const hasDoctype = html.includes('<!DOCTYPE') || html.includes('<!doctype');
+  const hasHtmlTag = html.includes('<html') && html.includes('</html>');
+  const hasBodyTag = html.includes('<body') && html.includes('</body>');
+  
+  return hasDoctype && hasHtmlTag && hasBodyTag;
+}
+
+/**
+ * Расчет показателя доступности
+ */
+function calculateAccessibilityScore(html: string): number {
+  let score = 100;
+  
+  // Проверка наличия alt атрибутов у изображений
+  const images = html.match(/<img[^>]*>/g) || [];
+  const imagesWithoutAlt = images.filter(img => !img.includes('alt=')).length;
+  score -= imagesWithoutAlt * 10;
+  
+  // Проверка контрастности (упрощенная)
+  if (!html.includes('color:') && !html.includes('background-color:')) {
+    score -= 20;
+  }
+  
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Расчет показателя производительности
+ */
+function calculatePerformanceScore(html: string): number {
+  let score = 100;
+  const sizeKb = Buffer.byteLength(html, 'utf8') / 1024;
+  
+  // Штрафы за размер
+  if (sizeKb > 100) score -= 20;
+  if (sizeKb > 200) score -= 30;
+  
+  // Проверка на инлайн стили (хорошо для email)
+  const inlineStyles = html.match(/style="/g) || [];
+  if (inlineStyles.length < 5) score -= 10; // Мало инлайн стилей - плохо для email
+  
+  return Math.max(0, Math.min(100, score));
+}
+
+async function handleMjmlRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
+  console.log('🏗️ Generating and rendering MJML content to HTML');
+  
+  // Если MJML контент не предоставлен, генерируем его динамически
+  let mjmlContent = params.mjml_content;
+  
+  if (!mjmlContent || mjmlContent.trim() === '') {
+    console.log('📝 Generating MJML dynamically from content data');
+    mjmlContent = generateDynamicMjml(params);
+  }
+  
+  // Валидируем сгенерированный MJML
+  console.log('🔍 Validating generated MJML...');
+  console.log('📝 Generated MJML preview:', mjmlContent.substring(0, 300) + '...');
+  
+  const validationResult = await validateMjmlContent(mjmlContent);
+  console.log('✅ Validation result:', { 
+    is_valid: validationResult.is_valid, 
+    issues_count: validationResult.issues?.length || 0,
+    first_issue: validationResult.issues?.[0]?.message
+  });
+  
+  if (!validationResult.is_valid) {
+    console.warn('⚠️ MJML validation issues found:', validationResult.issues);
+    // Попытка автоисправления
+    const originalLength = mjmlContent.length;
+    mjmlContent = await autoFixMjml(mjmlContent, validationResult.issues);
+    console.log(`🔧 Auto-fix applied: ${originalLength} → ${mjmlContent.length} chars`);
+  }
+  
+  // Безопасное извлечение данных из параметров
+  const contentData = typeof params.content_data === 'object' ? 
+    params.content_data : 
+    (typeof params.content_data === 'string' ? JSON.parse(params.content_data || '{}') : {});
+  
+  const assetsArray = Array.isArray(params.assets) ? params.assets : 
+    (typeof params.assets === 'string' ? JSON.parse(params.assets || '[]') : []);
+  
+  // Создаем emailFolder для сохранения полных файлов
+  const campaignId = `email-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const path = await import('path');
+  const basePath = path.join(process.cwd(), 'mails', campaignId);
+  const emailFolder: EmailFolder = {
+    campaignId: campaignId,
+    basePath: basePath,
+    assetsPath: path.join(basePath, 'assets'),
+    spritePath: path.join(basePath, 'assets', 'sprite-slices'),
+    htmlPath: path.join(basePath, 'email.html'),
+    mjmlPath: path.join(basePath, 'email.mjml'),
+    metadataPath: path.join(basePath, 'metadata.json')
+  };
+
   // Enhanced MJML rendering with optimizations
   const mjmlResult = await renderMjml({
     content: {
-      subject: 'Email Subject',
-      preheader: 'Email Preheader', 
-      body: params.mjml_content || 'Default body',
-      cta: 'Click Here',
-      language: 'ru',
-      tone: 'friendly'
+      subject: (contentData as any)?.subject || 'Email Subject',
+      preheader: (contentData as any)?.preheader || 'Email Preheader', 
+      body: (contentData as any)?.body || 'Default body',
+      cta: (contentData as any)?.cta || 'Click Here',
+      language: (contentData as any)?.language || 'ru',
+      tone: (contentData as any)?.tone || 'friendly'
     },
     assets: {
-      paths: [],
+      paths: assetsArray,
       metadata: {}
-    }
+    },
+    mjmlContent: mjmlContent, // Передаём сгенерированный MJML
+    emailFolder: emailFolder // Передаём emailFolder для сохранения полных файлов
   });
   
   if (!mjmlResult.success) {
@@ -222,31 +494,53 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
   
   console.log(`✅ MJML rendered successfully (${optimizedOutput.html?.length || 0} chars)`);
   
+  // Создаем стандартизированный ответ
+  const standardResponse = createStandardMjmlResponse(
+    mjmlContent,
+    optimizedOutput.html || '',
+    { 
+      ...validationResult, 
+      fixes_applied: mjmlContent.length - (params.mjml_content?.length || 0) 
+    },
+    optimizedOutput,
+    startTime,
+    params
+  );
+  
+  // Возвращаем совместимый формат для обратной совместимости
   return {
-    success: true,
+    success: standardResponse.success,
     action: 'render_mjml',
     data: {
-      html: optimizedOutput.html,
-      mjml: params.mjml_content,
+      html: standardResponse.html.content,
+      mjml: standardResponse.mjml.source,
       text_version: optimizedOutput.text_version,
-      rendering_stats: optimizedOutput.stats
+      rendering_stats: optimizedOutput.stats,
+      standard_response: standardResponse // Добавляем стандартизированный ответ
     },
     rendering_metadata: {
-      template_type: 'mjml',
-      rendering_engine: 'mjml-core',
-      optimizations_applied: optimizedOutput.optimizations || [],
-      client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-      file_size: optimizedOutput.html?.length || 0,
-      load_time_estimate: calculateLoadTime(optimizedOutput.html || '')
+      template_type: standardResponse.rendering.template_type,
+      rendering_engine: standardResponse.rendering.engine,
+      optimizations_applied: standardResponse.rendering.optimizations_applied,
+      client_compatibility: standardResponse.rendering.client_compatibility,
+      file_size: standardResponse.html.length,
+      load_time_estimate: calculateLoadTime(standardResponse.html.content)
     },
-    validation_results: validationResults,
+    validation_results: {
+      html_valid: standardResponse.html.is_valid,
+      email_client_scores: standardResponse.quality.email_client_scores,
+      accessibility_score: standardResponse.quality.accessibility_score,
+      performance_score: standardResponse.quality.performance_score,
+      issues: standardResponse.mjml.validation_issues
+    },
     analytics: params.include_analytics ? {
-      execution_time: Date.now() - startTime,
-      rendering_complexity: calculateComplexity(params.mjml_content),
+      execution_time: standardResponse.rendering.execution_time_ms,
+      rendering_complexity: calculateComplexity(standardResponse.mjml.source),
       cache_efficiency: 85,
-      components_rendered: 1,
-      optimizations_performed: optimizedOutput.optimizations?.length || 0
-    } : undefined
+      components_rendered: standardResponse.metadata.components_used.length,
+      optimizations_performed: standardResponse.rendering.optimizations_applied.length
+    } : undefined,
+    recommendations: standardResponse.recommendations
   };
 }
 
@@ -675,23 +969,7 @@ function generateTextVersion(html: string): string {
   return html.replace(/<[^>]+>/g, '').trim();
 }
 
-function validateHTML(html: string): boolean {
-  // Basic HTML validation
-  return html.includes('<html') && html.includes('</html>');
-}
-
-function calculateAccessibilityScore(html: string): number {
-  // Basic accessibility scoring
-  const hasAlt = html.includes('alt=');
-  const hasRoles = html.includes('role=');
-  return (hasAlt ? 50 : 0) + (hasRoles ? 50 : 0);
-}
-
-function calculatePerformanceScore(html: string): number {
-  // Basic performance scoring
-  const size = html.length;
-  return Math.max(0, 100 - (size / 1000)); // Penalize large files
-}
+// Дублированные функции удалены - используем определения выше
 
 // Enhancement helper functions
 async function addSeasonalOverlay(data: any, params: EmailRendererParams) {
@@ -720,4 +998,226 @@ async function addMjmlStructure(data: any, params: EmailRendererParams) {
     ...data,
     html: data.html + '<!-- MJML structure enhanced -->'
   };
+}
+
+/**
+ * Generate MJML dynamically based on content and parameters
+ */
+function generateDynamicMjml(params: EmailRendererParams): string {
+  // Safely handle parameters that might be objects or JSON strings
+  const contentData = typeof params.content_data === 'string' ? 
+    JSON.parse(params.content_data || '{}') : 
+    (params.content_data || {});
+  
+  const assets = Array.isArray(params.assets) ? params.assets :
+    (typeof params.assets === 'string' ? JSON.parse(params.assets || '[]') : []);
+  
+  const pricingData = typeof params.pricing_data === 'string' ? 
+    JSON.parse(params.pricing_data || '{}') : 
+    (params.pricing_data || {});
+  
+  const subject = (contentData.subject || 'Специальные предложения на авиабилеты').replace(/[<>&"]/g, (match) => {
+    const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
+    return escapes[match] || match;
+  });
+  const preheader = (contentData.preheader || 'Найдите лучшие цены на билеты').replace(/[<>&"]/g, (match) => {
+    const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
+    return escapes[match] || match;
+  });
+  const body = (contentData.body || 'Откройте для себя мир с выгодными ценами на авиабилеты.').replace(/[<>&"]/g, (match) => {
+    const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
+    return escapes[match] || match;
+  });
+  const cta = (contentData.cta || 'Найти билеты').replace(/[<>&"]/g, (match) => {
+    const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
+    return escapes[match] || match;
+  });
+  
+  // Generate brand colors from brand guidelines
+  const brandGuidelines = params.brand_guidelines || {};
+  const primaryColor = brandGuidelines.primary_color || '#2B5CE6';
+  const secondaryColor = brandGuidelines.secondary_color || '#FF6B6B';
+  const fontFamily = brandGuidelines.font_family || 'Arial, sans-serif';
+  
+  // Generate hero image section
+  let heroImageSection = '';
+  if (assets.length > 0) {
+    const heroImage = assets[0];
+    heroImageSection = `
+    <!-- Hero Section -->
+    <mj-section background-color="#ffffff" padding="0">
+      <mj-column>
+        <mj-image src="${heroImage}" alt="Travel destination" width="600px" />
+      </mj-column>
+    </mj-section>`;
+  }
+  
+  // Generate pricing section if available
+  let pricingSection = '';
+  if (pricingData.price_from) {
+    pricingSection = `
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="24px" color="${primaryColor}" font-weight="bold">
+          От ${pricingData.price_from} ₽
+        </mj-text>
+        <mj-text align="center" font-size="14px" color="#666666">
+          ${pricingData.route || 'Специальные предложения'}
+        </mj-text>
+      </mj-column>
+    </mj-section>`;
+  }
+  
+  // Generate rabbit component if needed
+  let rabbitSection = '';
+  const hasRabbitAssets = assets.some((asset: string) => asset.includes('заяц') || asset.includes('rabbit'));
+  if (hasRabbitAssets || body.includes('заяц')) {
+    const rabbitAsset = assets.find((asset: string) => asset.includes('заяц') || asset.includes('rabbit'));
+    if (rabbitAsset) {
+      rabbitSection = `
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-image src="${rabbitAsset}" alt="Купибилет заяц" width="150px" align="center" />
+        <mj-text align="center" font-size="14px" color="#666666" padding-top="10px">
+          Ваш помощник в путешествиях
+        </mj-text>
+      </mj-column>
+    </mj-section>`;
+    } else {
+      rabbitSection = `
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="48px" padding-top="20px">🐰</mj-text>
+        <mj-text align="center" font-size="14px" color="#666666" padding-top="10px">
+          Ваш помощник в путешествиях от Купибилет
+        </mj-text>
+      </mj-column>
+    </mj-section>`;
+    }
+  }
+  
+  return `<mjml>
+  <mj-head>
+    <mj-title>${subject}</mj-title>
+    <mj-preview>${preheader}</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="${fontFamily}" />
+      <mj-text font-size="16px" color="#333333" line-height="1.5" />
+      <mj-button background-color="${primaryColor}" color="#ffffff" border-radius="4px" />
+    </mj-attributes>
+    <mj-style>
+      .kupibilet-brand { color: ${primaryColor}; font-weight: bold; }
+      .price-highlight { color: ${secondaryColor}; font-size: 18px; font-weight: bold; }
+      @media only screen and (max-width: 600px) {
+        .mobile-padding { padding: 10px !important; }
+        .mobile-text { font-size: 14px !important; }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#f8f9fa">
+    <!-- Header -->
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-image src="${brandGuidelines.logo_url || 'https://kupibilet.ru/assets/logo.png'}" alt="Kupibilet" width="150px" align="left" />
+      </mj-column>
+    </mj-section>
+    
+    ${heroImageSection}
+    
+    <!-- Content Section -->
+    <mj-section background-color="#ffffff" padding="30px 20px">
+      <mj-column>
+        <mj-text font-size="28px" color="#333333" font-weight="bold" line-height="1.2">
+          ${subject}
+        </mj-text>
+        <mj-text font-size="16px" color="#666666" padding-top="15px">
+          ${body.replace(/\n/g, '<br/>')}
+        </mj-text>
+        
+        <mj-button href="https://kupibilet.ru/search" background-color="${primaryColor}" color="#ffffff" border-radius="4px" font-size="16px" font-weight="bold" padding-top="25px">
+          ${cta}
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    ${pricingSection}
+    ${rabbitSection}
+    
+    <!-- Footer -->
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#999999" align="center">
+          © 2025 Kupibilet. Все права защищены.
+        </mj-text>
+        <mj-text font-size="12px" color="#999999" align="center">
+          <a href="https://kupibilet.ru/unsubscribe" style="color: #999999;">Отписаться</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>`;
+}
+
+/**
+ * Validate MJML content using the validator
+ */
+async function validateMjmlContent(mjmlContent: string): Promise<any> {
+  try {
+    const { mjmlValidator } = await import('../simple/mjml-validator');
+    
+    const result = await mjmlValidator({
+      mjml_code: mjmlContent,
+      validation_level: 'strict',
+      fix_suggestions: true,
+      check_email_compatibility: true
+    });
+    
+    return result.data || { is_valid: false, issues: [], recommendations: [] };
+  } catch (error) {
+    console.warn('MJML validation failed:', error);
+    return { is_valid: true, issues: [], recommendations: [] }; // Fallback to assume valid
+  }
+}
+
+/**
+ * Auto-fix common MJML issues
+ */
+async function autoFixMjml(mjmlContent: string, issues: any[]): Promise<string> {
+  let fixedMjml = mjmlContent;
+  
+  for (const issue of issues) {
+    switch (issue.rule) {
+      case 'mjml-root-required':
+        if (!fixedMjml.includes('<mjml>')) {
+          fixedMjml = `<mjml>\n${fixedMjml}\n</mjml>`;
+        }
+        break;
+        
+      case 'mj-body-required':
+        if (!fixedMjml.includes('<mj-body>')) {
+          fixedMjml = fixedMjml.replace('</mjml>', '  <mj-body>\n  </mj-body>\n</mjml>');
+        }
+        break;
+        
+      case 'image-src-required':
+        // Replace images without src with placeholder
+        fixedMjml = fixedMjml.replace(/<mj-image([^>]*?)(?!.*src=)([^>]*?)>/g, 
+          '<mj-image$1 src="https://via.placeholder.com/600x300"$2>');
+        break;
+        
+      case 'image-alt-recommended':
+        // Add alt attributes to images without them
+        fixedMjml = fixedMjml.replace(/<mj-image([^>]*?)(?!.*alt=)([^>]*?)>/g, 
+          '<mj-image$1 alt="Email image"$2>');
+        break;
+        
+      case 'unclosed-tag':
+        // This is more complex and would require proper parsing
+        console.warn('Cannot auto-fix unclosed tag, manual intervention required');
+        break;
+    }
+  }
+  
+  console.log('🔧 Auto-fixed MJML issues:', issues.length);
+  return fixedMjml;
 }

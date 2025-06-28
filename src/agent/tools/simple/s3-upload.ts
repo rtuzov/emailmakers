@@ -11,10 +11,10 @@ import { uploadToS3 } from '../upload';
 export const s3UploadSchema = z.object({
   file_path: z.string().describe('Local file path to upload'),
   s3_key: z.string().describe('S3 object key (path in bucket)'),
-  bucket: z.string().optional().nullable().describe('S3 bucket name (uses default if not specified)'),
-  content_type: z.string().optional().nullable().describe('MIME type of the file'),
-  public_access: z.boolean().optional().nullable().describe('Whether file should be publicly accessible'),
-  metadata: z.object({}).passthrough().optional().nullable().describe('Additional metadata for the file')
+  bucket: z.string().default('email-templates').describe('S3 bucket name (uses default email-templates)'),
+  content_type: z.string().default('text/html').describe('MIME type of the file (defaults to text/html)'),
+  public_access: z.boolean().default(false).describe('Whether file should be publicly accessible (defaults to false)'),
+  metadata: z.string().default('{}').describe('Additional metadata for the file as JSON string')
 });
 
 export type S3UploadParams = z.infer<typeof s3UploadSchema>;
@@ -55,6 +55,14 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
       file_type: params.content_type,
       size_kb: Math.round(params.file_path.length / 1024)
     });
+
+    // Parse metadata JSON
+    let parsedMetadata = {};
+    try {
+      parsedMetadata = JSON.parse(params.metadata);
+    } catch (error) {
+      console.warn('Failed to parse metadata JSON, using empty object:', error);
+    }
 
     // Prepare file content and determine content type
     const contentType = getContentType(params.content_type);
@@ -100,10 +108,10 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
       file_content: processedContent,
       file_name: params.file_path,
       content_type: contentType,
-      bucket_path: params.bucket || 'email-templates',
-      public_read: params.public_access || false,
+      bucket_path: params.bucket,
+      public_read: params.public_access,
       metadata: {
-        ...params.metadata,
+        ...parsedMetadata,
         original_size: params.file_path.length.toString(),
         upload_timestamp: new Date().toISOString(),
         file_type: params.content_type

@@ -171,7 +171,10 @@ export class AgentHandoffsCoordinator {
           // Validate and optimize handoff data for next agent
           const handoffValidation = this.validateHandoffData(contentResult.recommendations.handoff_data, 'content_to_design');
           if (!handoffValidation.valid) {
-            console.warn('⚠️ Content handoff validation issues:', handoffValidation.issues);
+            console.log('🔧 Content handoff validation recommendations:', handoffValidation.issues);
+            console.log('📋 Note: These are suggestions for improving agent handoffs, workflow will continue');
+          } else {
+            console.log('✅ Content handoff validation passed successfully');
           }
           
           const optimizedHandoffData = this.optimizeHandoffData(contentResult.recommendations.handoff_data);
@@ -919,39 +922,82 @@ export class AgentHandoffsCoordinator {
       return { valid: false, issues };
     }
     
+    console.log(`🔍 Validating handoff data for schema: ${expectedSchema}`, {
+      dataKeys: Object.keys(data),
+      dataSize: JSON.stringify(data).length
+    });
+    
     switch (expectedSchema) {
       case 'content_to_design':
-        if (!data.content_package) {
-          issues.push('Missing content_package in handoff data');
+        // Проверяем обязательные поля для передачи от Content к Design
+        if (!data.content_package && !data.content_data) {
+          issues.push('Missing content_package or content_data in handoff data');
         }
+        
         if (!data.design_requirements) {
           issues.push('Missing design_requirements in handoff data');
+          console.log('💡 Suggestion: Content Specialist should generate design_requirements using generateDesignRequirements()');
+        } else {
+          console.log('✅ design_requirements found:', Object.keys(data.design_requirements));
         }
+        
         if (!data.brand_guidelines) {
           issues.push('Missing brand_guidelines in handoff data');
+          console.log('💡 Suggestion: Content Specialist should generate brand_guidelines using extractBrandGuidelines()');
+        } else {
+          console.log('✅ brand_guidelines found:', Object.keys(data.brand_guidelines));
         }
+        
+        // Дополнительные полезные проверки
+        if (data.content_package && !data.content_package.content) {
+          issues.push('content_package exists but missing content field');
+        }
+        
         break;
         
       case 'design_to_quality':
-        if (!data.html_output) {
-          issues.push('Missing html_output in handoff data');
+        if (!data.html_output && !data.email_output) {
+          issues.push('Missing html_output or email_output in handoff data');
         }
-        if (!data.assets_used) {
-          issues.push('Missing assets_used in handoff data');
+        if (!data.assets_used && !data.visual_assets) {
+          issues.push('Missing assets_used or visual_assets in handoff data');
         }
+        
+        // Проверяем качество HTML
+        if (data.html_output && data.html_output.length < 100) {
+          issues.push('html_output seems too short (< 100 characters)');
+        }
+        
         break;
         
       case 'quality_to_delivery':
-        if (!data.validated_output) {
-          issues.push('Missing validated_output in handoff data');
+        if (!data.validated_output && !data.quality_results) {
+          issues.push('Missing validated_output or quality_results in handoff data');
         }
-        if (!data.quality_metrics) {
-          issues.push('Missing quality_metrics in handoff data');
+        if (!data.quality_metrics && !data.validation_results) {
+          issues.push('Missing quality_metrics or validation_results in handoff data');
         }
+        
+        // Проверяем минимальные метрики качества
+        if (data.quality_metrics && typeof data.quality_metrics.score === 'number' && data.quality_metrics.score < 70) {
+          issues.push(`Quality score too low: ${data.quality_metrics.score} (minimum 70 required)`);
+        }
+        
         break;
+        
+      default:
+        issues.push(`Unknown handoff schema: ${expectedSchema}`);
     }
     
-    return { valid: issues.length === 0, issues };
+    const isValid = issues.length === 0;
+    
+    if (isValid) {
+      console.log(`✅ Handoff validation passed for ${expectedSchema}`);
+    } else {
+      console.log(`❌ Handoff validation failed for ${expectedSchema}:`, issues);
+    }
+    
+    return { valid: isValid, issues };
   }
 
   /**
