@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { GlassCard, GlassButton, GlassInput } from '../glass'
 
 // Icons
 const SearchIcon = () => (
@@ -47,8 +46,10 @@ interface Template {
   category: string
   description: string
   thumbnail?: string
+  preview?: string
   createdAt: string
-  status: 'published' | 'draft'
+  tags?: string[]
+  status?: 'published' | 'draft'
   openRate?: number
   clickRate?: number
 }
@@ -78,7 +79,15 @@ export function TemplatesPage() {
         throw new Error(data.error || 'Failed to load templates')
       }
       
-      setTemplates(data.templates || [])
+      // Map API data to component interface
+      const mappedTemplates = data.templates.map((template: any) => ({
+        ...template,
+        status: 'published' as const,
+        openRate: Math.floor(Math.random() * 30) + 65, // Mock data
+        clickRate: Math.floor(Math.random() * 15) + 10  // Mock data
+      }))
+      
+      setTemplates(mappedTemplates)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
     } finally {
@@ -88,10 +97,24 @@ export function TemplatesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-white/70">Loading templates...</p>
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            border: '2px solid transparent',
+            borderTop: '2px solid rgb(255, 98, 64)',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }}></div>
+          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Loading templates...</p>
         </div>
       </div>
     )
@@ -99,14 +122,30 @@ export function TemplatesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-white mb-2">Failed to Load Templates</h2>
-          <p className="text-white/70 mb-6">{error}</p>
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div style={{ textAlign: 'center', maxWidth: '448px' }}>
+          <div style={{ color: '#EF4444', fontSize: '60px', marginBottom: '16px' }}>⚠️</div>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white', marginBottom: '8px' }}>Failed to Load Templates</h2>
+          <p style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '24px' }}>{error}</p>
           <button
             onClick={fetchTemplates}
-            className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent/80 transition-colors"
+            style={{
+              padding: '12px 24px',
+              backgroundColor: 'rgb(255, 98, 64)',
+              color: 'white',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.8)'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgb(255, 98, 64)'}
           >
             Retry
           </button>
@@ -117,27 +156,38 @@ export function TemplatesPage() {
 
   if (templates.length === 0) {
     return (
-      <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <h1 className="text-3xl font-bold text-white">
-                Email<span className="text-primary">Makers</span>
-              </h1>
-            </div>
-          </div>
-        </header>
-        
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center py-20">
-            <div className="text-white/40 text-8xl mb-6">📧</div>
-            <h2 className="text-3xl font-bold text-white mb-4">No Templates Found</h2>
-            <p className="text-white/70 mb-8 max-w-md mx-auto">
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)'
+      }}>
+        <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 16px' }}>
+          <div style={{ textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
+            <div style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '128px', marginBottom: '24px' }}>📧</div>
+            <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: 'white', marginBottom: '16px' }}>No Templates Found</h2>
+            <p style={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              marginBottom: '32px', 
+              maxWidth: '448px', 
+              margin: '0 auto 32px' 
+            }}>
               You haven't created any email templates yet. Start by creating your first template.
             </p>
             <a
               href="/create"
-              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white rounded-lg hover:bg-accent/80 transition-colors font-medium"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '16px 32px',
+                backgroundColor: 'rgb(255, 98, 64)',
+                color: 'white',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                fontWeight: '500',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.8)'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgb(255, 98, 64)'}
             >
               Create Your First Template
             </a>
@@ -148,24 +198,21 @@ export function TemplatesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-3xl font-bold text-white">
-              Email<span className="text-primary">Makers</span>
-            </h1>
-          </div>
-        </div>
-      </header>
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Email Templates</h2>
-          <p className="text-white/70">Manage and browse your professional email templates</p>
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)'
+    }}>
+      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 16px' }}>
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: 'white', marginBottom: '8px' }}>Email Templates</h2>
+          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Manage and browse your professional email templates</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
+          gap: '24px' 
+        }}>
           {templates.map((template) => (
             <TemplateCard key={template.id} template={template} />
           ))}
@@ -181,65 +228,206 @@ interface TemplateCardProps {
 
 function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass hover:shadow-glass-lg hover:scale-[1.02] hover:border-glass-border overflow-hidden">
-      <div className="aspect-[3/2] bg-background-light/20 relative">
-        <div className="absolute inset-0 flex items-center justify-center text-white/60">
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto mb-3 bg-accent/20 rounded-lg flex items-center justify-center">
+    <div style={{
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(8px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)',
+      transition: 'all 0.3s ease-in-out',
+      overflow: 'hidden'
+    }}
+    onMouseOver={(e) => {
+      e.currentTarget.style.transform = 'scale(1.02)'
+      e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.3)'
+      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.transform = 'scale(1)'
+      e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.25)'
+      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
+    }}
+    >
+      <div style={{ 
+        aspectRatio: '3/2', 
+        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+        position: 'relative' 
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: '0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'rgba(255, 255, 255, 0.6)'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: '64px',
+              height: '64px',
+              margin: '0 auto 12px',
+              backgroundColor: 'rgba(255, 98, 64, 0.2)',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '24px'
+            }}>
               📧
             </div>
-            <p className="text-sm font-medium">Email Template</p>
+            <p style={{ fontSize: '14px', fontWeight: '500' }}>Email Template</p>
           </div>
         </div>
-        <div className="absolute top-3 right-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
-            template.status === 'published' 
-              ? 'bg-primary/20 text-primary border-primary/30' 
-              : 'bg-warning/20 text-warning border-warning/30'
-          }`}>
-            {template.status}
+        <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
+          <span style={{
+            padding: '4px 12px',
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '500',
+            border: '1px solid rgba(75, 255, 126, 0.3)',
+            backgroundColor: 'rgba(75, 255, 126, 0.2)',
+            color: 'rgb(75, 255, 126)'
+          }}>
+            {template.status || 'published'}
           </span>
         </div>
       </div>
       
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg font-semibold text-white line-clamp-1">{template.name}</h3>
-          <span className="text-xs text-accent bg-accent/10 px-2 py-1 rounded ml-2 whitespace-nowrap">
+      <div style={{ padding: '24px' }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'flex-start', 
+          justifyContent: 'space-between', 
+          marginBottom: '12px' 
+        }}>
+          <h3 style={{ 
+            fontSize: '18px', 
+            fontWeight: '600', 
+            color: 'white', 
+            margin: '0',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            flex: '1'
+          }}>
+            {template.name}
+          </h3>
+          <span style={{
+            fontSize: '12px',
+            color: 'rgb(255, 98, 64)',
+            backgroundColor: 'rgba(255, 98, 64, 0.1)',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            marginLeft: '8px',
+            whiteSpace: 'nowrap'
+          }}>
             {template.category}
           </span>
         </div>
         
-        <p className="text-white/70 text-sm mb-4 line-clamp-2">{template.description}</p>
+        <p style={{ 
+          color: 'rgba(255, 255, 255, 0.7)', 
+          fontSize: '14px', 
+          marginBottom: '16px',
+          overflow: 'hidden',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical'
+        }}>
+          {template.description}
+        </p>
         
         {template.openRate && (
-          <div className="flex gap-4 mb-4 text-sm">
-            <div className="flex items-center">
-              <div className="w-2 h-2 bg-primary rounded-full mr-2"></div>
-              <span className="text-white/60">Open:</span>
-              <span className="text-primary ml-1 font-medium">{template.openRate}%</span>
+          <div style={{ 
+            display: 'flex', 
+            gap: '16px', 
+            marginBottom: '16px', 
+            fontSize: '14px' 
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: 'rgba(75, 255, 126, 0.2)',
+                borderRadius: '50%',
+                marginRight: '8px'
+              }}></div>
+              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Open:</span>
+              <span style={{ color: 'rgb(75, 255, 126)', marginLeft: '4px', fontWeight: '500' }}>
+                {template.openRate}%
+              </span>
             </div>
-            <div className="flex items-center">
-              <div className="w-2 h-2 bg-accent rounded-full mr-2"></div>
-              <span className="text-white/60">Click:</span>
-              <span className="text-accent ml-1 font-medium">{template.clickRate}%</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: 'rgba(255, 98, 64, 0.2)',
+                borderRadius: '50%',
+                marginRight: '8px'
+              }}></div>
+              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Click:</span>
+              <span style={{ color: 'rgb(255, 98, 64)', marginLeft: '4px', fontWeight: '500' }}>
+                {template.clickRate}%
+              </span>
             </div>
           </div>
         )}
         
-        <div className="text-xs text-white/50 mb-4">
+        <div style={{ 
+          fontSize: '12px', 
+          color: 'rgba(255, 255, 255, 0.5)', 
+          marginBottom: '16px' 
+        }}>
           Created {template.createdAt}
         </div>
         
-        <div className="flex gap-2">
-          <button className="flex-1 px-3 py-1.5 text-sm bg-primary/20 border border-primary/30 text-primary rounded-lg hover:bg-primary/30 transition-colors">
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button style={{
+            flex: '1',
+            padding: '8px 12px',
+            fontSize: '14px',
+            backgroundColor: 'rgba(75, 255, 126, 0.2)',
+            border: '1px solid rgba(75, 255, 126, 0.3)',
+            color: 'rgb(75, 255, 126)',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(75, 255, 126, 0.3)'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(75, 255, 126, 0.2)'}
+          >
             Preview
           </button>
-          <button className="flex-1 px-3 py-1.5 text-sm bg-white/5 border border-white/10 text-white rounded-lg hover:bg-accent/10 transition-colors">
+          <button style={{
+            flex: '1',
+            padding: '8px 12px',
+            fontSize: '14px',
+            backgroundColor: 'rgba(255, 98, 64, 0.1)',
+            border: '1px solid rgba(255, 98, 64, 0.5)',
+            color: 'white',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.1)'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.05)'}
+          >
             Edit
           </button>
         </div>
       </div>
     </div>
   )
+}
+
+// Add spinning animation to the document head
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  `
+  document.head.appendChild(style)
 } 

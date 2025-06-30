@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ToolResult } from '../base-tool';
+import { ToolResult } from '../../../shared/types/tool-types';
 
 const mjmlValidatorSchema = z.object({
   mjml_code: z.string().describe('MJML код для валидации'),
@@ -125,11 +125,8 @@ export async function mjmlValidator(params: MjmlValidatorParams): Promise<ToolRe
       success: true,
       data: validationResult,
       metadata: {
-        validation_level: params.validation_level,
-        issues_count: validationResult.issues.length,
-        errors_count: validationResult.issues.filter(i => i.type === 'error').length,
-        warnings_count: validationResult.issues.filter(i => i.type === 'warning').length,
-        overall_score: validationResult.email_compatibility.overall_score,
+        tool_name: 'mjml-validator',
+        version: '1.0.0',
         timestamp: new Date().toISOString()
       }
     };
@@ -191,8 +188,8 @@ function validateBasicStructure(mjmlCode: string, result: ValidationResult) {
 
 function validateSyntaxAndTags(mjmlCode: string, result: ValidationResult) {
   // Проверка закрытых тегов
-  const openTags = mjmlCode.match(/<(mj-[a-z-]+)(?:\s[^>]*)?>/g) || [];
-  const closeTags = mjmlCode.match(/<\/(mj-[a-z-]+)>/g) || [];
+  const openTags: string[] = mjmlCode.match(/<(mj-[a-z-]+)(?:\s[^>]*)?>/g) || [];
+  const closeTags: string[] = mjmlCode.match(/<\/(mj-[a-z-]+)>/g) || [];
   
   const openTagNames = openTags.map(tag => tag.match(/<(mj-[a-z-]+)/)?.[1]).filter(Boolean);
   const closeTagNames = closeTags.map(tag => tag.match(/<\/(mj-[a-z-]+)>/)?.[1]).filter(Boolean);
@@ -237,7 +234,7 @@ function validateSyntaxAndTags(mjmlCode: string, result: ValidationResult) {
 
 function validateAttributes(mjmlCode: string, result: ValidationResult) {
   // Проверка обязательных атрибутов для изображений
-  const imageMatches = mjmlCode.match(/<mj-image[^>]*>/g) || [];
+  const imageMatches: string[] = mjmlCode.match(/<mj-image[^>]*>/g) || [];
   imageMatches.forEach(imageTag => {
     if (!imageTag.includes('src=')) {
       result.issues.push({
@@ -260,7 +257,7 @@ function validateAttributes(mjmlCode: string, result: ValidationResult) {
   });
 
   // Проверка ссылок в кнопках
-  const buttonMatches = mjmlCode.match(/<mj-button[^>]*>/g) || [];
+  const buttonMatches: string[] = mjmlCode.match(/<mj-button[^>]*>/g) || [];
   buttonMatches.forEach(buttonTag => {
     if (!buttonTag.includes('href=')) {
       result.issues.push({

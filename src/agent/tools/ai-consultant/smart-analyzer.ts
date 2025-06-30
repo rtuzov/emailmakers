@@ -422,7 +422,7 @@ EMAIL HTML:
 ${context.html_content}
 
 KUPIBILET BRAND GUIDELINES:
-- Primary colors: Blue (#0066CC), Orange (#FF6B35)
+- Primary colors: Bright Green (#4BFF7E), Dark Green (#1DA857), Orange-Red (#FF6240), Pink-Purple (#E03EEF), Dark Background (#2C3959)
 - Secondary colors: Light blue (#E6F3FF), Gray (#F5F5F5)
 - Typography: Modern, clean sans-serif
 - Tone: Friendly, helpful, trustworthy

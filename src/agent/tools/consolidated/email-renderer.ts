@@ -68,6 +68,20 @@ export const emailRendererSchema = z.object({
     personalization: z.string().default('{}')
   }).default({}).describe('Content data for rendering'),
   
+  // Additional parameters for backward compatibility
+  assets: z.array(z.string()).optional().nullable().describe('Asset paths for email rendering'),
+  pricing_data: z.string().optional().nullable().describe('Pricing data for content'),
+  brand_guidelines: z.object({
+    brand_voice: z.string().optional().nullable(),
+    visual_style: z.string().optional().nullable(),
+    color_palette: z.array(z.string()).optional().nullable(),
+    typography: z.string().optional().nullable(),
+    primary_color: z.string().optional().nullable(),
+    secondary_color: z.string().optional().nullable(),
+    font_family: z.string().optional().nullable(),
+    logo_url: z.string().optional().nullable()
+  }).optional().nullable().describe('Brand guidelines for rendering'),
+  
   // Rendering options
   rendering_options: z.object({
     output_format: z.enum(['html', 'mjml', 'amp', 'text', 'preview']).default('html').describe('Output format'),
@@ -156,6 +170,7 @@ interface EmailRendererResult {
     preview_url?: string;
     component_metadata?: any;
     rendering_stats?: any;
+    standard_response?: StandardMjmlResponse;
   };
   rendering_metadata?: {
     template_type: string;
@@ -383,7 +398,7 @@ function calculateAccessibilityScore(html: string): number {
   let score = 100;
   
   // Проверка наличия alt атрибутов у изображений
-  const images = html.match(/<img[^>]*>/g) || [];
+  const images: string[] = html.match(/<img[^>]*>/g) || [];
   const imagesWithoutAlt = images.filter(img => !img.includes('alt=')).length;
   score -= imagesWithoutAlt * 10;
   
@@ -454,7 +469,14 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
   // Создаем emailFolder для сохранения полных файлов
   const campaignId = `email-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const path = await import('path');
+  const fs = await import('fs/promises');
   const basePath = path.join(process.cwd(), 'mails', campaignId);
+  
+  // Создаем все необходимые папки
+  await fs.mkdir(basePath, { recursive: true });
+  await fs.mkdir(path.join(basePath, 'assets'), { recursive: true });
+  await fs.mkdir(path.join(basePath, 'assets', 'sprite-slices'), { recursive: true });
+  
   const emailFolder: EmailFolder = {
     campaignId: campaignId,
     basePath: basePath,
@@ -464,6 +486,8 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
     mjmlPath: path.join(basePath, 'email.mjml'),
     metadataPath: path.join(basePath, 'metadata.json')
   };
+  
+  console.log(`📁 Created email campaign folder: ${campaignId}`);
 
   // Enhanced MJML rendering with optimizations
   const mjmlResult = await renderMjml({
@@ -564,7 +588,7 @@ async function handleComponentRendering(params: EmailRendererParams, startTime: 
 
   const componentResult = await renderComponent({
     type: params.component_type === 'header' ? 'rabbit' : 'icon',
-    props: componentProps.iconType ? componentProps as any : {
+    props: (componentProps as any).iconType ? componentProps as any : {
       iconType: 'arrow',
       ...componentProps
     }
@@ -1005,9 +1029,52 @@ async function addMjmlStructure(data: any, params: EmailRendererParams) {
  */
 function generateDynamicMjml(params: EmailRendererParams): string {
   // Safely handle parameters that might be objects or JSON strings
-  const contentData = typeof params.content_data === 'string' ? 
-    JSON.parse(params.content_data || '{}') : 
-    (params.content_data || {});
+  let contentData: any = {};
+  
+  // Handle content_data that might be an array of function calls or a direct object
+  if (typeof params.content_data === 'string') {
+    try {
+      const parsed = JSON.parse(params.content_data);
+      if (Array.isArray(parsed)) {
+        // Find the function_call_result with content data
+        const contentResult = parsed.find(item => 
+          item.type === 'function_call_result' && 
+          item.name === 'content_create' && 
+          item.output?.text
+        );
+        if (contentResult) {
+          const contentText = JSON.parse(contentResult.output.text);
+          contentData = contentText.content_data?.complete_content || {};
+        }
+      } else {
+        contentData = parsed;
+      }
+    } catch (error) {
+      console.warn('Failed to parse content_data:', error);
+      contentData = {};
+    }
+  } else if (params.content_data && typeof params.content_data === 'object') {
+    contentData = params.content_data;
+  }
+  
+  console.log('🔍 Raw params.content_data type:', typeof params.content_data);
+  if (params.content_data) {
+    console.log('🔍 Raw params.content_data sample:', typeof params.content_data === 'string' ? 
+      (params.content_data as string).substring(0, 200) + '...' : 
+      JSON.stringify(params.content_data).substring(0, 200) + '...');
+  }
+  
+  console.log('🔍 Parsed content data:', {
+    subject: contentData.subject ? contentData.subject.substring(0, 50) + '...' : 'undefined',
+    preheader: contentData.preheader ? contentData.preheader.substring(0, 50) + '...' : 'undefined',
+    body: contentData.body ? contentData.body.substring(0, 100) + '...' : 'undefined',
+    cta: contentData.cta,
+    cta_text: contentData.cta_text,
+    hasBody: !!contentData.body,
+    bodyType: typeof contentData.body,
+    bodyLength: contentData.body?.length || 0,
+    allKeys: Object.keys(contentData)
+  });
   
   const assets = Array.isArray(params.assets) ? params.assets :
     (typeof params.assets === 'string' ? JSON.parse(params.assets || '[]') : []);
@@ -1101,8 +1168,7 @@ function generateDynamicMjml(params: EmailRendererParams): string {
     <mj-title>${subject}</mj-title>
     <mj-preview>${preheader}</mj-preview>
     <mj-attributes>
-      <mj-all font-family="${fontFamily}" />
-      <mj-text font-size="16px" color="#333333" line-height="1.5" />
+      <mj-text font-family="${fontFamily}" font-size="16px" color="#333333" line-height="1.5" />
       <mj-button background-color="${primaryColor}" color="#ffffff" border-radius="4px" />
     </mj-attributes>
     <mj-style>

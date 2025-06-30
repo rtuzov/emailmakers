@@ -200,7 +200,7 @@ export class CommandGenerator {
     // For color scheme optimization
     if (params.target === 'color_scheme') {
       optimized.brand_colors = {
-        primary: '#0066CC',
+        primary: '#4BFF7E',
         secondary: '#FF6B35',
         accent: '#E6F3FF',
         neutral: '#F5F5F5',

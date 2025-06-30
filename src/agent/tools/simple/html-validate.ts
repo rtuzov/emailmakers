@@ -288,7 +288,7 @@ function validateEmailStandards(html: string, standards?: any): { issues: any[];
   }
 
   // Width compliance (600-640px standard)
-  const widthMatches = html.match(/width\s*[:=]\s*["']?(\d+)/gi) || [];
+  const widthMatches: string[] = html.match(/width\s*[:=]\s*["']?(\d+)/gi) || [];
   const hasProperWidth = widthMatches.some(match => {
     const width = parseInt(match.replace(/\D/g, ''));
     return width >= 600 && width <= 640;

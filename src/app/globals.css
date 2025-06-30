@@ -2,36 +2,169 @@
 @tailwind components;
 @tailwind utilities;
 
-/* === Custom Brand Colors === */
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 20, 28, 40;     /* Much darker background */
-  --background-end-rgb: 20, 28, 40;       /* Much darker background */
-  
-  /* Brand Colors (comma-separated for better compatibility) */
-  --color-primary: 29, 168, 87;          /* #1DA857 - logo green */
-  --color-primary-dark: 20, 120, 62;     /* darker green */
-  --color-accent: 75, 255, 126;          /* #4BFF7E - glowing green */
-  --color-warning: 255, 200, 0;          /* #FFC800 */
-  --color-background: 20, 28, 40;        /* Much darker background */
-  --color-background-light: 30, 38, 50;  /* lighter variant */
-  --color-primary-foreground: 255, 255, 255;
-  --color-accent-foreground: 0, 0, 0;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 20, 28, 40;
-    --background-end-rgb: 20, 28, 40;
-    /* Keep same colors for dark mode */
-    --color-primary: 29, 168, 87;
-    --color-primary-dark: 20, 120, 62;
-    --color-accent: 75, 255, 126;
+    /* Купибилет Brand Colors - ОБНОВЛЕННАЯ СХЕМА */
+    --color-primary: 75, 255, 126;         /* #4BFF7E - яркий зеленый (основной) */
+    --color-primary-dark: 29, 168, 87;     /* #1DA857 - темно-зеленый */
+    --color-background: 44, 57, 89;        /* #2C3959 - темный фон */
+    --color-accent: 255, 98, 64;           /* #FF6240 - оранжево-красный */
+    --color-secondary: 224, 62, 239;       /* #E03EEF - розово-фиолетовый */
+    
+    /* Дополнительные цвета интерфейса */
+    --color-surface: 52, 67, 99;           /* #34436B - поверхности */
+    --color-surface-light: 62, 77, 109;    /* #3E4D6D - светлые поверхности */
+    
+    /* Текстовые цвета */
+    --color-text-primary: 255, 255, 255;   /* #FFFFFF - основной текст */
+    --color-text-secondary: 203, 213, 225; /* #CBD5E1 - вторичный текст */
+    --color-text-muted: 148, 163, 184;     /* #94A3B8 - приглушенный текст */
+    
+    /* Состояния */
+    --color-success: 75, 255, 126;         /* #4BFF7E - успех (яркий зеленый) */
+    --color-warning: 255, 98, 64;          /* #FF6240 - предупреждение (оранжево-красный) */
+    --color-error: 224, 62, 239;           /* #E03EEF - ошибка (розово-фиолетовый) */
+    --color-info: 29, 168, 87;             /* #1DA857 - информация (темно-зеленый) */
+    
+    /* Borders and shadows */
+    --color-border: 71, 85, 105;           /* #475569 - границы */
+    --color-border-light: 100, 116, 139;   /* #64748B - светлые границы */
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+@layer utilities {
+  /* Glass effect utilities with Kupibilet colors */
+  .bg-glass-primary { 
+    @apply bg-white/5 backdrop-blur-sm border border-white/10; 
+  }
+  .bg-glass-secondary { 
+    @apply bg-black/20 backdrop-blur-sm border border-white/10; 
+  }
+  .bg-glass-surface {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  .border-glass-border { 
+    @apply border-white/10; 
+  }
+  .shadow-glass { 
+    @apply shadow-xl shadow-black/25; 
+  }
+  .shadow-glass-sm { 
+    @apply shadow-lg shadow-black/20; 
+  }
+  .shadow-glass-lg { 
+    @apply shadow-2xl shadow-black/30; 
+  }
+  .shadow-glow-green { 
+    @apply shadow-green-400/25; 
+  }
+  .shadow-glow-blue {
+    @apply shadow-blue-400/25;
+  }
+  .shadow-glow-orange {
+    @apply shadow-orange-400/25;
+  }
+  
+  /* Kupibilet brand color utilities */
+  .bg-kupibilet-primary {
+    background-color: rgb(var(--color-primary));
+  }
+  .bg-kupibilet-secondary {
+    background-color: rgb(var(--color-secondary));
+  }
+  .bg-kupibilet-accent {
+    background-color: rgb(var(--color-accent));
+  }
+  .bg-kupibilet-dark {
+    background-color: rgb(var(--color-primary-dark));
+  }
+  .bg-kupibilet-background {
+    background-color: rgb(var(--color-background));
+  }
+  .text-kupibilet-primary {
+    color: rgb(var(--color-primary));
+  }
+  .text-kupibilet-secondary {
+    color: rgb(var(--color-secondary));
+  }
+  .text-kupibilet-accent {
+    color: rgb(var(--color-accent));
+  }
+  .text-kupibilet-dark {
+    color: rgb(var(--color-primary-dark));
+  }
+  .border-kupibilet-primary {
+    border-color: rgb(var(--color-primary));
+  }
+  .border-kupibilet-secondary {
+    border-color: rgb(var(--color-secondary));
+  }
+  .border-kupibilet-accent {
+    border-color: rgb(var(--color-accent));
+  }
+  .border-kupibilet-dark {
+    border-color: rgb(var(--color-primary-dark));
+  }
+  
+  /* Hover states */
+  .hover\\:bg-kupibilet-primary:hover {
+    background-color: rgb(var(--color-primary));
+  }
+  .hover\\:bg-kupibilet-secondary:hover {
+    background-color: rgb(var(--color-secondary));
+  }
+  .hover\\:bg-kupibilet-accent:hover {
+    background-color: rgb(var(--color-accent));
+  }
+  .hover\\:bg-kupibilet-dark:hover {
+    background-color: rgb(var(--color-primary-dark));
+  }
+  
+  /* Gradient backgrounds */
+  .bg-kupibilet-gradient {
+    background: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-primary-dark)));
+  }
+  .bg-kupibilet-gradient-dark {
+    background: linear-gradient(135deg, rgb(var(--color-background)), rgb(var(--color-surface)));
+  }
+  .bg-kupibilet-hero {
+    background: linear-gradient(135deg, rgb(var(--color-background)) 0%, rgb(var(--color-surface)) 50%, rgb(var(--color-surface-light)) 100%);
+  }
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-surface));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-primary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-primary-dark));
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+

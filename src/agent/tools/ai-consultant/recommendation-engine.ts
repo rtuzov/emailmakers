@@ -226,10 +226,10 @@ export class RecommendationEngine {
           tool: 'patch_html',
           parameters: {
             target: 'color_scheme',
-            primary_color: '#0066CC',
-            secondary_color: '#FF6B35',
-            background_color: '#F5F5F5',
-            ensure_contrast: true
+            primary_color: '#4BFF7E',
+            secondary_color: '#1DA857',
+            accent_color: '#FF6240',
+            background_color: '#2C3959'
           },
           expected_result: 'Improved color scheme following brand guidelines',
           success_criteria: ['Brand colors used', 'Good contrast ratio', 'Consistent application'],

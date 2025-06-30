@@ -320,25 +320,32 @@ export class VisualValidator {
   }
   
   // Brand checking methods
-  private checkBrandColors(htmlContent: string): { valid: boolean; details: any } {
+  private checkBrandColors(htmlContent: string): ValidationCheck {
     // Check for Kupibilet brand colors in CSS and style attributes
-    const kupibiletBlue = /#0066CC|#004499|rgb\(0,\s*68,\s*204\)/i;
-    const kupibiletGreen = /#00CC66|#00AA55|rgb\(0,\s*204,\s*102\)/i;
-    const kupibiletOrange = /#FF6600|#E55A00|rgb\(255,\s*102,\s*0\)/i;
-    
-    const hasBlue = kupibiletBlue.test(htmlContent);
-    const hasGreen = kupibiletGreen.test(htmlContent);
-    const hasOrange = kupibiletOrange.test(htmlContent);
-    
-    const brandColorCount = [hasBlue, hasGreen, hasOrange].filter(Boolean).length;
+    const kupibiletPrimary = /#4BFF7E|rgb\(75,\s*255,\s*126\)/i;
+    const kupibiletDark = /#1DA857|rgb\(29,\s*168,\s*87\)/i;
+    const kupibiletBackground = /#2C3959|rgb\(44,\s*57,\s*89\)/i;
+    const kupibiletAccent = /#FF6240|rgb\(255,\s*98,\s*64\)/i;
+    const kupibiletSecondary = /#E03EEF|rgb\(224,\s*62,\s*239\)/i;
+
+    const hasPrimary = kupibiletPrimary.test(htmlContent);
+    const hasDark = kupibiletDark.test(htmlContent);
+    const hasBackground = kupibiletBackground.test(htmlContent);
+    const hasAccent = kupibiletAccent.test(htmlContent);
+    const hasSecondary = kupibiletSecondary.test(htmlContent);
+
+    const colorCount = [hasPrimary, hasDark, hasBackground, hasAccent, hasSecondary].filter(Boolean).length;
     
     return {
-      valid: brandColorCount >= 1, // At least one brand color should be present
-      details: {
-        brand_blue: hasBlue,
-        brand_green: hasGreen,
-        brand_orange: hasOrange,
-        brand_color_count: brandColorCount
+      valid: colorCount >= 1,
+      score: Math.min(100, colorCount * 25),
+      details: `Found ${colorCount}/5 Kupibilet brand colors`,
+      colors_found: {
+        primary: hasPrimary,
+        dark: hasDark,
+        background: hasBackground,
+        accent: hasAccent,
+        secondary: hasSecondary
       }
     };
   }
@@ -681,7 +688,7 @@ export class VisualValidator {
     
     // Brand compliance recommendations
     if (!checks.brand_compliance.passed) {
-      recommendations.push('Use Kupibilet brand colors (#0066CC, #00CC66, #FF6600) in your design');
+      recommendations.push('Use Kupibilet brand colors (#4BFF7E, #1DA857, #FF6240) in your design');
       recommendations.push('Ensure consistent brand presentation throughout the email');
     }
     
@@ -728,17 +735,18 @@ export class VisualValidator {
   private getKupibiletBrandGuidelines(): BrandGuidelines {
     return {
       colors: {
-        primary: ['#0066CC', '#004499'],
-        secondary: ['#00CC66', '#00AA55'],
-        accent: ['#FF6600', '#E55A00']
+        primary: ['#4BFF7E', '#1DA857'],
+        secondary: ['#E03EEF'],
+        accent: ['#FF6240']
       },
       fonts: {
-        primary: ['Arial', 'Helvetica'],
-        fallback: ['sans-serif']
+        primary: ['Inter', 'system-ui', 'sans-serif'],
+        fallback: ['Arial', 'Helvetica', 'sans-serif']
       },
-      logos: {
-        required_elements: ['kupibilet'],
-        prohibited_elements: ['competitor-logos']
+      required_elements: ['kupibilet'],
+      spacing: {
+        base: 16,
+        scale: [8, 16, 24, 32, 48, 64]
       }
     };
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface SimpleLivePreviewProps {
   htmlContent: string
@@ -22,14 +22,16 @@ export default function SimpleLivePreview({
 }: SimpleLivePreviewProps) {
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [showCode, setShowCode] = useState(false)
-  const [isClient, setIsClient] = useState(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    if (iframeRef.current) {
+      iframeRef.current.srcdoc = htmlContent
+    }
+  }, [htmlContent])
 
   const handleCopyHTML = () => {
-    if (isClient && navigator.clipboard) {
+    if (navigator.clipboard) {
       navigator.clipboard.writeText(htmlContent)
         .then(() => alert('HTML copied to clipboard!'))
         .catch(() => alert('Failed to copy HTML'))
@@ -50,25 +52,13 @@ export default function SimpleLivePreview({
   }
 
   const handleDownloadHTML = () => {
-    if (!isClient) return
-    
     const blob = new Blob([htmlContent], { type: 'text/html' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `email-template-${Date.now()}.html`
+    a.download = `email-template-${Math.random().toString(36).substring(2, 9)}.html`
     a.click()
     URL.revokeObjectURL(url)
-  }
-
-  if (!isClient) {
-    return (
-      <div className="mt-8 rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass">
-        <div className="p-8 text-center">
-          <div className="text-white/70">Loading preview...</div>
-        </div>
-      </div>
-    )
   }
 
   return (

@@ -2,374 +2,310 @@
 
 import { useState } from 'react';
 
-// Icons
-const TemplateIcon = () => (
-  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-  </svg>
-)
-
-const SparklesIcon = () => (
-  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-  </svg>
-)
-
-interface FormData {
-  templateName: string;
-  contentBrief: string;
-  campaignType: string;
-  tone: string;
-  targetAudience: string;
-}
-
-interface GenerationResult {
-  jobId: string;
-  template: {
-    id: string;
-    subject: string;
-    preheader: string;
-    html: string;
-    metadata: {
-      generatedAt: string;
-      fileSize: number;
-      wordCount: number;
-      estimatedReadTime: number;
-    };
-  };
-  qualityReport: {
-    overallScore: number;
-    crossClientCompatibility: {
-      score: number;
-      supportedClients: string[];
-    };
-    accessibility: {
-      score: number;
-    };
-    performance: {
-      score: number;
-      metrics: {
-        fileSize: number;
-        loadTime: number;
-      };
-    };
-  };
-}
-
 export default function Create() {
-  const [formData, setFormData] = useState<FormData>({
-    templateName: '',
-    contentBrief: '',
-    campaignType: '',
-    tone: '',
-    targetAudience: ''
+  const [activeTab, setActiveTab] = useState('content');
+  const [formData, setFormData] = useState({
+    subject: '',
+    preheader: '',
+    content: '',
+    tone: 'friendly',
+    audience: 'general',
+    cta: '',
+    figmaUrl: '',
+    images: []
   });
-  
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState<GenerationResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const tabs = [
+    { 
+      id: 'content', 
+      label: 'Контент', 
+      icon: () => (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      )
+    },
+    { 
+      id: 'design', 
+      label: 'Дизайн', 
+      icon: () => (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      )
+    },
+    { 
+      id: 'settings', 
+      label: 'Настройки', 
+      icon: () => (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      )
+    }
+  ];
+
+  const toneOptions = [
+    { value: 'friendly', label: 'Дружелюбный', color: 'text-kupibilet-primary' },
+    { value: 'professional', label: 'Профессиональный', color: 'text-kupibilet-secondary' },
+    { value: 'urgent', label: 'Срочный', color: 'text-kupibilet-accent' },
+    { value: 'casual', label: 'Неформальный', color: 'text-kupibilet-primary' }
+  ];
+
+  const audienceOptions = [
+    { value: 'general', label: 'Общая аудитория' },
+    { value: 'business', label: 'Бизнес-клиенты' },
+    { value: 'travelers', label: 'Путешественники' },
+    { value: 'vip', label: 'VIP клиенты' }
+  ];
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleGenerate = async () => {
-    if (!formData.contentBrief.trim()) {
-      setError('Please provide a content brief');
-      return;
-    }
-
-    setIsGenerating(true);
-    setError(null);
-    setResult(null);
-
-    try {
-      const response = await fetch('/api/templates/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          template_name: formData.templateName,
-          content_brief: formData.contentBrief,
-          campaign_type: formData.campaignType || 'promotional',
-          tone: formData.tone || 'friendly',
-          target_audience: formData.targetAudience || 'general audience',
-          language: 'ru'
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate template');
-      }
-
-      if (data.success) {
-        setResult(data.data);
-      } else {
-        throw new Error(data.error || 'Generation failed');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleSaveDraft = () => {
-    // Save form data to localStorage
-    localStorage.setItem('emailDraft', JSON.stringify(formData));
-    alert('Draft saved locally!');
+    // TODO: Implement template generation
+    console.log('Generating template with data:', formData);
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Glass Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-glass-border bg-background/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-3xl font-bold text-white">
-              Email<span className="text-primary">Makers</span>
-            </h1>
-            <nav className="hidden md:flex space-x-4">
-              <a href="/" className="px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-accent transition-colors">
-                Dashboard
-              </a>
-              <a href="/templates" className="px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-accent transition-colors">
-                Templates
-              </a>
-              <a href="/create" className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-accent transition-colors">
-                Create
-              </a>
-            </nav>
+    <div className="min-h-screen px-6 py-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium text-white/20 mb-6" style={{backgroundColor: 'rgba(75, 255, 126, 0.2)'}}>
+            <span>🎨</span>
+            <span>AI-Powered Email Generator</span>
           </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Создать <span style={{color: '#4BFF7E'}}>Email-шаблон</span>
+          </h1>
+          
+          <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            Создайте профессиональный email-шаблон с помощью ИИ за несколько минут
+          </p>
         </div>
-      </header>
-      
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Header */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Create Email Template</h2>
-          <p className="text-white/70">Generate professional email templates with AI-powered content creation</p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Form */}
-          <div className="space-y-6">
-            {/* Template Name */}
-            <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-6">
-              <label className="block text-sm font-medium text-white mb-2">
-                Template Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter template name..."
-                value={formData.templateName}
-                onChange={(e) => handleInputChange('templateName', e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              />
-            </div>
 
-            {/* Content Brief */}
-            <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-6">
-              <label className="block text-sm font-medium text-white mb-2">
-                Content Brief
-              </label>
-              <textarea
-                placeholder="Describe your email content..."
-                rows={4}
-                value={formData.contentBrief}
-                onChange={(e) => handleInputChange('contentBrief', e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-vertical"
-              />
-            </div>
-
-            {/* Campaign Type */}
-            <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-6">
-              <label className="block text-sm font-medium text-white mb-2">
-                Campaign Type
-              </label>
-              <select 
-                value={formData.campaignType}
-                onChange={(e) => handleInputChange('campaignType', e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              >
-                <option value="">Select type</option>
-                <option value="newsletter">Newsletter</option>
-                <option value="promotional">Promotional</option>
-                <option value="transactional">Transactional</option>
-                <option value="welcome">Welcome</option>
-                <option value="abandoned_cart">Abandoned Cart</option>
-              </select>
-            </div>
-
-            {/* Tone */}
-            <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-6">
-              <label className="block text-sm font-medium text-white mb-2">
-                Tone
-              </label>
-              <select 
-                value={formData.tone}
-                onChange={(e) => handleInputChange('tone', e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              >
-                <option value="">Select tone</option>
-                <option value="professional">Professional</option>
-                <option value="friendly">Friendly</option>
-                <option value="casual">Casual</option>
-                <option value="urgent">Urgent</option>
-                <option value="formal">Formal</option>
-              </select>
-            </div>
-
-            {/* Target Audience */}
-            <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-6">
-              <label className="block text-sm font-medium text-white mb-2">
-                Target Audience
-              </label>
-              <input
-                type="text"
-                placeholder="e.g., Young professionals, Parents, etc."
-                value={formData.targetAudience}
-                onChange={(e) => handleInputChange('targetAudience', e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              />
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-4">
-              <button 
-                onClick={handleGenerate}
-                disabled={isGenerating}
-                className="flex-1 inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 ease-in-out backdrop-blur-md border focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary/20 border-primary/30 text-primary hover:bg-primary/30 hover:border-primary/50 focus:ring-primary/50 shadow-glass hover:shadow-glow-primary px-6 py-3 text-base gap-2 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                <SparklesIcon />
-                {isGenerating ? 'Generating...' : 'Generate Template'}
-              </button>
-              <button 
-                onClick={handleSaveDraft}
-                className="px-6 py-3 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all font-medium"
-              >
-                Save Draft
-              </button>
-            </div>
-
-            {/* Error Display */}
-            {error && (
-              <div className="rounded-xl border backdrop-blur bg-red-500/10 border-red-500/30 p-4">
-                <div className="text-red-400 text-sm">{error}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Form */}
+          <div className="lg:col-span-2">
+            <div className="rounded-2xl border border-white/20 overflow-hidden" style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}>
+              {/* Tabs */}
+              <div className="flex border-b border-white/10">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
+                        activeTab === tab.id ? 'bg-white/10 text-white border-2' : 'bg-white/5 text-white/70 border border-white/10 hover:bg-white/10'
+                      }`}
+                      style={activeTab === tab.id ? {borderBottomColor: '#4BFF7E', backgroundColor: 'rgba(75, 255, 126, 0.1)'} : {}}
+                    >
+                      <Icon />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
               </div>
-            )}
-          </div>
 
-          {/* Preview/Results */}
-          <div className="space-y-6">
-            {result ? (
-              <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-secondary border-glass-border shadow-glass-sm p-8">
-                <div className="text-white">
-                  <h3 className="text-xl font-semibold mb-4 text-green-400">✅ Template Generated Successfully!</h3>
-                  
-                  <div className="space-y-4">
+              {/* Tab Content */}
+              <div className="p-8">
+                {activeTab === 'content' && (
+                  <div className="space-y-6">
                     <div>
-                      <h4 className="font-medium text-white/90 mb-2">Template Details:</h4>
-                      <div className="text-sm text-white/70 space-y-1">
-                        <div>Subject: {result.template.subject}</div>
-                        <div>Job ID: {result.jobId}</div>
-                        <div>File Size: {Math.round(result.template.metadata.fileSize / 1024)} KB</div>
-                        <div>Word Count: {result.template.metadata.wordCount}</div>
-                        <div>Estimated Read Time: {result.template.metadata.estimatedReadTime} min</div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-white/90 mb-2">Quality Report:</h4>
-                      <div className="text-sm text-white/70 space-y-1">
-                        <div>Overall Score: {Math.round(result.qualityReport.overallScore * 100)}%</div>
-                        <div>Cross-Client Compatibility: {Math.round(result.qualityReport.crossClientCompatibility.score * 100)}%</div>
-                        <div>Accessibility Score: {Math.round(result.qualityReport.accessibility.score * 100)}%</div>
-                        <div>Performance Score: {Math.round(result.qualityReport.performance.score * 100)}%</div>
-                        <div>Supported Clients: {result.qualityReport.crossClientCompatibility.supportedClients.join(', ')}</div>
-                      </div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Тема письма
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.subject}
+                        onChange={(e) => handleInputChange('subject', e.target.value)}
+                        placeholder="Введите тему письма..."
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
+                      />
                     </div>
 
-                    <div className="pt-4 border-t border-white/10">
-                      <button 
-                        onClick={() => {
-                          const blob = new Blob([result.template.html], { type: 'text/html' });
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement('a');
-                          a.href = url;
-                          a.download = `${result.template.subject || 'email-template'}.html`;
-                          a.click();
-                          URL.revokeObjectURL(url);
-                        }}
-                        className="inline-flex items-center px-4 py-2 bg-accent/20 text-accent border border-accent/30 rounded-lg hover:bg-accent/30 transition-all text-sm"
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Предзаголовок
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.preheader}
+                        onChange={(e) => handleInputChange('preheader', e.target.value)}
+                        placeholder="Краткое описание содержания..."
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Основной контент
+                      </label>
+                      <textarea
+                        value={formData.content}
+                        onChange={(e) => handleInputChange('content', e.target.value)}
+                        placeholder="Опишите содержание письма или вставьте готовый текст..."
+                        rows={8}
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent resize-none"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Call-to-Action
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.cta}
+                        onChange={(e) => handleInputChange('cta', e.target.value)}
+                        placeholder="Например: Забронировать билет"
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'design' && (
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Figma URL (опционально)
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.figmaUrl}
+                        onChange={(e) => handleInputChange('figmaUrl', e.target.value)}
+                        placeholder="https://figma.com/file/..."
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Загрузить изображения
+                      </label>
+                      <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center hover:border-opacity-50 transition-colors" style={{'--hover-border-color': '#4BFF7E'} as any}>
+                        <svg className="w-8 h-8 text-white/50 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p className="text-white/70 mb-2">Перетащите изображения сюда</p>
+                        <p className="text-sm text-white/50">или нажмите для выбора файлов</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Тон сообщения
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {toneOptions.map((option) => (
+                          <button
+                            key={option.value}
+                            onClick={() => handleInputChange('tone', option.value)}
+                            className={`p-3 rounded-xl border transition-all duration-200 ${
+                              formData.tone === option.value
+                                ? 'text-white'
+                                : 'text-white/70 hover:text-white hover:border-white/30'
+                            }`}
+                            style={formData.tone === option.value ? 
+                              {backgroundColor: 'rgba(75, 255, 126, 0.2)', borderColor: '#4BFF7E'} : 
+                              {backgroundColor: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)'}
+                            }
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'settings' && (
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Целевая аудитория
+                      </label>
+                      <select
+                        value={formData.audience}
+                        onChange={(e) => handleInputChange('audience', e.target.value)}
+                        className="w-full px-4 py-3 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:border-transparent"
+                        style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', '--tw-ring-color': '#4BFF7E'} as any}
                       >
-                        Download HTML
-                      </button>
+                        {audienceOptions.map((option) => (
+                          <option key={option.value} value={option.value} className="bg-gray-800">
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
-                </div>
-              </div>
-            ) : (
-              <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-secondary border-glass-border shadow-glass-sm p-8">
-                <div className="text-center text-white/60">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-accent/20 rounded-lg flex items-center justify-center">
-                    <TemplateIcon />
-                  </div>
-                  <div className="text-lg font-medium mb-2 text-white">
-                    {isGenerating ? 'Generating Template...' : 'Ready to Generate'}
-                  </div>
-                  <div>
-                    {isGenerating 
-                      ? 'Please wait while we create your email template' 
-                      : 'Fill out the form and click "Generate Template" to create your email'
-                    }
-                  </div>
-                  {isGenerating && (
-                    <div className="mt-4">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Tips Section */}
-        <div className="mt-12">
-          <div className="rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-secondary border-glass-border shadow-glass-sm p-8">
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <SparklesIcon />
-              Pro Tips for Better Templates
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white/70">
-              <div>
-                <h4 className="font-medium text-white mb-2">Content Brief</h4>
-                <p className="text-sm">Be specific about your message, goals, and key points. Include any special offers or deadlines.</p>
-              </div>
-              <div>
-                <h4 className="font-medium text-white mb-2">Target Audience</h4>
-                <p className="text-sm">Define your audience clearly - age, interests, profession. This helps AI tailor the tone and content.</p>
-              </div>
-              <div>
-                <h4 className="font-medium text-white mb-2">Campaign Type</h4>
-                <p className="text-sm">Choose the right type for optimal structure and call-to-action placement.</p>
-              </div>
-              <div>
-                <h4 className="font-medium text-white mb-2">Tone Selection</h4>
-                <p className="text-sm">Match the tone to your brand voice and audience expectations for better engagement.</p>
+                )}
               </div>
             </div>
           </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Preview */}
+            <div className="rounded-2xl border border-white/20 p-6" style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}>
+              <div className="flex items-center space-x-2 mb-4">
+                <svg className="w-5 h-5" style={{color: '#4BFF7E'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <h3 className="text-lg font-semibold text-white">Предпросмотр</h3>
+              </div>
+              <div className="bg-white rounded-lg p-4 min-h-[200px]">
+                <p className="text-gray-500 text-sm">Предпросмотр появится после заполнения формы</p>
+              </div>
+            </div>
+
+            {/* Generation Controls */}
+            <div className="rounded-2xl border border-white/20 p-6" style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}>
+              <div className="flex items-center space-x-2 mb-4">
+                <svg className="w-5 h-5" style={{color: '#4BFF7E'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <h3 className="text-lg font-semibold text-white">Генерация</h3>
+              </div>
+              
+              <button
+                onClick={handleGenerate}
+                className="w-full py-3 px-4 rounded-xl font-semibold text-white transition-all duration-200 hover:shadow-lg"
+                style={{backgroundColor: '#4BFF7E'}}
+              >
+                Создать шаблон
+              </button>
+              
+              <p className="text-xs text-white/50 mt-3 text-center">
+                Генерация займет 10-30 секунд
+              </p>
+            </div>
+
+            {/* Tips */}
+            <div className="rounded-2xl border border-white/20 p-6" style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}>
+              <h3 className="text-lg font-semibold text-white mb-4">Советы</h3>
+              <ul className="space-y-2 text-sm text-white/70">
+                <li>• Используйте четкие и понятные заголовки</li>
+                <li>• Добавьте персональные элементы</li>
+                <li>• Укажите конкретный призыв к действию</li>
+                <li>• Тестируйте на разных устройствах</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
-  )
+  );
 }

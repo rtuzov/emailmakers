@@ -24,7 +24,7 @@ describe('AccessibilityTestingService', () => {
               This email is designed to be accessible.
             </p>
             <img src="test.jpg" alt="Descriptive image text" width="100" height="100" />
-            <a href="https://example.com" style="color: #0066cc; background-color: #ffffff;">
+            <a href="https://example.com" style="color: #4BFF7E; background-color: #2C3959;">
               Visit our website
             </a>
           </main>

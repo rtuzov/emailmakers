@@ -10,9 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // === Custom Brand Palette ===
+        // === Kupibilet Brand Palette (ОБНОВЛЕННАЯ СХЕМА) ===
         primary: {
-          DEFAULT: 'rgb(var(--color-primary))',           /* #1DA857 - logo green */
+          DEFAULT: 'rgb(var(--color-primary))',           /* #4BFF7E - яркий зеленый */
           50: 'rgba(var(--color-primary), 0.1)',
           100: 'rgba(var(--color-primary), 0.2)',
           200: 'rgba(var(--color-primary), 0.3)',
@@ -22,10 +22,23 @@ const config: Config = {
           600: 'rgba(var(--color-primary), 0.7)',
           700: 'rgba(var(--color-primary-dark), 0.8)',
           800: 'rgba(var(--color-primary-dark), 0.9)',
-          900: 'rgb(var(--color-primary-dark))',
+          900: 'rgb(var(--color-primary-dark))',          /* #1DA857 - темно-зеленый */
+        },
+        secondary: {
+          DEFAULT: 'rgb(var(--color-secondary))',         /* #E03EEF - розово-фиолетовый */
+          50: 'rgba(var(--color-secondary), 0.1)',
+          100: 'rgba(var(--color-secondary), 0.2)',
+          200: 'rgba(var(--color-secondary), 0.3)',
+          300: 'rgba(var(--color-secondary), 0.4)',
+          400: 'rgba(var(--color-secondary), 0.5)',
+          500: 'rgba(var(--color-secondary), 0.6)',
+          600: 'rgba(var(--color-secondary), 0.7)',
+          700: 'rgba(var(--color-secondary), 0.8)',
+          800: 'rgba(var(--color-secondary), 0.9)',
+          900: 'rgb(var(--color-secondary))',
         },
         accent: {
-          DEFAULT: 'rgb(var(--color-accent))',            /* #4BFF7E - glowing green */
+          DEFAULT: 'rgb(var(--color-accent))',            /* #FF6240 - оранжево-красный */
           50: 'rgba(var(--color-accent), 0.1)',
           100: 'rgba(var(--color-accent), 0.2)',
           200: 'rgba(var(--color-accent), 0.3)',
@@ -38,23 +51,10 @@ const config: Config = {
           900: 'rgb(var(--color-accent))',
         },
         background: {
-          DEFAULT: 'rgb(var(--color-background))',        /* #2C3959 - main background */
+          DEFAULT: 'rgb(var(--color-background))',        /* #2C3959 - темный фон */
           light: 'rgb(var(--color-background-light))',
         },
         warning: 'rgb(var(--color-warning))',
-        // legacy secondary palette kept for compatibility
-        secondary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7c3aed',
-          800: '#6b21a8',
-          900: '#581c87',
-        },
         // Glass Colors with transparency
         glass: {
           primary: 'rgba(var(--color-primary), 0.1)',

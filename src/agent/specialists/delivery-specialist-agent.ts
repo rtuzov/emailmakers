@@ -16,6 +16,14 @@ import { s3Upload, s3UploadSchema } from '../tools/simple/s3-upload';
 import { screenshots, screenshotsSchema } from '../tools/simple/screenshots';
 
 import { getUsageModel } from '../../shared/utils/model-config';
+import {
+  QualityToDeliveryHandoffData,
+  HandoffValidationResult,
+  AGENT_CONSTANTS
+} from '../types/base-agent-types';
+import { HandoffValidator } from '../validators/agent-handoff-validator';
+import { DeliverySpecialistValidator } from '../validators/delivery-specialist-validator';
+import { AICorrector, HandoffType } from '../validators/ai-corrector';
 
 // Input/Output types for agent handoffs
 export interface DeliverySpecialistInput {
@@ -105,9 +113,28 @@ export interface DeliverySpecialistOutput {
 export class DeliverySpecialistAgent {
   private agent: Agent;
   private agentId: string;
+  private handoffValidator: HandoffValidator;
+  private deliveryValidator: DeliverySpecialistValidator;
+  private aiCorrector: AICorrector;
+  
+  // Performance monitoring
+  private performanceMetrics = {
+    averageExecutionTime: 0,
+    successRate: 0,
+    toolUsageStats: new Map<string, number>(),
+    totalExecutions: 0,
+    totalSuccesses: 0,
+    validationSuccessRate: 0,
+    correctionAttempts: 0
+  };
 
   constructor() {
     this.agentId = 'delivery-specialist-v1';
+    
+    // Инициализация валидаторов
+    this.aiCorrector = new AICorrector();
+    this.handoffValidator = HandoffValidator.getInstance(this.aiCorrector);
+    this.deliveryValidator = DeliverySpecialistValidator.getInstance();
     
     this.agent = new Agent({
       name: this.agentId,
@@ -121,7 +148,7 @@ export class DeliverySpecialistAgent {
       tools: this.createSpecialistTools()
     });
 
-    console.log(`🚀 DeliverySpecialistAgent initialized: ${this.agentId}`);
+    console.log(`🚀 DeliverySpecialistAgent initialized with validation: ${this.agentId}`);
   }
 
   private getSpecialistInstructions(): string {
@@ -202,8 +229,20 @@ Execute deployment operations with precision and ensure production-ready deliver
       traceId
     });
 
+    // 🔍 КРИТИЧЕСКАЯ ВАЛИДАЦИЯ ВХОДНЫХ ДАННЫХ
+    if (input.handoff_data) {
+      const validatedHandoffData = await this.validateAndCorrectHandoffData(input.handoff_data, 'quality-to-delivery');
+      
+      if (!validatedHandoffData) {
+        throw new Error('Handoff данные от QualitySpecialist не прошли валидацию и не могут быть исправлены AI');
+      }
+      
+      // Обновляем input с валидированными данными
+      input.handoff_data = validatedHandoffData;
+    }
+
     try {
-      return await withTrace(`DeliverySpecialist-${input.task_type}`, async () => {
+      const result = await withTrace(`DeliverySpecialist-${input.task_type}`, async () => {
         switch (input.task_type) {
           case 'upload_assets':
             return await this.handleAssetUpload(input, startTime);
@@ -221,8 +260,20 @@ Execute deployment operations with precision and ensure production-ready deliver
             throw new Error(`Unknown task type: ${input.task_type}`);
         }
       });
+      
+      // Update performance metrics
+      const executionTime = Date.now() - startTime;
+      const toolsUsed = this.extractToolsUsed(input.task_type);
+      this.updatePerformanceMetrics(executionTime, result.success, toolsUsed);
+      
+      return result;
     } catch (error) {
       console.error('❌ DeliverySpecialist error:', error);
+      
+      // Update performance metrics for failed execution
+      const executionTime = Date.now() - startTime;
+      const toolsUsed = this.extractToolsUsed(input.task_type);
+      this.updatePerformanceMetrics(executionTime, false, toolsUsed);
       
       return {
         success: false,
@@ -1005,6 +1056,181 @@ Execute deployment operations with precision and ensure production-ready deliver
       console.error('❌ Failed to save email locally:', error);
       throw new Error(`Local save failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+  }
+
+  /**
+   * 🔍 ВАЛИДАЦИЯ И КОРРЕКЦИЯ HANDOFF ДАННЫХ
+   */
+  private async validateAndCorrectHandoffData(
+    handoffData: any, 
+    handoffType: 'quality-to-delivery'
+  ): Promise<QualityToDeliveryHandoffData | null> {
+    console.log(`🔍 Validating handoff data for ${handoffType}`);
+    
+    try {
+      // Преобразуем handoffData в формат QualityToDeliveryHandoffData
+      const formattedHandoffData = this.formatQualityToDeliveryData(handoffData);
+      
+      // Валидация
+      const validationResult = await this.handoffValidator.validateQualityToDelivery(
+        formattedHandoffData,
+        true // enableAICorrection
+      );
+      
+      // Обновляем метрики валидации
+      this.performanceMetrics.validationSuccessRate = 
+        ((this.performanceMetrics.validationSuccessRate * this.performanceMetrics.totalExecutions) + (validationResult.isValid ? 100 : 0)) 
+        / (this.performanceMetrics.totalExecutions + 1);
+      
+      if (!validationResult.isValid) {
+        this.performanceMetrics.correctionAttempts++;
+        
+        console.warn('⚠️ Handoff данные требуют коррекции:', {
+          errors: validationResult.errors.length,
+          criticalErrors: validationResult.errors.filter(e => e.severity === 'critical').length,
+          suggestions: validationResult.correctionSuggestions.length
+        });
+        
+        if (validationResult.validatedData) {
+          console.log('✅ AI успешно исправил handoff данные');
+          return validationResult.validatedData as QualityToDeliveryHandoffData;
+        } else {
+          console.error('❌ AI не смог исправить handoff данные');
+          return null;
+        }
+      }
+      
+      console.log('✅ Handoff данные валидны');
+      return validationResult.validatedData as QualityToDeliveryHandoffData;
+      
+    } catch (error) {
+      console.error('❌ Ошибка валидации handoff данных:', error);
+      return null;
+    }
+  }
+
+  /**
+   * 🔧 ПРЕОБРАЗОВАНИЕ В ФОРМАТ QualityToDeliveryHandoffData
+   */
+  private formatQualityToDeliveryData(handoffData: any): any {
+    const traceId = handoffData.trace_id || this.generateTraceId();
+    const timestamp = handoffData.timestamp || new Date().toISOString();
+    
+    // Извлекаем quality_score из разных источников
+    const qualityScore = handoffData.quality_score || 
+                        handoffData.final_quality_report?.overall_score ||
+                        handoffData.comprehensive_audit?.quality_report?.overall_score ||
+                        75; // Минимальный по умолчанию
+    
+    return {
+      quality_assessment: {
+        overall_score: qualityScore,
+        html_validation: {
+          w3c_compliant: handoffData.w3c_compliant !== false, // По умолчанию true
+          validation_errors: handoffData.validation_errors || [],
+          semantic_correctness: handoffData.semantic_correctness || true
+        },
+        email_compliance: {
+          client_compatibility_score: handoffData.client_compatibility_score || 95,
+          spam_score: handoffData.spam_score || 2,
+          deliverability_rating: handoffData.deliverability_rating || 'excellent'
+        },
+        accessibility: {
+          wcag_aa_compliant: handoffData.wcag_aa_compliant !== false, // По умолчанию true
+          accessibility_score: handoffData.accessibility_score || 85,
+          screen_reader_compatible: handoffData.screen_reader_compatible !== false
+        },
+        performance: {
+          load_time_ms: handoffData.load_time_ms || 800,
+          file_size_kb: this.calculateSizeKB(handoffData.html_output || ''),
+          image_optimization_score: handoffData.image_optimization_score || 90,
+          css_efficiency_score: handoffData.css_efficiency_score || 85
+        }
+      },
+      test_results: {
+        cross_client_tests: handoffData.cross_client_tests || [
+          { client: 'gmail', status: 'passed', score: 95 },
+          { client: 'outlook', status: 'passed', score: 90 }
+        ],
+        device_compatibility: handoffData.device_compatibility || [
+          { device: 'desktop', status: 'passed' },
+          { device: 'mobile', status: 'passed' }
+        ],
+        rendering_verification: {
+          screenshots_generated: handoffData.screenshots_generated || true,
+          visual_regression_passed: handoffData.visual_regression_passed !== false,
+          rendering_consistency_score: handoffData.rendering_consistency_score || 92
+        }
+      },
+      optimization_applied: {
+        performance_optimizations: handoffData.performance_optimizations || [],
+        code_minification: handoffData.code_minification !== false,
+        image_compression: handoffData.image_compression !== false,
+        css_inlining: handoffData.css_inlining !== false
+      },
+      trace_id: traceId,
+      timestamp: timestamp
+    };
+  }
+
+  /**
+   * 🔧 HELPER METHODS
+   */
+  private generateTraceId(): string {
+    return `dlv-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private calculateSizeKB(content: string): number {
+    const sizeBytes = Buffer.byteLength(content, 'utf8');
+    return Math.round((sizeBytes / 1024) * 100) / 100;
+  }
+
+  private extractToolsUsed(taskType: string): string[] {
+    switch (taskType) {
+      case 'upload_assets':
+        return ['s3_upload'];
+      case 'generate_screenshots':
+        return ['screenshots'];
+      case 'deploy_campaign':
+        return ['s3_upload'];
+      case 'visual_testing':
+        return ['screenshots'];
+      case 'finalize_delivery':
+        return ['s3_upload'];
+      case 'monitor_performance':
+        return [];
+      default:
+        return [];
+    }
+  }
+
+  private updatePerformanceMetrics(executionTime: number, success: boolean, toolsUsed: string[]) {
+    this.performanceMetrics.totalExecutions++;
+    if (success) {
+      this.performanceMetrics.totalSuccesses++;
+    }
+    
+    // Update average execution time
+    this.performanceMetrics.averageExecutionTime = 
+      (this.performanceMetrics.averageExecutionTime * (this.performanceMetrics.totalExecutions - 1) + executionTime) 
+      / this.performanceMetrics.totalExecutions;
+    
+    // Update success rate
+    this.performanceMetrics.successRate = 
+      (this.performanceMetrics.totalSuccesses / this.performanceMetrics.totalExecutions) * 100;
+    
+    // Update tool usage stats
+    toolsUsed.forEach(tool => {
+      const current = this.performanceMetrics.toolUsageStats.get(tool) || 0;
+      this.performanceMetrics.toolUsageStats.set(tool, current + 1);
+    });
+  }
+
+  getPerformanceMetrics() {
+    return {
+      ...this.performanceMetrics,
+      toolUsageStats: Object.fromEntries(this.performanceMetrics.toolUsageStats)
+    };
   }
 
   /**

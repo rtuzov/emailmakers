@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 interface LivePreviewProps {
@@ -29,48 +29,17 @@ function LivePreviewComponent({
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [showCode, setShowCode] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  // Ensure client-side only mounting
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   // Auto-refresh iframe when content changes
   useEffect(() => {
-    if (mounted && htmlContent) {
-      const iframe = document.getElementById('email-preview-iframe') as HTMLIFrameElement
-      if (iframe) {
-        iframe.contentDocument?.open()
-        iframe.contentDocument?.write(htmlContent)
-        iframe.contentDocument?.close()
-      }
+    if (htmlContent && iframeRef.current) {
+      const iframe = iframeRef.current
+      iframe.contentDocument?.open()
+      iframe.contentDocument?.write(htmlContent)
+      iframe.contentDocument?.close()
     }
-  }, [htmlContent, mounted])
-
-  if (!mounted) {
-    return (
-      <div className="relative transition-all duration-300">
-        <div className="rounded-t-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass p-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                📧 {title}
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div className="border-x border-b border-glass-border bg-white/5 backdrop-blur">
-          <div className="flex items-center justify-center h-96">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-white/70">Loading preview...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  }, [htmlContent])
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-background' : 'relative'} transition-all duration-300`}>
@@ -242,7 +211,7 @@ function LivePreviewComponent({
                   const url = URL.createObjectURL(blob)
                   const a = document.createElement('a')
                   a.href = url
-                  a.download = `email-template-${Date.now()}.html`
+                  a.download = `email-template-${Math.random().toString(36).substring(2, 9)}.html`
                   a.click()
                   URL.revokeObjectURL(url)
                 }}
