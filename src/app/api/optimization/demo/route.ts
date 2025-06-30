@@ -110,9 +110,9 @@ export async function GET(request: NextRequest) {
         message: error instanceof Error ? error.message : 'Unknown error',
         type: 'demo_execution_error'
       },
-      logs: logs || [],
+      logs: [],
       summary: {
-        total_log_entries: (logs || []).length,
+        total_log_entries: 0,
         demo_duration: 'interrupted',
         status: 'failed'
       }

@@ -1,6 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { DashboardLayout } from '@/ui/components/layout/dashboard-layout'
+import { GlassCard } from '@/ui/components/glass/glass-card'
+import { GlassButton } from '@/ui/components/glass/glass-button'
 
 // Icons
 const SearchIcon = () => (
@@ -59,6 +63,61 @@ export function TemplatesPage() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+
+  // Mock templates for demo purposes
+  const mockTemplates: Template[] = [
+    {
+      id: '1',
+      name: 'Black Friday Campaign',
+      category: 'promotional',
+      description: 'Eye-catching promotional template with countdown timer and special offers',
+      thumbnail: '/api/placeholder/300/200',
+      createdAt: '2024-01-15',
+      tags: ['sale', 'promotion', 'holiday'],
+      status: 'published',
+      openRate: 89,
+      clickRate: 24
+    },
+    {
+      id: '2',
+      name: 'Monthly Newsletter',
+      category: 'newsletter',
+      description: 'Clean and professional newsletter template with featured articles section',
+      thumbnail: '/api/placeholder/300/200',
+      createdAt: '2024-01-10',
+      tags: ['newsletter', 'updates', 'content'],
+      status: 'published',
+      openRate: 76,
+      clickRate: 18
+    },
+    {
+      id: '3',
+      name: 'Product Launch',
+      category: 'announcement',
+      description: 'Modern product announcement template with hero image and feature highlights',
+      thumbnail: '/api/placeholder/300/200',
+      createdAt: '2024-01-08',
+      tags: ['product', 'launch', 'announcement'],
+      status: 'published',
+      openRate: 92,
+      clickRate: 31
+    },
+    {
+      id: '4',
+      name: 'Welcome Series #1',
+      category: 'welcome',
+      description: 'Warm welcome email template for new subscribers with company introduction',
+      thumbnail: '/api/placeholder/300/200',
+      createdAt: '2024-01-05',
+      tags: ['welcome', 'onboarding', 'introduction'],
+      status: 'draft',
+      openRate: 84,
+      clickRate: 22
+    }
+  ]
 
   useEffect(() => {
     fetchTemplates()
@@ -67,27 +126,9 @@ export function TemplatesPage() {
   const fetchTemplates = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/templates')
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch templates: ${response.status} ${response.statusText}`)
-      }
-      
-      const data = await response.json()
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to load templates')
-      }
-      
-      // Map API data to component interface
-      const mappedTemplates = data.templates.map((template: any) => ({
-        ...template,
-        status: 'published' as const,
-        openRate: Math.floor(Math.random() * 30) + 65, // Mock data
-        clickRate: Math.floor(Math.random() * 15) + 10  // Mock data
-      }))
-      
-      setTemplates(mappedTemplates)
+      // Simulate API call - in real app, this would fetch from your API
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      setTemplates(mockTemplates)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
     } finally {
@@ -95,130 +136,172 @@ export function TemplatesPage() {
     }
   }
 
+  const filteredTemplates = templates.filter(template => {
+    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         template.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory
+    return matchesSearch && matchesCategory
+  })
+
+  const categories = [
+    { value: 'all', label: 'All Templates' },
+    { value: 'newsletter', label: 'Newsletter' },
+    { value: 'promotional', label: 'Promotional' },
+    { value: 'announcement', label: 'Announcement' },
+    { value: 'welcome', label: 'Welcome Series' },
+    { value: 'transactional', label: 'Transactional' }
+  ]
+
   if (loading) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '2px solid transparent',
-            borderTop: '2px solid rgb(255, 98, 64)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px'
-          }}></div>
-          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Loading templates...</p>
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin w-12 h-12 border-2 border-transparent border-t-kupibilet-primary rounded-full mx-auto mb-4"></div>
+            <p className="text-white/70">Loading templates...</p>
+          </div>
         </div>
-      </div>
+      </DashboardLayout>
     )
   }
 
   if (error) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{ textAlign: 'center', maxWidth: '448px' }}>
-          <div style={{ color: '#EF4444', fontSize: '60px', marginBottom: '16px' }}>⚠️</div>
-          <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white', marginBottom: '8px' }}>Failed to Load Templates</h2>
-          <p style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '24px' }}>{error}</p>
-          <button
-            onClick={fetchTemplates}
-            style={{
-              padding: '12px 24px',
-              backgroundColor: 'rgb(255, 98, 64)',
-              color: 'white',
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.8)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgb(255, 98, 64)'}
-          >
-            Retry
-          </button>
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-96">
+          <GlassCard className="p-8 text-center max-w-md">
+            <div className="text-red-400 text-6xl mb-4">⚠️</div>
+            <h2 className="text-xl font-bold text-white mb-2">Failed to Load Templates</h2>
+            <p className="text-white/70 mb-6">{error}</p>
+            <GlassButton onClick={fetchTemplates} variant="primary">
+              Retry
+            </GlassButton>
+          </GlassCard>
         </div>
-      </div>
+      </DashboardLayout>
     )
   }
 
   if (templates.length === 0) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)'
-      }}>
-        <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 16px' }}>
-          <div style={{ textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-            <div style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '128px', marginBottom: '24px' }}>📧</div>
-            <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: 'white', marginBottom: '16px' }}>No Templates Found</h2>
-            <p style={{ 
-              color: 'rgba(255, 255, 255, 0.7)', 
-              marginBottom: '32px', 
-              maxWidth: '448px', 
-              margin: '0 auto 32px' 
-            }}>
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-96">
+          <GlassCard className="p-12 text-center max-w-lg">
+            <div className="text-white/40 text-8xl mb-6">📧</div>
+            <h2 className="text-2xl font-bold text-white mb-4">No Templates Found</h2>
+            <p className="text-white/70 mb-8">
               You haven't created any email templates yet. Start by creating your first template.
             </p>
-            <a
-              href="/create"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '16px 32px',
-                backgroundColor: 'rgb(255, 98, 64)',
-                color: 'white',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontWeight: '500',
-                transition: 'background-color 0.2s'
-              }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.8)'}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgb(255, 98, 64)'}
-            >
-              Create Your First Template
-            </a>
-          </div>
-        </main>
-      </div>
+            <Link href="/create">
+              <GlassButton variant="primary" size="lg" glow>
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Create Your First Template
+              </GlassButton>
+            </Link>
+          </GlassCard>
+        </div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: 'linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%)'
-    }}>
-      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 16px' }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: 'white', marginBottom: '8px' }}>Email Templates</h2>
-          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Manage and browse your professional email templates</p>
+    <DashboardLayout>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-heading font-primary text-white mb-2">
+              Email Templates
+            </h1>
+            <p className="text-white/70">
+              Manage your email templates with AI-powered insights and analytics
+            </p>
+          </div>
+          <div className="mt-4 md:mt-0 flex gap-3">
+            <GlassButton variant="outline" onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
+              {viewMode === 'grid' ? (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              )}
+            </GlassButton>
+            <Link href="/create">
+              <GlassButton variant="primary" glow>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Create New
+              </GlassButton>
+            </Link>
+          </div>
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-          gap: '24px' 
-        }}>
-          {templates.map((template) => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
-        </div>
-      </main>
-    </div>
+        {/* Filters and Search */}
+        <GlassCard className="p-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="relative flex-1">
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="Search templates..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full glass-card pl-10 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-kupibilet-primary/50 rounded-xl"
+              />
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50">
+                <SearchIcon />
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex gap-2">
+              {categories.map((category) => (
+                <GlassButton
+                  key={category.value}
+                  variant={selectedCategory === category.value ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.value)}
+                >
+                  {category.label}
+                </GlassButton>
+              ))}
+            </div>
+          </div>
+        </GlassCard>
+
+        {/* Templates Grid/List */}
+        {viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTemplates.map((template) => (
+              <TemplateCard key={template.id} template={template} />
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filteredTemplates.map((template) => (
+              <TemplateListItem key={template.id} template={template} />
+            ))}
+          </div>
+        )}
+
+        {filteredTemplates.length === 0 && searchTerm && (
+          <GlassCard className="p-12 text-center">
+            <div className="text-white/40 text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-white mb-2">No templates found</h3>
+            <p className="text-white/70">
+              Try adjusting your search terms or filters
+            </p>
+          </GlassCard>
+        )}
+      </div>
+    </DashboardLayout>
   )
 }
 
@@ -228,195 +311,112 @@ interface TemplateCardProps {
 
 function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <div style={{
-      borderRadius: '12px',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(8px)',
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25)',
-      transition: 'all 0.3s ease-in-out',
-      overflow: 'hidden'
-    }}
-    onMouseOver={(e) => {
-      e.currentTarget.style.transform = 'scale(1.02)'
-      e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.3)'
-      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-    }}
-    onMouseOut={(e) => {
-      e.currentTarget.style.transform = 'scale(1)'
-      e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.25)'
-      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
-    }}
-    >
-      <div style={{ 
-        aspectRatio: '3/2', 
-        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-        position: 'relative' 
-      }}>
-        <div style={{
-          position: 'absolute',
-          inset: '0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'rgba(255, 255, 255, 0.6)'
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              width: '64px',
-              height: '64px',
-              margin: '0 auto 12px',
-              backgroundColor: 'rgba(255, 98, 64, 0.2)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '24px'
-            }}>
-              📧
+    <GlassCard className="overflow-hidden hover" hover>
+      {/* Thumbnail */}
+      <div className="aspect-video bg-gradient-to-br from-kupibilet-primary/20 to-kupibilet-accent/20 relative overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <MailIcon />
+          <div className="absolute top-4 right-4">
+            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+              template.status === 'published' 
+                ? 'bg-green-500/20 text-green-400' 
+                : 'bg-yellow-500/20 text-yellow-400'
+            }`}>
+              {template.status}
             </div>
-            <p style={{ fontSize: '14px', fontWeight: '500' }}>Email Template</p>
           </div>
         </div>
-        <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
-          <span style={{
-            padding: '4px 12px',
-            borderRadius: '20px',
-            fontSize: '12px',
-            fontWeight: '500',
-            border: '1px solid rgba(75, 255, 126, 0.3)',
-            backgroundColor: 'rgba(75, 255, 126, 0.2)',
-            color: 'rgb(75, 255, 126)'
-          }}>
-            {template.status || 'published'}
-          </span>
-        </div>
       </div>
-      
-      <div style={{ padding: '24px' }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'flex-start', 
-          justifyContent: 'space-between', 
-          marginBottom: '12px' 
-        }}>
-          <h3 style={{ 
-            fontSize: '18px', 
-            fontWeight: '600', 
-            color: 'white', 
-            margin: '0',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            flex: '1'
-          }}>
-            {template.name}
-          </h3>
-          <span style={{
-            fontSize: '12px',
-            color: 'rgb(255, 98, 64)',
-            backgroundColor: 'rgba(255, 98, 64, 0.1)',
-            padding: '4px 8px',
-            borderRadius: '4px',
-            marginLeft: '8px',
-            whiteSpace: 'nowrap'
-          }}>
-            {template.category}
-          </span>
+
+      {/* Content */}
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white truncate">{template.name}</h3>
+          <div className="flex items-center gap-1 ml-2">
+            <span className="text-xs text-kupibilet-primary font-medium">{template.openRate}%</span>
+          </div>
         </div>
-        
-        <p style={{ 
-          color: 'rgba(255, 255, 255, 0.7)', 
-          fontSize: '14px', 
-          marginBottom: '16px',
-          overflow: 'hidden',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical'
-        }}>
-          {template.description}
-        </p>
-        
-        {template.openRate && (
-          <div style={{ 
-            display: 'flex', 
-            gap: '16px', 
-            marginBottom: '16px', 
-            fontSize: '14px' 
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{
-                width: '8px',
-                height: '8px',
-                backgroundColor: 'rgba(75, 255, 126, 0.2)',
-                borderRadius: '50%',
-                marginRight: '8px'
-              }}></div>
-              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Open:</span>
-              <span style={{ color: 'rgb(75, 255, 126)', marginLeft: '4px', fontWeight: '500' }}>
-                {template.openRate}%
+
+        <p className="text-white/70 text-sm mb-4 line-clamp-2">{template.description}</p>
+
+        {/* Tags */}
+        {template.tags && (
+          <div className="flex flex-wrap gap-1 mb-4">
+            {template.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="px-2 py-1 bg-white/10 text-xs text-white/80 rounded-full">
+                {tag}
               </span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{
-                width: '8px',
-                height: '8px',
-                backgroundColor: 'rgba(255, 98, 64, 0.2)',
-                borderRadius: '50%',
-                marginRight: '8px'
-              }}></div>
-              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Click:</span>
-              <span style={{ color: 'rgb(255, 98, 64)', marginLeft: '4px', fontWeight: '500' }}>
-                {template.clickRate}%
-              </span>
-            </div>
+            ))}
           </div>
         )}
-        
-        <div style={{ 
-          fontSize: '12px', 
-          color: 'rgba(255, 255, 255, 0.5)', 
-          marginBottom: '16px' 
-        }}>
-          Created {template.createdAt}
-        </div>
-        
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button style={{
-            flex: '1',
-            padding: '8px 12px',
-            fontSize: '14px',
-            backgroundColor: 'rgba(75, 255, 126, 0.2)',
-            border: '1px solid rgba(75, 255, 126, 0.3)',
-            color: 'rgb(75, 255, 126)',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(75, 255, 126, 0.3)'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(75, 255, 126, 0.2)'}
-          >
-            Preview
-          </button>
-          <button style={{
-            flex: '1',
-            padding: '8px 12px',
-            fontSize: '14px',
-            backgroundColor: 'rgba(255, 98, 64, 0.1)',
-            border: '1px solid rgba(255, 98, 64, 0.5)',
-            color: 'white',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.1)'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 98, 64, 0.05)'}
-          >
-            Edit
-          </button>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-white/50">{template.createdAt}</span>
+          <div className="flex gap-2">
+            <GlassButton size="sm" variant="outline">
+              <EyeIcon />
+            </GlassButton>
+            <GlassButton size="sm" variant="outline">
+              <EditIcon />
+            </GlassButton>
+            <GlassButton size="sm" variant="outline">
+              <DownloadIcon />
+            </GlassButton>
+          </div>
         </div>
       </div>
-    </div>
+    </GlassCard>
+  )
+}
+
+interface TemplateListItemProps {
+  template: Template
+}
+
+function TemplateListItem({ template }: TemplateListItemProps) {
+  return (
+    <GlassCard className="p-6 hover" hover>
+      <div className="flex items-center gap-6">
+        {/* Thumbnail */}
+        <div className="w-24 h-16 bg-gradient-to-br from-kupibilet-primary/20 to-kupibilet-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+          <MailIcon />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="text-lg font-semibold text-white truncate">{template.name}</h3>
+            <div className={`px-2 py-1 rounded-full text-xs font-medium ml-4 ${
+              template.status === 'published' 
+                ? 'bg-green-500/20 text-green-400' 
+                : 'bg-yellow-500/20 text-yellow-400'
+            }`}>
+              {template.status}
+            </div>
+          </div>
+          <p className="text-white/70 text-sm mb-2">{template.description}</p>
+          <div className="flex items-center gap-4 text-xs text-white/50">
+            <span>{template.createdAt}</span>
+            <span>Open Rate: {template.openRate}%</span>
+            <span>Click Rate: {template.clickRate}%</span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-2 flex-shrink-0">
+          <GlassButton size="sm" variant="outline">
+            <EyeIcon />
+          </GlassButton>
+          <GlassButton size="sm" variant="outline">
+            <EditIcon />
+          </GlassButton>
+          <GlassButton size="sm" variant="outline">
+            <DownloadIcon />
+          </GlassButton>
+        </div>
+      </div>
+    </GlassCard>
   )
 }
 

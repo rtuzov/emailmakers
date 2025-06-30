@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/agent/core/logger';
-import fs from 'fs';
+import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
 
 interface LogEntry {
@@ -140,7 +141,7 @@ async function getAgentLogs(filters: {
   try {
     // Try to read from log files in temp directory
     const tempDir = path.join(process.cwd(), 'temp');
-    const logFiles = await fs.readdir(tempDir).catch(() => []);
+    const logFiles = await fs.readdir(tempDir).catch(() => [] as string[]);
     
     const agentLogFiles = logFiles.filter(file => 
       file.startsWith('agent-') && file.endsWith('.log')
@@ -256,7 +257,7 @@ async function getActiveTraces() {
   try {
     // Check for active trace files in temp directory
     const tempDir = path.join(process.cwd(), 'temp');
-    const files = await fs.readdir(tempDir).catch(() => []);
+    const files = await fs.readdir(tempDir).catch(() => [] as string[]);
     
     const traceFiles = files.filter(file => 
       file.startsWith('trace-') && file.endsWith('.json')
@@ -367,7 +368,7 @@ function formatLogsAsText(response: any): string {
 async function clearAgentLogs() {
   try {
     const tempDir = path.join(process.cwd(), 'temp');
-    const files = await fs.readdir(tempDir).catch(() => []);
+    const files = await fs.readdir(tempDir).catch(() => [] as string[]);
     
     const logFiles = files.filter(file => 
       file.startsWith('agent-') && file.endsWith('.log')
@@ -439,8 +440,8 @@ async function getSystemLogs(): Promise<LogEntry[]> {
   try {
     // Проверяем существование директории логов
     const logsDir = path.join(process.cwd(), 'logs');
-    if (!fs.existsSync(logsDir)) {
-      fs.mkdirSync(logsDir, { recursive: true });
+    if (!fsSync.existsSync(logsDir)) {
+      fsSync.mkdirSync(logsDir, { recursive: true });
     }
 
     // Читаем логи агентов из файлов
@@ -448,8 +449,8 @@ async function getSystemLogs(): Promise<LogEntry[]> {
     
     for (const logFile of logFiles) {
       const logPath = path.join(logsDir, logFile);
-      if (fs.existsSync(logPath)) {
-        const logContent = fs.readFileSync(logPath, 'utf-8');
+      if (fsSync.existsSync(logPath)) {
+        const logContent = fsSync.readFileSync(logPath, 'utf-8');
         const lines = logContent.split('\n').filter(line => line.trim());
         
         for (const line of lines) {

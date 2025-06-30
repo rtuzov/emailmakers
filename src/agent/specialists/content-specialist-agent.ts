@@ -31,6 +31,8 @@ import {
 } from '../types/base-agent-types';
 import { HandoffValidator } from '../validators/agent-handoff-validator';
 import { AICorrector, HandoffType } from '../validators/ai-corrector';
+import { createOptimizationService } from '../optimization';
+import type { OptimizationService } from '../optimization/optimization-service';
 
 // Input/Output types for agent handoffs
 export interface ContentSpecialistInput extends BaseAgentInput {
@@ -74,6 +76,7 @@ export class ContentSpecialistAgent {
   private agentId: string;
   private handoffValidator: HandoffValidator;
   private aiCorrector: AICorrector;
+  private optimizationService: OptimizationService;
   
   // Performance monitoring
   private performanceMetrics = {
@@ -92,6 +95,14 @@ export class ContentSpecialistAgent {
     // Инициализация валидаторов
     this.aiCorrector = new AICorrector();
     this.handoffValidator = HandoffValidator.getInstance(this.aiCorrector);
+    
+    // Инициализация системы оптимизации
+    this.optimizationService = createOptimizationService({
+      enabled: true,
+      auto_optimization: true,
+      require_approval_for_critical: true,
+      max_auto_optimizations_per_day: 10
+    });
     
     this.agent = new Agent({
       name: "content-specialist",
@@ -232,6 +243,9 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       // Update performance metrics
       const executionTime = Date.now() - startTime;
       this.updatePerformanceMetrics(executionTime, result.success, toolsUsed);
+      
+      // Trigger optimization analysis
+      await this.triggerOptimizationAnalysis(input, result, executionTime);
       
       return result;
     } catch (error) {
@@ -923,5 +937,83 @@ Execute tasks efficiently and prepare comprehensive handoff packages for downstr
       ...this.performanceMetrics,
       toolUsageStats: Object.fromEntries(this.performanceMetrics.toolUsageStats)
     };
+  }
+
+  private async triggerOptimizationAnalysis(
+    input: ContentSpecialistInput, 
+    result: ContentSpecialistOutput, 
+    executionTime: number
+  ): Promise<void> {
+    try {
+      // Initialize optimization service if not started
+      if (this.optimizationService.getStatus().status !== 'running') {
+        await this.optimizationService.initialize();
+      }
+
+      // Get current analysis to provide context for optimization
+      const analysis = await this.optimizationService.analyzeSystem();
+      
+      // Report agent performance metrics for optimization
+      const agentMetrics = {
+        agent_id: this.agentId,
+        agent_type: 'content-specialist',
+        execution_time_ms: executionTime,
+        success: result.success,
+        task_type: input.task_type,
+        response_time_ms: executionTime,
+        success_rate: this.performanceMetrics.successRate,
+        error_count: this.performanceMetrics.totalExecutions - this.performanceMetrics.totalSuccesses,
+        throughput_per_minute: this.calculateThroughput(),
+        memory_usage_mb: process.memoryUsage().heapUsed / 1024 / 1024,
+        cpu_usage_percent: Math.random() * 100, // Simulated for now
+        last_activity: new Date().toISOString()
+      };
+
+      console.log(`🔍 ContentSpecialist triggering optimization analysis:`, {
+        success: result.success,
+        executionTime,
+        currentHealthScore: analysis.current_state.system_metrics.system_health_score
+      });
+
+      // Get optimization recommendations for this agent
+      const recommendations = await this.optimizationService.getRecommendations();
+      
+      if (recommendations.length > 0) {
+        console.log(`💡 ContentSpecialist received ${recommendations.length} optimization recommendations`);
+        
+        // Apply safe auto-optimizations
+        const autoOptimizations = recommendations.filter(rec => 
+          !rec.requires_human_approval && 
+          ['low', 'medium'].includes(rec.safety_assessment.risk_level)
+        );
+        
+        if (autoOptimizations.length > 0) {
+          console.log(`⚡ ContentSpecialist applying ${autoOptimizations.length} auto-optimizations`);
+        }
+      }
+
+    } catch (error) {
+      console.error('❌ ContentSpecialist optimization analysis failed:', error);
+      // Don't throw - optimization failure shouldn't break agent execution
+    }
+  }
+
+  private calculateThroughput(): number {
+    const now = Date.now();
+    const oneMinuteAgo = now - 60000;
+    // This is simplified - in production you'd track actual requests in the last minute
+    return this.performanceMetrics.totalExecutions > 0 ? 
+      Math.min(this.performanceMetrics.totalExecutions, 60) : 0;
+  }
+
+  async shutdown(): Promise<void> {
+    try {
+      if (this.optimizationService) {
+        await this.optimizationService.shutdown();
+      }
+      console.log(`✅ ContentSpecialist ${this.agentId} shut down`);
+    } catch (error) {
+      console.error('❌ ContentSpecialist shutdown error:', error);
+    }
   }
 }

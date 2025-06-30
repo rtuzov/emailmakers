@@ -85,14 +85,14 @@ export class VisualValidator {
       
       // Check for required brand colors
       const hasKupibiletColors = this.checkBrandColors(htmlContent);
-      if (!hasKupibiletColors.valid) {
+      if (!hasKupibiletColors.passed) {
         issues.push('Missing Kupibilet brand colors');
         score -= 25;
       }
       
       // Check for proper font usage
       const hasBrandFonts = this.checkBrandFonts(htmlContent);
-      if (!hasBrandFonts.valid) {
+      if (!hasBrandFonts.passed) {
         issues.push('Non-standard font usage detected');
         score -= 20;
       }
@@ -337,20 +337,22 @@ export class VisualValidator {
     const colorCount = [hasPrimary, hasDark, hasBackground, hasAccent, hasSecondary].filter(Boolean).length;
     
     return {
-      valid: colorCount >= 1,
+      passed: colorCount >= 1,
       score: Math.min(100, colorCount * 25),
-      details: `Found ${colorCount}/5 Kupibilet brand colors`,
-      colors_found: {
-        primary: hasPrimary,
-        dark: hasDark,
-        background: hasBackground,
-        accent: hasAccent,
-        secondary: hasSecondary
+      message: `Found ${colorCount}/5 Kupibilet brand colors`,
+      details: {
+        colors_found: {
+          primary: hasPrimary,
+          dark: hasDark,
+          background: hasBackground,
+          accent: hasAccent,
+          secondary: hasSecondary
+        }
       }
     };
   }
   
-  private checkBrandFonts(htmlContent: string): { valid: boolean; details: any } {
+  private checkBrandFonts(htmlContent: string): ValidationCheck {
     // Check for web-safe fonts and proper font stack
     const fontFamilyPattern = /font-family\s*:\s*([^;]+)/gi;
     const matches: string[] = htmlContent.match(fontFamilyPattern) || [];
@@ -375,7 +377,9 @@ export class VisualValidator {
     });
     
     return {
-      valid: hasValidFonts,
+      passed: hasValidFonts,
+      score: hasValidFonts ? 100 : 0,
+      message: hasValidFonts ? 'Valid font stacks found' : 'Invalid font stacks detected',
       details: {
         fonts_found: fontDetails,
         safe_font_stacks: hasValidFonts
@@ -743,10 +747,9 @@ export class VisualValidator {
         primary: ['Inter', 'system-ui', 'sans-serif'],
         fallback: ['Arial', 'Helvetica', 'sans-serif']
       },
-      required_elements: ['kupibilet'],
-      spacing: {
-        base: 16,
-        scale: [8, 16, 24, 32, 48, 64]
+      logos: {
+        required_elements: ['kupibilet'],
+        prohibited_elements: []
       }
     };
   }

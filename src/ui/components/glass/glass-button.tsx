@@ -9,6 +9,7 @@ export interface GlassButtonProps extends React.ButtonHTMLAttributes<HTMLButtonE
   loading?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
+  glow?: boolean
   children: React.ReactNode
 }
 
@@ -20,18 +21,19 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
     loading = false,
     leftIcon,
     rightIcon,
+    glow = false,
     disabled,
     children, 
     ...props 
   }, ref) => {
-    const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 ease-in-out backdrop-blur-md border focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
+    const baseClasses = 'glass-button inline-flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden'
     
     const variantClasses = {
-      primary: 'bg-primary/20 border-primary/30 text-primary hover:bg-primary/30 hover:border-primary/50 focus:ring-primary/50 shadow-glass hover:shadow-glow-primary',
-      secondary: 'bg-background-light/20 border-background-light/30 text-white hover:bg-background-light/30 hover:border-background-light/50 focus:ring-background-light/50 shadow-glass',
-      accent: 'bg-accent/20 border-accent/30 text-accent hover:bg-accent/30 hover:border-accent/50 focus:ring-accent/50 shadow-glass hover:shadow-glow-accent animate-glow-pulse',
-      ghost: 'bg-white/5 border-white/10 text-white hover:bg-accent/10 hover:border-accent/20 focus:ring-accent/50 shadow-glass-sm hover:shadow-glow-accent',
-      outline: 'bg-transparent border-glass-border text-white hover:bg-glass-accent hover:border-accent/50 focus:ring-accent/50 shadow-glass-sm hover:shadow-glow-accent',
+      primary: 'bg-kupibilet-primary/20 border-kupibilet-primary/30 text-kupibilet-primary hover:bg-kupibilet-primary/30 hover:border-kupibilet-primary/50 focus:ring-kupibilet-primary/50',
+      secondary: 'bg-kupibilet-secondary/20 border-kupibilet-secondary/30 text-kupibilet-secondary hover:bg-kupibilet-secondary/30 hover:border-kupibilet-secondary/50 focus:ring-kupibilet-secondary/50',
+      accent: 'bg-kupibilet-accent/20 border-kupibilet-accent/30 text-kupibilet-accent hover:bg-kupibilet-accent/30 hover:border-kupibilet-accent/50 focus:ring-kupibilet-accent/50',
+      ghost: 'bg-white/5 border-white/10 text-white hover:bg-kupibilet-primary/10 hover:border-kupibilet-primary/20 focus:ring-kupibilet-primary/50',
+      outline: 'bg-transparent border-white/20 text-white hover:bg-kupibilet-primary/10 hover:border-kupibilet-primary/30 focus:ring-kupibilet-primary/50',
     }
 
     const sizeClasses = {
@@ -48,6 +50,14 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
       xl: 'w-6 h-6',
     }
 
+    const glowClasses = glow ? {
+      primary: 'glow-green',
+      secondary: 'glow-purple',
+      accent: 'glow-orange',
+      ghost: 'hover:glow-green',
+      outline: 'hover:glow-green',
+    } : {}
+
     return (
       <button
         ref={ref}
@@ -55,6 +65,7 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
           baseClasses,
           variantClasses[variant],
           sizeClasses[size],
+          glow && glowClasses[variant],
           'hover:scale-105 active:scale-95',
           className
         )}
@@ -70,7 +81,7 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
                 {leftIcon}
               </span>
             )}
-            <span>{children}</span>
+            <span className="relative z-10">{children}</span>
             {rightIcon && (
               <span className={cn('flex-shrink-0', iconSizeClasses[size])}>
                 {rightIcon}
@@ -78,6 +89,9 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
             )}
           </>
         )}
+        
+        {/* Glass reflection effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </button>
     )
   }

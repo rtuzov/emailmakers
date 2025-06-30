@@ -166,6 +166,13 @@ export class QualitySpecialistValidator {
   }
 
   /**
+   * 🔄 ALIAS ДЛЯ СОВМЕСТИМОСТИ С ТЕСТАМИ
+   */
+  public async validateOutput(data: any): Promise<HandoffValidationResult> {
+    return this.validateQualityOutput(data, true);
+  }
+
+  /**
    * 🏆 ЖЕСТКАЯ ВАЛИДАЦИЯ QUALITY SCORE ≥70
    */
   private validateQualityScore(data: QualityToDeliveryHandoffData): {

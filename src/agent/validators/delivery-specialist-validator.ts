@@ -181,6 +181,13 @@ export class DeliverySpecialistValidator {
   }
 
   /**
+   * 🔄 ALIAS ДЛЯ СОВМЕСТИМОСТИ С ТЕСТАМИ
+   */
+  public async validateOutput(deliveryPackage: any): Promise<HandoffValidationResult> {
+    return this.validateDeliveryPackage(deliveryPackage, true);
+  }
+
+  /**
    * 📋 ВАЛИДАЦИЯ СТРУКТУРЫ ПАКЕТА
    */
   private validatePackageStructure(pkg: any): {

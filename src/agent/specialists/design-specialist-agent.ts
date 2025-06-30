@@ -26,6 +26,8 @@ import {
 import { HandoffValidator } from '../validators/agent-handoff-validator';
 import { DesignSpecialistValidator } from '../validators/design-specialist-validator';
 import { AICorrector, HandoffType } from '../validators/ai-corrector';
+import { createOptimizationService } from '../optimization';
+import type { OptimizationService } from '../optimization/optimization-service';
 
 // Input/Output types for agent handoffs
 export interface DesignSpecialistInput {
@@ -112,6 +114,7 @@ export class DesignSpecialistAgent {
   private handoffValidator: HandoffValidator;
   private designValidator: DesignSpecialistValidator;
   private aiCorrector: AICorrector;
+  private optimizationService: OptimizationService;
 
   constructor() {
     this.agentId = 'design-specialist-v1';
@@ -120,6 +123,14 @@ export class DesignSpecialistAgent {
     this.aiCorrector = new AICorrector();
     this.handoffValidator = HandoffValidator.getInstance(this.aiCorrector);
     this.designValidator = DesignSpecialistValidator.getInstance();
+    
+    // Инициализация системы оптимизации
+    this.optimizationService = createOptimizationService({
+      enabled: true,
+      auto_optimization: true,
+      require_approval_for_critical: true,
+      max_auto_optimizations_per_day: 10
+    });
     
     this.agent = new Agent({
       name: this.agentId,

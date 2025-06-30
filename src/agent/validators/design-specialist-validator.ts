@@ -147,6 +147,13 @@ export class DesignSpecialistValidator {
   }
 
   /**
+   * 🔄 ALIAS ДЛЯ СОВМЕСТИМОСТИ С ТЕСТАМИ
+   */
+  public async validateOutput(data: any): Promise<HandoffValidationResult> {
+    return this.validateDesignOutput(data, true);
+  }
+
+  /**
    * 🔍 ВАЛИДАЦИЯ HTML КАЧЕСТВА
    */
   private async validateHTMLQuality(htmlContent: string): Promise<{
@@ -630,7 +637,7 @@ export class DesignSpecialistValidator {
   }
 
   private countCSSRules(html: string): number {
-    const styleBlocks = html.match(/<style[^>]*>(.*?)<\/style>/gis) || [];
+    const styleBlocks = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) || [];
     const inlineStyles = html.match(/style\s*=\s*["'][^"']*["']/gi) || [];
     return styleBlocks.length * 10 + inlineStyles.length; // Примерная оценка
   }

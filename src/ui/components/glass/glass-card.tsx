@@ -4,22 +4,33 @@ import React from 'react'
 import { cn } from '@/shared/utils/cn'
 
 export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'primary' | 'secondary' | 'modal' | 'subtle'
+  variant?: 'primary' | 'secondary' | 'accent' | 'default' | 'modal'
   blur?: 'sm' | 'md' | 'lg' | 'xl'
   glow?: boolean
   hover?: boolean
+  interactive?: boolean
   children: React.ReactNode
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, variant = 'primary', blur = 'md', glow = false, hover = false, children, ...props }, ref) => {
-    const baseClasses = 'rounded-xl border backdrop-blur transition-all duration-300 ease-in-out'
+  ({ 
+    className, 
+    variant = 'default', 
+    blur = 'md', 
+    glow = false, 
+    hover = false,
+    interactive = false,
+    children, 
+    ...props 
+  }, ref) => {
+    const baseClasses = 'rounded-xl border transition-all duration-300 ease-in-out'
     
     const variantClasses = {
-      primary: 'bg-glass-primary border-glass-border shadow-glass hover:shadow-glass-lg',
-      secondary: 'bg-glass-secondary border-glass-border shadow-glass-sm hover:shadow-glass',
-      modal: 'bg-glass-modal border-glass-border-dark shadow-glass-lg',
-      subtle: 'bg-white/5 border-white/10 shadow-glass-sm hover:bg-white/10',
+      default: 'glass-card',
+      primary: 'glass-primary',
+      secondary: 'glass-secondary', 
+      accent: 'glass-accent',
+      modal: 'glass-modal',
     }
 
     const blurClasses = {
@@ -30,11 +41,15 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
     }
 
     const glowClasses = glow ? {
-      primary: 'hover:shadow-glow',
-      secondary: 'hover:shadow-glow-secondary',
-      modal: 'hover:shadow-glow',
-      subtle: 'hover:shadow-glow',
+      default: 'glow-green',
+      primary: 'glow-green',
+      secondary: 'glow-purple',
+      accent: 'glow-orange',
+      modal: 'glow-green',
     } : {}
+
+    const hoverClasses = hover ? 'glass-hover' : ''
+    const interactiveClasses = interactive ? 'interactive cursor-pointer' : ''
 
     return (
       <div
@@ -44,7 +59,8 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
           variantClasses[variant],
           blurClasses[blur],
           glow && glowClasses[variant],
-          hover && 'hover:scale-[1.02] hover:border-glass-border',
+          hoverClasses,
+          interactiveClasses,
           className
         )}
         {...props}

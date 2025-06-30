@@ -25,6 +25,8 @@ import {
 import { HandoffValidator } from '../validators/agent-handoff-validator';
 import { QualitySpecialistValidator } from '../validators/quality-specialist-validator';
 import { AICorrector, HandoffType } from '../validators/ai-corrector';
+import { createOptimizationService } from '../optimization';
+import type { OptimizationService } from '../optimization/optimization-service';
 
 // Input/Output types for agent handoffs
 export interface QualitySpecialistInput {
@@ -127,6 +129,7 @@ export class QualitySpecialistAgent {
   private handoffValidator: HandoffValidator;
   private qualityValidator: QualitySpecialistValidator;
   private aiCorrector: AICorrector;
+  private optimizationService: OptimizationService;
   
   // Performance monitoring
   private performanceMetrics = {
@@ -145,6 +148,14 @@ export class QualitySpecialistAgent {
     // Инициализация валидаторов
     this.aiCorrector = new AICorrector();
     this.handoffValidator = HandoffValidator.getInstance(this.aiCorrector);
+    
+    // Инициализация системы оптимизации
+    this.optimizationService = createOptimizationService({
+      enabled: true,
+      auto_optimization: true,
+      require_approval_for_critical: true,
+      max_auto_optimizations_per_day: 10
+    });
     this.qualityValidator = QualitySpecialistValidator.getInstance();
     
     this.agent = new Agent({
@@ -160,6 +171,55 @@ export class QualitySpecialistAgent {
     });
 
     console.log(`🔍 QualitySpecialistAgent initialized: ${this.agentId}`);
+  }
+
+  async shutdown(): Promise<void> {
+    try {
+      if (this.optimizationService) {
+        await this.optimizationService.shutdown();
+      }
+      console.log(`✅ ${this.constructor.name} ${this.agentId} shut down`);
+    } catch (error) {
+      console.error(`❌ ${this.constructor.name} shutdown error:`, error);
+    }
+  }
+
+  private async triggerOptimizationAnalysis(
+    executionTime: number,
+    success: boolean,
+    taskType: string
+  ): Promise<void> {
+    try {
+      if (this.optimizationService.getStatus().status !== 'running') {
+        await this.optimizationService.initialize();
+      }
+
+      const analysis = await this.optimizationService.analyzeSystem();
+      
+      console.log(`🔍 ${this.constructor.name} triggering optimization analysis:`, {
+        success,
+        executionTime,
+        currentHealthScore: analysis.current_state.system_metrics.system_health_score
+      });
+
+      const recommendations = await this.optimizationService.getRecommendations();
+      
+      if (recommendations.length > 0) {
+        console.log(`💡 ${this.constructor.name} received ${recommendations.length} optimization recommendations`);
+        
+        const autoOptimizations = recommendations.filter(rec => 
+          !rec.requires_human_approval && 
+          ['low', 'medium'].includes(rec.safety_assessment.risk_level)
+        );
+        
+        if (autoOptimizations.length > 0) {
+          console.log(`⚡ ${this.constructor.name} applying ${autoOptimizations.length} auto-optimizations`);
+        }
+      }
+
+    } catch (error) {
+      console.error(`❌ ${this.constructor.name} optimization analysis failed:`, error);
+    }
   }
 
   private getSpecialistInstructions(): string {

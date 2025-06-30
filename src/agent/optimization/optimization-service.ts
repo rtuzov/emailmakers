@@ -17,6 +17,12 @@ import {
   DynamicThresholds,
   OptimizationStatus
 } from './optimization-types';
+import { 
+  getOptimizationConfig, 
+  validateOptimizationConfig, 
+  applyEnvironmentOverrides,
+  ProductionOptimizationConfig 
+} from '../../config/optimization-config';
 
 export interface OptimizationServiceConfig {
   // Основные настройки
