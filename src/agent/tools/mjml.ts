@@ -1,4 +1,20 @@
-import { ToolResult, ContentInfo, AssetInfo, handleToolError } from './index';
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define ToolResult locally to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 import * as path from 'path';
 import { EmailFolderManager, EmailFolder } from './email-folder-manager';
 
@@ -313,9 +329,9 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
     // Read image file
     const imageBuffer = await fs.readFile(imagePath);
     
-    // Determine MIME type based on file extension
+    // Determine MIME type based on file extension - строгая валидация без fallback
     const ext = path.extname(imagePath).toLowerCase();
-    let mimeType = 'image/png'; // default
+    let mimeType: string;
     
     switch (ext) {
       case '.jpg':
@@ -331,6 +347,9 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
       case '.gif':
         mimeType = 'image/gif';
         break;
+      default:
+        console.error(`❌ MJML: Неподдерживаемое расширение файла: ${ext} для ${imagePath}`);
+        throw new Error(`Неподдерживаемый формат изображения: ${ext}. Поддерживаются: .jpg, .jpeg, .png, .svg, .gif`);
     }
     
     // Convert to base64 data URL
@@ -345,16 +364,18 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
 
 async function compileMjmlToHtml(mjmlContent: string): Promise<string> {
   try {
-    // Use actual MJML compiler
-    const mjmlModule = await import('mjml');
+    // Use dynamic import with proper error handling for Next.js
+    const mjml = await import('mjml').then(module => module.default || module);
     
-    // MJML exports default function or module.default
-    const mjml = (mjmlModule as any).default || mjmlModule;
     if (typeof mjml !== 'function') {
       throw new Error('MJML compiler function not found');
     }
     
-    const result = mjml(mjmlContent);
+    const result = mjml(mjmlContent, {
+      minify: false,
+      beautify: false,
+      validationLevel: 'soft'
+    });
     
     if (result.errors && result.errors.length > 0) {
       console.warn('MJML compilation warnings:', result.errors);

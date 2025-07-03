@@ -4,8 +4,53 @@ import * as path from 'path';
 // Load .env.local file
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
-import { ToolResult, ContentInfo, PriceInfo, handleToolError } from './index';
-import { OpenAI } from 'openai';
+// OpenAI Agent SDK imports
+import { Agent, tool, withTrace } from '@openai/agents';
+import { generateTraceId } from '../validators/agent-handoff-validator';
+
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define local interfaces to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+interface ContentInfo {
+  subject: string;
+  preheader: string;
+  body: string;
+  cta: string;
+  language: string;
+  tone: string;
+}
+
+interface PriceInfo {
+  origin: string;
+  destination: string;
+  price: number;
+  date: string;
+  currency: string;
+  metadata?: {
+    airline?: string;
+    flight_number?: string;
+    duration?: number;
+    stops?: number;
+    estimated?: boolean;
+    base_price?: number;
+    variation_factor?: number;
+  };
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 import { getUsageModel } from '../../shared/utils/model-config';
 // import ABTestingService from '../../lib/ab-testing'; // DISABLED - A/B testing framework disabled
 
@@ -33,6 +78,74 @@ interface CopyParams {
     cheapest: number;
   };
 }
+
+// CopyGeneratorAgent - использует OpenAI Agent SDK
+class CopyGeneratorAgent extends Agent {
+  constructor() {
+    super({
+      name: 'CopyGeneratorAgent',
+      description: 'Generates email marketing copy for travel topics',
+      model: getUsageModel(),
+      tools: [generateCopyTool]
+    });
+  }
+}
+
+// Tool для генерации копирайтинга
+const generateCopyTool = tool({
+  name: 'generate_marketing_copy',
+  description: 'Generate Russian marketing copy for travel emails',
+  parameters: {
+    type: 'object',
+    properties: {
+      topic: { type: 'string', description: 'Travel topic or destination' },
+      priceContext: { type: 'string', description: 'Price information context' },
+      cheapestPrice: { type: 'number', description: 'Cheapest available price' },
+      currency: { type: 'string', description: 'Currency for prices' }
+    },
+    required: ['topic', 'priceContext', 'cheapestPrice', 'currency']
+  }
+}, async (params) => {
+  const prompt = `Ты эксперт по email-маркетингу для туристической компании Kupibilet. 
+Создай привлекательное письмо на тему "${params.topic}" используя цены от ${params.cheapestPrice} ${params.currency}.
+
+### Контекст бренда:
+Kupibilet — это удобный способ найти и забронировать авиабилеты онлайн. Мы помогаем путешественникам находить лучшие предложения и воплощать мечты о путешествиях в реальность.
+
+### Данные о ценах:
+${params.priceContext}
+
+### Требования:
+- Заголовок до 50 символов с ценой (используй "от ${params.cheapestPrice} ${params.currency}")
+- Preheader до 90 символов, дополняющий заголовок
+- Основной текст 200-300 слов
+- Призыв к действию до 20 символов
+- Тон: дружелюбный, мотивирующий
+- Фокус на выгоде и эмоциях
+
+### Эмоциональные триггеры:
+- Жажда путешествий и приключений
+- FOMO (ограниченное по времени предложение)
+- Ценность и экономия
+- Мечты и стремления
+- Удобство и простота
+
+### Структура письма:
+1. **Заголовок**: Привлекающий внимание с ценой
+2. **Preheader**: Дополняющий заголовок
+3. **Основной текст**: Эмоциональная история + выгода + призыв
+4. **CTA**: Ясный призыв к действию (примеры: "Найти билеты", "Забронировать", "Посмотреть цены")
+
+ВАЖНО: Отвечай ТОЛЬКО в формате JSON без дополнительного текста:
+{
+  "subject": "...",
+  "preheader": "...",
+  "body": "...",
+  "cta": "..."
+}`;
+
+  return prompt;
+});
 
 /**
  * T3: Generate Copy Tool
@@ -163,7 +276,18 @@ ${priceContext}
 
     try {
       const cleanedContent = cleanMarkdownJson(content);
+      console.log('🔍 Cleaned OpenAI content for parsing:', cleanedContent.substring(0, 200) + '...');
+      
       const parsed = JSON.parse(cleanedContent);
+      console.log('🔍 Parsed OpenAI response:', {
+        hasSubject: !!parsed.subject,
+        hasPreheader: !!parsed.preheader,
+        hasBody: !!parsed.body,
+        hasCta: !!parsed.cta,
+        subjectLength: parsed.subject?.length || 0,
+        bodyLength: parsed.body?.length || 0
+      });
+      
       return {
         subject: parsed.subject,
         preheader: parsed.preheader,
@@ -171,6 +295,8 @@ ${priceContext}
         cta: parsed.cta
       };
     } catch (parseError: any) {
+      console.error('❌ Failed to parse OpenAI response. Raw content:', content);
+      console.error('❌ Cleaned content:', content);
       throw new Error(`Failed to parse OpenAI response: ${parseError.message}`);
     }
     

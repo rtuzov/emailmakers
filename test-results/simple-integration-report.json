@@ -1,0 +1,43 @@
+{
+  "test_summary": {
+    "topic": "путешествие в Париж в сентябре",
+    "total_execution_time_ms": 11237,
+    "success": true,
+    "agents_tested": [
+      "ContentSpecialistAgent",
+      "DesignSpecialistAgentV2"
+    ],
+    "workflow_type": "simple_rendering"
+  },
+  "content_phase": {
+    "execution_time_ms": 9213,
+    "success": true,
+    "confidence_score": 81,
+    "operations_performed": 1,
+    "generated_content": {
+      "subject": "Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!",
+      "preheader": "Откройте для себя магию Парижа по выгодным ценам!",
+      "cta": "Забронировать билеты",
+      "body_length": 679
+    }
+  },
+  "design_phase": {
+    "execution_time_ms": 2024,
+    "success": true,
+    "confidence_score": 90,
+    "operations_performed": 2,
+    "cache_hit_rate": 75,
+    "rendering_metrics": {
+      "css_rules_count": 124,
+      "images_count": 1,
+      "total_size_kb": 14,
+      "estimated_load_time_ms": 500
+    }
+  },
+  "deliverables": {
+    "html_generated": true,
+    "mjml_generated": true,
+    "handoff_data_valid": true,
+    "total_workflow_success": true
+  }
+}

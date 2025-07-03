@@ -626,29 +626,46 @@ export class HandoffValidator {
 Верните ТОЛЬКО улучшенные данные в JSON формате.`;
   }
 
+  /**
+   * 🔄 ПОПЫТКА AI КОРРЕКЦИИ С УМНОЙ ЛОГИКОЙ
+   */
   private async attemptAICorrection(
     data: any,
     suggestions: CorrectionSuggestion[],
     handoffType: HandoffType
-  ): Promise<any | null> {
-    if (!this.aiCorrector) return null;
-    
-    let attempts = 0;
-    const maxAttempts = AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_AI_CORRECTION_ATTEMPTS;
-    
-    while (attempts < maxAttempts) {
-      try {
-        const correctedData = await this.aiCorrector.correctData(data, suggestions, handoffType);
-        if (correctedData) {
-          return correctedData;
-        }
-      } catch (error) {
-        console.error(`AI correction attempt ${attempts + 1} failed:`, error);
-      }
-      attempts++;
+  ): Promise<any> {
+    if (!this.aiCorrector) {
+      console.warn('⚠️ AICorrector не инициализирован');
+      return null;
     }
+
+    // Проверяем, стоит ли запускать коррекцию
+    const criticalErrors = suggestions.filter(s => s.priority === 'high').length;
+    const totalErrors = suggestions.length;
     
-    return null;
+    // Умная логика: не запускаем коррекцию для незначительных ошибок
+    if (AGENT_CONSTANTS.HANDOFF_VALIDATION.SKIP_CORRECTION_FOR_MINOR_ERRORS) {
+      if (criticalErrors === 0 && totalErrors < AGENT_CONSTANTS.HANDOFF_VALIDATION.TOTAL_ERROR_THRESHOLD) {
+        console.log(`⚠️ Пропускаем автокоррекцию: ${criticalErrors} критических ошибок, ${totalErrors} общих ошибок (порог: ${AGENT_CONSTANTS.HANDOFF_VALIDATION.TOTAL_ERROR_THRESHOLD})`);
+        return null;
+      }
+    }
+
+    // Проверяем размер данных
+    const dataSize = JSON.stringify(data).length;
+    if (dataSize > AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_CORRECTION_DATA_SIZE) {
+      console.warn(`⚠️ Данные слишком большие для коррекции: ${dataSize} байт (максимум: ${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_CORRECTION_DATA_SIZE})`);
+      return null;
+    }
+
+    console.log(`🤖 Запускаем AI коррекцию: ${criticalErrors} критических, ${totalErrors} общих ошибок`);
+    
+    try {
+      return await this.aiCorrector.correctData(data, suggestions, handoffType);
+    } catch (error) {
+      console.error('❌ AI коррекция провалена:', error.message);
+      return null;
+    }
   }
 
   private performDesignQualityChecks(data: DesignToQualityHandoffData): { isValid: boolean; errors: HandoffValidationError[] } {

@@ -85,6 +85,7 @@ export type {
 /**
  * Заводской метод для создания полностью настроенного OptimizationService
  * Использует production-ready конфигурацию с возможностью переопределения
+ * ВАЖНО: Теперь использует singleton pattern для предотвращения множественных экземпляров
  */
 export function createOptimizationService(config?: Partial<import('./optimization-service').OptimizationServiceConfig>) {
   // Получаем production configuration
@@ -102,8 +103,8 @@ export function createOptimizationService(config?: Partial<import('./optimizatio
       require_approval_for_critical: true,
       max_auto_optimizations_per_day: 5,
       min_confidence_threshold: 90,
-      metrics_collection_interval_ms: 60000,
-      analysis_interval_ms: 300000,
+      metrics_collection_interval_ms: 900000, // 15 minutes
+      analysis_interval_ms: 1800000, // 30 minutes
       emergency_stop_enabled: true,
       rollback_timeout_minutes: 30,
       max_concurrent_optimizations: 1,
@@ -125,11 +126,10 @@ export function createOptimizationService(config?: Partial<import('./optimizatio
   const finalConfig = {
     ...productionConfig,
     ...config, // User overrides
-    integration: config?.integration || {},
-    engine: config?.engine || {}
+    // Remove integration and engine nested configs as they're not needed for singleton
   };
   
-  console.log('🚀 Creating OptimizationService with production configuration:', {
+  console.log('🚀 Creating OptimizationService with production configuration (singleton):', {
     enabled: finalConfig.enabled,
     auto_optimization: finalConfig.auto_optimization,
     environment: process.env.NODE_ENV || 'development',
@@ -137,7 +137,9 @@ export function createOptimizationService(config?: Partial<import('./optimizatio
     auto_scaling_enabled: finalConfig.auto_scaling_enabled
   });
   
-  return new (require('./optimization-service').OptimizationService)(finalConfig);
+  // Use singleton pattern instead of creating new instance
+  const { OptimizationService } = require('./optimization-service');
+  return OptimizationService.getInstance(finalConfig);
 }
 
 /**

@@ -1,0 +1,356 @@
+/**
+ * @jest-environment jsdom
+ */
+
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
+// E2E-style integration test for metadata display
+describe('E2E: Template Metadata Display Integration', () => {
+  
+  // Mock fetch for API calls
+  global.fetch = jest.fn()
+
+  const mockTemplateResponse = {
+    success: true,
+    data: {
+      templates: [
+        {
+          id: 'template-1',
+          name: 'Professional Newsletter Template',
+          category: 'newsletter',
+          description: 'A comprehensive newsletter template with AI-generated content',
+          createdAt: '2024-03-05T10:30:00Z',
+          status: 'published',
+          openRate: 89.5,
+          clickRate: 24.8,
+          qualityScore: 92,
+          agentGenerated: true,
+          generatedContent: {
+            subject_line: 'Weekly Business Updates - Key Insights Inside',
+            preheader_text: 'Stay informed with the latest developments',
+            metadata: {
+              generation_time: 1500,
+              token_usage: 250,
+              model: 'gpt-4o-mini',
+              workflow: 'Advanced',
+              flow: 'Newsletter Generation'
+            }
+          },
+          tags: ['newsletter', 'professional']
+        },
+        {
+          id: 'template-2',
+          name: 'Simple Notification',
+          category: 'transactional',
+          description: 'Basic notification template',
+          createdAt: '2024-03-04T14:20:00Z',
+          status: 'draft',
+          openRate: 45.2,
+          clickRate: 12.1,
+          qualityScore: 78,
+          agentGenerated: false
+        }
+      ],
+      pagination: {
+        total: 2,
+        page: 1,
+        limit: 12,
+        totalPages: 1,
+        hasNext: false,
+        hasPrev: false
+      },
+      filters: {
+        categories: [
+          { value: 'all', label: 'All Templates', count: 2 },
+          { value: 'newsletter', label: 'Newsletter', count: 1 },
+          { value: 'transactional', label: 'Transactional', count: 1 }
+        ],
+        tags: ['newsletter', 'professional']
+      }
+    },
+    metadata: {
+      query_time: 150,
+      cache_status: 'database'
+    }
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    ;(global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => mockTemplateResponse
+    })
+  })
+
+  describe('Visual Metadata Integration Test', () => {
+    it('should render template cards with all metadata elements visible', async () => {
+      // This test simulates what users would see in the browser
+      
+      const TemplatesMockComponent = () => {
+        const [templates, setTemplates] = React.useState([])
+        const [loading, setLoading] = React.useState(true)
+
+        React.useEffect(() => {
+          fetch('/api/templates')
+            .then(res => res.json())
+            .then(data => {
+              setTemplates(data.data.templates)
+              setLoading(false)
+            })
+        }, [])
+
+        if (loading) return <div>Loading...</div>
+
+        return (
+          <div data-testid="templates-container">
+            {templates.map((template: any) => (
+              <div key={template.id} data-testid={`template-card-${template.id}`}>
+                {/* Template Name */}
+                <h3 data-testid={`template-name-${template.id}`}>{template.name}</h3>
+                
+                {/* Quality Score */}
+                {template.qualityScore && (
+                  <div 
+                    data-testid={`quality-score-${template.id}`}
+                    className={
+                      template.qualityScore >= 90 ? 'text-green-300' :
+                      template.qualityScore >= 80 ? 'text-yellow-300' :
+                      'text-red-300'
+                    }
+                  >
+                    ⭐ {template.qualityScore}%
+                  </div>
+                )}
+
+                {/* Subject Line */}
+                {template.generatedContent?.subject_line && (
+                  <p data-testid={`subject-line-${template.id}`}>
+                    📧 {template.generatedContent.subject_line}
+                  </p>
+                )}
+
+                {/* Preheader */}
+                {template.generatedContent?.preheader_text && (
+                  <p data-testid={`preheader-${template.id}`}>
+                    👁️ {template.generatedContent.preheader_text}
+                  </p>
+                )}
+
+                {/* Generation Metadata */}
+                {template.generatedContent?.metadata && (
+                  <div data-testid={`metadata-${template.id}`}>
+                    {template.generatedContent.metadata.generation_time && (
+                      <span data-testid={`generation-time-${template.id}`}>
+                        ⚡ {template.generatedContent.metadata.generation_time}ms
+                      </span>
+                    )}
+                    {template.generatedContent.metadata.model && (
+                      <span data-testid={`model-${template.id}`}>
+                        🧠 {template.generatedContent.metadata.model}
+                      </span>
+                    )}
+                    {template.generatedContent.metadata.token_usage && (
+                      <span data-testid={`tokens-${template.id}`}>
+                        🎯 {template.generatedContent.metadata.token_usage}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* AI Badge */}
+                {template.agentGenerated && (
+                  <div data-testid={`ai-badge-${template.id}`}>
+                    🤖 AI
+                  </div>
+                )}
+
+                {/* Performance Metrics */}
+                <div data-testid={`metrics-${template.id}`}>
+                  <span>Open: {template.openRate?.toFixed(1)}%</span>
+                  <span>Click: {template.clickRate?.toFixed(1)}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      render(<TemplatesMockComponent />)
+
+      // Wait for loading to complete
+      await waitFor(() => {
+        expect(screen.getByTestId('templates-container')).toBeInTheDocument()
+      })
+
+      // Verify API was called
+      expect(global.fetch).toHaveBeenCalledWith('/api/templates')
+
+      // Check first template (with full metadata)
+      expect(screen.getByTestId('template-name-template-1')).toHaveTextContent('Professional Newsletter Template')
+      expect(screen.getByTestId('quality-score-template-1')).toHaveTextContent('⭐ 92%')
+      expect(screen.getByTestId('quality-score-template-1')).toHaveClass('text-green-300')
+      expect(screen.getByTestId('subject-line-template-1')).toHaveTextContent('📧 Weekly Business Updates - Key Insights Inside')
+      expect(screen.getByTestId('preheader-template-1')).toHaveTextContent('👁️ Stay informed with the latest developments')
+      expect(screen.getByTestId('generation-time-template-1')).toHaveTextContent('⚡ 1500ms')
+      expect(screen.getByTestId('model-template-1')).toHaveTextContent('🧠 gpt-4o-mini')
+      expect(screen.getByTestId('tokens-template-1')).toHaveTextContent('🎯 250')
+      expect(screen.getByTestId('ai-badge-template-1')).toHaveTextContent('🤖 AI')
+      expect(screen.getByTestId('metrics-template-1')).toHaveTextContent('Open: 89.5%')
+      expect(screen.getByTestId('metrics-template-1')).toHaveTextContent('Click: 24.8%')
+
+      // Check second template (minimal metadata)
+      expect(screen.getByTestId('template-name-template-2')).toHaveTextContent('Simple Notification')
+      expect(screen.getByTestId('quality-score-template-2')).toHaveTextContent('⭐ 78%')
+      expect(screen.getByTestId('quality-score-template-2')).toHaveClass('text-yellow-300')
+      expect(screen.queryByTestId('subject-line-template-2')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('ai-badge-template-2')).not.toBeInTheDocument()
+      expect(screen.getByTestId('metrics-template-2')).toHaveTextContent('Open: 45.2%')
+    })
+  })
+
+  describe('API Integration Validation', () => {
+    it('should handle API response structure correctly', async () => {
+      // Test actual API response handling
+      const response = await fetch('/api/templates')
+      const data = await response.json()
+
+      expect(data.success).toBe(true)
+      expect(data.data.templates).toHaveLength(2)
+      expect(data.data.templates[0].generatedContent.metadata.generation_time).toBe(1500)
+      expect(data.metadata.query_time).toBe(150)
+    })
+
+    it('should handle quality score filtering API call', async () => {
+      const qualityFilterResponse = {
+        ...mockTemplateResponse,
+        data: {
+          ...mockTemplateResponse.data,
+          templates: [mockTemplateResponse.data.templates[0]] // Only high quality
+        }
+      }
+
+      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => qualityFilterResponse
+      })
+
+      const response = await fetch('/api/templates?qualityMin=90')
+      const data = await response.json()
+
+      expect(global.fetch).toHaveBeenCalledWith('/api/templates?qualityMin=90')
+      expect(data.data.templates).toHaveLength(1)
+      expect(data.data.templates[0].qualityScore).toBe(92)
+    })
+
+    it('should validate metadata structure in API response', async () => {
+      const response = await fetch('/api/templates')
+      const data = await response.json()
+
+      const template = data.data.templates[0]
+      
+      // Validate generatedContent structure
+      expect(template.generatedContent).toHaveProperty('subject_line')
+      expect(template.generatedContent).toHaveProperty('preheader_text')
+      expect(template.generatedContent).toHaveProperty('metadata')
+      
+      // Validate metadata structure
+      expect(template.generatedContent.metadata).toHaveProperty('generation_time')
+      expect(template.generatedContent.metadata).toHaveProperty('token_usage')
+      expect(template.generatedContent.metadata).toHaveProperty('model')
+      expect(template.generatedContent.metadata).toHaveProperty('workflow')
+      expect(template.generatedContent.metadata).toHaveProperty('flow')
+
+      // Validate data types
+      expect(typeof template.generatedContent.metadata.generation_time).toBe('number')
+      expect(typeof template.generatedContent.metadata.token_usage).toBe('number')
+      expect(typeof template.generatedContent.metadata.model).toBe('string')
+    })
+  })
+
+  describe('Error Handling', () => {
+    it('should handle missing metadata gracefully', async () => {
+      const responseWithoutMetadata = {
+        ...mockTemplateResponse,
+        data: {
+          ...mockTemplateResponse.data,
+          templates: [{
+            id: 'template-no-meta',
+            name: 'Template Without Metadata',
+            category: 'basic',
+            description: 'Basic template',
+            createdAt: '2024-03-01T10:00:00Z',
+            status: 'published',
+            openRate: 50.0,
+            clickRate: 15.0
+            // No qualityScore, no generatedContent, no agentGenerated
+          }]
+        }
+      }
+
+      ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => responseWithoutMetadata
+      })
+
+      const TestComponent = () => {
+        const [template, setTemplate] = React.useState(null)
+
+        React.useEffect(() => {
+          fetch('/api/templates')
+            .then(res => res.json())
+            .then(data => setTemplate(data.data.templates[0]))
+        }, [])
+
+        if (!template) return <div>Loading...</div>
+
+        return (
+          <div>
+            <h3 data-testid="template-name">{template.name}</h3>
+            {template.qualityScore && (
+              <div data-testid="quality-score">⭐ {template.qualityScore}%</div>
+            )}
+            {template.generatedContent?.subject_line && (
+              <div data-testid="subject-line">📧 {template.generatedContent.subject_line}</div>
+            )}
+            {template.agentGenerated && (
+              <div data-testid="ai-badge">🤖 AI</div>
+            )}
+          </div>
+        )
+      }
+
+      render(<TestComponent />)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('template-name')).toHaveTextContent('Template Without Metadata')
+      })
+
+      // Should handle missing metadata gracefully
+      expect(screen.queryByTestId('quality-score')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('subject-line')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('ai-badge')).not.toBeInTheDocument()
+    })
+
+    it('should handle API errors gracefully', async () => {
+      ;(global.fetch as jest.Mock).mockRejectedValueOnce(new Error('API Error'))
+
+      const ErrorTestComponent = () => {
+        const [error, setError] = React.useState(null)
+
+        React.useEffect(() => {
+          fetch('/api/templates')
+            .catch(err => setError(err.message))
+        }, [])
+
+        return error ? <div data-testid="error">{error}</div> : <div>Loading...</div>
+      }
+
+      render(<ErrorTestComponent />)
+
+      await waitFor(() => {
+        expect(screen.getByTestId('error')).toHaveTextContent('API Error')
+      })
+    })
+  })
+})

@@ -84,8 +84,14 @@ export async function emailTest(params: EmailTestParams): Promise<EmailTestResul
     console.log('🧪 Starting email testing suite:', {
       test_suite: params.test_suite,
       target_clients: params.target_clients,
-      device_targets: params.device_targets
+      device_targets: params.device_targets,
+      html_content_length: params.html_content?.length || 0
     });
+
+    // Валидация HTML контента
+    if (!params.html_content || params.html_content.trim() === '') {
+      throw new Error('HTML content is required for email testing. Received empty or null content.');
+    }
 
     // Initialize test results structure
     const clientResults: Record<string, any> = {};
@@ -196,6 +202,19 @@ async function testEmailInClient(
   testSettings?: any
 ): Promise<any> {
   
+  console.log(`📧 Testing client ${client} with HTML length: ${htmlContent?.length || 0}`);
+  
+  // Валидация HTML контента на уровне клиента
+  if (!htmlContent || htmlContent.trim() === '') {
+    console.error(`❌ Empty HTML content received for client ${client}`);
+    return {
+      status: 'fail',
+      device_results: {},
+      client_specific_issues: [`No HTML content provided for testing ${client}`],
+      compatibility_rating: 0
+    };
+  }
+  
   const clientResult: any = {
     status: 'pass',
     device_results: {},
@@ -252,6 +271,28 @@ async function testEmailOnDevice(
   testCriteria?: any,
   testSettings?: any
 ): Promise<any> {
+  
+  console.log(`📱 Testing ${client} on ${device} with HTML length: ${htmlContent?.length || 0}`);
+  
+  // Валидация HTML контента на уровне устройства
+  if (!htmlContent || htmlContent.trim() === '') {
+    console.error(`❌ Empty HTML content received for ${client}/${device}`);
+    return {
+      functionality_score: 0,
+      performance_score: 0,
+      accessibility_score: 0,
+      visual_score: 0,
+      issues_found: [{
+        severity: 'critical' as const,
+        category: 'content',
+        description: `No HTML content provided for testing ${client} on ${device}`
+      }],
+      tests_run: 0,
+      tests_passed: 0,
+      tests_failed: 1,
+      tests_skipped: 0
+    };
+  }
   
   const issues: any[] = [];
   let functionalityScore = 100;

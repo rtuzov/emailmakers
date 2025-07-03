@@ -604,34 +604,13 @@ ${contextPrompt}
     };
 
   } catch (error) {
-    console.error(`Ошибка анализа изображения ${componentName}:`, error.message);
-    return generateFallbackTags(componentName, context);
+    console.error(`❌ AI анализ изображения ${componentName} не удался:`, error.message);
+    throw new Error(`❌ FigmaProcessor: AI image analysis failed for ${componentName} - ${error.message}. No fallback analysis allowed.`);
   }
 }
 
-function generateFallbackTags(
-  componentName: string,
-  context?: AllPagesProcessorParams['context']
-): AITagAnalysis {
-  const baseTags = ['компонент', 'дизайн'];
-  
-  if (context?.campaign_type) {
-    baseTags.push(context.campaign_type);
-  }
-  
-  if (context?.content_theme) {
-    baseTags.push(...context.content_theme.split(' ').slice(0, 2));
-  }
-  
-  return {
-    suggestedTags: baseTags,
-    contentDescription: `Компонент: ${componentName}`,
-    emotionalTone: 'нейтральный',
-    usageContext: ['общий'],
-    confidence: 0.6,
-    reasoning: 'Fallback анализ из-за ошибки AI'
-  };
-}
+// generateFallbackTags function removed - NO FALLBACK ALLOWED
+// All components must be processed through AI analysis
 
 async function renameImageFile(oldPath: string, newName: string): Promise<string> {
   const dir = path.dirname(oldPath);

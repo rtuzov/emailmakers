@@ -12,7 +12,7 @@
 
 import { generateTraceId, withTrace } from '@openai/agents';
 import { ContentSpecialistAgent, ContentSpecialistInput, ContentSpecialistOutput } from '../specialists/content-specialist-agent';
-import { DesignSpecialistAgent, DesignSpecialistInput, DesignSpecialistOutput } from '../specialists/design-specialist-agent';
+import { DesignSpecialistAgentV2, DesignSpecialistInputV2, DesignSpecialistOutputV2 } from '../specialists/design-specialist-agent-v2';
 import { QualitySpecialistAgent, QualitySpecialistInput, QualitySpecialistOutput } from '../specialists/quality-specialist-agent';
 import { DeliverySpecialistAgent, DeliverySpecialistInput, DeliverySpecialistOutput } from '../specialists/delivery-specialist-agent';
 import { AgentResponseUtils, AgentErrorCodes } from '../types/base-agent-types';
@@ -61,7 +61,7 @@ export interface WorkflowExecutionOutput {
   };
   agent_results: {
     content_specialist?: ContentSpecialistOutput;
-    design_specialist?: DesignSpecialistOutput;
+    design_specialist?: DesignSpecialistOutputV2;
     quality_specialist?: QualitySpecialistOutput;
     delivery_specialist?: DeliverySpecialistOutput;
   };
@@ -104,7 +104,7 @@ interface HandoffExecution {
 
 export class AgentHandoffsCoordinator {
   private contentAgent: ContentSpecialistAgent;
-  private designAgent: DesignSpecialistAgent;
+  private designAgent: DesignSpecialistAgentV2;
   private qualityAgent: QualitySpecialistAgent;
   private deliveryAgent: DeliverySpecialistAgent;
   
@@ -118,7 +118,7 @@ export class AgentHandoffsCoordinator {
   constructor() {
     // Initialize all specialized agents
     this.contentAgent = new ContentSpecialistAgent();
-    this.designAgent = new DesignSpecialistAgent();
+    this.designAgent = new DesignSpecialistAgentV2();
     this.qualityAgent = new QualitySpecialistAgent();
     this.deliveryAgent = new DeliverySpecialistAgent();
     
@@ -195,7 +195,7 @@ export class AgentHandoffsCoordinator {
             throw new Error(`Design Specialist failed: ${designResult.error}`);
           }
           
-          currentHandoffData = this.mergeHandoffData(currentHandoffData, designResult.recommendations.handoff_data);
+          currentHandoffData = this.mergeHandoffData(currentHandoffData, designResult.handoff_data);
         }
 
         // Stage 3: Quality Specialist with retry
@@ -225,7 +225,7 @@ export class AgentHandoffsCoordinator {
             }
           }
           
-          currentHandoffData = this.mergeHandoffData(currentHandoffData, qualityResult.recommendations.handoff_data);
+          currentHandoffData = this.mergeHandoffData(currentHandoffData, qualityResult.recommendations?.handoff_data);
         }
 
         // Stage 4: Delivery Specialist with retry
@@ -375,7 +375,7 @@ export class AgentHandoffsCoordinator {
     workflowInput: WorkflowExecutionInput,
     handoffData: any,
     executionHistory: HandoffExecution[]
-  ): Promise<DesignSpecialistOutput> {
+  ): Promise<DesignSpecialistOutputV2> {
     const execution: HandoffExecution = {
       agent_id: 'design-specialist',
       start_time: Date.now(),
@@ -386,18 +386,22 @@ export class AgentHandoffsCoordinator {
     executionHistory.push(execution);
 
     // Extract content package from handoff data
-    const contentPackage = handoffData?.content_package?.data || {};
+    // Поддерживаем множественные структуры данных:
+    // 1. handoffData.content_package.complete_content
+    // 2. handoffData.content_package  
+    // 3. handoffData (когда структура: {content: {...}, design_requirements: {...}, brand_guidelines: {...}})
+    const contentPackage = handoffData?.content_package?.complete_content || handoffData?.content_package || handoffData || {};
     
-    const designInput: DesignSpecialistInput = {
+    const designInput: DesignSpecialistInputV2 = {
       task_type: 'render_email',
       content_package: {
         content: {
-          subject: contentPackage.content?.subject || workflowInput.campaign_brief.topic,
-          preheader: contentPackage.content?.preheader || `Узнайте больше о ${workflowInput.campaign_brief.topic}`,
-          body: contentPackage.content?.body || contentPackage.content?.email_body || '',
-          cta: contentPackage.content?.cta || contentPackage.content?.cta_text || 'Забронировать',
-          language: contentPackage.content?.language || 'ru',
-          tone: contentPackage.content?.tone || 'friendly'
+          subject: contentPackage.subject || workflowInput.campaign_brief.topic,
+          preheader: contentPackage.preheader || `Узнайте больше о ${workflowInput.campaign_brief.topic}`,
+          body: contentPackage.body || contentPackage.email_body || '',
+          cta: contentPackage.cta || contentPackage.cta_text || 'Забронировать',
+          language: contentPackage.language || 'ru',
+          tone: contentPackage.tone || 'friendly'
         },
         design_requirements: handoffData?.design_requirements,
         brand_guidelines: handoffData?.brand_guidelines
@@ -409,7 +413,6 @@ export class AgentHandoffsCoordinator {
         target_count: 2
       },
       rendering_requirements: {
-        output_format: 'html',
         template_type: 'promotional',
         email_client_optimization: 'universal',
         responsive_design: true,
@@ -417,8 +420,7 @@ export class AgentHandoffsCoordinator {
       },
       campaign_context: {
         campaign_id: workflowInput.workflow_id
-      },
-      handoff_data: handoffData
+      }
     };
 
     const retryPolicy = workflowInput.execution_config?.retry_policy || this.defaultRetryPolicy;
@@ -475,15 +477,31 @@ export class AgentHandoffsCoordinator {
     // Extract email package from design specialist
     const emailPackage = handoffData?.email_package || handoffData?.design_artifacts;
     
+    // DEBUG: Детальное логирование handoff данных
+    console.log('🔍 DEBUG AGENT HANDOFFS - QUALITY INPUT:', {
+      handoffData_keys: Object.keys(handoffData || {}),
+      has_email_package: !!handoffData?.email_package,
+      email_package_keys: handoffData?.email_package ? Object.keys(handoffData.email_package) : null,
+      has_design_artifacts: !!handoffData?.design_artifacts,
+      design_artifacts_keys: handoffData?.design_artifacts ? Object.keys(handoffData.design_artifacts) : null,
+      emailPackage_final: emailPackage ? Object.keys(emailPackage) : null,
+      html_content_length: emailPackage?.html_content?.length || 0,
+      html_output_length: emailPackage?.html_output?.length || 0,
+      html_content_preview: emailPackage?.html_content ? emailPackage.html_content.substring(0, 200) + '...' : 'EMPTY',
+      html_output_preview: emailPackage?.html_output ? emailPackage.html_output.substring(0, 200) + '...' : 'EMPTY',
+      handoffData_type: typeof handoffData,
+      handoffData_full_structure: handoffData ? JSON.stringify(handoffData, null, 2).substring(0, 500) + '...' : 'NULL'
+    });
+    
     const qualityInput: QualitySpecialistInput = {
       task_type: 'comprehensive_audit',
-      email_package: {
-        html_output: emailPackage?.html_output || '',
-        mjml_source: emailPackage?.mjml_source,
-        assets_used: emailPackage?.assets_used || [],
-        rendering_metadata: emailPackage?.rendering_metadata,
-        subject: emailPackage?.subject || workflowInput.campaign_brief.topic
-      },
+              email_package: {
+          html_output: emailPackage?.html_content || emailPackage?.html_output || '',
+          mjml_source: emailPackage?.mjml_source,
+          assets_used: emailPackage?.asset_urls || emailPackage?.assets_used || [],
+          rendering_metadata: emailPackage?.rendering_metadata,
+          subject: emailPackage?.subject || workflowInput.campaign_brief.topic
+        },
       quality_requirements: {
         html_validation: true,
         email_client_compatibility: workflowInput.execution_config?.quality_requirements?.minimum_score || 95,

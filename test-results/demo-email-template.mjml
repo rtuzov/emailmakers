@@ -1,0 +1,44 @@
+<mjml>
+  <mj-head>
+    <mj-title>Добро пожаловать в нашу рассылку!</mj-title>
+    <mj-preview>Готовьтесь к потрясающему контенту</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Inter, Arial, sans-serif" />
+      <mj-text font-size="16px" color="#1E293B" line-height="1.5" />
+      <mj-button background-color="#2563EB" color="white" font-size="16px" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      .dark-mode { background-color: #1f2937 !important; color: #f9fafb !important; }
+      @media (prefers-color-scheme: dark) {
+        .container { background-color: #1f2937 !important; }
+        .text { color: #f9fafb !important; }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#F8FAFC">
+    <mj-section background-color="white" padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="28px" font-weight="bold" color="#2563EB">
+          Добро пожаловать!
+        </mj-text>
+        <mj-text>
+          Мы рады приветствовать вас в нашем сообществе подписчиков.
+        </mj-text>
+        <mj-text>
+          Вы будете получать:
+        </mj-text>
+        <mj-text>
+          • Еженедельные советы и идеи<br/>
+          • Эксклюзивные предложения<br/>
+          • Новости индустрии
+        </mj-text>
+        <mj-text>
+          Спасибо за подписку!
+        </mj-text>
+        <mj-button href="#" background-color="#2563EB" color="white">
+          Читать нашу последнюю статью
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

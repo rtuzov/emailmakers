@@ -194,8 +194,9 @@ export async function GET(
 ) {
   try {
     // For demo purposes, return a simple response
+    const { jobId } = params;
     return NextResponse.json({
-      id: params.jobId,
+      id: jobId,
       status: 'pending',
       progress: {
         percentage: 0,
@@ -225,9 +226,10 @@ export async function DELETE(
 ) {
   try {
     // For demo purposes, return a simple response
+    const { jobId } = params;
     return NextResponse.json({
       message: 'Job cancelled successfully (demo mode)',
-      jobId: params.jobId
+      jobId: jobId
     });
   } catch (error) {
     console.error('Error cancelling render job:', error);
@@ -248,10 +250,11 @@ export async function POST(
 ) {
   try {
     // For demo purposes, return a simple response
+    const { jobId } = params;
     return NextResponse.json({
       message: 'Job retried successfully (demo mode)',
-      id: params.jobId + '-retry',
-      originalJobId: params.jobId,
+      id: jobId + '-retry',
+      originalJobId: jobId,
       status: 'pending',
       createdAt: new Date().toISOString()
     }, { status: 201 });

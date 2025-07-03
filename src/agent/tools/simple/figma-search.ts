@@ -41,11 +41,8 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
   const startTime = Date.now();
   
   try {
-    console.log('🔍 Searching local Figma assets:', {
-      tags: params.tags,
-      target_count: params.target_count,
-      emotional_tone: params.emotional_tone
-    });
+    // Simplified logging - detailed logs are in figma-local-processor
+    console.log(`🔍 Figma search: ${params.tags.length} tags, target: ${params.target_count}`);
 
     // Use existing local processor with search context
     const emotionalTone = params.emotional_tone || 'positive';

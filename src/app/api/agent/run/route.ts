@@ -11,14 +11,29 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log('🚀 Real Agent run request:', body);
 
-    // Validate required parameters
-    const { topic, destination, origin } = body;
-    if (!topic || !destination || !origin) {
-      return NextResponse.json({
-        status: 'error',
-        error_message: 'Missing required parameters: topic, destination, origin',
-        generation_time: 0
-      }, { status: 400 });
+    // Support both old format (topic, destination, origin) and new format (briefText, tone, language)
+    let topic: string;
+    let destination: string | undefined;
+    let origin: string | undefined;
+
+    if (body.briefText) {
+      // New format - convert briefText to topic
+      topic = body.briefText;
+      destination = body.destination || 'Париж'; // Default for Paris travel
+      origin = body.origin || 'Москва'; // Default origin
+    } else {
+      // Old format - validate required parameters
+      const { topic: oldTopic, destination: oldDestination, origin: oldOrigin } = body;
+      if (!oldTopic || !oldDestination || !oldOrigin) {
+        return NextResponse.json({
+          status: 'error',
+          error_message: 'Missing required parameters: either briefText OR (topic, destination, origin)',
+          generation_time: 0
+        }, { status: 400 });
+      }
+      topic = oldTopic;
+      destination = oldDestination;
+      origin = oldOrigin;
     }
 
     // Run the real agent
@@ -29,7 +44,9 @@ export async function POST(request: NextRequest) {
       origin,
       options: {
         use_real_apis: true,
-        mock_mode: false
+        mock_mode: false,
+        use_ultrathink: true,
+        ultrathink_mode: 'debug'
       }
     });
     const generationTime = Date.now() - startTime;

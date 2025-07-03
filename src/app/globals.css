@@ -4,10 +4,20 @@
 
 /* Kupibilet Brand Colors & Variables */
 :root {
+  /* Legacy variables for compatibility */
   --kupibilet-primary: #4BFF7E;
   --kupibilet-secondary: #E03EEF;
   --kupibilet-accent: #FF6240;
   --kupibilet-background: linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%);
+  
+  /* Tailwind-compatible RGB variables */
+  --color-primary: 75, 255, 126;              /* #4BFF7E */
+  --color-primary-dark: 29, 168, 87;          /* #1DA857 */
+  --color-secondary: 224, 62, 239;            /* #E03EEF */
+  --color-accent: 255, 98, 64;                /* #FF6240 */
+  --color-background: 44, 57, 89;             /* #2C3959 */
+  --color-background-light: 52, 67, 99;       /* #344363 */
+  --color-warning: 255, 193, 7;               /* #FFC107 */
 }
 
 /* Background Styles */
@@ -106,4 +116,46 @@ body {
 
 .bg-background {
   background: var(--kupibilet-background);
+}
+
+/* Hero backgrounds for layouts */
+.bg-kupibilet-hero {
+  background: linear-gradient(135deg, rgb(44, 57, 89) 0%, rgb(52, 67, 99) 50%, rgb(62, 77, 109) 100%);
+}
+
+.bg-animated-gradient {
+  background: linear-gradient(135deg, 
+    rgba(75, 255, 126, 0.1) 0%, 
+    rgba(224, 62, 239, 0.1) 25%, 
+    rgba(255, 98, 64, 0.1) 50%, 
+    rgba(75, 255, 126, 0.1) 75%, 
+    rgba(224, 62, 239, 0.1) 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+.bg-kupibilet-gradient {
+  background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-accent)) 100%);
+}
+
+/* Typography */
+.font-primary {
+  font-family: 'Inter', sans-serif;
+}
+
+.text-heading {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* Glow effects */
+.glow-green {
+  box-shadow: 0 0 20px rgba(var(--color-primary), 0.5);
+}
+
+/* Animations */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }

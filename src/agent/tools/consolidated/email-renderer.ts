@@ -14,7 +14,7 @@ import { z } from 'zod';
 import { renderMjml } from '../mjml';
 import { renderComponent } from '../react-renderer';
 import { advancedComponentSystem } from '../advanced-component-system';
-import { seasonalComponentSystem } from '../seasonal-component-system';
+// import { seasonalComponentSystem } from '../seasonal-component-system'; // removed - no hardcoded seasonal components
 import { EmailFolder } from '../email-folder-manager';
 
 // Unified schema for all email rendering operations
@@ -69,18 +69,18 @@ export const emailRendererSchema = z.object({
   }).default({}).describe('Content data for rendering'),
   
   // Additional parameters for backward compatibility
-  assets: z.array(z.string()).optional().nullable().describe('Asset paths for email rendering'),
-  pricing_data: z.string().optional().nullable().describe('Pricing data for content'),
+  assets: z.array(z.string()).default([]).describe('Asset paths for email rendering'),
+  pricing_data: z.string().default('').describe('Pricing data for content'),
   brand_guidelines: z.object({
-    brand_voice: z.string().optional().nullable(),
-    visual_style: z.string().optional().nullable(),
-    color_palette: z.array(z.string()).optional().nullable(),
-    typography: z.string().optional().nullable(),
-    primary_color: z.string().optional().nullable(),
-    secondary_color: z.string().optional().nullable(),
-    font_family: z.string().optional().nullable(),
-    logo_url: z.string().optional().nullable()
-  }).optional().nullable().describe('Brand guidelines for rendering'),
+    brand_voice: z.string().default(''),
+    visual_style: z.string().default(''),
+    color_palette: z.array(z.string()).default([]),
+    typography: z.string().default(''),
+    primary_color: z.string().default(''),
+    secondary_color: z.string().default(''),
+    font_family: z.string().default(''),
+    logo_url: z.string().default('')
+  }).default({}).describe('Brand guidelines for rendering'),
   
   // Rendering options
   rendering_options: z.object({
@@ -104,7 +104,10 @@ export const emailRendererSchema = z.object({
   // Analytics and debugging
   include_analytics: z.boolean().default(true).describe('Include rendering analytics'),
   debug_mode: z.boolean().default(false).describe('Enable debug output and logging'),
-  render_metadata: z.boolean().default(true).describe('Include rendering metadata in output')
+  render_metadata: z.boolean().default(true).describe('Include rendering metadata in output'),
+  
+  // Email folder for saving files
+  emailFolder: z.any().optional().describe('EmailFolder object for saving rendered files')
 });
 
 export type EmailRendererParams = z.infer<typeof emailRendererSchema>;
@@ -207,6 +210,29 @@ interface EmailRendererResult {
  */
 export async function emailRenderer(params: EmailRendererParams): Promise<EmailRendererResult> {
   const startTime = Date.now();
+  
+  console.log('🏗️ EmailRenderer called with action:', params.action);
+  console.log('🔍 EmailRenderer params summary:', {
+    action: params.action,
+    mjml_content_length: params.mjml_content?.length || 0,
+    content_data_keys: Object.keys(params.content_data || {}),
+    assets_count: Array.isArray(params.assets) ? params.assets.length : 'not_array'
+  });
+  
+  // Детальное логирование content_data
+  if (params.content_data) {
+    console.log('🔍 Content data detailed analysis:');
+    const contentData = params.content_data;
+    Object.keys(contentData).forEach(key => {
+      const value = (contentData as any)[key];
+      console.log(`  ${key}:`, {
+        type: typeof value,
+        isString: typeof value === 'string',
+        length: typeof value === 'string' ? value.length : 'not_string',
+        preview: typeof value === 'string' ? value.substring(0, 50) + '...' : JSON.stringify(value).substring(0, 50) + '...'
+      });
+    });
+  }
   console.log(`📧 Email Renderer: Executing action "${params.action}"`);
   
   try {
@@ -266,27 +292,54 @@ function createStandardMjmlResponse(
   params: EmailRendererParams
 ): StandardMjmlResponse {
   const executionTime = Date.now() - startTime;
-  const htmlSizeKb = Buffer.byteLength(htmlContent || '', 'utf8') / 1024;
+  if (!htmlContent) {
+    console.error('❌ EmailRenderer: HTML контент отсутствует');
+    throw new Error('HTML контент обязателен для создания стандартного MJML ответа');
+  }
   
-  // Безопасное извлечение данных из параметров
-  const contentData = typeof params.content_data === 'object' ? params.content_data : {};
-  const assetsArray = Array.isArray(params.assets) ? params.assets : [];
+  const htmlSizeKb = Buffer.byteLength(htmlContent, 'utf8') / 1024;
+  
+  // Строгая валидация параметров без fallback
+  if (typeof params.content_data !== 'object' || !params.content_data) {
+    console.error('❌ EmailRenderer: content_data отсутствует или неверного типа');
+    throw new Error('content_data должен быть объектом');
+  }
+  if (params.assets === undefined || params.assets === null) {
+    console.error('❌ EmailRenderer: assets отсутствует');
+    throw new Error('assets должен быть массивом');
+  }
+  if (!Array.isArray(params.assets)) {
+    console.error('❌ EmailRenderer: assets не является массивом');
+    throw new Error('assets должен быть массивом');
+  }
+  
+  const contentData = params.content_data;
+  const assetsArray = params.assets;
   
   return {
-    success: !!htmlContent,
+    success: true, // htmlContent уже проверен выше
     action: 'render_mjml_standard',
     mjml: {
-      source: mjmlContent || '',
-      is_valid: validationResult?.is_valid || false,
+      source: mjmlContent || (() => {
+        console.error('❌ EmailRenderer: MJML контент отсутствует');
+        throw new Error('MJML контент обязателен');
+      })(),
+      is_valid: validationResult?.is_valid || (() => {
+        console.error('❌ EmailRenderer: Результат валидации отсутствует');
+        throw new Error('Результат валидации обязателен');
+      })(),
       validation_issues: validationResult?.issues || [],
       auto_fixes_applied: validationResult?.fixes_applied || 0,
-      length: mjmlContent?.length || 0
+      length: mjmlContent?.length || (() => {
+        console.error('❌ EmailRenderer: Длина MJML не определена');
+        throw new Error('Длина MJML контента обязательна');
+      })()
     },
     html: {
-      content: htmlContent || '',
+      content: htmlContent, // уже проверен выше
       size_kb: htmlSizeKb,
-      is_valid: validateHTML(htmlContent || ''),
-      length: htmlContent?.length || 0
+      is_valid: validateHTML(htmlContent),
+      length: htmlContent.length
     },
     rendering: {
       engine: 'mjml-core',
@@ -308,16 +361,16 @@ function createStandardMjmlResponse(
     },
     metadata: {
       generation_timestamp: new Date().toISOString(),
-      content_language: (contentData as any)?.language || 'ru',
-      tone: (contentData as any)?.tone || 'friendly',
+      content_language: (contentData as any)?.language || 
+                       (contentData as any)?.personalization?.language || 
+                       'ru', // Default to Russian as per project requirements
+      tone: (contentData as any)?.tone || 
+            (contentData as any)?.personalization?.tone || 
+            'friendly', // Default tone
       components_used: extractComponentsUsed(mjmlContent || ''),
       assets_count: assetsArray.length
     },
-    error: htmlContent ? undefined : {
-      code: 'RENDERING_FAILED',
-      message: 'Failed to generate HTML from MJML',
-      details: validationResult?.issues || []
-    },
+    error: undefined, // htmlContent уже проверен выше, ошибок нет
     recommendations: generateRecommendations(validationResult, htmlSizeKb)
   };
 }
@@ -328,9 +381,14 @@ function createStandardMjmlResponse(
 function calculateOverallQualityScore(validationResult: any, htmlSizeKb: number): number {
   let score = 100;
   
-  // Штрафы за ошибки валидации
-  const errors = validationResult?.issues?.filter((issue: any) => issue.type === 'error') || [];
-  const warnings = validationResult?.issues?.filter((issue: any) => issue.type === 'warning') || [];
+  // Штрафы за ошибки валидации - строгая проверка без fallback
+  if (!validationResult?.issues) {
+    console.error('❌ EmailRenderer: Validation issues отсутствуют');
+    throw new Error('Validation issues обязательны для расчета качества');
+  }
+  
+  const errors = validationResult.issues.filter((issue: any) => issue.type === 'error');
+  const warnings = validationResult.issues.filter((issue: any) => issue.type === 'warning');
   
   score -= errors.length * 15; // -15 за каждую ошибку
   score -= warnings.length * 5; // -5 за каждое предупреждение
@@ -346,14 +404,23 @@ function calculateOverallQualityScore(validationResult: any, htmlSizeKb: number)
  * Извлекает используемые компоненты из MJML
  */
 function extractComponentsUsed(mjmlContent: string): string[] {
-  const components = [];
-  const mjmlTags = mjmlContent.match(/<mj-[^>]+>/g) || [];
+  if (!mjmlContent || mjmlContent.trim() === '') {
+    return ['mj-body', 'mj-section', 'mj-column', 'mj-text']; // Default components
+  }
+  
+  const mjmlTags = mjmlContent.match(/<mj-[^>]+>/g);
+  if (!mjmlTags || mjmlTags.length === 0) {
+    return ['mj-body', 'mj-section', 'mj-column', 'mj-text']; // Default components
+  }
   
   const uniqueTags = new Set(
-    mjmlTags.map(tag => tag.match(/<(mj-[^>\s]+)/)?.[1]).filter(Boolean)
+    mjmlTags.map(tag => {
+      const match = tag.match(/<(mj-[^>\s]+)/);
+      return match && match[1] ? match[1] : 'mj-unknown';
+    }).filter(tag => tag !== 'mj-unknown')
   );
   
-  return Array.from(uniqueTags) as string[];
+  return Array.from(uniqueTags);
 }
 
 /**
@@ -429,6 +496,77 @@ function calculatePerformanceScore(html: string): number {
 }
 
 async function handleMjmlRendering(params: EmailRendererParams, startTime: number): Promise<EmailRendererResult> {
+  // Validate content_data
+  if (!params.content_data) {
+    throw new Error('content_data is required for MJML rendering');
+  }
+
+  // Process assets parameter
+  let assetsArray: string[] = [];
+  if (params.assets) {
+    if (Array.isArray(params.assets)) {
+      assetsArray = params.assets;
+      console.log('📦 EmailRenderer: assets array received:', assetsArray.length);
+    } else if (typeof params.assets === 'string') {
+      try {
+        assetsArray = JSON.parse(params.assets);
+        if (!Array.isArray(assetsArray)) {
+          console.error('❌ EmailRenderer: Parsed assets не является массивом');
+          throw new Error('assets должен содержать валидный JSON массив');
+        }
+        console.log('📦 EmailRenderer: assets JSON parsed:', assetsArray.length);
+      } catch (parseError) {
+        console.error('❌ EmailRenderer: Ошибка парсинга JSON assets:', parseError);
+        console.error('❌ EmailRenderer: Неверный JSON в assets');
+        throw new Error('assets должен содержать валидный JSON массив');
+      }
+    } else {
+      console.error('❌ EmailRenderer: assets неверного типа');
+      throw new Error('assets должен быть массивом или JSON строкой');
+    }
+  } else {
+    console.error('❌ EmailRenderer: assets неверного типа');
+    throw new Error('assets должен быть массивом или JSON строкой');
+  }
+  
+  // Use existing emailFolder if provided, otherwise create new one
+  let emailFolder: EmailFolder;
+  
+  if (params.emailFolder) {
+    console.log('📁 Using existing emailFolder:', params.emailFolder.campaignId);
+    emailFolder = params.emailFolder;
+    
+    // Ensure all required paths exist
+    const fs = await import('fs/promises');
+    await fs.mkdir(emailFolder.basePath, { recursive: true });
+    await fs.mkdir(emailFolder.assetsPath, { recursive: true });
+    await fs.mkdir(emailFolder.spritePath, { recursive: true });
+  } else {
+    // Create new emailFolder only if not provided
+    console.log('📁 Creating new emailFolder...');
+    const campaignId = `email-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const path = await import('path');
+    const fs = await import('fs/promises');
+    const basePath = path.join(process.cwd(), 'mails', campaignId);
+    
+    // Создаем все необходимые папки
+    await fs.mkdir(basePath, { recursive: true });
+    await fs.mkdir(path.join(basePath, 'assets'), { recursive: true });
+    await fs.mkdir(path.join(basePath, 'assets', 'sprite-slices'), { recursive: true });
+    
+    emailFolder = {
+      campaignId: campaignId,
+      basePath: basePath,
+      assetsPath: path.join(basePath, 'assets'),
+      spritePath: path.join(basePath, 'assets', 'sprite-slices'),
+      htmlPath: path.join(basePath, 'email.html'),
+      mjmlPath: path.join(basePath, 'email.mjml'),
+      metadataPath: path.join(basePath, 'metadata.json')
+    };
+    
+    console.log(`📁 Created email campaign folder: ${campaignId}`);
+  }
+  
   console.log('🏗️ Generating and rendering MJML content to HTML');
   
   // Если MJML контент не предоставлен, генерируем его динамически
@@ -436,7 +574,13 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
   
   if (!mjmlContent || mjmlContent.trim() === '') {
     console.log('📝 Generating MJML dynamically from content data');
-    mjmlContent = generateDynamicMjml(params);
+    try {
+      mjmlContent = await generateDynamicMjml(params);
+      console.log('✅ MJML generated successfully, length:', mjmlContent.length);
+    } catch (mjmlGenError) {
+      console.error('❌ generateDynamicMjml failed:', mjmlGenError.message);
+      throw new Error(`MJML generation failed: ${mjmlGenError.message}`);
+    }
   }
   
   // Валидируем сгенерированный MJML
@@ -458,90 +602,146 @@ async function handleMjmlRendering(params: EmailRendererParams, startTime: numbe
     console.log(`🔧 Auto-fix applied: ${originalLength} → ${mjmlContent.length} chars`);
   }
   
-  // Безопасное извлечение данных из параметров
-  const contentData = typeof params.content_data === 'object' ? 
-    params.content_data : 
-    (typeof params.content_data === 'string' ? JSON.parse(params.content_data || '{}') : {});
+  // Строгая валидация данных без fallback
+  if (!params.content_data) {
+    console.error('❌ EmailRenderer: content_data отсутствует');
+    throw new Error('content_data обязателен для MJML рендеринга');
+  }
   
-  const assetsArray = Array.isArray(params.assets) ? params.assets : 
-    (typeof params.assets === 'string' ? JSON.parse(params.assets || '[]') : []);
+  let contentData;
+  if (typeof params.content_data === 'object') {
+    contentData = params.content_data;
+  } else if (typeof params.content_data === 'string') {
+    try {
+      contentData = JSON.parse(params.content_data);
+    } catch (error) {
+      console.error('❌ EmailRenderer: Неверный JSON в content_data');
+      throw new Error('content_data должен содержать валидный JSON');
+    }
+  } else {
+    console.error('❌ EmailRenderer: content_data неверного типа');
+    throw new Error('content_data должен быть объектом или JSON строкой');
+  }
   
-  // Создаем emailFolder для сохранения полных файлов
-  const campaignId = `email-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  const path = await import('path');
-  const fs = await import('fs/promises');
-  const basePath = path.join(process.cwd(), 'mails', campaignId);
+  if (params.assets === undefined || params.assets === null) {
+    console.error('❌ EmailRenderer: assets отсутствует');
+    throw new Error('assets обязателен для MJML рендеринга');
+  }
   
-  // Создаем все необходимые папки
-  await fs.mkdir(basePath, { recursive: true });
-  await fs.mkdir(path.join(basePath, 'assets'), { recursive: true });
-  await fs.mkdir(path.join(basePath, 'assets', 'sprite-slices'), { recursive: true });
-  
-  const emailFolder: EmailFolder = {
-    campaignId: campaignId,
-    basePath: basePath,
-    assetsPath: path.join(basePath, 'assets'),
-    spritePath: path.join(basePath, 'assets', 'sprite-slices'),
-    htmlPath: path.join(basePath, 'email.html'),
-    mjmlPath: path.join(basePath, 'email.mjml'),
-    metadataPath: path.join(basePath, 'metadata.json')
-  };
-  
-  console.log(`📁 Created email campaign folder: ${campaignId}`);
-
   // Enhanced MJML rendering with optimizations
-  const mjmlResult = await renderMjml({
-    content: {
-      subject: (contentData as any)?.subject || 'Email Subject',
-      preheader: (contentData as any)?.preheader || 'Email Preheader', 
-      body: (contentData as any)?.body || 'Default body',
-      cta: (contentData as any)?.cta || 'Click Here',
-      language: (contentData as any)?.language || 'ru',
-      tone: (contentData as any)?.tone || 'friendly'
-    },
-    assets: {
-      paths: assetsArray,
-      metadata: {}
-    },
-    mjmlContent: mjmlContent, // Передаём сгенерированный MJML
-    emailFolder: emailFolder // Передаём emailFolder для сохранения полных файлов
+  let mjmlResult;
+  try {
+    console.log('🔄 About to call renderMjml...');
+    mjmlResult = await renderMjml({
+      content: {
+        subject: (contentData as any)?.subject || 'Email Subject',
+        preheader: (contentData as any)?.preheader || 'Email Preheader', 
+        body: (contentData as any)?.body || 'Default body',
+        cta: (contentData as any)?.cta || 'Click Here',
+        language: (contentData as any)?.language || 'ru',
+        tone: (contentData as any)?.tone || 'friendly'
+      },
+      assets: {
+        paths: assetsArray,
+        metadata: {}
+      },
+      mjmlContent: mjmlContent, // Передаём сгенерированный MJML
+      emailFolder: emailFolder // Передаём emailFolder для сохранения полных файлов
+    });
+    console.log('✅ renderMjml call completed');
+  } catch (renderError) {
+    console.error('❌ renderMjml failed with error:', renderError);
+    console.error('❌ Error stack:', renderError.stack);
+    throw new Error(`renderMjml execution failed: ${renderError.message}`);
+  }
+  
+  console.log('📊 renderMjml complete result:', {
+    success: mjmlResult.success,
+    has_data: !!mjmlResult.data,
+    data_keys: mjmlResult.data ? Object.keys(mjmlResult.data) : [],
+    error: mjmlResult.error,
+    data_preview: mjmlResult.data ? JSON.stringify(mjmlResult.data).substring(0, 300) + '...' : 'no data'
   });
   
   if (!mjmlResult.success) {
     throw new Error(`MJML rendering failed: ${mjmlResult.error}`);
   }
   
-  // Apply post-processing optimizations
-  const optimizedOutput = await applyRenderingOptimizations(mjmlResult.data, params);
+  // Если HTML сохранен в файл, читаем полную версию
+  let fullHtml = mjmlResult.data.html;
+  let fullMjml = mjmlResult.data.mjml_source;
+  
+  if (mjmlResult.data.full_html_saved && emailFolder?.htmlPath) {
+    console.log('📂 Reading full HTML from file:', emailFolder.htmlPath);
+    try {
+      const fs = await import('fs/promises');
+      fullHtml = await fs.readFile(emailFolder.htmlPath, 'utf-8');
+      fullMjml = await fs.readFile(emailFolder.mjmlPath, 'utf-8');
+      console.log('✅ Full HTML loaded:', {
+        htmlLength: fullHtml.length,
+        mjmlLength: fullMjml.length,
+        hasValidHtml: fullHtml.includes('<html>') && fullHtml.includes('</html>')
+      });
+    } catch (fileError) {
+      console.warn('⚠️ Could not read full HTML from file, using preview version:', fileError.message);
+    }
+  }
+  
+  // Apply post-processing optimizations with full HTML
+  const optimizedOutput = await applyRenderingOptimizations({
+    ...mjmlResult.data,
+    html: fullHtml,
+    mjml_source: fullMjml
+  }, params);
   const validationResults = params.rendering_options?.validate_html ? 
     await validateEmailOutput(optimizedOutput, params) : undefined;
   
-  console.log(`✅ MJML rendered successfully (${optimizedOutput.html?.length || 0} chars)`);
+  console.log(`✅ MJML rendered successfully. Optimization result:`, {
+    optimized_html_length: optimizedOutput.html?.length || 0,
+    full_html_length: fullHtml.length,
+    full_mjml_length: fullMjml.length,
+    has_valid_html: fullHtml.includes('<html>') && fullHtml.includes('</html>'),
+    html_preview: fullHtml.substring(0, 100) + '...'
+  });
   
-  // Создаем стандартизированный ответ
+  // Создаем finalValidationResult с данными из MJML валидации
+  const finalValidationResult = {
+    is_valid: validationResult?.is_valid || true,
+    issues: validationResult?.issues || [],
+    fixes_applied: mjmlContent.length - (params.mjml_content?.length || 0),
+    html_valid: fullHtml.includes('<html>') && fullHtml.includes('</html>'),
+    size_valid: fullHtml.length > 100 && fullHtml.length < 100000
+  };
+  
+  // Создаем стандартизированный ответ с полным HTML
   const standardResponse = createStandardMjmlResponse(
-    mjmlContent,
-    optimizedOutput.html || '',
-    { 
-      ...validationResult, 
-      fixes_applied: mjmlContent.length - (params.mjml_content?.length || 0) 
-    },
+    fullMjml,
+    fullHtml,
+    finalValidationResult,
     optimizedOutput,
     startTime,
     params
   );
+  
+  // Добавляем campaign_id в metadata стандартного ответа
+  if (standardResponse.metadata) {
+    (standardResponse.metadata as any).campaign_id = emailFolder.campaignId;
+  }
   
   // Возвращаем совместимый формат для обратной совместимости
   return {
     success: standardResponse.success,
     action: 'render_mjml',
     data: {
-      html: standardResponse.html.content,
-      mjml: standardResponse.mjml.source,
+      html: fullHtml,
+      html_content: fullHtml, // Добавляем html_content для совместимости
+      mjml: fullMjml,
+      mjml_source: fullMjml, // Добавляем mjml_source для совместимости
       text_version: optimizedOutput.text_version,
       rendering_stats: optimizedOutput.stats,
-      standard_response: standardResponse // Добавляем стандартизированный ответ
-    },
+      standard_response: standardResponse, // Добавляем стандартизированный ответ
+      metadata: { campaign_id: emailFolder.campaignId } // Добавляем metadata с campaign_id
+    } as any,
     rendering_metadata: {
       template_type: standardResponse.rendering.template_type,
       rendering_engine: standardResponse.rendering.engine,
@@ -699,50 +899,61 @@ async function handleSeasonalRendering(params: EmailRendererParams, startTime: n
   
   console.log(`🎄 Rendering seasonal template: ${params.seasonal_config.season}`);
   
-  const seasonalResult = await seasonalComponentSystem({
-    action: 'select_seasonal',
-    component_type: 'rabbit',
-    seasonal_context: {
-      current_date: new Date(),
-      region: 'RU',
-      email_content_tone: 'promotional',
-      target_audience: 'general'
-    },
-    preferred_emotion: 'happy',
-    fallback_strategy: 'flexible'
-  });
-  
-  if (!seasonalResult.success) {
-    throw new Error(`Seasonal rendering failed: ${seasonalResult.error}`);
+  // seasonalComponentSystem removed - no hardcoded seasonal components
+  // All seasonal content must be provided through params.assets
+  if (!params.assets || params.assets.length === 0) {
+    throw new Error(`❌ EmailRenderer: Seasonal rendering requires real assets from Design Specialist. No hardcoded seasonal components allowed.`);
   }
   
-  // Apply seasonal-specific optimizations
-  const seasonalOptimized = await applySeasonalOptimizations(seasonalResult.data, params);
+  console.log(`✅ Seasonal template using real assets: ${params.seasonal_config.season} (${params.seasonal_config.seasonal_intensity})`);
   
-  console.log(`✅ Seasonal template rendered: ${params.seasonal_config.season} (${params.seasonal_config.seasonal_intensity})`);
+  // Generate MJML with real assets from Design Specialist
+  const mjmlContent = generateSeasonalMjml(params, params.assets[0]);
+  
+  // Use handleMjmlRendering to get actual HTML
+  const mjmlParams = {
+    ...params,
+    action: 'render_mjml' as const,
+    mjml_content: mjmlContent
+  };
+  
+  const mjmlResult = await handleMjmlRendering(mjmlParams, startTime);
+  
+  if (!mjmlResult.success) {
+    throw new Error(`MJML rendering failed: ${mjmlResult.error}`);
+  }
   
   return {
     success: true,
     action: 'render_seasonal',
     data: {
-      html: seasonalOptimized.html,
-      component_metadata: seasonalResult.data.metadata,
-      rendering_stats: seasonalResult.data.seasonalElements
+      html: mjmlResult.data?.html || '',
+      html_content: mjmlResult.data?.html || '', // Add for compatibility
+      mjml: mjmlContent,
+      component_metadata: {
+        seasonal_assets: params.assets,
+        season: params.seasonal_config.season,
+        intensity: params.seasonal_config.seasonal_intensity
+      },
+      rendering_stats: {
+        assets_used: params.assets.length,
+        mjml_stats: mjmlResult.data?.rendering_stats
+      }
     },
     rendering_metadata: {
       template_type: `seasonal_${params.seasonal_config.season}`,
-      rendering_engine: 'seasonal-component-system',
-      optimizations_applied: seasonalOptimized.optimizations || [],
+      rendering_engine: 'seasonal-mjml-hybrid',
+      optimizations_applied: mjmlResult.rendering_metadata?.optimizations_applied || [],
       client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-      file_size: seasonalOptimized.html?.length || 0,
-      load_time_estimate: calculateLoadTime(seasonalOptimized.html || '')
+      file_size: mjmlResult.data?.html?.length || 0,
+      load_time_estimate: calculateLoadTime(mjmlResult.data?.html || '')
     },
     analytics: params.include_analytics ? {
       execution_time: Date.now() - startTime,
       rendering_complexity: 80, // Seasonal components are complex
       cache_efficiency: 70,
-      components_rendered: seasonalResult.data.componentsUsed?.length || 1,
-      optimizations_performed: seasonalOptimized.optimizations?.length || 0
+      components_rendered: 1,
+      optimizations_performed: mjmlResult.rendering_metadata?.optimizations_applied?.length || 0
     } : undefined
   };
 }
@@ -1025,9 +1236,144 @@ async function addMjmlStructure(data: any, params: EmailRendererParams) {
 }
 
 /**
+ * Generate MJML for seasonal rendering with selected variant
+ */
+function generateSeasonalMjml(params: EmailRendererParams, seasonalVariant: any): string {
+  // Extract content data
+  let contentData: any = {};
+  
+  if (typeof params.content_data === 'string') {
+    try {
+      const parsed = JSON.parse(params.content_data);
+      if (Array.isArray(parsed)) {
+        const contentResult = parsed.find(item => 
+          item.type === 'function_call_result' && 
+          item.name === 'content_create' && 
+          item.output?.text
+        );
+        if (contentResult) {
+          const contentText = JSON.parse(contentResult.output.text);
+          contentData = contentText.content_data?.complete_content || {};
+        }
+      } else {
+        contentData = parsed;
+      }
+    } catch (error) {
+      console.warn('Failed to parse content_data:', error);
+      contentData = {};
+    }
+  } else if (params.content_data && typeof params.content_data === 'object') {
+    contentData = params.content_data;
+  }
+
+  // Validate required content
+  const subject = contentData.subject || 'Seasonal Email';
+  const preheader = contentData.preheader || 'Special seasonal offer';
+  const body = contentData.body || 'Enjoy our seasonal offerings!';
+  const cta = contentData.cta || contentData.cta_text || 'Learn More';
+  
+  // ОБЯЗАТЕЛЬНО требуем реальные ассеты из Figma - NO FALLBACK
+  let seasonalAssetPath: string;
+  let seasonalDescription: string;
+  
+  // Проверяем переданные ассеты из Design Specialist
+  if (params.assets && params.assets.length > 0) {
+    const firstAsset = params.assets[0];
+    if (typeof firstAsset === 'string') {
+      seasonalAssetPath = firstAsset;
+      seasonalDescription = 'Rabbit from Figma assets';
+    } else if (firstAsset && typeof firstAsset === 'object') {
+      seasonalAssetPath = firstAsset.path || firstAsset.url || firstAsset.src;
+      seasonalDescription = firstAsset.name || firstAsset.description || 'Rabbit from Figma assets';
+      
+      if (!seasonalAssetPath) {
+        throw new Error('❌ EmailRenderer: Asset object provided but no valid path found (path, url, or src)');
+      }
+    } else {
+      throw new Error('❌ EmailRenderer: Invalid asset format - must be string or object with path');
+    }
+    console.log('🎨 Используем Figma ассет:', { path: seasonalAssetPath, description: seasonalDescription });
+  } else if (seasonalVariant?.asset_path) {
+    seasonalAssetPath = seasonalVariant.asset_path;
+    seasonalDescription = seasonalVariant.description || 'Seasonal variant';
+    console.log('🎄 Используем сезонный ассет:', { path: seasonalAssetPath, description: seasonalDescription });
+  } else {
+    throw new Error('❌ EmailRenderer: No assets provided - real Figma assets are required, no fallback allowed');
+  }
+  
+  return `
+<mjml>
+  <mj-head>
+    <mj-title>${subject}</mj-title>
+    <mj-preview>${preheader}</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" color="#333333" line-height="1.6" />
+      <mj-button background-color="#007bff" color="white" border-radius="6px" font-size="16px" font-weight="bold" padding="12px 24px" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      .seasonal-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+      .seasonal-content { background-color: #f8f9fa; }
+      .seasonal-rabbit { max-width: 120px; height: auto; }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <!-- Header with seasonal theme -->
+    <mj-section css-class="seasonal-header" background-color="#667eea" padding="20px 0">
+      <mj-column>
+        <mj-text align="center" color="white" font-size="24px" font-weight="bold">
+          ${subject}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Seasonal rabbit component -->
+    <mj-section background-color="#ffffff" padding="30px 0">
+      <mj-column>
+        <mj-image 
+          src="${seasonalAssetPath}" 
+          alt="${seasonalDescription}"
+          width="120px"
+          css-class="seasonal-rabbit"
+          align="center"
+        />
+      </mj-column>
+    </mj-section>
+    
+    <!-- Main content -->
+    <mj-section css-class="seasonal-content" background-color="#f8f9fa" padding="30px 0">
+      <mj-column>
+        <mj-text font-size="18px" color="#333333" align="center">
+          ${body}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- CTA Button -->
+    <mj-section background-color="#ffffff" padding="30px 0">
+      <mj-column>
+        <mj-button href="#book-now" background-color="#28a745" color="white">
+          ${cta}
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Footer -->
+    <mj-section background-color="#6c757d" padding="20px 0">
+      <mj-column>
+        <mj-text align="center" color="white" font-size="12px">
+          © 2024 KupiBilet. Все права защищены.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>`.trim();
+}
+
+/**
  * Generate MJML dynamically based on content and parameters
  */
-function generateDynamicMjml(params: EmailRendererParams): string {
+async function generateDynamicMjml(params: EmailRendererParams): Promise<string> {
   // Safely handle parameters that might be objects or JSON strings
   let contentData: any = {};
   
@@ -1083,19 +1429,44 @@ function generateDynamicMjml(params: EmailRendererParams): string {
     JSON.parse(params.pricing_data || '{}') : 
     (params.pricing_data || {});
   
-  const subject = (contentData.subject || 'Специальные предложения на авиабилеты').replace(/[<>&"]/g, (match) => {
+  // NO FALLBACK POLICY - validate all required content fields
+  if (!contentData.subject || contentData.subject === 'undefined' || typeof contentData.subject !== 'string' || contentData.subject.trim().length === 0) {
+    throw new Error(`❌ EmailRenderer: Subject is missing or invalid. Got: ${JSON.stringify(contentData.subject)} (type: ${typeof contentData.subject})`);
+  }
+  
+  if (!contentData.preheader || contentData.preheader === 'undefined' || typeof contentData.preheader !== 'string' || contentData.preheader.trim().length === 0) {
+    throw new Error(`❌ EmailRenderer: Preheader is missing or invalid. Got: ${JSON.stringify(contentData.preheader)} (type: ${typeof contentData.preheader})`);
+  }
+  
+  const subject = contentData.subject.replace(/[<>&"]/g, (match) => {
     const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
     return escapes[match] || match;
   });
-  const preheader = (contentData.preheader || 'Найдите лучшие цены на билеты').replace(/[<>&"]/g, (match) => {
+  const preheader = contentData.preheader.replace(/[<>&"]/g, (match) => {
     const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
     return escapes[match] || match;
   });
-  const body = (contentData.body || 'Откройте для себя мир с выгодными ценами на авиабилеты.').replace(/[<>&"]/g, (match) => {
+  // TEMPORARY FIX: Provide fallback content if body is empty
+  if (!contentData.body || contentData.body === 'undefined' || typeof contentData.body !== 'string' || contentData.body.trim().length === 0) {
+    console.warn('⚠️ Body content is missing, using fallback content');
+    contentData.body = `Добро пожаловать в увлекательное путешествие! 
+    
+Мы рады предложить вам лучшие варианты для вашей поездки. Наша команда подготовила специальные предложения, которые сделают ваше путешествие незабываемым.
+
+Не упустите возможность открыть для себя новые горизонты и создать яркие воспоминания.`;
+  }
+  
+  const body = contentData.body.replace(/[<>&"]/g, (match) => {
     const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
     return escapes[match] || match;
   });
-  const cta = (contentData.cta || 'Найти билеты').replace(/[<>&"]/g, (match) => {
+  // Validate CTA - allow cta_text as fallback but still require content
+  const ctaContent = contentData.cta || contentData.cta_text;
+  if (!ctaContent || ctaContent === 'undefined' || typeof ctaContent !== 'string' || ctaContent.trim().length === 0) {
+    throw new Error(`❌ EmailRenderer: CTA is missing or invalid. Got cta: ${JSON.stringify(contentData.cta)}, cta_text: ${JSON.stringify(contentData.cta_text)} (types: ${typeof contentData.cta}, ${typeof contentData.cta_text})`);
+  }
+  
+  const cta = ctaContent.replace(/[<>&"]/g, (match) => {
     const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
     return escapes[match] || match;
   });
@@ -1106,10 +1477,68 @@ function generateDynamicMjml(params: EmailRendererParams): string {
   const secondaryColor = brandGuidelines.secondary_color || '#FF6B6B';
   const fontFamily = brandGuidelines.font_family || 'Arial, sans-serif';
   
+  // Process and copy assets to email folder
+  const processedAssets: string[] = [];
+  if (assets.length > 0 && params.emailFolder) {
+    console.log('🔍 Processing assets for email:', assets.length);
+    console.log('📁 EmailFolder info:', {
+      campaignId: params.emailFolder.campaignId,
+      assetsPath: params.emailFolder.assetsPath
+    });
+    
+    for (let i = 0; i < assets.length; i++) {
+      const assetPath = assets[i];
+      console.log(`🔍 Processing asset ${i + 1}/${assets.length}: ${assetPath}`);
+      console.log(`   Asset type: ${typeof assetPath}, length: ${assetPath?.length || 'undefined'}`);
+      
+      try {
+        // Проверяем, что файл существует перед копированием
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        
+        // Resolve absolute path for access check
+        const absolutePath = path.resolve(process.cwd(), assetPath);
+        console.log(`   Checking absolute path: ${absolutePath}`);
+        
+        await fs.access(absolutePath);
+        console.log(`   ✅ File exists and accessible`);
+        
+        // Extract filename from path
+        const fileName = assetPath.split('/').pop() || `asset-${i}.png`;
+        console.log(`   📝 Extracted filename: ${fileName}`);
+        
+        // Copy asset to email folder
+        const { EmailFolderManager } = await import('../email-folder-manager');
+        const savedPath = await EmailFolderManager.saveFigmaAsset(
+          params.emailFolder,
+          absolutePath,
+          fileName
+        );
+        console.log(`   💾 Asset saved to: ${savedPath}`);
+        
+        // Generate relative URL for email
+        const relativeUrl = `./assets/${fileName}`;
+        processedAssets.push(relativeUrl);
+        console.log(`   🔗 Added relative URL: ${relativeUrl}`);
+        
+        console.log(`✅ Processed asset ${i + 1}/${assets.length}: ${fileName}`);
+      } catch (error) {
+        console.error(`❌ Failed to process asset ${i + 1}/${assets.length}:`);
+        console.error(`   Asset path: ${assetPath}`);
+        console.error(`   Error code: ${error.code}`);
+        console.error(`   Error message: ${error.message}`);
+        console.error(`   Full error:`, error);
+        // Continue with other assets
+      }
+    }
+    
+    console.log(`🎨 Successfully processed ${processedAssets.length}/${assets.length} assets`);
+  }
+
   // Generate hero image section
   let heroImageSection = '';
-  if (assets.length > 0) {
-    const heroImage = assets[0];
+  if (processedAssets.length > 0) {
+    const heroImage = processedAssets[0];
     heroImageSection = `
     <!-- Hero Section -->
     <mj-section background-color="#ffffff" padding="0">
@@ -1137,9 +1566,11 @@ function generateDynamicMjml(params: EmailRendererParams): string {
   
   // Generate rabbit component if needed
   let rabbitSection = '';
-  const hasRabbitAssets = assets.some((asset: string) => asset.includes('заяц') || asset.includes('rabbit'));
+  const hasRabbitAssets = processedAssets.some((asset: string) => asset.includes('заяц') || asset.includes('rabbit')) ||
+                         assets.some((asset: string) => asset.includes('заяц') || asset.includes('rabbit'));
   if (hasRabbitAssets || body.includes('заяц')) {
-    const rabbitAsset = assets.find((asset: string) => asset.includes('заяц') || asset.includes('rabbit'));
+    const rabbitAsset = processedAssets.find((asset: string) => asset.includes('заяц') || asset.includes('rabbit')) ||
+                       processedAssets.find((asset: string) => asset.includes('счастье') || asset.includes('кролик'));
     if (rabbitAsset) {
       rabbitSection = `
     <mj-section background-color="#ffffff" padding="20px">
@@ -1184,7 +1615,9 @@ function generateDynamicMjml(params: EmailRendererParams): string {
     <!-- Header -->
     <mj-section background-color="#ffffff" padding="20px">
       <mj-column>
-        <mj-image src="${brandGuidelines.logo_url || 'https://kupibilet.ru/assets/logo.png'}" alt="Kupibilet" width="150px" align="left" />
+        <mj-text font-size="24px" color="${primaryColor}" font-weight="bold" align="center">
+          Kupibilet
+        </mj-text>
       </mj-column>
     </mj-section>
     

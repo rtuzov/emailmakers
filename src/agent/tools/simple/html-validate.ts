@@ -111,7 +111,10 @@ export async function htmlValidate(params: HtmlValidateParams): Promise<HtmlVali
         severity: issue.severity,
         category: issue.category,
         description: issue.description,
-        suggestion: issue.fix_suggestion || 'Review and fix manually',
+        suggestion: issue.fix_suggestion || (() => {
+          console.error('❌ HtmlValidate: Fix suggestion отсутствует для issue');
+          throw new Error('Fix suggestion обязателен для каждой проблемы валидации');
+        })(),
         auto_fixable: issue.auto_fixable || false
       })));
     }

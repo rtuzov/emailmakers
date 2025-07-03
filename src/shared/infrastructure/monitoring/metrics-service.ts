@@ -394,8 +394,8 @@ export class MetricsService {
     const timestamp = Date.now();
     
     const counters: CounterMetric[] = [];
-    for (const [name, labelMap] of this.counters.entries()) {
-      for (const [labelKey, value] of labelMap.entries()) {
+    for (const [name, labelMap] of Array.from(this.counters.entries())) {
+      for (const [labelKey, value] of Array.from(labelMap.entries())) {
         counters.push({
           name,
           value,
@@ -406,8 +406,8 @@ export class MetricsService {
     }
 
     const histograms: HistogramMetric[] = [];
-    for (const [name, labelMap] of this.histograms.entries()) {
-      for (const [labelKey, values] of labelMap.entries()) {
+    for (const [name, labelMap] of Array.from(this.histograms.entries())) {
+      for (const [labelKey, values] of Array.from(labelMap.entries())) {
         histograms.push({
           name,
           value: this.calculateHistogramValue(values),
@@ -419,8 +419,8 @@ export class MetricsService {
     }
 
     const gauges: GaugeMetric[] = [];
-    for (const [name, labelMap] of this.gauges.entries()) {
-      for (const [labelKey, value] of labelMap.entries()) {
+    for (const [name, labelMap] of Array.from(this.gauges.entries())) {
+      for (const [labelKey, value] of Array.from(labelMap.entries())) {
         gauges.push({
           name,
           value,
@@ -446,18 +446,18 @@ export class MetricsService {
     const timestamp = Date.now();
 
     // Counters
-    for (const [name, labelMap] of this.counters.entries()) {
+    for (const [name, labelMap] of Array.from(this.counters.entries())) {
       lines.push(`# TYPE ${name} counter`);
-      for (const [labelKey, value] of labelMap.entries()) {
+      for (const [labelKey, value] of Array.from(labelMap.entries())) {
         const labels = this.formatPrometheusLabels(labelKey);
         lines.push(`${name}${labels} ${value} ${timestamp}`);
       }
     }
 
     // Histograms
-    for (const [name, labelMap] of this.histograms.entries()) {
+    for (const [name, labelMap] of Array.from(this.histograms.entries())) {
       lines.push(`# TYPE ${name} histogram`);
-      for (const [labelKey, values] of labelMap.entries()) {
+      for (const [labelKey, values] of Array.from(labelMap.entries())) {
         const labels = this.formatPrometheusLabels(labelKey);
         const sum = values.reduce((a, b) => a + b, 0);
         const count = values.length;
@@ -476,9 +476,9 @@ export class MetricsService {
     }
 
     // Gauges
-    for (const [name, labelMap] of this.gauges.entries()) {
+    for (const [name, labelMap] of Array.from(this.gauges.entries())) {
       lines.push(`# TYPE ${name} gauge`);
-      for (const [labelKey, value] of labelMap.entries()) {
+      for (const [labelKey, value] of Array.from(labelMap.entries())) {
         const labels = this.formatPrometheusLabels(labelKey);
         lines.push(`${name}${labels} ${value} ${timestamp}`);
       }

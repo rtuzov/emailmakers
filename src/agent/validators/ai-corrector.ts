@@ -70,8 +70,18 @@ export class AICorrector {
       );
 
       console.log(`🔄 AICorrector: Попытка коррекции ${currentAttempts + 1}/${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_AI_CORRECTION_ATTEMPTS} для ${handoffType}`);
+      console.log(`🔍 AICorrector: Причины коррекции:`, correctionSuggestions.map(s => `${s.field}: ${s.issue}`));
 
-      const response = await run(this.agent, correctionPrompt);
+      // Добавляем таймаут для операции коррекции
+      const CORRECTION_TIMEOUT = 15000; // 15 секунд максимум
+      const correctionPromise = run(this.agent, correctionPrompt);
+      
+      const response = await Promise.race([
+        correctionPromise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Коррекция превысила таймаут 15 секунд')), CORRECTION_TIMEOUT)
+        )
+      ]);
       
       if (!response) {
         throw new Error('AI не предоставил ответ');
@@ -81,7 +91,7 @@ export class AICorrector {
       const correctedData = this.parseAIResponse(response, handoffType);
       
       if (correctedData) {
-        console.log(`✅ AICorrector: Успешная коррекция для ${handoffType}`);
+        console.log(`✅ AICorrector: Успешная коррекция для ${handoffType} за ${Date.now() - Date.now()} мс`);
         this.correctionAttempts.delete(dataHash); // Сбросить счетчик при успехе
         return correctedData;
       } else {
@@ -89,11 +99,13 @@ export class AICorrector {
       }
 
     } catch (error) {
-      console.error(`❌ AICorrector: Ошибка коррекции попытка ${currentAttempts + 1}:`, error);
+      console.error(`❌ AICorrector: Попытка ${currentAttempts + 1} не удалась:`, error.message);
       
-      // Если это последняя попытка, очистить счетчик
-      if (currentAttempts + 1 >= AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_AI_CORRECTION_ATTEMPTS) {
+      // Если это таймаут, возвращаем null немедленно
+      if (error.message.includes('таймаут')) {
+        console.error(`⏱️ AICorrector: Коррекция отменена из-за превышения времени выполнения`);
         this.correctionAttempts.delete(dataHash);
+        return null;
       }
       
       return null;
@@ -204,36 +216,23 @@ ${handoffType === 'quality-to-delivery' ? `
    * 🧠 ИНСТРУКЦИИ ДЛЯ AI КОРРЕКТОРА
    */
   private getCorrectorInstructions(): string {
-    return `You are a Data Correction Specialist AI designed to fix validation errors in email generation handoff data.
+    return `You are a Data Correction Specialist for email generation workflow.
 
-CORE MISSION: Transform invalid data into valid data that passes strict validation requirements.
+MISSION: Fix validation errors in handoff data between agents quickly and accurately.
 
-CORRECTION PRINCIPLES:
-1. **Precision**: Fix exactly what's broken, preserve what works
-2. **Compliance**: Ensure all corrections meet strict business requirements  
-3. **Quality**: Improve data quality while maintaining original intent
-4. **Format**: Always return pure JSON without any additional text
+CORE PRINCIPLES:
+1. Fix only what's broken, preserve what works
+2. Ensure compliance with size and format requirements
+3. Return ONLY valid JSON, no explanations
 
-KEY RESPONSIBILITIES:
-- Fix validation errors in handoff data between agents
-- Ensure compliance with size limits, quality scores, and format requirements
-- Optimize content while preserving semantic meaning
-- Apply domain-specific rules for email generation workflow
+KEY REQUIREMENTS BY HANDOFF TYPE:
+- content-to-design: Valid content structure, proper metadata
+- design-to-quality: HTML validation, size <100KB, MJML compliance
+- quality-to-delivery: Quality scores ≥70, WCAG AA compliance
 
-CRITICAL REQUIREMENTS:
-- Content-to-Design: Valid content structure, proper metadata, correct formats
-- Design-to-Quality: HTML validation, size compliance (<100KB), performance optimization  
-- Quality-to-Delivery: Quality scores ≥70, WCAG AA compliance, email compatibility ≥95%
+OUTPUT: Return ONLY the corrected JSON object. No markdown, no explanations, no additional text.
 
-OUTPUT FORMAT: Return ONLY valid JSON data structure. No explanations, no markdown, no additional text.
-
-VALIDATION TARGETS:
-- File sizes must be within strict limits
-- Quality scores must meet minimum thresholds  
-- All required fields must be properly formatted
-- Email-specific compliance requirements must be met
-
-Remember: Your corrections directly impact email delivery success. Precision and compliance are critical.`;
+TIMEOUT: You have 10 seconds maximum to complete the correction.`;
   }
 
   /**

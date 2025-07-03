@@ -193,6 +193,53 @@ async function handleGetPrices(params: PricingIntelligenceParams, startTime: num
   });
   
   if (!pricesResult.success) {
+    // Check if this is a "no flights available" case, which should be handled gracefully
+    if (pricesResult.error && pricesResult.error.includes('No flights available')) {
+      console.log(`📭 No flights found for ${params.origin} → ${params.destination}, returning structured response`);
+      
+      // Return a successful response with no flights and helpful insights
+      return {
+        success: true,
+        action: 'get_prices',
+        data: {
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          recommendations: {
+            no_flights_reason: 'No flights available for the specified route and dates',
+            route: `${params.origin} → ${params.destination}`,
+            suggestions: [
+              'Try different dates or flexible date ranges',
+              'Consider nearby airports or alternative routes',
+              'Check if the route is seasonal or has limited service',
+              'Try booking closer to departure date when more flights may be available'
+            ]
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights currently available. Consider alternative dates or routes.',
+          optimal_dates: []
+        },
+        marketing_copy: params.response_format === 'marketing' ? {
+          headline: 'Рейсы не найдены',
+          description: `К сожалению, на данный момент нет доступных рейсов по маршруту ${params.origin} → ${params.destination}. Попробуйте изменить даты или рассмотрите альтернативные маршруты.`,
+          urgency_level: 'low' as const,
+          call_to_action: 'Изменить параметры поиска'
+        } : undefined,
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'current',
+          confidence_score: 1.0 // High confidence that no flights are available
+        } : undefined
+      };
+    }
+    
+    // For other errors, still throw
     throw new Error(`Failed to get prices: ${pricesResult.error}`);
   }
   
@@ -241,6 +288,47 @@ async function handleAnalyzeTrends(params: PricingIntelligenceParams, startTime:
   });
   
   if (!currentPrices.success) {
+    // Handle "no flights available" case gracefully for trend analysis
+    if (currentPrices.error && currentPrices.error.includes('No flights available')) {
+      console.log(`📭 No flights found for trend analysis: ${params.origin} → ${params.destination}`);
+      
+      return {
+        success: true,
+        action: 'analyze_trends',
+        data: {
+          trends: {
+            overall_trend: 'no_data',
+            data_points: 0,
+            confidence: 0,
+            booking_advice: 'No flights available for trend analysis',
+            optimal_booking_dates: []
+          },
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          recommendations: {
+            analysis_period: '90 days',
+            route: `${params.origin} → ${params.destination}`,
+            no_data_reason: 'No flights available for the specified route and dates'
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights currently available for trend analysis.',
+          optimal_dates: []
+        },
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'no_data',
+          confidence_score: 0
+        } : undefined
+      };
+    }
+    
     throw new Error(`Failed to get current prices for trend analysis: ${currentPrices.error}`);
   }
   
@@ -301,6 +389,45 @@ async function handleForecastPrices(params: PricingIntelligenceParams, startTime
   });
   
   if (!currentPrices.success) {
+    // Handle "no flights available" case gracefully for forecasting
+    if (currentPrices.error && currentPrices.error.includes('No flights available')) {
+      console.log(`📭 No flights found for forecasting: ${params.origin} → ${params.destination}`);
+      
+      return {
+        success: true,
+        action: 'forecast_prices',
+        data: {
+          forecasts: {
+            forecast_points: 0,
+            predicted_trend: 'no_data',
+            confidence: 0
+          },
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          recommendations: {
+            baseline_price: 0,
+            forecast_horizon_days: params.forecast_horizon,
+            no_data_reason: 'No flights available for the specified route and dates'
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights currently available for price forecasting.',
+          optimal_dates: []
+        },
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'no_data',
+          confidence_score: 0
+        } : undefined
+      };
+    }
+    
     throw new Error(`Failed to get current prices for forecasting: ${currentPrices.error}`);
   }
   
@@ -377,6 +504,49 @@ async function handleCompareRoutes(params: PricingIntelligenceParams, startTime:
   });
   
   if (!mainRoute.success) {
+    // Handle "no flights available" case gracefully for route comparison
+    if (mainRoute.error && mainRoute.error.includes('No flights available')) {
+      console.log(`📭 No flights found for main route: ${params.origin} → ${params.destination}`);
+      
+      return {
+        success: true,
+        action: 'compare_routes',
+        data: {
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          comparison_data: {
+            main_route: {
+              route: `${params.origin} → ${params.destination}`,
+              data: { prices: [], currency: 'RUB', cheapest: 0 },
+              no_flights_available: true
+            },
+            alternative_routes: [],
+            comparison: {
+              recommendation: 'No flights available for main route. Consider alternative routes or dates.',
+              best_dates: [],
+              total_prices_compared: 0,
+              confidence: 0
+            }
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights available for the main route.',
+          optimal_dates: []
+        },
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'no_data',
+          confidence_score: 0
+        } : undefined
+      };
+    }
+    
     throw new Error(`Failed to get prices for main route: ${mainRoute.error}`);
   }
   
@@ -469,6 +639,43 @@ async function handleGetRecommendations(params: PricingIntelligenceParams, start
   });
   
   if (!currentPrices.success) {
+    // Handle "no flights available" case gracefully for recommendations
+    if (currentPrices.error && currentPrices.error.includes('No flights available')) {
+      console.log(`📭 No flights found for recommendations: ${params.origin} → ${params.destination}`);
+      
+      return {
+        success: true,
+        action: 'get_recommendations',
+        data: {
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          recommendations: {
+            strategies: [],
+            primary_strategy: 'No flights available. Consider alternative routes or dates.',
+            seasonal_factor: 1.0,
+            trend_assessment: 'no_data',
+            confidence: 0,
+            alerts: []
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights currently available for recommendations.',
+          price_alerts: []
+        },
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'no_data',
+          confidence_score: 0
+        } : undefined
+      };
+    }
+    
     console.error('❌ Pricing API failed for recommendations:', currentPrices.error);
     // Return structured error response instead of throwing
     return {
@@ -553,6 +760,55 @@ async function handleMarketAnalysis(params: PricingIntelligenceParams, startTime
   });
   
   if (!pricesResult.success) {
+    // Handle "no flights available" case gracefully for market analysis
+    if (pricesResult.error && pricesResult.error.includes('No flights available')) {
+      console.log(`📭 No flights found for market analysis: ${params.origin} → ${params.destination}`);
+      
+      return {
+        success: true,
+        action: 'market_analysis',
+        data: {
+          prices: [],
+          currency: 'RUB',
+          cheapest: 0,
+          average: 0,
+          median: 0,
+          market_insights: {
+            market_overview: {
+              trend: 'no_data',
+              seasonality: 1.0,
+              recommendation: 'No flights available for market analysis',
+              data_sources: 0,
+              prices_analyzed: 0,
+              confidence: 0,
+              alerts: []
+            },
+            competitive_landscape: {
+              status: 'no_data',
+              reason: 'No flights available'
+            },
+            demand_patterns: {
+              status: 'no_data',
+              reason: 'No flights available'
+            },
+            route: `${params.origin} → ${params.destination}`
+          }
+        },
+        pricing_insights: {
+          price_trend: 'stable' as const,
+          seasonality_factor: 1.0,
+          booking_recommendation: 'No flights currently available for market analysis.',
+          price_alerts: []
+        },
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          prices_analyzed: 0,
+          data_freshness: 'no_data',
+          confidence_score: 0
+        } : undefined
+      };
+    }
+    
     console.error('❌ Pricing API failed:', pricesResult.error);
     // Return structured error response instead of throwing
     return {

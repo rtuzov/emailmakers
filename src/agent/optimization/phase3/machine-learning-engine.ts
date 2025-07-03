@@ -748,7 +748,7 @@ export class MachineLearningEngine extends EventEmitter {
     console.log('🔄 Retraining ML models with new feedback...');
     
     // Симуляция переобучения моделей
-    for (const [modelId, model] of this.models.entries()) {
+    for (const [modelId, model] of Array.from(this.models.entries())) {
       const feedbackSamples = this.feedbackHistory
         .filter(f => f.prediction_id.includes(model.model_type.split('_')[0]))
         .slice(-100);

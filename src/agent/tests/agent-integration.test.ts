@@ -7,7 +7,7 @@
 
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { ContentSpecialistAgent, ContentSpecialistInput } from '../specialists/content-specialist-agent';
-import { DesignSpecialistAgent } from '../specialists/design-specialist-agent';
+import { DesignSpecialistAgentV2 } from '../specialists/design-specialist-agent-v2';
 import { QualitySpecialistAgent } from '../specialists/quality-specialist-agent';
 import { DeliverySpecialistAgent } from '../specialists/delivery-specialist-agent';
 import { AGENT_CONSTANTS } from '../types/base-agent-types';
@@ -81,13 +81,13 @@ vi.mock('../tools/simple/s3-upload', () => ({
 
 describe('🔄 Agent Integration Pipeline Tests', () => {
   let contentAgent: ContentSpecialistAgent;
-  let designAgent: DesignSpecialistAgent;
+  let designAgent: DesignSpecialistAgentV2;
   let qualityAgent: QualitySpecialistAgent;
   let deliveryAgent: DeliverySpecialistAgent;
 
   beforeEach(() => {
     contentAgent = new ContentSpecialistAgent();
-    designAgent = new DesignSpecialistAgent();
+    designAgent = new DesignSpecialistAgentV2();
     qualityAgent = new QualitySpecialistAgent();
     deliveryAgent = new DeliverySpecialistAgent();
     

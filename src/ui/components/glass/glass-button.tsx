@@ -29,11 +29,11 @@ const GlassButton = React.forwardRef<HTMLButtonElement, GlassButtonProps>(
     const baseClasses = 'glass-button inline-flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden'
     
     const variantClasses = {
-      primary: 'bg-kupibilet-primary/20 border-kupibilet-primary/30 text-kupibilet-primary hover:bg-kupibilet-primary/30 hover:border-kupibilet-primary/50 focus:ring-kupibilet-primary/50',
-      secondary: 'bg-kupibilet-secondary/20 border-kupibilet-secondary/30 text-kupibilet-secondary hover:bg-kupibilet-secondary/30 hover:border-kupibilet-secondary/50 focus:ring-kupibilet-secondary/50',
-      accent: 'bg-kupibilet-accent/20 border-kupibilet-accent/30 text-kupibilet-accent hover:bg-kupibilet-accent/30 hover:border-kupibilet-accent/50 focus:ring-kupibilet-accent/50',
-      ghost: 'bg-white/5 border-white/10 text-white hover:bg-kupibilet-primary/10 hover:border-kupibilet-primary/20 focus:ring-kupibilet-primary/50',
-      outline: 'bg-transparent border-white/20 text-white hover:bg-kupibilet-primary/10 hover:border-kupibilet-primary/30 focus:ring-kupibilet-primary/50',
+      primary: 'bg-primary-200 border-primary-300 text-primary hover:bg-primary-300 hover:border-primary-400 focus:ring-primary-500',
+      secondary: 'bg-secondary-200 border-secondary-300 text-secondary hover:bg-secondary-300 hover:border-secondary-400 focus:ring-secondary-500',
+      accent: 'bg-accent-200 border-accent-300 text-accent hover:bg-accent-300 hover:border-accent-400 focus:ring-accent-500',
+      ghost: 'bg-white/5 border-white/10 text-white hover:bg-primary-100 hover:border-primary-200 focus:ring-primary-300',
+      outline: 'bg-transparent border-white/20 text-white hover:bg-primary-100 hover:border-primary-300 focus:ring-primary-300',
     }
 
     const sizeClasses = {

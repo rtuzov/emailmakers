@@ -549,33 +549,13 @@ ${contextPrompt}
     };
 
   } catch (error) {
-    console.error(`Ошибка анализа изображения ${componentName}:`, error.message);
-    return generateFallbackTags(componentName, context);
+    console.error(`❌ AI анализ изображения ${componentName} не удался:`, error.message);
+    throw new Error(`❌ FigmaAPI: AI image analysis failed for ${componentName} - ${error.message}. No fallback analysis allowed.`);
   }
 }
 
-function generateFallbackTags(
-  componentName: string,
-  context?: any
-): any {
-  // Извлекаем базовые теги из названия компонента
-  const nameParts = componentName.toLowerCase()
-    .replace(/[^а-яё\w\s]/gi, ' ')
-    .split(/\s+/)
-    .filter(part => part.length > 2)
-    .slice(0, 3);
-  
-  const baseTags = nameParts.length > 0 ? nameParts : ['элемент'];
-  
-  return {
-    suggestedTags: baseTags,
-    contentDescription: `Элемент интерфейса: ${componentName}`,
-    emotionalTone: 'нейтральный',
-    usageContext: ['интерфейс', 'дизайн'],
-    confidence: 0.5,
-    reasoning: 'Fallback анализ на основе названия компонента'
-  };
-}
+// generateFallbackTags function removed - NO FALLBACK ALLOWED
+// All components must be processed through AI analysis
 
 async function renameImageFile(oldPath: string, newName: string): Promise<string> {
   const path = await import('path');

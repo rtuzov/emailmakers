@@ -1,0 +1,121 @@
+{
+  "demo_name": "Asset Search Demo",
+  "timestamp": "2025-07-02T11:09:08.573Z",
+  "input_example": {
+    "task_type": "find_assets",
+    "content_package": {
+      "content": {
+        "subject": "Летние путешествия с выгодой",
+        "preheader": "Откройте для себя удивительные направления",
+        "body": "Присоединяйтесь к тысячам путешественников, которые доверяют нашим рекомендациям",
+        "cta": "Забронировать поездку"
+      },
+      "brand_guidelines": {
+        "colors": {
+          "primary": "#FF6B35",
+          "secondary": "#004E89",
+          "accent": "#FFD23F"
+        },
+        "fonts": {
+          "primary": "Montserrat",
+          "secondary": "Open Sans"
+        }
+      }
+    },
+    "asset_requirements": {
+      "tags": [
+        "travel",
+        "summer",
+        "vacation"
+      ],
+      "emotional_tone": "positive",
+      "campaign_type": "promotional",
+      "target_count": 5
+    }
+  },
+  "output_example": {
+    "success": true,
+    "task_type": "find_assets",
+    "results": {
+      "assets": {
+        "success": true,
+        "assets": [
+          {
+            "fileName": "summer-beach-vacation.png",
+            "filePath": "/assets/travel/summer-beach-vacation.png",
+            "tags": [
+              "travel",
+              "summer",
+              "beach",
+              "vacation"
+            ],
+            "description": "Beautiful beach vacation scene with palm trees",
+            "emotion": "happy",
+            "category": "illustration",
+            "relevanceScore": 0.92,
+            "source": "figma"
+          },
+          {
+            "fileName": "airplane-travel-icon.svg",
+            "filePath": "/assets/travel/airplane-travel-icon.svg",
+            "tags": [
+              "travel",
+              "airplane",
+              "transport"
+            ],
+            "description": "Modern airplane icon for travel content",
+            "emotion": "neutral",
+            "category": "icon",
+            "relevanceScore": 0.88,
+            "source": "figma"
+          },
+          {
+            "fileName": "summer-holiday-banner.jpg",
+            "filePath": "/assets/travel/summer-holiday-banner.jpg",
+            "tags": [
+              "summer",
+              "holiday",
+              "banner",
+              "vacation"
+            ],
+            "description": "Vibrant summer holiday promotional banner",
+            "emotion": "happy",
+            "category": "banner",
+            "relevanceScore": 0.95,
+            "source": "figma"
+          }
+        ],
+        "total_found": 3,
+        "search_metadata": {
+          "query_tags": [
+            "travel",
+            "summer",
+            "vacation"
+          ],
+          "search_time_ms": 1250,
+          "recommendations": [
+            "Consider adding hotel-related assets",
+            "Include location-specific imagery",
+            "Add call-to-action buttons"
+          ]
+        }
+      }
+    },
+    "recommendations": {
+      "next_agent": "quality_specialist",
+      "next_actions": [
+        "Validate asset compatibility",
+        "Check image quality standards",
+        "Verify brand consistency"
+      ]
+    },
+    "analytics": {
+      "execution_time_ms": 1250,
+      "operations_performed": 3,
+      "confidence_score": 0.91,
+      "cache_hit_rate": 0
+    },
+    "trace_id": "demo-asset-search-001"
+  },
+  "description": "Пример работы нового DesignSpecialistAgentV2 для поиска ассетов"
+}

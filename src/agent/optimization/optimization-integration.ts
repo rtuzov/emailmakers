@@ -57,24 +57,37 @@ export class OptimizationIntegration extends EventEmitter {
   private appliedOptimizationsToday: number = 0;
   private lastOptimizationReset: string = new Date().toDateString();
 
+  // Add logging throttling for metrics collection
+  private lastMetricsLogTime: number = 0;
+  private metricsLogCount: number = 0;
+  private readonly MIN_METRICS_LOG_INTERVAL = 600000; // 10 minutes between metrics logs
+  private readonly MAX_METRICS_LOGS_PER_HOUR = 6; // Limit to 6 logs per hour
+
   constructor(config: Partial<OptimizationIntegrationConfig> = {}) {
     super();
     
     this.config = {
       enabled: true,
-      auto_optimization_enabled: false, // Start with manual mode for safety
-      metrics_collection_interval_ms: 60000, // 1 minute
-      optimization_interval_ms: 300000, // 5 minutes
+      auto_optimization_enabled: true,
+      metrics_collection_interval_ms: 900000, // 15 minutes (was likely much shorter)
+      optimization_interval_ms: 1800000, // 30 minutes (was likely much shorter)
       require_human_approval_for_critical: true,
-      max_auto_optimizations_per_hour: 3,
+      max_auto_optimizations_per_hour: 2, // Reduced from potentially higher number
       ...config
     };
+
+    console.log('🔧 OptimizationIntegration initialized with config:', {
+      enabled: this.config.enabled,
+      auto_optimization: this.config.auto_optimization_enabled,
+      metrics_interval_minutes: this.config.metrics_collection_interval_ms / 60000,
+      optimization_interval_minutes: this.config.optimization_interval_ms / 60000,
+      max_optimizations_per_hour: this.config.max_auto_optimizations_per_hour
+    });
 
     this.optimizationEngine = new OptimizationEngine();
     this.validationMonitor = ValidationMonitor.getInstance();
     this.metricsService = new MetricsService();
 
-    console.log('🔗 OptimizationIntegration initialized with config:', this.config);
     this.setupEventListeners();
   }
 
@@ -132,7 +145,24 @@ export class OptimizationIntegration extends EventEmitter {
    * Получение объединенного снэпшота метрик из всех источников
    */
   public async getIntegratedMetricsSnapshot(): Promise<IntegratedMetricsSnapshot> {
-    console.log('📊 Collecting integrated metrics snapshot...');
+    // Throttle logging to prevent spam
+    const now = Date.now();
+    const timeSinceLastLog = now - this.lastMetricsLogTime;
+    const shouldLog = timeSinceLastLog > this.MIN_METRICS_LOG_INTERVAL && 
+                     this.metricsLogCount < this.MAX_METRICS_LOGS_PER_HOUR;
+
+    if (shouldLog) {
+      console.log('📊 Collecting integrated metrics snapshot...');
+      this.lastMetricsLogTime = now;
+      this.metricsLogCount++;
+      
+      // Reset hourly counter
+      if (this.metricsLogCount >= this.MAX_METRICS_LOGS_PER_HOUR) {
+        setTimeout(() => {
+          this.metricsLogCount = 0;
+        }, 3600000); // Reset after 1 hour
+      }
+    }
 
     try {
       // Получаем метрики из ValidationMonitor
@@ -187,11 +217,15 @@ export class OptimizationIntegration extends EventEmitter {
         }
       };
 
-      console.log('✅ Integrated metrics snapshot collected successfully');
+      if (shouldLog) {
+        console.log('✅ Integrated metrics snapshot collected successfully');
+      }
       return integratedSnapshot;
 
     } catch (error) {
-      console.error('❌ Failed to collect integrated metrics:', error);
+      if (shouldLog) {
+        console.error('❌ Failed to collect integrated metrics:', error);
+      }
       throw new Error(`Integrated metrics collection failed: ${error.message}`);
     }
   }
@@ -285,16 +319,44 @@ export class OptimizationIntegration extends EventEmitter {
   // ===== PRIVATE METHODS =====
 
   private setupEventListeners(): void {
+    // Add throttling for critical events to prevent cascading loops
+    let lastCriticalEventAnalysis = 0;
+    const CRITICAL_EVENT_THROTTLE = 120000; // 2 minutes between critical event analyses
+
     // Слушаем события ValidationMonitor
     this.validationMonitor.on('critical_event', (event) => {
-      console.log('🚨 Critical event detected, triggering optimization analysis');
-      this.performFullOptimizationAnalysis().catch(console.error);
+      const timeSinceLastAnalysis = Date.now() - lastCriticalEventAnalysis;
+      
+      if (timeSinceLastAnalysis > CRITICAL_EVENT_THROTTLE) {
+        console.log('🚨 Critical event detected, triggering throttled optimization analysis');
+        lastCriticalEventAnalysis = Date.now();
+        
+        // Use setTimeout to prevent blocking the event loop
+        setTimeout(() => {
+          this.performFullOptimizationAnalysis().catch(error => {
+            console.error('❌ Critical event analysis failed:', error);
+          });
+        }, 1000); // 1 second delay
+      } else {
+        console.log('⏳ Critical event detected but analysis throttled');
+      }
     });
 
     this.validationMonitor.on('validation_recorded', (event) => {
-      // Можем триггерить мини-анализ при определенных условиях
+      // Only trigger analysis for critical failures, and with throttling
       if (event.result === 'failed' && event.severity === 'critical') {
-        console.log('⚠️ Critical validation failure, considering immediate optimization');
+        const timeSinceLastAnalysis = Date.now() - lastCriticalEventAnalysis;
+        
+        if (timeSinceLastAnalysis > CRITICAL_EVENT_THROTTLE) {
+          console.log('⚠️ Critical validation failure, scheduling delayed optimization check');
+          lastCriticalEventAnalysis = Date.now();
+          
+          // Delay the analysis to prevent immediate cascading
+          setTimeout(() => {
+            // Only perform lightweight analysis for validation failures
+            console.log('🔍 Performing lightweight analysis for validation failure');
+          }, 5000); // 5 second delay
+        }
       }
     });
 

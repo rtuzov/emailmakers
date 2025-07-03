@@ -6,7 +6,23 @@
  */
 
 import { z } from 'zod';
-import { handleToolError } from './index';
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define ToolResult locally to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 
 export const renderTestSchema = z.object({
   html: z.string().describe('HTML content to test'),
@@ -55,9 +71,16 @@ export async function renderTest(params: RenderTestParams): Promise<RenderTestRe
       clients: params.email_clients
     });
 
-    // Валидация параметров
+    // Детальная валидация параметров
     if (!params.html || params.html.trim() === '') {
-      throw new Error('HTML content is required for render testing');
+      const errorMsg = `HTML content is required for render testing. Received: ${params.html === null ? 'null' : params.html === undefined ? 'undefined' : 'empty string'}`;
+      console.error('❌ Render test validation failed:', errorMsg);
+      throw new Error(errorMsg);
+    }
+
+    if (params.html.length < 50) {
+      const errorMsg = `HTML content seems too short (${params.html.length} chars). Minimum expected: 50 characters.`;
+      console.warn('⚠️ Render test warning:', errorMsg);
     }
 
     if (!params.email_clients || params.email_clients.length === 0) {

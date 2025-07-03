@@ -68,6 +68,9 @@ export interface OptimizationReport {
 }
 
 export class OptimizationService extends EventEmitter {
+  private static instance: OptimizationService | null = null;
+  private static isInitializing: boolean = false;
+  
   private engine: OptimizationEngine;
   private integration: OptimizationIntegration;
   private config: OptimizationServiceConfig;
@@ -78,7 +81,15 @@ export class OptimizationService extends EventEmitter {
   private optimizationHistory: OptimizationResult[] = [];
   private pendingRecommendations: OptimizationRecommendation[] = [];
 
-  constructor(config: Partial<OptimizationServiceConfig> = {}) {
+  // Add throttling state management
+  private isAnalyzing: boolean = false;
+  private lastAnalysisTime: number = 0;
+  private analysisCount: number = 0;
+  private readonly MIN_ANALYSIS_INTERVAL = 60000; // 1 minute minimum between analyses
+  private readonly MAX_ANALYSES_PER_HOUR = 10; // Limit analyses per hour
+  private analysisTimestamps: number[] = [];
+
+  private constructor(config: Partial<OptimizationServiceConfig> = {}) {
     super();
     
     this.config = this.mergeDefaultConfig(config);
@@ -93,8 +104,43 @@ export class OptimizationService extends EventEmitter {
       recommendations_pending: 0
     };
 
-    console.log('🎯 OptimizationService initializing with config:', this.config);
+    console.log('🔧 OptimizationService initialized with config:', {
+      enabled: this.config.enabled,
+      auto_optimization: this.config.auto_optimization,
+      analysis_interval: this.config.analysis_interval_ms
+    });
     this.initializeComponents();
+  }
+
+  /**
+   * Get singleton instance of OptimizationService
+   */
+  public static getInstance(config: Partial<OptimizationServiceConfig> = {}): OptimizationService {
+    if (OptimizationService.instance) {
+      return OptimizationService.instance;
+    }
+
+    if (OptimizationService.isInitializing) {
+      throw new Error('OptimizationService is already being initialized');
+    }
+
+    OptimizationService.isInitializing = true;
+    try {
+      OptimizationService.instance = new OptimizationService(config);
+      return OptimizationService.instance;
+    } finally {
+      OptimizationService.isInitializing = false;
+    }
+  }
+
+  /**
+   * Reset singleton instance (for testing purposes)
+   */
+  public static resetInstance(): void {
+    if (OptimizationService.instance) {
+      OptimizationService.instance.shutdown();
+      OptimizationService.instance = null;
+    }
   }
 
   /**
@@ -102,36 +148,34 @@ export class OptimizationService extends EventEmitter {
    */
   public async initialize(): Promise<void> {
     if (this.isInitialized) {
-      console.warn('⚠️ OptimizationService already initialized');
+      console.log('⚠️ OptimizationService already initialized');
       return;
     }
 
     try {
-      console.log('🚀 Initializing OptimizationService...');
-
-      // Проверяем доступность зависимостей
-      await this.checkDependencies();
-
-      // Инициализируем интеграцию
-      await this.integration.start();
-
-      // Выполняем первоначальный анализ
-      await this.performInitialAnalysis();
-
-      // Запускаем периодические процессы
-      this.startPeriodicAnalysis();
-
-      this.isInitialized = true;
-      this.status.status = 'running';
+      console.log('🔧 Initializing OptimizationService...');
       
-      this.emit('initialized');
-      console.log('✅ OptimizationService initialized successfully');
+      await this.integration.start();
+      this.status.status = 'running';
+      this.isInitialized = true;
+      
+      // Start analysis timer with error handling
+      if (this.config.enabled) {
+        this.startPeriodicAnalysis();
+      }
 
+      console.log('✅ OptimizationService initialized successfully');
+      this.emit('service_initialized');
+      
     } catch (error) {
-      console.error('❌ Failed to initialize OptimizationService:', error);
+      console.error('❌ OptimizationService initialization failed:', error);
       this.status.status = 'error';
       this.emit('initialization_failed', error);
-      throw error;
+      
+      // Don't throw the error to prevent cascading failures
+      // Instead, set service to disabled state
+      this.config.enabled = false;
+      console.log('⚠️ OptimizationService disabled due to initialization failure');
     }
   }
 
@@ -171,24 +215,76 @@ export class OptimizationService extends EventEmitter {
   }
 
   /**
-   * Выполнение мгновенного анализа системы
+   * Анализ системы с throttling
    */
   public async analyzeSystem(): Promise<SystemAnalysis> {
-    console.log('🔍 Performing on-demand system analysis...');
+    // Check if service is enabled and initialized
+    if (!this.config.enabled) {
+      throw new Error('OptimizationService is disabled');
+    }
+
+    // Throttle analysis to prevent spam
+    const now = Date.now();
+    const timeSinceLastAnalysis = now - this.lastAnalysisTime;
+    
+    if (timeSinceLastAnalysis < this.MIN_ANALYSIS_INTERVAL) {
+      throw new Error(`Analysis throttled. Please wait ${Math.ceil((this.MIN_ANALYSIS_INTERVAL - timeSinceLastAnalysis) / 1000)} seconds`);
+    }
+
+    // Check hourly limit
+    this.analysisTimestamps = this.analysisTimestamps.filter(timestamp => 
+      now - timestamp < 3600000 // Keep only last hour
+    );
+    
+    if (this.analysisTimestamps.length >= this.MAX_ANALYSES_PER_HOUR) {
+      throw new Error('Analysis limit reached for this hour');
+    }
+
+    if (this.isAnalyzing) {
+      throw new Error('Analysis already in progress');
+    }
+
+    this.isAnalyzing = true;
+    this.lastAnalysisTime = now;
+    this.analysisTimestamps.push(now);
+    this.analysisCount++;
 
     try {
+      const shouldLog = this.analysisCount <= 5; // Reduce logging after 5 analyses
+      if (shouldLog) {
+        console.log('🔍 Analyzing system performance...');
+      }
+
+      if (!this.isInitialized) {
+        throw new Error('OptimizationService not initialized');
+      }
+
       const analysis = await this.integration.performFullOptimizationAnalysis();
       
       this.status.last_analysis = new Date().toISOString();
       this.status.system_health_score = this.extractHealthScore(analysis);
-      
-      this.emit('analysis_completed', analysis);
+
+      if (shouldLog) {
+        console.log('✅ System analysis completed:', {
+          trends: analysis.trends.length,
+          bottlenecks: analysis.bottlenecks.length,
+          errorPatterns: analysis.error_patterns.length,
+          predictedIssues: analysis.predicted_issues.length
+        });
+      }
+
+      this.emit('system_analysis_completed', analysis);
       return analysis;
 
     } catch (error) {
-      console.error('❌ System analysis failed:', error);
-      this.emit('analysis_failed', error);
+      const shouldLog = this.analysisCount <= 5;
+      if (shouldLog) {
+        console.error('❌ System analysis failed:', error);
+      }
+      this.emit('system_analysis_failed', error);
       throw error;
+    } finally {
+      this.isAnalyzing = false;
     }
   }
 
@@ -196,7 +292,17 @@ export class OptimizationService extends EventEmitter {
    * Получение рекомендаций по оптимизации
    */
   public async getRecommendations(forceRefresh: boolean = false): Promise<OptimizationRecommendation[]> {
-    console.log('💡 Getting optimization recommendations...');
+    // Add throttling for recommendations to prevent cascading calls
+    const timeSinceLastRecommendation = Date.now() - this.lastAnalysisTime;
+    if (!forceRefresh && this.pendingRecommendations.length > 0 && timeSinceLastRecommendation < 120000) {
+      console.log('⏳ Recommendations throttled - returning cached recommendations');
+      return [...this.pendingRecommendations];
+    }
+
+    const shouldLog = this.analysisCount <= 5;
+    if (shouldLog) {
+      console.log('💡 Getting optimization recommendations...');
+    }
 
     try {
       if (forceRefresh || this.pendingRecommendations.length === 0) {
@@ -209,8 +315,12 @@ export class OptimizationService extends EventEmitter {
       return [...this.pendingRecommendations];
 
     } catch (error) {
-      console.error('❌ Failed to get recommendations:', error);
-      this.emit('recommendations_failed', error);
+      // Don't log throttling errors as they're expected
+      if (!error.message.includes('throttled') && 
+          !error.message.includes('already in progress')) {
+        console.error('❌ Failed to get recommendations:', error);
+        this.emit('recommendations_failed', error);
+      }
       throw error;
     }
   }
@@ -470,16 +580,36 @@ export class OptimizationService extends EventEmitter {
       clearInterval(this.analysisTimer);
     }
 
+    // Increase interval to reduce frequency and prevent infinite loops
+    const safeInterval = Math.max(this.config.analysis_interval_ms, 300000); // Minimum 5 minutes
+
     this.analysisTimer = setInterval(async () => {
       try {
-        await this.analyzeSystem();
-        await this.getRecommendations(true);
+        // Only run if not currently analyzing and enough time has passed
+        if (!this.isAnalyzing && this.analysisCount <= 10) { // Reduce max analyses
+          const timeSinceLastAnalysis = Date.now() - this.lastAnalysisTime;
+          
+          // Only analyze if enough time has passed
+          if (timeSinceLastAnalysis >= this.MIN_ANALYSIS_INTERVAL) {
+            await this.analyzeSystem();
+            
+            // Only get recommendations occasionally to prevent cascading calls
+            if (this.analysisCount % 3 === 0) { // Every 3rd analysis
+              await this.getRecommendations(true);
+            }
+          }
+        }
       } catch (error) {
-        console.error('❌ Periodic analysis failed:', error);
+        // Don't log throttling errors as they're expected
+        if (!error.message.includes('throttled') && 
+            !error.message.includes('rate limit') && 
+            !error.message.includes('already in progress')) {
+          console.error('❌ Periodic analysis failed:', error);
+        }
       }
-    }, this.config.analysis_interval_ms);
+    }, safeInterval);
 
-    console.log(`📊 Periodic analysis started (interval: ${this.config.analysis_interval_ms}ms)`);
+    console.log(`📊 Periodic analysis started (interval: ${safeInterval}ms, reduced from ${this.config.analysis_interval_ms}ms for stability)`);
   }
 
   private stopPeriodicAnalysis(): void {

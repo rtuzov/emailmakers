@@ -47,10 +47,10 @@ export class EmailFolderManager {
       // trace_id имеет формат trace_<32_alphanumeric>, поэтому берем символы после "trace_"
       const traceIdWithoutPrefix = traceId.startsWith('trace_') ? traceId.substring(6) : traceId;
       const shortTraceId = traceIdWithoutPrefix.substring(0, 8);
-      campaignId = `email-${shortTraceId}-${timestamp}`;
+      campaignId = `email_${timestamp}_${shortTraceId}`;
     } else {
       const shortId = Math.random().toString(36).substring(2, 10);
-      campaignId = `email-${timestamp}-${shortId}`;
+      campaignId = `email_${timestamp}_${shortId}`;
     }
     
     const basePath = path.resolve(process.cwd(), 'mails', campaignId);

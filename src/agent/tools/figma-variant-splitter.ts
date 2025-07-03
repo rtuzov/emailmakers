@@ -5,7 +5,23 @@ import * as fs from 'fs/promises';
 // Load .env.local file
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
-import { ToolResult, AssetInfo, handleToolError } from './index';
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define ToolResult locally to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 
 interface FigmaVariantSplitterParams {
   assetPath?: string;        // Путь к локальному ассету

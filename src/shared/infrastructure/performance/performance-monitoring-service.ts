@@ -440,7 +440,7 @@ export class PerformanceMonitoringService {
     this.alerts = this.alerts.filter(a => a.timestamp > cutoffTime);
 
     // Cleanup Prometheus metrics (keep only recent data)
-    for (const [key, durations] of this.prometheusMetrics.http_request_duration_seconds.entries()) {
+    for (const [key, durations] of Array.from(this.prometheusMetrics.http_request_duration_seconds.entries())) {
       if (durations.length > 1000) {
         this.prometheusMetrics.http_request_duration_seconds.set(key, durations.slice(-1000));
       }
@@ -519,7 +519,7 @@ export class PerformanceMonitoringService {
     // HTTP requests total
     output += '# HELP http_requests_total Total number of HTTP requests\n';
     output += '# TYPE http_requests_total counter\n';
-    for (const [key, count] of this.prometheusMetrics.http_requests_total.entries()) {
+    for (const [key, count] of Array.from(this.prometheusMetrics.http_requests_total.entries())) {
       const [method, endpoint, status] = key.split('_');
       output += `http_requests_total{method="${method}",endpoint="${endpoint}",status="${status}"} ${count}\n`;
     }

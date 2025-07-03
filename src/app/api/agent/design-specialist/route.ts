@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DesignSpecialistAgent } from '../../../../agent/specialists/design-specialist-agent';
+import { DesignSpecialistAgentV2 } from '../../../../agent/specialists/design-specialist-agent-v2';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     console.log('🎨 DesignSpecialist API called:', { task_type, hasContentPackage: !!content_package });
 
-    const designSpecialist = new DesignSpecialistAgent();
+    const designSpecialist = new DesignSpecialistAgentV2();
     
     // Default content package if not provided
     const defaultContentPackage = {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     };
     
     const input = {
-      task_type: task_type as 'select_assets' | 'render_email' | 'create_templates' | 'optimize_design',
+      task_type: task_type as any,
       content_package: content_package || defaultContentPackage,
       asset_requirements: asset_requirements || {
         tags: ['авиабилеты', 'путешествия'],
@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
     console.log('✅ DesignSpecialist result:', {
       success: result.success,
       task_type: result.task_type,
-      hasRenderedEmail: !!result.results.rendered_email,
-      hasDesignArtifacts: !!result.design_artifacts,
+      hasRenderedEmail: !!(result.results as any).rendered_email,
+      hasDesignArtifacts: !!(result as any).design_artifacts,
       executionTime
     });
 
@@ -79,8 +79,8 @@ export async function POST(request: NextRequest) {
         task_type: result.task_type,
         success: result.success,
         results: result.results,
-        design_artifacts: result.design_artifacts,
-        handoff_data: result.recommendations.handoff_data,
+        design_artifacts: (result as any).design_artifacts,
+        handoff_data: (result.recommendations as any).handoff_data,
         analytics: result.analytics,
         execution_time: executionTime,
         capabilities: designSpecialist.getCapabilities()

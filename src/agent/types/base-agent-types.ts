@@ -169,27 +169,14 @@ export class AgentResponseUtils {
   }
 
   /**
-   * Создание fallback данных для контента
+   * ❌ FALLBACK УДАЛЕН - метод больше не создает fallback данные
+   * Теперь выбрасывает ошибку при попытке создания fallback контента
    */
-  static createFallbackContentData(topic: string, language: 'ru' | 'en' = 'ru'): any {
-    const templates = {
-      ru: {
-        subject: `Специальное предложение: ${topic}`,
-        preheader: 'Не упустите выгодную возможность!',
-        body: `Откройте для себя ${topic}. Мы подготовили для вас особенное предложение с отличными условиями.`,
-        cta: 'Узнать подробнее'
-      },
-      en: {
-        subject: `Special Offer: ${topic}`,
-        preheader: 'Don\'t miss this great opportunity!',
-        body: `Discover ${topic}. We have prepared a special offer with excellent conditions for you.`,
-        cta: 'Learn More'
-      }
-    };
-
-    return {
-      complete_content: templates[language]
-    };
+  static createFallbackContentData(topic: string, language: 'ru' | 'en' = 'ru'): never {
+    console.error(`❌ AgentResponseUtils: Попытка создания fallback контента для topic="${topic}", language="${language}"`);
+    console.error('❌ FALLBACK POLICY VIOLATION: Создание fallback контента запрещено проектными правилами');
+    console.error('❌ Требуется реальный контент от ContentSpecialist или внешних источников');
+    throw new Error('Создание fallback контента запрещено. Используйте реальные данные от агентов или API.');
   }
 }
 
@@ -233,6 +220,28 @@ export interface ContentToDesignHandoffData {
     destination?: string;
     origin?: string;
     urgency_level: 'low' | 'medium' | 'high' | 'critical';
+  };
+  pricing_context?: {
+    action: string;
+    data?: {
+      prices?: any[];
+      currency?: string;
+      cheapest?: number;
+      average?: number;
+      median?: number;
+    };
+    pricing_insights?: {
+      price_trend: 'increasing' | 'decreasing' | 'stable';
+      seasonality_factor: number;
+      booking_recommendation: string;
+      optimal_dates?: string[];
+    };
+    marketing_copy?: {
+      headline: string;
+      description: string;
+      urgency_level: 'low' | 'medium' | 'high';
+      call_to_action: string;
+    };
   };
   trace_id: string;
   timestamp: string;
@@ -388,6 +397,28 @@ export const ContentToDesignHandoffDataSchema = z.object({
     origin: z.string().optional(),
     urgency_level: z.enum(['low', 'medium', 'high', 'critical'])
   }),
+  pricing_context: z.object({
+    action: z.string(),
+    data: z.object({
+      prices: z.array(z.any()).optional(),
+      currency: z.string().optional(),
+      cheapest: z.number().optional(),
+      average: z.number().optional(),
+      median: z.number().optional()
+    }).optional(),
+    pricing_insights: z.object({
+      price_trend: z.enum(['increasing', 'decreasing', 'stable']),
+      seasonality_factor: z.number(),
+      booking_recommendation: z.string(),
+      optimal_dates: z.array(z.string()).optional()
+    }).optional(),
+    marketing_copy: z.object({
+      headline: z.string(),
+      description: z.string(),
+      urgency_level: z.enum(['low', 'medium', 'high']),
+      call_to_action: z.string()
+    }).optional()
+  }).optional(),
   trace_id: z.string().uuid(),
   timestamp: z.string().datetime()
 });
@@ -492,6 +523,14 @@ export const AGENT_CONSTANTS = {
     MIN_ACCESSIBILITY_SCORE: 80,
     MAX_SPAM_SCORE: 3,
     MAX_VALIDATION_TIME_MS: 1000,
-    MAX_AI_CORRECTION_ATTEMPTS: 3
+    MAX_AI_CORRECTION_ATTEMPTS: 2,
+    AI_CORRECTION_TIMEOUT_MS: 15000,
+    ENABLE_AUTO_CORRECTION: true,
+    VALIDATION_TIMEOUT_MS: 30000,
+    LOG_CORRECTION_DETAILS: true,
+    CRITICAL_ERROR_THRESHOLD: 1,
+    TOTAL_ERROR_THRESHOLD: 3,
+    SKIP_CORRECTION_FOR_MINOR_ERRORS: true,
+    MAX_CORRECTION_DATA_SIZE: 100000,
   }
 } as const; 

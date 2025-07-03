@@ -17,6 +17,23 @@ import {
   OPTIMIZATION_CONSTANTS
 } from './optimization-types';
 
+// Add throttling and circuit breaker interfaces
+interface AnalysisState {
+  isAnalyzing: boolean;
+  lastAnalysisTime: number;
+  consecutiveFailures: number;
+  circuitBreakerOpen: boolean;
+  analysisCount: number;
+}
+
+interface ThrottleConfig {
+  minInterval: number; // Minimum time between analyses (ms)
+  maxConcurrent: number; // Maximum concurrent analyses
+  circuitBreakerThreshold: number; // Failures before opening circuit
+  circuitBreakerTimeout: number; // Time to keep circuit open (ms)
+  logThrottleThreshold: number; // Reduce logging after this many analyses
+}
+
 export interface PatternAnalyzer {
   // Анализ трендов производительности
   analyzePerformanceTrends(timeWindow: number): Promise<PerformanceTrend[]>;
@@ -36,8 +53,28 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
   private readonly MAX_HISTORY_SIZE = 1000;
   private readonly TREND_ANALYSIS_WINDOW = 24; // hours
   
+  // Add state management for throttling and circuit breaker
+  private analysisState: AnalysisState = {
+    isAnalyzing: false,
+    lastAnalysisTime: 0,
+    consecutiveFailures: 0,
+    circuitBreakerOpen: false,
+    analysisCount: 0
+  };
+
+  private throttleConfig: ThrottleConfig = {
+    minInterval: 30000, // 30 seconds minimum between analyses
+    maxConcurrent: 1, // Only one analysis at a time
+    circuitBreakerThreshold: 5, // Open circuit after 5 failures
+    circuitBreakerTimeout: 300000, // Keep circuit open for 5 minutes
+    logThrottleThreshold: 10 // Reduce logging after 10 analyses
+  };
+  
   constructor() {
-    console.log('🔍 OptimizationAnalyzer initialized');
+    const shouldLog = this.analysisState.analysisCount < this.throttleConfig.logThrottleThreshold;
+    if (shouldLog) {
+      console.log('🔍 OptimizationAnalyzer initialized');
+    }
   }
 
   /**
@@ -55,46 +92,115 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
   }
 
   /**
-   * Анализ трендов производительности
+   * Анализ трендов производительности с throttling
    */
   public async analyzePerformanceTrends(timeWindowHours: number = this.TREND_ANALYSIS_WINDOW): Promise<PerformanceTrend[]> {
-    console.log(`🔍 Analyzing performance trends for ${timeWindowHours}h window`);
-    
-    if (this.metricsHistory.length < OPTIMIZATION_CONSTANTS.MIN_DATA_POINTS_FOR_PATTERN) {
-      console.warn('⚠️ Insufficient data for trend analysis');
+    // Check circuit breaker
+    if (this.analysisState.circuitBreakerOpen) {
+      const timeSinceFailure = Date.now() - this.analysisState.lastAnalysisTime;
+      if (timeSinceFailure < this.throttleConfig.circuitBreakerTimeout) {
+        console.warn('⚡ Circuit breaker open - skipping analysis');
+        return [];
+      } else {
+        // Reset circuit breaker
+        this.analysisState.circuitBreakerOpen = false;
+        this.analysisState.consecutiveFailures = 0;
+        console.log('🔄 Circuit breaker reset');
+      }
+    }
+
+    // Check if analysis is already running
+    if (this.analysisState.isAnalyzing) {
+      console.warn('⏸️ Analysis already in progress - skipping');
       return [];
     }
 
-    const cutoffTime = Date.now() - (timeWindowHours * 60 * 60 * 1000);
-    const recentMetrics = this.metricsHistory.filter(
-      m => new Date(m.timestamp).getTime() > cutoffTime
-    );
-
-    const trends: PerformanceTrend[] = [];
-
-    // Анализ системных трендов
-    trends.push(...this.analyzeSystemMetricsTrends(recentMetrics, timeWindowHours));
-    
-    // Анализ трендов по агентам
-    for (const agentType of ['content-specialist', 'design-specialist', 'quality-specialist', 'delivery-specialist'] as AgentType[]) {
-      trends.push(...this.analyzeAgentTrends(recentMetrics, agentType, timeWindowHours));
+    // Check minimum interval
+    const timeSinceLastAnalysis = Date.now() - this.analysisState.lastAnalysisTime;
+    if (timeSinceLastAnalysis < this.throttleConfig.minInterval) {
+      const shouldLog = this.analysisState.analysisCount < this.throttleConfig.logThrottleThreshold;
+      if (shouldLog) {
+        console.warn(`⏳ Analysis throttled - ${this.throttleConfig.minInterval - timeSinceLastAnalysis}ms remaining`);
+      }
+      return [];
     }
 
-    // Анализ трендов валидации
-    trends.push(...this.analyzeValidationTrends(recentMetrics, timeWindowHours));
+    this.analysisState.isAnalyzing = true;
+    this.analysisState.lastAnalysisTime = Date.now();
+    this.analysisState.analysisCount++;
 
-    console.log(`✅ Found ${trends.length} performance trends`);
-    return trends.filter(trend => trend.confidence_score >= OPTIMIZATION_CONSTANTS.PATTERN_CONFIDENCE_THRESHOLD);
+    try {
+      const shouldLog = this.analysisState.analysisCount <= this.throttleConfig.logThrottleThreshold;
+      if (shouldLog) {
+        console.log(`🔍 Analyzing performance trends for ${timeWindowHours}h window`);
+      }
+      
+      if (this.metricsHistory.length < OPTIMIZATION_CONSTANTS.MIN_DATA_POINTS_FOR_PATTERN) {
+        if (shouldLog) {
+          console.warn('⚠️ Insufficient data for trend analysis');
+        }
+        // Return minimal baseline trends when insufficient data
+        return this.generateBaselineTrends();
+      }
+
+      const cutoffTime = Date.now() - (timeWindowHours * 60 * 60 * 1000);
+      const recentMetrics = this.metricsHistory.filter(
+        m => new Date(m.timestamp).getTime() > cutoffTime
+      );
+
+      const trends: PerformanceTrend[] = [];
+
+      // Анализ системных трендов
+      trends.push(...this.analyzeSystemMetricsTrends(recentMetrics, timeWindowHours));
+      
+      // Анализ трендов по агентам
+      for (const agentType of ['content-specialist', 'design-specialist', 'quality-specialist', 'delivery-specialist'] as AgentType[]) {
+        trends.push(...this.analyzeAgentTrends(recentMetrics, agentType, timeWindowHours));
+      }
+
+      // Анализ трендов валидации
+      trends.push(...this.analyzeValidationTrends(recentMetrics, timeWindowHours));
+
+      const filteredTrends = trends.filter(trend => trend.confidence_score >= OPTIMIZATION_CONSTANTS.PATTERN_CONFIDENCE_THRESHOLD);
+      
+      if (shouldLog) {
+        console.log(`✅ Found ${filteredTrends.length} performance trends`);
+      }
+
+      // Reset failure count on success
+      this.analysisState.consecutiveFailures = 0;
+      
+      return filteredTrends;
+
+    } catch (error) {
+      console.error('❌ Performance trends analysis failed:', error);
+      this.analysisState.consecutiveFailures++;
+      
+      // Open circuit breaker if too many failures
+      if (this.analysisState.consecutiveFailures >= this.throttleConfig.circuitBreakerThreshold) {
+        this.analysisState.circuitBreakerOpen = true;
+        console.error('🚨 Circuit breaker opened due to repeated failures');
+      }
+      
+      return [];
+    } finally {
+      this.analysisState.isAnalyzing = false;
+    }
   }
 
   /**
    * Выявление bottlenecks в системе
    */
   public async identifyBottlenecks(): Promise<Bottleneck[]> {
-    console.log('🔍 Identifying system bottlenecks');
+    const shouldLog = this.analysisState.analysisCount <= this.throttleConfig.logThrottleThreshold;
+    if (shouldLog) {
+      console.log('🔍 Identifying system bottlenecks');
+    }
     
     if (this.metricsHistory.length === 0) {
-      console.warn('⚠️ No metrics data for bottleneck analysis');
+      if (shouldLog) {
+        console.warn('⚠️ No metrics data for bottleneck analysis');
+      }
       return [];
     }
 
@@ -112,7 +218,9 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
     // Анализ bottlenecks валидации
     bottlenecks.push(...this.identifyValidationBottlenecks(latestMetrics));
 
-    console.log(`✅ Identified ${bottlenecks.length} bottlenecks`);
+    if (shouldLog) {
+      console.log(`✅ Identified ${bottlenecks.length} bottlenecks`);
+    }
     return bottlenecks.sort((a, b) => this.getBottleneckPriority(a) - this.getBottleneckPriority(b));
   }
 
@@ -142,30 +250,63 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
   }
 
   /**
-   * Предсказание потенциальных проблем
+   * Предсказание потенциальных проблем с защитой от рекурсии
    */
   public async predictPerformanceIssues(): Promise<PredictedIssue[]> {
-    console.log('🔮 Predicting performance issues');
-    
-    if (this.metricsHistory.length < OPTIMIZATION_CONSTANTS.MIN_DATA_POINTS_FOR_PATTERN) {
-      console.warn('⚠️ Insufficient data for prediction');
+    // Check circuit breaker
+    if (this.analysisState.circuitBreakerOpen) {
+      console.warn('⚡ Circuit breaker open - skipping predictions');
       return [];
     }
 
-    const predictions: PredictedIssue[] = [];
+    const shouldLog = this.analysisState.analysisCount <= this.throttleConfig.logThrottleThreshold;
+    if (shouldLog) {
+      console.log('🔮 Predicting performance issues');
+    }
     
-    // Предсказание на основе трендов
-    const trends = await this.analyzePerformanceTrends();
-    predictions.push(...this.predictIssuesFromTrends(trends));
-    
-    // Предсказание перегрузки системы
-    predictions.push(...this.predictSystemOverload());
-    
-    // Предсказание сбоев валидации
-    predictions.push(...this.predictValidationFailures());
+    if (this.metricsHistory.length < OPTIMIZATION_CONSTANTS.MIN_DATA_POINTS_FOR_PATTERN) {
+      if (shouldLog) {
+        console.warn('⚠️ Insufficient data for prediction');
+      }
+      return [];
+    }
 
-    console.log(`✅ Generated ${predictions.length} predictions`);
-    return predictions.filter(p => p.confidence_percent >= OPTIMIZATION_CONSTANTS.PATTERN_CONFIDENCE_THRESHOLD);
+    try {
+      const predictions: PredictedIssue[] = [];
+      
+      // IMPORTANT: Don't call analyzePerformanceTrends() here to prevent recursion
+      // Instead, use cached or simplified trend analysis
+      const recentMetrics = this.metricsHistory.slice(-24); // Last 24 snapshots
+      const simplifiedTrends = this.getSimplifiedTrends(recentMetrics);
+      
+      // Предсказание на основе упрощенных трендов
+      predictions.push(...this.predictIssuesFromTrends(simplifiedTrends));
+      
+      // Предсказание перегрузки системы
+      predictions.push(...this.predictSystemOverload());
+      
+      // Предсказание сбоев валидации
+      predictions.push(...this.predictValidationFailures());
+
+      const filteredPredictions = predictions.filter(p => p.confidence_percent >= OPTIMIZATION_CONSTANTS.PATTERN_CONFIDENCE_THRESHOLD);
+      
+      if (shouldLog) {
+        console.log(`✅ Generated ${filteredPredictions.length} predictions`);
+      }
+      
+      return filteredPredictions;
+
+    } catch (error) {
+      console.error('❌ Performance prediction failed:', error);
+      this.analysisState.consecutiveFailures++;
+      
+      if (this.analysisState.consecutiveFailures >= this.throttleConfig.circuitBreakerThreshold) {
+        this.analysisState.circuitBreakerOpen = true;
+        console.error('🚨 Circuit breaker opened due to prediction failures');
+      }
+      
+      return [];
+    }
   }
 
   // ===== PRIVATE METHODS =====
@@ -541,5 +682,56 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
   private getBottleneckPriority(bottleneck: Bottleneck): number {
     const severityPriority = { critical: 1, high: 2, medium: 3, low: 4 };
     return severityPriority[bottleneck.severity];
+  }
+
+  /**
+   * Get simplified trends without triggering full analysis (prevents recursion)
+   */
+  private getSimplifiedTrends(metrics: MetricsSnapshot[]): PerformanceTrend[] {
+    if (metrics.length < 3) return [];
+
+    const trends: PerformanceTrend[] = [];
+    
+    // Simple trend calculation for success rate
+    const successRates = metrics.map(m => m.system_metrics.overall_success_rate);
+    const avgSuccessRate = successRates.reduce((a, b) => a + b, 0) / successRates.length;
+    const recentSuccessRate = successRates.slice(-3).reduce((a, b) => a + b, 0) / 3;
+    
+    if (Math.abs(recentSuccessRate - avgSuccessRate) > 5) {
+      trends.push({
+        metric_name: 'system_success_rate',
+        trend_direction: recentSuccessRate > avgSuccessRate ? 'up' : 'down',
+        change_percent: ((recentSuccessRate - avgSuccessRate) / avgSuccessRate) * 100,
+        confidence_score: 75,
+        time_window: '1h',
+        data_points: successRates.map((rate, i) => ({
+          timestamp: metrics[i].timestamp,
+          value: rate,
+          anomaly_detected: false
+        }))
+      });
+    }
+
+    return trends;
+  }
+
+  /**
+   * Generate baseline trends when insufficient data is available
+   */
+  private generateBaselineTrends(): PerformanceTrend[] {
+    return [
+      {
+        metric_name: 'system_baseline',
+        trend_direction: 'stable',
+        change_percent: 0,
+        confidence_score: 50,
+        time_window: '1h',
+        data_points: [{
+          timestamp: new Date().toISOString(),
+          value: 100,
+          anomaly_detected: false
+        }]
+      }
+    ];
   }
 }

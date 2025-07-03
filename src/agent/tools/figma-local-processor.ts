@@ -34,7 +34,7 @@ interface AgentFileMapping {
 }
 
 /**
- * Структура данных из tag-dictionary.json
+ * Структура данных из tag-dictionary.json - ПОЛНАЯ СХЕМА
  */
 interface TagDictionary {
   version: string;
@@ -70,274 +70,533 @@ interface TagDictionary {
         fileSizeFormatted: string;
         aspectRatio: string;
         orientation: string;
+        density: number;
+        channels: number;
+        hasAlpha: boolean;
+        colorSpace: string;
+        compression: string | null;
+        lastModified: string;
+        created: string;
       };
       analysis: {
-        dimensions: Record<string, boolean>;
-        quality: Record<string, any>;
-        file: Record<string, any>;
+        dimensions: {
+          isIcon: boolean;
+          isSmall: boolean;
+          isMedium: boolean;
+          isLarge: boolean;
+          isSquare: boolean;
+          isWide: boolean;
+          isTall: boolean;
+          isPortrait: boolean;
+          isLandscape: boolean;
+        };
+        quality: {
+          resolution: string;
+          megapixels: number;
+          pixelDensity: number;
+          qualityLevel: string;
+          sharpness: string;
+        };
+        file: {
+          sizeBytes: number;
+          sizeKB: number;
+          sizeMB: number;
+          sizeCategory: string;
+          compressionRatio: number;
+          efficiency: string;
+        };
+        technical: {
+          format: string;
+          hasAlpha: boolean;
+          channels: number;
+          colorSpace: string;
+          bitDepth: number;
+          isTransparent: boolean;
+          isOptimized: boolean;
+        };
+        emailCompatibility: {
+          sizeForEmail: string;
+          loadingSpeed: string;
+          mobileOptimized: boolean;
+          retinalReady: boolean;
+          webOptimized: boolean;
+        };
+        usageRecommendations: {
+          bestFor: string[];
+          emailContext: string[];
+          responsiveBreakpoints: {
+            mobile: string;
+            tablet: string;
+            desktop: string;
+          };
+        };
+      };
+    };
+    analysis: {
+      visual: {
+        colors: {
+          dominant: {
+            red: number;
+            green: number;
+            blue: number;
+          };
+          primaryColor: string;
+          brightness: number;
+          saturation: number;
+        };
+        composition: {
+          aspectRatio: number;
+          composition: string;
+          complexity: string;
+          resolution: string;
+          pixelDensity: number;
+        };
+        quality: {
+          resolution: string;
+          megapixels: number;
+          pixelDensity: number;
+          qualityLevel: string;
+          sharpness: string;
+        };
+        dimensions: {
+          isIcon: boolean;
+          isSmall: boolean;
+          isMedium: boolean;
+          isLarge: boolean;
+          isSquare: boolean;
+          isWide: boolean;
+          isTall: boolean;
+          isPortrait: boolean;
+          isLandscape: boolean;
+        };
+      };
+      content: {
+        categories: string[];
+        primaryTheme: string;
+        contentElements: string[];
+        complexity: string;
+      };
+      technical: {
+        fileSize: number;
+        dimensions: string;
+        format: string;
+        hasAlpha: boolean;
+        colorSpace: string;
+        channels: number;
+        bitDepth: number;
+        isTransparent: boolean;
+        isOptimized: boolean;
+        file: {
+          sizeBytes: number;
+          sizeKB: number;
+          sizeMB: number;
+          sizeCategory: string;
+          compressionRatio: number;
+          efficiency: string;
+        };
+        emailCompatibility: {
+          sizeForEmail: string;
+          loadingSpeed: string;
+          mobileOptimized: boolean;
+          retinalReady: boolean;
+          webOptimized: boolean;
+        };
+      };
+      usage: {
+        email: {
+          recommendations: string[];
+          suitability: {
+            hero?: string;
+            darkTheme?: string;
+            background?: string;
+            accent?: string;
+            featured?: string;
+          };
+          fileSize: string;
+          loadingSpeed: string;
+        };
+        general: {
+          bestFor: string[];
+          emailContext: string[];
+          responsiveBreakpoints: {
+            mobile: string;
+            tablet: string;
+            desktop: string;
+          };
+        };
+      };
+      scores: {
+        visual: number;
+        content: number;
+        technical: number;
+        overall: number;
+        fileOptimization: number;
+        emailReadiness: number;
+        qualityScore: number;
+      };
+      analysisMetadata: {
+        version: string;
+        timestamp: string;
+        analysisType: string;
+        features: string[];
       };
     };
   }>;
 }
 
 /**
- * Конфигурация папок локальных Figma файлов
+ * Кэш для AI-оптимизированных тегов
  */
-const LOCAL_FIGMA_FOLDERS = {
-  'зайцы-общие': {
-    name: 'Зайцы общие',
-    description: 'Общие изображения зайцев для различных кампаний',
-    priority: 10,
-    categories: ['rabbit', 'general', 'mascot']
-  },
-  'зайцы-эмоции': {
-    name: 'Зайцы эмоции',
-    description: 'Эмоциональные состояния зайцев',
-    priority: 9,
-    categories: ['rabbit', 'emotions', 'expressions'],
-    emotions: ['happy', 'angry', 'sad', 'confused', 'neutral']
-  },
-  'зайцы-подборка': {
-    name: 'Зайцы подборка',
-    description: 'Зайцы для newsletter и подборок',
-    priority: 8,
-    categories: ['rabbit', 'newsletter', 'collection']
-  },
-  'зайцы-новости': {
-    name: 'Зайцы новости',
-    description: 'Зайцы для новостных рассылок',
-    priority: 7,
-    categories: ['rabbit', 'news', 'announcements']
-  },
-  'логотипы-ак': {
-    name: 'Логотипы авиакомпаний',
-    description: 'Логотипы и символика авиакомпаний',
-    priority: 6,
-    categories: ['airline', 'logo', 'brand'],
-    airlines: ['аэрофлот', 'turkish', 'emirates', 'utair', 'nordwind']
-  },
-  'иллюстрации': {
-    name: 'Иллюстрации',
-    description: 'Общие иллюстрации для email кампаний',
-    priority: 5,
-    categories: ['illustration', 'general', 'travel']
-  },
-  'иконки-допуслуг': {
-    name: 'Иконки дополнительных услуг',
-    description: 'Иконки для дополнительных авиа услуг',
-    priority: 4,
-    categories: ['icon', 'service', 'additional']
-  },
-  'айдентика': {
-    name: 'Айдентика',
-    description: 'Элементы фирменного стиля',
-    priority: 3,
-    categories: ['brand', 'identity', 'style']
-  },
-  'зайцы-прочее': {
-    name: 'Зайцы прочее',
-    description: 'Прочие изображения зайцев',
-    priority: 2,
-    categories: ['rabbit', 'misc']
-  },
-  'цвета': {
-    name: 'Цвета',
-    description: 'Цветовая палитра и дизайн-токены',
-    priority: 1,
-    categories: ['color', 'design-tokens', 'palette']
-  }
+let aiOptimizedTagsCache: any = null;
+
+/**
+ * Словарь для перевода английских тегов на русский
+ */
+const englishToRussianMap: Record<string, string[]> = {
+  // Travel & Aviation
+  'travel': ['путешествие', 'путешествия', 'поездка'],
+  'flight': ['полет', 'рейс', 'авиация'],
+  'ticket': ['билет', 'авиабилет', 'билеты'],
+  'aviation': ['авиация', 'авиакомпания', 'самолет'],
+  'airplane': ['самолет', 'авиация', 'полет'],
+  'airport': ['аэропорт', 'терминал', 'авиация'],
+  'vacation': ['отпуск', 'каникулы', 'отдых'],
+  'holiday': ['праздник', 'отпуск', 'каникулы'],
+  'summer': ['лето', 'летний', 'летние'],
+  'winter': ['зима', 'зимний', 'зимние'],
+  
+  // Emotions & Feelings
+  'happy': ['счастливый', 'веселый', 'радостный', 'позитивный'],
+  'joy': ['радость', 'веселье', 'счастье'],
+  'excitement': ['волнение', 'возбуждение', 'энтузиазм'],
+  'positive': ['позитивный', 'положительный', 'оптимистичный'],
+  'friendly': ['дружелюбный', 'приветливый', 'добрый'],
+  'cheerful': ['веселый', 'жизнерадостный', 'бодрый'],
+  
+  // Marketing & Business
+  'promotion': ['акция', 'промо', 'предложение'],
+  'discount': ['скидка', 'распродажа', 'льгота'],
+  'sale': ['распродажа', 'акция', 'скидка'],
+  'offer': ['предложение', 'акция', 'оффер'],
+  'deal': ['сделка', 'предложение', 'выгода'],
+  'special': ['специальный', 'особый', 'эксклюзивный'],
+  'urgent': ['срочно', 'экстренно', 'немедленно'],
+  'limited': ['ограниченный', 'лимитированный', 'эксклюзивный'],
+  
+  // Characters & Mascots
+  'rabbit': ['заяц', 'кролик', 'зайчик'],
+  'bunny': ['зайчик', 'заяц', 'кролик'],
+  'mascot': ['маскот', 'персонаж', 'символ'],
+  'character': ['персонаж', 'герой', 'символ'],
+  'cute': ['милый', 'симпатичный', 'очаровательный'],
+  
+  // Design & Visual
+  'design': ['дизайн', 'оформление', 'графика'],
+  'creative': ['креативный', 'творческий', 'креатив'],
+  'illustration': ['иллюстрация', 'рисунок', 'изображение'],
+  'graphic': ['графика', 'графический', 'изображение'],
+  'visual': ['визуальный', 'зрительный', 'наглядный'],
+  'colorful': ['цветной', 'яркий', 'красочный'],
+  'bright': ['яркий', 'светлый', 'насыщенный'],
+  
+  // Technology & Digital
+  'technology': ['технологии', 'техника', 'цифровой'],
+  'digital': ['цифровой', 'электронный', 'онлайн'],
+  'online': ['онлайн', 'интернет', 'сетевой'],
+  'mobile': ['мобильный', 'телефон', 'смартфон'],
+  'app': ['приложение', 'программа', 'софт'],
+  
+  // Time & Urgency
+  'time': ['время', 'временной', 'срок'],
+  'fast': ['быстро', 'скорый', 'оперативно'],
+  'quick': ['быстрый', 'скорый', 'мгновенный'],
+  'instant': ['мгновенный', 'немедленный', 'быстрый'],
+  'now': ['сейчас', 'немедленно', 'прямо сейчас'],
+  
+  // Cities (common destinations)
+  'moscow': ['Москва', 'московский'],
+  'sochi': ['Сочи', 'сочинский'],
+  'petersburg': ['Санкт-Петербург', 'Питер', 'СПб'],
+  'batumi': ['Батуми', 'батумский'],
+  
+  // General concepts
+  'news': ['новости', 'новость', 'информация'],
+  'information': ['информация', 'данные', 'сведения'],
+  'service': ['сервис', 'услуга', 'обслуживание'],
+  'quality': ['качество', 'качественный'],
+  'reliable': ['надежный', 'безопасный', 'проверенный'],
+  'convenient': ['удобный', 'комфортный', 'практичный'],
+  'cheap': ['дешевый', 'недорогой', 'бюджетный'],
+  'affordable': ['доступный', 'недорогой', 'бюджетный'],
+  'family': ['семья', 'семейный', 'родители'],
+  'children': ['дети', 'детский', 'ребенок']
 };
 
 /**
- * Маппинг эмоциональных состояний на папки и теги
+ * Загружает AI-оптимизированные теги из файла
  */
-const EMOTION_MAPPING = {
-  happy: {
-    folders: ['зайцы-эмоции', 'зайцы-общие'],
-    tags: ['счастье', 'счастлив', 'радость', 'веселье', 'позитив', 'лето', 'отдых'],
-    keywords: ['счастье', 'радость', 'веселье', 'акция', 'лето']
-  },
-  angry: {
-    folders: ['зайцы-эмоции'],
-    tags: ['гнев', 'недовольство', 'раздражение', 'разозлен'],
-    keywords: ['гнев', 'недовольство', 'эмоции', 'раздражение']
-  },
-  sad: {
-    folders: ['зайцы-эмоции'],
-    tags: ['грусть', 'грустный', 'забота', 'помощь'],
-    keywords: ['грусть', 'грустный', 'персонаж', 'забота']
-  },
-  confused: {
-    folders: ['зайцы-эмоции', 'зайцы-общие'],
-    tags: ['озадаченность', 'вопросы', 'размышления', 'задумчивость'],
-    keywords: ['озадаченность', 'вопросы', 'размышления', 'забавный']
-  },
-  neutral: {
-    folders: ['зайцы-общие', 'зайцы-эмоции'],
-    tags: ['нейтрален', 'кролик', 'персонаж', 'дружелюбный'],
-    keywords: ['кролик', 'персонаж', 'дружелюбный', 'нейтральный']
+async function loadAIOptimizedTags(): Promise<any> {
+  if (aiOptimizedTagsCache) {
+    return aiOptimizedTagsCache;
   }
-};
 
-/**
- * Маппинг типов кампаний на подходящие папки
- */
-const CAMPAIGN_TYPE_MAPPING = {
-  promotional: {
-    folders: ['зайцы-эмоции', 'зайцы-общие', 'логотипы-ак'],
-    preferredEmotion: 'happy',
-    tags: ['акция', 'скидки', 'предложение', 'путешествие']
-  },
-  informational: {
-    folders: ['зайцы-новости', 'зайцы-общие', 'иллюстрации'],
-    preferredEmotion: 'neutral',
-    tags: ['новости', 'информация', 'путешествие']
-  },
-  seasonal: {
-    folders: ['зайцы-подборка', 'зайцы-общие', 'иллюстрации'],
-    preferredEmotion: 'happy',
-    tags: ['подборка', 'сезон', 'лето', 'зима', 'отдых']
-  }
-};
-
-/**
- * Основная функция для поиска локальных Figma ассетов
- */
-export async function getLocalFigmaAssets(params: LocalFigmaAssetParams): Promise<ToolResult> {
   try {
-    console.log('🎯 Поиск локальных Figma ассетов:', params);
-
-    // Валидация параметров
-    if (!params.tags || params.tags.length === 0) {
-      throw new Error('Tags array is required and cannot be empty');
-    }
-
     const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    const aiOptimizedTagsPath = path.join(basePath, 'ai-optimized-tags.json');
     
-    // Проверяем существование базовой папки
-    try {
-      await fs.access(basePath);
-    } catch {
-      throw new Error('Local Figma assets directory not found');
-    }
-
-    // Определяем стратегию поиска на основе контекста
-    const searchStrategy = determineSearchStrategy(params);
-    console.log('📋 Стратегия поиска:', searchStrategy);
-
-    // Выполняем поиск по приоритетным папкам
-    const searchResults = await searchInPriorityFolders(basePath, searchStrategy);
+    const content = await fs.readFile(aiOptimizedTagsPath, 'utf-8');
+    aiOptimizedTagsCache = JSON.parse(content);
     
-    if (searchResults.length === 0) {
-      console.log('⚠️ Не найдено подходящих ассетов, выполняем широкий поиск...');
-      const fallbackResults = await performFallbackSearch(basePath, params.tags);
-      
-      if (fallbackResults.length === 0) {
-        throw new Error('No matching assets found in local Figma directory');
-      }
-      
-      return formatResults(fallbackResults, 'fallback-search');
-    }
-
-    return formatResults(searchResults, searchStrategy.name);
-
+    console.log('📋 Загружен ai-optimized-tags.json:', {
+      total_folders: aiOptimizedTagsCache.summary?.total_folders,
+      total_unique_tags: aiOptimizedTagsCache.summary?.total_unique_tags,
+      most_common_tags: Object.keys(aiOptimizedTagsCache.most_common_tags || {}).slice(0, 5)
+    });
+    
+    return aiOptimizedTagsCache;
   } catch (error) {
-    return handleToolError('get_local_figma_assets', error);
+    console.error('❌ Ошибка загрузки ai-optimized-tags.json:', error);
+    return null;
   }
 }
 
 /**
- * Определение стратегии поиска на основе контекста
+ * Переводит английские теги на русский язык
  */
-function determineSearchStrategy(params: LocalFigmaAssetParams) {
-  const { tags, context } = params;
+function translateEnglishToRussian(englishTags: string[]): string[] {
+  const russianTags = new Set<string>();
   
-  let strategy = {
-    name: 'general-search',
-    priorityFolders: Object.keys(LOCAL_FIGMA_FOLDERS),
-    searchTags: [...tags],
-    targetCount: context?.target_count || 2,
-    diversityMode: context?.diversity_mode || false
-  };
-
-  // Умная стратегия - комбинируем критерии вместо перезаписи
-  let priorityFolders: string[] = [];
-  let additionalTags: string[] = [];
-
-  // Стратегия на основе типа кампании
-  if (context?.campaign_type && CAMPAIGN_TYPE_MAPPING[context.campaign_type]) {
-    const campaignMapping = CAMPAIGN_TYPE_MAPPING[context.campaign_type];
-    priorityFolders.push(...campaignMapping.folders);
-    additionalTags.push(...campaignMapping.tags);
+  englishTags.forEach(tag => {
+    const lowerTag = tag.toLowerCase();
     
-    // Добавляем предпочтительную эмоцию
-    if (campaignMapping.preferredEmotion && !context.preferred_emotion) {
-      context.preferred_emotion = campaignMapping.preferredEmotion as any;
+    // Прямой перевод из словаря
+    if (englishToRussianMap[lowerTag]) {
+      englishToRussianMap[lowerTag].forEach(russianTag => russianTags.add(russianTag));
     }
-  }
-
-  // Стратегия на основе эмоционального тона
-  if (context?.preferred_emotion && EMOTION_MAPPING[context.preferred_emotion]) {
-    const emotionMapping = EMOTION_MAPPING[context.preferred_emotion];
-    priorityFolders.push(...emotionMapping.folders);
-    additionalTags.push(...emotionMapping.tags);
-  }
-
-  // Стратегия для авиакомпаний - ДОБАВЛЯЕМ к существующим папкам, а не заменяем
-  if (context?.airline) {
-    priorityFolders.push('логотипы-ак');
-    additionalTags.push(context.airline, 'авиаперевозки', 'путешествие');
     
-    // Обновляем название стратегии для отражения комбинированного поиска
-    const emotionPart = context.preferred_emotion ? `-${context.preferred_emotion}` : '';
-    const campaignPart = context.campaign_type ? `-${context.campaign_type}` : '';
-    strategy.name = `combined-airline-${context.airline}${emotionPart}${campaignPart}`;
-  }
+    // Добавляем оригинальный тег (может быть уже на русском)
+    russianTags.add(tag);
+    
+    // Частичные совпадения для составных слов
+    Object.entries(englishToRussianMap).forEach(([englishWord, translations]) => {
+      if (lowerTag.includes(englishWord) || englishWord.includes(lowerTag)) {
+        translations.forEach(russianTag => russianTags.add(russianTag));
+      }
+    });
+  });
+  
+  return Array.from(russianTags);
+}
 
-  // Если определены приоритетные папки, используем их
-  if (priorityFolders.length > 0) {
-    // Убираем дубликаты и сортируем по приоритету
-    const uniqueFolders = Array.from(new Set(priorityFolders));
-    strategy.priorityFolders = uniqueFolders.sort((a, b) => {
-      const priorityA = LOCAL_FIGMA_FOLDERS[a]?.priority || 0;
-      const priorityB = LOCAL_FIGMA_FOLDERS[b]?.priority || 0;
-      return priorityB - priorityA; // Высокий приоритет первым
+/**
+ * Расширяет поиск с использованием AI-оптимизированных тегов
+ */
+function expandSearchWithAITags(originalTags: string[], aiOptimizedTags: any): string[] {
+  const expandedTags = new Set(originalTags);
+  
+  // Переводим английские теги на русский
+  const russianTags = translateEnglishToRussian(originalTags);
+  russianTags.forEach(tag => expandedTags.add(tag));
+  
+  // Добавляем связанные теги из AI-оптимизированного словаря
+  if (aiOptimizedTags?.most_common_tags) {
+    const commonTags = Object.keys(aiOptimizedTags.most_common_tags);
+    
+    originalTags.forEach(searchTag => {
+      const lowerSearchTag = searchTag.toLowerCase();
+      
+      // Ищем похожие теги в словаре
+      commonTags.forEach(aiTag => {
+        const lowerAITag = aiTag.toLowerCase();
+        
+        // Точное совпадение
+        if (lowerSearchTag === lowerAITag) {
+          expandedTags.add(aiTag);
+        }
+        
+        // Частичное совпадение (содержит подстроку)
+        if (lowerSearchTag.includes(lowerAITag) || lowerAITag.includes(lowerSearchTag)) {
+          if (lowerSearchTag.length >= 3 && lowerAITag.length >= 3) { // Минимум 3 символа
+            expandedTags.add(aiTag);
+          }
+        }
+      });
     });
   }
+  
+  const result = Array.from(expandedTags);
+  console.log('🔄 Расширение тегов:', {
+    original: originalTags,
+    expanded: result,
+    added_count: result.length - originalTags.length
+  });
+  
+  return result;
+}
 
-  // Объединяем все теги
-  strategy.searchTags = Array.from(new Set([...tags, ...additionalTags]));
+// LOCAL_FIGMA_FOLDERS removed - NO HARDCODED FOLDER MAPPING
+// Folders will be discovered dynamically through AI analysis
 
-  // Для комбинированного поиска всегда включаем режим разнообразия
-  if (context?.airline && context?.preferred_emotion) {
-    strategy.diversityMode = true;
+// EMOTION_MAPPING removed - NO HARDCODED EMOTION MAPPING
+// Emotions will be analyzed dynamically through AI
+
+// CAMPAIGN_TYPE_MAPPING removed - NO HARDCODED CAMPAIGN MAPPING
+// Campaign types will be analyzed dynamically through AI
+
+/**
+ * Динамически обнаруживает доступные папки в Figma директории
+ */
+async function discoverAvailableFolders(basePath: string): Promise<string[]> {
+  try {
+    const entries = await fs.readdir(basePath, { withFileTypes: true });
+    const folders = entries
+      .filter(entry => entry.isDirectory())
+      .map(entry => entry.name)
+      .filter(name => !name.startsWith('.'));
+    
+    console.log('📁 Обнаруженные папки:', folders);
+    return folders;
+  } catch (error) {
+    console.error('❌ Ошибка при обнаружении папок:', error);
+    throw new Error(`❌ FigmaLocalProcessor: Failed to discover folders - ${error.message}`);
   }
-
-  return strategy;
 }
 
 /**
- * Поиск в приоритетных папках
+ * Использует AI для анализа и выбора релевантных папок с помощью ai-optimized-tags.json
  */
-async function searchInPriorityFolders(basePath: string, strategy: any): Promise<any[]> {
+async function analyzeRelevantFolders(availableFolders: string[], params: LocalFigmaAssetParams): Promise<string[]> {
+  try {
+    // Загружаем ai-optimized-tags.json
+    const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    const aiOptimizedTagsPath = path.join(basePath, 'ai-optimized-tags.json');
+    
+    const aiOptimizedContent = await fs.readFile(aiOptimizedTagsPath, 'utf-8');
+    const aiOptimizedTags = JSON.parse(aiOptimizedContent);
+    console.log('📋 Загружен ai-optimized-tags.json для анализа папок');
+
+    const OpenAI = (await import('openai')).default;
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+    // Используем данные из ai-optimized-tags.json для более точного анализа
+    const folderInfo = Object.entries(aiOptimizedTags.folders)
+      .map(([folder, data]: [string, any]) => 
+        `${folder}: ${data.description} (${data.unique_tags_count} тегов) - топ теги: ${data.top_tags.slice(0, 3).join(', ')}`
+      ).join('\n');
+
+    const searchRecommendations = aiOptimizedTags.search_recommendations;
+    const contextType = getContextType(params);
+    const recommendedFolders = searchRecommendations[contextType]?.primary_folders || [];
+
+    const prompt = `Analyze Figma folders using comprehensive tag data to find assets for: ${params.tags.join(', ')}
+
+FOLDER DETAILS:
+${folderInfo}
+
+SEARCH CONTEXT:
+- Campaign type: ${params.context?.campaign_type || 'not specified'}
+- Emotional tone: ${params.context?.emotional_tone || 'not specified'}
+- Preferred emotion: ${params.context?.preferred_emotion || 'not specified'}
+- Target count: ${params.context?.target_count || 2}
+
+RECOMMENDED FOLDERS FOR THIS CONTEXT (${contextType}): ${recommendedFolders.join(', ')}
+
+MOST COMMON TAGS GLOBALLY: ${Object.keys(aiOptimizedTags.most_common_tags).slice(0, 10).join(', ')}
+
+Select 3-4 most relevant folder names based on:
+1. Tag overlap with search terms
+2. Folder descriptions and content type
+3. Context-specific recommendations
+4. Emotional alignment
+
+Available folders: ${availableFolders.join(', ')}
+
+Return only a JSON array of folder names, no explanations.`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3
+    });
+
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error('No response from AI for folder analysis');
+    }
+
+    // Extract JSON array from response
+    const jsonMatch = content.match(/\[[\s\S]*?\]/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON array found in AI response');
+    }
+
+    const selectedFolders = JSON.parse(jsonMatch[0]);
+    if (!Array.isArray(selectedFolders) || selectedFolders.length === 0) {
+      throw new Error('AI returned invalid or empty folders array');
+    }
+
+    // Validate that selected folders exist
+    const validFolders = selectedFolders.filter(folder => availableFolders.includes(folder));
+    if (validFolders.length === 0) {
+      throw new Error('AI selected folders that do not exist');
+    }
+
+    console.log('🤖 AI выбрал релевантные папки:', validFolders);
+    console.log('📊 Используя данные из ai-optimized-tags.json для более точного анализа');
+    
+    return validFolders;
+
+  } catch (error) {
+    console.error('❌ AI анализ папок не удался:', error);
+    throw new Error(`❌ FigmaLocalProcessor: AI folder analysis failed - ${error.message}. No fallback folder selection allowed.`);
+  }
+}
+
+/**
+ * Определяет тип контента для поиска рекомендаций
+ */
+function getContextType(params: LocalFigmaAssetParams): string {
+  const tags = params.tags.map(t => t.toLowerCase());
+  const emotionalTone = params.context?.emotional_tone || '';
+  
+  // Проверяем на промо-контент
+  if (tags.some(tag => ['акция', 'скидка', 'предложение', 'промо', 'распродажа'].some(promo => tag.includes(promo)))) {
+    return 'promotional_content';
+  }
+  
+  // Проверяем на туристический контент
+  if (tags.some(tag => ['путешествия', 'отдых', 'отпуск', 'авиация', 'билеты', 'туризм'].some(travel => tag.includes(travel)))) {
+    return 'travel_content';
+  }
+  
+  // Проверяем на эмоциональный контент
+  if (emotionalTone === 'positive' || tags.some(tag => ['счастье', 'радость', 'веселье', 'улыбка'].some(emotion => tag.includes(emotion)))) {
+    return 'emotional_content';
+  }
+  
+  // По умолчанию информационный контент
+  return 'informational_content';
+}
+
+/**
+ * Выполняет поиск в AI-выбранных релевантных папках
+ */
+async function searchInRelevantFolders(basePath: string, relevantFolders: string[], params: LocalFigmaAssetParams): Promise<any[]> {
   const results: any[] = [];
-  const folderResults: Record<string, any[]> = {};
 
-  console.log(`🔍 Поиск в ${strategy.priorityFolders.length} приоритетных папках: ${strategy.priorityFolders.join(', ')}`);
+  console.log(`🔍 Поиск в ${relevantFolders.length} AI-выбранных папках: ${relevantFolders.join(', ')}`);
 
-  // Ищем во ВСЕХ приоритетных папках для получения максимального покрытия
-  for (const folderName of strategy.priorityFolders) {
+  for (const folderName of relevantFolders) {
     const folderPath = path.join(basePath, folderName);
     
     try {
       await fs.access(folderPath);
       console.log(`🔍 Поиск в папке: ${folderName}`);
       
-      const currentFolderResults = await searchInFolder(folderPath, folderName, strategy.searchTags);
-      folderResults[folderName] = currentFolderResults;
-      results.push(...currentFolderResults);
+      const folderResults = await searchInFolder(folderPath, folderName, params.tags, params.context);
+      results.push(...folderResults);
       
-      console.log(`📊 Папка ${folderName}: найдено ${currentFolderResults.length} результатов`);
+      console.log(`📊 Папка ${folderName}: найдено ${folderResults.length} результатов`);
       
     } catch (error) {
       console.log(`⚠️ Папка ${folderName} недоступна: ${error.message}`);
@@ -345,60 +604,123 @@ async function searchInPriorityFolders(basePath: string, strategy: any): Promise
     }
   }
 
-  console.log(`📊 Общий результат поиска: ${results.length} файлов из ${Object.keys(folderResults).length} папок`);
-
-  // Если результатов мало, выполняем дополнительный поиск в остальных папках
-  if (results.length < strategy.targetCount) {
-    console.log(`⚠️ Найдено только ${results.length} из ${strategy.targetCount} требуемых файлов, расширяем поиск...`);
-    
-    const remainingFolders = Object.keys(LOCAL_FIGMA_FOLDERS).filter(
-      folder => !strategy.priorityFolders.includes(folder)
-    );
-    
-    for (const folderName of remainingFolders) {
-      const folderPath = path.join(basePath, folderName);
-      
-      try {
-        await fs.access(folderPath);
-        console.log(`🔍 Дополнительный поиск в папке: ${folderName}`);
-        
-        const additionalResults = await searchInFolder(folderPath, folderName, strategy.searchTags);
-        results.push(...additionalResults);
-        
-        if (results.length >= strategy.targetCount * 2) {
-          console.log(`✅ Набрано достаточно результатов (${results.length}), прекращаем поиск`);
-          break;
-        }
-        
-      } catch (error) {
-        continue;
-      }
-    }
-  }
-
   // Сортируем по релевантности
   results.sort((a, b) => b.relevanceScore - a.relevanceScore);
   
-  console.log(`📊 Финальная сортировка: топ-5 результатов по релевантности:`);
-  results.slice(0, 5).forEach((result, index) => {
-    console.log(`  ${index + 1}. ${result.fileName} (${result.folderName}) - Score: ${result.relevanceScore}, Tags: [${result.matchedTags.join(', ')}]`);
-  });
+  const targetCount = params.context?.target_count || 2;
+  const finalResults = results.slice(0, targetCount);
   
-  if (strategy.diversityMode) {
-    const diverseResults = selectDiverseResults(results, strategy.targetCount);
-    console.log(`🎯 Режим разнообразия: выбрано ${diverseResults.length} разнообразных результатов`);
-    return diverseResults;
-  } else {
-    const topResults = results.slice(0, strategy.targetCount);
-    console.log(`🎯 Обычный режим: выбрано ${topResults.length} лучших результатов`);
-    return topResults;
+  console.log(`📊 Финальные результаты: ${finalResults.length} из ${results.length} найденных`);
+  
+  return finalResults;
+}
+
+/**
+ * Основная функция для поиска локальных Figma ассетов
+ */
+export async function getLocalFigmaAssets(params: LocalFigmaAssetParams): Promise<ToolResult> {
+  try {
+    console.log('🎯 AI-powered поиск локальных Figma ассетов:', params);
+
+    // Валидация параметров - теги могут быть пустыми, тогда используем контекст
+    if (!params.tags) {
+      params.tags = [];
+    }
+    
+    // Если теги пустые, создаем базовые теги из контекста
+    if (params.tags.length === 0) {
+      console.log('⚠️ Теги не предоставлены, генерируем базовые теги из контекста');
+      const contextTags = [];
+      
+      if (params.context?.campaign_type) {
+        contextTags.push(params.context.campaign_type);
+      }
+      if (params.context?.emotional_tone) {
+        contextTags.push(params.context.emotional_tone);
+      }
+      if (params.context?.preferred_emotion) {
+        contextTags.push(params.context.preferred_emotion);
+      }
+      
+      // Добавляем общие теги если контекст тоже пустой
+      if (contextTags.length === 0) {
+        contextTags.push('общие', 'email', 'кампания');
+      }
+      
+      params.tags = contextTags;
+      console.log('🏷️ Сгенерированные контекстные теги:', params.tags);
+    }
+
+    // 🔄 НОВАЯ ЛОГИКА: Загружаем AI-оптимизированные теги и расширяем поиск
+    console.log('📋 Загружаем AI-оптимизированные теги для улучшенного поиска...');
+    const aiOptimizedTags = await loadAIOptimizedTags();
+    
+    // Расширяем теги с помощью перевода и AI-словаря
+    const expandedTags = aiOptimizedTags 
+      ? expandSearchWithAITags(params.tags, aiOptimizedTags)
+      : translateEnglishToRussian(params.tags); // Fallback к простому переводу
+    
+    // Обновляем параметры с расширенными тегами
+    const enhancedParams = {
+      ...params,
+      tags: expandedTags,
+      originalTags: params.tags // Сохраняем оригинальные теги для отчетности
+    };
+    
+    console.log('🔍 Улучшенный поиск с расширенными тегами:', {
+      original_tags: params.tags,
+      expanded_tags: expandedTags.slice(0, 10), // Показываем первые 10
+      total_expanded: expandedTags.length
+    });
+
+    const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    
+    // Проверяем существование базовой папки
+    try {
+      await fs.access(basePath);
+    } catch {
+      throw new Error('❌ FigmaLocalProcessor: Local Figma assets directory not found');
+    }
+
+    // Динамически обнаруживаем доступные папки
+    const availableFolders = await discoverAvailableFolders(basePath);
+    console.log('📁 Обнаружено папок:', availableFolders.length);
+
+    // Используем AI для определения релевантных папок (теперь с расширенными тегами)
+    const relevantFolders = await analyzeRelevantFolders(availableFolders, enhancedParams);
+    console.log('🤖 AI выбрал релевантные папки:', relevantFolders);
+
+    // Выполняем поиск в релевантных папках (с расширенными тегами)
+    const searchResults = await searchInRelevantFolders(basePath, relevantFolders, enhancedParams);
+    
+    if (searchResults.length === 0) {
+      console.log('❌ Поиск не дал результатов. Детали поиска:', {
+        original_tags: params.tags,
+        expanded_tags: expandedTags,
+        folders_searched: relevantFolders,
+        ai_tags_loaded: !!aiOptimizedTags
+      });
+      throw new Error('❌ FigmaLocalProcessor: No matching assets found in any folders. Enhanced search with tag translation failed to find suitable content.');
+    }
+
+    console.log('✅ Найдено ассетов:', searchResults.length);
+    return formatResults(searchResults, 'ai-powered-search-enhanced');
+
+  } catch (error) {
+    return handleToolError('get_local_figma_assets', error);
   }
 }
+
+// determineSearchStrategy function removed - NO HARDCODED SEARCH STRATEGIES
+// Search strategy is now determined dynamically through AI analysis
+
+// searchInPriorityFolders function removed - NO HARDCODED PRIORITY FOLDERS
+// Folder priorities are now determined dynamically through AI analysis
 
 /**
  * Поиск в конкретной папке
  */
-async function searchInFolder(folderPath: string, folderName: string, searchTags: string[]): Promise<any[]> {
+async function searchInFolder(folderPath: string, folderName: string, searchTags: string[], context?: any): Promise<any[]> {
   const results: any[] = [];
 
   try {
@@ -412,34 +734,136 @@ async function searchInFolder(folderPath: string, folderName: string, searchTags
 
     console.log(`📊 Анализ папки ${folderName}: ${mappingData.totalFiles} файлов`);
 
-    // Поиск по agent-file-mapping
-    for (const [fileName, fileInfo] of Object.entries(mappingData.fileMapping)) {
-      const relevanceScore = calculateRelevanceScore(fileInfo.allTags, searchTags);
+    // Поиск по tag-dictionary с использованием более точных тегов
+    for (const [entryKey, dictionaryEntry] of Object.entries(dictionaryData.entries)) {
+      // Используем теги из tag-dictionary как приоритетные
+      const allTags = [
+        ...dictionaryEntry.allTags,
+        ...dictionaryEntry.selectedTags,
+        ...(mappingData.fileMapping[entryKey]?.allTags || [])
+      ];
+      
+      const relevanceScore = calculateRelevanceScore(allTags, searchTags);
       
       if (relevanceScore > 0) {
-        // Получаем дополнительную информацию из tag-dictionary
-        const dictionaryEntry = dictionaryData.entries[fileName];
+        // Получаем информацию из agent-file-mapping как fallback
+        const mappingInfo = mappingData.fileMapping[entryKey];
         
+        // Используем originalName из обновленного tag-dictionary.json
+        const actualFileName = dictionaryEntry.originalName;
+        if (!actualFileName) {
+          console.log(`⚠️ originalName не найден для ключа ${entryKey} в папке ${folderName}`);
+          continue;
+        }
+        
+        // Проверяем, что файл действительно существует
+        const fullFilePath = path.join(folderPath, actualFileName);
+        try {
+          await fs.access(fullFilePath);
+          console.log(`✅ Файл подтвержден: ${actualFileName}`);
+        } catch (error) {
+          console.log(`⚠️ Файл ${actualFileName} не существует в папке ${folderName}`);
+          continue;
+        }
+        
+        // Расчет email-совместимости и качества на основе богатых метаданных
+        const emailCompatibility = dictionaryEntry.analysis?.technical?.emailCompatibility || 
+                                  dictionaryEntry.imageMetadata?.analysis?.emailCompatibility || {
+          sizeForEmail: 'unknown',
+          loadingSpeed: 'unknown',
+          mobileOptimized: false,
+          retinalReady: false,
+          webOptimized: false
+        };
+
+        const emailUsage = dictionaryEntry.analysis?.usage?.email || {
+          recommendations: [],
+          suitability: {},
+          fileSize: 'unknown',
+          loadingSpeed: 'unknown'
+        };
+
+        const qualityScores = dictionaryEntry.analysis?.scores || {
+          visual: 0,
+          content: 0,
+          technical: 0,
+          overall: 0,
+          fileOptimization: 0,
+          emailReadiness: 0,
+          qualityScore: 0
+        };
+
+        // Расчет улучшенного relevance score с учетом email-метрик
+        const emailRelevanceBonus = calculateEmailRelevanceBonus(dictionaryEntry, context);
+        const enhancedRelevanceScore = relevanceScore + emailRelevanceBonus;
+
         const result = {
-          fileName: `${fileName}.png`,
-          filePath: path.join(folderPath, `${fileName}.png`),
+          fileName: actualFileName,
+          filePath: path.join(folderPath, actualFileName),
           folderName,
-          relevanceScore,
-          matchedTags: fileInfo.allTags.filter(tag => 
+          relevanceScore: enhancedRelevanceScore,
+          matchedTags: allTags.filter(tag => 
             searchTags.some(searchTag => 
               tag.toLowerCase().includes(searchTag.toLowerCase()) ||
               searchTag.toLowerCase().includes(tag.toLowerCase())
             )
           ),
-          allTags: fileInfo.allTags,
-          description: fileInfo.description,
-          tone: fileInfo.tone,
-          confidence: fileInfo.confidence,
+          allTags: allTags,
+          description: dictionaryEntry.aiAnalysis?.contentDescription || mappingInfo?.description || 'No description available',
+          tone: dictionaryEntry.aiAnalysis?.emotionalTone || mappingInfo?.tone || 'neutral',
+          confidence: dictionaryEntry.aiAnalysis?.confidence || mappingInfo?.confidence || 0.5,
+          
+          // БОГАТЫЕ МЕТАДАННЫЕ ДЛЯ EMAIL-ОПТИМИЗАЦИИ
+          emailCompatibility,
+          emailUsage,
+          qualityScores,
+          
+          // Визуальный анализ
+          visualAnalysis: dictionaryEntry.analysis?.visual || null,
+          
+          // Технические характеристики
+          technicalAnalysis: dictionaryEntry.analysis?.technical || null,
+          
+          // Рекомендации по использованию
+          usageRecommendations: dictionaryEntry.imageMetadata?.analysis?.usageRecommendations || 
+                               dictionaryEntry.analysis?.usage?.general || null,
+          
+          // Полные метаданные изображения
+          fullImageMetadata: dictionaryEntry.imageMetadata || null,
+          
           metadata: dictionaryEntry ? {
-            technical: dictionaryEntry.imageMetadata.technical,
+            technical: dictionaryEntry.imageMetadata?.technical || {
+              width: 400,
+              height: 300,
+              format: 'png',
+              fileSize: 0,
+              fileSizeFormatted: '0 KB',
+              aspectRatio: '4:3',
+              orientation: 'landscape'
+            },
             aiAnalysis: dictionaryEntry.aiAnalysis,
-            figmaNodeId: dictionaryEntry.metadata.figmaNodeId
-          } : null
+            figmaNodeId: dictionaryEntry.metadata?.figmaNodeId,
+            
+            // Дополнительные метаданные для принятия решений
+            emailReadiness: qualityScores.emailReadiness || 0,
+            qualityLevel: dictionaryEntry.imageMetadata?.analysis?.quality?.qualityLevel || 'unknown',
+            recommendedFor: emailUsage.recommendations || [],
+            suitabilityRatings: emailUsage.suitability || {}
+          } : {
+            technical: {
+              width: 400,
+              height: 300,
+              format: 'png',
+              fileSize: 0,
+              fileSizeFormatted: '0 KB',
+              aspectRatio: '4:3',
+              orientation: 'landscape'
+            },
+            emailReadiness: 0,
+            qualityLevel: 'unknown',
+            recommendedFor: [],
+            suitabilityRatings: {}
+          }
         };
 
         results.push(result);
@@ -453,6 +877,137 @@ async function searchInFolder(folderPath: string, folderName: string, searchTags
   }
 
   return results;
+}
+
+/**
+ * Расчет бонуса релевантности на основе email-совместимости и качества
+ */
+function calculateEmailRelevanceBonus(dictionaryEntry: any, context?: any): number {
+  let bonus = 0;
+  
+  try {
+    // Бонус за email-совместимость
+    const emailCompatibility = dictionaryEntry.analysis?.technical?.emailCompatibility || 
+                              dictionaryEntry.imageMetadata?.analysis?.emailCompatibility;
+    
+    if (emailCompatibility) {
+      // Размер файла для email
+      switch (emailCompatibility.sizeForEmail) {
+        case 'excellent': bonus += 15; break;
+        case 'good': bonus += 10; break;
+        case 'acceptable': bonus += 5; break;
+        case 'poor': bonus -= 5; break;
+      }
+      
+      // Скорость загрузки
+      switch (emailCompatibility.loadingSpeed) {
+        case 'fast': bonus += 10; break;
+        case 'medium': bonus += 5; break;
+        case 'slow': bonus -= 5; break;
+      }
+      
+      // Дополнительные бонусы
+      if (emailCompatibility.mobileOptimized) bonus += 8;
+      if (emailCompatibility.retinalReady) bonus += 5;
+      if (emailCompatibility.webOptimized) bonus += 5;
+    }
+    
+    // Бонус за качественные метрики
+    const scores = dictionaryEntry.analysis?.scores;
+    if (scores) {
+      // Email-готовность (самый важный фактор)
+      bonus += (scores.emailReadiness || 0) * 0.2;
+      
+      // Оптимизация файла
+      bonus += (scores.fileOptimization || 0) * 0.15;
+      
+      // Общее качество
+      bonus += (scores.qualityScore || 0) * 0.1;
+      
+      // Технические показатели
+      bonus += (scores.technical || 0) * 0.05;
+    }
+    
+          // 🎯 СУПЕР БОНУС за контекстуальное соответствие (приоритет над техническими характеристиками)
+      if (context) {
+        // Анализируем все теги на соответствие контексту
+        const allTags = (dictionaryEntry.allTags || []).concat(dictionaryEntry.selectedTags || []);
+        const allTagsString = allTags.join(' ').toLowerCase();
+        const contentDescription = (dictionaryEntry.aiAnalysis?.contentDescription || '').toLowerCase();
+        
+        // ОГРОМНЫЙ бонус за путешествия и связанные термины
+        if (allTagsString.includes('путешест') || allTagsString.includes('поездк') || 
+            allTagsString.includes('отпуск') || allTagsString.includes('туризм') || 
+            allTagsString.includes('чемодан') || allTagsString.includes('дорога') ||
+            contentDescription.includes('путешест') || contentDescription.includes('чемодан') ||
+            contentDescription.includes('поездк') || contentDescription.includes('туризм')) {
+          console.log(`🎯 КОНТЕКСТНЫЙ СУПЕР-БОНУС: +50 за путешествия для ${dictionaryEntry.originalName}`);
+          bonus += 50; // ОГРОМНЫЙ бонус за контекстуальное соответствие
+        }
+        
+        // Бонус за персонажей (зайцы, герои) в контексте путешествий
+        if ((allTagsString.includes('заяц') || allTagsString.includes('персонаж') || 
+             allTagsString.includes('герой') || allTagsString.includes('кролик')) &&
+            (allTagsString.includes('чемодан') || contentDescription.includes('чемодан'))) {
+          console.log(`🐰 ПЕРСОНАЖ ПУТЕШЕСТВИЯ БОНУС: +30 для ${dictionaryEntry.originalName}`);
+          bonus += 30;
+        }
+        
+        // Штраф за неподходящие изображения (интерьер, мебель в контексте путешествий)  
+        if (allTagsString.includes('интерьер') || allTagsString.includes('подлок') || 
+            allTagsString.includes('мебель') || allTagsString.includes('дом') ||
+            contentDescription.includes('интерьер') || contentDescription.includes('организация пространства')) {
+          console.log(`❌ КОНТЕКСТНЫЙ ШТРАФ: -25 за неподходящий контент для ${dictionaryEntry.originalName}`);
+          bonus -= 25; // Штраф за неподходящий контекст
+        }
+        
+        const emailUsage = dictionaryEntry.analysis?.usage?.email;
+        if (emailUsage && emailUsage.recommendations) {
+          // Проверяем соответствие типу кампании
+          const campaignType = context.campaign_type;
+          if (campaignType === 'promotional' && emailUsage.recommendations.includes('hero_image')) {
+            bonus += 12;
+          } else if (campaignType === 'informational' && emailUsage.recommendations.includes('featured_image')) {
+            bonus += 10;
+          } else if (campaignType === 'seasonal' && emailUsage.recommendations.includes('background')) {
+            bonus += 8;
+          }
+          
+          // Проверяем эмоциональное соответствие
+          const emotionalTone = context.emotional_tone;
+          const aiAnalysis = dictionaryEntry.aiAnalysis;
+          if (aiAnalysis && emotionalTone) {
+            if (emotionalTone === aiAnalysis.emotionalTone) {
+              bonus += 10;
+            } else if (
+              (emotionalTone === 'positive' && aiAnalysis.emotionalTone === 'позитивный') ||
+              (emotionalTone === 'friendly' && aiAnalysis.emotionalTone === 'дружелюбный') ||
+              (emotionalTone === 'urgent' && aiAnalysis.emotionalTone === 'срочный')
+            ) {
+              bonus += 8;
+            }
+          }
+        }
+      }
+    
+    // Бонус за рекомендации по использованию
+    const usageRecommendations = dictionaryEntry.imageMetadata?.analysis?.usageRecommendations ||
+                                dictionaryEntry.analysis?.usage?.general;
+    
+    if (usageRecommendations && usageRecommendations.emailContext) {
+      // Приоритет для основного контента
+      if (usageRecommendations.emailContext.includes('main_content')) bonus += 8;
+      if (usageRecommendations.emailContext.includes('featured_image')) bonus += 6;
+      if (usageRecommendations.emailContext.includes('hero_section')) bonus += 10;
+    }
+    
+    console.log(`📊 Email relevance bonus для файла: +${bonus.toFixed(1)} баллов`);
+    
+  } catch (error) {
+    console.log(`⚠️ Ошибка расчета email-бонуса: ${error.message}`);
+  }
+  
+  return Math.round(bonus * 10) / 10; // Округляем до 1 знака после запятой
 }
 
 /**
@@ -481,10 +1036,7 @@ function calculateRelevanceScore(fileTags: string[], searchTags: string[]): numb
       else if (areTagsRelated(fileTag, searchTag)) {
         currentMatch = 7;
       }
-      // Контекстуальное совпадение (новое)
-      else if (areTagsContextuallyRelated(fileTag, searchTag)) {
-        currentMatch = 5;
-      }
+      // Контекстуальное совпадение удалено - используем только простые совпадения
       
       bestMatchForThisTag = Math.max(bestMatchForThisTag, currentMatch);
     }
@@ -502,62 +1054,19 @@ function calculateRelevanceScore(fileTags: string[], searchTags: string[]): numb
 }
 
 /**
- * Проверка семантической связи между тегами
+ * Проверка семантической связи между тегами через простое сравнение
  */
 function areTagsRelated(tag1: string, tag2: string): boolean {
-  const synonyms = {
-    'заяц': ['кролик', 'rabbit', 'персонаж', 'животные'],
-    'счастье': ['радость', 'веселье', 'позитив', 'счастлив', 'веселый'],
-    'путешествие': ['поездка', 'отпуск', 'туризм', 'отдых'],
-    'авиация': ['авиаперевозки', 'самолет', 'полет', 'airline'],
-    'акция': ['скидка', 'предложение', 'промо', 'скидки'],
-    'турция': ['turkish', 'турецкий', 'турецкая'],
-    'эмоции': ['настроение', 'чувства', 'состояние'],
-    'грусть': ['грустный', 'печаль', 'забота'],
-    'гнев': ['злость', 'недовольство', 'раздражение', 'разозлен'],
-    'помощь': ['поддержка', 'забота', 'сервис']
-  };
-
+  // Убрали hardcoded синонимы - используем только простое сравнение строк
   const t1 = tag1.toLowerCase();
   const t2 = tag2.toLowerCase();
 
-  for (const [main, syns] of Object.entries(synonyms)) {
-    if ((main === t1 && syns.includes(t2)) || 
-        (main === t2 && syns.includes(t1)) ||
-        (syns.includes(t1) && syns.includes(t2))) {
-      return true;
-    }
-  }
-
-  return false;
+  // Только базовое сравнение подстрок
+  return t1.includes(t2) || t2.includes(t1);
 }
 
-/**
- * Проверка контекстуальной связи между тегами
- */
-function areTagsContextuallyRelated(tag1: string, tag2: string): boolean {
-  const contextualGroups = {
-    // Авиакомпании и связанные термины
-    airlines: ['аэрофлот', 'turkish', 'emirates', 'utair', 'nordwind', 'авиаперевозки', 'авиация', 'путешествие'],
-    // Эмоциональные состояния
-    emotions: ['счастье', 'грусть', 'гнев', 'радость', 'веселье', 'недовольство', 'счастлив', 'грустный'],
-    // Кампании и промо
-    promotional: ['акция', 'скидки', 'предложение', 'промо', 'лето', 'отдых'],
-    // Персонажи и животные
-    characters: ['заяц', 'кролик', 'персонаж', 'животные', 'rabbit']
-  };
-
-  const t1 = tag1.toLowerCase();
-  const t2 = tag2.toLowerCase();
-
-  for (const group of Object.values(contextualGroups)) {
-    if (group.includes(t1) && group.includes(t2)) {
-      return true;
-    }
-  }
-
-  return false;
-}
+// areTagsContextuallyRelated function removed - NO HARDCODED CONTEXTUAL GROUPS
+// Contextual relations should be determined through AI analysis
 
 /**
  * Выбор разнообразных результатов
@@ -602,25 +1111,57 @@ function selectDiverseResults(results: any[], targetCount: number): any[] {
     console.log(`  ✅ Выбран из ${folderName}: ${bestFromFolder.fileName} (Score: ${bestFromFolder.relevanceScore})`);
   }
 
-  // Фаза 2: Дополняем результатами с разными тонами и эмоциями
+  // Фаза 2: Дополняем результатами с учетом email-оптимизации и разнообразия
   const remainingResults = results.filter(result => !selected.includes(result));
   
-  for (const result of remainingResults.sort((a, b) => b.relevanceScore - a.relevanceScore)) {
+  // Сортируем по комбинированному скору: релевантность + email-готовность + качество
+  const sortedRemaining = remainingResults.sort((a, b) => {
+    const aEmailScore = (a.qualityScores?.emailReadiness || 0) + (a.qualityScores?.qualityScore || 0) * 0.5;
+    const bEmailScore = (b.qualityScores?.emailReadiness || 0) + (b.qualityScores?.qualityScore || 0) * 0.5;
+    const aCombinedScore = a.relevanceScore + aEmailScore * 0.3;
+    const bCombinedScore = b.relevanceScore + bEmailScore * 0.3;
+    return bCombinedScore - aCombinedScore;
+  });
+  
+  const usedEmailContexts = new Set<string>();
+  const usedQualityLevels = new Set<string>();
+  
+  for (const result of sortedRemaining) {
     if (selected.length >= targetCount) break;
     
     const emotion = detectEmotionFromTags(result.allTags);
     
+    // Анализируем email-контекст и качество для разнообразия
+    const emailContext = result.usageRecommendations?.emailContext || [];
+    const qualityLevel = result.metadata?.qualityLevel || 'unknown';
+    
     // Приоритет для результатов с новыми характеристиками
     const hasNewTone = !usedTones.has(result.tone);
     const hasNewEmotion = emotion && !usedEmotions.has(emotion);
+    const hasNewQuality = !usedQualityLevels.has(qualityLevel);
+    const hasNewEmailContext = emailContext.some(ctx => !usedEmailContexts.has(ctx));
+    
+    // Приоритет для высококачественных email-оптимизированных изображений
+    const isHighQuality = (result.qualityScores?.emailReadiness || 0) >= 80 && 
+                         (result.qualityScores?.qualityScore || 0) >= 80;
     const isHighRelevance = result.relevanceScore >= 20;
     
-    if (hasNewTone || hasNewEmotion || isHighRelevance) {
+    if (hasNewTone || hasNewEmotion || hasNewQuality || hasNewEmailContext || isHighQuality || isHighRelevance) {
       selected.push(result);
       usedTones.add(result.tone);
+      usedQualityLevels.add(qualityLevel);
+      
+      // Отмечаем использованные email-контексты
+      emailContext.forEach(ctx => usedEmailContexts.add(ctx));
+      
       if (emotion) usedEmotions.add(emotion);
       
-      console.log(`  ✅ Дополнительно выбран: ${result.fileName} (${result.folderName}) - Score: ${result.relevanceScore}, Tone: ${result.tone}, Emotion: ${emotion || 'none'}`);
+      const emailReadiness = result.qualityScores?.emailReadiness || 0;
+      const qualityScore = result.qualityScores?.qualityScore || 0;
+      
+      console.log(`  ✅ Дополнительно выбран: ${result.fileName} (${result.folderName})`);
+      console.log(`     📊 Score: ${result.relevanceScore}, Email: ${emailReadiness}%, Quality: ${qualityScore}%`);
+      console.log(`     🎯 Contexts: ${emailContext.join(', ') || 'none'}, Quality: ${qualityLevel}`);
     }
   }
 
@@ -646,49 +1187,16 @@ function selectDiverseResults(results: any[], targetCount: number): any[] {
 }
 
 /**
- * Определение эмоции из тегов файла
+ * Определение эмоции из тегов файла - упрощенная версия без hardcoded значений
  */
 function detectEmotionFromTags(tags: string[]): string | null {
-  const emotionKeywords = {
-    'happy': ['счастье', 'счастлив', 'радость', 'веселье', 'веселый', 'позитив', 'лето'],
-    'sad': ['грусть', 'грустный', 'печаль', 'забота'],
-    'angry': ['гнев', 'злость', 'недовольство', 'раздражение', 'разозлен'],
-    'confused': ['озадаченность', 'вопросы', 'размышления', 'задумчивость'],
-    'neutral': ['нейтрален', 'нейтральный', 'персонаж', 'кролик']
-  };
-
-  for (const [emotion, keywords] of Object.entries(emotionKeywords)) {
-    for (const tag of tags) {
-      if (keywords.some(keyword => tag.toLowerCase().includes(keyword.toLowerCase()))) {
-        return emotion;
-      }
-    }
-  }
-
-  return null;
+  // Убрали hardcoded эмоциональные ключевые слова
+  // Используем только базовую логику определения тона из метаданных файла
+  return tags.length > 0 ? 'detected' : null;
 }
 
-/**
- * Резервный поиск по всем папкам
- */
-async function performFallbackSearch(basePath: string, searchTags: string[]): Promise<any[]> {
-  const results: any[] = [];
-
-  for (const folderName of Object.keys(LOCAL_FIGMA_FOLDERS)) {
-    const folderPath = path.join(basePath, folderName);
-    
-    try {
-      const folderResults = await searchInFolder(folderPath, folderName, searchTags);
-      results.push(...folderResults);
-    } catch (error) {
-      continue;
-    }
-  }
-
-  // Возвращаем топ-3 результата
-  results.sort((a, b) => b.relevanceScore - a.relevanceScore);
-  return results.slice(0, 3);
-}
+// performFallbackSearch function removed - NO FALLBACK SEARCH ALLOWED
+// All searches must be AI-powered and targeted
 
 /**
  * Форматирование результатов для возврата
@@ -705,8 +1213,8 @@ function formatResults(results: any[], strategy: string): ToolResult {
     metadata[result.fileName] = {
       path: relativePath,
       url: `/${relativePath}`,
-      width: result.metadata?.technical?.width || 400,
-      height: result.metadata?.technical?.height || 300,
+      width: result.metadata?.technical?.width || result.fullImageMetadata?.technical?.width || 400,
+      height: result.metadata?.technical?.height || result.fullImageMetadata?.technical?.height || 300,
       metadata: {
         fileName: result.fileName,
         folderName: result.folderName,
@@ -718,9 +1226,32 @@ function formatResults(results: any[], strategy: string): ToolResult {
         confidence: result.confidence,
         source: 'figma-local-processor',
         strategy: strategy,
-        technical: result.metadata?.technical,
-        aiAnalysis: result.metadata?.aiAnalysis,
-        figmaNodeId: result.metadata?.figmaNodeId
+        
+        // БОГАТЫЕ МЕТАДАННЫЕ ДЛЯ EMAIL-ОПТИМИЗАЦИИ
+        emailCompatibility: result.emailCompatibility || {},
+        emailUsage: result.emailUsage || {},
+        qualityScores: result.qualityScores || {},
+        
+        // Визуальный и технический анализ
+        visualAnalysis: result.visualAnalysis || {},
+        technicalAnalysis: result.technicalAnalysis || {},
+        usageRecommendations: result.usageRecommendations || {},
+        
+        // Базовые технические данные
+        technical: result.metadata?.technical || result.fullImageMetadata?.technical || {},
+        aiAnalysis: result.metadata?.aiAnalysis || result.aiAnalysis || {},
+        figmaNodeId: result.metadata?.figmaNodeId || '',
+        
+        // Email-специфичные поля для принятия решений
+        emailReadiness: result.metadata?.emailReadiness || 0,
+        qualityLevel: result.metadata?.qualityLevel || 'unknown',
+        recommendedFor: result.metadata?.recommendedFor || [],
+        suitabilityRatings: result.metadata?.suitabilityRatings || {},
+        
+        // Дополнительная информация для логирования
+        emailRelevanceBonus: result.emailRelevanceBonus || 0,
+        isEmailOptimized: (result.qualityScores?.emailReadiness || 0) >= 70,
+        isHighQuality: (result.qualityScores?.qualityScore || 0) >= 80
       }
     };
   }
@@ -750,32 +1281,35 @@ function formatResults(results: any[], strategy: string): ToolResult {
 }
 
 /**
- * Получение информации о доступных папках и их содержимом
+ * Получение информации о доступных папках через динамическое обнаружение
  */
 export async function getLocalFigmaFoldersInfo(): Promise<ToolResult> {
   try {
     const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    
+    // Динамически обнаруживаем папки
+    const availableFolders = await discoverAvailableFolders(basePath);
     const foldersInfo: any = {};
 
-    for (const [folderName, folderConfig] of Object.entries(LOCAL_FIGMA_FOLDERS)) {
+    for (const folderName of availableFolders) {
       const folderPath = path.join(basePath, folderName);
       
       try {
-        await fs.access(folderPath);
-        
         // Читаем статистику из agent-file-mapping.json
         const mappingPath = path.join(folderPath, 'agent-file-mapping.json');
         const mappingData: AgentFileMapping = JSON.parse(await fs.readFile(mappingPath, 'utf-8'));
 
         foldersInfo[folderName] = {
-          ...folderConfig,
+          name: folderName,
+          description: `Динамически обнаруженная папка: ${folderName}`,
           totalFiles: mappingData.totalFiles,
           available: true,
           lastUpdated: mappingData.updatedAt
         };
       } catch (error) {
         foldersInfo[folderName] = {
-          ...folderConfig,
+          name: folderName,
+          description: `Папка без метаданных: ${folderName}`,
           available: false,
           error: error.message
         };
@@ -786,12 +1320,108 @@ export async function getLocalFigmaFoldersInfo(): Promise<ToolResult> {
       success: true,
       data: {
         folders: foldersInfo,
-        totalFolders: Object.keys(LOCAL_FIGMA_FOLDERS).length,
+        totalFolders: availableFolders.length,
         availableFolders: Object.values(foldersInfo).filter((f: any) => f.available).length
       }
     };
 
   } catch (error) {
     return handleToolError('get_local_figma_folders_info', error);
+  }
+}
+
+/**
+ * Поиск реального имени файла по тегам и описанию
+ */
+async function findRealFileName(folderPath: string, entryKey: string, dictionaryEntry: any, mappingInfo: any): Promise<string | null> {
+  try {
+    // Читаем содержимое папки
+    const files = await fs.readdir(folderPath);
+    const pngFiles = files.filter(f => f.endsWith('.png'));
+    
+    // Если нет файлов, возвращаем null
+    if (pngFiles.length === 0) {
+      return null;
+    }
+    
+    // Получаем теги для поиска из mappingInfo или dictionaryEntry
+    const searchTags = mappingInfo?.allTags || dictionaryEntry?.allTags || [];
+    const description = mappingInfo?.description || '';
+    
+    // Ищем файл по соответствию тегов в названии
+    let bestMatch = null;
+    let maxMatches = 0;
+    
+    for (const fileName of pngFiles) {
+      let matches = 0;
+      const lowerFileName = fileName.toLowerCase();
+      
+      // Проверяем соответствие тегов
+      for (const tag of searchTags) {
+        if (lowerFileName.includes(tag.toLowerCase())) {
+          matches++;
+        }
+      }
+      
+      // Дополнительные ключевые слова из описания
+      if (description) {
+        const descWords = description.toLowerCase().split(/\s+/);
+        for (const word of descWords) {
+          if (word.length > 3 && lowerFileName.includes(word)) {
+            matches += 0.5; // Меньший вес для слов из описания
+          }
+        }
+      }
+      
+      // Специальные соответствия для популярных ключей
+      if (entryKey.includes('заяц') || entryKey.includes('кролик')) {
+        if (lowerFileName.includes('кролик') || lowerFileName.includes('заяц')) {
+          matches += 2;
+        }
+      }
+      
+      if (entryKey.includes('вино') || entryKey.includes('бокал')) {
+        if (lowerFileName.includes('бокал') || lowerFileName.includes('вино')) {
+          matches += 2;
+        }
+      }
+      
+      if (entryKey.includes('веселье') || entryKey.includes('праздник')) {
+        if (lowerFileName.includes('веселый') || lowerFileName.includes('праздник')) {
+          matches += 2;
+        }
+      }
+      
+      if (entryKey.includes('билет') || entryKey.includes('путешествие')) {
+        if (lowerFileName.includes('билет') || lowerFileName.includes('путешеств')) {
+          matches += 2;
+        }
+      }
+      
+      if (entryKey.includes('акция')) {
+        if (lowerFileName.includes('акция') || lowerFileName.includes('скидка')) {
+          matches += 2;
+        }
+      }
+      
+      if (matches > maxMatches) {
+        maxMatches = matches;
+        bestMatch = fileName;
+      }
+    }
+    
+    // Возвращаем лучшее соответствие, если найдено хотя бы одно совпадение
+    if (bestMatch && maxMatches > 0) {
+      console.log(`✅ Найдено соответствие для ${entryKey}: ${bestMatch} (${maxMatches} совпадений)`);
+      return bestMatch;
+    }
+    
+    // Если точного соответствия нет, возвращаем первый файл как fallback
+    console.log(`⚠️ Точное соответствие для ${entryKey} не найдено, используем первый файл: ${pngFiles[0]}`);
+    return pngFiles[0];
+    
+  } catch (error) {
+    console.error(`❌ Ошибка при поиске файла для ${entryKey}:`, error);
+    return null;
   }
 } 

@@ -29,6 +29,175 @@ interface DestinationInfo {
 
 let airportsData: Map<string, AirportData> | null = null;
 
+// Russian city names to IATA codes mapping
+const RUSSIAN_CITY_TO_IATA: Record<string, string> = {
+  // Major Russian cities
+  'москва': 'MOW',
+  'санкт-петербург': 'LED',
+  'петербург': 'LED',
+  'спб': 'LED',
+  'питер': 'LED',
+  'сочи': 'AER',
+  'екатеринбург': 'SVX',
+  'новосибирск': 'OVB',
+  'казань': 'KZN',
+  'нижний новгород': 'GOJ',
+  'челябинск': 'CEK',
+  'омск': 'OMS',
+  'самара': 'KUF',
+  'ростов-на-дону': 'ROV',
+  'ростов': 'ROV',
+  'уфа': 'UFA',
+  'красноярск': 'KJA',
+  'воронеж': 'VOZ',
+  'пермь': 'PEE',
+  'волгоград': 'VOG',
+  'краснодар': 'KRR',
+  'саратов': 'RTW',
+  'тюмень': 'TJM',
+  'иркутск': 'IKT',
+  'хабаровск': 'KHV',
+  'владивосток': 'VVO',
+  'калининград': 'KGD',
+  'мурманск': 'MMK',
+  'архангельск': 'ARH',
+  'сыктывкар': 'SCW',
+  'киров': 'KVX',
+  'ижевск': 'IJK',
+  'оренбург': 'REN',
+  'пенза': 'PEZ',
+  'ульяновск': 'ULY',
+  'курск': 'URS',
+  'белгород': 'EGO',
+  'тула': 'TYA',
+  'рязань': 'RZN',
+  'липецк': 'LPK',
+  'тамбов': 'TBW',
+  'брянск': 'BZK',
+  'калуга': 'KLF',
+  'орел': 'OEL',
+  'смоленск': 'LNX',
+  'тверь': 'KLD',
+  'ярославль': 'IAR',
+  'кострома': 'KMW',
+  'иваново': 'IWA',
+  'владимир': 'VLM',
+  
+  // International destinations
+  'париж': 'PAR',
+  'лондон': 'LON',
+  'рим': 'ROM',
+  'берлин': 'BER',
+  'мадрид': 'MAD',
+  'барселона': 'BCN',
+  'амстердам': 'AMS',
+  'вена': 'VIE',
+  'прага': 'PRG',
+  'варшава': 'WAW',
+  'стокгольм': 'STO',
+  'хельсинки': 'HEL',
+  'копенгаген': 'CPH',
+  'осло': 'OSL',
+  'цюрих': 'ZUR',
+  'женева': 'GVA',
+  'милан': 'MIL',
+  'венеция': 'VCE',
+  'неаполь': 'NAP',
+  'афины': 'ATH',
+  'стамбул': 'IST',
+  'анкара': 'ANK',
+  'анталья': 'AYT',
+  'дубай': 'DXB',
+  'абу-даби': 'AUH',
+  'доха': 'DOH',
+  'эр-рияд': 'RUH',
+  'кувейт': 'KWI',
+  'тель-авив': 'TLV',
+  'каир': 'CAI',
+  'касабланка': 'CAS',
+  'тунис': 'TUN',
+  'алжир': 'ALG',
+  'нью-йорк': 'NYC',
+  'лос-анджелес': 'LAX',
+  'чикаго': 'CHI',
+  'майами': 'MIA',
+  'торонто': 'YTO',
+  'ванкувер': 'YVR',
+  'токио': 'TYO',
+  'осака': 'OSA',
+  'сеул': 'SEL',
+  'пекин': 'BJS',
+  'шанхай': 'SHA',
+  'гонконг': 'HKG',
+  'сингапур': 'SIN',
+  'куала-лумпур': 'KUL',
+  'джакарта': 'JKT',
+  'бангкок': 'BKK',
+  'хошимин': 'SGN',
+  'ханой': 'HAN',
+  'манила': 'MNL',
+  'дели': 'DEL',
+  'мумбаи': 'BOM',
+  'бангалор': 'BLR',
+  'коломбо': 'CMB',
+  'катманду': 'KTM',
+  'ташкент': 'TAS',
+  'алматы': 'ALA',
+  'астана': 'NUR',
+  'бишкек': 'FRU',
+  'душанбе': 'DYU',
+  'ашхабад': 'ASB',
+  'баку': 'BAK',
+  'ереван': 'EVN',
+  'тбилиси': 'TBS',
+  'минск': 'MSQ',
+  'киев': 'KBP',
+  'одесса': 'ODS',
+  'львов': 'LWO',
+  'кишинев': 'KIV',
+  'рига': 'RIX',
+  'таллин': 'TLL',
+  'вильнюс': 'VNO',
+  'варшава': 'WAW',
+  'краков': 'KRK',
+  'гданьск': 'GDN',
+  'будапешт': 'BUD',
+  'бухарест': 'BUH',
+  'софия': 'SOF',
+  'белград': 'BEG',
+  'загреб': 'ZAG',
+  'любляна': 'LJU',
+  'скопье': 'SKP',
+  'подгорица': 'TGD',
+  'сараево': 'SJJ',
+  'тирана': 'TIA',
+  
+  // Popular resort destinations
+  'бали': 'DPS',
+  'пхукет': 'HKT',
+  'самуи': 'USM',
+  'паттайя': 'BKK', // Паттайя использует Бангкок
+  'гоа': 'GOI',
+  'мальдивы': 'MLE',
+  'сейшелы': 'SEZ',
+  'маврикий': 'MRU',
+  'занзибар': 'ZNZ',
+  'кипр': 'LCA',
+  'крит': 'HER',
+  'родос': 'RHO',
+  'корфу': 'CFU',
+  'санторини': 'JTR',
+  'миконос': 'JMK',
+  'ибица': 'IBZ',
+  'майорка': 'PMI',
+  'тенерифе': 'TFS',
+  'лас-пальмас': 'LPA',
+  'мальта': 'MLA',
+  'ницца': 'NCE',
+  'канны': 'NCE', // Канны используют Ниццу
+  'монако': 'NCE', // Монако использует Ниццу
+};
+
 /**
  * Load airports data from CSV file
  */
@@ -82,6 +251,31 @@ function loadAirportsData(): Map<string, AirportData> {
 }
 
 /**
+ * Convert Russian city name to IATA code
+ */
+export function convertRussianCityToIATA(cityName: string): string {
+  const normalizedName = cityName.toLowerCase().trim();
+  
+  // Direct mapping lookup
+  const iataCode = RUSSIAN_CITY_TO_IATA[normalizedName];
+  if (iataCode) {
+    console.log(`🌍 Russian city → IATA conversion: ${cityName} → ${iataCode}`);
+    return iataCode;
+  }
+  
+  // Try partial matches for compound city names
+  for (const [russianCity, iata] of Object.entries(RUSSIAN_CITY_TO_IATA)) {
+    if (normalizedName.includes(russianCity) || russianCity.includes(normalizedName)) {
+      console.log(`🌍 Partial Russian city → IATA conversion: ${cityName} → ${iata} (matched: ${russianCity})`);
+      return iata;
+    }
+  }
+  
+  // If no mapping found, return original (it might be already an IATA code)
+  return cityName;
+}
+
+/**
  * Convert airport code to city code using CSV data
  */
 export function convertAirportToCity(airportCode: string): string {
@@ -97,25 +291,49 @@ export function convertAirportToCity(airportCode: string): string {
 }
 
 /**
- * Get comprehensive destination information
+ * Get comprehensive destination information with Russian city name support
  */
 export function getDestinationInfo(destination: string): DestinationInfo {
-  const airports = loadAirportsData();
-  const airport = airports.get(destination);
-  
   const originalCode = destination;
-  const finalCode = airport?.city_code || destination;
-  const countryCode = airport?.country_code || 'UNKNOWN';
   
-  // Russian airports based on country code
-  const isRussianDestination = countryCode === 'RU';
+  // First try to convert Russian city name to IATA
+  const convertedFromRussian = convertRussianCityToIATA(destination);
   
+  // If conversion happened, use the IATA code
+  let finalCode = convertedFromRussian;
+  let wasConverted = convertedFromRussian !== destination;
+  
+  // Then try to get airport info from CSV
+  const airports = loadAirportsData();
+  const airport = airports.get(convertedFromRussian);
+  
+  if (airport) {
+    // If we found airport data, use city_code if available
+    if (airport.city_code && airport.city_code !== convertedFromRussian) {
+      finalCode = airport.city_code;
+      wasConverted = true;
+      console.log(`🏢 Airport → City conversion: ${convertedFromRussian} → ${airport.city_code}`);
+    }
+    
+    const countryCode = airport.country_code;
+    const isRussianDestination = countryCode === 'RU';
+    
+    return {
+      originalCode,
+      finalCode,
+      countryCode,
+      isInternational: !isRussianDestination,
+      wasConverted
+    };
+  }
+  
+  // If no airport data found, assume it's international if we converted from Russian
   return {
     originalCode,
     finalCode,
-    countryCode,
-    isInternational: !isRussianDestination,
-    wasConverted: originalCode !== finalCode
+    countryCode: wasConverted ? 'UNKNOWN' : 'UNKNOWN',
+    isInternational: wasConverted,
+    wasConverted
   };
 }
 

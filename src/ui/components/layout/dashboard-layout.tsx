@@ -86,7 +86,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   // Logo component
   const defaultLogo = (
     <div className="flex items-center gap-3">
-      <div className="w-8 h-8 bg-kupibilet-gradient rounded-lg flex items-center justify-center">
+      <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
         <span className="text-white font-bold text-lg">E</span>
       </div>
       {!sidebarCollapsed && (
@@ -107,12 +107,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19c-5 0-5-4.03-5-4.03V5a2 2 0 012-2h4a2 2 0 012 2v9.97S13 19 9 19z" />
         </svg>
-        <span className="absolute -top-1 -right-1 w-3 h-3 bg-kupibilet-accent rounded-full"></span>
+        <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
       </button>
 
       {/* User Menu */}
       <div className="glass-button p-1 flex items-center gap-2">
-        <div className="w-8 h-8 bg-kupibilet-gradient rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
           <span className="text-white font-medium text-sm">U</span>
         </div>
         {!sidebarCollapsed && (
@@ -126,7 +126,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   )
 
   return (
-    <div className="min-h-screen bg-kupibilet-hero">
+    <div className="min-h-screen bg-gradient-to-br from-background to-background-light">
       {/* Background Pattern */}
       <div className="fixed inset-0 bg-animated-gradient opacity-30 pointer-events-none" />
       
@@ -162,7 +162,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <div
             className={cn(
               'flex-1 overflow-y-auto p-6',
-              'scrollbar-thin scrollbar-thumb-kupibilet-primary scrollbar-track-transparent',
+              'scrollbar-thin scrollbar-thumb-primary scrollbar-track-transparent',
               className
             )}
           >

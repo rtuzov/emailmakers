@@ -4,7 +4,23 @@ import * as path from 'path';
 // Load .env.local file
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
-import { ToolResult, AssetInfo, handleToolError } from './index';
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define ToolResult locally to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 import * as fs from 'fs/promises';
 import OpenAI from 'openai';
 import { splitFigmaVariants } from './figma-variant-splitter';
@@ -84,110 +100,10 @@ const VISUAL_PRIORITY_TYPES: Record<string, number> = {
 // All exportable node types
 const EXPORTABLE_NODE_TYPES = Object.keys(VISUAL_PRIORITY_TYPES);
 
-// Enhanced tag mapping based on figma-assets-guide-optimized.md
-const EMOTIONAL_MAPPING = {
-  complaint: ["недоволен", "заяц"],
-  success: ["счастлив", "заяц"],
-  help: ["озадачен", "заяц"],
-  urgent: ["разозлен", "заяц"],
-  apology: ["грустный", "заяц"],
-  neutral: ["нейтрален", "заяц"]
-};
+// All hardcoded mappings removed - AI will determine appropriate tags dynamically
 
-const CONTENT_TYPE_MAPPING = {
-  newsletter: ["подборка", "заяц"],
-  news: ["новости", "заяц"],
-  faq: ["озадачен", "заяц"], // Fallback until FAQ variant created
-  general: ["заяц", "общие"]
-};
-
-const AIRLINE_MAPPING = {
-  aeroflot: ["аэрофлот"],
-  turkish: ["turkish", "airlines"],
-  nordwind: ["nordwind"],
-  utair: ["utair"]
-};
-
-/**
- * Intelligent tag enhancement based on figma-assets-guide-optimized.md
- * Converts semantic tags to optimized Figma search terms
- */
-function enhanceTagsWithContext(originalTags: string[], context?: FigmaAssetParams['context']): string[] {
-  const enhancedTags = [...originalTags];
-  
-  // Analyze tags for emotional context
-  for (const tag of originalTags) {
-    const tagLower = tag.toLowerCase();
-    
-    // Map emotional context
-    if (tagLower.includes('жалоб') || tagLower.includes('проблем') || tagLower.includes('ошибк')) {
-      enhancedTags.push(...EMOTIONAL_MAPPING.complaint);
-    } else if (tagLower.includes('успех') || tagLower.includes('поздравл') || tagLower.includes('победа')) {
-      enhancedTags.push(...EMOTIONAL_MAPPING.success);
-    } else if (tagLower.includes('помощ') || tagLower.includes('вопрос') || tagLower.includes('инструкц')) {
-      enhancedTags.push(...EMOTIONAL_MAPPING.help);
-    } else if (tagLower.includes('срочн') || tagLower.includes('важн') || tagLower.includes('критич')) {
-      enhancedTags.push(...EMOTIONAL_MAPPING.urgent);
-    } else if (tagLower.includes('извинен') || tagLower.includes('сожал') || tagLower.includes('компенсац')) {
-      enhancedTags.push(...EMOTIONAL_MAPPING.apology);
-    }
-    
-    // Map content type
-    if (tagLower.includes('подборк') || tagLower.includes('newsletter') || tagLower.includes('рассылк')) {
-      enhancedTags.push(...CONTENT_TYPE_MAPPING.newsletter);
-    } else if (tagLower.includes('новост') || tagLower.includes('анонс') || tagLower.includes('обновлен')) {
-      enhancedTags.push(...CONTENT_TYPE_MAPPING.news);
-    } else if (tagLower.includes('faq') || tagLower.includes('справк') || tagLower.includes('поддержк')) {
-      enhancedTags.push(...CONTENT_TYPE_MAPPING.faq);
-    }
-    
-    // Map airline context
-    if (tagLower.includes('аэрофлот') || tagLower.includes('aeroflot')) {
-      enhancedTags.push(...AIRLINE_MAPPING.aeroflot);
-    } else if (tagLower.includes('turkish') || tagLower.includes('турецк')) {
-      enhancedTags.push(...AIRLINE_MAPPING.turkish);
-    } else if (tagLower.includes('nordwind') || tagLower.includes('нордвинд')) {
-      enhancedTags.push(...AIRLINE_MAPPING.nordwind);
-    } else if (tagLower.includes('utair') || tagLower.includes('ютэйр')) {
-      enhancedTags.push(...AIRLINE_MAPPING.utair);
-    }
-  }
-  
-  // Add context-based enhancements
-  if (context?.campaign_type) {
-    switch (context.campaign_type) {
-      case 'promotional':
-        enhancedTags.push(...EMOTIONAL_MAPPING.success);
-        break;
-      case 'informational':
-        enhancedTags.push(...EMOTIONAL_MAPPING.neutral);
-        break;
-      case 'seasonal':
-        enhancedTags.push(...CONTENT_TYPE_MAPPING.newsletter);
-        break;
-    }
-  }
-  
-  if (context?.emotional_tone) {
-    switch (context.emotional_tone) {
-      case 'positive':
-        enhancedTags.push(...EMOTIONAL_MAPPING.success);
-        break;
-      case 'neutral':
-        enhancedTags.push(...EMOTIONAL_MAPPING.neutral);
-        break;
-      case 'urgent':
-        enhancedTags.push(...EMOTIONAL_MAPPING.urgent);
-        break;
-      case 'friendly':
-        enhancedTags.push(...CONTENT_TYPE_MAPPING.general);
-        break;
-    }
-  }
-  
-  // Remove duplicates and return
-  return Array.from(new Set(enhancedTags));
-}
+// enhanceTagsWithContext function removed - NO HARDCODED TAG ENHANCEMENT
+// Tag enhancement should be done through AI analysis
 
 // Enhanced node mapping for better AI understanding with optimized guide integration
 const NODE_CATEGORIES = {
@@ -314,9 +230,30 @@ export async function getFigmaAssets(params: FigmaAssetParams): Promise<ToolResu
   try {
     console.log('🎯 Getting Figma assets with LOCAL-ONLY mode (API disabled):', params);
 
-    // Validate parameters
-    if (!params.tags || params.tags.length === 0) {
-      throw new Error('Tags array is required and cannot be empty');
+    // Validate parameters - теги могут быть пустыми, тогда используем контекст
+    if (!params.tags) {
+      params.tags = [];
+    }
+    
+    // Если теги пустые, создаем базовые теги из контекста
+    if (params.tags.length === 0) {
+      console.log('⚠️ Теги не предоставлены, генерируем базовые теги из контекста');
+      const contextTags = [];
+      
+      if (params.context?.campaign_type) {
+        contextTags.push(params.context.campaign_type);
+      }
+      if (params.context?.emotional_tone) {
+        contextTags.push(params.context.emotional_tone);
+      }
+      
+      // Добавляем общие теги если контекст тоже пустой
+      if (contextTags.length === 0) {
+        contextTags.push('общие', 'email', 'изображения');
+      }
+      
+      params.tags = contextTags;
+      console.log('🏷️ Сгенерированные контекстные теги:', params.tags);
     }
 
     // FORCE LOCAL-ONLY MODE - API disabled as requested
@@ -1166,68 +1103,68 @@ async function analyzeImagesWithAI(candidates: ScoredAsset[], imageUrls: Record<
 
 async function analyzeImageWithOpenAI(imageUrl: string, candidate: ScoredAsset, tags: string[]): Promise<AIAnalysisResult> {
   try {
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-      organization: process.env.OPENAI_ORG_ID
-    });
-
     if (!process.env.OPENAI_API_KEY) {
       throw new Error('OpenAI API key not found. OPENAI_API_KEY environment variable is required for AI image analysis.');
     }
 
-    console.log(`🔍 Analyzing: ${candidate.name} (${candidate.type})`);
+    console.log(`🔍 Analyzing via Agents SDK: ${candidate.name} (${candidate.type})`);
 
-    const response = await openai.chat.completions.create({
+    // Используем OpenAI Agents SDK для анализа изображений
+    const { Agent, run } = require('@openai/agents');
+    
+    const imageAnalysisAgent = new Agent({
+      name: 'ImageAnalysisAgent',
+      instructions: `You are an expert image analyst for email marketing. You analyze images and provide structured feedback on their suitability for email campaigns. Always respond with valid JSON containing the required fields.`,
       model: getUsageModel(),
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: `Analyze this image for email marketing suitability. Consider:
-              1. Visual Impact (1-10): How eye-catching and engaging is it?
-              2. Email Compatibility (1-10): How well does it work in email clients?
-              3. Brand Alignment (1-10): How well does it fit Kupibilet travel brand?
-              4. Content Relevance (1-10): How relevant is it to tags: ${tags.join(', ')}
-
-              Provide a brief description and reasoning for scores.
-              
-              Element info: ${candidate.name} (${candidate.type}, category: ${candidate.category})`,
-            },
-            {
-              type: 'image_url',
-              image_url: { url: imageUrl }
-            }
-          ]
-        }
-      ],
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'image_analysis',
-          schema: {
-            type: 'object',
-            properties: {
-              visualImpact: { type: 'number', minimum: 1, maximum: 10 },
-              emailCompatibility: { type: 'number', minimum: 1, maximum: 10 },
-              brandAlignment: { type: 'number', minimum: 1, maximum: 10 },
-              contentRelevance: { type: 'number', minimum: 1, maximum: 10 },
-              description: { type: 'string' },
-              reasoning: { type: 'string' }
-            },
-            required: ['visualImpact', 'emailCompatibility', 'brandAlignment', 'contentRelevance', 'description', 'reasoning']
-          }
-        }
+      settings: {
+        temperature: 0.3 // Низкая температура для более консистентных оценок
       }
     });
 
-    const content = response.choices[0]?.message?.content;
+    const prompt = `Analyze this image for email marketing suitability. Consider:
+1. Visual Impact (1-10): How eye-catching and engaging is it?
+2. Email Compatibility (1-10): How well does it work in email clients?
+3. Brand Alignment (1-10): How well does it fit Kupibilet travel brand?
+4. Content Relevance (1-10): How relevant is it to tags: ${tags.join(', ')}
+
+Provide a brief description and reasoning for scores.
+
+Element info: ${candidate.name} (${candidate.type}, category: ${candidate.category})
+
+Image URL: ${imageUrl}
+
+Respond with JSON in this exact format:
+{
+  "visualImpact": number (1-10),
+  "emailCompatibility": number (1-10),
+  "brandAlignment": number (1-10),
+  "contentRelevance": number (1-10),
+  "description": "string",
+  "reasoning": "string"
+}`;
+
+    const result = await run(imageAnalysisAgent, prompt);
+    const content = result.finalOutput;
+    
     if (!content) {
-      throw new Error('No response content from OpenAI');
+      throw new Error('No response content from OpenAI Agents SDK');
     }
 
-    const analysis = JSON.parse(content);
+    // Извлекаем JSON из ответа
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON found in AI response');
+    }
+
+    const analysis = JSON.parse(jsonMatch[0]);
+    
+    // Валидируем структуру ответа
+    const requiredFields = ['visualImpact', 'emailCompatibility', 'brandAlignment', 'contentRelevance', 'description', 'reasoning'];
+    for (const field of requiredFields) {
+      if (!(field in analysis)) {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
     
     // Calculate overall score
     const overallScore = (
@@ -1248,7 +1185,7 @@ async function analyzeImageWithOpenAI(imageUrl: string, candidate: ScoredAsset, 
     };
 
   } catch (error) {
-    throw new Error(`AI image analysis failed: ${error.message}`);
+    throw new Error(`AI image analysis via Agents SDK failed: ${error.message}`);
   }
 }
 

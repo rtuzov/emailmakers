@@ -5,7 +5,23 @@ import * as fs from 'fs/promises';
 // Load .env.local file
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
-import { ToolResult, handleToolError } from './index';
+// Import only what we need to break circular dependency
+import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { logger } from '../core/logger';
+
+// Define ToolResult locally to avoid circular import
+interface ToolResult {
+  success: boolean;
+  data?: any;
+  error?: string;
+  metadata?: Record<string, any>;
+}
+
+// Local error handling function
+function handleToolError(toolName: string, error: any): ToolResult {
+  logger.error(`Tool ${toolName} failed`, { error });
+  return handleToolErrorUnified(toolName, error);
+}
 import OpenAI from 'openai';
 import { TagDictionaryManager, generateShortFileName, TagDictionary } from './figma-tag-dictionary';
 
@@ -674,52 +690,13 @@ async function analyzeImageWithAI(
     return analysis;
 
   } catch (error) {
-    console.error('❌ Ошибка анализа GPT-4:', error.message);
-    
-    // Fallback: генерируем теги на основе имени компонента
-    return generateFallbackTags(componentName, context);
+    console.error('❌ AI анализ изображения не удался:', error.message);
+    throw new Error(`❌ FigmaNewsProcessor: AI image analysis failed for ${componentName} - ${error.message}. No fallback analysis allowed.`);
   }
 }
 
-/**
- * Генерирует fallback теги, если GPT-4 недоступен
- */
-function generateFallbackTags(
-  componentName: string,
-  context?: NewsRabbitsProcessorParams['context']
-): AITagAnalysis {
-  
-  const name = componentName.toLowerCase();
-  const tags: string[] = [];
-
-  // Анализируем имя компонента - добавляем "заяц" только если он есть в названии
-  if (name.includes('заяц') || name.includes('rabbit')) tags.push('заяц');
-  if (name.includes('новости')) tags.push('новости');
-  if (name.includes('подборка')) tags.push('подборка');
-  if (name.includes('общие')) tags.push('общие');
-  if (name.includes('вопрос')) tags.push('вопрос-ответ');
-  if (name.includes('билет')) tags.push('билет');
-  if (name.includes('путешествия')) tags.push('путешествия');
-  
-  // Добавляем контекстные теги
-  if (context?.campaign_type) {
-    tags.push(context.campaign_type);
-  }
-
-  // Если не нашли тегов, добавляем базовые
-  if (tags.length === 0) {
-    tags.push('контент');
-  }
-
-  return {
-    suggestedTags: tags,
-    contentDescription: `Изображение для ${componentName}`,
-    emotionalTone: 'нейтральный',
-    usageContext: ['email-маркетинг', 'новости'],
-    confidence: 0.7,
-    reasoning: 'Теги сгенерированы на основе анализа имени компонента (fallback)'
-  };
-}
+// generateFallbackTags function removed - NO FALLBACK ALLOWED
+// All components must be processed through AI analysis
 
 /**
  * Генерирует новое имя файла на основе тегов

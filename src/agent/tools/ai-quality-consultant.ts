@@ -20,51 +20,51 @@ import { getValidatedUsageModel } from '../../shared/utils/model-config';
 export const aiQualityConsultantSchema = z.object({
   // Email content (может быть сокращенным для оптимизации)
   html_content: z.string().describe('Generated email HTML content (может быть сокращенным с ...[truncated])'),
-  mjml_source: z.string().nullable().optional().nullable().describe('Original MJML source code'),
-  campaign_id: z.string().nullable().optional().nullable().describe('Campaign ID для загрузки полного HTML из файла'),
+  mjml_source: z.string().optional().nullable().describe('Original MJML source code'),
+  campaign_id: z.string().optional().nullable().describe('Campaign ID для загрузки полного HTML из файла'),
   topic: z.string().describe('Email campaign topic'),
   
   // Скриншоты для визуального анализа
   screenshots: z.object({
-    desktop: z.string().nullable().optional().nullable().describe('Base64 encoded desktop screenshot'),
-    mobile: z.string().nullable().optional().nullable().describe('Base64 encoded mobile screenshot'),
-    tablet: z.string().nullable().optional().nullable().describe('Base64 encoded tablet screenshot')
-  }).nullable().optional().nullable().describe('Screenshots from generate_screenshots tool'),
+    desktop: z.string().optional().nullable().describe('Base64 encoded desktop screenshot'),
+    mobile: z.string().optional().nullable().describe('Base64 encoded mobile screenshot'),
+    tablet: z.string().optional().nullable().describe('Base64 encoded tablet screenshot')
+  }).optional().nullable().describe('Screenshots from generate_screenshots tool'),
   
   // Campaign context
-  target_audience: z.string().nullable().optional().nullable().describe('Target audience for the campaign'),
+  target_audience: z.string().optional().nullable().describe('Target audience for the campaign'),
   campaign_type: z.enum(['promotional', 'informational', 'seasonal']),
   
   // Assets from previous tools
   assets_used: z.object({
     original_assets: z.array(z.string()),
     processed_assets: z.array(z.string()),
-    sprite_metadata: z.string().nullable().optional().nullable()
+    sprite_metadata: z.string().optional().nullable()
   }).optional().nullable().describe('Assets used from T1/T10 tools'),
   
   // Pricing data from T2
   prices: z.object({
-    origin: z.string().nullable().optional().nullable(),
-    destination: z.string().nullable().optional().nullable(),
-    cheapest_price: z.number().nullable().optional().nullable(),
-    currency: z.string().nullable().optional().nullable(),
-    date_range: z.string().nullable().optional().nullable()
-  }).nullable().optional().nullable().describe('Price data from get_prices tool'),
+    origin: z.string().optional().nullable(),
+    destination: z.string().optional().nullable(),
+    cheapest_price: z.number().optional().nullable(),
+    currency: z.string().optional().nullable(),
+    date_range: z.string().optional().nullable()
+  }).optional().nullable().describe('Price data from get_prices tool'),
   
   // Content metadata from T3
   content_metadata: z.object({
-    subject: z.string().nullable().optional().nullable(),
-    tone: z.string().nullable().optional().nullable(),
-    language: z.string().nullable().optional().nullable(),
-    word_count: z.number().nullable().optional().nullable()
-  }).nullable().optional().nullable().describe('Content metadata from generate_copy tool'),
+    subject: z.string().optional().nullable(),
+    tone: z.string().optional().nullable(),
+    language: z.string().optional().nullable(),
+    word_count: z.number().optional().nullable()
+  }).optional().nullable().describe('Content metadata from generate_copy tool'),
   
   // Render test results from T8
   render_test_results: z.object({
     overall_score: z.number(),
-    client_compatibility: z.object({}).passthrough().nullable().optional(),
-    issues_found: z.array(z.string()).nullable().optional().nullable()
-  }).nullable().optional().nullable().describe('Results from render_test tool'),
+    client_compatibility: z.object({}).passthrough().optional().nullable(),
+    issues_found: z.array(z.string()).optional().nullable()
+  }).optional().nullable().describe('Results from render_test tool'),
   
   // Improvement iteration tracking
   iteration_count: z.number().describe('Current improvement iteration number'),
@@ -72,7 +72,7 @@ export const aiQualityConsultantSchema = z.object({
     overall_score: z.number(),
     quality_grade: z.enum(['A', 'B', 'C', 'D', 'F']),
     recommendations: z.array(z.string())
-  }).nullable().optional().nullable().describe('Previous quality analysis results'),
+  }).optional().nullable().describe('Previous quality analysis results'),
   improvement_history: z.array(z.object({
     iteration: z.number(),
     score: z.number(),
@@ -81,11 +81,11 @@ export const aiQualityConsultantSchema = z.object({
   
   // Configuration overrides
   config_overrides: z.object({
-    quality_gate_threshold: z.number().nullable().optional().nullable(),
-    max_iterations: z.number().nullable().optional().nullable(),
-    enable_auto_execution: z.boolean().nullable().optional().nullable(),
-    max_recommendations: z.number().nullable().optional().nullable()
-  }).nullable().optional().nullable().describe('Configuration overrides for AI consultant')
+    quality_gate_threshold: z.number().optional().nullable(),
+    max_iterations: z.number().optional().nullable(),
+    enable_auto_execution: z.boolean().optional().nullable(),
+    max_recommendations: z.number().optional().nullable()
+  }).optional().nullable().describe('Configuration overrides for AI consultant')
 });
 
 export type AIQualityConsultantParams = z.infer<typeof aiQualityConsultantSchema>;

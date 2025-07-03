@@ -13,60 +13,83 @@ module.exports = {
 
   // Transform TypeScript files
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react-jsx',
+      },
+      useESM: true,
+    }],
   },
+
+  // Enable experimental ES modules support
+  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
+  globals: {
+    'ts-jest': {
+      useESM: true
+    }
+  },
+
+  // Transform ES modules from node_modules
+  transformIgnorePatterns: [
+    'node_modules/(?!(@openai/agents|@openai/agents-core|zod|uuid)/)'
+  ],
 
   // Test file patterns
   testMatch: [
-    '**/__tests__/**/*.(ts|js)',
-    '**/*.(test|spec).(ts|js)',
+    '**/__tests__/**/*.(ts|tsx|js|jsx)',
+    '**/*.(test|spec).(ts|tsx|js|jsx)',
   ],
 
   // Module name mapping for absolute imports (FIXED)
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/agent/(.*)$': '<rootDir>/src/agent/$1',
-    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
     '^@/domains/(.*)$': '<rootDir>/src/domains/$1',
-    // Mock AI Corrector to avoid ES module issues
-    '^.*ai-corrector$': '<rootDir>/__tests__/__mocks__/ai-corrector.ts',
+    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@/ui/(.*)$': '<rootDir>/src/ui/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@/app/(.*)$': '<rootDir>/src/app/$1',
+    '^@/config/(.*)$': '<rootDir>/src/config/$1',
   },
 
-  // Coverage configuration
+  // Setup files
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+
+  // Coverage settings
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/agent/validators/**/*.{ts,tsx}',
-    'src/agent/types/**/*.{ts,tsx}',
+    'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
+    '!src/**/*.stories.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',
     '!src/**/*.spec.{ts,tsx}',
+    '!src/**/index.ts',
+    '!src/app/layout.tsx',
+    '!src/app/page.tsx',
   ],
 
-  // Coverage thresholds (Phase 4 requirements)
+  // Coverage thresholds
   coverageThreshold: {
     global: {
-      branches: 50, // Lowered for initial setup
+      branches: 50,
       functions: 60,
       lines: 60,
       statements: 60,
     },
   },
 
-  // Coverage reporters
-  coverageReporters: [
-    'text',
-    'lcov',
-    'html',
-  ],
-
   // Coverage directory
   coverageDirectory: 'coverage',
 
-  // Setup files
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  // Coverage reporters
+  coverageReporters: ['text', 'lcov', 'html'],
 
-  // Test timeout (30 seconds for validation tests)
+  // Test timeout
   testTimeout: 30000,
+
+  // Verbose output
+  verbose: true,
 
   // Clear mocks between tests
   clearMocks: true,
@@ -74,32 +97,6 @@ module.exports = {
   // Restore mocks after each test
   restoreMocks: true,
 
-  // Verbose output for detailed test results
-  verbose: true,
-
-  // Ignore patterns
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/build/',
-  ],
-
-  // TypeScript configuration (FIXED)
-  preset: 'ts-jest',
-  
-  // Transform ignore patterns
-  transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$))',
-  ],
-
-  // Module resolution
-  extensionsToTreatAsEsm: ['.ts'],
-
-  // Performance optimization
+  // Maximum worker processes
   maxWorkers: '50%',
-  cache: true,
-  cacheDirectory: '<rootDir>/node_modules/.cache/jest',
-
-  // Error reporting
-  errorOnDeprecated: false, // Reduced for compatibility
 }; 

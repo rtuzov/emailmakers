@@ -53,7 +53,7 @@ const GlassNavigation: React.FC<GlassNavigationProps> = ({
       'glass-button flex items-center gap-3 transition-all duration-200',
       orientation === 'horizontal' ? 'px-4 py-2' : 'w-full px-4 py-3 justify-start',
       item.active 
-        ? 'glow-green bg-kupibilet-primary/20 text-kupibilet-primary border-kupibilet-primary/30'
+        ? 'glow-green bg-primary-200 text-primary border-primary-300'
         : 'text-white/80 hover:text-white hover:bg-white/10',
       size === 'sm' && 'text-sm',
       size === 'lg' && 'text-lg'
@@ -70,7 +70,7 @@ const GlassNavigation: React.FC<GlassNavigationProps> = ({
           {item.label}
         </span>
         {item.badge && (
-          <span className="ml-auto px-2 py-0.5 text-xs bg-kupibilet-accent/20 text-kupibilet-accent rounded-full border border-kupibilet-accent/30">
+          <span className="ml-auto px-2 py-0.5 text-xs bg-accent-200 text-accent rounded-full border border-accent-300">
             {item.badge}
           </span>
         )}

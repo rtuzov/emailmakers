@@ -49,24 +49,72 @@ export class OptimizationEngine implements OptimizationEngineInterface {
   private activeOptimizations: Map<string, OptimizationResult> = new Map();
   private optimizationHistory: OptimizationResult[] = [];
   private isRunning: boolean = false;
+  private isInitialized: boolean = false;
+  private lastSuccessfulAnalysis: SystemAnalysis | null = null;
 
-  constructor(config: OptimizationConfig = {}) {
+  // Add throttling state
+  private isAnalyzing: boolean = false;
+  private lastAnalysisTime: number = 0;
+  private analysisCount: number = 0;
+  private readonly MIN_ANALYSIS_INTERVAL = 60000; // 1 minute minimum (increased from 30s)
+
+  // Add logging throttling for tracking
+  private lastTrackingLogTime: number = 0;
+  private trackingLogCount: number = 0;
+  private readonly MIN_TRACKING_LOG_INTERVAL = 300000; // 5 minutes between tracking logs
+  private readonly MAX_TRACKING_LOGS_PER_HOUR = 6; // Limit to 6 logs per hour
+
+  constructor(config: Partial<OptimizationConfig> = {}) {
+    this.config = this.mergeConfig(config);
     this.analyzer = new OptimizationAnalyzer();
-    this.config = this.mergeDefaultConfig(config);
     
-    console.log('⚙️ OptimizationEngine initialized with config:', this.config);
+    console.log('⚙️ OptimizationEngine initialized');
     
-    // Запускаем мониторинг
-    this.startContinuousMonitoring();
+    // Запускаем мониторинг только если не запущен
+    if (!this.isRunning) {
+      this.startContinuousMonitoring();
+    }
   }
 
   /**
-   * Анализ текущего состояния системы
+   * Анализ текущего состояния системы с throttling
    */
   public async analyzeSystemPerformance(): Promise<SystemAnalysis> {
-    console.log('🔍 Analyzing system performance...');
-    
+    // Check if analysis is already running
+    if (this.isAnalyzing) {
+      console.warn('⏸️ System performance analysis already in progress');
+      throw new Error('Analysis already in progress');
+    }
+
+    // Check minimum interval
+    const timeSinceLastAnalysis = Date.now() - this.lastAnalysisTime;
+    if (timeSinceLastAnalysis < this.MIN_ANALYSIS_INTERVAL) {
+      const remainingTime = this.MIN_ANALYSIS_INTERVAL - timeSinceLastAnalysis;
+      
+      // Log throttling only occasionally to avoid spam
+      if (this.analysisCount % 10 === 0) {
+        console.warn(`⏳ System analysis throttled - ${Math.ceil(remainingTime / 1000)}s remaining`);
+      }
+      
+      // Return cached analysis if available instead of throwing error
+      if (this.lastSuccessfulAnalysis) {
+        console.log('📋 Returning cached analysis due to throttling');
+        return this.lastSuccessfulAnalysis;
+      }
+      
+      throw new Error(`Analysis throttled - ${Math.ceil(remainingTime / 1000)}s remaining`);
+    }
+
+    this.isAnalyzing = true;
+    this.lastAnalysisTime = Date.now();
+    this.analysisCount++;
+
     try {
+      const shouldLog = this.analysisCount <= 3; // Reduce logging after 3 analyses
+      if (shouldLog) {
+        console.log('🔍 Analyzing system performance...');
+      }
+      
       // Получаем текущие метрики (в реальности будет интеграция с MetricsService)
       const currentState = await this.getCurrentMetrics();
       
@@ -104,17 +152,25 @@ export class OptimizationEngine implements OptimizationEngineInterface {
         optimization_opportunities: optimizationOpportunities
       };
 
-      console.log('✅ System analysis completed:', {
-        trends: trends.length,
-        bottlenecks: bottlenecks.length,
-        errorPatterns: errorPatterns.length,
-        predictedIssues: predictedIssues.length
-      });
+      if (shouldLog) {
+        console.log('✅ System analysis completed:', {
+          trends: trends.length,
+          bottlenecks: bottlenecks.length,
+          errorPatterns: errorPatterns.length,
+          predictedIssues: predictedIssues.length
+        });
+      }
 
+      // Cache successful analysis
+      this.lastSuccessfulAnalysis = analysis;
+      
       return analysis;
+
     } catch (error) {
       console.error('❌ System analysis failed:', error);
-      throw new Error(`System analysis failed: ${error.message}`);
+      throw new Error(`System analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      this.isAnalyzing = false;
     }
   }
 
@@ -232,17 +288,36 @@ export class OptimizationEngine implements OptimizationEngineInterface {
    * Отслеживание результатов активных оптимизаций
    */
   public async trackOptimizationResults(): Promise<OptimizationResult[]> {
-    console.log('📊 Tracking optimization results...');
+    // Throttle logging to prevent spam
+    const now = Date.now();
+    const timeSinceLastLog = now - this.lastTrackingLogTime;
+    const shouldLog = timeSinceLastLog > this.MIN_TRACKING_LOG_INTERVAL && 
+                     this.trackingLogCount < this.MAX_TRACKING_LOGS_PER_HOUR;
+
+    if (shouldLog) {
+      console.log('📊 Tracking optimization results...');
+      this.lastTrackingLogTime = now;
+      this.trackingLogCount++;
+      
+      // Reset hourly counter
+      if (this.trackingLogCount >= this.MAX_TRACKING_LOGS_PER_HOUR) {
+        setTimeout(() => {
+          this.trackingLogCount = 0;
+        }, 3600000); // Reset after 1 hour
+      }
+    }
     
     const results: OptimizationResult[] = [];
 
-    for (const [optimizationId, result] of this.activeOptimizations) {
+    for (const [optimizationId, result] of Array.from(this.activeOptimizations.entries())) {
       try {
         // Проверяем нужно ли делать rollback
         const shouldRollback = await this.checkRollbackTriggers(result);
         
         if (shouldRollback.triggered) {
-          console.log(`🔄 Triggering rollback for optimization ${optimizationId}: ${shouldRollback.reason}`);
+          if (shouldLog) {
+            console.log(`🔄 Triggering rollback for optimization ${optimizationId}: ${shouldRollback.reason}`);
+          }
           await this.rollbackOptimization(optimizationId);
           continue;
         }
@@ -253,7 +328,9 @@ export class OptimizationEngine implements OptimizationEngineInterface {
         results.push(updatedResult);
 
       } catch (error) {
-        console.error(`❌ Error tracking optimization ${optimizationId}:`, error);
+        if (shouldLog) {
+          console.error(`❌ Error tracking optimization ${optimizationId}:`, error);
+        }
       }
     }
 
@@ -370,7 +447,7 @@ export class OptimizationEngine implements OptimizationEngineInterface {
 
   // ===== PRIVATE METHODS =====
 
-  private mergeDefaultConfig(config: OptimizationConfig): OptimizationConfig {
+  private mergeConfig(config: Partial<OptimizationConfig>): OptimizationConfig {
     return {
       safety_settings: {
         require_human_approval_for_critical: true,
@@ -399,14 +476,14 @@ export class OptimizationEngine implements OptimizationEngineInterface {
     this.isRunning = true;
     console.log('🔄 Starting continuous optimization monitoring...');
 
-    // Мониторинг каждые 5 минут
+    // Мониторинг каждые 30 минут (было 5 минут)
     setInterval(async () => {
       try {
         await this.trackOptimizationResults();
       } catch (error) {
         console.error('❌ Error in continuous monitoring:', error);
       }
-    }, 5 * 60 * 1000);
+    }, 30 * 60 * 1000); // Changed from 5 minutes to 30 minutes
   }
 
   private async getCurrentMetrics(): Promise<MetricsSnapshot> {

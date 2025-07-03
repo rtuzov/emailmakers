@@ -164,8 +164,10 @@ export class DesignSpecialistValidator {
     const errors: HandoffValidationError[] = [];
     const suggestions: CorrectionSuggestion[] = [];
     
-    // Проверка базовой структуры HTML
-    if (!htmlContent.includes('<!DOCTYPE html')) {
+    // Проверка базовой структуры HTML (поддержка разных вариантов DOCTYPE)
+    const hasDoctype = htmlContent.toLowerCase().includes('<!doctype html') || 
+                      htmlContent.includes('<!DOCTYPE html');
+    if (!hasDoctype) {
       errors.push({
         field: 'email_package.html_content',
         errorType: 'format_error',
@@ -210,23 +212,38 @@ export class DesignSpecialistValidator {
       });
     }
     
-    // Проверка инлайн стилей
+    // Проверка внешних CSS файлов (разрешаем Google Fonts)
     const externalStylesheets = htmlContent.match(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi);
     if (externalStylesheets && externalStylesheets.length > 0) {
-      errors.push({
-        field: 'email_package.html_content',
-        errorType: 'format_error',
-        message: 'HTML не должен содержать внешние стилевые файлы',
-        severity: 'critical'
-      });
+      const hasGoogleFonts = externalStylesheets.some(link => link.includes('fonts.googleapis.com'));
+      const hasOtherCSS = externalStylesheets.some(link => !link.includes('fonts.googleapis.com'));
       
-      suggestions.push({
-        field: 'email_package.html_content',
-        issue: 'Внешние CSS файлы',
-        suggestion: 'Конвертировать в инлайн стили',
-        correctionPrompt: 'Уберите все внешние CSS файлы и конвертируйте стили в инлайн атрибуты style="". Каждый элемент должен иметь стили непосредственно в атрибуте style.',
-        priority: 'high'
-      });
+      if (hasGoogleFonts && !hasOtherCSS) {
+        // Только Google Fonts - предупреждение
+        suggestions.push({
+          field: 'email_package.html_content',
+          issue: 'Google Fonts ссылка',
+          suggestion: 'Рассмотрите использование web-safe шрифтов для лучшей совместимости',
+          correctionPrompt: 'Google Fonts могут не работать во всех email клиентах. Добавьте fallback шрифты в CSS.',
+          priority: 'medium'
+        });
+      } else if (hasOtherCSS) {
+        // Другие внешние CSS - критическая ошибка
+        errors.push({
+          field: 'email_package.html_content',
+          errorType: 'format_error',
+          message: 'HTML не должен содержать внешние стилевые файлы (кроме Google Fonts)',
+          severity: 'critical'
+        });
+        
+        suggestions.push({
+          field: 'email_package.html_content',
+          issue: 'Внешние CSS файлы',
+          suggestion: 'Конвертировать в инлайн стили',
+          correctionPrompt: 'Уберите все внешние CSS файлы и конвертируйте стили в инлайн атрибуты style="". Каждый элемент должен иметь стили непосредственно в атрибуте style.',
+          priority: 'high'
+        });
+      }
     }
     
     return {

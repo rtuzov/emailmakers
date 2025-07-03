@@ -1,0 +1,69 @@
+<mjml>
+  <mj-head>
+    <mj-title>Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!</mj-title>
+    <mj-preview>Откройте для себя магию Парижа по выгодным ценам!</mj-preview>
+    <mj-attributes>
+      <mj-text font-family="Arial, sans-serif" font-size="16px" color="#333333" line-height="1.5" />
+      <mj-button background-color="#2B5CE6" color="#ffffff" border-radius="4px" />
+    </mj-attributes>
+    <mj-style>
+      .kupibilet-brand { color: #2B5CE6; font-weight: bold; }
+      .price-highlight { color: #FF6B6B; font-size: 18px; font-weight: bold; }
+      @media only screen and (max-width: 600px) {
+        .mobile-padding { padding: 10px !important; }
+        .mobile-text { font-size: 14px !important; }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#f8f9fa">
+    <!-- Header -->
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" color="#2B5CE6" font-weight="bold" align="center">
+          Kupibilet
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    
+    <!-- Hero Section -->
+    <mj-section background-color="#ffffff" padding="0">
+      <mj-column>
+        <mj-image src="./assets/иконка-изображающая-коробку-с-символом-самолета-символизирующая-доставку-и-логистику.png" alt="Travel destination" width="600px" />
+      </mj-column>
+    </mj-section>
+    
+    <!-- Content Section -->
+    <mj-section background-color="#ffffff" padding="30px 20px">
+      <mj-column>
+        <mj-text font-size="28px" color="#333333" font-weight="bold" line-height="1.2">
+          Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!
+        </mj-text>
+        <mj-text font-size="16px" color="#666666" padding-top="15px">
+          Мечтаете о сентябрьском отдыхе в романтичном Париже? У нас для вас отличное предложение! Только сейчас вы можете забронировать авиабилеты из Москвы в Париж от 19 771 рублей. Это уникальная возможность погрузиться в атмосферу французской столицы, насладиться её красотой и культурой.<br/><br/>Представьте, как вы прогуливаетесь по Елисейским полям, наслаждаетесь ароматом свежих круассанов и восхищаетесь видами с Эйфелевой башни. Париж в сентябре — это время тепла и уюта, когда город наполняется яркими красками и атмосферой праздника.<br/><br/>Не упустите шанс! Количество билетов по такой цене ограничено. Забронируйте свою поездку уже сегодня и создайте незабываемые воспоминания с близкими.
+        </mj-text>
+        
+        <mj-button href="https://kupibilet.ru/search" background-color="#2B5CE6" color="#ffffff" border-radius="4px" font-size="16px" font-weight="bold" padding-top="25px">
+          Забронировать билеты
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    
+    
+    
+    <!-- Footer -->
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#999999" align="center">
+          © 2025 Kupibilet. Все права защищены.
+        </mj-text>
+        <mj-text font-size="12px" color="#999999" align="center">
+          <a href="https://kupibilet.ru/unsubscribe" style="color: #999999;">Отписаться</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+  <mj-body>
+  </mj-body>
+</mjml>

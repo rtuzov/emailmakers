@@ -1,0 +1,859 @@
+{
+  "success": true,
+  "task_type": "generate_content",
+  "results": {
+    "content_data": {
+      "success": true,
+      "content": {
+        "subject": "Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!",
+        "preheader": "Откройте для себя магию Парижа по выгодным ценам!",
+        "body": "Мечтаете о сентябрьском отдыхе в романтичном Париже? У нас для вас отличное предложение! Только сейчас вы можете забронировать авиабилеты из Москвы в Париж от 19 771 рублей. Это уникальная возможность погрузиться в атмосферу французской столицы, насладиться её красотой и культурой.\n\nПредставьте, как вы прогуливаетесь по Елисейским полям, наслаждаетесь ароматом свежих круассанов и восхищаетесь видами с Эйфелевой башни. Париж в сентябре — это время тепла и уюта, когда город наполняется яркими красками и атмосферой праздника.\n\nНе упустите шанс! Количество билетов по такой цене ограничено. Забронируйте свою поездку уже сегодня и создайте незабываемые воспоминания с близкими.",
+        "cta": "Забронировать билеты",
+        "language": "ru",
+        "tone": "friendly"
+      },
+      "metadata": {
+        "language": "ru",
+        "tone": "friendly",
+        "word_count": 94,
+        "reading_time": 1,
+        "quality_score": 81,
+        "pricing_integration": true,
+        "route_analysis": true,
+        "generation_date": "2025-07-02T12:30:29.995Z"
+      },
+      "qualityScore": 81
+    },
+    "pricing_data": {
+      "success": true,
+      "action": "get_prices",
+      "data": {
+        "prices": [
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 24680,
+            "currency": "RUB",
+            "date": "2025-07-16",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19858,
+            "currency": "RUB",
+            "date": "2025-07-17",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19962,
+            "currency": "RUB",
+            "date": "2025-07-18",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 23782,
+            "currency": "RUB",
+            "date": "2025-07-19",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19954,
+            "currency": "RUB",
+            "date": "2025-07-20",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 20825,
+            "currency": "RUB",
+            "date": "2025-07-21",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 20828,
+            "currency": "RUB",
+            "date": "2025-07-22",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19783,
+            "currency": "RUB",
+            "date": "2025-07-23",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19771,
+            "currency": "RUB",
+            "date": "2025-07-24",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 25499,
+            "currency": "RUB",
+            "date": "2025-07-25",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 25608,
+            "currency": "RUB",
+            "date": "2025-07-26",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 28586,
+            "currency": "RUB",
+            "date": "2025-07-27",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 19906,
+            "currency": "RUB",
+            "date": "2025-07-28",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 21777,
+            "currency": "RUB",
+            "date": "2025-07-29",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 21534,
+            "currency": "RUB",
+            "date": "2025-07-30",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 23823,
+            "currency": "RUB",
+            "date": "2025-07-31",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 25963,
+            "currency": "RUB",
+            "date": "2025-08-01",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 27871,
+            "currency": "RUB",
+            "date": "2025-08-02",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 24928,
+            "currency": "RUB",
+            "date": "2025-08-03",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 25706,
+            "currency": "RUB",
+            "date": "2025-08-04",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 23801,
+            "currency": "RUB",
+            "date": "2025-08-05",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 25899,
+            "currency": "RUB",
+            "date": "2025-08-06",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 26624,
+            "currency": "RUB",
+            "date": "2025-08-07",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 28614,
+            "currency": "RUB",
+            "date": "2025-08-08",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 30864,
+            "currency": "RUB",
+            "date": "2025-08-09",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 28332,
+            "currency": "RUB",
+            "date": "2025-08-10",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 27030,
+            "currency": "RUB",
+            "date": "2025-08-11",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 32896,
+            "currency": "RUB",
+            "date": "2025-08-12",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 31386,
+            "currency": "RUB",
+            "date": "2025-08-13",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 30402,
+            "currency": "RUB",
+            "date": "2025-08-14",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          },
+          {
+            "origin": "MOW",
+            "destination": "PAR",
+            "price": 34243,
+            "currency": "RUB",
+            "date": "2025-08-15",
+            "metadata": {
+              "airline": "",
+              "stops": 0
+            }
+          }
+        ],
+        "currency": "RUB",
+        "cheapest": 19771,
+        "search_metadata": {
+          "route": "MOW → PAR",
+          "date_range": "2025-07-16 to 2025-08-15",
+          "cabin_class": "economy",
+          "total_found": 31
+        },
+        "statistics": {
+          "average": 25185,
+          "median": 25499,
+          "standard_deviation": 4116.792566095365,
+          "price_range": {
+            "min": 19771,
+            "max": 34243
+          }
+        },
+        "enhanced_at": "2025-07-02T12:30:21.441Z"
+      },
+      "pricing_insights": {
+        "price_trend": "increasing",
+        "seasonality_factor": 1,
+        "booking_recommendation": "Book now for best prices around 19771 RUB",
+        "optimal_dates": [
+          "2025-07-16",
+          "2025-07-17",
+          "2025-07-18"
+        ],
+        "price_alerts": [
+          {
+            "type": "good_deal",
+            "message": "Found prices 21% below average",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "marketing_copy": {
+        "headline": "Билеты MOW → PAR от 19771 RUB",
+        "description": "Лучшие предложения на авиабилеты с вылетом из MOW. Book now for best prices around 19771 RUB",
+        "urgency_level": "high",
+        "call_to_action": "Забронировать сейчас"
+      },
+      "analytics": {
+        "execution_time": 652,
+        "prices_analyzed": 31,
+        "data_freshness": "fresh",
+        "confidence_score": 100
+      }
+    },
+    "brief_analysis": {
+      "routes": [
+        {
+          "origin": "MOW",
+          "destination": "PAR"
+        }
+      ],
+      "suggestedDates": "2025-07-16,2025-08-15",
+      "travelPurpose": "seasonal",
+      "urgency": "low",
+      "seasonality": "summer"
+    }
+  },
+  "recommendations": {
+    "next_agent": "design_specialist",
+    "next_actions": [
+      "Apply content to email templates",
+      "Select matching visual assets",
+      "Implement design consistency",
+      "Optimize for mobile and desktop"
+    ],
+    "handoff_data": {
+      "content_package": {
+        "complete_content": {
+          "subject": "Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!",
+          "preheader": "Откройте для себя магию Парижа по выгодным ценам!",
+          "body": "Мечтаете о сентябрьском отдыхе в романтичном Париже? У нас для вас отличное предложение! Только сейчас вы можете забронировать авиабилеты из Москвы в Париж от 19 771 рублей. Это уникальная возможность погрузиться в атмосферу французской столицы, насладиться её красотой и культурой.\n\nПредставьте, как вы прогуливаетесь по Елисейским полям, наслаждаетесь ароматом свежих круассанов и восхищаетесь видами с Эйфелевой башни. Париж в сентябре — это время тепла и уюта, когда город наполняется яркими красками и атмосферой праздника.\n\nНе упустите шанс! Количество билетов по такой цене ограничено. Забронируйте свою поездку уже сегодня и создайте незабываемые воспоминания с близкими.",
+          "cta": "Забронировать билеты"
+        },
+        "content_metadata": {
+          "language": "ru",
+          "tone": "friendly",
+          "word_count": 94,
+          "reading_time": 1
+        },
+        "brand_guidelines": {
+          "voice_tone": "professional",
+          "key_messages": [
+            "качество",
+            "надежность"
+          ],
+          "compliance_notes": []
+        }
+      },
+      "design_requirements": {
+        "template_type": "informational",
+        "visual_priority": "balanced",
+        "layout_preferences": [
+          "responsive",
+          "clean"
+        ],
+        "color_scheme": "warm_inviting"
+      },
+      "campaign_context": {
+        "topic": "seasonal",
+        "target_audience": "путешественники, семьи",
+        "destination": "PAR",
+        "origin": "MOW",
+        "urgency_level": "high"
+      },
+      "pricing_context": {
+        "action": "get_prices",
+        "data": {
+          "prices": [
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 24680,
+              "currency": "RUB",
+              "date": "2025-07-16",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19858,
+              "currency": "RUB",
+              "date": "2025-07-17",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19962,
+              "currency": "RUB",
+              "date": "2025-07-18",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 23782,
+              "currency": "RUB",
+              "date": "2025-07-19",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19954,
+              "currency": "RUB",
+              "date": "2025-07-20",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 20825,
+              "currency": "RUB",
+              "date": "2025-07-21",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 20828,
+              "currency": "RUB",
+              "date": "2025-07-22",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19783,
+              "currency": "RUB",
+              "date": "2025-07-23",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19771,
+              "currency": "RUB",
+              "date": "2025-07-24",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 25499,
+              "currency": "RUB",
+              "date": "2025-07-25",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 25608,
+              "currency": "RUB",
+              "date": "2025-07-26",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 28586,
+              "currency": "RUB",
+              "date": "2025-07-27",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 19906,
+              "currency": "RUB",
+              "date": "2025-07-28",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 21777,
+              "currency": "RUB",
+              "date": "2025-07-29",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 21534,
+              "currency": "RUB",
+              "date": "2025-07-30",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 23823,
+              "currency": "RUB",
+              "date": "2025-07-31",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 25963,
+              "currency": "RUB",
+              "date": "2025-08-01",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 27871,
+              "currency": "RUB",
+              "date": "2025-08-02",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 24928,
+              "currency": "RUB",
+              "date": "2025-08-03",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 25706,
+              "currency": "RUB",
+              "date": "2025-08-04",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 23801,
+              "currency": "RUB",
+              "date": "2025-08-05",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 25899,
+              "currency": "RUB",
+              "date": "2025-08-06",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 26624,
+              "currency": "RUB",
+              "date": "2025-08-07",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 28614,
+              "currency": "RUB",
+              "date": "2025-08-08",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 30864,
+              "currency": "RUB",
+              "date": "2025-08-09",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 28332,
+              "currency": "RUB",
+              "date": "2025-08-10",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 27030,
+              "currency": "RUB",
+              "date": "2025-08-11",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 32896,
+              "currency": "RUB",
+              "date": "2025-08-12",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 31386,
+              "currency": "RUB",
+              "date": "2025-08-13",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 30402,
+              "currency": "RUB",
+              "date": "2025-08-14",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            },
+            {
+              "origin": "MOW",
+              "destination": "PAR",
+              "price": 34243,
+              "currency": "RUB",
+              "date": "2025-08-15",
+              "metadata": {
+                "airline": "",
+                "stops": 0
+              }
+            }
+          ],
+          "currency": "RUB",
+          "cheapest": 19771
+        },
+        "pricing_insights": {
+          "price_trend": "increasing",
+          "seasonality_factor": 1,
+          "booking_recommendation": "Book now for best prices around 19771 RUB",
+          "optimal_dates": [
+            "2025-07-16",
+            "2025-07-17",
+            "2025-07-18"
+          ]
+        },
+        "marketing_copy": {
+          "headline": "Билеты MOW → PAR от 19771 RUB",
+          "description": "Лучшие предложения на авиабилеты с вылетом из MOW. Book now for best prices around 19771 RUB",
+          "urgency_level": "high",
+          "call_to_action": "Забронировать сейчас"
+        }
+      },
+      "trace_id": "1044882d-770a-4d42-90a2-2e4d6475b314",
+      "timestamp": "2025-07-02T12:30:20.788Z"
+    }
+  },
+  "analytics": {
+    "execution_time": 9209,
+    "operations_performed": 1,
+    "confidence_score": 81,
+    "agent_efficiency": 92
+  }
+}
