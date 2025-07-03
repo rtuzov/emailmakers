@@ -149,33 +149,66 @@ ${params.priceContext}
 
 /**
  * T3: Generate Copy Tool
- * Generate email content using dual LLM approach (GPT-4o mini + Claude)
+ * Generate email content using OpenAI Agent SDK with tracing
  */
 export async function generateCopy(params: CopyParams): Promise<ToolResult> {
-  try {
-    console.log('🖋️ Генерация контента для темы:', params.topic);
-
-    // Validate parameters
-    if (!params.topic || !params.prices) {
-      throw new Error('Topic and prices are required');
+  const traceId = generateTraceId();
+  
+  return withTrace({
+    name: 'generate_copy',
+    metadata: { 
+      trace_id: traceId,
+      topic: params.topic,
+      price_count: params.prices.prices.length,
+      cheapest_price: params.prices.cheapest
     }
-
-    // Check if OpenAI API is available
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    if (!openaiApiKey) {
-      throw new Error('OpenAI API key not found. OPENAI_API_KEY environment variable is required.');
-    }
-
+  }, async () => {
     try {
-      const openai = new OpenAI({
-        apiKey: openaiApiKey,
+      console.log(`🖋️ [${traceId}] Генерация контента для темы:`, params.topic);
+
+      // Validate parameters
+      if (!params.topic || !params.prices) {
+        throw new Error('Topic and prices are required');
+      }
+
+      // Check if OpenAI API is available
+      const openaiApiKey = process.env.OPENAI_API_KEY;
+      if (!openaiApiKey) {
+        throw new Error('OpenAI API key not found. OPENAI_API_KEY environment variable is required.');
+      }
+
+      // Create copy generator agent
+      const copyAgent = new CopyGeneratorAgent();
+
+      // Prepare price context
+      const pricesList = params.prices?.prices || [];
+      const currency = params.prices?.currency || 'RUB';
+      const cheapestPrice = params.prices?.cheapest || 0;
+      
+      // Generate price context only if we have valid prices
+      let priceContext = 'Специальные предложения на авиабилеты';
+      if (pricesList.length > 0) {
+        priceContext = pricesList.slice(0, 3).map(p => 
+          `${p.origin}→${p.destination}: ${p.price} ${p.currency} (${p.date})`
+        ).join('\n');
+      }
+
+      console.log(`🔧 [${traceId}] Starting agent copy generation...`);
+      
+      // Generate content using agent
+      const response = await copyAgent.run(`Generate marketing copy for ${params.topic} with pricing context`, {
+        tools: {
+          generate_marketing_copy: {
+            topic: params.topic,
+            priceContext: priceContext,
+            cheapestPrice: cheapestPrice,
+            currency: currency
+          }
+        }
       });
 
-      // Test connectivity with a simple request
-      await testOpenAIConnectivity(openai);
-
-      // Generate Russian content only
-      const russianContent = await generateRussianContent(openai, params.topic, params.prices);
+      // Parse response 
+      const russianContent = await parseAgentResponse(response);
 
       const result: ContentInfo = {
         subject: russianContent.subject,
@@ -186,88 +219,59 @@ export async function generateCopy(params: CopyParams): Promise<ToolResult> {
         tone: 'friendly'
       };
 
+      console.log(`✅ [${traceId}] Copy generation completed successfully`);
+
       return {
         success: true,
         data: result,
         metadata: {
+          trace_id: traceId,
           topic: params.topic,
           price_info: `от ${params.prices.cheapest} ${params.prices.currency}`,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          agent_used: 'CopyGeneratorAgent',
+          model: getUsageModel()
         }
       };
 
-    } catch (networkError: any) {
-      throw new Error(`Network error: ${networkError.message}`);
+    } catch (error: any) {
+      console.error(`❌ [${traceId}] Copy generation failed:`, error.message);
+      return handleToolError('generate_copy', error);
     }
-
-  } catch (error: any) {
-    return handleToolError('generate_copy', error);
-  }
+  });
 }
 
-async function generateRussianContent(
-  openai: OpenAI, 
-  topic: string, 
-  prices: { prices: PriceInfo[]; currency: string; cheapest: number }
-): Promise<Omit<ContentInfo, 'language' | 'tone'>> {
-  
-  // Defensive checks for prices
-  const pricesList = prices?.prices || [];
-  const currency = prices?.currency || 'RUB';
-  const cheapestPrice = prices?.cheapest || 0;
-  
-  // Generate price context only if we have valid prices
-  let priceContext = 'Специальные предложения на авиабилеты';
-  if (pricesList.length > 0) {
-    priceContext = pricesList.slice(0, 3).map(p => `${p.origin}→${p.destination}: ${p.price} ${p.currency} (${p.date})`).join('\n');
-  }
-  
-  // Enhanced prompt using content.md guidelines
-  const prompt = `Ты эксперт по email-маркетингу для туристической компании Kupibilet. 
-Создай привлекательное письмо на тему "${topic}" используя цены от ${cheapestPrice} ${currency}.
-
-### Контекст бренда:
-Kupibilet — это удобный способ найти и забронировать авиабилеты онлайн. Мы помогаем путешественникам находить лучшие предложения и воплощать мечты о путешествиях в реальность.
-
-### Данные о ценах:
-${priceContext}
-
-### Требования:
-- Заголовок до 50 символов с ценой (используй "от ${cheapestPrice} ${currency}")
-- Preheader до 90 символов, дополняющий заголовок
-- Основной текст 200-300 слов
-- Призыв к действию до 20 символов
-- Тон: дружелюбный, мотивирующий
-- Фокус на выгоде и эмоциях
-
-### Эмоциональные триггеры:
-- Жажда путешествий и приключений
-- FOMO (ограниченное по времени предложение)
-- Ценность и экономия
-- Мечты и стремления
-- Удобство и простота
-
-### Структура письма:
-1. **Заголовок**: Привлекающий внимание с ценой
-2. **Preheader**: Дополняющий заголовок
-3. **Основной текст**: Эмоциональная история + выгода + призыв
-4. **CTA**: Ясный призыв к действию (примеры: "Найти билеты", "Забронировать", "Посмотреть цены")
-
-ВАЖНО: Отвечай ТОЛЬКО в формате JSON без дополнительного текста:
-{
-  "subject": "...",
-  "preheader": "...",
-  "body": "...",
-  "cta": "..."
-}`;
-
+// Parse agent response and extract content
+async function parseAgentResponse(response: any): Promise<Omit<ContentInfo, 'language' | 'tone'>> {
   try {
-    const response = await openai.chat.completions.create({
-      model: getUsageModel(),
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-      max_tokens: 1000
-    });
+    // Extract content from agent response
+    let content = '';
+    if (response && typeof response === 'string') {
+      content = response;
+    } else if (response?.content) {
+      content = response.content;
+    } else if (response?.text) {
+      content = response.text;
+    } else {
+      throw new Error('Invalid agent response format');
+    }
+
+    // Clean and parse JSON
+    const cleanContent = cleanMarkdownJson(content);
+    const parsedContent = JSON.parse(cleanContent);
+
+    return {
+      subject: parsedContent.subject || '',
+      preheader: parsedContent.preheader || '',
+      body: parsedContent.body || '',
+      cta: parsedContent.cta || 'Найти билеты'
+    };
+
+  } catch (parseError: any) {
+    console.error('Failed to parse agent response:', parseError.message);
+    throw new Error(`Failed to parse agent response: ${parseError.message}`);
+  }
+}
 
     const content = response.choices[0]?.message?.content;
     if (!content) {
