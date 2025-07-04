@@ -139,34 +139,82 @@ export class ContentSpecialistAgent extends BaseSpecialistAgent {
     try {
       console.log(`📝 ContentSpecialistAgent: Starting ${input.task_type} task`);
       
-      // Update performance metrics
-      this.performanceMetrics.totalExecutions++;
+      // 🔍 Update performance metrics with tracing
+      await this.tracedFunction(
+        'update-performance-metrics',
+        { task_type: input.task_type },
+        async () => {
+          this.performanceMetrics.totalExecutions++;
+          return true;
+        }
+      );
       
-      // Execute task with OpenAI Agent SDK  
-      const result = await this.executeSpecialistTask(input);
+      // 🎯 Execute task with OpenAI Agent SDK and comprehensive tracing
+      const result = await this.executeTracedAgentFunction(
+        'execute-specialist-task',
+        input,
+        async () => {
+          return await this.executeSpecialistTask(input);
+        }
+      );
       
-      // Return result directly (validation simplified)
-      const validationResult = result || {
-        success: false,
-        task_type: input.task_type,
-        analytics: { execution_time: 0, operations_performed: 0, confidence_score: 0, agent_efficiency: 0 },
-        results: {},
-        recommendations: { next_agent: 'design_specialist', next_actions: [], handoff_data: {} }
-      } as ContentSpecialistOutput;
+      // 🔍 Validate result with tracing
+      const validationResult = await this.executeTracedValidation(
+        'output-validation',
+        result,
+        async () => {
+          return result || {
+            success: false,
+            task_type: input.task_type,
+            analytics: { execution_time: 0, operations_performed: 0, confidence_score: 0, agent_efficiency: 0 },
+            results: {},
+            recommendations: { next_agent: 'design_specialist', next_actions: [], handoff_data: {} }
+          } as ContentSpecialistOutput;
+        }
+      );
       
-      // Update success metrics
-      this.performanceMetrics.totalSuccesses++;
-      this.updatePerformanceMetrics(Date.now() - startTime, true);
+      // 🔍 Update success metrics with tracing
+      await this.tracedFunction(
+        'update-success-metrics',
+        { success: true, duration: Date.now() - startTime },
+        async () => {
+          this.performanceMetrics.totalSuccesses++;
+          this.updatePerformanceMetrics(Date.now() - startTime, true);
+          return true;
+        }
+      );
+      
+      // 🔄 Trace handoff if needed
+      if (validationResult.recommendations.next_agent) {
+        await this.traceHandoff(
+          validationResult.recommendations.next_agent,
+          validationResult.recommendations.handoff_data,
+          { validation_passed: true, confidence: validationResult.analytics.confidence_score }
+        );
+      }
       
       console.log(`✅ ContentSpecialistAgent: Task ${input.task_type} completed successfully`);
+      
+      // 🏁 Complete tracing
+      this.completeTracing(true);
       
       return validationResult;
       
     } catch (error) {
       console.error(`❌ ContentSpecialistAgent: Task ${input.task_type} failed:`, error);
       
-      // Update failure metrics
-      this.updatePerformanceMetrics(Date.now() - startTime, false);
+      // 🔍 Update failure metrics with tracing
+      await this.tracedFunction(
+        'update-failure-metrics',
+        { error: error instanceof Error ? error.message : String(error) },
+        async () => {
+          this.updatePerformanceMetrics(Date.now() - startTime, false);
+          return false;
+        }
+      );
+      
+      // 🏁 Complete tracing with error
+      this.completeTracing(false, error instanceof Error ? error.message : String(error));
       
       // Return error response
       return {
@@ -189,44 +237,75 @@ export class ContentSpecialistAgent extends BaseSpecialistAgent {
   }
 
   /**
-   * Execute specialist task using OpenAI Agent
+   * Execute specialist task using OpenAI Agent with enhanced tracing
    */
   private async executeSpecialistTask(input: ContentSpecialistInput): Promise<ContentSpecialistOutput> {
-    const taskPrompt = this.buildTaskPrompt(input);
-    
-    try {
-      // Execute using OpenAI Agent SDK with proper tracing
-      
-      const runConfig = createAgentRunConfig(
-        'ContentSpecialist',
-        input.task_type,
-        {
-          task_type: input.task_type,
-          has_context_requirements: !!input.context_requirements,
-          has_pricing_requirements: !!input.pricing_requirements,
-          has_content_requirements: !!input.content_requirements,
-          workflow_stage: 'execution',
-          session_id: 'default'
+    return this.tracedFunction(
+      'build-and-execute-task',
+      { task_type: input.task_type },
+      async () => {
+        // 🔍 Build task prompt with tracing
+        const taskPrompt = await this.tracedFunction(
+          'build-task-prompt',
+          { task_type: input.task_type },
+          async () => {
+            return this.buildTaskPrompt(input);
+          }
+        );
+        
+        try {
+          // 🔍 Create run config with tracing
+          const runConfig = await this.tracedFunction(
+            'create-run-config',
+            { task_type: input.task_type },
+            async () => {
+              return createAgentRunConfig(
+                'ContentSpecialist',
+                input.task_type,
+                {
+                  task_type: input.task_type,
+                  has_context_requirements: !!input.context_requirements,
+                  has_pricing_requirements: !!input.pricing_requirements,
+                  has_content_requirements: !!input.content_requirements,
+                  workflow_stage: 'execution',
+                  session_id: 'default'
+                }
+              );
+            }
+          );
+          
+          console.log(`🤖 Starting agent execution for ${input.task_type}`);
+          
+          // 🤖 Execute OpenAI Agent with comprehensive tracing
+          const agentResponse = await this.executeOpenAIAgent(taskPrompt);
+          
+          console.log(`🤖 Agent response received for ${input.task_type}`);
+          
+          // 🔍 Process the agent response with tracing
+          const processedResult = await this.tracedFunction(
+            'process-agent-response',
+            { task_type: input.task_type, has_response: !!agentResponse },
+            async () => {
+              return await this.processAgentResponse(agentResponse, input);
+            }
+          );
+          
+          return processedResult;
+          
+        } catch (error) {
+          console.error('❌ OpenAI Agent execution failed:', error);
+          
+          // 🔍 Execute fallback task with tracing
+          return await this.tracedFunction(
+            'execute-fallback-task',
+            { task_type: input.task_type, error: error instanceof Error ? error.message : String(error) },
+            async () => {
+              return await this.executeFallbackTask(input);
+            }
+          );
         }
-      );
-      
-      console.log(`🤖 Starting agent execution for ${input.task_type}`);
-      
-      const agentResponse = await run(this.agent, taskPrompt);
-      
-      console.log(`🤖 Agent response received for ${input.task_type}`);
-      
-      // Process the agent response
-      const processedResult = await this.processAgentResponse(agentResponse, input);
-      
-      return processedResult;
-      
-    } catch (error) {
-      console.error('❌ OpenAI Agent execution failed:', error);
-      
-      // Fallback to direct tool execution
-      return await this.executeFallbackTask(input);
-    }
+      }
+    );
   }
 
   /**
@@ -763,11 +842,12 @@ Always provide structured output with clear recommendations for next agents in t
    * Get agent status and health
    */
   getAgentStatus() {
+    const baseStatus = super.getAgentStatus();
+    const trace = this.getCurrentTrace();
+    
     return {
-      agent_id: this.agentId,
-      agent_type: 'content_specialist',
-      status: 'operational',
-      trace_id: this.traceId,
+      ...baseStatus,
+      specialization: 'content_specialist',
       performance: this.getPerformanceMetrics(),
       capabilities: [
         'context_analysis',
