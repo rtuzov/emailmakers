@@ -37,6 +37,9 @@ export interface ExtractedContentPackage {
   content: StandardContent;
   metadata: ContentMetadata;
   brand_guidelines: BrandGuidelines;
+  title?: string;
+  description?: string;
+  brief_text?: string;
 }
 
 export class ContentExtractor {

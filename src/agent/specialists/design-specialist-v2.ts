@@ -5,11 +5,11 @@
  * Following the proven service-based pattern from Quality Specialist refactoring
  */
 
-import { Agent, AgentOptions } from 'openai/agents';
+import { Agent, AgentOptions } from '@openai/agents';
 import { ContentExtractor, ExtractedContentPackage } from '../core/content-extractor';
 import { AssetManager, StandardAsset, AssetSearchResult } from '../core/asset-manager';
 import { EmailRenderingService as CoreRenderingService, RenderingResult } from '../core/email-rendering-service';
-import { ErrorHandler } from '../core/error-handler';
+import { ErrorHandler, ErrorType } from '../core/error-handler';
 
 // Import modular services
 import { AssetManagementService } from './design/services/asset-management-service';
@@ -54,7 +54,6 @@ export class DesignSpecialistAgentV2 extends Agent {
     super({
       ...options,
       name: 'Design Specialist V2',
-      description: 'Handles email design, asset management, and template rendering with modular architecture',
       instructions: `
         You are a Design Specialist Agent V2 with modular architecture.
         
@@ -73,7 +72,7 @@ export class DesignSpecialistAgentV2 extends Agent {
     this.contentExtractor = new ContentExtractor();
     this.assetManager = new AssetManager();
     this.coreRenderingService = new CoreRenderingService();
-    this.errorHandler = new ErrorHandler();
+    this.errorHandler = ErrorHandler.getInstance();
 
     // Initialize modular services
     this.assetManagementService = new AssetManagementService();
@@ -114,11 +113,16 @@ export class DesignSpecialistAgentV2 extends Agent {
       };
       
     } catch (error) {
-      this.errorHandler.handleError(error, { 
-        context: 'DesignSpecialistAgentV2.executeTask',
-        input: input.task_type,
-        trace_id: traceId
-      });
+      this.errorHandler.handleError(
+        error instanceof Error ? error : new Error(String(error)),
+        ErrorType.RENDERING_ERROR,
+        'DesignSpecialistAgentV2.executeTask',
+        { 
+          input: input.task_type,
+          trace_id: traceId
+        },
+        traceId
+      );
       
       return {
         success: false,
@@ -361,7 +365,30 @@ export class DesignSpecialistAgentV2 extends Agent {
       // Use the email rendering service to prepare comprehensive handoff data
       const assets = this.extractAssetsFromResults(results);
       return await this.emailRenderingService.prepareHandoffData(
-        results.rendering || { html_output: htmlOutput },
+        results.rendering || { 
+          success: true,
+          html_content: htmlOutput,
+          mjml_source: '',
+          inline_css: '',
+          html_output: htmlOutput,
+          metadata: {
+            file_size_bytes: Buffer.byteLength(htmlOutput, 'utf8'),
+            render_time_ms: 0,
+            template_type: 'promotional',
+            optimization_applied: []
+          },
+          assets_metadata: {
+            total_assets: 0,
+            processed_assets: [],
+            asset_urls: []
+          },
+          performance_metrics: {
+            css_rules_count: 0,
+            images_count: 0,
+            total_size_kb: Math.round(Buffer.byteLength(htmlOutput, 'utf8') / 1024),
+            estimated_load_time_ms: 100
+          }
+        },
         content,
         assets
       );

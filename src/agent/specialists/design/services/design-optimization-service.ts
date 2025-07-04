@@ -5,10 +5,10 @@
  * for the Design Specialist Agent V2
  */
 
-import { ExtractedContentPackage } from '../../core/content-extractor';
-import { StandardAsset } from '../../core/asset-manager';
-import { responsiveDesign, ResponsiveDesignParams } from '../../tools/simple/responsive-design';
-import { accessibility, AccessibilityParams } from '../../tools/simple/accessibility';
+import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { StandardAsset } from '../../../core/asset-manager';
+import { ResponsiveDesignParams, responsiveDesign } from '../../../tools/simple/responsive-design';
+import { AccessibilityParams, accessibility } from '../../../tools/simple/accessibility';
 import {
   DesignSpecialistInputV2,
   ServiceExecutionResult,
@@ -99,7 +99,7 @@ export class DesignOptimizationService {
       
       return {
         success: true,
-        data: responsiveResult as ResponsiveDesignResult,
+        data: responsiveResult as any,
         execution_time_ms: Date.now() - startTime,
         confidence_score: 0.85,
         operations_performed: 2
@@ -136,7 +136,7 @@ export class DesignOptimizationService {
       
       return {
         success: true,
-        data: accessibilityResult as AccessibilityResult,
+        data: accessibilityResult as any,
         execution_time_ms: Date.now() - startTime,
         confidence_score: 0.9,
         operations_performed: 3
@@ -202,8 +202,8 @@ export class DesignOptimizationService {
       optimized_mjml: undefined,
       optimization_type: 'accessibility',
       improvements: [
-        `WCAG ${result.compliance_level} compliance achieved`,
-        `${result.fixes_applied?.length || 0} accessibility issues fixed`,
+        `WCAG ${(result as any).compliance_level || 'AA'} compliance achieved`,
+        `${(result as any).fixes_applied?.length || 0} accessibility issues fixed`,
         'Alt text added to images',
         'Color contrast improved',
         'Semantic HTML structure enhanced'
@@ -371,10 +371,9 @@ export class DesignOptimizationService {
     return {
       action: 'fix',
       html_content: htmlContent,
-      compliance_level: 'WCAG_AA',
-      auto_fix: true,
-      preserve_design: true,
-      target_disabilities: ['visual', 'motor', 'cognitive']
+      wcag_level: 'AA' as const,
+      auto_fix_level: 'standard' as const,
+      preserve_design: true
     };
   }
 

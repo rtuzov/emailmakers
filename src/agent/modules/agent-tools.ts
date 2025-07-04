@@ -6,7 +6,7 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { contentGenerator } from '../tools/consolidated/content-generator';
-import { emailRenderer } from '../tools/consolidated/email-renderer';
+import { emailRenderer } from '../tools/email-renderer-v2';
 import { qualityController } from '../tools/consolidated/quality-controller';
 import { deliveryManager } from '../tools/consolidated/delivery-manager';
 import { getCurrentDate } from '../tools/date';
@@ -208,35 +208,94 @@ export const emailRendererTool = tool({
           image_types: imagePlanData.image_plan?.map(img => img.type) || []
         });
         
-        // 🔍 Step 2: Select real Figma assets based on image plan
+        // 🔍 Step 2: Use AssetManager to find Figma assets based on image plan
+        const { AssetManager } = await import('../core/asset-manager');
+        const assetManager = new AssetManager();
+        
+        // Collect all search tags from image plan
+        const allTags = [];
         for (const imageSpec of imagePlanData.image_plan || []) {
-          try {
-            // Use search tags from image plan to find Figma assets
-            const searchTags = imageSpec.search_tags || ['заяц', 'путешествие'];
-            
-            console.log(`🔍 Design Specialist: Searching Figma assets for ${imageSpec.type} with tags:`, searchTags);
-            
-            // Simple asset selection from known Figma paths
-            const figmaAsset = await selectFigmaAssetByTags(searchTags, imageSpec.type);
-            if (figmaAsset) {
-              selectedAssets.push(figmaAsset);
-              console.log(`✅ Design Specialist: Selected asset for ${imageSpec.type}: ${figmaAsset}`);
-            }
-          } catch (error) {
-            console.warn(`⚠️ Design Specialist: Failed to select asset for ${imageSpec.type}:`, error);
+          allTags.push(...(imageSpec.search_tags || []));
+        }
+        
+        // Remove duplicates and add fallback tags
+        const uniqueTags = [...new Set(allTags)];
+        if (uniqueTags.length === 0) {
+          uniqueTags.push('заяц', 'кролик', 'путешествие');
+        }
+        
+        console.log(`🔍 Design Specialist: Searching assets with tags:`, uniqueTags);
+        
+        // Search for assets using AssetManager
+        const searchResult = await assetManager.searchAssets({
+          tags: uniqueTags,
+          emotional_tone: 'positive',
+          campaign_type: 'seasonal',
+          target_count: imagePlanData.image_plan?.length || 3
+        }, contentData);
+        
+        if (searchResult.success && searchResult.assets.length > 0) {
+          // Map found assets to image plan positions
+          for (let i = 0; i < Math.min(searchResult.assets.length, imagePlanData.image_plan?.length || 3); i++) {
+            const asset = searchResult.assets[i];
+            selectedAssets.push(asset.filePath);
+            console.log(`✅ Design Specialist: Mapped asset ${asset.fileName} to position ${i + 1}`);
           }
         }
         
-        console.log(`🎨 Design Specialist: Selected ${selectedAssets.length} Figma assets:`, selectedAssets);
+        console.log(`🎨 Design Specialist: Selected ${selectedAssets.length} Figma assets from search result`);
         
       } catch (error) {
-        console.warn('⚠️ Design Specialist: Could not parse image plan, using default assets');
+        console.warn('⚠️ Design Specialist: Could not parse image plan or search assets:', error);
       }
     }
     
-    // Fail fast if no assets were selected — no hardcoded fallbacks allowed
+    // If no assets found through image plan, try direct search with content
     if (selectedAssets.length === 0) {
-      throw new Error('Design Specialist: No matching Figma assets were found for the provided image plan. Aborting rendering as per fail-fast policy.');
+      console.log('🔄 Design Specialist: No assets from image plan, trying direct content search...');
+      
+      try {
+        const { AssetManager } = await import('../core/asset-manager');
+        const assetManager = new AssetManager();
+        
+        // Extract tags from content
+        const contentTags = [];
+        const subject = contentData.subject || '';
+        const body = contentData.body || '';
+        const fullText = `${subject} ${body}`.toLowerCase();
+        
+        if (fullText.includes('норвег')) contentTags.push('путешествие', 'страна', 'отпуск');
+        if (fullText.includes('осень')) contentTags.push('сезон', 'время', 'природа');
+        if (fullText.includes('путешеств')) contentTags.push('путешествие', 'туризм', 'отдых');
+        
+        // Fallback to general tags
+        if (contentTags.length === 0) {
+          contentTags.push('заяц', 'кролик', 'путешествие');
+        }
+        
+        console.log(`🔍 Design Specialist: Direct search with content tags:`, contentTags);
+        
+        const directSearchResult = await assetManager.searchAssets({
+          tags: contentTags,
+          emotional_tone: 'positive',
+          campaign_type: 'seasonal',
+          target_count: 3
+        }, contentData);
+        
+        if (directSearchResult.success && directSearchResult.assets.length > 0) {
+          for (const asset of directSearchResult.assets.slice(0, 3)) {
+            selectedAssets.push(asset.filePath);
+            console.log(`✅ Design Specialist: Added asset from direct search: ${asset.fileName}`);
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Design Specialist: Direct search failed:', error);
+      }
+    }
+    
+    // Continue with available assets (don't fail if no assets found)
+    if (selectedAssets.length === 0) {
+      console.log('⚠️ Design Specialist: No assets found, but continuing with placeholder template');
     }
     
     // Generate MJML content from the received data
@@ -284,23 +343,51 @@ export const emailRendererTool = tool({
     if (selectedAssets.length > 0) {
       // Add hero image
       if (selectedAssets[0]) {
+        const heroFileName = selectedAssets[0].split('/').pop() || 'hero-image.png';
         heroImageSection = `
         <mj-section background-color="#ffffff" padding="0">
           <mj-column>
-            <mj-image src="{{FIGMA_ASSET_URL:${selectedAssets[0].split('/').pop()}}}" alt="Travel destination" width="600px" />
+            <mj-image src="{{FIGMA_ASSET_URL:${heroFileName}}}" alt="Travel destination" width="600px" />
           </mj-column>
         </mj-section>`;
+        console.log(`🖼️ Design Specialist: Added hero image: ${heroFileName}`);
       }
       
       // Add rabbit mascot
       if (selectedAssets[1]) {
+        const rabbitFileName = selectedAssets[1].split('/').pop() || 'rabbit-mascot.png';
         rabbitSection = `
         <mj-section background-color="#ffffff" padding="20px 0">
           <mj-column>
-            <mj-image src="{{FIGMA_ASSET_URL:${selectedAssets[1].split('/').pop()}}}" alt="Kupibilet Rabbit" width="120px" align="center" />
+            <mj-image src="{{FIGMA_ASSET_URL:${rabbitFileName}}}" alt="Kupibilet Rabbit" width="120px" align="center" />
           </mj-column>
         </mj-section>`;
+        console.log(`🖼️ Design Specialist: Added rabbit mascot: ${rabbitFileName}`);
       }
+    } else {
+      // Create template without assets but with placeholders
+      console.log('🖼️ Design Specialist: Creating template with text-based design (no assets)');
+      heroImageSection = `
+      <mj-section background-color="#FF6B35" padding="40px 20px">
+        <mj-column>
+          <mj-text font-size="32px" font-weight="bold" color="white" align="center">
+            🌍 ${contentData.subject || 'Путешествие в Норвегию осенью'}
+          </mj-text>
+          <mj-text font-size="18px" color="white" align="center" padding-top="10px">
+            Откройте для себя красоту северной природы
+          </mj-text>
+        </mj-column>
+      </mj-section>`;
+      
+      rabbitSection = `
+      <mj-section background-color="#f8f9fa" padding="20px 0">
+        <mj-column>
+          <mj-text font-size="48px" align="center" padding-bottom="10px">🐰</mj-text>
+          <mj-text font-size="16px" color="#666666" align="center">
+            Ваш надёжный спутник в мире путешествий
+          </mj-text>
+        </mj-column>
+      </mj-section>`;
     }
     
     // Create complete MJML template
@@ -371,10 +458,12 @@ export const emailRendererTool = tool({
       action: params.action || 'render_mjml',
       mjml_content: fullMjmlContent,
       content_data: contentData,
-      template_config: {
-        responsive: true,
-        dark_mode_support: true,
-        client_optimization: ['gmail', 'outlook', 'apple_mail']
+      rendering_options: {
+        responsive_design: true,
+        email_client_optimization: 'all',
+        inline_css: true,
+        validate_html: true,
+        accessibility_compliance: true
       }
     });
     

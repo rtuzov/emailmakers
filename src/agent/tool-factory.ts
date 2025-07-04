@@ -4,7 +4,7 @@ import { tool } from '@openai/agents';
 import { figmaAssetManager, figmaAssetManagerSchema } from './tools/consolidated/figma-asset-manager';
 import { pricingIntelligence, pricingIntelligenceSchema } from './tools/consolidated/pricing-intelligence';
 import { contentGenerator, contentGeneratorSchema } from './tools/consolidated/content-generator';
-import { emailRenderer, emailRendererSchema } from './tools/consolidated/email-renderer';
+import { emailRenderer, emailRendererSchema } from './tools/email-renderer-v2';
 import { qualityController, qualityControllerSchema } from './tools/consolidated/quality-controller';
 import { deliveryManager, deliveryManagerSchema } from './tools/consolidated/delivery-manager';
 import { contextProvider, contextProviderSchema } from './tools/consolidated/context-provider';

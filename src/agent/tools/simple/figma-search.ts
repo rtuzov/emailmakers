@@ -6,12 +6,7 @@
  */
 
 import { z } from 'zod';
-// import { getLocalFigmaAssets } from '../figma-local-processor';
-
-// Stub implementation
-async function getLocalFigmaAssets(params: any) {
-  return { success: false, error: 'getLocalFigmaAssets not implemented', data: null };
-}
+import { getLocalFigmaAssets } from '../figma-local-processor';
 
 export const figmaSearchSchema = z.object({
   tags: z.array(z.string()).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),

@@ -5,10 +5,13 @@
  * Extracted from the original 1818-line file for better maintainability
  */
 
-import { AssetSearchResult, StandardAsset } from '../../core/asset-manager';
-import { ExtractedContentPackage } from '../../core/content-extractor';
-import { RenderingResult } from '../../core/email-rendering-service';
-import { DesignToQualityHandoffData } from '../../types/base-agent-types';
+import { AssetSearchResult, StandardAsset } from '../../../core/asset-manager';
+import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { RenderingResult } from '../../../core/email-rendering-service';
+import { DesignToQualityHandoffData } from '../../../types/base-agent-types';
+
+// Re-export types that are used by other modules
+export type { DesignToQualityHandoffData };
 
 // =============================================================================
 // CORE TASK TYPES
@@ -209,6 +212,7 @@ export interface ResponsiveBreakpoints {
 export interface ImagePlan {
   total_images_needed: number;
   image_plan: ImagePlanItem[];
+  figma_assets_needed?: any;
   layout_optimization: LayoutOptimization;
 }
 

@@ -356,9 +356,7 @@ export class ComponentRenderingService {
         customization_level: params.advanced_config?.customization_level || 'standard',
         content_data: params.content_data || {},
         assets: params.assets || [],
-        brand_guidelines: params.brand_guidelines || {},
-        features: params.advanced_config?.features || [],
-        rendering_options: params.rendering_options || {}
+        brand_guidelines: params.brand_guidelines || {}
       });
       
       console.log('✅ Advanced component system completed');

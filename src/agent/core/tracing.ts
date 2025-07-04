@@ -65,12 +65,12 @@ export class TracingSystem {
     this.metrics = this.initializeMetrics();
 
     const traceConfig = {
-      workflowName: config.workflowName,
-      traceId: config.traceId,
-      groupId: config.groupId,
-      disabled: config.disabled || false,
+      name: config.workflowName,
       metadata: {
         ...config.metadata,
+        traceId: config.traceId,
+        groupId: config.groupId,
+        disabled: config.disabled || false,
         version: '2.0',
         environment: process.env.NODE_ENV || 'development',
         timestamp: new Date().toISOString(),
@@ -81,10 +81,10 @@ export class TracingSystem {
 
     // Create workflow-level trace
     const trace = await withTrace(traceConfig, async () => {
-      return { initialized: true, traceId: traceConfig.traceId };
+      return { initialized: true, traceId: config.traceId };
     });
 
-    this.currentTraceId = traceConfig.traceId || this.generateTraceId();
+    this.currentTraceId = config.traceId || this.generateTraceId();
     
     // Log workflow initialization
     await this.logWorkflowEvent('workflow_initialized', {
@@ -118,8 +118,10 @@ export class TracingSystem {
 
     // Create custom span for agent execution
     const span = createCustomSpan({
-      name: `${agentName}_execution`,
-      metadata: spanMetadata
+      data: {
+        name: `${agentName}_execution`,
+        ...spanMetadata
+      }
     });
 
     // Log agent start
@@ -196,8 +198,10 @@ export class TracingSystem {
 
     // Create handoff span
     const span = createCustomSpan({
-      name: `handoff_${handoffKey}`,
-      metadata: handoffMetadata
+      data: {
+        name: `handoff_${handoffKey}`,
+        ...handoffMetadata
+      }
     });
 
     // Log handoff start
@@ -260,8 +264,10 @@ export class TracingSystem {
 
     // Create function span for tool execution
     const span = createFunctionSpan({
-      name: toolName,
-      metadata: toolMetadata
+      data: {
+        name: toolName,
+        ...toolMetadata
+      }
     });
 
     // Log tool start
@@ -334,8 +340,7 @@ export class TracingSystem {
 
     // Create generation span
     const span = createGenerationSpan({
-      name: `${agentName}_generation`,
-      metadata: generationMetadata
+      data: generationMetadata
     });
 
     // Log generation start
@@ -402,8 +407,10 @@ export class TracingSystem {
 
     // Create feedback span
     const span = createCustomSpan({
-      name: `feedback_${agentName}_to_${targetAgent}`,
-      metadata: feedbackMetadata
+      data: {
+        name: `feedback_${agentName}_to_${targetAgent}`,
+        ...feedbackMetadata
+      }
     });
 
     // Log feedback event

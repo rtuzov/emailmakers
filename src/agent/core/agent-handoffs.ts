@@ -12,8 +12,9 @@
 
 // Import specialist agents and their types
 import { ContentSpecialistAgent, ContentSpecialistInput, ContentSpecialistOutput } from '../specialists/content-specialist-agent';
-import { DesignSpecialistAgentV2, DesignSpecialistInputV2, DesignSpecialistOutputV2 } from '../specialists/design-specialist-agent-v2';
-import { QualitySpecialistAgent, QualitySpecialistInput, QualitySpecialistOutput } from '../specialists/quality-specialist-agent';
+import { DesignSpecialistAgentV2, DesignSpecialistInputV2, DesignSpecialistOutputV2 } from '../specialists/design-specialist-v2';
+import { QualitySpecialistV2 } from '../specialists/quality-specialist-v2';
+import { QualitySpecialistInput, QualitySpecialistOutput } from '../specialists/quality/types/quality-types';
 import { DeliverySpecialistAgent, DeliverySpecialistInput, DeliverySpecialistOutput } from '../specialists/delivery-specialist-agent';
 import { AgentResponseUtils, AgentErrorCodes } from '../types/base-agent-types';
 import { DEFAULT_RETRY_POLICY, QUALITY_SCORE_THRESHOLD } from '../../shared/constants';
@@ -113,7 +114,7 @@ interface HandoffExecution {
 export class AgentHandoffsCoordinator {
   private contentAgent: ContentSpecialistAgent;
   private designAgent: DesignSpecialistAgentV2;
-  private qualityAgent: QualitySpecialistAgent;
+  private qualityAgent: QualitySpecialistV2;
   private deliveryAgent: DeliverySpecialistAgent;
   
   private executionHistory: Map<string, HandoffExecution[]> = new Map();
@@ -122,8 +123,11 @@ export class AgentHandoffsCoordinator {
   constructor() {
     // Initialize all specialized agents
     this.contentAgent = new ContentSpecialistAgent();
-    this.designAgent = new DesignSpecialistAgentV2();
-    this.qualityAgent = new QualitySpecialistAgent();
+    this.designAgent = new DesignSpecialistAgentV2({
+      name: 'Design Specialist V2',
+      instructions: 'You are a Design Specialist Agent V2 with modular architecture.'
+    });
+    this.qualityAgent = new QualitySpecialistV2(null);
     this.deliveryAgent = new DeliverySpecialistAgent();
     
     console.log('🔄 AgentHandoffsCoordinator initialized with 4 specialized agents');

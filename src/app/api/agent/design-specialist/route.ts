@@ -1,7 +1,8 @@
 // @ts-nocheck
 
 import { NextRequest, NextResponse } from 'next/server';
-import { DesignSpecialistAgentV2, DesignSpecialistInputV2 } from '@/agent/specialists/design-specialist-agent-v2';
+import { cors } from '@/lib/cors';
+import { DesignSpecialistAgentV2, DesignSpecialistInputV2 } from '@/agent/specialists/design-specialist-v2';
 
 export async function POST(request: NextRequest) {
   try {

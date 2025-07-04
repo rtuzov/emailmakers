@@ -10,18 +10,21 @@ export interface ImagePlanningConfig {
   emotional_tone: string;
 }
 
+export interface ImagePlanItem {
+  position: number;
+  type: 'hero' | 'illustration' | 'icon' | 'background' | 'product' | 'testimonial';
+  content_description: string;
+  size_priority: 'large' | 'medium' | 'small';
+  emotional_tone: string;
+  search_tags: string[];
+  placement?: 'header' | 'body' | 'footer' | 'sidebar';
+  fallback_options?: string[];
+}
+
 export interface ImagePlan {
   total_images_needed: number;
   figma_assets_needed: number;
-  image_plan: Array<{
-    position: number;
-    type: 'hero' | 'illustration' | 'icon' | 'background' | 'product' | 'testimonial';
-    content_description: string;
-    size_priority: 'large' | 'medium' | 'small';
-    emotional_tone: string;
-    search_tags: string[];
-    placement: 'header' | 'body' | 'footer' | 'sidebar';
-  }>;
+  image_plan: ImagePlanItem[];
   layout_optimization: {
     mobile_friendly: boolean;
     load_time_optimized: boolean;

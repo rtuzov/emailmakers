@@ -5,9 +5,9 @@
  * for the Design Specialist Agent V2
  */
 
-import { EmailRenderingService as CoreRenderingService, RenderingParams, RenderingResult } from '../../core/email-rendering-service';
-import { ExtractedContentPackage } from '../../core/content-extractor';
-import { StandardAsset } from '../../core/asset-manager';
+import { EmailRenderingService as CoreRenderingService, RenderingParams, RenderingResult } from '../../../core/email-rendering-service';
+import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { StandardAsset } from '../../../core/asset-manager';
 import {
   DesignSpecialistInputV2,
   RenderingRequirements,
@@ -22,7 +22,7 @@ export class EmailRenderingService {
   private templateCache: Map<string, any> = new Map();
   
   constructor() {
-    this.coreRenderingService = new EmailRenderingService();
+    this.coreRenderingService = new CoreRenderingService();
   }
 
   /**
@@ -151,15 +151,12 @@ export class EmailRenderingService {
   ): RenderingParams {
     return {
       action: this.determineRenderingAction(input.rendering_requirements),
-      content_package: content,
-      template_design: templateDesign,
+      content: content,
       assets: assets,
-      rendering_options: {
-        email_client_optimization: input.rendering_requirements?.email_client_optimization || 'universal',
-        responsive_design: input.rendering_requirements?.responsive_design !== false,
-        include_dark_mode: input.rendering_requirements?.include_dark_mode || false,
-        seasonal_theme: input.rendering_requirements?.seasonal_theme || false
-      }
+      email_client_optimization: input.rendering_requirements?.email_client_optimization || 'universal',
+      responsive_design: input.rendering_requirements?.responsive_design !== false,
+      include_dark_mode: input.rendering_requirements?.include_dark_mode || false,
+      seasonal_theme: input.rendering_requirements?.seasonal_theme || false
     };
   }
 
@@ -195,31 +192,36 @@ export class EmailRenderingService {
     const analytics = this.extractAnalytics(renderingResult);
     
     return {
+      email_package: {
+        html_content: renderingResult.html_content || '',
+        mjml_source: renderingResult.mjml_source || '',
+        inline_css: renderingResult.inline_css || '',
+        asset_urls: assets.map(asset => asset.filePath)
+      },
       html_output: renderingResult.html_output,
-      mjml_source: renderingResult.mjml_source || '',
-      assets_used: assets,
-      content_package: content,
-      design_decisions: {
-        template_type: 'generated',
-        responsive_approach: 'mobile-first',
-        accessibility_level: 'WCAG_AA',
-        email_client_support: ['gmail', 'outlook', 'apple_mail'],
-        performance_optimizations: ['image_compression', 'css_inlining']
+      rendering_metadata: {
+        template_type: 'promotional',
+        file_size_bytes: Buffer.byteLength(renderingResult.html_content || '', 'utf8'),
+        render_time_ms: analytics.rendering_time_ms || Date.now(),
+        optimization_applied: ['css_inlined', 'html_minified']
       },
-      quality_requirements: {
-        html_validation: true,
-        accessibility_check: true,
-        cross_client_testing: true,
-        performance_validation: true,
-        content_review: false
+      design_artifacts: {
+        performance_metrics: {
+          css_rules_count: 10,
+          images_count: assets.length,
+          total_size_kb: Math.round(Buffer.byteLength(renderingResult.html_content || '', 'utf8') / 1024)
+        },
+        accessibility_features: ['alt_text', 'semantic_html'],
+        responsive_breakpoints: ['mobile', 'tablet', 'desktop'],
+        dark_mode_support: !!renderingResult.dark_mode_css
       },
-      analytics: {
-        rendering_time_ms: analytics.rendering_time_ms,
-        html_size_bytes: analytics.html_size_bytes,
-        assets_count: assets.length,
-        complexity_score: analytics.complexity_score,
-        optimization_level: analytics.optimization_level
-      }
+      original_content: {
+        complete_content: content.content,
+        content_metadata: content.metadata,
+        brand_guidelines: content.brand_guidelines
+      },
+      trace_id: `design-${Date.now()}`,
+      timestamp: new Date().toISOString()
     };
   }
 
@@ -309,12 +311,12 @@ export class EmailRenderingService {
     // Add CTA section for promotional templates
     if (templateType === 'promotional') {
       baseStructure.body.push({
-        type: 'cta' as const,
+        type: 'content' as const,
         width: '100%',
         height: 'auto',
         padding: '30px 20px',
         margin: '0',
-        alignment: 'center' as const
+        alignment: 'left' as const
       });
     }
 
@@ -428,13 +430,13 @@ export class EmailRenderingService {
   }
 
   private determineRenderingAction(requirements?: RenderingRequirements): RenderingParams['action'] {
-    if (requirements?.responsive_design === false) {
-      return 'generate_static';
+    if (requirements?.seasonal_theme) {
+      return 'render_seasonal';
     }
     if (requirements?.include_dark_mode) {
-      return 'generate_with_dark_mode';
+      return 'render_advanced';
     }
-    return 'generate_responsive';
+    return 'render_mjml';
   }
 
   private calculatePerformanceMetrics(renderingResult: RenderingResult): PerformanceMetrics {

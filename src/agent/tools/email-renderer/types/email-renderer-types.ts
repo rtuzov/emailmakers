@@ -156,27 +156,27 @@ export interface ComplianceResult {
 // ============================================================================
 
 export interface ContentData {
-  subject: string;
-  preheader: string;
-  body: string;
-  cta_text: string;
-  cta_url: string;
-  pricing_data: string;
-  assets: string[];
-  personalization: string;
+  subject?: string;
+  preheader?: string;
+  body?: string;
+  cta_text?: string;
+  cta_url?: string;
+  pricing_data?: string;
+  assets?: string[];
+  personalization?: string;
   language?: string;
   tone?: string;
 }
 
 export interface BrandGuidelines {
-  brand_voice: string;
-  visual_style: string;
-  color_palette: string[];
-  typography: string;
-  primary_color: string;
-  secondary_color: string;
-  font_family: string;
-  logo_url: string;
+  brand_voice?: string;
+  visual_style?: string;
+  color_palette?: string[];
+  typography?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  font_family?: string;
+  logo_url?: string;
 }
 
 export interface AssetMetadata {
@@ -191,13 +191,13 @@ export interface AssetMetadata {
 // ============================================================================
 
 export interface RenderingOptions {
-  output_format: OutputFormat;
-  email_client_optimization: EmailClient;
-  responsive_design: boolean;
-  inline_css: boolean;
-  minify_output: boolean;
-  validate_html: boolean;
-  accessibility_compliance: boolean;
+  output_format?: OutputFormat;
+  email_client_optimization?: EmailClient;
+  responsive_design?: boolean;
+  inline_css?: boolean;
+  minify_output?: boolean;
+  validate_html?: boolean;
+  accessibility_compliance?: boolean;
 }
 
 export interface PerformanceConfig {
@@ -208,23 +208,23 @@ export interface PerformanceConfig {
 }
 
 export interface AdvancedConfig {
-  template_type: TemplateType;
-  customization_level: CustomizationLevel;
-  features: string[];
-  brand_guidelines: Partial<BrandGuidelines>;
+  template_type?: TemplateType;
+  customization_level?: CustomizationLevel;
+  features?: string[];
+  brand_guidelines?: Partial<BrandGuidelines>;
 }
 
 export interface SeasonalConfig {
-  season: SeasonalTheme;
-  seasonal_intensity: 'subtle' | 'moderate' | 'festive' | 'full_theme';
-  cultural_context: 'russian' | 'international' | 'european' | 'mixed';
-  include_animations: boolean;
+  season?: SeasonalTheme;
+  seasonal_intensity?: 'subtle' | 'moderate' | 'festive' | 'full_theme';
+  cultural_context?: 'russian' | 'international' | 'european' | 'mixed';
+  include_animations?: boolean;
 }
 
 export interface HybridConfig {
-  base_template: 'mjml' | 'react' | 'advanced' | 'seasonal';
-  enhancements: string[];
-  priority_order: string[];
+  base_template?: 'mjml' | 'react' | 'advanced' | 'seasonal';
+  enhancements?: string[];
+  priority_order?: string[];
 }
 
 // ============================================================================
@@ -302,6 +302,7 @@ export interface EmailRendererResult {
   };
   rendering_metadata?: RenderingMetadata;
   validation_results?: ComplianceResult;
+  trace_id?: string;
   analytics?: RenderingAnalytics;
   error?: string;
   recommendations?: string[];
@@ -360,6 +361,8 @@ export interface OptimizationContext {
 export interface OptimizationResult {
   optimized_html: string;
   optimized_mjml?: string;
+  text_version?: string;
+  amp_version?: string;
   optimizations_applied: string[];
   performance_improvements: {
     size_reduction_percent: number;
@@ -466,58 +469,5 @@ export interface ErrorContext {
 // EXPORT ALL TYPES
 // ============================================================================
 
-export type {
-  // Main types
-  EmailRendererParams,
-  EmailRendererResult,
-  StandardMjmlResponse,
-  
-  // Engine and rendering types
-  RenderingEngine,
-  TemplateType,
-  EmailClient,
-  OutputFormat,
-  ComponentType,
-  SeasonalTheme,
-  CustomizationLevel,
-  CacheStrategy,
-  
-  // Validation and quality
-  ValidationIssue,
-  ValidationResult,
-  QualityMetrics,
-  ComplianceResult,
-  
-  // Content and configuration
-  ContentData,
-  BrandGuidelines,
-  AssetMetadata,
-  RenderingOptions,
-  PerformanceConfig,
-  AdvancedConfig,
-  SeasonalConfig,
-  HybridConfig,
-  
-  // Output and metadata
-  RenderingMetadata,
-  RenderingAnalytics,
-  EmailFolder,
-  
-  // Service execution
-  ServiceExecutionContext,
-  ServiceExecutionResult,
-  
-  // Specialized rendering
-  ComponentRenderingContext,
-  ComponentRenderingResult,
-  HybridRenderingStage,
-  HybridRenderingPipeline,
-  
-  // Optimization
-  OptimizationContext,
-  OptimizationResult,
-  
-  // Error handling
-  EmailRendererError,
-  ErrorContext
-}; 
+// All types are already exported individually above
+// This bulk export is removed to avoid TypeScript conflicts 

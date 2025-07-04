@@ -152,6 +152,8 @@ export interface TaskResults {
   validation_data?: any;
   optimization_data?: any;
   audit_data?: any;
+  consultation_data?: any;
+  detailed_check?: any;
 }
 
 // Recommendations structure

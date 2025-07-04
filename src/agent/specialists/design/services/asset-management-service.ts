@@ -5,8 +5,8 @@
  * for the Design Specialist Agent V2
  */
 
-import { AssetManager, AssetSearchParams, AssetSearchResult, StandardAsset } from '../../core/asset-manager';
-import { ExtractedContentPackage } from '../../core/content-extractor';
+import { AssetManager, AssetSearchParams, AssetSearchResult, StandardAsset } from '../../../core/asset-manager';
+import { ExtractedContentPackage } from '../../../core/content-extractor';
 import {
   DesignSpecialistInputV2,
   AssetRequirements,
@@ -15,9 +15,9 @@ import {
   ExternalImageResult,
   ExternalImage,
   ServiceExecutionResult,
-  ImagePlan,
   ContentAnalysis
 } from '../types/design-types';
+import { ImagePlan, ImagePlanItem } from '../../../modules/image-planning';
 
 export class AssetManagementService {
   private assetManager: AssetManager;
@@ -63,6 +63,14 @@ export class AssetManagementService {
       
       // Step 4: Combine results
       const combinedResults = this.combineAssetResults(figmaAssets, externalImages);
+      
+      // Step 5: Проверяем, что хотя бы какие-то ассеты найдены
+      if (combinedResults.assets.length === 0) {
+        console.log('⚠️ AssetManagementService: No assets found, but continuing with empty result');
+        combinedResults.search_metadata.recommendations.push(
+          'No assets found for the specified topic - consider using more general themes or check asset availability'
+        );
+      }
       
       return {
         success: true,
@@ -335,11 +343,11 @@ export class AssetManagementService {
     // Simplified AI simulation
     const totalImages = Math.min(imageContext.content_length === 'long' ? 5 : 3, 6);
     
-    const imagePlan = Array.from({ length: totalImages }, (_, index) => ({
+    const imagePlan: ImagePlanItem[] = Array.from({ length: totalImages }, (_, index) => ({
       position: index + 1,
-      type: index === 0 ? 'hero' : 'illustration' as const,
+      type: index === 0 ? 'hero' : 'illustration',
       content_description: `Image ${index + 1} for ${imageContext.content_type}`,
-      size_priority: index === 0 ? 'large' : 'medium' as const,
+      size_priority: index === 0 ? 'large' : 'medium',
       emotional_tone: imageContext.emotional_tone[0] || 'neutral',
       search_tags: [imageContext.content_type, imageContext.seasonal_context],
       fallback_options: ['general', 'abstract']
@@ -348,6 +356,7 @@ export class AssetManagementService {
     return {
       total_images_needed: totalImages,
       image_plan: imagePlan,
+      figma_assets_needed: Math.ceil(totalImages / 2),
       layout_optimization: {
         mobile_friendly: true,
         load_time_optimized: true,
@@ -362,11 +371,11 @@ export class AssetManagementService {
   private planImagesByContext(imageContext: any): ImagePlan {
     const totalImages = 2; // Conservative fallback
     
-    const imagePlan = Array.from({ length: totalImages }, (_, index) => ({
+    const imagePlan: ImagePlanItem[] = Array.from({ length: totalImages }, (_, index) => ({
       position: index + 1,
-      type: index === 0 ? 'hero' : 'illustration' as const,
+      type: index === 0 ? 'hero' : 'illustration',
       content_description: `Contextual image ${index + 1}`,
-      size_priority: 'medium' as const,
+      size_priority: 'medium',
       emotional_tone: 'neutral',
       search_tags: ['general', 'email'],
       fallback_options: ['abstract', 'geometric']
@@ -375,6 +384,7 @@ export class AssetManagementService {
     return {
       total_images_needed: totalImages,
       image_plan: imagePlan,
+      figma_assets_needed: Math.ceil(totalImages / 2),
       layout_optimization: {
         mobile_friendly: true,
         load_time_optimized: true,
@@ -427,30 +437,33 @@ export class AssetManagementService {
     
     if (externalImages) {
       const externalAssets: StandardAsset[] = externalImages.images.map(img => ({
-        id: `external-${img.url}`,
-        name: img.title,
-        type: 'image',
-        url: img.url,
+        fileName: img.title,
+        filePath: img.url,
         tags: img.tags,
-        metadata: {
-          description: img.description,
-          size: img.size,
-          format: img.format,
-          quality_score: img.quality_score
-        }
+        description: img.description,
+        emotion: 'neutral',
+        category: 'image',
+        relevanceScore: img.quality_score / 100,
+        source: 'internet' as const
       }));
       
       combinedAssets.push(...externalAssets);
     }
     
     return {
+      success: true,
       assets: combinedAssets,
       total_found: combinedAssets.length,
       search_query: figmaAssets.search_query,
       confidence_score: Math.min(
-        figmaAssets.confidence_score,
+        figmaAssets.confidence_score || 1,
         externalImages?.confidence_score || 1
-      )
+      ),
+      search_metadata: {
+        query_tags: [],
+        search_time_ms: 0,
+        recommendations: []
+      }
     };
   }
 

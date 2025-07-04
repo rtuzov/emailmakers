@@ -10,7 +10,7 @@
  * - Валидация выходных данных
  */
 
-import { emailRenderer, emailRendererSchema } from '../tools/consolidated/email-renderer';
+import { emailRenderer, emailRendererSchema } from '../tools/email-renderer-v2';
 import { mjmlValidator } from '../tools/simple/mjml-validator';
 import { EmailFolderManager } from '../tools/email-folder-manager';
 import { generateTraceId } from '@openai/agents';
@@ -28,6 +28,7 @@ export interface RenderingParams {
   responsive_design?: boolean;
   seasonal_theme?: boolean;
   include_dark_mode?: boolean;
+  content_package?: any;
 }
 
 export interface RenderingResult {
@@ -35,6 +36,10 @@ export interface RenderingResult {
   html_content: string;
   mjml_source: string;
   inline_css: string;
+  html_output?: any;
+  css_output?: any;
+  dark_mode_css?: any;
+  design_artifacts?: any;
   // ✅ Добавляем email_folder для передачи путей к файлам
   email_folder?: {
     campaignId: string;

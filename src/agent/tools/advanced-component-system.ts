@@ -47,8 +47,13 @@ interface ComponentAnalytics {
 }
 
 interface AdvancedComponentParams {
-  action: 'render' | 'analyze' | 'preview' | 'clear_cache' | 'get_analytics';
-  component_type: 'rabbit' | 'icon' | 'button' | 'price_display' | 'social_proof';
+  action?: 'render' | 'analyze' | 'preview' | 'clear_cache' | 'get_analytics';
+  component_type?: 'rabbit' | 'icon' | 'button' | 'price_display' | 'social_proof';
+  template_type?: string;
+  customization_level?: string;
+  content_data?: any;
+  assets?: any[];
+  brand_guidelines?: any;
   props?: Record<string, any> | null;
   sizing_context?: SizingContext | null;
   cache_strategy?: 'aggressive' | 'normal' | 'minimal' | 'disabled' | null;

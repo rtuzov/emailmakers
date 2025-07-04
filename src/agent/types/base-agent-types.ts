@@ -255,6 +255,7 @@ export interface DesignToQualityHandoffData {
     inline_css: string;
     asset_urls: string[];
   };
+  html_output?: any;
   rendering_metadata: {
     template_type: string;
     file_size_bytes: number;

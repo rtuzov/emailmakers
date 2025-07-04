@@ -328,11 +328,11 @@ export class OptimizationService {
     let currentData = baseStage.output_data;
     
     // Stage 2: Apply enhancements in order
-    const enhancementOrder = config.priority_order.length > 0 ? 
-      config.priority_order : config.enhancements;
+    const enhancementOrder = (config.priority_order && config.priority_order.length > 0) ? 
+      config.priority_order : (config.enhancements || []);
     
     for (const enhancement of enhancementOrder) {
-      if (config.enhancements.includes(enhancement)) {
+      if (this.isValidEnhancement(enhancement) && config.enhancements && config.enhancements.includes(enhancement as any)) {
         const enhancementStage = await this.executeEnhancementStage(enhancement, currentData, params);
         stages.push(enhancementStage);
         
@@ -406,32 +406,36 @@ export class OptimizationService {
   /**
    * Execute enhancement stage
    */
-  private async executeEnhancementStage(enhancement: string, inputData: any, params: EmailRendererParams): Promise<HybridRenderingStage> {
+  private async executeEnhancementStage(enhancement: 'seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure', inputData: any, params: EmailRendererParams): Promise<HybridRenderingStage> {
     const stageStartTime = Date.now();
     
     try {
       let outputData: any;
       
-      switch (enhancement) {
-        case 'seasonal_overlay':
-          outputData = await this.addSeasonalOverlay(inputData, params);
-          break;
-        case 'advanced_components':
-          outputData = await this.addAdvancedComponents(inputData, params);
-          break;
-        case 'react_widgets':
-          outputData = await this.addReactWidgets(inputData, params);
-          break;
-        case 'mjml_structure':
-          outputData = await this.addMjmlStructure(inputData, params);
-          break;
-        default:
-          throw new Error(`Unknown enhancement: ${enhancement}`);
+      const validEnhancements = ['seasonal_overlay', 'advanced_components', 'react_widgets', 'mjml_structure'];
+      if (!validEnhancements.includes(enhancement)) {
+        console.warn(`Unknown enhancement: ${enhancement}, skipping...`);
+        outputData = inputData;
+      } else {
+        switch (enhancement as 'seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure') {
+          case 'seasonal_overlay':
+            outputData = await this.addSeasonalOverlay(inputData, params);
+            break;
+          case 'advanced_components':
+            outputData = await this.addAdvancedComponents(inputData, params);
+            break;
+          case 'react_widgets':
+            outputData = await this.addReactWidgets(inputData, params);
+            break;
+          case 'mjml_structure':
+            outputData = await this.addMjmlStructure(inputData, params);
+            break;
+        }
       }
       
       return {
         stage_name: `enhancement_${enhancement}`,
-        engine: 'hybrid-enhancement',
+        engine: 'advanced-system',
         input_data: inputData,
         output_data: outputData,
         execution_time_ms: Date.now() - stageStartTime,
@@ -441,7 +445,7 @@ export class OptimizationService {
     } catch (error) {
       return {
         stage_name: `enhancement_${enhancement}`,
-        engine: 'hybrid-enhancement',
+        engine: 'advanced-system',
         input_data: inputData,
         execution_time_ms: Date.now() - stageStartTime,
         success: false,
@@ -604,6 +608,13 @@ export class OptimizationService {
     return optimizations;
   }
   
+  /**
+   * Type guard to check if enhancement is valid
+   */
+  private isValidEnhancement(enhancement: string): enhancement is 'seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure' {
+    return ['seasonal_overlay', 'advanced_components', 'react_widgets', 'mjml_structure'].includes(enhancement);
+  }
+
   // Placeholder methods for various optimizations
   private async inlineCSS(html: string): Promise<string> { return html; }
   private minifyHTML(html: string): string { return html.replace(/\s+/g, ' ').trim(); }

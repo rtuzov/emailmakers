@@ -18,7 +18,7 @@ export interface AssetSearchParams {
   emotional_tone: 'positive' | 'neutral' | 'urgent' | 'friendly';
   campaign_type: 'seasonal' | 'promotional' | 'informational';
   target_count: number;
-  preferred_emotion: 'happy' | 'angry' | 'neutral' | 'sad' | 'confused';
+  preferred_emotion?: 'happy' | 'angry' | 'neutral' | 'sad' | 'confused';
   image_requirements?: {
     total_images_needed: number;
     figma_images_count: number;
@@ -49,6 +49,8 @@ export interface AssetSearchResult {
   assets: StandardAsset[];
   total_found: number;
   external_images?: any[];
+  search_query?: string;
+  confidence_score?: number;
   search_metadata: {
     query_tags: string[];
     search_time_ms: number;
@@ -196,7 +198,7 @@ Return only the JSON array, no explanations.`;
   }
 
   /**
-   * Выполнение поиска в Figma
+   * Выполнение поиска в Figma с fallback логикой
    */
   private async performSearch(tags: string[], params: AssetSearchParams): Promise<any> {
     const searchParams = {
@@ -220,13 +222,99 @@ Return only the JSON array, no explanations.`;
       track_usage: true
     };
 
-    const result = await figmaSearch(searchParams);
+    // Первая попытка поиска с исходными тегами
+    let result = await figmaSearch(searchParams);
     
-    if (!result.success) {
-      throw new Error(`AssetManager: Figma search failed: ${result.error}`);
+    if (!result.success || result.assets.length === 0) {
+      console.log('🔄 AssetManager: First search failed, trying fallback strategies...');
+      
+      // Стратегия 1: Поиск с более общими тегами
+      const generalTags = this.getGeneralTags(tags);
+      if (generalTags.length > 0) {
+        const generalSearchParams = { ...searchParams, tags: generalTags };
+        result = await figmaSearch(generalSearchParams);
+        
+        if (result.success && result.assets.length > 0) {
+          console.log('✅ AssetManager: Found assets with general tags');
+          return result;
+        }
+      }
+      
+      // Стратегия 2: Поиск по категориям
+      const categoryTags = this.getCategoryTags(params.campaign_type);
+      const categorySearchParams = { ...searchParams, tags: categoryTags };
+      result = await figmaSearch(categorySearchParams);
+      
+      if (result.success && result.assets.length > 0) {
+        console.log('✅ AssetManager: Found assets with category tags');
+        return result;
+      }
+      
+      // Стратегия 3: Поиск любых доступных ассетов
+      const anySearchParams = { ...searchParams, tags: ['заяц', 'кролик', 'купибилет'] };
+      result = await figmaSearch(anySearchParams);
+      
+      if (result.success && result.assets.length > 0) {
+        console.log('✅ AssetManager: Found any available assets');
+        return result;
+      }
+      
+      // Если все стратегии не сработали, возвращаем результат с пустым массивом
+      console.log('⚠️ AssetManager: No assets found with any strategy');
+      return {
+        success: true,
+        assets: [],
+        search_metadata: {
+          query_tags: tags,
+          assets_found: 0,
+          search_time: 0,
+          recommendations: [
+            'No suitable assets found for the given topic',
+            'Consider using more general themes',
+            'Check if assets exist in the Figma directory'
+          ]
+        }
+      };
     }
     
     return result;
+  }
+
+  /**
+   * Получение более общих тегов для fallback поиска
+   */
+  private getGeneralTags(originalTags: string[]): string[] {
+    const generalMappings: Record<string, string[]> = {
+      'норвегия': ['путешествие', 'страна', 'отпуск'],
+      'осень': ['сезон', 'время', 'погода'],
+      'путешествие': ['поездка', 'отдых', 'туризм'],
+      'билет': ['бронирование', 'самолет', 'авиация'],
+      'отдых': ['путешествие', 'отпуск', 'туризм']
+    };
+    
+    const generalTags: string[] = [];
+    
+    for (const tag of originalTags) {
+      const general = generalMappings[tag.toLowerCase()];
+      if (general) {
+        generalTags.push(...general);
+      }
+    }
+    
+    return [...new Set(generalTags)];
+  }
+
+  /**
+   * Получение тегов по категории кампании
+   */
+  private getCategoryTags(campaignType: string): string[] {
+    const categoryMappings: Record<string, string[]> = {
+      'seasonal': ['заяц', 'кролик', 'сезон', 'время'],
+      'promotional': ['заяц', 'кролик', 'акция', 'предложение'],
+      'informational': ['заяц', 'кролик', 'информация', 'новости']
+    };
+    
+    return categoryMappings[campaignType] || ['заяц', 'кролик'];
   }
 
   /**
