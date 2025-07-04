@@ -10,9 +10,8 @@
  * Использует OpenAI Agents SDK с handoffs
  */
 
-import { Agent, run, tool, withTrace, generateTraceId } from '@openai/agents';
 import { z } from 'zod';
-import { v4 as uuidv4 } from 'uuid';
+import { Agent, run } from '@openai/agents';
 import { s3Upload, s3UploadSchema } from '../tools/simple/s3-upload';
 import { screenshots, screenshotsSchema } from '../tools/simple/screenshots';
 import { campaignDeployment, campaignDeploymentSchema } from '../tools/simple/campaign-deployment';
@@ -28,6 +27,11 @@ import { HandoffValidator } from '../validators/agent-handoff-validator';
 import { DeliverySpecialistValidator } from '../validators/delivery-specialist-validator';
 import { AICorrector, HandoffType } from '../validators/ai-corrector';
 // import { OptimizationService } from '../optimization/optimization-service'; // Removed for performance
+import fs from 'fs/promises';
+import path from 'path';
+import { runWithTimeout } from '../utils/run-with-timeout';
+import { BaseSpecialistAgent } from '../core/base-specialist-agent';
+import { createAgentRunConfig } from '../utils/tracing-utils';
 
 // Input/Output types for agent handoffs
 export interface DeliverySpecialistInput {
@@ -114,13 +118,10 @@ export interface DeliverySpecialistOutput {
   error?: string;
 }
 
-export class DeliverySpecialistAgent {
-  private agent: Agent;
-  private agentId: string;
+export class DeliverySpecialistAgent extends BaseSpecialistAgent {
   private handoffValidator: HandoffValidator;
   private deliveryValidator: DeliverySpecialistValidator;
   private aiCorrector: AICorrector;
-  // private optimizationService: OptimizationService; // Removed for performance
   
   // Performance monitoring
   private performanceMetrics = {
@@ -134,7 +135,7 @@ export class DeliverySpecialistAgent {
   };
 
   constructor() {
-    this.agentId = 'delivery-specialist-v1';
+    super('delivery-specialist-v1', 'placeholder', []);
     
     // Инициализация валидаторов
     this.aiCorrector = new AICorrector();
@@ -144,17 +145,14 @@ export class DeliverySpecialistAgent {
     // this.optimizationService - removed for performance optimization
     this.deliveryValidator = DeliverySpecialistValidator.getInstance();
     
-    this.agent = new Agent({
-      name: this.agentId,
-      instructions: this.getSpecialistInstructions(),
-      model: getUsageModel(),
-      modelSettings: {
-        temperature: 0.4,        // Низкая креативность для надежности доставки
-        maxTokens: 10000,        // Для больших рассылок без обрезок
-        toolChoice: 'auto'
-      },
-      tools: this.createSpecialistTools()
-    });
+    (this.agent as Agent).instructions = this.getSpecialistInstructions();
+    (this.agent as Agent).model = getUsageModel();
+    (this.agent as Agent).modelSettings = {
+      temperature: 0.4,
+      maxTokens: 10000,
+      toolChoice: 'auto',
+    } as any;
+    // Tools are handled automatically by SDK - removed direct assignment
 
     console.log(`🚀 DeliverySpecialistAgent initialized with validation: ${this.agentId}`);
   }
@@ -219,30 +217,30 @@ Execute deployment operations with precision and ensure production-ready deliver
 
   private createSpecialistTools() {
     return [
-      tool({
+      {
         name: 's3_upload',
         description: 'S3 Upload - Simple file upload to S3 with metadata and security scanning.',
         parameters: s3UploadSchema,
         execute: s3Upload
-      }),
-      tool({
+      },
+      {
         name: 'screenshots',
         description: 'Screenshots - Simple email screenshot generation across clients and devices.',
         parameters: screenshotsSchema,
         execute: screenshots
-      }),
-      tool({
+      },
+      {
         name: 'campaign_deployment',
         description: 'Campaign Deployment - Real deployment operations for email campaigns including staging, production, and monitoring.',
         parameters: campaignDeploymentSchema,
         execute: campaignDeployment
-      }),
-      tool({
+      },
+      {
         name: 'visual_testing',
         description: 'Visual Testing - Visual regression testing for email clients with Percy integration.',
         parameters: visualTestingSchema,
         execute: visualTesting
-      })
+      }
     ];
   }
 
@@ -251,7 +249,7 @@ Execute deployment operations with precision and ensure production-ready deliver
    */
   async executeTask(input: DeliverySpecialistInput): Promise<DeliverySpecialistOutput> {
     const startTime = Date.now();
-    const traceId = generateTraceId();
+    const traceId = this.traceId;
     
     console.log(`🚀 DeliverySpecialist executing: ${input.task_type}`, {
       quality_score: input.email_package.quality_score,
@@ -287,7 +285,9 @@ Execute deployment operations with precision and ensure production-ready deliver
     }
 
     try {
-      const result = await withTrace(`DeliverySpecialist-${input.task_type}`, async () => {
+      const result = await this.traced(
+        `execute-${input.task_type}`,
+        async () => {
         switch (input.task_type) {
           case 'upload_assets':
             return await this.handleAssetUpload(input, startTime);
@@ -304,7 +304,8 @@ Execute deployment operations with precision and ensure production-ready deliver
           default:
             throw new Error(`Unknown task type: ${input.task_type}`);
         }
-      });
+        }
+      );
       
       // Update performance metrics
       const executionTime = Date.now() - startTime;
@@ -380,14 +381,16 @@ Execute deployment operations with precision and ensure production-ready deliver
       created_by: 'delivery-specialist'
     })}"`;
 
-    const uploadResult = await run(this.agent, uploadPrompt);
+    const uploadPromises: Promise<any>[] = [];
+    // HTML upload
+    uploadPromises.push(runWithTimeout(this.agent, uploadPrompt));
 
-    // Upload MJML source if available
-    let mjmlUploadResult = null;
+    // MJML upload (optional)
+    let mjmlUploadResult: any = null;
     if (input.email_package.mjml_source) {
       const mjmlFileName = `${campaignId}.mjml`;
       const mjmlS3Key = `campaigns/${campaignId}/source/${mjmlFileName}`;
-      
+
       const mjmlUploadPrompt = `Upload MJML source file to S3 storage. Use s3_upload with these parameters:
       - file_path: "${input.email_package.mjml_source}"
       - s3_key: "${mjmlS3Key}"
@@ -399,7 +402,12 @@ Execute deployment operations with precision and ensure production-ready deliver
         source_type: 'mjml'
       })}"`;
 
-      mjmlUploadResult = await run(this.agent, mjmlUploadPrompt);
+      uploadPromises.push(runWithTimeout(this.agent, mjmlUploadPrompt));
+    }
+
+    const [uploadResult, optionalMjmlResult] = await Promise.all(uploadPromises);
+    if (optionalMjmlResult) {
+      mjmlUploadResult = optionalMjmlResult;
     }
 
     const deliveryArtifacts = this.buildUploadArtifacts(uploadResult, mjmlUploadResult);
@@ -465,6 +473,7 @@ Execute deployment operations with precision and ensure production-ready deliver
       }
     };
 
+    const runConfig = createAgentRunConfig(this.agentId + "-screenshot", "screenshot_operation", { operation: "screenshot", component_type: "agent" });
     const screenshotResult = await run(this.agent, `Generate comprehensive email screenshots across clients and devices. Use screenshots for visual testing and comparison.`);
 
     const screenshotArtifacts = this.buildScreenshotArtifacts(screenshotResult);
@@ -549,6 +558,7 @@ Execute deployment operations with precision and ensure production-ready deliver
     - notification_events: ${JSON.stringify(deploymentParams.notification_events)}
     - include_analytics: ${deploymentParams.include_analytics}`;
 
+    const runConfig = createAgentRunConfig(this.agentId + "-deployment", "deployment_operation", { operation: "deployment", component_type: "agent" });
     const deploymentResult = await run(this.agent, deploymentPrompt);
 
     // Set up monitoring if deployment succeeded
@@ -635,6 +645,7 @@ Execute deployment operations with precision and ensure production-ready deliver
     - visual_testing_config: ${JSON.stringify(visualTestingParams.visual_testing_config)}
     - include_analytics: ${visualTestingParams.include_analytics}`;
 
+    const runConfig = createAgentRunConfig(this.agentId + "-visualTest", "visualTest_operation", { operation: "visualTest", component_type: "agent" });
     const visualTestResult = await run(this.agent, visualTestPrompt);
 
     const testingArtifacts = this.buildVisualTestingArtifacts(visualTestResult);
@@ -708,6 +719,7 @@ Execute deployment operations with precision and ensure production-ready deliver
     - finalized_at: "${finalizationParams.finalized_at}"
     - include_analytics: ${finalizationParams.include_analytics}`;
 
+    const runConfig = createAgentRunConfig(this.agentId + "-finalization", "finalization_operation", { operation: "finalization", component_type: "agent" });
     const finalizationResult = await run(this.agent, finalizationPrompt);
 
     // Archive assets using S3 archival (simulate archiving process)
@@ -790,6 +802,7 @@ Execute deployment operations with precision and ensure production-ready deliver
     - session_id: "${monitoringParams.session_id}"
     - include_analytics: ${monitoringParams.include_analytics}`;
 
+    const runConfig = createAgentRunConfig(this.agentId + "-monitoring", "monitoring_operation", { operation: "monitoring", component_type: "agent" });
     const monitoringResult = await run(this.agent, monitoringPrompt);
 
     const monitoringArtifacts = this.buildMonitoringArtifacts(monitoringResult);
@@ -1110,10 +1123,6 @@ Execute deployment operations with precision and ensure production-ready deliver
    */
   private async saveEmailToLocalFolder(emailPackage: any, campaignId: string): Promise<void> {
     try {
-      // Import dependencies at module level for performance
-      const fs = require('fs/promises');
-      const path = require('path');
-      
       // Создаем директорию для кампании
       const localDir = path.join(process.cwd(), 'mails', campaignId);
       await fs.mkdir(localDir, { recursive: true });
@@ -1210,7 +1219,7 @@ Execute deployment operations with precision and ensure production-ready deliver
    * 🔧 ПРЕОБРАЗОВАНИЕ В ФОРМАТ QualityToDeliveryHandoffData
    */
   private formatQualityToDeliveryData(handoffData: any): any {
-    const traceId = handoffData.trace_id || this.generateTraceId();
+    const traceId = handoffData.trace_id || this.traceId;
     const timestamp = handoffData.timestamp || new Date().toISOString();
     
     // Извлекаем quality_score из разных источников
@@ -1273,11 +1282,6 @@ Execute deployment operations with precision and ensure production-ready deliver
   /**
    * 🔧 HELPER METHODS
    */
-  private generateTraceId(): string {
-    // Generate valid UUID v4 for handoff validation
-    return uuidv4();
-  }
-
   private calculateSizeKB(content: string): number {
     const sizeBytes = Buffer.byteLength(content, 'utf8');
     return Math.round((sizeBytes / 1024) * 100) / 100;

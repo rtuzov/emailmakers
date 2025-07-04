@@ -11,6 +11,8 @@
  */
 
 import { z } from 'zod';
+import { recordToolUsage } from '../../utils/tracing-utils';
+
 import { aiQualityConsultant } from '../ai-quality-consultant';
 import { diffHtml } from '../diff';
 import { patchHtml } from '../patch';
@@ -22,12 +24,12 @@ export const qualityControllerSchema = z.object({
   
   // For analyze_quality action (replaces ai_quality_consultant)
   content_to_analyze: z.object({
-    html: z.string().optional().nullable().describe('HTML content to analyze'),
-    mjml: z.string().optional().nullable().describe('MJML content to analyze'),
-    subject: z.string().optional().nullable().describe('Email subject line'),
-    text_version: z.string().optional().nullable().describe('Text version of email'),
-    metadata: z.object({}).passthrough().optional().nullable().describe('Additional content metadata')
-  }).optional().nullable().describe('Content for quality analysis'),
+    html: z.string().nullable().default(null).describe('HTML content to analyze'),
+    mjml: z.string().nullable().default(null).describe('MJML content to analyze'),
+    subject: z.string().nullable().default(null).describe('Email subject line'),
+    text_version: z.string().nullable().default(null).describe('Text version of email'),
+    metadata: z.string().nullable().default(null).describe('Additional content metadata (JSON string)')
+  }).nullable().default(null).describe('Content for quality analysis'),
   
   analysis_scope: z.object({
     technical_validation: z.boolean().default(true).describe('Validate HTML/CSS for email clients'),
@@ -38,7 +40,7 @@ export const qualityControllerSchema = z.object({
     cross_client_compatibility: z.boolean().default(true).describe('Test email client compatibility'),
     deliverability: z.boolean().default(true).describe('Analyze spam score and deliverability'),
     mobile_optimization: z.boolean().default(true).describe('Check mobile rendering')
-  }).optional().nullable().describe('Scope of quality analysis'),
+  }).nullable().default(null).describe('Scope of quality analysis'),
   
   // For compare_versions action (replaces diff_html)
   version_comparison: z.object({
@@ -47,7 +49,7 @@ export const qualityControllerSchema = z.object({
     comparison_type: z.enum(['structural', 'visual', 'semantic', 'performance', 'comprehensive']).default('comprehensive').describe('Type of comparison to perform'),
     ignore_whitespace: z.boolean().default(true).describe('Ignore whitespace differences'),
     highlight_changes: z.boolean().default(true).describe('Highlight visual changes')
-  }).optional().nullable().describe('Version comparison parameters'),
+  }).nullable().default(null).describe('Version comparison parameters'),
   
   // For apply_patches action (replaces patch_html)
   patch_operations: z.object({
@@ -55,13 +57,13 @@ export const qualityControllerSchema = z.object({
     patches: z.array(z.object({
       type: z.enum(['replace', 'insert', 'delete', 'modify']).describe('Type of patch operation'),
       selector: z.string().describe('CSS selector or XPath for target element'),
-      content: z.string().optional().nullable().describe('New content (for replace/insert operations)'),
-      attributes: z.object({}).passthrough().optional().nullable().describe('Attributes to modify'),
-      position: z.enum(['before', 'after', 'inside', 'replace']).optional().nullable().describe('Position for insertion')
+      content: z.string().nullable().default(null).describe('New content (for replace/insert operations)'),
+      attributes: z.string().nullable().default(null).describe('Attributes to modify (JSON string)'),
+      position: z.enum(['before', 'after', 'inside', 'replace']).nullable().default(null).describe('Position for insertion')
     })).describe('Array of patch operations to apply'),
     validation_after_patch: z.boolean().default(true).describe('Validate HTML after applying patches'),
     backup_original: z.boolean().default(true).describe('Keep backup of original content')
-  }).optional().nullable().describe('Patch application parameters'),
+  }).nullable().default(null).describe('Patch application parameters'),
   
   // For test_rendering action (replaces render_test)
   rendering_tests: z.object({
@@ -71,7 +73,7 @@ export const qualityControllerSchema = z.object({
     screenshot_comparison: z.boolean().default(true).describe('Generate visual comparison screenshots'),
     performance_metrics: z.boolean().default(true).describe('Collect performance metrics'),
     accessibility_testing: z.boolean().default(true).describe('Run accessibility tests')
-  }).optional().nullable().describe('Rendering test configuration'),
+  }).nullable().default(null).describe('Rendering test configuration'),
   
   // For comprehensive_audit action
   audit_config: z.object({
@@ -80,7 +82,7 @@ export const qualityControllerSchema = z.object({
     generate_report: z.boolean().default(true).describe('Generate comprehensive quality report'),
     benchmark_comparison: z.boolean().default(false).describe('Compare against industry benchmarks'),
     priority_issues_only: z.boolean().default(false).describe('Focus only on high-priority issues')
-  }).optional().nullable().describe('Comprehensive audit configuration'),
+  }).nullable().default(null).describe('Comprehensive audit configuration'),
   
   // For automated_fix action
   auto_fix_config: z.object({
@@ -88,19 +90,19 @@ export const qualityControllerSchema = z.object({
     aggressive_fixes: z.boolean().default(false).describe('Apply aggressive optimization fixes'),
     preserve_original: z.boolean().default(true).describe('Preserve original content structure'),
     test_fixes: z.boolean().default(true).describe('Test fixes before applying')
-  }).optional().nullable().describe('Automated fix configuration'),
+  }).nullable().default(null).describe('Automated fix configuration'),
   
   // Common options
   quality_threshold: z.number().min(0).max(100).default(80).describe('Minimum quality threshold (0-100)'),
   include_analytics: z.boolean().default(true).describe('Include detailed analytics in response'),
-  priority_focus: z.array(z.enum(['performance', 'accessibility', 'compatibility', 'content', 'technical'])).optional().nullable().describe('Priority areas for quality control'),
+  priority_focus: z.array(z.enum(['performance', 'accessibility', 'compatibility', 'content', 'technical'])).default([]).describe('Priority areas for quality control'),
   
   // Context and metadata
   campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).optional().nullable(),
-    target_audience: z.string().optional().nullable(),
-    brand_guidelines: z.object({}).optional().nullable()
-  }).optional().nullable().describe('Campaign context for quality assessment')
+    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).nullable().default(null),
+    target_audience: z.string().nullable().default(null),
+    brand_guidelines: z.string().nullable().default(null)
+  }).nullable().default(null).describe('Campaign context for quality assessment')
 });
 
 export type QualityControllerParams = z.infer<typeof qualityControllerSchema>;
@@ -175,45 +177,76 @@ export async function qualityController(params: QualityControllerParams): Promis
   console.log(`🔍 Quality Controller: Executing action "${params.action}"`);
   
   try {
-    switch (params.action) {
-      case 'analyze_quality':
-        return await handleQualityAnalysis(params, startTime);
-        
-      case 'compare_versions':
-        return await handleVersionComparison(params, startTime);
-        
-      case 'apply_patches':
-        return await handlePatchApplication(params, startTime);
-        
-      case 'test_rendering':
-        return await handleRenderingTests(params, startTime);
-        
-      case 'comprehensive_audit':
-        return await handleComprehensiveAudit(params, startTime);
-        
-      case 'automated_fix':
-        return await handleAutomatedFix(params, startTime);
-        
-      default:
-        throw new Error(`Unknown action: ${params.action}`);
+    let result: QualityControllerResult;
+      
+      switch (params.action) {
+        case 'analyze_quality':
+          result = await handleQualityAnalysis(params, startTime);
+          break;
+          
+        case 'compare_versions':
+          result = await handleVersionComparison(params, startTime);
+          break;
+          
+        case 'apply_patches':
+          result = await handlePatchApplication(params, startTime);
+          break;
+          
+        case 'test_rendering':
+          result = await handleRenderingTests(params, startTime);
+          break;
+          
+        case 'comprehensive_audit':
+          result = await handleComprehensiveAudit(params, startTime);
+          break;
+          
+        case 'automated_fix':
+          result = await handleAutomatedFix(params, startTime);
+          break;
+          
+        default:
+          throw new Error(`Unknown action: ${params.action}`);
+      }
+      
+      // Record tracing statistics
+      if (result.analytics) {
+        recordToolUsage({
+          tool: 'quality-controller',
+          operation: params.action,
+          duration: result.analytics.execution_time,
+          success: result.success
+        });
+      }
+      
+      return result;
+    
+    } catch (error) {
+      console.error('❌ Quality Controller error:', error);
+      
+      const errorResult = {
+        success: false,
+        action: params.action,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          tests_performed: 0,
+          issues_detected: 0,
+          fixes_applied: 0,
+          confidence_score: 0
+        } : undefined
+      };
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'quality-controller',
+        operation: params.action,
+        duration: Date.now() - startTime,
+        success: false,
+        error: errorResult.error
+      });
+      
+      return errorResult;
     }
-    
-  } catch (error) {
-    console.error('❌ Quality Controller error:', error);
-    
-    return {
-      success: false,
-      action: params.action,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.include_analytics ? {
-        execution_time: Date.now() - startTime,
-        tests_performed: 0,
-        issues_detected: 0,
-        fixes_applied: 0,
-        confidence_score: 0
-      } : undefined
-    };
-  }
 }
 
 /**

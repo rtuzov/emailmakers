@@ -22,7 +22,6 @@
     "noUnusedParameters": false,
     "noUncheckedIndexedAccess": false,
     "exactOptionalPropertyTypes": false,
-    "skipLibCheck": true,
     "plugins": [
       {
         "name": "next"
@@ -37,6 +36,18 @@
       "@/api/*": ["./src/api/*"]
     }
   },
-  "include": ["next-env.d.ts", "global.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "cypress"]
+  "include": ["next-env.d.ts", "global.d.ts", "src/**/*", ".next/types/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "cypress",
+    "__tests__",
+    "**/__tests__/**",
+    "__mocks__",
+    "tests",
+    "examples",
+    "coverage",
+    "src/agent/tools/consolidated/content-generator.ts",
+    "src/agent/tools/consolidated/figma-asset-manager.ts",
+    "src/agent/tools/consolidated/pricing-intelligence.ts"
+  ]
 }

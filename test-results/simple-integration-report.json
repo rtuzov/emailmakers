@@ -1,7 +1,7 @@
 {
   "test_summary": {
     "topic": "путешествие в Париж в сентябре",
-    "total_execution_time_ms": 11237,
+    "total_execution_time_ms": 12165,
     "success": true,
     "agents_tested": [
       "ContentSpecialistAgent",
@@ -10,19 +10,19 @@
     "workflow_type": "simple_rendering"
   },
   "content_phase": {
-    "execution_time_ms": 9213,
+    "execution_time_ms": 10198,
     "success": true,
     "confidence_score": 81,
     "operations_performed": 1,
     "generated_content": {
-      "subject": "Путешествие в Париж в сентябре от 19771 RUB — не упустите шанс!",
-      "preheader": "Откройте для себя магию Парижа по выгодным ценам!",
-      "cta": "Забронировать билеты",
-      "body_length": 679
+      "subject": "Путешествие в Париж в сентябре от 20089 RUB — забронируйте сейчас!",
+      "preheader": "Не упустите шанс посетить волшебный Париж по выгодным ценам.",
+      "cta": "Забронировать поездку",
+      "body_length": 575
     }
   },
   "design_phase": {
-    "execution_time_ms": 2024,
+    "execution_time_ms": 1967,
     "success": true,
     "confidence_score": 90,
     "operations_performed": 2,

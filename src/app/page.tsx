@@ -225,7 +225,7 @@ export default function Home() {
         <div className="glass-card p-8 mb-16">
           <h2 className="text-2xl font-bold text-white mb-8">
             Статистика системы
-            {loading && <span className="text-sm text-white/50 ml-2">загрузка...</span>}
+            {loading && <span className="text-sm text-white/50 ml-2"> загрузка...</span>}
           </h2>
           
           {/* Real-time Status Indicators */}

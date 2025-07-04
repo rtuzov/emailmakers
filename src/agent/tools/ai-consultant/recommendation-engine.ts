@@ -14,6 +14,7 @@ import {
   AIConsultantConfig,
   AIConsultantError
 } from './types';
+import { BRAND_COLORS } from '../../../shared/constants';
 
 export class RecommendationEngine {
   private openai: OpenAI;
@@ -226,10 +227,10 @@ export class RecommendationEngine {
           tool: 'patch_html',
           parameters: {
             target: 'color_scheme',
-            primary_color: '#4BFF7E',
-            secondary_color: '#1DA857',
+            primary_color: BRAND_COLORS.PRIMARY,
+            secondary_color: BRAND_COLORS.SECONDARY,
             accent_color: '#FF6240',
-            background_color: '#2C3959'
+            background_color: BRAND_COLORS.TERTIARY
           },
           expected_result: 'Improved color scheme following brand guidelines',
           success_criteria: ['Brand colors used', 'Good contrast ratio', 'Consistent application'],

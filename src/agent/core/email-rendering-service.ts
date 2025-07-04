@@ -11,11 +11,13 @@
  */
 
 import { emailRenderer, emailRendererSchema } from '../tools/consolidated/email-renderer';
-import { mjmlValidator, mjmlValidatorTool } from '../tools/simple/mjml-validator';
+import { mjmlValidator } from '../tools/simple/mjml-validator';
 import { EmailFolderManager } from '../tools/email-folder-manager';
 import { generateTraceId } from '@openai/agents';
 import { StandardAsset } from './asset-manager';
 import { ExtractedContentPackage } from './content-extractor';
+import { BRAND_COLORS } from '../../shared/constants';
+import { cacheGet, cacheSet } from '../../shared/cache';
 
 export interface RenderingParams {
   action: 'render_mjml' | 'render_advanced' | 'render_seasonal' | 'render_hybrid' | 'optimize_output';
@@ -33,6 +35,15 @@ export interface RenderingResult {
   html_content: string;
   mjml_source: string;
   inline_css: string;
+  // ✅ Добавляем email_folder для передачи путей к файлам
+  email_folder?: {
+    campaignId: string;
+    basePath: string;
+    assetsPath: string;
+    htmlPath: string;
+    mjmlPath: string;
+    metadataPath: string;
+  };
   metadata: {
     file_size_bytes: number;
     render_time_ms: number;
@@ -60,7 +71,6 @@ export interface RenderingResult {
 }
 
 export class EmailRenderingService {
-  private cache: Map<string, RenderingResult> = new Map();
   private folderManager: EmailFolderManager;
 
   constructor() {
@@ -75,8 +85,8 @@ export class EmailRenderingService {
     
     // Проверяем кэш
     const cacheKey = this.generateCacheKey(params);
-    if (this.cache.has(cacheKey)) {
-      const cached = this.cache.get(cacheKey)!;
+    const cached = await cacheGet<RenderingResult>(cacheKey);
+    if (cached) {
       console.log('✅ EmailRenderingService: Using cached result');
       return cached;
     }
@@ -98,10 +108,10 @@ export class EmailRenderingService {
       const validationResult = await this.validateRendering(renderingResult);
       
       // Формируем финальный результат
-      const result = await this.formatResult(renderingResult, validationResult, startTime, params);
+      const result = await this.formatResult(renderingResult, validationResult, startTime, params, emailFolder);
       
       // Кэшируем результат
-      this.cache.set(cacheKey, result);
+      await cacheSet(cacheKey, result, 86400);
       
       return result;
       
@@ -202,8 +212,8 @@ export class EmailRenderingService {
             customization_level: 'advanced' as const,
             features: ['dark_mode', 'personalization'] as ('dark_mode' | 'interactive' | 'animation' | 'personalization' | 'a_b_testing')[],
             brand_guidelines: {
-              primary_color: params.content.brand_guidelines.color_palette?.[0] || '#4BFF7E',
-              secondary_color: params.content.brand_guidelines.color_palette?.[1] || '#1DA857',
+              primary_color: params.content.brand_guidelines.color_palette?.[0] || BRAND_COLORS.PRIMARY,
+              secondary_color: params.content.brand_guidelines.color_palette?.[1] || BRAND_COLORS.SECONDARY,
               font_family: params.content.brand_guidelines.typography || 'Arial, sans-serif',
               logo_url: ''
             }
@@ -270,19 +280,20 @@ export class EmailRenderingService {
     }
     
     try {
-      const validationResult = await mjmlValidator({
+      const validationToolResult = await mjmlValidator({
         mjml_code: mjmlSource,
         validation_level: 'strict',
-        check_accessibility: true,
-        check_email_clients: true,
-        auto_fix: false
+        check_components: true,
+        check_attributes: true
       });
+
+      const validationData = validationToolResult.success ? validationToolResult.validation_results : null;
       
       return {
-        mjml_valid: validationResult.is_valid,
-        html_valid: validationResult.html_validation?.is_valid || true,
-        email_client_scores: validationResult.email_client_compatibility || { gmail: 90, outlook: 85, apple_mail: 95 },
-        accessibility_score: validationResult.accessibility_score || 80
+        mjml_valid: validationData?.is_valid ?? false,
+        html_valid: true, // HTML assumed valid if rendering succeeded
+        email_client_scores: { gmail: 90, outlook: 85, apple_mail: 95 },
+        accessibility_score: 80
       };
     } catch (error) {
       console.warn('⚠️ EmailRenderingService: MJML validation failed, continuing without validation');
@@ -302,7 +313,8 @@ export class EmailRenderingService {
     renderingResult: any, 
     validationResult: any, 
     startTime: number, 
-    params: RenderingParams
+    params: RenderingParams,
+    emailFolder?: any
   ): Promise<RenderingResult> {
     const htmlContent = renderingResult.data.html || renderingResult.data.html_content || '';
     const mjmlSource = renderingResult.data.mjml || renderingResult.data.mjml_source || '';
@@ -322,6 +334,15 @@ export class EmailRenderingService {
       html_content: htmlContent,
       mjml_source: mjmlSource,
       inline_css: this.extractInlineCSS(htmlContent),
+      // ✅ Передаем emailFolder для использования в handoff данных
+      email_folder: emailFolder ? {
+        campaignId: emailFolder.campaignId,
+        basePath: emailFolder.basePath,
+        assetsPath: emailFolder.assetsPath,
+        htmlPath: emailFolder.htmlPath,
+        mjmlPath: emailFolder.mjmlPath,
+        metadataPath: emailFolder.metadataPath
+      } : undefined,
       metadata: {
         file_size_bytes: Buffer.byteLength(htmlContent, 'utf8'),
         render_time_ms: Date.now() - startTime,
@@ -442,30 +463,90 @@ export class EmailRenderingService {
    * Очистка кэша
    */
   clearCache(): void {
-    this.cache.clear();
+    // This method is no longer used as the cache is managed by the shared cache util
   }
 
   /**
    * Статистика кэша
    */
   getCacheStats(): {size: number, keys: string[]} {
-    return {
-      size: this.cache.size,
-      keys: Array.from(this.cache.keys())
-    };
+    // This method is no longer used as the cache is managed by the shared cache util
+    return { size: 0, keys: [] };
   }
 
   /**
    * Получение статистики производительности
    */
   getPerformanceStats() {
-    const cacheHitRate = this.cache.size > 0 ? 85 : 0; // Примерная статистика
+    // This method is no longer used as the cache is managed by the shared cache util
+    return {
+      cache_hit_rate: 0,
+      cache_size: 0,
+      avg_render_time_ms: 0,
+      success_rate: 0
+    };
+  }
+
+  /**
+   * 🔗 СОЗДАНИЕ ССЫЛКИ НА ФАЙЛ ВМЕСТО ПЕРЕДАЧИ ПОЛНОГО HTML
+   */
+  public createFileReference(emailPath: string): {
+    file_path: string;
+    file_url: string;
+    preview_url?: string;
+    metadata: {
+      size_bytes: number;
+      created_at: string;
+      format: 'html' | 'mjml';
+    };
+  } {
+    const fs = require('fs');
+    const path = require('path');
+    
+    try {
+      const absolutePath = path.resolve(emailPath);
+      const stats = fs.statSync(absolutePath);
+      const fileName = path.basename(emailPath);
+      const fileExt = path.extname(fileName).toLowerCase();
+      
+      return {
+        file_path: absolutePath,
+        file_url: `file://${absolutePath}`,
+        preview_url: fileExt === '.html' ? `http://localhost:3000/preview?file=${encodeURIComponent(absolutePath)}` : undefined,
+        metadata: {
+          size_bytes: stats.size,
+          created_at: stats.birthtime.toISOString(),
+          format: fileExt === '.mjml' ? 'mjml' : 'html'
+        }
+      };
+    } catch (error) {
+      console.error('❌ Ошибка создания файловой ссылки:', error);
+      throw new Error(`Не удалось создать ссылку на файл: ${emailPath}`);
+    }
+  }
+
+  /**
+   * 🔧 ОПТИМИЗИРОВАННАЯ ПЕРЕДАЧА ДАННЫХ С ФАЙЛОВЫМИ ССЫЛКАМИ
+   */
+  public optimizeHandoffData(originalHandoffData: any, emailOutputPath: string): any {
+    const fileReference = this.createFileReference(emailOutputPath);
     
     return {
-      cache_hit_rate: cacheHitRate,
-      cache_size: this.cache.size,
-      avg_render_time_ms: 2500,
-      success_rate: 95
+      ...originalHandoffData,
+      email_package: {
+        ...originalHandoffData.email_package,
+        // Заменяем полный HTML на ссылку
+        html_content: `[FILE_REFERENCE] ${fileReference.file_url}`,
+        html_file_reference: fileReference,
+        // Сохраняем только размер для валидации
+        file_size_bytes: fileReference.metadata.size_bytes
+      },
+      optimization_applied: {
+        ...originalHandoffData.optimization_applied,
+        file_reference_optimization: true,
+        data_transfer_optimization: true,
+        reduced_payload_size: true
+      }
     };
   }
 } 

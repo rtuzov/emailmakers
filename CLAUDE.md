@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Email-Makers is an enterprise-grade web application that generates email templates using AI-powered content creation and design automation. It follows Domain-Driven Design (DDD) principles and delivers production-ready email templates with comprehensive quality assurance.
+Email-Makers is an enterprise-grade web application that generates email templates using AI-powered content creation and design automation. It follows Domain-Driven Design (DDD) principles and uses a sophisticated multi-agent system powered by OpenAI Agents SDK.
 
 ## Essential Development Commands
 
 ### Core Development Workflow
 ```bash
-# Start development server
+# Start development server (always on port 3000)
 npm run dev
 
-# Type checking (run before any code changes)
+# Type checking (MUST run before any code changes - zero TypeScript errors required)
 npm run type-check
 
 # Build for production
@@ -37,6 +37,9 @@ npm run db:studio
 
 # Reset database completely (development only)
 npm run db:reset
+
+# Setup worker nodes table
+npm run db:setup-workers
 ```
 
 ### Testing Commands
@@ -50,6 +53,10 @@ npm run test:watch
 # Generate coverage report (target: 80%+)
 npm run test:coverage
 
+# Run specific test suites
+npm run test:validators
+npm run test:integration
+
 # Run E2E tests with Cypress
 npx cypress open
 ```
@@ -61,6 +68,21 @@ npm run check:api-keys
 
 # Complete setup validation
 npm run setup
+```
+
+### Docker Operations
+```bash
+# Start PostgreSQL container
+npm run docker:up
+
+# Stop containers
+npm run docker:down
+
+# View logs
+npm run docker:logs
+
+# Clean everything
+npm run docker:clean
 ```
 
 ## Architecture Overview
@@ -103,6 +125,26 @@ The project is organized into 7 bounded contexts following DDD principles:
    - Browser automation for screenshot capture
    - Multi-client email rendering verification
    - Queue-based job processing with priority handling
+
+### Multi-Agent System Architecture
+
+The project uses OpenAI Agents SDK with a sophisticated multi-agent workflow:
+
+**Core Agent System** (`/src/agent/`)
+- Main orchestrator: `EmailGeneratorAgent`
+- State management via `StateManager`
+- Agent handoffs coordination
+- 8-step email generation pipeline
+
+**Specialist Agents:**
+1. **ContentSpecialistAgent** - Content generation
+2. **DesignSpecialistAgentV2** - Design implementation
+3. **QualitySpecialistAgent** - Quality assurance
+4. **DeliverySpecialistAgent** - Deployment and delivery
+
+**Tool Categories:**
+- **Consolidated Tools**: Campaign management, content generation, Figma integration, quality control
+- **Simple Tools**: Accessibility, brand voice, color themes, email optimization, responsive design
 
 ### Technical Stack
 
@@ -259,6 +301,18 @@ Check `docs/API_SETUP_GUIDE.md` and run `npm run check:api-keys`
 
 ### Docker Issues
 Use `docker-compose up -d` for local PostgreSQL service
+
+## Claude Code Specific Instructions
+
+1. **Always find existing components first** - Components may have already been implemented
+2. **Use MCP tools for enhanced functionality:**
+   - `mcp__sequential-thinking__sequentialthinking` for complex problem solving
+   - `mcp__playwright__*` for browser testing React changes
+   - `mcp__context7__*` for fetching up-to-date documentation
+3. **Follow strict error handling** - No fallback logic allowed, fail fast with clear error messages
+4. **Maintain TypeScript strict mode** - Zero compilation errors tolerated
+5. **Test after frontend changes** - Use playwright MCP for UI/UX testing
+6. **Bulk error resolution** - Collect all errors with `npx tsc --noEmit` and fix together
 
 ## Development Best Practices
 

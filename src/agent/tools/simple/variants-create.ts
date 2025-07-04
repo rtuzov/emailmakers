@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod';
-import { generateCopy } from '../copy';
+// generateCopy removed - now using consolidated content generator
 
 export const variantsCreateSchema = z.object({
   base_content: z.string().describe('Base content to create variants from'),
@@ -138,13 +138,18 @@ async function generateSingleVariant(
       }
     };
 
-    const result = await generateCopy(copyParams);
+    // generateCopy removed - using mock data for now
+    const result = { 
+      success: false, 
+      error: 'generateCopy tool removed - use consolidated content generator',
+      data: null
+    };
     
     if (!result.success || !result.data) {
       return null;
     }
 
-    const content = extractVariantContent(result.data);
+    const content = extractVariantContent(result.data || {});
     const changesMade = analyzeChanges(content, params, strategy);
 
     return {

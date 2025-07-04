@@ -1,521 +1,486 @@
 /**
- * 🔧 AUTO FIX - Simple Tool
+ * 🔧 AUTO-FIX TOOL
  * 
- * Простое автоматическое исправление email проблем
- * Заменяет часть функциональности quality-controller
+ * Инструмент для автоматического исправления проблем в email шаблонах
+ * Исправляет распространенные ошибки и улучшает совместимость
  */
 
+
 import { z } from 'zod';
-import { patchHtml } from '../patch';
+import { generateTraceId, tracedAsync } from '../../utils/tracing-utils';
 
-export const autoFixSchema = z.object({
-  html_content: z.string().describe('HTML content to fix'),
-  issues_to_fix: z.array(z.object({
-    issue_type: z.enum(['missing_doctype', 'missing_alt_text', 'inline_styles', 'email_width', 'table_layout', 'outlook_compatibility', 'gmail_optimization', 'mobile_responsive', 'accessibility']).describe('Type of issue to fix'),
-    severity: z.enum(['critical', 'high', 'medium', 'low']).describe('Issue severity'),
-    description: z.string().describe('Description of the issue'),
-    auto_fixable: z.boolean().describe('Whether this issue can be auto-fixed')
-  })).describe('List of issues to automatically fix'),
-  fix_preferences: z.object({
-    aggressive_fixes: z.boolean().default(false).describe('Apply aggressive fixes that might change layout'),
-    preserve_styling: z.boolean().default(true).describe('Try to preserve existing styling'),
-    optimize_for_client: z.enum(['outlook', 'gmail', 'apple_mail', 'universal']).default('universal').describe('Optimize specifically for email client'),
-    backup_original: z.boolean().default(true).describe('Keep reference to original content')
-  }).default({}).describe('Preferences for fix application'),
-  validation_after_fix: z.boolean().describe('Validate HTML after applying fixes')
-});
-
-export type AutoFixParams = z.infer<typeof autoFixSchema>;
+export interface AutoFixParams {
+  html_content: string;
+  issues?: Array<{
+    type: 'validation' | 'compatibility' | 'performance' | 'accessibility';
+    description: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    location?: {
+      line?: number;
+      column?: number;
+      element?: string;
+    };
+  }>;
+  fix_options?: {
+    auto_fix_critical?: boolean;
+    auto_fix_high?: boolean;
+    auto_fix_medium?: boolean;
+    preserve_formatting?: boolean;
+    add_fallbacks?: boolean;
+  };
+}
 
 export interface AutoFixResult {
   success: boolean;
-  fix_results: {
-    original_html: string;
-    fixed_html: string;
-    fixes_applied: Array<{
-      issue_type: string;
-      fix_action: string;
-      before_snippet: string;
-      after_snippet: string;
-      success: boolean;
-      impact: 'minor' | 'moderate' | 'significant';
-    }>;
-    fixes_skipped: Array<{
-      issue_type: string;
-      reason: string;
-      manual_action_required: string;
-    }>;
-    improvement_summary: {
-      issues_fixed: number;
-      issues_remaining: number;
-      overall_improvement: number;
-      client_compatibility_gain: number;
+  fixed_content: string;
+  fixes_applied: Array<{
+    issue_type: string;
+    fix_description: string;
+    original_code?: string;
+    fixed_code?: string;
+    impact: 'low' | 'medium' | 'high';
+    location?: {
+      line?: number;
+      element?: string;
     };
-  };
-  fix_metadata: {
-    fix_duration: number;
-    html_size_change: {
-      before_kb: number;
-      after_kb: number;
-      size_change_percent: number;
-    };
-    validation_results?: {
-      valid: boolean;
-      new_issues: string[];
-      warnings: string[];
-    };
-    recommendations: string[];
+  }>;
+  remaining_issues: Array<{
+    type: string;
+    description: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    recommendation: string;
+  }>;
+  fix_summary: {
+    total_issues_found: number;
+    issues_fixed: number;
+    issues_remaining: number;
+    compatibility_improved: boolean;
+    performance_improved: boolean;
   };
   error?: string;
 }
 
 export async function autoFix(params: AutoFixParams): Promise<AutoFixResult> {
-  const startTime = Date.now();
-  const originalSize = params.html_content.length;
+  const traceId = generateTraceId();
   
-  try {
-    // Validate required parameters - fail if missing
-    if (!params.validation_after_fix && params.validation_after_fix !== false) {
-      throw new Error('validation_after_fix parameter is required');
-    }
-    
-    console.log('🔧 Starting auto-fix process:', {
-      issues_count: params.issues_to_fix.length,
-      fixable_issues: params.issues_to_fix.filter(i => i.auto_fixable).length,
-      optimize_for: params.fix_preferences.optimize_for_client
-    });
+  return await tracedAsync({
+    name: 'auto_fix',
+    metadata: { trace_id: traceId }
+  }, async () => {
+    const startTime = Date.now();
+    console.log(`🔧 Auto-Fix: Starting automatic fixes for email template`);
 
-    let currentHtml = params.html_content;
-    const fixesApplied: any[] = [];
-    const fixesSkipped: any[] = [];
-    let backupHtml = params.fix_preferences.backup_original ? params.html_content : '';
+    try {
+      // Validate input
+      if (!params.html_content || params.html_content.trim().length === 0) {
+        const errorResult: AutoFixResult = {
+          success: false,
+          fixed_content: '',
+          fixes_applied: [],
+          remaining_issues: [{
+            type: 'validation',
+            description: 'No HTML content provided',
+            severity: 'critical',
+            recommendation: 'Provide valid HTML content for auto-fixing'
+          }],
+          fix_summary: {
+            total_issues_found: 1,
+            issues_fixed: 0,
+            issues_remaining: 1,
+            compatibility_improved: false,
+            performance_improved: false
+          },
+          error: 'No HTML content provided for auto-fixing'
+        };
 
-    // Process each fixable issue
-    for (const issue of params.issues_to_fix) {
-      if (!issue.auto_fixable) {
-        fixesSkipped.push({
-          issue_type: issue.issue_type,
-          reason: 'Issue marked as not auto-fixable',
-          manual_action_required: getManualActionForIssue(issue.issue_type)
-        });
-        continue;
+        console.log(`❌ Auto-Fix failed: No HTML content provided`);
+        return errorResult;
       }
 
-      console.log(`🔧 Applying fix for: ${issue.issue_type}`);
+      // Default fix options
+      const fixOptions = {
+        auto_fix_critical: true,
+        auto_fix_high: true,
+        auto_fix_medium: params.fix_options?.auto_fix_medium !== false,
+        preserve_formatting: params.fix_options?.preserve_formatting !== false,
+        add_fallbacks: params.fix_options?.add_fallbacks !== false,
+        ...params.fix_options
+      };
+
+      let fixedContent = params.html_content;
+      const fixesApplied: AutoFixResult['fixes_applied'] = [];
+      const remainingIssues: AutoFixResult['remaining_issues'] = [];
+
+      // Detect issues if not provided
+      const issues = params.issues || await detectIssues(params.html_content);
       
-      const fixResult = await applySingleFix(
-        currentHtml, 
-        issue, 
-        params.fix_preferences
+      console.log(`🔍 Found ${issues.length} issues to analyze`);
+
+      // Apply fixes based on severity and options
+      for (const issue of issues) {
+        const shouldFix = shouldApplyFix(issue.severity, fixOptions);
+        
+        if (shouldFix) {
+          const fixResult = applyFix(fixedContent, issue);
+          if (fixResult.fixed_content !== fixedContent) {
+            fixedContent = fixResult.fixed_content;
+            fixesApplied.push({
+              issue_type: issue.type,
+              fix_description: fixResult.description,
+              original_code: fixResult.originalCode,
+              fixed_code: fixResult.fixedCode,
+              impact: mapSeverityToImpact(issue.severity),
+              location: issue.location
+            });
+            console.log(`✅ Fixed ${issue.type}: ${issue.description}`);
+          } else {
+            remainingIssues.push({
+              type: issue.type,
+              description: issue.description,
+              severity: issue.severity,
+              recommendation: fixResult.recommendation || 'Manual fix required'
+            });
+            console.log(`⚠️ Could not fix ${issue.type}: ${issue.description}`);
+          }
+        } else {
+          remainingIssues.push({
+            type: issue.type,
+            description: issue.description,
+            severity: issue.severity,
+            recommendation: 'Fix disabled in options or requires manual intervention'
+          });
+        }
+      }
+
+      // Analyze improvements
+      const compatibilityImproved = fixesApplied.some(fix => 
+        fix.issue_type === 'compatibility' || fix.issue_type === 'validation'
+      );
+      
+      const performanceImproved = fixesApplied.some(fix => 
+        fix.issue_type === 'performance'
       );
 
-      if (fixResult.success) {
-        fixesApplied.push({
-          issue_type: issue.issue_type,
-          fix_action: fixResult.fix_action,
-          before_snippet: fixResult.before_snippet,
-          after_snippet: fixResult.after_snippet,
-          success: true,
-          impact: fixResult.impact
-        });
-        currentHtml = fixResult.fixed_html;
-      } else {
-        fixesSkipped.push({
-          issue_type: issue.issue_type,
-          reason: fixResult.error || 'Fix failed',
-          manual_action_required: getManualActionForIssue(issue.issue_type)
-        });
-      }
-    }
-
-    // Calculate improvement metrics
-    const improvementSummary = calculateImprovementSummary(
-      params.issues_to_fix,
-      fixesApplied,
-      fixesSkipped
-    );
-
-    // Validate fixed HTML if requested
-    let validationResults = undefined;
-    if (params.validation_after_fix) {
-      validationResults = await validateFixedHtml(currentHtml);
-    }
-
-    const fixDuration = Date.now() - startTime;
-    const finalSize = currentHtml.length;
-    const sizeChangePercent = originalSize > 0 ? ((finalSize - originalSize) / originalSize) * 100 : 0;
-
-    // Generate recommendations
-    const recommendations = generateFixRecommendations(
-      fixesApplied, 
-      fixesSkipped, 
-      validationResults
-    );
-
-    return {
-      success: true,
-      fix_results: {
-        original_html: backupHtml,
-        fixed_html: currentHtml,
+      const result: AutoFixResult = {
+        success: true,
+        fixed_content: fixedContent,
         fixes_applied: fixesApplied,
-        fixes_skipped: fixesSkipped,
-        improvement_summary: improvementSummary
-      },
-      fix_metadata: {
-        fix_duration: fixDuration,
-        html_size_change: {
-          before_kb: Math.round(originalSize / 1024 * 100) / 100,
-          after_kb: Math.round(finalSize / 1024 * 100) / 100,
-          size_change_percent: Math.round(sizeChangePercent * 100) / 100
-        },
-        validation_results: validationResults,
-        recommendations: recommendations
-      }
-    };
+        remaining_issues: remainingIssues,
+        fix_summary: {
+          total_issues_found: issues.length,
+          issues_fixed: fixesApplied.length,
+          issues_remaining: remainingIssues.length,
+          compatibility_improved: compatibilityImproved,
+          performance_improved: performanceImproved
+        }
+      };
 
-  } catch (error) {
-    const fixDuration = Date.now() - startTime;
-    console.error('❌ Auto-fix process failed:', error);
+      const duration = Date.now() - startTime;
+      console.log(`✅ Auto-Fix completed in ${duration}ms: ${fixesApplied.length} fixes applied, ${remainingIssues.length} issues remaining`);
+      
+      return result;
 
-    return {
-      success: false,
-      fix_results: {
-        original_html: params.html_content,
-        fixed_html: params.html_content,
+    } catch (error) {
+      const errorResult: AutoFixResult = {
+        success: false,
+        fixed_content: params.html_content,
         fixes_applied: [],
-        fixes_skipped: params.issues_to_fix.map(issue => ({
-          issue_type: issue.issue_type,
-          reason: 'Auto-fix process failed',
-          manual_action_required: 'Manual review and fixing required'
-        })),
-        improvement_summary: {
+        remaining_issues: [{
+          type: 'system',
+          description: 'Auto-fix process failed',
+          severity: 'critical',
+          recommendation: 'Check error logs and retry'
+        }],
+        fix_summary: {
+          total_issues_found: 0,
           issues_fixed: 0,
-          issues_remaining: params.issues_to_fix.length,
-          overall_improvement: 0,
-          client_compatibility_gain: 0
-        }
-      },
-      fix_metadata: {
-        fix_duration: fixDuration,
-        html_size_change: {
-          before_kb: Math.round(originalSize / 1024 * 100) / 100,
-          after_kb: Math.round(originalSize / 1024 * 100) / 100,
-          size_change_percent: 0
+          issues_remaining: 1,
+          compatibility_improved: false,
+          performance_improved: false
         },
-        recommendations: ['Review auto-fix configuration', 'Check error logs', 'Consider manual fixes']
-      },
-      error: error instanceof Error ? error.message : 'Unknown auto-fix error'
-    };
-  }
-}
+        error: error instanceof Error ? error.message : 'Unknown error during auto-fixing'
+      };
 
-async function applySingleFix(
-  html: string, 
-  issue: any, 
-  preferences: any
-): Promise<any> {
-  
-  try {
-    let fixedHtml = html;
-    let fixAction = '';
-    let beforeSnippet = '';
-    let afterSnippet = '';
-    let impact: 'minor' | 'moderate' | 'significant' = 'minor';
-
-    switch (issue.issue_type) {
-      case 'missing_doctype':
-        if (!html.toLowerCase().includes('<!doctype')) {
-          beforeSnippet = html.substring(0, 50);
-          fixedHtml = '<!DOCTYPE html>\n' + html;
-          afterSnippet = fixedHtml.substring(0, 50);
-          fixAction = 'Added DOCTYPE html declaration';
-          impact = 'moderate';
-        }
-        break;
-
-      case 'missing_alt_text':
-        const imgRegex = /<img([^>]*?)(?:\s+alt\s*=\s*["'][^"']*["'])?([^>]*?)>/gi;
-        fixedHtml = html.replace(imgRegex, (match, before, after) => {
-          if (!match.includes('alt=')) {
-            beforeSnippet = match.substring(0, 50);
-            const fixed = `<img${before} alt="Image"${after}>`;
-            afterSnippet = fixed.substring(0, 50);
-            fixAction = 'Added alt text to images';
-            impact = 'minor';
-            return fixed;
-          }
-          return match;
-        });
-        break;
-
-      case 'email_width':
-        if (!html.includes('width="600"') && !html.includes('width="640"')) {
-          const tableRegex = /<table([^>]*)>/gi;
-          fixedHtml = html.replace(tableRegex, (match, attributes) => {
-            if (!attributes.includes('width=')) {
-              beforeSnippet = match.substring(0, 50);
-              const fixed = `<table${attributes} width="600">`;
-              afterSnippet = fixed.substring(0, 50);
-              fixAction = 'Set email width to 600px';
-              impact = 'moderate';
-              return fixed;
-            }
-            return match;
-          });
-        }
-        break;
-
-      case 'outlook_compatibility':
-        // Add Outlook-specific fixes
-        if (html.includes('display:flex') || html.includes('flexbox')) {
-          beforeSnippet = 'flexbox/flex layout detected';
-          fixedHtml = html.replace(/display\s*:\s*flex/gi, 'display:table-cell');
-          afterSnippet = 'converted to table-cell';
-          fixAction = 'Converted flexbox to table layout for Outlook';
-          impact = 'significant';
-        }
-        break;
-
-      case 'gmail_optimization':
-        // Optimize for Gmail
-        if (html.length > 102000) {
-          beforeSnippet = `Size: ${Math.round(html.length/1024)}KB`;
-          // This is complex - would need content compression
-          fixAction = 'Gmail size optimization attempted';
-          afterSnippet = 'Size optimization needed';
-          impact = 'significant';
-        }
-        break;
-
-      case 'inline_styles':
-        // Convert style tags to inline styles (simplified)
-        const styleTagRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-        let styles = '';
-        fixedHtml = html.replace(styleTagRegex, (match, content) => {
-          styles += content;
-          beforeSnippet = match.substring(0, 50);
-          fixAction = 'Extracted styles for inlining';
-          afterSnippet = '/* styles extracted */';
-          impact = 'moderate';
-          return '<!-- styles extracted -->';
-        });
-        break;
-
-      case 'mobile_responsive':
-        if (!html.includes('viewport') && !html.includes('@media')) {
-          const headMatch = html.match(/<head[^>]*>/i);
-          if (headMatch) {
-            beforeSnippet = headMatch[0];
-            const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-            fixedHtml = html.replace(/<head([^>]*)>/i, `<head$1>\n${viewport}`);
-            afterSnippet = `<head$1>\n${viewport}`;
-            fixAction = 'Added viewport meta tag for mobile';
-            impact = 'moderate';
-          }
-        }
-        break;
-
-      case 'accessibility':
-        // Basic accessibility improvements
-        if (!html.includes('role=') || !html.includes('aria-')) {
-          const mainTableRegex = /<table([^>]*?)>/i;
-          fixedHtml = html.replace(mainTableRegex, (match, attributes) => {
-            if (!attributes.includes('role=')) {
-              beforeSnippet = match;
-              const fixed = `<table${attributes} role="presentation">`;
-              afterSnippet = fixed;
-              fixAction = 'Added accessibility roles';
-              impact = 'minor';
-              return fixed;
-            }
-            return match;
-          });
-        }
-        break;
-
-      default:
-        throw new Error(`Unknown issue type: ${issue.issue_type}`);
+      const duration = Date.now() - startTime;
+      console.log(`❌ Auto-Fix failed after ${duration}ms:`, error);
+      
+      return errorResult;
     }
+  });
+}
 
-    // Use patch tool for complex fixes if needed
-    if (issue.severity === 'critical' && fixedHtml === html) {
-      try {
-        const patchResult = await patchHtml({
-          html: html,
-          issues: [issue.description],
-          patch_type: 'email_optimization'
-        });
-        
-        if (patchResult.success && patchResult.data) {
-          fixedHtml = patchResult.data.patched_html;
-          fixAction = 'Applied patch fix';
-          impact = 'moderate';
-        }
-      } catch (patchError) {
-        console.warn('Patch tool failed, continuing with basic fix');
-      }
-    }
+/**
+ * Обнаружение проблем в HTML контенте
+ */
+async function detectIssues(htmlContent: string): Promise<AutoFixParams['issues']> {
+  const issues: NonNullable<AutoFixParams['issues']> = [];
 
-    return {
-      success: fixedHtml !== html,
-      fixed_html: fixedHtml,
-      fix_action: fixAction,
-      before_snippet: beforeSnippet.substring(0, 100),
-      after_snippet: afterSnippet.substring(0, 100),
-      impact: impact
-    };
-
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Fix application failed'
-    };
+  // Check for missing DOCTYPE
+  if (!htmlContent.includes('<!DOCTYPE')) {
+    issues.push({
+      type: 'validation',
+      description: 'Missing DOCTYPE declaration',
+      severity: 'high',
+      location: { line: 1, element: 'document' }
+    });
   }
-}
 
-function getManualActionForIssue(issueType: string): string {
-  const manualActions: Record<string, string> = {
-    'missing_doctype': 'Add "<!DOCTYPE html>" at the beginning of the document',
-    'missing_alt_text': 'Add descriptive alt text to all images',
-    'inline_styles': 'Convert CSS styles to inline styles for better email client support',
-    'email_width': 'Set main table width to 600-640px',
-    'table_layout': 'Convert div-based layout to table-based layout',
-    'outlook_compatibility': 'Remove flexbox, CSS Grid, and use table layouts',
-    'gmail_optimization': 'Reduce email size below 102KB and use inline styles',
-    'mobile_responsive': 'Add viewport meta tag and responsive CSS',
-    'accessibility': 'Add ARIA labels, roles, and improve semantic markup'
-  };
+  // Check for missing meta tags
+  if (!htmlContent.includes('<meta charset')) {
+    issues.push({
+      type: 'validation',
+      description: 'Missing charset meta tag',
+      severity: 'medium',
+      location: { element: 'head' }
+    });
+  }
 
-  return manualActions[issueType] || 'Review and fix manually according to best practices';
-}
+  if (!htmlContent.includes('viewport')) {
+    issues.push({
+      type: 'compatibility',
+      description: 'Missing viewport meta tag',
+      severity: 'medium',
+      location: { element: 'head' }
+    });
+  }
 
-function calculateImprovementSummary(
-  originalIssues: any[], 
-  fixesApplied: any[], 
-  fixesSkipped: any[]
-): any {
-  const issuesFixed = fixesApplied.length;
-  const issuesRemaining = fixesSkipped.length;
-  const totalIssues = originalIssues.length;
-  
-  const overallImprovement = totalIssues > 0 ? Math.round((issuesFixed / totalIssues) * 100) : 0;
-  
-  // Calculate client compatibility gain based on fix types
-  let compatibilityGain = 0;
-  fixesApplied.forEach(fix => {
-    const gainMap: Record<string, number> = {
-      'missing_doctype': 15,
-      'email_width': 10,
-      'outlook_compatibility': 25,
-      'gmail_optimization': 20,
-      'mobile_responsive': 15,
-      'inline_styles': 10,
-      'accessibility': 5,
-      'missing_alt_text': 5
-    };
-    compatibilityGain += gainMap[fix.issue_type] || 5;
+  // Check for images without alt text
+  const imgMatches = htmlContent.match(/<img[^>]*>/g) || [];
+  imgMatches.forEach((img, index) => {
+    if (!img.includes('alt=')) {
+      issues.push({
+        type: 'accessibility',
+        description: 'Image missing alt attribute',
+        severity: 'medium',
+        location: { element: `img[${index}]` }
+      });
+    }
   });
 
+  // Check for inline styles vs external
+  const inlineStyleCount = (htmlContent.match(/style\s*=/g) || []).length;
+  if (inlineStyleCount > 50) {
+    issues.push({
+      type: 'performance',
+      description: 'Excessive inline styles detected',
+      severity: 'low',
+      location: { element: 'document' }
+    });
+  }
+
+  // Check for missing font fallbacks
+  const fontFamilyMatches = htmlContent.match(/font-family\s*:\s*[^;]+/g) || [];
+  fontFamilyMatches.forEach((fontDecl, index) => {
+    if (!fontDecl.includes('Arial') && !fontDecl.includes('sans-serif')) {
+      issues.push({
+        type: 'compatibility',
+        description: 'Font declaration missing fallback fonts',
+        severity: 'low',
+        location: { element: `font-declaration[${index}]` }
+      });
+    }
+  });
+
+  // Check for table-based layout
+  if (!htmlContent.includes('<table') && htmlContent.includes('<div')) {
+    issues.push({
+      type: 'compatibility',
+      description: 'Using div-based layout instead of table-based for email',
+      severity: 'high',
+      location: { element: 'layout' }
+    });
+  }
+
+  return issues;
+}
+
+/**
+ * Определение необходимости применения исправления
+ */
+function shouldApplyFix(severity: string, options: any): boolean {
+  switch (severity) {
+    case 'critical':
+      return options.auto_fix_critical;
+    case 'high':
+      return options.auto_fix_high;
+    case 'medium':
+      return options.auto_fix_medium;
+    case 'low':
+      return false; // Low severity issues require manual review
+    default:
+      return false;
+  }
+}
+
+/**
+ * Применение конкретного исправления
+ */
+function applyFix(content: string, issue: NonNullable<AutoFixParams['issues']>[0]): {
+  fixed_content: string;
+  description: string;
+  originalCode?: string;
+  fixedCode?: string;
+  recommendation?: string;
+} {
+  
+  switch (issue.type) {
+    case 'validation':
+      return applyValidationFix(content, issue);
+    case 'compatibility':
+      return applyCompatibilityFix(content, issue);
+    case 'performance':
+      return applyPerformanceFix(content, issue);
+    case 'accessibility':
+      return applyAccessibilityFix(content, issue);
+    default:
+      return {
+        
+        fixed_content: content,
+        description: 'Unknown issue type',
+        recommendation: 'Manual review required'
+      };
+  }
+}
+
+/**
+ * Исправления валидации
+ */
+function applyValidationFix(content: string, issue: any): ReturnType<typeof applyFix> {
+  if (issue.description.includes('DOCTYPE')) {
+    const doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n';
+    const fixedContent = doctype + content;
+    
+    return {
+      fixed_content: fixedContent,
+      description: 'Added XHTML DOCTYPE declaration',
+      originalCode: content.substring(0, 50) + '...',
+      fixedCode: doctype + content.substring(0, 50) + '...'
+    };
+  }
+
+  if (issue.description.includes('charset')) {
+    const metaCharset = '<meta charset="UTF-8">';
+    const fixedContent = content.replace(
+      /<head>/i,
+      `<head>\n  ${metaCharset}`
+    );
+    
+    return {
+      fixed_content: fixedContent,
+      description: 'Added charset meta tag',
+      originalCode: '<head>',
+      fixedCode: `<head>\n  ${metaCharset}`
+    };
+  }
+
   return {
-    issues_fixed: issuesFixed,
-    issues_remaining: issuesRemaining,
-    overall_improvement: overallImprovement,
-    client_compatibility_gain: Math.min(100, compatibilityGain)
+    
+    fixed_content: content,
+    description: 'Validation fix not implemented',
+    recommendation: 'Manual validation fix required'
   };
 }
 
-async function validateFixedHtml(html: string): Promise<any> {
-  try {
-    // Basic post-fix validation
-    const newIssues: string[] = [];
-    const warnings: string[] = [];
-
-    // Check if basic structure is still intact
-    if (!html.includes('<html') && !html.includes('<body')) {
-      newIssues.push('HTML structure may have been corrupted');
-    }
-
-    // Check for broken tags
-    const openTags = (html.match(/<[^/][^>]*[^/]>/g) || []).length;
-    const closeTags = (html.match(/<\/[^>]+>/g) || []).length;
-    const selfClosingTags = (html.match(/<[^>]*\/>/g) || []).length;
-    
-    if (Math.abs(openTags - closeTags - selfClosingTags) > 2) {
-      warnings.push('Potential tag mismatch detected');
-    }
-
-    // Check if content is still present
-    const textContent = html.replace(/<[^>]*>/g, '').trim();
-    if (textContent.length < 50) {
-      newIssues.push('Content may have been lost during fixes');
-    }
-
-    return {
-      valid: newIssues.length === 0,
-      new_issues: newIssues,
-      warnings: warnings
-    };
-
-  } catch (error) {
-    return {
-      valid: false,
-      new_issues: ['Validation failed'],
-      warnings: ['Could not validate fixed HTML']
-    };
-  }
-}
-
-function generateFixRecommendations(
-  fixesApplied: any[], 
-  fixesSkipped: any[], 
-  validationResults?: any
-): string[] {
-  const recommendations: string[] = [];
-
-  if (fixesApplied.length > 0) {
-    recommendations.push(`Successfully applied ${fixesApplied.length} automatic fixes`);
-    
-    const significantFixes = fixesApplied.filter(fix => fix.impact === 'significant');
-    if (significantFixes.length > 0) {
-      recommendations.push('Significant layout changes made - review visual appearance');
-    }
-  }
-
-  if (fixesSkipped.length > 0) {
-    recommendations.push(`${fixesSkipped.length} issues require manual attention`);
-    
-    const criticalSkipped = fixesSkipped.filter(fix => 
-      fix.issue_type.includes('outlook') || fix.issue_type.includes('gmail')
+/**
+ * Исправления совместимости
+ */
+function applyCompatibilityFix(content: string, issue: any): ReturnType<typeof applyFix> {
+  if (issue.description.includes('viewport')) {
+    const viewportMeta = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    const fixedContent = content.replace(
+      /<head>/i,
+      `<head>\n  ${viewportMeta}`
     );
-    if (criticalSkipped.length > 0) {
-      recommendations.push('Critical email client compatibility issues need manual fixing');
-    }
+    
+    return {
+      
+      fixed_content: fixedContent,
+      description: 'Added viewport meta tag',
+      originalCode: '<head>',
+      fixedCode: `<head>\n  ${viewportMeta}`
+    };
   }
 
-  if (validationResults?.new_issues?.length > 0) {
-    recommendations.push('New issues detected after fixes - review carefully');
+  if (issue.description.includes('fallback fonts')) {
+    const fixedContent = content.replace(
+      /font-family\s*:\s*([^;,]+)(?=[;,])/g,
+      'font-family: $1, Arial, sans-serif'
+    );
+    
+    return {
+      
+      fixed_content: fixedContent,
+      description: 'Added fallback fonts to font-family declarations',
+      originalCode: 'font-family: CustomFont',
+      fixedCode: 'font-family: CustomFont, Arial, sans-serif'
+    };
   }
 
-  if (validationResults?.warnings?.length > 0) {
-    recommendations.push('Validation warnings found - consider additional testing');
-  }
-
-  // Specific recommendations based on fix types
-  const outlookFixes = fixesApplied.filter(fix => fix.issue_type.includes('outlook'));
-  if (outlookFixes.length > 0) {
-    recommendations.push('Test thoroughly in Outlook after layout changes');
-  }
-
-  const mobileFixes = fixesApplied.filter(fix => fix.issue_type.includes('mobile'));
-  if (mobileFixes.length > 0) {
-    recommendations.push('Test mobile rendering after responsive fixes');
-  }
-
-  if (recommendations.length === 0) {
-    recommendations.push('No fixes were needed - email appears to be well-formed');
-  } else {
-    recommendations.push('Run email testing to verify fixes work correctly');
-  }
-
-  return recommendations;
+  return {
+    
+    fixed_content: content,
+    description: 'Compatibility fix not implemented',
+    recommendation: 'Manual compatibility review required'
+  };
 }
+
+/**
+ * Исправления производительности
+ */
+function applyPerformanceFix(content: string, issue: any): ReturnType<typeof applyFix> {
+  // Performance fixes are typically more complex and may require manual review
+  return {
+    
+    fixed_content: content,
+    description: 'Performance optimization requires manual review',
+    recommendation: 'Consider moving inline styles to CSS classes or optimizing style usage'
+  };
+}
+
+/**
+ * Исправления доступности
+ */
+function applyAccessibilityFix(content: string, issue: any): ReturnType<typeof applyFix> {
+  if (issue.description.includes('alt attribute')) {
+    const fixedContent = content.replace(
+      /<img([^>]*?)(?<!alt\s*=\s*"[^"]*")\s*>/g,
+      '<img$1 alt="Image">'
+    );
+    
+    return {
+      
+      fixed_content: fixedContent,
+      description: 'Added default alt attributes to images',
+      originalCode: '<img src="...">',
+      fixedCode: '<img src="..." alt="Image">'
+    };
+  }
+
+  return {
+    
+    fixed_content: content,
+    description: 'Accessibility fix not implemented',
+    recommendation: 'Manual accessibility review required'
+  };
+}
+
+/**
+ * Маппинг серьезности в воздействие
+ */
+function mapSeverityToImpact(severity: string): 'low' | 'medium' | 'high' {
+  switch (severity) {
+    case 'critical':
+    case 'high':
+      return 'high';
+    case 'medium':
+      return 'medium';
+    case 'low':
+    default:
+      return 'low';
+  }
+}
+
+// Minimal schema export
+export const autoFixSchema = z.object({
+  html_content: z.string(),
+});

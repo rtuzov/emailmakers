@@ -1,8 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentDate } from '@/agent/tools/date';
-import { getFigmaAssets } from '@/agent/tools/figma';
-import { renderTest } from '@/agent/tools/render-test';
-import { uploadToS3 } from '@/agent/tools/upload';
 
 /**
  * POST /api/test-tools
@@ -15,33 +11,53 @@ export async function POST(request: NextRequest) {
 
     const results: any = {};
 
+    // Import tools dynamically to avoid build issues
+    
     // Test date tool with autumn context
     if (body.test_dates) {
       console.log('📅 Testing date tool...');
-      const dateResult = await getCurrentDate({
-        campaign_context: {
-          topic: 'Путешествие в Париж осенью романтическая поездка',
-          urgency: 'seasonal',
-          campaign_type: 'seasonal',
-          destination: 'Париж'
-        }
-      });
-      results.date_test = dateResult;
+      try {
+        const { getCurrentDateImpl } = await import('@/agent/tools/date-impl');
+        const dateResult = await getCurrentDateImpl({
+          campaign_context: {
+            topic: 'Путешествие в Париж осенью романтическая поездка',
+            urgency: 'seasonal',
+            campaign_type: 'seasonal',
+            destination: 'Париж'
+          }
+        });
+        results.date_test = dateResult;
+      } catch (error) {
+        results.date_test = {
+          success: false,
+          error: 'Date tool implementation not available',
+          data: { current_date: new Date().toISOString().split('T')[0] }
+        };
+      }
     }
 
     // Test figma tool with context
     if (body.test_figma) {
       console.log('🖼️ Testing figma tool...');
-      const figmaResult = await getFigmaAssets({
-        tags: ['счастлив', 'заяц'],
-        context: {
-          campaign_type: 'seasonal',
-          emotional_tone: 'positive',
-          target_count: 2,
-          diversity_mode: true
-        }
-      });
-      results.figma_test = figmaResult;
+      try {
+        const { getFigmaAssetsImpl } = await import('@/agent/tools/figma-impl');
+        const figmaResult = await getFigmaAssetsImpl({
+          tags: ['счастлив', 'заяц'],
+          context: {
+            campaign_type: 'seasonal',
+            emotional_tone: 'positive',
+            target_count: 2,
+            diversity_mode: true
+          }
+        });
+        results.figma_test = figmaResult;
+      } catch (error) {
+        results.figma_test = {
+          success: false,
+          error: 'Figma tool implementation error: ' + error.message,
+          data: { paths: [], assets: [] }
+        };
+      }
     }
 
     // Test render test tool
@@ -74,11 +90,20 @@ export async function POST(request: NextRequest) {
         </html>
       `;
       
-      const renderResult = await renderTest({
-        html: testHtml,
-        subject: 'Test Email Subject'
-      });
-      results.render_test = renderResult;
+      try {
+        const { renderTestImpl } = await import('@/agent/tools/render-test-impl');
+        const renderResult = await renderTestImpl({
+          html: testHtml,
+          subject: 'Test Email Subject'
+        });
+        results.render_test = renderResult;
+      } catch (error) {
+        results.render_test = {
+          success: false,
+          error: 'Render test implementation not available',
+          data: { validation_score: 0, issues: ['Implementation not found'] }
+        };
+      }
     }
 
     // Test render test tool with bad HTML
@@ -99,11 +124,20 @@ export async function POST(request: NextRequest) {
         </html>
       `;
       
-      const badRenderResult = await renderTest({
-        html: badTestHtml,
-        subject: 'Bad Email Subject'
-      });
-      results.render_test_bad = badRenderResult;
+      try {
+        const { renderTestImpl } = await import('@/agent/tools/render-test-impl');
+        const badRenderResult = await renderTestImpl({
+          html: badTestHtml,
+          subject: 'Bad Email Subject'
+        });
+        results.render_test_bad = badRenderResult;
+      } catch (error) {
+        results.render_test_bad = {
+          success: false,
+          error: 'Render test implementation not available',
+          data: { validation_score: 0, issues: ['Implementation not found'] }
+        };
+      }
     }
 
     // Test upload tool with fallback handling
@@ -118,7 +152,8 @@ export async function POST(request: NextRequest) {
       `;
       
       try {
-        const uploadResult = await uploadToS3({
+        const { uploadToS3Impl } = await import('@/agent/tools/upload-impl');
+        const uploadResult = await uploadToS3Impl({
           html: testHtml,
           mjml_source: null
         });
@@ -126,7 +161,8 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         results.upload_test = {
           success: false,
-          error: error.message
+          error: 'Upload tool implementation not available: ' + error.message,
+          data: { html_url: null, mjml_url: null }
         };
       }
     }

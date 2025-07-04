@@ -23,6 +23,7 @@ function handleToolError(toolName: string, error: any): ToolResult {
   return handleToolErrorUnified(toolName, error);
 }
 import { randomUUID } from 'crypto';
+import { generateTraceId } from '../utils/tracing-utils';
 
 interface UploadParams {
   html: string; // Может быть сокращенным с ...[truncated]
@@ -47,18 +48,20 @@ interface UploadResult {
  * Upload final email assets to S3 and provide public URLs
  */
 export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
-  try {
-    console.log('T9: Uploading files to S3');
-    console.log('🔍 T9: Input params validation:', {
-      hasHtml: !!params.html,
-      htmlLength: params.html?.length || 0,
-      htmlType: typeof params.html,
-      hasMjmlSource: !!params.mjml_source,
-      hasAssets: !!params.assets,
-      htmlPreview: params.html?.substring(0, 100) + '...',
-      htmlIsTruncated: params.html?.includes('...[truncated]'),
-      campaignId: params.campaign_id
-    });
+  const traceId = generateTraceId();
+  
+    try {
+      console.log('T9: Uploading files to S3');
+      console.log('🔍 T9: Input params validation:', {
+        hasHtml: !!params.html,
+        htmlLength: params.html?.length || 0,
+        htmlType: typeof params.html,
+        hasMjmlSource: !!params.mjml_source,
+        hasAssets: !!params.assets,
+        htmlPreview: params.html?.substring(0, 100) + '...',
+        htmlIsTruncated: params.html?.includes('...[truncated]'),
+        campaignId: params.campaign_id
+      });
 
     // Проверяем, если HTML сокращен, пытаемся загрузить полный из файла
     let fullHtml = params.html;
@@ -108,9 +111,9 @@ export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
       return generateLocalUrls(params);
     }
 
-  } catch (error) {
-    return handleToolError('upload_s3', error);
-  }
+    } catch (error) {
+      return handleToolError('upload_s3', error);
+    }
 }
 
 async function performS3Upload(params: UploadParams, bucket: string): Promise<UploadResult> {

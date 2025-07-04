@@ -6,7 +6,12 @@
  */
 
 import { z } from 'zod';
-import { getLocalFigmaFoldersInfo } from '../figma-local-processor';
+// import { getLocalFigmaFoldersInfo } from '../figma-local-processor';
+
+// Stub implementation
+async function getLocalFigmaFoldersInfo() {
+  return { success: false, error: 'getLocalFigmaFoldersInfo not implemented', data: null };
+}
 
 export const figmaFoldersSchema = z.object({
   include_stats: z.boolean().default(true).describe('Include folder statistics (file counts, etc.)'),

@@ -5,8 +5,11 @@
  * Заменяет часть функциональности quality-controller
  */
 
+import { generateTraceId, tracedAsync } from '../../utils/tracing-utils';
+
 import { z } from 'zod';
 import { renderTest } from '../render-test';
+
 
 export const emailTestSchema = z.object({
   html_content: z.string().describe('HTML email content to test'),
@@ -77,6 +80,12 @@ export interface EmailTestResult {
 }
 
 export async function emailTest(params: EmailTestParams): Promise<EmailTestResult> {
+  const traceId = generateTraceId();
+  
+  return await tracedAsync({
+    name: 'email_test',
+    metadata: { trace_id: traceId }
+  }, async () => {
   const startTime = Date.now();
   const testTimestamp = new Date().toISOString();
   
@@ -192,6 +201,7 @@ export async function emailTest(params: EmailTestParams): Promise<EmailTestResul
       error: error instanceof Error ? error.message : 'Unknown email testing error'
     };
   }
+  });
 }
 
 async function testEmailInClient(

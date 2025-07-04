@@ -48,6 +48,7 @@ export interface AssetSearchResult {
   success: boolean;
   assets: StandardAsset[];
   total_found: number;
+  external_images?: any[];
   search_metadata: {
     query_tags: string[];
     search_time_ms: number;
@@ -325,5 +326,12 @@ Return only the JSON array, no explanations.`;
       size: this.cache.size,
       keys: Array.from(this.cache.keys())
     };
+  }
+
+  /**
+   * Backwards-compat alias used by DesignSpecialistAgentV2.
+   */
+  getStats() {
+    return this.getCacheStats();
   }
 } 

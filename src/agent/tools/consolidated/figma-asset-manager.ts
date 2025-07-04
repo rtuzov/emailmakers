@@ -11,66 +11,88 @@
  */
 
 import { z } from 'zod';
-import { getLocalFigmaAssets, getLocalFigmaFoldersInfo } from '../figma-local-processor';
-import { splitFigmaSprite } from '../figma-sprite-splitter';
-import { selectIdenticaCreatives } from '../identica-selector';
+import { recordToolUsage } from '../../utils/tracing-utils';
+
+// import { getLocalFigmaAssets, getLocalFigmaFoldersInfo } from '../figma-local-processor';
+// import { splitFigmaSprite } from '../figma-sprite-splitter';
+// import { selectIdenticaCreatives } from '../identica-selector';
+
+// Stub implementations for removed functions
+async function getLocalFigmaAssets(params: any) {
+  return { success: false, error: 'getLocalFigmaAssets not implemented', data: null };
+}
+
+async function getLocalFigmaFoldersInfo() {
+  return { success: false, error: 'getLocalFigmaFoldersInfo not implemented', data: null };
+}
+
+async function splitFigmaSprite(params: any) {
+  return { success: false, error: 'splitFigmaSprite not implemented', manifest: null };
+}
+
+async function selectIdenticaCreatives(params: any) {
+  return { success: false, error: 'selectIdenticaCreatives not implemented', data: null };
+}
 
 // Unified schema for all Figma asset operations
 export const figmaAssetManagerSchema = z.object({
   action: z.enum(['search', 'list_folders', 'split_sprite', 'select_identica', 'bulk_process', 'analyze_assets']).describe('Figma asset operation to perform'),
   
-  // For search action (replaces get_figma_assets)
-  tags: z.array(z.string()).optional().nullable().describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
+  // For search action (replaces get_figma_assets) - make tags required for search
+  tags: z.array(z.string()).default([]).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
   search_context: z.object({
-    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).optional().nullable().describe('Type of email campaign'),
-    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).optional().nullable().describe('Emotional tone of the campaign'),
-    target_count: z.number().optional().nullable().describe('Number of assets to return (default: 2)'),
-    diversity_mode: z.boolean().optional().nullable().describe('Select diverse assets from different categories'),
-    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).optional().nullable().describe('Preferred rabbit emotion'),
-    airline: z.string().optional().nullable().describe('Specific airline for logo search'),
-    use_local_only: z.boolean().optional().nullable().describe('Force local-only search (always true now)')
-  }).optional().nullable().describe('Search context for intelligent asset selection'),
+    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).nullable().default(null).describe('Type of email campaign'),
+    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).nullable().default(null).describe('Emotional tone of the campaign'),
+    target_count: z.number().nullable().default(2).describe('Number of assets to return (default: 2)'),
+    diversity_mode: z.boolean().nullable().default(false).describe('Select diverse assets from different categories'),
+    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).nullable().default(null).describe('Preferred rabbit emotion'),
+    airline: z.string().nullable().default(null).describe('Specific airline for logo search'),
+    use_local_only: z.boolean().nullable().default(true).describe('Force local-only search (always true now)')
+  }).nullable().default(null).describe('Search context for intelligent asset selection'),
   
   // For split_sprite action
-  sprite_path: z.string().optional().nullable().describe('Path to the PNG sprite file to split'),
+  sprite_path: z.string().nullable().default(null).describe('Path to the PNG sprite file to split'),
   split_options: z.object({
     h_gap: z.number().default(15).describe('Horizontal gap threshold in pixels'),
     v_gap: z.number().default(15).describe('Vertical gap threshold in pixels'),
     confidence_threshold: z.number().default(0.9).describe('Minimum confidence threshold for classification')
-  }).optional().nullable().describe('Sprite splitting options'),
+  }).nullable().default(null).describe('Sprite splitting options'),
   
   // For select_identica action
   identica_criteria: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'brand', 'logo', 'premium']).optional().nullable().describe('Campaign type for creative selection'),
-    emotional_tone: z.enum(['позитивный', 'нейтральный', 'дружелюбный']).optional().nullable().describe('Desired emotional tone'),
-    usage_context: z.array(z.string()).optional().nullable().describe('Usage context for creatives'),
-    tags: z.array(z.string()).optional().nullable().describe('Specific tags for creative search'),
+    campaign_type: z.enum(['promotional', 'informational', 'brand', 'logo', 'premium']).nullable().default(null).describe('Campaign type for creative selection'),
+    emotional_tone: z.enum(['позитивный', 'нейтральный', 'дружелюбный']).nullable().default(null).describe('Desired emotional tone'),
+    usage_context: z.array(z.string()).nullable().default(null).describe('Usage context for creatives'),
+    tags: z.array(z.string()).nullable().default(null).describe('Specific tags for creative search'),
     target_count: z.number().default(2).describe('Number of creatives to select'),
     prefer_logo: z.boolean().default(false).describe('Prefer logos in selection'),
     prefer_premium: z.boolean().default(false).describe('Prefer premium creatives')
-  }).optional().nullable().describe('Criteria for identica selection'),
+  }).nullable().default(null).describe('Criteria for identica selection'),
   
   // For bulk_process action
   bulk_operations: z.array(z.object({
     operation: z.enum(['search', 'split', 'analyze']),
-    parameters: z.object({}).passthrough().optional().nullable()
-  })).optional().nullable().describe('Multiple operations to perform in sequence'),
+    parameters: z.object({
+      tags: z.array(z.string()).nullable().default(null),
+      action_specific_data: z.string().nullable().default(null)
+    }).nullable().default(null)
+  })).nullable().default(null).describe('Multiple operations to perform in sequence'),
   
-  // Common options
+  // Common options - required with defaults
   quality_filter: z.enum(['any', 'medium', 'high', 'premium']).default('medium').describe('Quality filter for assets'),
   format_preference: z.array(z.enum(['png', 'svg', 'jpg', 'webp'])).default(['png', 'svg']).describe('Preferred asset formats'),
   size_constraints: z.object({
-    min_width: z.number().optional().nullable(),
-    max_width: z.number().optional().nullable(),
-    min_height: z.number().optional().nullable(),
-    max_height: z.number().optional().nullable()
-  }).optional().nullable().describe('Size constraints for assets'),
+    min_width: z.number().nullable().default(null),
+    max_width: z.number().nullable().default(null),
+    min_height: z.number().nullable().default(null),
+    max_height: z.number().nullable().default(null)
+  }).nullable().default(null).describe('Size constraints for assets'),
   
-  // Performance and caching
+  // Performance and caching - required with defaults
   cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).default('normal').describe('Caching strategy for assets'),
   parallel_processing: z.boolean().default(true).describe('Enable parallel processing for multiple operations'),
   
-  // Analytics and tracking
+  // Analytics and tracking - required with defaults
   include_analytics: z.boolean().default(true).describe('Include performance analytics in response'),
   track_usage: z.boolean().default(false).describe('Track asset usage for optimization')
 });
@@ -111,54 +133,87 @@ export async function figmaAssetManager(params: FigmaAssetManagerParams): Promis
   console.log(`🎨 Figma Asset Manager: Executing action "${params.action}"`);
   
   try {
-    switch (params.action) {
-      case 'search':
-        return await handleAssetSearch(params, startTime);
-        
-      case 'list_folders':
-        return await handleListFolders(params, startTime);
-        
-      case 'split_sprite':
-        return await handleSpriteSpitting(params, startTime);
-        
-      case 'select_identica':
-        return await handleIdenticaSelection(params, startTime);
-        
-      case 'bulk_process':
-        return await handleBulkProcessing(params, startTime);
-        
-      case 'analyze_assets':
-        return await handleAssetAnalysis(params, startTime);
-        
-      default:
-        throw new Error(`Unknown action: ${params.action}`);
+    let result: FigmaAssetManagerResult;
+      
+      switch (params.action) {
+        case 'search':
+          result = await handleAssetSearch(params, startTime);
+          break;
+          
+        case 'list_folders':
+          result = await handleListFolders(params, startTime);
+          break;
+          
+        case 'split_sprite':
+          result = await handleSpriteSpitting(params, startTime);
+          break;
+          
+        case 'select_identica':
+          result = await handleIdenticaSelection(params, startTime);
+          break;
+          
+        case 'bulk_process':
+          result = await handleBulkProcessing(params, startTime);
+          break;
+          
+        case 'analyze_assets':
+          result = await handleAssetAnalysis(params, startTime);
+          break;
+          
+        default:
+          throw new Error(`Unknown action: ${params.action}`);
+      }
+      
+      // Record tracing statistics
+      if (result.analytics) {
+        recordToolUsage({
+          tool: 'figma-asset-manager',
+          operation: params.action,
+          duration: result.analytics.execution_time,
+          success: result.success
+        });
+      }
+      
+      return result;
+      
+    } catch (error) {
+      console.error('❌ Figma Asset Manager error:', error);
+      
+      const errorResult = {
+        success: false,
+        action: params.action,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          assets_found: 0,
+          operations_performed: 0
+        } : undefined
+      };
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'figma-asset-manager',
+        operation: params.action,
+        duration: Date.now() - startTime,
+        success: false,
+        error: errorResult.error
+      });
+      
+      return errorResult;
     }
-    
-  } catch (error) {
-    console.error('❌ Figma Asset Manager error:', error);
-    
-    return {
-      success: false,
-      action: params.action,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.include_analytics ? {
-        execution_time: Date.now() - startTime,
-        assets_found: 0,
-        operations_performed: 0
-      } : undefined
-    };
-  }
 }
 
 /**
  * Handle asset search (replaces get_figma_assets)
  */
 async function handleAssetSearch(params: FigmaAssetManagerParams, startTime: number): Promise<FigmaAssetManagerResult> {
-  if (!params.tags || params.tags.length === 0) {
-    throw new Error('Tags are required for asset search');
-  }
-  
+  if (params.tags.length === 0) {
+    // If no tags provided, use default search terms
+    params.tags = ['заяц', 'логотип']; // Default search terms
+    console.log('🔍 No tags provided, using default search terms:', params.tags.join(', '));
+  } else {
   console.log(`🔍 Searching for assets with tags: ${params.tags.join(', ')}`);
+  }
   
   // Enhance search with quality filtering and intelligent context
   const enhancedContext = {

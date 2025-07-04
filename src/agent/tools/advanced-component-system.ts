@@ -127,11 +127,11 @@ async function renderAdvancedComponent(params: AdvancedComponentParams): Promise
           render_time: Date.now() - startTime,
           component_type: params.component_type
         },
-        metadata: {
-          action: 'render',
-          cached: true,
-          performance: cached.performance_metrics
-        }
+        // metadata: {
+        //   action: 'render',
+        //   cached: true,
+        //   performance: cached.performance_metrics
+        // }
       };
     }
   }
@@ -181,11 +181,11 @@ async function renderAdvancedComponent(params: AdvancedComponentParams): Promise
       component_type: params.component_type,
       optimization_applied: true
     },
-    metadata: {
-      action: 'render',
-      cached: false,
-      sizing_context: params.sizing_context
-    }
+    // metadata: {
+    //   action: 'render',
+    //   cached: false,
+    //   sizing_context: params.sizing_context
+    // }
   };
 }
 
@@ -523,10 +523,10 @@ function analyzeComponentPerformance(componentType?: string): ToolResult {
         optimization_opportunities: analytics.filter(a => a.performance_score < 70).map(a => a.component_type)
       }
     },
-    metadata: {
-      action: 'analyze',
-      timestamp: new Date().toISOString()
-    }
+    // metadata: {
+    //   action: 'analyze',
+    //   timestamp: new Date().toISOString()
+    // }
   };
 }
 
@@ -568,10 +568,10 @@ function generateComponentPreview(params: AdvancedComponentParams): ToolResult {
       component_type: params.component_type,
       preview_url: `/preview/${params.component_type}/${Date.now()}`
     },
-    metadata: {
-      action: 'preview',
-      timestamp: new Date().toISOString()
-    }
+    // metadata: {
+    //   action: 'preview',
+    //   timestamp: new Date().toISOString()
+    // }
   };
 }
 
@@ -589,10 +589,10 @@ function clearComponentCache(componentType?: string): ToolResult {
         cleared_entries: keysToDelete.length,
         component_type: componentType
       },
-      metadata: {
-        action: 'clear_cache',
-        timestamp: new Date().toISOString()
-      }
+      // metadata: {
+      //   action: 'clear_cache',
+      //   timestamp: new Date().toISOString()
+      // }
     };
   } else {
     const totalEntries = componentCache.size;
@@ -604,10 +604,10 @@ function clearComponentCache(componentType?: string): ToolResult {
         cleared_entries: totalEntries,
         component_type: 'all'
       },
-      metadata: {
-        action: 'clear_cache',
-        timestamp: new Date().toISOString()
-      }
+      // metadata: {
+      //   action: 'clear_cache',
+      //   timestamp: new Date().toISOString()
+      // }
     };
   }
 }

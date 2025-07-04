@@ -11,7 +11,10 @@
  */
 
 import { z } from 'zod';
-import { generateCopy } from '../copy';
+import { tool } from '@openai/agents';
+import { recordToolUsage } from '../../utils/tracing-utils';
+
+// generateCopy removed - now using direct AI generation
 
 // Unified schema for all content generation operations
 export const contentGeneratorSchema = z.object({
@@ -39,8 +42,8 @@ export const contentGeneratorSchema = z.object({
         min: z.number(),
         max: z.number()
       })
-    }).optional().nullable().describe('Enhanced pricing statistics')
-  }).optional().nullable().describe('Price data for content context'),
+    }).nullable().default(null).describe('Enhanced pricing statistics')
+  }).nullable().default(null).describe('Price data for content context'),
   
   // Content generation strategy
   generation_strategy: z.enum(['speed', 'quality', 'creative', 'data_driven', 'emotional']).default('quality').describe('Generation approach'),
@@ -51,61 +54,61 @@ export const contentGeneratorSchema = z.object({
   target_audience: z.object({
     primary: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers']).describe('Primary audience segment'),
     demographics: z.object({
-      age_range: z.enum(['18-25', '26-35', '36-45', '46-55', '55+']).optional().nullable(),
-      income_level: z.enum(['budget', 'middle', 'premium', 'luxury']).optional().nullable(),
-      travel_frequency: z.enum(['first_time', 'occasional', 'frequent', 'business']).optional().nullable()
-    }).optional().nullable().describe('Detailed demographics'),
+      age_range: z.enum(['18-25', '26-35', '36-45', '46-55', '55+']).nullable().default(null),
+      income_level: z.enum(['budget', 'middle', 'premium', 'luxury']).nullable().default(null),
+      travel_frequency: z.enum(['first_time', 'occasional', 'frequent', 'business']).nullable().default(null)
+    }).nullable().default(null).describe('Detailed demographics'),
     psychographics: z.object({
-      motivations: z.array(z.enum(['save_money', 'convenience', 'comfort', 'experience', 'status'])).optional().nullable(),
-      booking_behavior: z.enum(['last_minute', 'planner', 'deal_hunter', 'loyalty_focused']).optional().nullable()
-    }).optional().nullable().describe('Psychological and behavioral traits')
-  }).optional().nullable().describe('Target audience specification'),
+      motivations: z.array(z.enum(['save_money', 'convenience', 'comfort', 'experience', 'status'])).nullable().default(null),
+      booking_behavior: z.enum(['last_minute', 'planner', 'deal_hunter', 'loyalty_focused']).nullable().default(null)
+    }).nullable().default(null).describe('Psychological and behavioral traits')
+  }).nullable().default(null).describe('Target audience specification'),
   
   // Campaign context
   campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).optional().nullable(),
-    seasonality: z.enum(['spring', 'summer', 'autumn', 'winter', 'holiday', 'general']).optional().nullable(),
-    urgency_level: z.enum(['low', 'medium', 'high', 'critical']).optional().nullable(),
+    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).nullable().default(null),
+    seasonality: z.enum(['spring', 'summer', 'autumn', 'winter', 'holiday', 'general']).nullable().default(null),
+    urgency_level: z.enum(['low', 'medium', 'high', 'critical']).nullable().default(null),
     promotion_details: z.object({
-      discount_percentage: z.number().optional().nullable(),
-      validity_period: z.string().optional().nullable(),
-      limited_availability: z.boolean().optional().nullable()
-    }).optional().nullable()
-  }).optional().nullable().describe('Campaign-specific context'),
+      discount_percentage: z.number().nullable().default(null),
+      validity_period: z.string().nullable().default(null),
+      limited_availability: z.boolean().nullable().default(null)
+    }).nullable().default(null)
+  }).nullable().default(null).describe('Campaign-specific context'),
   
   // Assets and visual context
   assets_context: z.object({
     available_assets: z.array(z.object({
       type: z.enum(['rabbit_emotion', 'airline_logo', 'illustration', 'icon']),
-      emotion: z.string().optional().nullable(),
-      description: z.string().optional().nullable()
-    })).optional().nullable().describe('Available visual assets for content alignment'),
+      emotion: z.string().nullable().default(null),
+      description: z.string().nullable().default(null)
+    })).nullable().default(null).describe('Available visual assets for content alignment'),
     brand_elements: z.object({
-      colors: z.array(z.string()).optional().nullable(),
-      mascot_personality: z.string().optional().nullable()
-    }).optional().nullable()
-  }).optional().nullable().describe('Visual assets context for content alignment'),
+      colors: z.array(z.string()).nullable().default(null),
+      mascot_personality: z.string().nullable().default(null)
+    }).nullable().default(null)
+  }).nullable().default(null).describe('Visual assets context for content alignment'),
   
   // Content specifications
   content_specs: z.object({
-    max_length: z.number().optional().nullable().describe('Maximum content length in characters'),
+    max_length: z.number().nullable().default(null).describe('Maximum content length in characters'),
     include_prices: z.boolean().default(true).describe('Include pricing information'),
     include_cta: z.boolean().default(true).describe('Include call-to-action'),
     email_client_optimization: z.boolean().default(true).describe('Optimize for email clients'),
     accessibility_compliance: z.boolean().default(true).describe('Ensure accessibility compliance')
-  }).optional().nullable().describe('Content technical specifications'),
+  }).nullable().default(null).describe('Content technical specifications'),
   
   // A/B testing and variations
   variant_options: z.object({
     generate_variants: z.boolean().default(false).describe('Generate multiple content variations'),
     variant_count: z.number().min(1).max(5).default(2).describe('Number of variants to generate'),
-    variation_focus: z.enum(['tone', 'structure', 'cta', 'pricing_emphasis', 'emotional_appeal']).optional().nullable().describe('Primary variation dimension')
-  }).optional().nullable().describe('A/B testing variant generation'),
+    variation_focus: z.enum(['tone', 'structure', 'cta', 'pricing_emphasis', 'emotional_appeal']).nullable().default(null).describe('Primary variation dimension')
+  }).nullable().default(null).describe('A/B testing variant generation'),
   
   // Analysis and optimization
-  existing_content: z.string().optional().nullable().describe('Existing content to analyze or optimize'),
-  benchmark_content: z.string().optional().nullable().describe('Benchmark content for comparison'),
-  optimization_goals: z.array(z.enum(['open_rate', 'click_rate', 'conversion', 'engagement', 'brand_awareness'])).optional().nullable().describe('Optimization objectives'),
+  existing_content: z.string().nullable().default(null).describe('Existing content to analyze or optimize'),
+  benchmark_content: z.string().nullable().default(null).describe('Benchmark content for comparison'),
+  optimization_goals: z.array(z.enum(['open_rate', 'click_rate', 'conversion', 'engagement', 'brand_awareness'])).nullable().default(null).describe('Optimization objectives'),
   
   // Output preferences
   output_format: z.enum(['structured', 'plain_text', 'json', 'marketing_brief']).default('structured').describe('Output format preference'),
@@ -177,72 +180,104 @@ export async function contentGenerator(params: ContentGeneratorParams): Promise<
   console.log(`✍️ Content Generator: Executing action "${params.action}" for topic: "${params.topic}"`);
   
   try {
-    switch (params.action) {
-      case 'generate':
-        return await handleGenerate(params, startTime);
-        
-      case 'optimize':
-        return await handleOptimize(params, startTime);
-        
-      case 'variants':
-        return await handleVariants(params, startTime);
-        
-      case 'personalize':
-        return await handlePersonalize(params, startTime);
-        
-      case 'analyze':
-        return await handleAnalyze(params, startTime);
-        
-      case 'test':
-        return await handleTest(params, startTime);
-        
-      default:
-        throw new Error(`Unknown action: ${params.action}`);
+    let result: ContentGeneratorResult;
+      
+      switch (params.action) {
+        case 'generate':
+          result = await handleGenerate(params, startTime);
+          break;
+          
+        case 'optimize':
+          result = await handleOptimize(params, startTime);
+          break;
+          
+        case 'variants':
+          result = await handleVariants(params, startTime);
+          break;
+          
+        case 'personalize':
+          result = await handlePersonalize(params, startTime);
+          break;
+          
+        case 'analyze':
+          result = await handleAnalyze(params, startTime);
+          break;
+          
+        case 'test':
+          result = await handleTest(params, startTime);
+          break;
+          
+        default:
+          throw new Error(`Unknown action: ${params.action}`);
+      }
+      
+      // Record tracing statistics
+      if (result.analytics) {
+        recordToolUsage({
+          tool: 'content-generator',
+          operation: params.action,
+          duration: result.analytics.execution_time,
+          success: result.success
+        });
+      }
+      
+      return result;
+      
+    } catch (error) {
+      console.error('❌ Content Generator error:', error);
+      
+      const errorResult = {
+        success: false,
+        action: params.action,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          content_length: 0,
+          complexity_score: 0,
+          generation_confidence: 0,
+          ai_model_used: 'error'
+        } : undefined
+      };
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'content-generator',
+        operation: params.action,
+        duration: Date.now() - startTime,
+        success: false,
+        error: errorResult.error
+      });
+      
+      return errorResult;
     }
-    
-  } catch (error) {
-    console.error('❌ Content Generator error:', error);
-    
-    return {
-      success: false,
-      action: params.action,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.include_analytics ? {
-        execution_time: Date.now() - startTime,
-        content_length: 0,
-        complexity_score: 0,
-        generation_confidence: 0,
-        ai_model_used: 'error'
-      } : undefined
-    };
-  }
 }
 
 /**
  * Handle content generation (enhanced version of generate_copy)
  */
 async function handleGenerate(params: ContentGeneratorParams, startTime: number): Promise<ContentGeneratorResult> {
-  if (!params.pricing_data) {
-    throw new Error('Pricing data is required for content generation');
+  // Gracefully handle missing pricing data
+  let pricingData = params.pricing_data;
+  if (!pricingData) {
+    console.warn('⚠️ No pricing_data provided. Proceeding without price context');
+    pricingData = {
+      prices: [],
+      currency: 'RUB',
+      cheapest: 0,
+      statistics: null,
+    } as any;
   }
   
   console.log(`🎯 Generating ${params.content_type} content with ${params.generation_strategy} strategy`);
   
-  // Enhance pricing data for context
-  const enhancedPricingData = enhancePricingContext(params.pricing_data, params);
+  // Enhance pricing data for context (safe even if empty)
+  const enhancedPricingData = enhancePricingContext(pricingData, params);
   
   // Create enhanced generation context
   const generationContext = await createEnhancedContext(params, enhancedPricingData);
   
-  // Generate base content using existing tool
-  const baseContent = await generateCopy({
-    topic: params.topic,
-    prices: enhancedPricingData
-  });
-  
-  if (!baseContent.success) {
-    throw new Error(`Base content generation failed: ${baseContent.error}`);
-  }
+  // Generate base content using OpenAI directly
+  const baseContent = await generateContentWithAI(params.topic, enhancedPricingData, params);
   
   // Apply intelligent enhancements
   const enhancedContent = await enhanceGeneratedContent(baseContent.data, params, generationContext);
@@ -930,3 +965,103 @@ function getContentPreferences(audience: any): any {
     emotional_tone: 'positive'
   };
 }
+
+/**
+ * Generate content using OpenAI directly without old tools
+ */
+async function generateContentWithAI(topic: string, pricingData: any, params: ContentGeneratorParams) {
+  console.log(`🤖 Generating content with AI for topic: ${topic}`);
+  
+  try {
+    const OpenAI = require('openai').OpenAI;
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+
+    // Prepare pricing context
+    const priceContext = pricingData?.prices?.length > 0 
+      ? pricingData.prices.slice(0, 5).map((p: any) => 
+          `${p.origin || 'Москва'} → ${p.destination || 'Destination'}: от ${p.price || 'N/A'} ${p.currency || 'RUB'}`
+        ).join('\n')
+      : 'Специальные предложения на авиабилеты';
+
+    const contentPrompt = `Создай email-контент для Kupibilet на тему: "${topic}"
+
+ЦЕНЫ И МАРШРУТЫ:
+${priceContext}
+
+ТРЕБОВАНИЯ:
+- Язык: русский
+- Бренд: Kupibilet (авиабилеты)
+- Тон: ${params.tone || 'friendly'}
+- Тип контента: ${params.content_type || 'promotional'}
+- Целевая аудитория: ${params.target_audience?.primary || 'путешественники'}
+
+ОБЯЗАТЕЛЬНО верни ТОЛЬКО JSON в формате:
+{
+  "subject": "Заголовок письма",
+  "preheader": "Краткое описание",
+  "body": "Основной текст письма с ценами",
+  "cta": "Текст кнопки",
+  "language": "ru",
+  "tone": "${params.tone || 'friendly'}"
+}
+
+НЕ добавляй никакого другого текста, только JSON!`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: contentPrompt }],
+      temperature: 0.7,
+      max_tokens: 1500
+    });
+
+    const aiResponse = response.choices[0].message.content;
+    
+    // Parse JSON response
+    let contentData;
+    try {
+      // Extract JSON from response
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        contentData = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found in AI response');
+      }
+    } catch (parseError) {
+      console.error('Failed to parse AI response as JSON:', parseError);
+      // Fallback content structure
+      contentData = {
+        subject: `${topic} - специальные предложения от Kupibilet`,
+        preheader: 'Лучшие цены на авиабилеты',
+        body: `Отличные предложения по направлению "${topic}". ${priceContext}. Бронируйте сейчас!`,
+        cta: 'Найти билеты',
+        language: 'ru',
+        tone: params.tone || 'friendly'
+      };
+    }
+
+    console.log(`✅ AI content generated successfully`);
+    
+    return {
+      success: true,
+      data: contentData
+    };
+
+  } catch (error) {
+    console.error('❌ AI content generation failed:', error);
+    throw new Error(`AI content generation failed: ${error.message}`);
+  }
+}
+
+export const contentGeneratorSchemaAlias = contentGeneratorSchema;
+
+/**
+ * Legacy alias for backward compatibility – mirrors contentGenerator
+ */
+export const generateCopyTool = tool({
+  name: 'generate_copy',
+  description: 'Legacy alias for content_generator – generates email copy/content. Use content_generator for new flows.',
+  parameters: contentGeneratorSchema,
+  execute: contentGenerator,
+});

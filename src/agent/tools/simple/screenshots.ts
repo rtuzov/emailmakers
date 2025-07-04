@@ -5,8 +5,11 @@
  * Заменяет часть функциональности delivery-manager
  */
 
+import { generateTraceId, tracedAsync } from '../../utils/tracing-utils';
+
 import { z } from 'zod';
 import { generateScreenshots } from '../screenshot-generator';
+
 
 export const screenshotsSchema = z.object({
   html_content: z.string().describe('HTML email content to screenshot'),
@@ -65,110 +68,163 @@ export interface ScreenshotsResult {
     total_size_mb: number;
     summary_report: string;
   };
+  summary?: {
+    total_screenshots: number;
+    successful_captures: number;
+    failed_captures: number;
+    total_processing_time: number;
+  };
   error?: string;
 }
 
 export async function screenshots(params: ScreenshotsParams): Promise<ScreenshotsResult> {
-  try {
-    console.log('📸 Generating email screenshots:', {
-      clients: params.screenshot_config.clients,
-      devices: params.screenshot_config.devices,
-      html_size: params.html_content.length
-    });
+  const traceId = generateTraceId();
+  
+  return await tracedAsync({
+    name: 'screenshots',
+    metadata: { trace_id: traceId }
+  }, async () => {
+    const startTime = Date.now();
+    console.log(`📸 Screenshots: Starting capture process`);
 
-    const config = params.screenshot_config;
-    const clients = config.clients;
-    const devices = config.devices;
-    const modes = config.capture_modes;
+    try {
+      // Validate input
+      if (!params.html_content || params.html_content.trim().length === 0) {
+        const errorResult: ScreenshotsResult = {
+          success: false,
+          screenshots: [],
+          comparison_analysis: {
+            consistency_score: 0,
+            major_differences: [],
+            recommendations: ['Check error logs', 'Verify screenshot configuration']
+          },
+          delivery_package: {
+            individual_files: [],
+            total_size_mb: 0,
+            summary_report: 'No screenshots generated'
+          },
+          error: 'No HTML content provided for screenshot capture'
+        };
 
-    const screenshots: any[] = [];
-    const captureErrors: string[] = [];
+        console.log(`❌ Screenshots failed: No HTML content provided`);
+        return errorResult;
+      }
 
-    // Generate screenshots for each combination
-    for (const client of clients) {
-      for (const device of devices) {
-        for (const mode of modes) {
-          console.log(`📱 Capturing ${client}/${device}/${mode}...`);
-          
-          try {
-            const screenshot = await captureSingleScreenshot(
-              params.html_content,
-              client,
-              device,
-              mode,
-              params.output_settings
-            );
+      // Default configuration
+      const config = params.screenshot_config;
+      const clients = config.clients;
+      const devices = config.devices;
+      const modes = config.capture_modes;
+
+      const screenshots: ScreenshotsResult['screenshots'] = [];
+      const captureErrors: string[] = [];
+
+      // Generate screenshots for each combination
+      for (const client of clients) {
+        for (const device of devices) {
+          for (const mode of modes) {
+            console.log(`📱 Capturing ${client}/${device}/${mode}...`);
             
-            if (screenshot) {
-              screenshots.push(screenshot);
-            } else {
-              captureErrors.push(`Failed to capture ${client}/${device}/${mode}`);
+            try {
+              const screenshot = await captureSingleScreenshot(
+                params.html_content,
+                client,
+                device,
+                mode,
+                params.output_settings
+              );
+              
+              if (screenshot) {
+                screenshots.push(screenshot);
+              } else {
+                captureErrors.push(`Failed to capture ${client}/${device}/${mode}`);
+              }
+            } catch (error) {
+              console.warn(`Screenshot failed for ${client}/${device}/${mode}:`, error);
+              captureErrors.push(`Error capturing ${client}/${device}/${mode}: ${error instanceof Error ? error.message : 'Unknown error'}`);
             }
-          } catch (error) {
-            console.warn(`Screenshot failed for ${client}/${device}/${mode}:`, error);
-            captureErrors.push(`Error capturing ${client}/${device}/${mode}: ${error instanceof Error ? error.message : 'Unknown error'}`);
           }
         }
       }
-    }
 
-    if (screenshots.length === 0) {
-      return {
+      if (screenshots.length === 0) {
+        const errorResult: ScreenshotsResult = {
+          success: false,
+          screenshots: [],
+          comparison_analysis: {
+            consistency_score: 0,
+            major_differences: [],
+            recommendations: ['Check screenshot configuration', 'Verify HTML content']
+          },
+          delivery_package: {
+            individual_files: [],
+            total_size_mb: 0,
+            summary_report: `All screenshot captures failed: ${captureErrors.join('; ')}`
+          },
+          error: `All screenshot captures failed: ${captureErrors.join('; ')}`
+        };
+
+        console.log(`❌ Screenshots failed: No captures successful`);
+        return errorResult;
+      }
+
+      // Perform cross-client analysis
+      const comparisonAnalysis = await performComparisonAnalysis(
+        screenshots,
+        params.comparison_options
+      );
+
+      // Create delivery package
+      const deliveryPackage = await createDeliveryPackage(
+        screenshots,
+        comparisonAnalysis,
+        params.output_settings
+      );
+
+      const totalProcessingTime = Date.now() - startTime;
+      const totalScreenshots = screenshots.length;
+
+      const result: ScreenshotsResult = {
+        success: true,
+        screenshots,
+        comparison_analysis: comparisonAnalysis,
+        delivery_package: deliveryPackage,
+        summary: {
+          total_screenshots: totalScreenshots,
+          successful_captures: totalScreenshots,
+          failed_captures: 0,
+          total_processing_time: totalProcessingTime
+        }
+      };
+
+      console.log(`✅ Screenshots completed: ${totalScreenshots} successful in ${totalProcessingTime}ms`);
+      
+      return result;
+
+    } catch (error) {
+      const totalProcessingTime = Date.now() - startTime;
+      
+      const errorResult: ScreenshotsResult = {
         success: false,
         screenshots: [],
         comparison_analysis: {
           consistency_score: 0,
           major_differences: [],
-          recommendations: ['Check screenshot configuration', 'Verify HTML content']
+          recommendations: ['Check error logs', 'Verify screenshot configuration']
         },
         delivery_package: {
           individual_files: [],
           total_size_mb: 0,
-          summary_report: 'No screenshots generated'
+          summary_report: 'Screenshot generation failed'
         },
-        error: `All screenshot captures failed: ${captureErrors.join('; ')}`
+        error: error instanceof Error ? error.message : 'Unknown screenshots error'
       };
+
+      console.log(`❌ Screenshots failed after ${totalProcessingTime}ms:`, error);
+      
+      return errorResult;
     }
-
-    // Perform cross-client analysis
-    const comparisonAnalysis = await performComparisonAnalysis(
-      screenshots,
-      params.comparison_options
-    );
-
-    // Create delivery package
-    const deliveryPackage = await createDeliveryPackage(
-      screenshots,
-      comparisonAnalysis,
-      params.output_settings
-    );
-
-    return {
-      success: true,
-      screenshots,
-      comparison_analysis: comparisonAnalysis,
-      delivery_package: deliveryPackage
-    };
-
-  } catch (error) {
-    console.error('❌ Screenshots generation failed:', error);
-
-    return {
-      success: false,
-      screenshots: [],
-      comparison_analysis: {
-        consistency_score: 0,
-        major_differences: [],
-        recommendations: ['Check error logs', 'Verify screenshot configuration']
-      },
-      delivery_package: {
-        individual_files: [],
-        total_size_mb: 0,
-        summary_report: 'Screenshot generation failed'
-      },
-      error: error instanceof Error ? error.message : 'Unknown screenshots error'
-    };
-  }
+  });
 }
 
 async function captureSingleScreenshot(

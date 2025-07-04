@@ -6,11 +6,24 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  demonstrateOptimizationSystem, 
-  simulateRealWorldOptimization,
-  demonstrateSystemIntegration 
-} from '../../../../agent/optimization/optimization-demo';
+// import { 
+//   demonstrateOptimizationSystem, 
+//   simulateRealWorldOptimization,
+//   demonstrateSystemIntegration 
+// } from '../../../../agent/optimization/optimization-demo';
+
+// Stub implementations
+async function demonstrateOptimizationSystem() {
+  return { success: false, error: 'demonstrateOptimizationSystem not implemented' };
+}
+
+async function simulateRealWorldOptimization() {
+  return { success: false, error: 'simulateRealWorldOptimization not implemented' };
+}
+
+async function demonstrateSystemIntegration() {
+  return { success: false, error: 'demonstrateSystemIntegration not implemented' };
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

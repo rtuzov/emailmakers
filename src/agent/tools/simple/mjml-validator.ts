@@ -1,365 +1,281 @@
-import { z } from 'zod';
-import { ToolResult } from '../../../shared/types/tool-types';
+/**
+ * 🎯 MJML VALIDATOR TOOL
+ * 
+ * Инструмент для валидации MJML кода
+ * Проверяет синтаксис и структуру MJML шаблонов
+ */
 
-const mjmlValidatorSchema = z.object({
-  mjml_code: z.string().describe('MJML код для валидации'),
-  validation_level: z.enum(['basic', 'strict', 'email_client']).default('strict').describe('Уровень валидации'),
-  fix_suggestions: z.boolean().default(true).describe('Включить предложения по исправлению'),
-  check_email_compatibility: z.boolean().default(true).describe('Проверить совместимость с email-клиентами')
-});
+import { generateTraceId, tracedAsync } from '../../utils/tracing-utils';
 
-export type MjmlValidatorParams = z.infer<typeof mjmlValidatorSchema>;
 
-interface ValidationIssue {
-  type: 'error' | 'warning' | 'info';
-  line?: number;
-  column?: number;
-  message: string;
-  rule: string;
-  fix_suggestion?: string;
+
+export interface MjmlValidatorParams {
+  mjml_code: string;
+  validation_level?: 'basic' | 'strict' | 'comprehensive';
+  check_components?: boolean;
+  check_attributes?: boolean;
 }
 
-interface ValidationResult {
-  is_valid: boolean;
-  issues: ValidationIssue[];
-  email_compatibility: {
-    gmail: number;
-    outlook: number;
-    apple_mail: number;
-    yahoo: number;
-    overall_score: number;
-  };
-  structure_analysis: {
-    has_mjml_root: boolean;
-    has_head: boolean;
-    has_body: boolean;
-    sections_count: number;
-    components_used: string[];
-  };
-  recommendations: string[];
-}
-
-export async function mjmlValidator(params: MjmlValidatorParams): Promise<ToolResult> {
-  try {
-    console.log('🔍 Validating MJML code...');
-    
-    const mjmlCode = params.mjml_code.trim();
-    
-    if (!mjmlCode) {
-      return {
-        success: false,
-        error: 'MJML code is required for validation'
-      };
-    }
-
-    const validationResult: ValidationResult = {
-      is_valid: true,
-      issues: [],
-      email_compatibility: {
-        gmail: 100,
-        outlook: 100,
-        apple_mail: 100,
-        yahoo: 100,
-        overall_score: 100
-      },
-      structure_analysis: {
-        has_mjml_root: false,
-        has_head: false,
-        has_body: false,
-        sections_count: 0,
-        components_used: []
-      },
-      recommendations: []
+export interface MjmlValidatorResult {
+  success: boolean;
+  validation_results: {
+    is_valid: boolean;
+    syntax_errors: Array<{
+      line: number;
+      column: number;
+      message: string;
+      severity: 'error' | 'warning' | 'info';
+    }>;
+    structure_issues: string[];
+    component_analysis: {
+      total_components: number;
+      valid_components: number;
+      invalid_components: Array<{
+        component: string;
+        issue: string;
+        line?: number;
+      }>;
     };
+    best_practices: {
+      score: number;
+      recommendations: string[];
+    };
+  };
+  error?: string;
+}
 
-    // 1. Базовая проверка структуры
-    validateBasicStructure(mjmlCode, validationResult);
-    
-    // 2. Проверка синтаксиса и тегов
-    validateSyntaxAndTags(mjmlCode, validationResult);
-    
-    // 3. Проверка атрибутов
-    validateAttributes(mjmlCode, validationResult);
-    
-    // 4. Проверка email-совместимости
-    if (params.check_email_compatibility) {
-      validateEmailCompatibility(mjmlCode, validationResult);
-    }
-    
-    // 5. Генерация рекомендаций
-    if (params.fix_suggestions) {
-      generateRecommendations(mjmlCode, validationResult);
-    }
+export async function mjmlValidator(params: MjmlValidatorParams): Promise<MjmlValidatorResult> {
+  const traceId = generateTraceId();
+  
+  return await tracedAsync({
+    name: 'mjml_validator',
+    metadata: { trace_id: traceId }
+  }, async () => {
+    const startTime = Date.now();
+    console.log(`🎯 MJML Validator: Starting validation with level "${params.validation_level || 'basic'}"`);
 
-    // Проверяем через MJML компилятор если возможно
     try {
-      const mjmlModule = await import('mjml');
-      const mjml = (mjmlModule as any).default || mjmlModule;
+      // Validate input
+      if (!params.mjml_code || params.mjml_code.trim().length === 0) {
+        const errorResult: MjmlValidatorResult = {
+          success: false,
+          validation_results: {
+            is_valid: false,
+            syntax_errors: [{
+              line: 1,
+              column: 1,
+              message: 'No MJML code provided',
+              severity: 'error'
+            }],
+            structure_issues: ['Empty MJML content'],
+            component_analysis: {
+              total_components: 0,
+              valid_components: 0,
+              invalid_components: []
+            },
+            best_practices: {
+              score: 0,
+              recommendations: ['Provide valid MJML code for validation']
+            }
+          },
+          error: 'No MJML code provided'
+        };
+
+        console.log(`❌ MJML Validator failed: No MJML code provided`);
+        return errorResult;
+      }
+
+      const validationLevel = params.validation_level || 'basic';
+      const checkComponents = params.check_components !== false;
+      const checkAttributes = params.check_attributes !== false;
+
+      // Basic structure validation
+      const syntaxErrors: Array<{
+        line: number;
+        column: number;
+        message: string;
+        severity: 'error' | 'warning' | 'info';
+      }> = [];
+
+      const structureIssues: string[] = [];
       
-      if (typeof mjml === 'function') {
-        const result = mjml(mjmlCode, { validationLevel: params.validation_level });
-        
-        if (result.errors && result.errors.length > 0) {
-          result.errors.forEach((error: any) => {
-            validationResult.issues.push({
-              type: error.level === 'error' ? 'error' : 'warning',
-              line: error.line,
-              message: error.message,
-              rule: error.tagName || 'mjml-compiler',
-              fix_suggestion: generateFixSuggestion(error)
-            });
+      // Check for basic MJML structure
+      if (!params.mjml_code.includes('<mjml>')) {
+        syntaxErrors.push({
+          line: 1,
+          column: 1,
+          message: 'Missing <mjml> root element',
+          severity: 'error'
+        });
+      }
+
+      if (!params.mjml_code.includes('<mj-head>') && validationLevel !== 'basic') {
+        syntaxErrors.push({
+          line: 1,
+          column: 1,
+          message: 'Missing <mj-head> section',
+          severity: 'warning'
+        });
+      }
+
+      if (!params.mjml_code.includes('<mj-body>')) {
+        syntaxErrors.push({
+          line: 1,
+          column: 1,
+          message: 'Missing <mj-body> element',
+          severity: 'error'
+        });
+      }
+
+      // Check for unclosed tags
+      const openTags = params.mjml_code.match(/<mj-[\w-]+(?:\s[^>]*)?>(?![^<]*<\/mj-[\w-]+>)/g) || [];
+      openTags.forEach((tag, index) => {
+        const tagName = tag.match(/<(mj-[\w-]+)/)?.[1];
+        if (tagName && !params.mjml_code.includes(`</${tagName}>`)) {
+          syntaxErrors.push({
+            line: index + 1,
+            column: 1,
+            message: `Unclosed tag: ${tagName}`,
+            severity: 'error'
           });
+        }
+      });
+
+      // Component analysis
+      const mjmlComponents = [
+        'mj-section', 'mj-column', 'mj-text', 'mj-button', 'mj-image',
+        'mj-divider', 'mj-spacer', 'mj-table', 'mj-social', 'mj-navbar'
+      ];
+
+      let totalComponents = 0;
+      let validComponents = 0;
+      const invalidComponents: Array<{
+        component: string;
+        issue: string;
+        line?: number;
+      }> = [];
+
+      if (checkComponents) {
+        mjmlComponents.forEach(component => {
+          const regex = new RegExp(`<${component}[^>]*>`, 'g');
+          const matches = params.mjml_code.match(regex) || [];
+          totalComponents += matches.length;
           
-          if (result.errors.some((e: any) => e.level === 'error')) {
-            validationResult.is_valid = false;
+          matches.forEach((match, index) => {
+            // Basic component validation
+            if (component === 'mj-button' && !match.includes('href=')) {
+              invalidComponents.push({
+                component,
+                issue: 'Button missing href attribute',
+                line: index + 1
+              });
+            } else if (component === 'mj-image' && !match.includes('src=')) {
+              invalidComponents.push({
+                component,
+                issue: 'Image missing src attribute',
+                line: index + 1
+              });
+            } else {
+              validComponents++;
+            }
+          });
+        });
+      }
+
+      // Best practices analysis
+      let bestPracticesScore = 100;
+      const recommendations: string[] = [];
+
+      // Check for responsive design
+      if (!params.mjml_code.includes('mj-column') || !params.mjml_code.includes('width=')) {
+        bestPracticesScore -= 20;
+        recommendations.push('Use mj-column with width attributes for responsive design');
+      }
+
+      // Check for meta tags
+      if (!params.mjml_code.includes('mj-title')) {
+        bestPracticesScore -= 10;
+        recommendations.push('Add mj-title for better email client support');
+      }
+
+      if (!params.mjml_code.includes('mj-preview')) {
+        bestPracticesScore -= 10;
+        recommendations.push('Add mj-preview for email preview text');
+      }
+
+      // Check for font fallbacks
+      if (params.mjml_code.includes('font-family') && !params.mjml_code.includes('Arial')) {
+        bestPracticesScore -= 10;
+        recommendations.push('Include fallback fonts like Arial for better compatibility');
+      }
+
+      // Check for alt text on images
+      const imageMatches = params.mjml_code.match(/<mj-image[^>]*>/g) || [];
+      const imagesWithoutAlt = imageMatches.filter(img => !img.includes('alt=')).length;
+      if (imagesWithoutAlt > 0) {
+        bestPracticesScore -= imagesWithoutAlt * 5;
+        recommendations.push('Add alt text to all images for accessibility');
+      }
+
+      // Structure issues
+      if (params.mjml_code.includes('<mj-column>') && !params.mjml_code.includes('<mj-section>')) {
+        structureIssues.push('mj-column should be wrapped in mj-section');
+      }
+
+      const isValid = syntaxErrors.filter(e => e.severity === 'error').length === 0;
+
+      const result: MjmlValidatorResult = {
+        success: true,
+        validation_results: {
+          is_valid: isValid,
+          syntax_errors: syntaxErrors,
+          structure_issues: structureIssues,
+          component_analysis: {
+            total_components: totalComponents,
+            valid_components: validComponents,
+            invalid_components: invalidComponents
+          },
+          best_practices: {
+            score: Math.max(0, bestPracticesScore),
+            recommendations: recommendations
           }
         }
-      }
+      };
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ MJML Validator completed in ${duration}ms, valid: ${isValid}`);
+      
+      return result;
+
     } catch (error) {
-      console.warn('MJML compiler not available for validation:', error);
-    }
+      const errorResult: MjmlValidatorResult = {
+        success: false,
+        validation_results: {
+          is_valid: false,
+          syntax_errors: [{
+            line: 1,
+            column: 1,
+            message: 'Validation failed due to internal error',
+            severity: 'error'
+          }],
+          structure_issues: ['Internal validation error'],
+          component_analysis: {
+            total_components: 0,
+            valid_components: 0,
+            invalid_components: []
+          },
+          best_practices: {
+            score: 0,
+            recommendations: ['Check error logs', 'Verify MJML syntax']
+          }
+        },
+        error: error instanceof Error ? error.message : 'Unknown error during MJML validation'
+      };
 
-    console.log(`✅ MJML validation completed: ${validationResult.is_valid ? 'VALID' : 'INVALID'} (${validationResult.issues.length} issues)`);
-
-    return {
-      success: true,
-      data: validationResult,
-      metadata: {
-        tool_name: 'mjml-validator',
-        version: '1.0.0',
-        timestamp: new Date().toISOString()
-      }
-    };
-
-  } catch (error) {
-    console.error('❌ MJML validation failed:', error);
-    return {
-      success: false,
-      error: `MJML validation failed: ${error.message}`
-    };
-  }
-}
-
-function validateBasicStructure(mjmlCode: string, result: ValidationResult) {
-  // Проверка корневого тега <mjml>
-  if (!mjmlCode.includes('<mjml>') || !mjmlCode.includes('</mjml>')) {
-    result.issues.push({
-      type: 'error',
-      message: 'MJML code must be wrapped in <mjml></mjml> tags',
-      rule: 'mjml-root-required',
-      fix_suggestion: 'Wrap your content in <mjml></mjml> tags'
-    });
-    result.is_valid = false;
-  } else {
-    result.structure_analysis.has_mjml_root = true;
-  }
-
-  // Проверка наличия <mj-head>
-  if (mjmlCode.includes('<mj-head>')) {
-    result.structure_analysis.has_head = true;
-  }
-
-  // Проверка наличия <mj-body>
-  if (!mjmlCode.includes('<mj-body>') || !mjmlCode.includes('</mj-body>')) {
-    result.issues.push({
-      type: 'error',
-      message: 'MJML must contain <mj-body></mj-body>',
-      rule: 'mj-body-required',
-      fix_suggestion: 'Add <mj-body></mj-body> section to your MJML'
-    });
-    result.is_valid = false;
-  } else {
-    result.structure_analysis.has_body = true;
-  }
-
-  // Подсчёт секций
-  const sectionMatches = mjmlCode.match(/<mj-section/g);
-  result.structure_analysis.sections_count = sectionMatches ? sectionMatches.length : 0;
-
-  // Анализ используемых компонентов
-  const componentRegex = /<(mj-[a-z-]+)/g;
-  const components = new Set<string>();
-  let match;
-  while ((match = componentRegex.exec(mjmlCode)) !== null) {
-    components.add(match[1]);
-  }
-  result.structure_analysis.components_used = Array.from(components);
-}
-
-function validateSyntaxAndTags(mjmlCode: string, result: ValidationResult) {
-  // Проверка закрытых тегов
-  const openTags: string[] = mjmlCode.match(/<(mj-[a-z-]+)(?:\s[^>]*)?>/g) || [];
-  const closeTags: string[] = mjmlCode.match(/<\/(mj-[a-z-]+)>/g) || [];
-  
-  const openTagNames = openTags.map(tag => tag.match(/<(mj-[a-z-]+)/)?.[1]).filter(Boolean);
-  const closeTagNames = closeTags.map(tag => tag.match(/<\/(mj-[a-z-]+)>/)?.[1]).filter(Boolean);
-  
-  // Проверка парности тегов
-  openTagNames.forEach(tagName => {
-    if (tagName && !closeTagNames.includes(tagName)) {
-      // Исключаем самозакрывающиеся теги
-      const selfClosingTags = ['mj-image', 'mj-spacer', 'mj-divider'];
-      if (!selfClosingTags.includes(tagName)) {
-        result.issues.push({
-          type: 'error',
-          message: `Unclosed tag: <${tagName}>`,
-          rule: 'unclosed-tag',
-          fix_suggestion: `Add closing tag </${tagName}>`
-        });
-        result.is_valid = false;
-      }
+      const duration = Date.now() - startTime;
+      console.log(`❌ MJML Validator failed after ${duration}ms:`, error);
+      
+      return errorResult;
     }
   });
-
-  // Проверка недопустимых тегов
-  const validMjmlTags = [
-    'mjml', 'mj-head', 'mj-body', 'mj-section', 'mj-column', 'mj-text', 
-    'mj-button', 'mj-image', 'mj-table', 'mj-spacer', 'mj-divider',
-    'mj-title', 'mj-preview', 'mj-attributes', 'mj-style', 'mj-font',
-    'mj-hero', 'mj-wrapper', 'mj-group', 'mj-raw', 'mj-include',
-    'mj-navbar', 'mj-accordion', 'mj-carousel', 'mj-social'
-  ];
-
-  result.structure_analysis.components_used.forEach(component => {
-    if (!validMjmlTags.includes(component)) {
-      result.issues.push({
-        type: 'warning',
-        message: `Unknown MJML component: ${component}`,
-        rule: 'unknown-component',
-        fix_suggestion: `Check if ${component} is correctly spelled or supported`
-      });
-    }
-  });
-}
-
-function validateAttributes(mjmlCode: string, result: ValidationResult) {
-  // Проверка обязательных атрибутов для изображений
-  const imageMatches: string[] = mjmlCode.match(/<mj-image[^>]*>/g) || [];
-  imageMatches.forEach(imageTag => {
-    if (!imageTag.includes('src=')) {
-      result.issues.push({
-        type: 'error',
-        message: 'mj-image requires src attribute',
-        rule: 'image-src-required',
-        fix_suggestion: 'Add src="your-image-url" to mj-image tag'
-      });
-      result.is_valid = false;
-    }
-    
-    if (!imageTag.includes('alt=')) {
-      result.issues.push({
-        type: 'warning',
-        message: 'mj-image should have alt attribute for accessibility',
-        rule: 'image-alt-recommended',
-        fix_suggestion: 'Add alt="description" to mj-image tag'
-      });
-    }
-  });
-
-  // Проверка ссылок в кнопках
-  const buttonMatches: string[] = mjmlCode.match(/<mj-button[^>]*>/g) || [];
-  buttonMatches.forEach(buttonTag => {
-    if (!buttonTag.includes('href=')) {
-      result.issues.push({
-        type: 'warning',
-        message: 'mj-button should have href attribute',
-        rule: 'button-href-recommended',
-        fix_suggestion: 'Add href="your-link" to mj-button tag'
-      });
-    }
-  });
-}
-
-function validateEmailCompatibility(mjmlCode: string, result: ValidationResult) {
-  let compatibilityScore = 100;
-  
-  // Проверка CSS свойств, которые не поддерживаются в Outlook
-  const outlookIncompatible = [
-    'border-radius', 'box-shadow', 'transform', 'opacity', 'position: absolute',
-    'position: fixed', 'flexbox', 'grid'
-  ];
-  
-  outlookIncompatible.forEach(property => {
-    if (mjmlCode.includes(property)) {
-      compatibilityScore -= 10;
-      result.issues.push({
-        type: 'warning',
-        message: `${property} may not be supported in Outlook`,
-        rule: 'outlook-compatibility',
-        fix_suggestion: `Consider alternative approach for ${property} to support Outlook`
-      });
-    }
-  });
-
-  // Проверка размеров изображений
-  const imageSizeRegex = /width="(\d+)"/g;
-  let match;
-  while ((match = imageSizeRegex.exec(mjmlCode)) !== null) {
-    const width = parseInt(match[1]);
-    if (width > 600) {
-      result.issues.push({
-        type: 'warning',
-        message: `Image width ${width}px exceeds recommended 600px`,
-        rule: 'image-width-limit',
-        fix_suggestion: 'Keep image width under 600px for better email client support'
-      });
-      compatibilityScore -= 5;
-    }
-  }
-
-  result.email_compatibility = {
-    gmail: Math.max(90, compatibilityScore),
-    outlook: Math.max(70, compatibilityScore - 20),
-    apple_mail: Math.max(95, compatibilityScore),
-    yahoo: Math.max(85, compatibilityScore - 10),
-    overall_score: compatibilityScore
-  };
-}
-
-function generateRecommendations(mjmlCode: string, result: ValidationResult) {
-  const recommendations: string[] = [];
-
-  // Рекомендации по структуре
-  if (result.structure_analysis.sections_count === 0) {
-    recommendations.push('Add at least one mj-section to organize your content');
-  }
-
-  if (!result.structure_analysis.has_head) {
-    recommendations.push('Add mj-head section with mj-title and mj-preview for better email client display');
-  }
-
-  // Рекомендации по производительности
-  if (mjmlCode.length > 100000) {
-    recommendations.push('Consider reducing email size for better loading performance');
-  }
-
-  // Рекомендации по доступности
-  if (!mjmlCode.includes('alt=')) {
-    recommendations.push('Add alt attributes to all images for accessibility');
-  }
-
-  // Рекомендации по мобильной оптимизации
-  if (!mjmlCode.includes('@media')) {
-    recommendations.push('Consider adding responsive styles for mobile optimization');
-  }
-
-  result.recommendations = recommendations;
-}
-
-function generateFixSuggestion(error: any): string {
-  const suggestions: Record<string, string> = {
-    'mj-column': 'Ensure mj-column is inside mj-section',
-    'mj-text': 'Check that mj-text content is properly formatted',
-    'mj-button': 'Verify mj-button has href attribute and is inside mj-column',
-    'mj-image': 'Make sure mj-image has src attribute and valid URL'
-  };
-
-  return suggestions[error.tagName] || 'Check MJML documentation for proper usage';
-}
-
-export const mjmlValidatorTool = {
-  name: 'mjml_validator',
-  description: 'Validate MJML code for syntax, structure, and email client compatibility',
-  inputSchema: mjmlValidatorSchema,
-  execute: mjmlValidator
-}; 
+} 

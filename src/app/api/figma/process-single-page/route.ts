@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { processAllFigmaPages } from '@/agent/tools/figma-all-pages-processor';
+// import { processAllFigmaPages } from '@/agent/tools/figma-all-pages-processor';
+
+// Stub implementation
+async function processAllFigmaPages(params: any) {
+  return { success: false, error: 'processAllFigmaPages not implemented' };
+}
 import { getUsageModel } from '../../../../shared/utils/model-config';
 
 export async function POST(request: NextRequest) {
@@ -88,7 +93,14 @@ async function processSinglePageOnly(params: {
     config({ path: path.resolve(process.cwd(), '.env.local') });
 
     const { TagDictionaryManager } = await import('@/agent/tools/figma-tag-dictionary');
-    const { TagOptimizationService } = await import('@/agent/tools/tag-optimization-service');
+    // const { TagOptimizationService } = await import('@/agent/tools/tag-optimization-service');
+    
+    // Stub implementation
+    class TagOptimizationService {
+      static async optimize(params: any) {
+        return { success: false, error: 'TagOptimizationService not implemented' };
+      }
+    }
 
     console.log('🎯 Single Page Processor: Начинаем обработку одной страницы');
 

@@ -10,12 +10,20 @@
  * Workflow: ContentSpecialist → DesignSpecialist → QualitySpecialist → DeliverySpecialist
  */
 
-import { generateTraceId, withTrace } from '@openai/agents';
+// Import specialist agents and their types
 import { ContentSpecialistAgent, ContentSpecialistInput, ContentSpecialistOutput } from '../specialists/content-specialist-agent';
 import { DesignSpecialistAgentV2, DesignSpecialistInputV2, DesignSpecialistOutputV2 } from '../specialists/design-specialist-agent-v2';
 import { QualitySpecialistAgent, QualitySpecialistInput, QualitySpecialistOutput } from '../specialists/quality-specialist-agent';
 import { DeliverySpecialistAgent, DeliverySpecialistInput, DeliverySpecialistOutput } from '../specialists/delivery-specialist-agent';
 import { AgentResponseUtils, AgentErrorCodes } from '../types/base-agent-types';
+import { DEFAULT_RETRY_POLICY, QUALITY_SCORE_THRESHOLD } from '../../shared/constants';
+import { executeWithRetry } from './retry-wrapper';
+import { WorkflowExecutionInput as BaseWorkflowExecutionInput, WorkflowExecutionOutput as BaseWorkflowExecutionOutput, HandoffExecution as BaseHandoffExecution } from './handoff-types';
+import { calculateOverallConfidence, calculateHandoffAnalytics } from './handoff-analytics';
+import { generateTraceId } from '../utils/tracing-utils';
+
+// Helper function for delays
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Main workflow input/output types
 export interface WorkflowExecutionInput {
@@ -109,11 +117,7 @@ export class AgentHandoffsCoordinator {
   private deliveryAgent: DeliverySpecialistAgent;
   
   private executionHistory: Map<string, HandoffExecution[]> = new Map();
-  private defaultRetryPolicy = {
-    max_retries: 2,
-    retry_delay_ms: 1000,
-    retry_on_failure: true
-  };
+  private defaultRetryPolicy = DEFAULT_RETRY_POLICY;
 
   constructor() {
     // Initialize all specialized agents
@@ -146,11 +150,10 @@ export class AgentHandoffsCoordinator {
     let currentHandoffData = input.handoff_context || {};
 
     try {
-      return await withTrace(`WorkflowExecution-${input.workflow_id}`, async () => {
         // Stage 1: Content Specialist with retry
         if (!this.shouldSkipAgent('content', input.execution_config?.skip_agents)) {
           console.log('📝 Executing Content Specialist...');
-          const contentResult = await this.executeWithRetry(
+          const contentResult = await executeWithRetry(
             () => this.executeContentSpecialist(input, currentHandoffData, executionHistory),
             2,
             "Content Specialist"
@@ -184,7 +187,7 @@ export class AgentHandoffsCoordinator {
         // Stage 2: Design Specialist with retry
         if (!this.shouldSkipAgent('design', input.execution_config?.skip_agents)) {
           console.log('🎨 Executing Design Specialist...');
-          const designResult = await this.executeWithRetry(
+          const designResult = await executeWithRetry(
             () => this.executeDesignSpecialist(input, currentHandoffData, executionHistory),
             2,
             "Design Specialist"
@@ -201,7 +204,7 @@ export class AgentHandoffsCoordinator {
         // Stage 3: Quality Specialist with retry
         if (!this.shouldSkipAgent('quality', input.execution_config?.skip_agents)) {
           console.log('🔍 Executing Quality Specialist...');
-          const qualityResult = await this.executeWithRetry(
+          const qualityResult = await executeWithRetry(
             () => this.executeQualitySpecialist(input, currentHandoffData, executionHistory),
             2,
             "Quality Specialist"
@@ -231,7 +234,7 @@ export class AgentHandoffsCoordinator {
         // Stage 4: Delivery Specialist with retry
         if (!this.shouldSkipAgent('delivery', input.execution_config?.skip_agents)) {
           console.log('🚀 Executing Delivery Specialist...');
-          const deliveryResult = await this.executeWithRetry(
+          const deliveryResult = await executeWithRetry(
             () => this.executeDeliverySpecialist(input, currentHandoffData, executionHistory),
             2,
             "Delivery Specialist"
@@ -253,8 +256,7 @@ export class AgentHandoffsCoordinator {
         });
         
         return finalOutput;
-      });
-      
+        
     } catch (error) {
       console.error(`❌ Multi-agent workflow failed: ${input.workflow_id}`, error);
       
@@ -357,7 +359,7 @@ export class AgentHandoffsCoordinator {
         
         if (execution.retry_count <= retryPolicy.max_retries && retryPolicy.retry_on_failure) {
           console.log(`🔄 Retrying Content Specialist (attempt ${execution.retry_count}/${retryPolicy.max_retries})`);
-          await this.delay(retryPolicy.retry_delay_ms);
+          await delay(retryPolicy.retry_delay_ms);
         } else {
           execution.end_time = Date.now();
           throw error;
@@ -446,7 +448,7 @@ export class AgentHandoffsCoordinator {
         
         if (execution.retry_count <= retryPolicy.max_retries && retryPolicy.retry_on_failure) {
           console.log(`🔄 Retrying Design Specialist (attempt ${execution.retry_count}/${retryPolicy.max_retries})`);
-          await this.delay(retryPolicy.retry_delay_ms);
+          await delay(retryPolicy.retry_delay_ms);
         } else {
           execution.end_time = Date.now();
           throw error;
@@ -557,7 +559,7 @@ export class AgentHandoffsCoordinator {
         
         if (execution.retry_count <= retryPolicy.max_retries && retryPolicy.retry_on_failure) {
           console.log(`🔄 Retrying Quality Specialist (attempt ${execution.retry_count}/${retryPolicy.max_retries})`);
-          await this.delay(retryPolicy.retry_delay_ms);
+          await delay(retryPolicy.retry_delay_ms);
         } else {
           execution.end_time = Date.now();
           throw error;
@@ -595,7 +597,7 @@ export class AgentHandoffsCoordinator {
         html_output: emailPackage?.html_output || '',
         mjml_source: emailPackage?.mjml_source,
         assets_used: emailPackage?.assets_used || [],
-        quality_score: qualityData?.quality_report?.overall_score || 85,
+        quality_score: qualityData?.quality_report?.overall_score || QUALITY_SCORE_THRESHOLD,
         compliance_status: qualityData?.compliance_status || { overall_compliance: 'pass' }
       },
       deployment_config: {
@@ -647,7 +649,7 @@ export class AgentHandoffsCoordinator {
         
         if (execution.retry_count <= retryPolicy.max_retries && retryPolicy.retry_on_failure) {
           console.log(`🔄 Retrying Delivery Specialist (attempt ${execution.retry_count}/${retryPolicy.max_retries})`);
-          await this.delay(retryPolicy.retry_delay_ms);
+          await delay(retryPolicy.retry_delay_ms);
         } else {
           execution.end_time = Date.now();
           throw error;
@@ -708,7 +710,7 @@ export class AgentHandoffsCoordinator {
     const executedAgents = executionHistory.map(exec => exec.agent_id);
     
     // Calculate overall metrics
-    const overallConfidence = this.calculateOverallConfidence(agentResults);
+    const overallConfidence = calculateOverallConfidence(agentResults);
     const qualityScore = agentResults.quality_specialist?.quality_report?.overall_score || 0;
     const issuesFound = agentResults.quality_specialist?.quality_report?.issues_found?.length || 0;
     const issuesResolved = agentResults.quality_specialist?.analytics?.fixes_applied || 0;
@@ -717,7 +719,7 @@ export class AgentHandoffsCoordinator {
     const finalArtifacts = this.extractFinalArtifacts(agentResults);
     
     // Calculate handoff analytics
-    const handoffAnalytics = this.calculateHandoffAnalytics(executionHistory);
+    const handoffAnalytics = calculateHandoffAnalytics(executionHistory);
     
     return {
       success,
@@ -738,27 +740,6 @@ export class AgentHandoffsCoordinator {
     };
   }
 
-  private calculateOverallConfidence(agentResults: any): number {
-    const confidenceScores = [];
-    
-    if (agentResults.content_specialist?.analytics?.confidence_score) {
-      confidenceScores.push(agentResults.content_specialist.analytics.confidence_score);
-    }
-    if (agentResults.design_specialist?.analytics?.confidence_score) {
-      confidenceScores.push(agentResults.design_specialist.analytics.confidence_score);
-    }
-    if (agentResults.quality_specialist?.analytics?.confidence_score) {
-      confidenceScores.push(agentResults.quality_specialist.analytics.confidence_score);
-    }
-    if (agentResults.delivery_specialist?.analytics?.agent_efficiency) {
-      confidenceScores.push(agentResults.delivery_specialist.analytics.agent_efficiency);
-    }
-    
-    return confidenceScores.length > 0 ? 
-      Math.round(confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length) : 
-      0;
-  }
-
   private extractFinalArtifacts(agentResults: any): any {
     const deliveryArtifacts = agentResults.delivery_specialist?.delivery_artifacts || {};
     const designArtifacts = agentResults.design_specialist?.design_artifacts || {};
@@ -776,45 +757,6 @@ export class AgentHandoffsCoordinator {
         quality_score: qualityReport?.overall_score || 0
       }
     };
-  }
-
-  private calculateHandoffAnalytics(executionHistory: HandoffExecution[]): any {
-    const completedHandoffs = executionHistory.filter(exec => exec.end_time);
-    const handoffTimes = completedHandoffs.map(exec => exec.end_time! - exec.start_time);
-    
-    return {
-      handoff_count: completedHandoffs.length,
-      average_handoff_time: handoffTimes.length > 0 ? 
-        Math.round(handoffTimes.reduce((sum, time) => sum + time, 0) / handoffTimes.length) : 0,
-      data_transfer_size: 0, // Would need to calculate actual data sizes
-      workflow_efficiency: this.calculateWorkflowEfficiency(executionHistory),
-      bottlenecks_detected: this.detectBottlenecks(executionHistory)
-    };
-  }
-
-  private calculateWorkflowEfficiency(executionHistory: HandoffExecution[]): number {
-    const successRate = executionHistory.filter(exec => exec.success).length / executionHistory.length;
-    const retryPenalty = executionHistory.reduce((total, exec) => total + exec.retry_count, 0) * 0.1;
-    
-    return Math.max(0, Math.round((successRate - retryPenalty) * 100));
-  }
-
-  private detectBottlenecks(executionHistory: HandoffExecution[]): string[] {
-    const bottlenecks: string[] = [];
-    const avgTime = executionHistory.reduce((sum, exec) => 
-      sum + (exec.end_time ? exec.end_time - exec.start_time : 0), 0) / executionHistory.length;
-    
-    executionHistory.forEach(exec => {
-      const execTime = exec.end_time ? exec.end_time - exec.start_time : 0;
-      if (execTime > avgTime * 1.5) {
-        bottlenecks.push(`${exec.agent_id} (${execTime}ms)`);
-      }
-      if (exec.retry_count > 1) {
-        bottlenecks.push(`${exec.agent_id} retries (${exec.retry_count})`);
-      }
-    });
-    
-    return bottlenecks;
   }
 
   private generateWorkflowRecommendations(agentResults: any, success: boolean): any {
@@ -860,38 +802,6 @@ export class AgentHandoffsCoordinator {
         ]
       };
     }
-  }
-
-  /**
-   * Execute with retry logic and exponential backoff
-   */
-  private async executeWithRetry<T>(
-    operation: () => Promise<T>, 
-    maxRetries: number = 2,
-    context: string = 'operation'
-  ): Promise<T> {
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await operation();
-      } catch (error) {
-        const isLastAttempt = attempt === maxRetries;
-        
-        if (isLastAttempt) {
-          console.error(`${context} failed after ${maxRetries + 1} attempts:`, error);
-          throw error;
-        }
-        
-        const delay = Math.min(1000 * Math.pow(2, attempt), 10000); // Max 10s delay
-        console.warn(`${context} failed on attempt ${attempt + 1}, retrying in ${delay}ms:`, error);
-        await this.delay(delay);
-      }
-    }
-    
-    throw new Error(`Unexpected error in executeWithRetry for ${context}`);
-  }
-
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**

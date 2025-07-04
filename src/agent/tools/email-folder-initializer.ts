@@ -108,14 +108,14 @@ export async function initializeEmailFolder(params: InitializeFolderParams): Pro
           folder_format: traceId ? 'trace-based' : 'random-based'
         }
       },
-      metadata: {
-        tool: 'initialize_email_folder',
-        topic: params.topic,
-        campaign_type: params.campaign_type || 'promotional',
-        timestamp: new Date().toISOString(),
-        trace_id: traceId,
-        trace_source: traceSource
-      }
+      // metadata: {
+      //   tool: 'initialize_email_folder',
+      //   topic: params.topic,
+      //   campaign_type: params.campaign_type || 'promotional',
+      //   timestamp: new Date().toISOString(),
+      //   trace_id: traceId,
+      //   trace_source: traceSource
+      // }
     };
 
   } catch (error) {
@@ -163,11 +163,11 @@ export async function loadEmailFolder(params: { campaignId: string }): Promise<T
         current_metadata: metadata,
         structure_loaded: true
       },
-      metadata: {
-        tool: 'load_email_folder',
-        campaignId: params.campaignId,
-        timestamp: new Date().toISOString()
-      }
+      // metadata: {
+      //   tool: 'load_email_folder',
+      //   campaignId: params.campaignId,
+      //   timestamp: new Date().toISOString()
+      // }
     };
 
   } catch (error) {

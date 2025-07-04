@@ -2,6 +2,7 @@ import { OpenAI } from 'openai';
 import { Agent, run } from '@openai/agents';
 import { logger } from './logger';
 import { getConfig } from './config';
+import { createAgentRunConfig } from '../utils/tracing-utils';
 
 const cfg = getConfig();
 
@@ -53,12 +54,7 @@ export class OpenAIClient {
         const specializedAgent = new Agent({
           name: 'SpecializedAgent',
           instructions: typeof systemMessage === 'string' ? systemMessage : 'You are a helpful assistant.',
-          model: params.model || 'gpt-4o-mini',
-          settings: {
-            temperature: params.temperature,
-            maxTokens: params.max_tokens,
-            topP: params.top_p
-          }
+          model: (params as any).model || 'gpt-4o-mini'
         });
         
         result = await run(specializedAgent, userMessages);

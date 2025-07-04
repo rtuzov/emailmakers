@@ -155,12 +155,12 @@ export async function generateScreenshots(params: ScreenshotParams): Promise<Too
     return {
       success: true,
       data: result,
-      metadata: {
-        devices_processed: params.devices,
-        campaign_id: params.campaign_id,
-        generation_time: generationTime,
-        timestamp: new Date().toISOString()
-      }
+      // metadata: {
+      //   devices_processed: params.devices,
+      //   campaign_id: params.campaign_id,
+      //   generation_time: generationTime,
+      //   timestamp: new Date().toISOString()
+      // }
     };
     
   } catch (error) {

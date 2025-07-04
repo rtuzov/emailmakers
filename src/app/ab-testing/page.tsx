@@ -66,7 +66,8 @@ export default function ABTestingPage() {
       const response = await fetch('/api/ab-testing?action=summary');
       const result = await response.json();
       
-      if (result.success) {
+      // Always show mock data when API is disabled or not working
+      if (result.success || result.disabled) {
         // Generate mock data for now since API is disabled
         const mockData: ABTestingData = {
           tests: [
@@ -167,21 +168,59 @@ export default function ABTestingPage() {
           ]
         };
         setAbTestingData(mockData);
-        setError(null);
+        // Set appropriate message for disabled state
+        if (result.disabled) {
+          setError('A/B testing framework is currently disabled');
+        } else {
+          setError(null);
+        }
       } else {
-        // Handle disabled API gracefully
-        const fallbackData: ABTestingData = {
-          tests: [],
+        // Handle other API errors - still show mock data for interface testing
+        const mockData: ABTestingData = {
+          tests: [
+            {
+              id: 'demo-test',
+              name: 'Demo A/B Test',
+              description: 'Example test for interface demonstration',
+              status: 'active',
+              variants: [
+                {
+                  id: 'variant-a',
+                  name: 'Variant A',
+                  weight: 0.5,
+                  config: { type: 'demo' },
+                  metrics: { impressions: 1000, conversions: 100, conversionRate: 10.0 }
+                }
+              ],
+              metrics: {
+                impressions: 1000,
+                conversions: 100,
+                conversionRate: 10.0,
+                clickThroughRate: 15.0,
+                openRate: 25.0
+              },
+              startDate: '2025-07-01T10:00:00Z',
+              confidenceLevel: 85
+            }
+          ],
           summary: {
-            totalTests: 0,
-            activeTests: 0,
-            totalImpressions: 0,
-            totalConversions: 0,
-            averageConversionRate: 0
+            totalTests: 1,
+            activeTests: 1,
+            totalImpressions: 1000,
+            totalConversions: 100,
+            averageConversionRate: 10.0
           },
-          recommendations: []
+          recommendations: [
+            {
+              id: 'demo-rec',
+              title: 'Demo Recommendation',
+              description: 'This is a demonstration of the A/B testing interface',
+              priority: 'medium',
+              category: 'demo'
+            }
+          ]
         };
-        setAbTestingData(fallbackData);
+        setAbTestingData(mockData);
         setError('A/B testing framework is currently disabled');
       }
     } catch (err) {

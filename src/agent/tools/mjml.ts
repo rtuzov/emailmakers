@@ -1,13 +1,23 @@
 // Import only what we need to break circular dependency
 import { handleToolErrorUnified } from '../core/error-orchestrator';
 import { logger } from '../core/logger';
+import { recordToolUsage, tracedAsync } from '../utils/tracing-utils';
 
-// Define ToolResult locally to avoid circular import
+// Define types locally to avoid circular import
 interface ToolResult {
   success: boolean;
   data?: any;
   error?: string;
   metadata?: Record<string, any>;
+}
+
+interface ContentInfo {
+  subject: string;
+  preheader: string;
+  body: string;
+  cta: string;
+  language: string;
+  tone: string;
 }
 
 // Local error handling function
@@ -52,27 +62,32 @@ interface MjmlResult {
  * Render email using MJML template with content and assets
  */
 export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
-  try {
-    console.log('T4: Rendering MJML template');
-    console.log('🔍 T4: Input params validation:', {
-      hasContent: !!params.content,
-      hasAssets: !!params.assets,
-      hasEmailFolder: !!params.emailFolder,
-      contentType: typeof params.content,
-      assetsType: typeof params.assets
-    });
+  return await tracedAsync({
+    toolName: 'render-mjml',
+    operation: 'compile',
+    params
+  }, async () => {
+    try {
+      console.log('T4: Rendering MJML template');
+      console.log('🔍 T4: Input params validation:', {
+        hasContent: !!params.content,
+        hasAssets: !!params.assets,
+        hasEmailFolder: !!params.emailFolder,
+        contentType: typeof params.content,
+        assetsType: typeof params.assets
+      });
 
-    // Add tracing
-    const { logger } = await import('../core/logger');
-    const traceId = `render_mjml_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    logger.startTrace(traceId, {
-      tool: 'render_mjml',
-      hasContent: !!params.content,
-      hasAssets: !!params.assets,
-      hasEmailFolder: !!params.emailFolder,
-      assetsCount: params.assets?.paths?.length || 0
-    });
+      // Add tracing
+      const { logger } = await import('../core/logger');
+      const traceId = `render_mjml_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      logger.startTrace(traceId, {
+        tool: 'render_mjml',
+        hasContent: !!params.content,
+        hasAssets: !!params.assets,
+        hasEmailFolder: !!params.emailFolder,
+        assetsCount: params.assets?.paths?.length || 0
+      });
 
     logger.addTraceStep(traceId, {
       tool: 'render_mjml',
@@ -299,14 +314,33 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       }
     };
 
+    // Record tracing statistics
+    recordToolUsage({
+      tool: 'render-mjml',
+      operation: 'compile',
+      duration: Date.now() - Date.now(), // Will be calculated by withToolTrace
+      success: true
+    });
+
     await logger.endTrace(traceId, finalResult);
     return finalResult;
 
-  } catch (error) {
-    // Error will be automatically traced by OpenAI Agents SDK
-    console.error('❌ MJML rendering failed:', error);
-    return handleToolError('render_mjml', error);
-  }
+    } catch (error) {
+      // Error will be automatically traced by OpenAI Agents SDK
+      console.error('❌ MJML rendering failed:', error);
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'render-mjml',
+        operation: 'compile',
+        duration: Date.now() - Date.now(), // Will be calculated by withToolTrace
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      
+      return handleToolError('render_mjml', error);
+    }
+  }).then(traceResult => traceResult.data || traceResult);
 }
 
 

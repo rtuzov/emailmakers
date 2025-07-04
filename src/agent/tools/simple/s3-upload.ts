@@ -5,8 +5,11 @@
  * Заменяет часть функциональности delivery-manager
  */
 
+import { generateTraceId, tracedAsync } from '../../utils/tracing-utils';
+
 import { z } from 'zod';
 import { uploadToS3 } from '../upload';
+
 
 export const s3UploadSchema = z.object({
   file_path: z.string().describe('Local file path to upload'),
@@ -47,15 +50,20 @@ export interface S3UploadResult {
 }
 
 export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> {
-  const startTime = Date.now();
+  const traceId = generateTraceId();
   
-  try {
+  return await tracedAsync({
+    name: 's3_upload',
+    metadata: { trace_id: traceId }
+  }, async () => {
+    const startTime = Date.now();
     console.log('☁️ Uploading to S3:', {
       file_name: params.file_path,
       file_type: params.content_type,
       size_kb: Math.round(params.file_path.length / 1024)
     });
 
+    try {
     // Parse metadata JSON
     let parsedMetadata = {};
     try {
@@ -195,6 +203,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
       error: error instanceof Error ? error.message : 'Unknown S3 upload error'
     };
   }
+  });
 }
 
 function getContentType(fileType: string): string {

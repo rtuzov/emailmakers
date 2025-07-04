@@ -1,5 +1,5 @@
-import { Agent, run, tool, withTrace, generateTraceId, getCurrentTrace } from '@openai/agents';
 import { z } from 'zod';
+import { Agent, run, tool } from '@openai/agents';
 
 
 // Import consolidated tools
@@ -32,6 +32,26 @@ export type {
   ContentData,
   CampaignMetadata
 } from './types';
+
+import { buildSystemPrompt } from './prompt-builder';
+import { createAgentTools } from './tool-factory';
+import { DEFAULT_RETRY_POLICY, QUALITY_SCORE_THRESHOLD } from '../shared/constants';
+import { generateTraceId } from './utils/tracing-utils';
+
+// Simple request/response interfaces for runAgent demo helpers
+export interface AgentRequest {
+  topic: string;
+  destination?: string;
+  origin?: string;
+}
+
+export interface AgentResponse {
+  success: boolean;
+  result?: any;
+  error?: string;
+  timestamp: string;
+  executionTime?: number;
+}
 
 export class EmailGeneratorAgent {
   private agent: Agent;
@@ -81,7 +101,7 @@ export class EmailGeneratorAgent {
         maxTokens: 10000,        // Для больших рассылок без обрезок
         toolChoice: 'auto'       // Intelligent tool selection
       },
-      tools: this.createTools()  // Re-enable all 10 tools
+      tools: createAgentTools()  // tools now provided by tool-factory
     });
   }
 
@@ -90,186 +110,7 @@ export class EmailGeneratorAgent {
 
 
   private getSystemPrompt(): string {
-    return `You are the Email Campaign Multi-Agent Coordinator for Kupibilet, orchestrating specialized agents to create exceptional travel email campaigns.
-
-MISSION: Coordinate a team of specialist agents to transform any travel topic into a production-ready, cross-client compatible HTML email that exceeds quality standards and drives engagement.
-
-🎯 MULTI-AGENT WORKFLOW COORDINATION:
-
-Your role is to coordinate four specialist agents in this exact sequence:
-
-1. **CONTENT SPECIALIST** - Analyzes context, gathers pricing intelligence, generates compelling content
-   → Handoff: Rich content package with context insights and pricing data
-
-2. **DESIGN SPECIALIST** - Selects visual assets, applies brand guidelines, renders email design  
-   → Handoff: Complete email design with assets and MJML/HTML output
-
-3. **QUALITY SPECIALIST** - Validates standards compliance, tests cross-client compatibility, applies fixes
-   → Handoff: Quality-assured email package meeting all compliance standards
-
-4. **DELIVERY SPECIALIST** - Handles production deployment, visual testing, performance monitoring
-   → Final Output: Production-ready email with deployment confirmation
-
-🔄 HANDOFF WORKFLOW RULES:
-
-**TO CONTENT SPECIALIST:**
-- Always start here for context analysis and content generation
-- Provide clear campaign brief with topic, type, audience, and route details
-- Expect context intelligence, pricing data, and content package in return
-
-**TO DESIGN SPECIALIST:**  
-- Hand off rich content package from Content Specialist
-- Expect complete email design with brand-compliant assets and HTML output
-- Validate design meets Kupibilet brand guidelines before proceeding
-
-**TO QUALITY SPECIALIST:**
-- Hand off complete email package from Design Specialist  
-- Expect comprehensive quality validation and compliance certification
-- Do not proceed to delivery unless quality standards are met (85%+ score)
-
-**TO DELIVERY SPECIALIST:**
-- Hand off quality-assured package from Quality Specialist
-- Expect production deployment with monitoring and performance metrics
-- Workflow complete when deployment confirmed successful
-
-🛡️ QUALITY GATES & STANDARDS:
-
-**Content Quality Gate:**
-- Russian language accuracy and travel context relevance
-- Pricing intelligence integration and market positioning
-- Audience-appropriate tone and messaging
-
-**Design Quality Gate:**  
-- Kupibilet brand compliance (colors: #4BFF7E, #1DA857, #2C3959)
-- Emotional asset selection (rabbit mascots with appropriate emotions)
-- Mobile-responsive design and accessibility standards
-- MJML validation and email client compatibility
-- Structured response format with complete MJML/HTML output
-
-**Technical Quality Gate:**
-- Cross-client compatibility (Gmail, Outlook, Apple Mail, Yandex Mail)
-- WCAG AA accessibility compliance
-- HTML validation and email standards compliance
-- Performance optimization (<100KB, <2s load time)
-
-📧 MJML RENDERING STANDARDS (CRITICAL):
-
-**For Design Specialist Agent:**
-When coordinating MJML rendering, ensure these standards are met:
-
-1. **MJML Structure Validation:**
-   - Complete MJML syntax with proper <mjml>, <mj-head>, <mj-body> structure
-   - Valid component nesting and attribute usage
-   - No truncated or malformed MJML code
-
-2. **Response Format Requirements:**
-   - Structured StandardMjmlResponse format with all required fields
-   - Complete MJML source in mjml.source field
-   - Full HTML output in html.content field
-   - Validation results with specific error details
-   - Performance metrics (file size, compatibility scores)
-
-3. **Quality Validation:**
-   - MJML compilation must succeed without errors
-   - HTML output must be email-client compatible
-   - File size under 100KB for deliverability
-   - Accessibility compliance (WCAG AA)
-   - Email-safe CSS (inline styles, table layouts)
-
-4. **Error Handling Protocol:**
-   - Use mjml_validator tool for syntax validation
-   - Provide specific error messages with fix suggestions
-   - Retry with corrected MJML if compilation fails
-   - Never proceed with invalid or incomplete MJML
-
-**Deployment Quality Gate:**
-- Production-ready package validation
-- Visual regression testing confirmation  
-- Monitoring and analytics setup completion
-
-⚠️ COORDINATION RESPONSIBILITIES:
-
-1. **Workflow Orchestration:** Manage agent handoffs and ensure proper data flow
-2. **Quality Assurance:** Enforce quality gates at each handoff point
-3. **Error Recovery:** Handle agent failures with retry logic and fallback strategies  
-4. **Performance Monitoring:** Track overall workflow efficiency and success rates
-5. **Context Preservation:** Maintain campaign context throughout the multi-agent workflow
-
-🚫 WHAT YOU DON'T DO:
-- Technical tool execution (delegated to specialist agents)
-- Direct asset manipulation or content generation
-- Individual quality checks or validation processes
-- File uploads or deployment operations
-
-✅ SUCCESS CRITERIA:
-- All four specialists complete their tasks successfully
-- Quality gates pass at each handoff stage  
-- Final email meets all technical and brand standards
-- Production deployment confirmed with monitoring active
-
-Focus on coordination, not execution. Let the specialists handle their domains while you ensure seamless workflow orchestration.`;
-  }
-
-  private createTools() {
-    return [
-
-
-      // 🎨 Figma Asset Manager - Consolidated asset operations
-      tool({
-        name: 'figma_asset_manager', 
-        description: 'Figma Asset Manager - Unified asset management for all Figma operations including search, folder listing, sprite splitting, and identica selection. Uses LOCAL files only, no API calls. Replaces get_figma_assets, get_figma_folders_info, split_figma_sprite, and select_identica_creatives.',
-        parameters: figmaAssetManagerSchema,
-        execute: figmaAssetManager
-      }),
-
-      // 💰 Pricing Intelligence - Enhanced price analysis
-      tool({
-        name: 'pricing_intelligence',
-        description: 'Pricing Intelligence - Advanced price analysis with market insights, trend forecasting, route comparison, and intelligent recommendations. Enhanced version of get_prices with analytics and market intelligence.',
-        parameters: pricingIntelligenceSchema,
-        execute: pricingIntelligence
-      }),
-
-      // ✍️ Content Generator - Intelligent content creation
-      tool({
-        name: 'content_generator',
-        description: 'Content Generator - Intelligent content creation with context awareness, A/B testing variants, audience personalization, and optimization. Enhanced version of generate_copy with advanced features.',
-        parameters: contentGeneratorSchema,
-        execute: contentGenerator
-      }),
-
-      // 📧 Email Renderer - Unified rendering system
-      tool({
-        name: 'email_renderer',
-        description: 'Email Renderer - Unified email rendering with multiple engine support including MJML, React components, advanced systems, and seasonal components. Replaces render_mjml, render_component, advanced_component_system, and seasonal_component_system.',
-        parameters: emailRendererSchema,
-        execute: emailRenderer
-      }),
-
-      // 🔍 Quality Controller - Comprehensive QA system
-      tool({
-        name: 'quality_controller',
-        description: 'Quality Controller - Comprehensive email quality assurance including AI analysis, version comparison, patch application, rendering tests, and automated fixes. Replaces ai_quality_consultant, diff_html, patch_html, and render_test.',
-        parameters: qualityControllerSchema,
-        execute: qualityController
-      }),
-
-      // 🚀 Delivery Manager - Unified deployment system
-      tool({
-        name: 'delivery_manager',
-        description: 'Delivery Manager - Unified email campaign delivery and deployment including asset upload, screenshot generation, visual testing, campaign deployment, and CDN distribution. Replaces upload_s3, generate_screenshots, and percy_snap.',
-        parameters: deliveryManagerSchema,
-        execute: deliveryManager
-      }),
-
-      // 🌍 Context Provider - Enhanced contextual intelligence
-      tool({
-        name: 'context_provider',
-        description: 'Context Provider - Comprehensive contextual intelligence including temporal, seasonal, cultural, marketing, and travel context for email campaigns. Enhanced version of get_current_date with multi-dimensional context analysis.',
-        parameters: contextProviderSchema,
-        execute: contextProvider
-      })
-    ];
+    return buildSystemPrompt();
   }
 
   /**
@@ -313,13 +154,9 @@ Focus on coordination, not execution. Let the specialists handle their domains w
           origin: request.origin
         },
         execution_config: {
-          retry_policy: {
-            max_retries: 2,
-            retry_delay_ms: 1000,
-            retry_on_failure: true
-          },
+          retry_policy: DEFAULT_RETRY_POLICY,
           quality_requirements: {
-            minimum_score: 85,
+            minimum_score: QUALITY_SCORE_THRESHOLD,
             require_compliance: true,
             auto_fix_issues: true
           },
@@ -392,7 +229,7 @@ Focus on coordination, not execution. Let the specialists handle their domains w
     // Extract results from agent outputs
     const htmlOutput = workflowResult.final_artifacts.html_output || '';
     const qualityScore = workflowResult.execution_summary.quality_score;
-    const hasQualityPass = qualityScore >= 85;
+    const hasQualityPass = qualityScore >= QUALITY_SCORE_THRESHOLD;
 
     return {
       status: 'success',
@@ -471,9 +308,17 @@ Focus on coordination, not execution. Let the specialists handle their domains w
       console.log('🧠 Model:', this.agent.model);
       console.log('🛠️ Tools count:', this.agent.tools.length);
       
-      const result = await run(this.agent, inputMessage, {
-        maxTurns: 20 // Увеличили лимит для более сложных задач
-      });
+      const runConfig = {
+        workflowName: "EmailGeneration",
+        traceMetadata: {
+          operation: "email_generation",
+          component_type: "agent",
+          topic: inputMessage.substring(0, 50)
+        },
+        maxTurns: 20
+      };
+      
+      const result = await run(this.agent, inputMessage);
       
       console.log('✅ OpenAI Agent execution completed');
       console.log('📊 Response received from OpenAI Agents SDK');
@@ -1083,68 +928,90 @@ export const emailGeneratorAgentSpeed = new EmailGeneratorAgent(true, 'speed');
 export const emailGeneratorAgentDebug = new EmailGeneratorAgent(true, 'debug');
 export const emailGeneratorAgentBasic = new EmailGeneratorAgent(false);
 
-// Export the runAgent function with UltraThink support
-export async function runAgent(request: {
-  topic: string;
-  destination?: string;
-  origin?: string;
-  options?: {
-    use_real_apis?: boolean;
-    mock_mode?: boolean;
-    use_ultrathink?: boolean;
-    ultrathink_mode?: 'speed' | 'quality' | 'debug';
-  };
-}): Promise<{
-  success: boolean;
-  data?: any;
-  error?: string;
-  apis_used?: string[];
-  ultrathink_used?: boolean;
-  analytics?: any;
-}> {
+// Export the runAgent function with simplified multi-agent workflow
+export async function runAgent(request: AgentRequest): Promise<AgentResponse> {
+  const startTime = Date.now();
+  
   try {
-    // Choose agent based on options
-    const useUltraThink = request.options?.use_ultrathink ?? false;
-    const ultraThinkMode = request.options?.ultrathink_mode ?? 'quality';
+    console.log('🤖 Starting multi-handoff agent execution:', request);
     
-    const agent = new EmailGeneratorAgent(useUltraThink, ultraThinkMode);
+    // Use the new multi-handoff agent approach
+    const { generateKupibiletEmail } = await import('./multi-handoff-agent');
+    const result = await generateKupibiletEmail(request.topic);
     
-    const emailRequest: EmailGenerationRequest = {
-      topic: request.topic,
-      origin: request.origin || 'MOW',
-      destination: request.destination || 'CDG',
-      campaign_type: 'promotional'
-    };
-
-    const result = await agent.generateEmail(emailRequest);
+    const executionTime = Date.now() - startTime;
+    console.log(`✅ Multi-handoff agent execution completed successfully in ${executionTime}ms`);
     
-    // Get UltraThink analytics if available
-    let analytics = undefined;
-    if (useUltraThink && (agent as any).ultraThink) {
-      analytics = (agent as any).ultraThink.getExecutionAnalytics();
-    }
-    
-    if (result.status === 'success') {
       return {
         success: true,
-        data: result,
-        apis_used: ['openai', 'figma', 'kupibilet', 'mjml'],
-        ultrathink_used: useUltraThink,
-        analytics
-      };
-    } else {
-      return {
-        success: false,
-        error: result.error_message || 'Email generation failed',
-        ultrathink_used: useUltraThink,
-        analytics
-      };
-    }
+      result: result, // Return the full result from multi-handoff agent
+      timestamp: new Date().toISOString(),
+      executionTime: executionTime
+    };
   } catch (error) {
+    const executionTime = Date.now() - startTime;
+    console.error('❌ Multi-handoff agent execution failed:', error);
+    
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
-      ultrathink_used: request.options?.use_ultrathink ?? true
+      timestamp: new Date().toISOString(),
+      executionTime: executionTime
     };
+  }
+}
+
+/**
+ * ✅ SIMPLE AGENT FUNCTION FOR OFFICIAL SDK USAGE
+ * Creates a simple Agent instance using official OpenAI Agents SDK
+ * This function addresses the "getAllTools is not a function" error
+ */
+export function createEmailGeneratorAgent(): Agent {
+  // Validate API key
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is required for OpenAI Agent');
+  }
+
+  console.log('🤖 Creating simple OpenAI Agent with official SDK...');
+
+  return new Agent({
+    name: 'EmailGenerator',
+    instructions: 'You are an expert email marketing specialist focused on travel and tourism. Generate engaging, conversion-optimized email content for travel campaigns.',
+    model: 'gpt-4o-mini',
+    modelSettings: {
+      temperature: 0.7,
+      maxTokens: 4000,
+      toolChoice: 'auto'
+    },
+    tools: createAgentTools()
+  });
+}
+
+/**
+ * ✅ SIMPLE RUN FUNCTION USING OFFICIAL SDK
+ * Uses the official run() function from OpenAI Agents SDK
+ */
+export async function runAgentSimple(input: {
+  topic: string;
+  destination?: string;
+  origin?: string;
+}): Promise<any> {
+  try {
+    console.log('🚀 Running agent with official SDK run() function...');
+    
+    const agent = createEmailGeneratorAgent();
+    const prompt = `Generate an email campaign for: ${input.topic}. Destination: ${input.destination || 'Paris'}. Origin: ${input.origin || 'Moscow'}.`;
+    
+    console.log('📝 Prompt:', prompt);
+    
+    // ✅ USE OFFICIAL run() API FROM SDK
+    const result = await run(agent, prompt);
+    
+    console.log('✅ Agent run completed successfully');
+    return result;
+    
+  } catch (error) {
+    console.error('❌ Agent run failed:', error);
+    throw error;
   }
 } 

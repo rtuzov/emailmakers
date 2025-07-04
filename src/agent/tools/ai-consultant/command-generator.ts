@@ -12,6 +12,7 @@ import {
   AIConsultantConfig,
   AIConsultantError
 } from './types';
+import { BRAND_COLORS } from '../../../shared/constants';
 
 export class CommandGenerator {
   private config: AIConsultantConfig;
@@ -200,7 +201,7 @@ export class CommandGenerator {
     // For color scheme optimization
     if (params.target === 'color_scheme') {
       optimized.brand_colors = {
-        primary: '#4BFF7E',
+        primary: BRAND_COLORS.PRIMARY,
         secondary: '#FF6B35',
         accent: '#E6F3FF',
         neutral: '#F5F5F5',

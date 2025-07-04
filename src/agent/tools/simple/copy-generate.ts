@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod';
-import { generateCopy } from '../copy';
+// generateCopy removed - now using consolidated content generator
 
 export const copyGenerateSchema = z.object({
   copy_type: z.enum(['subject', 'preheader', 'cta', 'headline', 'description']).describe('Type of copy to generate'),
@@ -87,7 +87,12 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
     };
 
     // Generate copy using existing tool
-    const result = await generateCopy(copyParams);
+    // generateCopy removed - using mock data for now
+  const result = { 
+    success: false, 
+    error: 'generateCopy tool removed - use consolidated content generator',
+    data: null
+  };
     
     if (!result.success) {
       return {
@@ -115,7 +120,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
     }
 
     // Extract copy based on type
-    const generatedText = extractCopyByType(result.data, params.copy_type);
+    const generatedText = extractCopyByType(result.data || {}, params.copy_type);
     
     // Generate alternatives if possible
     const alternatives = generateAlternatives(generatedText, params);

@@ -158,7 +158,6 @@ const RUSSIAN_CITY_TO_IATA: Record<string, string> = {
   'рига': 'RIX',
   'таллин': 'TLL',
   'вильнюс': 'VNO',
-  'варшава': 'WAW',
   'краков': 'KRK',
   'гданьск': 'GDN',
   'будапешт': 'BUD',

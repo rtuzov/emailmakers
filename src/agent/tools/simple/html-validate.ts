@@ -6,6 +6,7 @@
  */
 
 import { z } from 'zod';
+import { recordToolUsage } from '../../utils/tracing-utils';
 import { aiQualityConsultant } from '../ai-quality-consultant';
 
 export const htmlValidateSchema = z.object({
@@ -133,7 +134,7 @@ export async function htmlValidate(params: HtmlValidateParams): Promise<HtmlVali
     const validationTime = Date.now() - startTime;
     const htmlSizeKb = Math.round(params.html_content.length / 1024);
 
-    return {
+    const result = {
       success: true,
       validation_results: {
         overall_status: overallStatus,
@@ -150,34 +151,55 @@ export async function htmlValidate(params: HtmlValidateParams): Promise<HtmlVali
       }
     };
 
-  } catch (error) {
-    const validationTime = Date.now() - startTime;
-    console.error('❌ HTML validation failed:', error);
+    // Record tracing statistics
+    recordToolUsage({
+      tool: 'html-validate',
+      operation: 'validate',
+      duration: validationTime,
+      success: true
+    });
 
-    return {
-      success: false,
-      validation_results: {
-        overall_status: 'fail',
-        issues_found: [],
-        email_standards_check: {
-          doctype_valid: false,
-          table_based_layout: false,
-          inline_styles_ratio: 0,
-          image_alt_coverage: 0,
-          width_compliance: false
+    return result;
+
+    } catch (error) {
+      const validationTime = Date.now() - startTime;
+      console.error('❌ HTML validation failed:', error);
+
+      const errorResult = {
+        success: false,
+        validation_results: {
+          overall_status: 'fail' as 'fail',
+          issues_found: [],
+          email_standards_check: {
+            doctype_valid: false,
+            table_based_layout: false,
+            inline_styles_ratio: 0,
+            image_alt_coverage: 0,
+            width_compliance: false
+          },
+          client_compatibility: {}
         },
-        client_compatibility: {}
-      },
-      validation_metadata: {
-        validation_time: validationTime,
-        html_size_kb: 0,
-        total_issues: 0,
-        critical_issues: 0,
-        recommendations: ['Check validation parameters', 'Verify HTML content']
-      },
-      error: error instanceof Error ? error.message : 'Unknown validation error'
-    };
-  }
+        validation_metadata: {
+          validation_time: validationTime,
+          html_size_kb: 0,
+          total_issues: 0,
+          critical_issues: 0,
+          recommendations: ['Check validation parameters', 'Verify HTML content']
+        },
+        error: error instanceof Error ? error.message : 'Unknown validation error'
+      };
+
+      // Record error statistics
+      recordToolUsage({
+        tool: 'html-validate',
+        operation: 'validate',
+        duration: validationTime,
+        success: false,
+        error: errorResult.error
+      });
+
+      return errorResult;
+    }
 }
 
 function validateHtmlStructure(html: string): { issues: any[] } {

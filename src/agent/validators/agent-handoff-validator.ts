@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ValidationMonitor } from '../monitoring/validation-monitor';
+import { generateTraceId } from '../utils/tracing-utils';
 import {
   HandoffDataUnion,
   HandoffValidationResult,
@@ -671,17 +672,28 @@ export class HandoffValidator {
   private performDesignQualityChecks(data: DesignToQualityHandoffData): { isValid: boolean; errors: HandoffValidationError[] } {
     const errors: HandoffValidationError[] = [];
     
-    // Проверка размера HTML
-    const htmlSize = Buffer.byteLength(data.email_package.html_content, 'utf8');
-    if (htmlSize > AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024) {
+    // Проверка размера HTML с безопасной проверкой на undefined
+    if (!data.email_package?.html_content) {
       errors.push({
         field: 'email_package.html_content',
-        errorType: 'size_limit',
-        message: `HTML размер ${Math.round(htmlSize/1024)}KB превышает лимит ${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB`,
-        currentValue: htmlSize,
-        expectedValue: AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024,
+        errorType: 'missing',
+        message: `HTML контент отсутствует или пустой`,
+        currentValue: data.email_package?.html_content || null,
+        expectedValue: 'Строка длиной >100 символов',
         severity: 'critical'
       });
+    } else {
+      const htmlSize = Buffer.byteLength(data.email_package.html_content, 'utf8');
+      if (htmlSize > AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024) {
+        errors.push({
+          field: 'email_package.html_content',
+          errorType: 'size_limit',
+          message: `HTML размер ${Math.round(htmlSize/1024)}KB превышает лимит ${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB`,
+          currentValue: htmlSize,
+          expectedValue: AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024,
+          severity: 'critical'
+        });
+      }
     }
     
     return { isValid: errors.length === 0, errors };
@@ -724,10 +736,6 @@ export class HandoffValidator {
 
 export function createTimestamp(): string {
   return new Date().toISOString();
-}
-
-export function generateTraceId(): string {
-  return crypto.randomUUID();
 }
 
 export function calculateDataSize(data: any): number {

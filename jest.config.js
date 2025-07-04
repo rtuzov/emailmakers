@@ -24,15 +24,10 @@ module.exports = {
   // Enable experimental ES modules support
   preset: 'ts-jest/presets/default-esm',
   extensionsToTreatAsEsm: ['.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true
-    }
-  },
 
   // Transform ES modules from node_modules
   transformIgnorePatterns: [
-    'node_modules/(?!(@openai/agents|@openai/agents-core|zod|uuid)/)'
+    'node_modules/(?!(@openai/agents.*|zod|uuid)/)'
   ],
 
   // Test file patterns

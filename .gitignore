@@ -210,3 +210,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Large auto-generated files
+src/agent/**/comprehensive-analysis-report.html

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logger } from '@/agent/core/logger';
 import path from 'path';
 import fs from 'fs/promises';
 

@@ -14,6 +14,8 @@
  */
 
 import { z } from 'zod';
+import { executeToolWithTrace, recordToolUsage } from '../../utils/tracing-utils';
+
 import { getCurrentDate } from '../date';
 
 // ПРОСТАЯ СХЕМА ДЛЯ OPENAI СОВМЕСТИМОСТИ - БЕЗ ВЛОЖЕННЫХ ОБЪЕКТОВ
@@ -177,45 +179,76 @@ export async function contextProvider(params: ContextProviderParams): Promise<Co
   console.log(`🌍 Context Provider: Executing action "${params.action}"`);
   
   try {
-    switch (params.action) {
-      case 'get_current_context':
-        return await handleCurrentContext(params, startTime);
-        
-      case 'get_seasonal_context':
-        return await handleSeasonalContext(params, startTime);
-        
-      case 'get_cultural_context':
-        return await handleCulturalContext(params, startTime);
-        
-      case 'get_marketing_context':
-        return await handleMarketingContext(params, startTime);
-        
-      case 'get_travel_context':
-        return await handleTravelContext(params, startTime);
-        
-      case 'get_comprehensive_context':
-        return await handleComprehensiveContext(params, startTime);
-        
-      default:
-        throw new Error(`Unknown action: ${params.action}`);
+    let result: ContextProviderResult;
+      
+      switch (params.action) {
+        case 'get_current_context':
+          result = await handleCurrentContext(params, startTime);
+          break;
+          
+        case 'get_seasonal_context':
+          result = await handleSeasonalContext(params, startTime);
+          break;
+          
+        case 'get_cultural_context':
+          result = await handleCulturalContext(params, startTime);
+          break;
+          
+        case 'get_marketing_context':
+          result = await handleMarketingContext(params, startTime);
+          break;
+          
+        case 'get_travel_context':
+          result = await handleTravelContext(params, startTime);
+          break;
+          
+        case 'get_comprehensive_context':
+          result = await handleComprehensiveContext(params, startTime);
+          break;
+          
+        default:
+          throw new Error(`Unknown action: ${params.action}`);
+      }
+      
+      // Record tracing statistics
+      if (result.analytics) {
+        recordToolUsage({
+          tool: 'context-provider',
+          operation: params.action,
+          duration: result.analytics.execution_time,
+          success: result.success
+        });
+      }
+      
+      return result;
+    
+    } catch (error) {
+      console.error('❌ Context Provider error:', error);
+      
+      const errorResult = {
+        success: false,
+        action: params.action,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        analytics: params.include_analytics ? {
+          context_freshness: 0,
+          data_sources: 0,
+          confidence_score: 0,
+          execution_time: Date.now() - startTime,
+          cache_efficiency: 0
+        } : undefined
+      };
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'context-provider',
+        operation: params.action,
+        duration: Date.now() - startTime,
+        success: false,
+        error: errorResult.error
+      });
+      
+      return errorResult;
     }
-    
-  } catch (error) {
-    console.error('❌ Context Provider error:', error);
-    
-    return {
-      success: false,
-      action: params.action,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.include_analytics ? {
-        context_freshness: 0,
-        data_sources: 0,
-        confidence_score: 0,
-        execution_time: Date.now() - startTime,
-        cache_efficiency: 0
-      } : undefined
-    };
-  }
 }
 
 /**

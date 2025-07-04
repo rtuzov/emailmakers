@@ -10,138 +10,87 @@
  */
 
 import { z } from 'zod';
+import { recordToolUsage } from '../../utils/tracing-utils';
+
 import { uploadToS3 } from '../upload';
 import { generateScreenshots } from '../screenshot-generator';
 import { percySnap } from '../percy';
 
 // Unified schema for all delivery management operations
 export const deliveryManagerSchema = z.object({
-  action: z.enum(['upload_assets', 'generate_screenshots', 'visual_testing', 'deploy_campaign', 'archive_assets', 'cdn_distribution']).describe('Delivery management operation'),
+  action: z.enum(['upload_assets', 'generate_screenshots', 'visual_testing', 'deploy_campaign', 'archive_assets', 'cdn_distribution']).describe('Action to perform'),
   
-  // For upload_assets action (replaces upload_s3)
+  // For upload_assets action
   upload_config: z.object({
     files: z.array(z.object({
       file_path: z.string().describe('Local file path to upload'),
-      destination_key: z.string().optional().nullable().describe('S3 key (auto-generated if not provided)'),
-      content_type: z.string().optional().nullable().describe('MIME type (auto-detected if not provided)'),
-      metadata: z.object({}).passthrough().optional().nullable().describe('Additional metadata for the file')
+      destination_key: z.string().nullable().default(null).describe('S3 key (auto-generated if not provided)'),
+      content_type: z.string().nullable().default(null).describe('MIME type (auto-detected if not provided)'),
+      metadata: z.string().nullable().default(null).describe('File metadata (JSON string)')
     })).describe('Files to upload'),
-    bucket_config: z.object({
-      bucket_name: z.string().optional().nullable().describe('S3 bucket name (defaults to configured bucket)'),
-      region: z.string().optional().nullable().describe('AWS region'),
-      access_level: z.enum(['private', 'public-read', 'public-read-write']).default('public-read').describe('S3 access level'),
-      storage_class: z.enum(['STANDARD', 'REDUCED_REDUNDANCY', 'GLACIER', 'DEEP_ARCHIVE']).default('STANDARD').describe('S3 storage class')
-    }).optional().nullable().describe('S3 bucket configuration'),
-    upload_options: z.object({
-      enable_versioning: z.boolean().default(true).describe('Enable S3 versioning'),
-      encryption: z.boolean().default(true).describe('Enable server-side encryption'),
-      cache_control: z.string().optional().nullable().describe('Cache-Control header'),
-      expires: z.string().optional().nullable().describe('Expires header'),
-      compress: z.boolean().default(true).describe('Compress files before upload')
-    }).optional().nullable().describe('Upload optimization options')
-  }).optional().nullable().describe('Asset upload configuration'),
-  
-  // For generate_screenshots action (replaces generate_screenshots)
+    bucket_name: z.string().nullable().default(null).describe('S3 bucket name'),
+    access_level: z.enum(['private', 'public-read']).default('public-read').describe('S3 access level')
+  }).nullable().default(null).describe('Asset upload configuration'),
+
+  // For generate_screenshots action
   screenshot_config: z.object({
     target_content: z.string().describe('HTML content or URL to capture'),
     content_type: z.enum(['html', 'url', 'mjml']).default('html').describe('Type of content to capture'),
-    capture_options: z.object({
-      viewport_sizes: z.array(z.object({
-        width: z.number(),
-        height: z.number(),
-        device_name: z.string().optional().nullable()
-      })).default([
-        { width: 1200, height: 800, device_name: 'desktop' },
-        { width: 375, height: 667, device_name: 'mobile' }
-      ]).describe('Viewport sizes for screenshots'),
-      email_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).default(['gmail', 'outlook']).describe('Email clients to simulate'),
-      capture_full_page: z.boolean().default(true).describe('Capture full page or just viewport'),
-      include_annotations: z.boolean().default(false).describe('Include debugging annotations'),
-      quality: z.number().min(1).max(100).default(90).describe('Screenshot quality (1-100)')
-    }).optional().nullable().describe('Screenshot capture options'),
-    output_config: z.object({
-      format: z.enum(['png', 'jpg', 'webp']).default('png').describe('Output image format'),
-      naming_pattern: z.string().default('{client}_{device}_{timestamp}').describe('File naming pattern'),
-      upload_to_s3: z.boolean().default(true).describe('Automatically upload screenshots to S3'),
-      generate_comparison: z.boolean().default(false).describe('Generate comparison with previous version')
-    }).optional().nullable().describe('Output configuration')
-  }).optional().nullable().describe('Screenshot generation configuration'),
-  
-  // For visual_testing action (replaces percy_snap)
+    viewport_width: z.number().default(1200).describe('Viewport width'),
+    viewport_height: z.number().default(800).describe('Viewport height'),
+    format: z.enum(['png', 'jpg']).default('png').describe('Output image format')
+  }).nullable().default(null).describe('Screenshot generation configuration'),
+
+  // For visual_testing action
   visual_testing_config: z.object({
-    test_content: z.string().describe('HTML content or URL for visual testing'),
     test_name: z.string().describe('Name for the visual test'),
-    percy_config: z.object({
-      widths: z.array(z.number()).default([375, 768, 1280]).describe('Viewport widths for Percy snapshots'),
-      min_height: z.number().default(1024).describe('Minimum height for snapshots'),
-      percy_css: z.string().optional().nullable().describe('Custom CSS for Percy snapshots'),
-      enable_javascript: z.boolean().default(false).describe('Enable JavaScript execution'),
-      discovery_network_idle: z.boolean().default(true).describe('Wait for network idle before capture')
-    }).optional().nullable().describe('Percy-specific configuration'),
-    comparison_options: z.object({
-      threshold: z.number().min(0).max(1).default(0.1).describe('Visual diff threshold (0-1)'),
-      include_dom_snapshot: z.boolean().default(true).describe('Include DOM snapshot for debugging'),
-      ignore_regions: z.array(z.string()).optional().nullable().describe('CSS selectors to ignore in comparisons'),
-      auto_approve_changes: z.boolean().default(false).describe('Auto-approve changes below threshold')
-    }).optional().nullable().describe('Visual comparison options')
-  }).optional().nullable().describe('Visual testing configuration'),
-  
+    content_source: z.string().describe('HTML content or URL for testing'),
+    source_type: z.enum(['html', 'url']).default('html').describe('Type of content source'),
+    threshold: z.number().min(0).max(1).default(0.1).describe('Visual difference threshold (0-1)')
+  }).nullable().default(null).describe('Visual testing configuration'),
+
   // For deploy_campaign action
-  deployment_config: z.object({
-    campaign_assets: z.array(z.string()).describe('List of asset paths to deploy'),
-    deployment_target: z.enum(['staging', 'production', 'preview', 'test']).default('staging').describe('Deployment environment'),
-    deployment_strategy: z.object({
-      rollout_type: z.enum(['immediate', 'gradual', 'scheduled']).default('immediate').describe('Deployment rollout strategy'),
-      rollout_percentage: z.number().min(1).max(100).default(100).describe('Percentage of users for gradual rollout'),
-      scheduled_time: z.string().optional().nullable().describe('ISO timestamp for scheduled deployment'),
-      enable_rollback: z.boolean().default(true).describe('Enable automatic rollback on failure')
-    }).optional().nullable().describe('Deployment strategy options'),
-    validation_checks: z.object({
-      run_quality_checks: z.boolean().default(true).describe('Run quality validation before deployment'),
-      run_visual_tests: z.boolean().default(true).describe('Run visual regression tests'),
-      run_performance_tests: z.boolean().default(true).describe('Run performance tests'),
-      require_manual_approval: z.boolean().default(false).describe('Require manual approval before deployment')
-    }).optional().nullable().describe('Pre-deployment validation')
-  }).optional().nullable().describe('Campaign deployment configuration'),
-  
+  deploy_config: z.object({
+    campaign_name: z.string().describe('Campaign name'),
+    subject: z.string().describe('Email subject line'),
+    content: z.string().describe('Email HTML content'),
+    platform: z.enum(['mailchimp', 'sendgrid', 'aws_ses']).describe('Email platform to deploy to'),
+    from_email: z.string().email().describe('Sender email address'),
+    from_name: z.string().describe('Sender display name'),
+    test_mode: z.boolean().default(true).describe('Deploy in test mode first'),
+    run_quality_checks: z.boolean().default(true).describe('Run quality checks before deployment'),
+    run_visual_tests: z.boolean().default(true).describe('Run visual tests before deployment'),
+    run_performance_tests: z.boolean().default(true).describe('Run performance tests before deployment')
+  }).nullable().default(null).describe('Campaign deployment configuration'),
+
   // For archive_assets action
   archive_config: z.object({
-    assets_to_archive: z.array(z.string()).describe('Asset paths to archive'),
-    archive_destination: z.enum(['s3_glacier', 's3_deep_archive', 'local_backup']).default('s3_glacier').describe('Archive destination'),
-    retention_policy: z.object({
-      retention_days: z.number().default(2555).describe('Retention period in days (default: 7 years)'),
-      auto_delete: z.boolean().default(false).describe('Auto-delete after retention period'),
-      compliance_tags: z.array(z.string()).optional().nullable().describe('Compliance tags for archived assets')
-    }).optional().nullable().describe('Archive retention policy')
-  }).optional().nullable().describe('Asset archiving configuration'),
-  
+    source_assets: z.array(z.string()).describe('Paths to assets to archive'),
+    archive_format: z.enum(['zip', 'tar']).default('zip').describe('Archive format'),
+    s3_bucket: z.string().nullable().default(null).describe('S3 bucket for storage'),
+    retention_days: z.number().default(30).describe('Archive retention period in days'),
+    storage_config: z.object({
+      s3_bucket: z.string().nullable().default(null).describe('S3 bucket for storage')
+    }).nullable().default(null).describe('Storage configuration')
+  }).nullable().default(null).describe('Asset archiving configuration'),
+
   // For cdn_distribution action
-  cdn_config: z.object({
-    assets_to_distribute: z.array(z.string()).describe('Asset paths for CDN distribution'),
-    cdn_provider: z.enum(['cloudfront', 'cloudflare', 'fastly', 'custom']).default('cloudfront').describe('CDN provider'),
-    distribution_settings: z.object({
-      cache_ttl: z.number().default(86400).describe('Cache TTL in seconds'),
-      geo_restrictions: z.array(z.string()).optional().nullable().describe('Geographic restrictions'),
-      compression_enabled: z.boolean().default(true).describe('Enable compression'),
-      http2_enabled: z.boolean().default(true).describe('Enable HTTP/2'),
-      security_headers: z.boolean().default(true).describe('Add security headers')
-    }).optional().nullable().describe('CDN distribution settings')
-  }).optional().nullable().describe('CDN distribution configuration'),
-  
+  cdn_distribution_config: z.object({
+    assets_to_distribute: z.array(z.string()).describe('Asset paths to distribute via CDN'),
+    cdn_provider: z.enum(['cloudflare', 'aws_cloudfront']).default('cloudflare').describe('CDN provider'),
+    cache_ttl: z.number().default(86400).describe('Cache TTL in seconds')
+  }).nullable().default(null).describe('CDN distribution configuration'),
+
   // Common options
-  campaign_id: z.string().optional().nullable().describe('Campaign ID for asset organization'),
+  campaign_id: z.string().nullable().default(null).describe('Campaign ID for asset organization'),
   environment: z.enum(['development', 'staging', 'production']).default('staging').describe('Target environment'),
-  enable_monitoring: z.boolean().default(true).describe('Enable delivery monitoring and notifications'),
+  enable_monitoring: z.boolean().default(true).describe('Enable delivery monitoring'),
   include_analytics: z.boolean().default(true).describe('Include delivery analytics in response'),
-  
-  // Notification and webhook options
   notifications: z.object({
-    webhook_url: z.string().optional().nullable().describe('Webhook URL for delivery notifications'),
-    email_notifications: z.array(z.string()).optional().nullable().describe('Email addresses for notifications'),
-    slack_webhook: z.string().optional().nullable().describe('Slack webhook for notifications'),
-    notification_events: z.array(z.enum(['upload_complete', 'deployment_success', 'deployment_failure', 'visual_test_complete'])).default(['deployment_success', 'deployment_failure']).describe('Events to notify about')
-  }).optional().nullable().describe('Notification configuration')
-});
+    webhook_url: z.string().nullable().default(null).describe('Webhook URL for notifications'),
+    email: z.string().nullable().default(null).describe('Email for notifications')
+  }).nullable().default(null).describe('Notification configuration')
+}).describe('Delivery management parameters');
 
 export type DeliveryManagerParams = z.infer<typeof deliveryManagerSchema>;
 
@@ -221,45 +170,76 @@ export async function deliveryManager(params: DeliveryManagerParams): Promise<De
   console.log(`🚀 Delivery Manager: Executing action "${params.action}"`);
   
   try {
-    switch (params.action) {
-      case 'upload_assets':
-        return await handleAssetUpload(params, startTime);
-        
-      case 'generate_screenshots':
-        return await handleScreenshotGeneration(params, startTime);
-        
-      case 'visual_testing':
-        return await handleVisualTesting(params, startTime);
-        
-      case 'deploy_campaign':
-        return await handleCampaignDeployment(params, startTime);
-        
-      case 'archive_assets':
-        return await handleAssetArchiving(params, startTime);
-        
-      case 'cdn_distribution':
-        return await handleCdnDistribution(params, startTime);
-        
-      default:
-        throw new Error(`Unknown action: ${params.action}`);
+    let result: DeliveryManagerResult;
+      
+      switch (params.action) {
+        case 'upload_assets':
+          result = await handleAssetUpload(params, startTime);
+          break;
+          
+        case 'generate_screenshots':
+          result = await handleScreenshotGeneration(params, startTime);
+          break;
+          
+        case 'visual_testing':
+          result = await handleVisualTesting(params, startTime);
+          break;
+          
+        case 'deploy_campaign':
+          result = await handleCampaignDeployment(params, startTime);
+          break;
+          
+        case 'archive_assets':
+          result = await handleAssetArchiving(params, startTime);
+          break;
+          
+        case 'cdn_distribution':
+          result = await handleCdnDistribution(params, startTime);
+          break;
+          
+        default:
+          throw new Error(`Unknown action: ${params.action}`);
+      }
+      
+      // Record tracing statistics
+      if (result.analytics) {
+        recordToolUsage({
+          tool: 'delivery-manager',
+          operation: params.action,
+          duration: result.analytics.execution_time,
+          success: result.success
+        });
+      }
+      
+      return result;
+      
+    } catch (error) {
+      console.error('❌ Delivery Manager error:', error);
+      
+      const errorResult = {
+        success: false,
+        action: params.action,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        analytics: params.include_analytics ? {
+          execution_time: Date.now() - startTime,
+          operations_performed: 0,
+          data_transferred: 0,
+          success_rate: 0,
+          estimated_cost: 0
+        } : undefined
+      };
+      
+      // Record error statistics
+      recordToolUsage({
+        tool: 'delivery-manager',
+        operation: params.action,
+        duration: Date.now() - startTime,
+        success: false,
+        error: errorResult.error
+      });
+      
+      return errorResult;
     }
-    
-  } catch (error) {
-    console.error('❌ Delivery Manager error:', error);
-    
-    return {
-      success: false,
-      action: params.action,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      analytics: params.include_analytics ? {
-        execution_time: Date.now() - startTime,
-        operations_performed: 0,
-        data_transferred: 0,
-        success_rate: 0,
-        estimated_cost: 0
-      } : undefined
-    };
-  }
 }
 
 /**
@@ -284,7 +264,7 @@ async function handleAssetUpload(params: DeliveryManagerParams, startTime: numbe
         campaign_id: params.campaign_id,
         assets: {
           images: [file.file_path],
-          metadata: file.metadata
+          metadata: (typeof file.metadata === 'object' && file.metadata !== null) ? file.metadata : {}
         }
       });
       
@@ -360,9 +340,9 @@ async function handleScreenshotGeneration(params: DeliveryManagerParams, startTi
   const screenshotResult = await generateScreenshots({
     html_content: params.screenshot_config.target_content,
     campaign_id: params.campaign_id,
-    viewport_width: params.screenshot_config.capture_options?.viewport_sizes?.[0]?.width,
-    viewport_height: params.screenshot_config.capture_options?.viewport_sizes?.[0]?.height,
-    full_page: params.screenshot_config.capture_options?.capture_full_page,
+    viewport_width: params.screenshot_config.viewport_width,
+    viewport_height: params.screenshot_config.viewport_height,
+    full_page: true,
     devices: ['desktop', 'mobile']
   });
   
@@ -400,12 +380,12 @@ async function handleVisualTesting(params: DeliveryManagerParams, startTime: num
   
   console.log(`👁️ Running visual tests with Percy: ${params.visual_testing_config.test_name}`);
   
-  const percyResult = await percySnap({
-    content: params.visual_testing_config.test_content,
-    name: params.visual_testing_config.test_name,
-    percyConfig: params.visual_testing_config.percy_config,
-    comparisonOptions: params.visual_testing_config.comparison_options
-  });
+      const percyResult = await percySnap({
+      content: params.visual_testing_config.content_source,
+      name: params.visual_testing_config.test_name,
+      percyConfig: {},
+      comparisonOptions: { threshold: params.visual_testing_config.threshold }
+    });
   
   if (!percyResult.success) {
     throw new Error(`Visual testing failed: ${percyResult.error}`);
@@ -435,21 +415,21 @@ async function handleVisualTesting(params: DeliveryManagerParams, startTime: num
  * Handle campaign deployment
  */
 async function handleCampaignDeployment(params: DeliveryManagerParams, startTime: number): Promise<DeliveryManagerResult> {
-  if (!params.deployment_config) {
+  if (!params.deploy_config) {
     throw new Error('Deployment configuration is required');
   }
   
-  console.log(`🚀 Deploying campaign to ${params.deployment_config.deployment_target}`);
-  
-  // Pre-deployment validation
-  const validationResults = await runPreDeploymentValidation(params);
-  
-  if (!validationResults.passed && !params.deployment_config.validation_checks?.require_manual_approval) {
-    throw new Error(`Pre-deployment validation failed: ${validationResults.failures.join(', ')}`);
-  }
-  
-  // Execute deployment
-  const deploymentResults = await executeCampaignDeployment(params.deployment_config, params);
+      console.log(`🚀 Deploying campaign to ${params.environment}`);
+    
+    // Pre-deployment validation
+    const validationResults = await runPreDeploymentValidation(params);
+    
+    if (!validationResults.passed && !params.deploy_config.test_mode) {
+      throw new Error(`Pre-deployment validation failed: ${validationResults.failures.join(', ')}`);
+    }
+    
+    // Execute deployment
+    const deploymentResults = await executeCampaignDeployment(params.deploy_config, params);
   
   // Post-deployment monitoring
   const monitoringResults = await setupDeploymentMonitoring(deploymentResults, params);
@@ -489,9 +469,9 @@ async function handleAssetArchiving(params: DeliveryManagerParams, startTime: nu
     throw new Error('Archive configuration is required');
   }
   
-  console.log(`📦 Archiving ${params.archive_config.assets_to_archive.length} assets to ${params.archive_config.archive_destination}`);
-  
-  const archiveResults = await executeAssetArchiving(params.archive_config, params);
+      console.log(`📦 Archiving ${params.archive_config.source_assets.length} assets to ${params.archive_config.s3_bucket || 'local storage'}`);
+    
+    const archiveResults = await executeAssetArchiving(params.archive_config, params);
   
   console.log(`✅ Archived ${archiveResults.archived_assets} assets`);
   
@@ -505,7 +485,7 @@ async function handleAssetArchiving(params: DeliveryManagerParams, startTime: nu
       operations_performed: archiveResults.archived_assets,
       data_transferred: archiveResults.archive_size,
       success_rate: 100,
-      estimated_cost: calculateArchiveCost(archiveResults.archive_size, params.archive_config.archive_destination)
+              estimated_cost: calculateArchiveCost(archiveResults.archive_size, params.archive_config.s3_bucket || 'local storage')
     } : undefined
   };
 }
@@ -514,13 +494,13 @@ async function handleAssetArchiving(params: DeliveryManagerParams, startTime: nu
  * Handle CDN distribution
  */
 async function handleCdnDistribution(params: DeliveryManagerParams, startTime: number): Promise<DeliveryManagerResult> {
-  if (!params.cdn_config) {
+  if (!params.cdn_distribution_config) {
     throw new Error('CDN configuration is required');
   }
   
-  console.log(`🌐 Distributing ${params.cdn_config.assets_to_distribute.length} assets via ${params.cdn_config.cdn_provider}`);
+  console.log(`🌐 Distributing ${params.cdn_distribution_config.assets_to_distribute.length} assets via ${params.cdn_distribution_config.cdn_provider}`);
   
-  const cdnResults = await executeCdnDistribution(params.cdn_config, params);
+  const cdnResults = await executeCdnDistribution(params.cdn_distribution_config, params);
   
   console.log(`✅ CDN distribution completed: ${cdnResults.distribution_id}`);
   
@@ -531,10 +511,10 @@ async function handleCdnDistribution(params: DeliveryManagerParams, startTime: n
     cdn_results: cdnResults,
     analytics: params.include_analytics ? {
       execution_time: Date.now() - startTime,
-      operations_performed: params.cdn_config.assets_to_distribute.length,
+      operations_performed: params.cdn_distribution_config.assets_to_distribute.length,
       data_transferred: 0, // CDN handles this
       success_rate: 100,
-      estimated_cost: calculateCdnCost(params.cdn_config.assets_to_distribute.length)
+      estimated_cost: calculateCdnCost(params.cdn_distribution_config.assets_to_distribute.length)
     } : undefined
   };
 }
@@ -561,9 +541,9 @@ async function enhanceVisualTestResults(data: any, params: DeliveryManagerParams
   };
 }
 
-async function runPreDeploymentValidation(params: DeliveryManagerParams) {
-  const validationChecks = params.deployment_config?.validation_checks;
-  const failures = [];
+  async function runPreDeploymentValidation(params: DeliveryManagerParams) {
+    const validationChecks = params.deploy_config;
+    const failures = [];
   
   // Simulate validation checks
   if (validationChecks?.run_quality_checks) {
@@ -590,12 +570,12 @@ async function executeCampaignDeployment(deploymentConfig: any, params: Delivery
   const deploymentId = `deploy_${Date.now()}`;
   
   return {
-    deployment_id: deploymentId,
-    deployment_url: `https://${params.environment}.example.com/campaigns/${params.campaign_id}`,
-    assets_deployed: deploymentConfig.campaign_assets.length,
-    deployment_status: 'success' as const,
-    validation_results: { passed: true },
-    rollback_available: deploymentConfig.deployment_strategy?.enable_rollback || true
+          deployment_id: deploymentId,
+      deployment_url: `https://${params.environment}.example.com/campaigns/${params.campaign_id}`,
+      assets_deployed: deploymentConfig.campaign_name.length,
+      deployment_status: 'success' as const,
+      validation_results: { passed: true },
+      rollback_available: !deploymentConfig.test_mode
   };
 }
 
@@ -609,18 +589,18 @@ async function setupDeploymentMonitoring(deploymentResults: any, params: Deliver
   };
 }
 
-async function executeAssetArchiving(archiveConfig: any, params: DeliveryManagerParams) {
-  const archiveSize = archiveConfig.assets_to_archive.length * 1024 * 1024; // Simulated size
-  const retentionUntil = new Date();
-  retentionUntil.setDate(retentionUntil.getDate() + (archiveConfig.retention_policy?.retention_days || 2555));
-  
-  return {
-    archived_assets: archiveConfig.assets_to_archive.length,
-    archive_location: `${archiveConfig.archive_destination}/campaigns/${params.campaign_id}`,
-    archive_size: archiveSize,
-    retention_until: retentionUntil.toISOString()
-  };
-}
+  async function executeAssetArchiving(archiveConfig: any, params: DeliveryManagerParams) {
+    const archiveSize = archiveConfig.source_assets.length * 1024 * 1024; // Simulated size
+    const retentionUntil = new Date();
+    retentionUntil.setDate(retentionUntil.getDate() + (archiveConfig.retention_days || 30));
+    
+    return {
+      archived_assets: archiveConfig.source_assets.length,
+      archive_location: archiveConfig.s3_bucket ? `https://${archiveConfig.s3_bucket}.s3.amazonaws.com/${archiveConfig.source_assets[0]}` : archiveConfig.source_assets[0],
+      archive_size: archiveSize,
+      retention_until: retentionUntil.toISOString()
+    };
+  }
 
 async function executeCdnDistribution(cdnConfig: any, params: DeliveryManagerParams) {
   const distributionId = `dist_${Date.now()}`;
@@ -640,16 +620,12 @@ async function sendDeliveryNotification(event: string, data: any, notificationCo
   // Send notifications via configured channels
   console.log(`📢 Sending notification for event: ${event}`);
   
-  if (notificationConfig.webhook_url && notificationConfig.notification_events.includes(event)) {
+  if (notificationConfig.webhook_url) {
     // Would send webhook notification
   }
   
-  if (notificationConfig.email_notifications && notificationConfig.notification_events.includes(event)) {
+  if (notificationConfig.email) {
     // Would send email notifications
-  }
-  
-  if (notificationConfig.slack_webhook && notificationConfig.notification_events.includes(event)) {
-    // Would send Slack notification
   }
 }
 

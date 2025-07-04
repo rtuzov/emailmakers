@@ -264,27 +264,46 @@ export class DesignSpecialistValidator {
     const errors: HandoffValidationError[] = [];
     const suggestions: CorrectionSuggestion[] = [];
     
-    // Проверка размера HTML файла
-    const htmlSize = Buffer.byteLength(data.email_package.html_content, 'utf8');
-    const maxSizeBytes = AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024;
-    
-    if (htmlSize > maxSizeBytes) {
+    // Проверка размера HTML файла с безопасной проверкой на undefined
+    if (!data.email_package?.html_content) {
       errors.push({
         field: 'email_package.html_content',
-        errorType: 'size_limit',
-        message: `HTML размер ${Math.round(htmlSize/1024)}KB превышает лимит ${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB`,
-        currentValue: htmlSize,
-        expectedValue: maxSizeBytes,
+        errorType: 'missing',
+        message: `HTML контент отсутствует или пустой`,
+        currentValue: data.email_package?.html_content || null,
+        expectedValue: 'Строка длиной >100 символов',
         severity: 'critical'
       });
       
       suggestions.push({
         field: 'email_package.html_content',
-        issue: 'Превышен размер HTML файла',
-        suggestion: 'Оптимизировать HTML и CSS',
-        correctionPrompt: `HTML файл весит ${Math.round(htmlSize/1024)}KB, но должен быть ≤${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB. Оптимизируйте: 1) Минифицируйте CSS 2) Удалите неиспользуемые стили 3) Оптимизируйте структуру 4) Сократите повторяющиеся стили`,
+        issue: 'Отсутствует HTML контент',
+        suggestion: 'Сгенерировать HTML контент из MJML',
+        correctionPrompt: 'HTML контент отсутствует. Сгенерируйте валидный HTML email используя MJML компилятор.',
         priority: 'high'
       });
+    } else {
+      const htmlSize = Buffer.byteLength(data.email_package.html_content, 'utf8');
+      const maxSizeBytes = AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB * 1024;
+      
+      if (htmlSize > maxSizeBytes) {
+        errors.push({
+          field: 'email_package.html_content',
+          errorType: 'size_limit',
+          message: `HTML размер ${Math.round(htmlSize/1024)}KB превышает лимит ${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB`,
+          currentValue: htmlSize,
+          expectedValue: maxSizeBytes,
+          severity: 'critical'
+        });
+        
+        suggestions.push({
+          field: 'email_package.html_content',
+          issue: 'Превышен размер HTML файла',
+          suggestion: 'Оптимизировать HTML и CSS',
+          correctionPrompt: `HTML файл весит ${Math.round(htmlSize/1024)}KB, но должен быть ≤${AGENT_CONSTANTS.HANDOFF_VALIDATION.MAX_FILE_SIZE_KB}KB. Оптимизируйте: 1) Минифицируйте CSS 2) Удалите неиспользуемые стили 3) Оптимизируйте структуру 4) Сократите повторяющиеся стили`,
+          priority: 'high'
+        });
+      }
     }
     
     // Проверка total_size_kb из метрик

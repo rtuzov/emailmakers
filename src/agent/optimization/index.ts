@@ -12,12 +12,12 @@ export { OptimizationIntegration } from './optimization-integration';
 export { OptimizationService } from './optimization-service';
 
 // Phase 2: Dynamic Thresholds + Human Oversight
-export { DynamicThresholdsEngine } from './phase2/dynamic-thresholds-engine';
-export { HumanOversightDashboard } from './phase2/human-oversight-dashboard';
+// export { DynamicThresholdsEngine } from './phase2/dynamic-thresholds-engine';
+// export { HumanOversightDashboard } from './phase2/human-oversight-dashboard';
 
 // Phase 3: Auto-Scaling + Machine Learning
-export { MachineLearningEngine } from './phase3/machine-learning-engine';
-export { AutoScalingManager } from './phase3/auto-scaling-manager';
+// export { MachineLearningEngine } from './phase3/machine-learning-engine';
+// export { AutoScalingManager } from './phase3/auto-scaling-manager';
 
 // Типы и интерфейсы
 export {
@@ -63,24 +63,22 @@ export {
 } from './optimization-types';
 
 // Integration Tests
-export { runPhase2IntegrationTest } from './phase2/integration-test';
-export { runPhase3IntegrationTest } from './phase3/integration-test';
-export { runMasterIntegrationTest, runMasterSmokeTest } from './master-integration-test';
+// export { runPhase2IntegrationTest } from './phase2/integration-test';
+// export { runPhase3IntegrationTest } from './phase3/integration-test';
+// export { runMasterIntegrationTest, runMasterSmokeTest } from './master-integration-test';
 
 // Демонстрационные компоненты
-export { 
-  demonstrateOptimizationSystem,
-  simulateRealWorldOptimization,
-  demonstrateSystemIntegration
-} from './optimization-demo';
+// export { 
+//   demonstrateOptimizationSystem,
+//   simulateRealWorldOptimization,
+//   demonstrateSystemIntegration
+// } from './optimization-demo';
 
-// Re-export для удобства
-export type { 
-  OptimizationEngine as Engine,
-  OptimizationAnalyzer as Analyzer,
-  OptimizationIntegration as Integration,
-  OptimizationService as Service
-} from './index';
+// Re-export для удобства (alternative aliasing)
+export type Engine = import('./optimization-engine').OptimizationEngine;
+export type Analyzer = import('./optimization-analyzer').OptimizationAnalyzer;
+export type Integration = import('./optimization-integration').OptimizationIntegration;
+export type Service = import('./optimization-service').OptimizationService;
 
 /**
  * Заводской метод для создания полностью настроенного OptimizationService
