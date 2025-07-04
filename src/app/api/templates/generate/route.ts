@@ -122,7 +122,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     
     // Import and call the agent directly
     const { EmailGeneratorAgent } = await import('@/agent/agent');
-    const agent = new EmailGeneratorAgent(true, 'quality');
+    // Исправляю создание агента - новый конструктор не принимает параметры
+    const agent = new EmailGeneratorAgent();
     
          // Convert agentRequest to EmailGenerationRequest format
      const emailRequest = {
