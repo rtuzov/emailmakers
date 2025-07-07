@@ -45,7 +45,7 @@ async function quickMLIntegrationCheck() {
     
     // 3. Проверяем workflow_quality_analyzer
     console.log('\n🔧 Workflow Quality Analyzer:');
-    const workflowTool = qualityTools.find(tool => tool.name === 'workflow_quality_analyzer');
+    const workflowTool = toolRegistry.getTool('workflow_quality_analyzer');
     if (workflowTool) {
       console.log(`   ✅ Status: ${workflowTool.enabled ? 'ENABLED' : 'DISABLED'} (v${workflowTool.version})`);
       console.log(`   - Agents count: ${workflowTool.metadata?.agents_count || 'unknown'}`);
