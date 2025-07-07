@@ -51,7 +51,7 @@ export const ClientTestResultSchema = z.object({
   screenshots: z.array(z.object({
     id: z.string(),
     url: z.string().url(),
-    thumbnailUrl: z.string().url().optional(),
+    thumbnailUrl: z.string().url().optional().nullable(),
     darkMode: z.boolean(),
     timestamp: z.date(),
     fileSize: z.number().positive(),
@@ -71,13 +71,13 @@ export const ClientTestResultSchema = z.object({
     severity: z.enum(['critical', 'major', 'minor', 'info']),
     category: z.enum(['css', 'html', 'images', 'fonts', 'layout', 'interactive']),
     description: z.string(),
-      recommendation: z.string().optional(),
-  affectedElements: z.array(z.string()).optional()
+      recommendation: z.string().optional().nullable(),
+  affectedElements: z.array(z.string()).optional().nullable()
   })),
   renderTime: z.number().positive(), // milliseconds
-  errorMessage: z.string().optional(),
+  errorMessage: z.string().optional().nullable(),
   startedAt: z.date(),
-  completedAt: z.date().optional()
+  completedAt: z.date().optional().nullable()
 });
 
 export type ClientTestResult = z.infer<typeof ClientTestResultSchema>;
@@ -91,7 +91,7 @@ export const AccessibilityResultSchema = z.object({
     impact: z.enum(['critical', 'serious', 'moderate', 'minor']),
     description: z.string(),
     help: z.string(),
-    helpUrl: z.string().url().optional(),
+    helpUrl: z.string().url().optional().nullable(),
     nodes: z.array(z.object({
       target: z.string(),
       html: z.string(),
@@ -132,14 +132,14 @@ export const PerformanceResultSchema = z.object({
     type: z.enum(['size', 'compression', 'images', 'css', 'html']),
     priority: z.enum(['high', 'medium', 'low']),
     description: z.string(),
-    potentialSavings: z.number().positive().optional(), // bytes
+    potentialSavings: z.number().positive().optional().nullable(), // bytes
     implementation: z.string()
   })),
   metrics: z.object({
-      firstContentfulPaint: z.number().positive().optional(),
-  largestContentfulPaint: z.number().positive().optional(),
-  cumulativeLayoutShift: z.number().min(0).optional(),
-  totalBlockingTime: z.number().positive().optional()
+      firstContentfulPaint: z.number().positive().optional().nullable(),
+  largestContentfulPaint: z.number().positive().optional().nullable(),
+  cumulativeLayoutShift: z.number().min(0).optional().nullable(),
+  totalBlockingTime: z.number().positive().optional().nullable()
   }),
   timestamp: z.date()
 });
@@ -159,9 +159,9 @@ export const SpamResultSchema = z.object({
   })),
   deliverabilityScore: z.number().min(0).max(100),
   authenticationChecks: z.object({
-      spf: z.enum(['pass', 'fail', 'neutral', 'none']).optional(),
-  dkim: z.enum(['pass', 'fail', 'none']).optional(),
-  dmarc: z.enum(['pass', 'fail', 'none']).optional()
+      spf: z.enum(['pass', 'fail', 'neutral', 'none']).optional().nullable(),
+  dkim: z.enum(['pass', 'fail', 'none']).optional().nullable(),
+  dmarc: z.enum(['pass', 'fail', 'none']).optional().nullable()
   }),
   recommendations: z.array(z.object({
     priority: z.enum(['critical', 'high', 'medium', 'low']),
@@ -188,9 +188,9 @@ export const TestResultSchema = z.object({
   ]),
   overallScore: z.number().min(0).max(100),
   clientResults: z.array(ClientTestResultSchema),
-  accessibilityResult: AccessibilityResultSchema.optional(),
-  performanceResult: PerformanceResultSchema.optional(),
-  spamResult: SpamResultSchema.optional(),
+  accessibilityResult: AccessibilityResultSchema.optional().nullable(),
+  performanceResult: PerformanceResultSchema.optional().nullable(),
+  spamResult: SpamResultSchema.optional().nullable(),
   summary: z.object({
     totalClients: z.number().positive(),
     passedClients: z.number().min(0),
@@ -206,11 +206,11 @@ export const TestResultSchema = z.object({
     testDuration: z.number().positive(), // seconds
     testEnvironment: z.string(),
     testVersion: z.string(),
-    userAgent: z.string().optional()
+    userAgent: z.string().optional().nullable()
   }),
   createdAt: z.date(),
   updatedAt: z.date(),
-  completedAt: z.date().optional()
+  completedAt: z.date().optional().nullable()
 });
 
 export type TestResultData = z.infer<typeof TestResultSchema>;

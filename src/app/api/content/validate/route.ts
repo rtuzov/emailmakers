@@ -6,37 +6,37 @@ import { z } from 'zod';
 // Validation schema for content brief validation
 const ValidateBriefSchema = z.object({
   content: z.string().min(1, 'Content is required'),
-  type: z.enum(['text', 'json', 'figma_url']).optional(),
-  title: z.string().optional(),
-  description: z.string().optional(),
+  type: z.enum(['text', 'json', 'figma_url']).optional().nullable(),
+  title: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
   brandGuidelines: z.object({
-    tone: z.enum(['professional', 'casual', 'friendly', 'formal', 'playful', 'urgent']).optional(),
-    voice: z.enum(['authoritative', 'conversational', 'empathetic', 'enthusiastic', 'informative']).optional(),
-    values: z.array(z.string()).optional(),
-    prohibitedWords: z.array(z.string()).optional(),
-    preferredLanguage: z.string().optional()
-  }).optional(),
+    tone: z.enum(['professional', 'casual', 'friendly', 'formal', 'playful', 'urgent']).optional().nullable(),
+    voice: z.enum(['authoritative', 'conversational', 'empathetic', 'enthusiastic', 'informative']).optional().nullable(),
+    values: z.array(z.string()).optional().nullable(),
+    prohibitedWords: z.array(z.string()).optional().nullable(),
+    preferredLanguage: z.string().optional().nullable()
+  }).optional().nullable(),
   targetAudience: z.object({
     demographics: z.object({
-      ageRange: z.string().optional(),
-      gender: z.string().optional(),
-      location: z.string().optional(),
-      income: z.string().optional(),
-      education: z.string().optional()
-    }).optional(),
+      ageRange: z.string().optional().nullable(),
+      gender: z.string().optional().nullable(),
+      location: z.string().optional().nullable(),
+      income: z.string().optional().nullable(),
+      education: z.string().optional().nullable()
+    }).optional().nullable(),
     psychographics: z.object({
       interests: z.array(z.string()),
       values: z.array(z.string()),
       lifestyle: z.array(z.string()),
       painPoints: z.array(z.string())
-    }).optional(),
+    }).optional().nullable(),
     behavior: z.object({
-      purchaseHistory: z.string().optional(),
-      engagementLevel: z.enum(['high', 'medium', 'low']).optional(),
+      purchaseHistory: z.string().optional().nullable(),
+      engagementLevel: z.enum(['high', 'medium', 'low']).optional().nullable(),
       preferredChannels: z.array(z.string()),
       deviceUsage: z.enum(['mobile', 'desktop', 'both'])
-    }).optional()
-  }).optional()
+    }).optional().nullable()
+  }).optional().nullable()
 });
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

@@ -11,26 +11,30 @@ import { z } from 'zod';
 import { renderTest } from '../render-test';
 
 
-export const emailTestSchema = z.object({
-  html_content: z.string().describe('HTML email content to test'),
-  test_suite: z.enum(['basic', 'comprehensive', 'custom']).default('basic').describe('Test suite to run'),
-  target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird', 'samsung_mail'])).default(['gmail', 'outlook', 'apple_mail']).describe('Email clients to test'),
-  device_targets: z.array(z.enum(['desktop', 'mobile', 'tablet'])).default(['desktop', 'mobile']).describe('Device types to test'),
-  test_criteria: z.object({
-    functionality_tests: z.array(z.enum(['links', 'images', 'responsive_layout', 'fonts', 'spacing'])).default(['links', 'images', 'responsive_layout']),
-    performance_tests: z.array(z.enum(['load_time', 'rendering_speed', 'image_loading'])).default(['load_time']),
-    accessibility_tests: z.array(z.enum(['screen_reader', 'keyboard_navigation', 'color_contrast'])).default(['screen_reader']),
-    visual_tests: z.array(z.enum(['layout_consistency', 'image_display', 'text_rendering', 'spacing_accuracy'])).default(['layout_consistency'])
-  }).default({}).describe('Specific test criteria to check'),
-  test_settings: z.object({
-    timeout_seconds: z.number().default(30).describe('Maximum time to wait for rendering'),
-    take_screenshots: z.boolean().default(true).describe('Capture screenshots for visual comparison'),
-    check_dark_mode: z.boolean().default(false).describe('Test dark mode compatibility'),
-    test_image_blocking: z.boolean().default(true).describe('Test with images blocked')
-  }).default({}).describe('Test execution settings')
+const TestCriteriaSchema = z.object({
+    functionality_tests: z.array(z.enum(['links', 'images', 'responsive_layout', 'fonts', 'spacing'])),
+    performance_tests: z.array(z.enum(['load_time', 'rendering_speed', 'image_loading'])),
+    accessibility_tests: z.array(z.enum(['screen_reader', 'keyboard_navigation', 'color_contrast'])),
+    visual_tests: z.array(z.enum(['layout_consistency', 'image_display', 'text_rendering', 'spacing_accuracy']))
 });
 
-export type EmailTestParams = z.infer<typeof emailTestSchema>;
+const TestOptionsSchema = z.object({
+    timeout_seconds: z.number().describe('Maximum time to wait for rendering'),
+    take_screenshots: z.boolean().describe('Capture screenshots for visual comparison'),
+    check_dark_mode: z.boolean().describe('Test dark mode compatibility'),
+    test_image_blocking: z.boolean().describe('Test with images blocked')
+});
+
+const EmailTestSchema = z.object({
+    email_content: z.string().describe('HTML email content to test'),
+    test_suite: z.enum(['basic', 'comprehensive', 'custom']).describe('Test suite to run'),
+    target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird', 'samsung_mail'])).describe('Email clients to test'),
+    device_targets: z.array(z.enum(['desktop', 'mobile', 'tablet'])).describe('Device types to test'),
+    test_criteria: TestCriteriaSchema.describe('Specific test criteria to check'),
+    test_options: TestOptionsSchema.describe('Test execution settings')
+});
+
+export type EmailTestParams = z.infer<typeof EmailTestSchema>;
 
 export interface EmailTestResult {
   success: boolean;
@@ -94,11 +98,11 @@ export async function emailTest(params: EmailTestParams): Promise<EmailTestResul
       test_suite: params.test_suite,
       target_clients: params.target_clients,
       device_targets: params.device_targets,
-      html_content_length: params.html_content?.length || 0
+      html_content_length: params.email_content?.length || 0
     });
 
     // Валидация HTML контента
-    if (!params.html_content || params.html_content.trim() === '') {
+    if (!params.email_content || params.email_content.trim() === '') {
       throw new Error('HTML content is required for email testing. Received empty or null content.');
     }
 
@@ -116,10 +120,10 @@ export async function emailTest(params: EmailTestParams): Promise<EmailTestResul
       
       const clientResult = await testEmailInClient(
         client, 
-        params.html_content, 
+        params.email_content, 
         params.device_targets, 
         params.test_criteria,
-        params.test_settings
+        params.test_options
       );
       
       clientResults[client] = clientResult;
@@ -132,7 +136,7 @@ export async function emailTest(params: EmailTestParams): Promise<EmailTestResul
         testsSkippedCount += deviceResult.tests_skipped || 0;
       });
       
-      if (params.test_settings?.take_screenshots) {
+      if (params.test_options?.take_screenshots) {
         screenshotsCaptured += params.device_targets.length;
       }
     }

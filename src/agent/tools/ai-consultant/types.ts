@@ -11,6 +11,16 @@ import { getValidatedUsageModel } from '../../../shared/utils/model-config';
 // ================================
 
 /**
+ * Quality dimension types for analysis
+ */
+export type QualityDimension = 
+  | 'content_quality' 
+  | 'visual_appeal' 
+  | 'technical_compliance' 
+  | 'emotional_resonance' 
+  | 'brand_alignment';
+
+/**
  * Quality recommendation with automated execution capability
  */
 export interface QualityRecommendation {
@@ -86,6 +96,35 @@ export interface QualityAnalysisResult {
   
   // Score tracking
   score_impact?: number; // Score change from executed improvements
+  
+  // Individual dimension scores (for backward compatibility)
+  content_quality_score?: number;
+  visual_design_score?: number;
+  technical_compliance_score?: number;
+  emotional_resonance_score?: number;
+  brand_alignment_score?: number;
+  overall_quality_score?: number;
+  
+  // Insights by dimension
+  content_insights?: string[];
+  visual_insights?: string[];
+  technical_insights?: string[];
+  emotional_insights?: string[];
+  brand_insights?: string[];
+  
+  // Recommendations by dimension  
+  content_recommendations?: string[];
+  visual_recommendations?: string[];
+  technical_recommendations?: string[];
+  emotional_recommendations?: string[];
+  brand_recommendations?: string[];
+  improvement_recommendations?: string[];
+  
+  // Additional properties
+  quality_issues?: string[];
+  passed_checks?: string[];
+  confidence_score?: number;
+  execution_time_ms?: number;
 }
 
 /**
@@ -98,11 +137,32 @@ export interface AnalyzedElement {
   issues: string[];
   score: number;
   recommendations: string[];
+  element?: any; // HTML element or element data
 }
 
 // ================================
 // AI CONSULTANT INTERFACES
 // ================================
+
+/**
+ * Quality analysis request interface
+ */
+export interface QualityAnalysisRequest {
+  html_content: string;
+  mjml_source?: string;
+  topic: string;
+  target_audience?: string;
+  campaign_type?: string;
+  screenshots?: {
+    desktop?: string;
+    mobile?: string;
+    tablet?: string;
+  };
+  assets_info?: any;
+  render_results?: any;
+  pricing_info?: any;
+  quality_requirements?: any;
+}
 
 /**
  * AI Quality Consultant request interface
@@ -124,9 +184,12 @@ export interface AIConsultantRequest {
 
   // Context data
   assets_used?: any;
+  assets_info?: any;
   prices?: any;
+  pricing_info?: any;
   content_metadata?: any;
   render_test_results?: any;
+  render_results?: any;
 
   // Session management
   session_id?: string;
@@ -243,6 +306,8 @@ export interface AIConsultantConfig {
   log_level: 'debug' | 'info' | 'warn' | 'error';
   enable_analytics: boolean;
   analytics_endpoint?: string;
+  enable_progress_tracking?: boolean;
+  max_tokens?: number;
 }
 
 // ================================
@@ -299,15 +364,7 @@ export type ExecutionStatus =
   | 'skipped'
   | 'requires_approval';
 
-/**
- * Quality dimensions for scoring
- */
-export type QualityDimension = 
-  | 'content_quality'
-  | 'visual_appeal'
-  | 'technical_compliance'
-  | 'emotional_resonance'
-  | 'brand_alignment';
+// QualityDimension already defined above
 
 // ================================
 // DEFAULT CONFIGURATIONS

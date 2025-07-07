@@ -116,11 +116,9 @@ export async function qualityValidation(params: QualityValidationParams): Promis
     return result;
     
   } catch (error) {
-    const validationTime = Date.now() - startTime;
     console.error('❌ T11 Quality Validation: Validation failed:', error);
-    
-    // Return error result that doesn't block the pipeline
-    return formatErrorResult(error, validationTime);
+    // ❌ FALLBACK POLICY: propagate error to caller
+    throw error instanceof Error ? error : new Error(String(error));
   }
 }
 
@@ -243,10 +241,8 @@ function formatErrorResult(error: any, validationTime: number): string {
     }
   }
   
-  output += `\\n🔄 FALLBACK DECISION\\n`;
-  output += `Status: Validation failed, but email pipeline continues\\n`;
-  output += `Recommendation: Manual quality review recommended before upload\\n`;
-  output += `Next step: Proceed with upload_s3 tool (with caution)\\n`;
+  output += `\\nSTATUS\\n`;
+  output += `Validation failed – pipeline halted by policy\\n`;
   
   return output;
 }

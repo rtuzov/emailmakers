@@ -6,12 +6,12 @@ import { z } from 'zod';
 const ExtractDesignSystemSchema = z.object({
   figmaUrl: z.string().url('Invalid Figma URL format'),
   options: z.object({
-    skipCache: z.boolean().optional(),
-    includeAssets: z.boolean().optional(),
-    includeComponents: z.boolean().optional(),
-    includeTokens: z.boolean().optional(),
-    optimizeForEmail: z.boolean().optional()
-  }).optional()
+    skipCache: z.boolean().optional().nullable(),
+    includeAssets: z.boolean().optional().nullable(),
+    includeComponents: z.boolean().optional().nullable(),
+    includeTokens: z.boolean().optional().nullable(),
+    optimizeForEmail: z.boolean().optional().nullable()
+  }).optional().nullable()
 });
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

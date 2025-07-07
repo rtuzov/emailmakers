@@ -33,7 +33,14 @@
 ### Шаг 3: Генерация скриншотов
 - Используй `delivery_manager` tool с параметрами:
   - `action`: 'generate_screenshots'
-  - `screenshot_targets`: ['gmail','outlook','apple_mail','yahoo']
+  - `campaign_id`: ID кампании
+  - `screenshot_config`: {
+    - `target_content`: HTML content для скриншотов
+    - `content_type`: 'html'
+    - `viewport_width`: 1200
+    - `viewport_height`: 800
+    - `format`: 'png'
+  }
 - Сохрани результаты в папку `screenshots/` кампании
 
 ### Шаг 4: Финальная документация

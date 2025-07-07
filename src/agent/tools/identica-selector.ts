@@ -1,5 +1,5 @@
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import
@@ -64,9 +64,12 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
     try {
       const mappingContent = await fs.readFile(mappingPath, 'utf-8');
       const mappingData = JSON.parse(mappingContent);
-      assetMapping = mappingData.fileMapping || {};
+      if (!mappingData.fileMapping) {
+        throw new Error('No file mapping found in asset mapping data');
+      }
+      assetMapping = mappingData.fileMapping;
     } catch (error) {
-      console.warn('⚠️ T16: Could not load agent-file-mapping.json, using fallback detection');
+      throw new Error(`Required agent-file-mapping.json not found or invalid: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
     
     // Получаем список всех PNG файлов
@@ -96,16 +99,16 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
           fileName,
           filePath,
           shortName: mappingKey,
-          tags: mapping.allTags || [],
-          description: mapping.description || '',
-          tone: mapping.tone || 'нейтральный',
-          confidence: mapping.confidence || 0.8,
+          tags: mapping.allTags ? mapping.allTags : [],
+          description: mapping.description ? mapping.description : '',
+          tone: mapping.tone ? mapping.tone : 'нейтральный',
+          confidence: mapping.confidence ? mapping.confidence : 0.8,
           usageContext: ['email-рассылка', 'маркетинг'],
           figmaNodeId: mapping.figmaNodeId
         };
       } else {
-        // Fallback: анализируем по имени файла
-        assetData = analyzeAssetByFileName(fileName, filePath);
+        // Asset not found in mapping - fail fast
+        throw new Error(`Asset ${fileName} not found in agent-file-mapping.json. All assets must be properly mapped.`);
       }
       
       assets.push(assetData);
@@ -151,69 +154,16 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
   }
 }
 
-/**
- * Анализирует ассет по имени файла (fallback метод)
- */
-function analyzeAssetByFileName(fileName: string, filePath: string): IdenticaAsset {
-  const shortName = fileName.replace('.png', '');
-  const lowerName = shortName.toLowerCase();
-  
-  // Определяем теги на основе имени файла
-  const tags: string[] = [];
-  const usageContext: string[] = ['email-рассылка'];
-  
-  if (lowerName.includes('логотип') || lowerName.includes('logo')) {
-    tags.push('логотип', 'брендинг');
-    usageContext.push('брендинг');
-  }
-  
-  if (lowerName.includes('премиум') || lowerName.includes('premium')) {
-    tags.push('премиум', 'эксклюзив');
-  }
-  
-  if (lowerName.includes('авиа') || lowerName.includes('самолет') || lowerName.includes('билет')) {
-    tags.push('авиация', 'путешествия', 'билеты');
-    usageContext.push('авиакампании');
-  }
-  
-  if (lowerName.includes('локация') || lowerName.includes('геолокация') || lowerName.includes('карта')) {
-    tags.push('локация', 'навигация', 'геолокация');
-  }
-  
-  if (lowerName.includes('дизайн') || lowerName.includes('графика')) {
-    tags.push('дизайн', 'графика');
-  }
-  
-  if (lowerName.includes('маркетинг')) {
-    tags.push('маркетинг');
-    usageContext.push('маркетинговые кампании');
-  }
-  
-  // Определяем тон
-  let tone = 'нейтральный';
-  if (lowerName.includes('яркий') || lowerName.includes('позитив')) {
-    tone = 'позитивный';
-  } else if (lowerName.includes('дружелюбный')) {
-    tone = 'дружелюбный';
-  }
-  
-  return {
-    fileName,
-    filePath,
-    shortName,
-    tags: tags.length > 0 ? tags : ['общий', 'айдентика'],
-    description: `Креатив из айдентики: ${shortName}`,
-    tone,
-    confidence: 0.7, // Ниже чем у данных из mapping
-    usageContext
-  };
-}
+// Removed analyzeAssetByFileName function - no fallback logic allowed
 
 /**
  * Выбирает лучшие ассеты на основе критериев
  */
 function selectBestAssets(assets: IdenticaAsset[], params: IdenticaSelectionParams): IdenticaAsset[] {
-  const targetCount = params.target_count || 2;
+  if (!params.target_count) {
+    throw new Error('target_count parameter is required');
+  }
+  const targetCount = params.target_count;
   
   // Сортируем ассеты по релевантности
   const scoredAssets = assets.map(asset => ({
@@ -266,7 +216,7 @@ function selectBestAssets(assets: IdenticaAsset[], params: IdenticaSelectionPara
     
     // Проверяем разнообразие тегов
     const hasNewTags = item.asset.tags.some(tag => !usedTags.has(tag));
-    const hasMatchingTone = !params.emotional_tone || item.asset.tone === params.emotional_tone;
+    const hasMatchingTone = params.emotional_tone ? item.asset.tone === params.emotional_tone : true;
     
     if (hasNewTags && hasMatchingTone) {
       selected.push(item.asset);
@@ -371,7 +321,7 @@ function buildSelectionCriteria(params: IdenticaSelectionParams): string {
     criteria.push('предпочтение премиум-ассетам');
   }
   
-  criteria.push(`целевое количество: ${params.target_count || 2}`);
+  criteria.push(`целевое количество: ${params.target_count}`);
   
   return criteria.join('; ');
 }
@@ -383,7 +333,7 @@ function calculateSelectionConfidence(assets: IdenticaAsset[], params: IdenticaS
   if (assets.length === 0) return 0;
   
   const avgConfidence = assets.reduce((sum, asset) => sum + asset.confidence, 0) / assets.length;
-  const targetCount = params.target_count || 2;
+  const targetCount = params.target_count;
   const countPenalty = assets.length < targetCount ? 0.8 : 1.0;
   
   return Math.min(0.95, avgConfidence * countPenalty);

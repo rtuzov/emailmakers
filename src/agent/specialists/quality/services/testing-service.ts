@@ -54,6 +54,17 @@ export class TestingService {
         success: true,
         task_type: 'test_rendering',
         results: {
+          status: 'completed' as const,
+          quality_score: this.extractCompatibilityScore(testingResult),
+          validation_passed: this.shouldProceedToCompliance(qualityReport),
+          recommendations: {
+            next_actions: this.generateTestingActions(qualityReport),
+            critical_fixes: [],
+            improvements: []
+          },
+          analytics: analytics,
+          processing_time_ms: Date.now() - startTime,
+          timestamp: new Date().toISOString(),
           testing_data: testingResult
         },
         quality_report: qualityReport,
@@ -186,7 +197,28 @@ Please use the email_test tool to perform comprehensive rendering tests across a
     return {
       success: false,
       task_type: input.task_type,
-      results: {},
+      results: {
+        status: 'failed' as const,
+        quality_score: 0,
+        validation_passed: false,
+        recommendations: {
+          next_actions: ['Retry testing with error recovery', 'Manual testing required'],
+          critical_fixes: [],
+          improvements: []
+        },
+        analytics: {
+          total_checks: 0,
+          passed_checks: 0,
+          failed_checks: 1,
+          processing_time_ms: Date.now() - startTime,
+          ml_score: 0,
+          ml_issues: [],
+          ml_recommendations: []
+        },
+        processing_time_ms: Date.now() - startTime,
+        timestamp: new Date().toISOString(),
+        error: error?.message || 'Testing failed'
+      },
       quality_report: ReportGeneratorUtils.generateFailureReport(),
       compliance_status: ComplianceAssessmentUtils.generateFailureComplianceStatus(),
       recommendations: {
@@ -198,7 +230,14 @@ Please use the email_test tool to perform comprehensive rendering tests across a
         issues_detected: 1,
         fixes_applied: 0,
         confidence_score: 0,
-        agent_efficiency: 0
+        agent_efficiency: 0,
+        total_checks: 0,
+        passed_checks: 0,
+        failed_checks: 1,
+        processing_time_ms: Date.now() - startTime,
+        ml_score: 0,
+        ml_issues: [],
+        ml_recommendations: []
       },
       error: error instanceof Error ? error.message : 'Unknown testing error'
     };

@@ -12,8 +12,8 @@ const finalEmailDeliverySchema = z.object({
   email_subject: z.string().describe('Email subject line'),
   email_preheader: z.string().describe('Email preheader text'),
   assets_to_include: z.array(z.string()).nullable().describe('Specific asset paths to include in final delivery'),
-  create_zip: z.boolean().default(true).describe('Create ZIP archive for delivery'),
-  open_preview: z.boolean().default(false).describe('Open HTML preview in browser')
+  create_zip: z.boolean().describe('Create ZIP archive for delivery'),
+  open_preview: z.boolean().describe('Open HTML preview in browser')
 });
 
 export type FinalEmailDeliveryParams = z.infer<typeof finalEmailDeliverySchema>;

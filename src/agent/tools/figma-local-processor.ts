@@ -6,6 +6,7 @@
 
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { AITagMapper } from './ai-tag-mapper';
 
 interface LocalFigmaAsset {
   fileName: string;
@@ -46,7 +47,7 @@ interface LocalFigmaSearchResult {
 }
 
 /**
- * Поиск локальных Figma ассетов
+ * Поиск локальных Figma ассетов с AI-маппингом тегов
  */
 export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promise<LocalFigmaSearchResult> {
   try {
@@ -63,8 +64,29 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       };
     }
 
+    console.log(`🔍 Figma search: ${params.tags.length} input tags, target: ${params.context.target_count}`);
+
+    // 🤖 AI-POWERED TAG MAPPING
+    const aiTagMapper = new AITagMapper();
+    const tagMappingResult = await aiTagMapper.mapTags({
+      inputTags: params.tags,
+      campaignType: params.context.campaign_type,
+      emotionalTone: params.context.emotional_tone,
+      contentContext: `Target count: ${params.context.target_count}, Diversity: ${params.context.diversity_mode}`
+    });
+
+    let searchTags: string[];
+    if (tagMappingResult.success && tagMappingResult.mappedTags.length > 0) {
+      searchTags = tagMappingResult.mappedTags;
+      console.log(`✅ AI Tag Mapping: [${params.tags.join(', ')}] → [${searchTags.join(', ')}]`);
+      console.log(`📝 Mapping reasoning: ${tagMappingResult.mappingReasoning}`);
+    } else {
+      searchTags = tagMappingResult.fallbackTags || params.tags;
+      console.log(`⚠️ AI Tag Mapping failed, using fallback tags: [${searchTags.join(', ')}]`);
+    }
+
     // Получаем список всех PNG файлов
-    const assets = await findAllAssets(basePath);
+    const assets = await findAllAssetsWithAITags(basePath);
     
     if (assets.length === 0) {
       return {
@@ -74,8 +96,8 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       };
     }
 
-    // Фильтруем ассеты по тегам
-    const filteredAssets = filterAssetsByTags(assets, params.tags);
+    // Фильтруем ассеты по AI-маппированным тегам
+    const filteredAssets = filterAssetsByAITags(assets, searchTags, tagMappingResult.selectedFolders);
     
     // Применяем дополнительные фильтры
     const finalAssets = applyContextFilters(filteredAssets, params.context);
@@ -83,12 +105,22 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
     // Ограничиваем количество результатов
     const limitedAssets = finalAssets.slice(0, params.context.target_count);
     
+    console.log(`🎯 Found ${limitedAssets.length}/${assets.length} matching assets`);
+    
     // Преобразуем в формат результата
     const metadata: Record<string, any> = {};
     limitedAssets.forEach(asset => {
       metadata[asset.fileName] = {
         path: asset.filePath,
-        metadata: asset.metadata
+        metadata: {
+          ...asset.metadata,
+          ai_mapping: {
+            original_tags: params.tags,
+            mapped_tags: searchTags,
+            mapping_confidence: tagMappingResult.confidence,
+            selected_folders: tagMappingResult.selectedFolders
+          }
+        }
       };
     });
 
@@ -107,18 +139,18 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
 }
 
 /**
- * Поиск всех ассетов в папке
+ * Поиск всех ассетов в папке с AI-тегами
  */
-async function findAllAssets(basePath: string): Promise<LocalFigmaAsset[]> {
+async function findAllAssetsWithAITags(basePath: string): Promise<LocalFigmaAsset[]> {
   const assets: LocalFigmaAsset[] = [];
   
   try {
     const folders = await fs.readdir(basePath, { withFileTypes: true });
     
     for (const folder of folders) {
-      if (folder.isDirectory()) {
+      if (folder.isDirectory() && !folder.name.endsWith('.json')) {
         const folderPath = path.join(basePath, folder.name);
-        const folderAssets = await findAssetsInFolder(folderPath, folder.name);
+        const folderAssets = await findAssetsInFolderWithAITags(folderPath, folder.name);
         assets.push(...folderAssets);
       }
     }
@@ -130,9 +162,16 @@ async function findAllAssets(basePath: string): Promise<LocalFigmaAsset[]> {
 }
 
 /**
- * Поиск ассетов в конкретной папке
+ * Legacy function for backward compatibility
  */
-async function findAssetsInFolder(folderPath: string, folderName: string): Promise<LocalFigmaAsset[]> {
+async function findAllAssets(basePath: string): Promise<LocalFigmaAsset[]> {
+  return findAllAssetsWithAITags(basePath);
+}
+
+/**
+ * Поиск ассетов в конкретной папке с AI-тегами
+ */
+async function findAssetsInFolderWithAITags(folderPath: string, folderName: string): Promise<LocalFigmaAsset[]> {
   const assets: LocalFigmaAsset[] = [];
   
   try {
@@ -140,7 +179,7 @@ async function findAssetsInFolder(folderPath: string, folderName: string): Promi
     
     for (const file of files) {
       if (file.isFile() && file.name.endsWith('.png')) {
-        const asset = createAssetFromFile(file.name, folderPath, folderName);
+        const asset = await createAssetFromFileWithAITags(file.name, folderPath, folderName);
         assets.push(asset);
       }
     }
@@ -151,12 +190,14 @@ async function findAssetsInFolder(folderPath: string, folderName: string): Promi
   return assets;
 }
 
+
+
 /**
- * Создание объекта ассета из файла
+ * Создание объекта ассета из файла с AI-тегами
  */
-function createAssetFromFile(fileName: string, folderPath: string, folderName: string): LocalFigmaAsset {
+async function createAssetFromFileWithAITags(fileName: string, folderPath: string, folderName: string): Promise<LocalFigmaAsset> {
   const filePath = path.join(folderPath, fileName);
-  const tags = extractTagsFromFileName(fileName, folderName);
+  const tags = await extractTagsFromAIOptimizedData(fileName, folderName);
   
   return {
     fileName,
@@ -173,34 +214,33 @@ function createAssetFromFile(fileName: string, folderPath: string, folderName: s
   };
 }
 
+
+
 /**
- * Извлечение тегов из имени файла
+ * Извлечение тегов из AI-оптимизированных данных через агента
  */
-function extractTagsFromFileName(fileName: string, folderName: string): string[] {
-  const tags: string[] = [];
+async function extractTagsFromAIOptimizedData(fileName: string, folderName: string): Promise<string[]> {
+  const aiTagMapper = new AITagMapper();
   
-  // Добавляем теги из названия папки
-  if (folderName.includes('зайц')) tags.push('заяц', 'кролик');
-  if (folderName.includes('новости')) tags.push('новости', 'путешествия');
-  if (folderName.includes('иллюстрации')) tags.push('иллюстрация', 'картинка');
-  if (folderName.includes('логотипы')) tags.push('логотип', 'лого');
-  if (folderName.includes('иконки')) tags.push('иконка', 'значок');
-  if (folderName.includes('айдентика')) tags.push('бренд', 'айдентика');
+  // Create input tags from filename and folder
+  const inputTags = [fileName.toLowerCase(), folderName];
   
-  // Добавляем теги из имени файла
-  const fileNameLower = fileName.toLowerCase();
-  if (fileNameLower.includes('счастлив') || fileNameLower.includes('радост')) tags.push('счастливый', 'радостный');
-  if (fileNameLower.includes('грустн') || fileNameLower.includes('печаль')) tags.push('грустный', 'печальный');
-  if (fileNameLower.includes('сердит') || fileNameLower.includes('злой')) tags.push('сердитый', 'злой');
-  if (fileNameLower.includes('путешеств')) tags.push('путешествие', 'поездка');
-  if (fileNameLower.includes('самолет') || fileNameLower.includes('авиа')) tags.push('самолет', 'авиация');
-  if (fileNameLower.includes('билет')) tags.push('билет', 'бронирование');
+  // Map tags using AI agent
+  const mappingResult = await aiTagMapper.mapTags({
+    inputTags,
+    campaignType: 'promotional',
+    emotionalTone: 'friendly',
+    contentContext: `Figma asset: ${fileName} from folder ${folderName}`
+  });
   
-  // Общие теги
-  tags.push('купибилет', 'авиакомпания');
+  if (!mappingResult.success) {
+    throw new Error(`AI Tag Mapping failed: ${mappingResult.error}`);
+  }
   
-  return [...new Set(tags)]; // Убираем дубликаты
+  return mappingResult.mappedTags;
 }
+
+
 
 /**
  * Генерация описания ассета
@@ -240,23 +280,74 @@ function determineCategoryFromFolder(folderName: string): string {
 }
 
 /**
- * Фильтрация ассетов по тегам
+ * AI-powered фильтрация ассетов по тегам с приоритетом папок
  */
-function filterAssetsByTags(assets: LocalFigmaAsset[], searchTags: string[]): LocalFigmaAsset[] {
+function filterAssetsByAITags(assets: LocalFigmaAsset[], searchTags: string[], priorityFolders: string[]): LocalFigmaAsset[] {
   if (!searchTags || searchTags.length === 0) {
     return assets;
   }
   
-  return assets.filter(asset => {
-    const assetTags = asset.metadata.allTags.map(tag => tag.toLowerCase());
-    return searchTags.some(searchTag => 
-      assetTags.some(assetTag => 
-        assetTag.includes(searchTag.toLowerCase()) || 
-        searchTag.toLowerCase().includes(assetTag)
-      )
-    );
-  });
+  console.log(`🔍 Filtering ${assets.length} assets by AI tags: [${searchTags.join(', ')}]`);
+  console.log(`📂 Priority folders: [${priorityFolders.join(', ')}]`);
+  
+  // Score and filter assets
+  const scoredAssets = assets.map(asset => {
+    const score = calculateAssetRelevanceScore(asset, searchTags, priorityFolders);
+    return { asset, score };
+  }).filter(item => item.score > 0);
+  
+  // Sort by score (highest first)
+  scoredAssets.sort((a, b) => b.score - a.score);
+  
+  const filteredAssets = scoredAssets.map(item => item.asset);
+  
+  console.log(`✅ Filtered to ${filteredAssets.length} relevant assets`);
+  
+  return filteredAssets;
 }
+
+/**
+ * Calculate relevance score for an asset
+ */
+function calculateAssetRelevanceScore(asset: LocalFigmaAsset, searchTags: string[], priorityFolders: string[]): number {
+  let score = 0;
+  const assetTags = asset.metadata.allTags.map(tag => tag.toLowerCase());
+  const folderName = asset.metadata.folderName;
+  
+  // Exact tag matches (high score)
+  for (const searchTag of searchTags) {
+    const searchTagLower = searchTag.toLowerCase();
+    
+    if (assetTags.includes(searchTagLower)) {
+      score += 10; // Exact match
+    } else {
+      // Partial matches
+      for (const assetTag of assetTags) {
+        if (assetTag.includes(searchTagLower) || searchTagLower.includes(assetTag)) {
+          score += 5; // Partial match
+        }
+      }
+    }
+  }
+  
+  // Priority folder bonus
+  if (priorityFolders.includes(folderName)) {
+    const folderIndex = priorityFolders.indexOf(folderName);
+    score += (priorityFolders.length - folderIndex) * 2; // Higher bonus for higher priority folders
+  }
+  
+  // Brand mascot bonus (always prefer rabbit/mascot assets)
+  if (assetTags.some(tag => ['заяц', 'кролик'].includes(tag))) {
+    score += 3;
+  }
+  
+  return score;
+}
+
+/**
+ * Legacy фильтрация ассетов по тегам
+ */
+
 
 /**
  * Применение контекстных фильтров

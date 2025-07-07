@@ -8,9 +8,9 @@
 import { z } from 'zod';
 import { Agent, run } from '@openai/agents';
 
-import { campaignDeployment, campaignDeploymentSchema } from '../../../tools/simple/campaign-deployment';
+import { campaignDeployment, CampaignDeploymentSchema } from '../../../tools/simple/campaign-deployment';
 import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
-import { deliveryManagerTool } from '../../../modules/agent-tools';
+import { deliveryManagerTool } from '../../../tools/agent-tools';
 import { runWithTimeout } from '../../../utils/run-with-timeout';
 import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';

@@ -375,4 +375,26 @@ export class ErrorHandler {
     
     return JSON.stringify(this.errorLog, null, 2);
   }
+}
+
+// ============================================================================
+// ERROR ORCHESTRATOR FUNCTIONALITY (consolidated from error-orchestrator.ts)
+// ============================================================================
+
+import { SmartErrorHandler } from '../utils/ultrathink-stub';
+import { logger } from './logger';
+
+export const ErrorOrchestrator = SmartErrorHandler;
+
+/**
+ * Unified helper to log and convert error into standard result shape.
+ * Consolidates error-orchestrator.ts functionality into main error-handler.ts
+ */
+export function handleToolErrorUnified(toolName: string, error: any) {
+  logger.error(`Tool ${toolName} failed`, { error: error?.message || error });
+  ErrorOrchestrator.handleError(error, toolName, 0).catch(() => {});
+  return {
+    success: false,
+    error: error instanceof Error ? error.message : String(error),
+  };
 } 

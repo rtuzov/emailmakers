@@ -36,7 +36,7 @@ export const ComparisonResultSchema = z.object({
   differencePixels: z.number().min(0),
   totalPixels: z.number().positive(),
   differencePercentage: z.number().min(0).max(100),
-  diffImageUrl: z.string().url().optional(),
+  diffImageUrl: z.string().url().optional().nullable(),
   comparedAt: z.date(),
   algorithm: z.enum(['pixelmatch', 'ssim', 'custom']).default('pixelmatch'),
   threshold: z.number().min(0).max(1).default(0.1)
@@ -49,12 +49,12 @@ export const ImageMetadataSchema = z.object({
   width: z.number().positive(),
   height: z.number().positive(),
   format: z.enum([ScreenshotFormat.PNG, ScreenshotFormat.JPEG, ScreenshotFormat.WEBP]),
-  quality: z.number().min(1).max(100).optional(),
+  quality: z.number().min(1).max(100).optional().nullable(),
   fileSize: z.number().positive(), // bytes
-  compression: z.number().min(0).max(1).optional(),
-  colorDepth: z.number().positive().optional(),
-  hasAlpha: z.boolean().optional(),
-  dpi: z.number().positive().optional()
+  compression: z.number().min(0).max(1).optional().nullable(),
+  colorDepth: z.number().positive().optional().nullable(),
+  hasAlpha: z.boolean().optional().nullable(),
+  dpi: z.number().positive().optional().nullable()
 });
 
 export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;
@@ -62,15 +62,15 @@ export type ImageMetadata = z.infer<typeof ImageMetadataSchema>;
 // Storage information schema
 export const StorageInfoSchema = z.object({
   provider: z.enum(['s3', 'gcs', 'azure', 'local', 'minio']),
-  bucket: z.string().optional(),
+  bucket: z.string().optional().nullable(),
   key: z.string(),
-  region: z.string().optional(),
+  region: z.string().optional().nullable(),
   url: z.string().url(),
-  thumbnailUrl: z.string().url().optional(),
-  cdnUrl: z.string().url().optional(),
-  expiresAt: z.date().optional(),
+  thumbnailUrl: z.string().url().optional().nullable(),
+  cdnUrl: z.string().url().optional().nullable(),
+  expiresAt: z.date().optional().nullable(),
   isPublic: z.boolean().default(false),
-  tags: z.record(z.string()).optional()
+  tags: z.record(z.string()).optional().nullable()
 });
 
 export type StorageInfo = z.infer<typeof StorageInfoSchema>;
@@ -97,8 +97,8 @@ export const ScreenshotSchema = z.object({
     ScreenshotStatus.FAILED,
     ScreenshotStatus.ARCHIVED
   ]),
-  imageMetadata: ImageMetadataSchema.optional(),
-  storageInfo: StorageInfoSchema.optional(),
+  imageMetadata: ImageMetadataSchema.optional().nullable(),
+  storageInfo: StorageInfoSchema.optional().nullable(),
   captureConfig: z.object({
     fullPage: z.boolean().default(true),
     clip: z.object({
@@ -106,7 +106,7 @@ export const ScreenshotSchema = z.object({
       y: z.number().min(0),
       width: z.number().positive(),
       height: z.number().positive()
-    }).optional(),
+    }).optional().nullable(),
     omitBackground: z.boolean().default(false),
     encoding: z.enum(['base64', 'binary']).default('binary'),
     delay: z.number().min(0).default(0), // milliseconds
@@ -114,12 +114,12 @@ export const ScreenshotSchema = z.object({
     caret: z.enum(['hide', 'initial']).default('hide')
   }),
   comparisonResults: z.array(ComparisonResultSchema).default([]),
-  processingTime: z.number().positive().optional(), // milliseconds
-  errorMessage: z.string().optional(),
+  processingTime: z.number().positive().optional().nullable(), // milliseconds
+  errorMessage: z.string().optional().nullable(),
   retryCount: z.number().min(0).default(0),
   maxRetries: z.number().min(0).default(3),
-  capturedAt: z.date().optional(),
-  processedAt: z.date().optional(),
+  capturedAt: z.date().optional().nullable(),
+  processedAt: z.date().optional().nullable(),
   createdAt: z.date(),
   updatedAt: z.date()
 });

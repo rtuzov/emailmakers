@@ -6,7 +6,7 @@ import path from 'path';
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 
 // Define types locally to avoid circular import
@@ -450,7 +450,7 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
       currency: solution.price?.currency || 'RUB',
       date: solution.departure_date,
       metadata: {
-        airline: solution.airline || '',
+        airline: solution.airline ?? '',
         duration: solution.duration,
         stops: solution.stops || 0,
         flight_number: solution.flight_number
@@ -486,7 +486,7 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
       currency: responseData.currency || flight.currency || 'RUB',
       date: flight.departure_date || flight.date,
       metadata: {
-        airline: flight.airline || '',
+        airline: flight.airline ?? '',
         duration: flight.duration,
         stops: flight.stops || 0,
         flight_number: flight.flight_number

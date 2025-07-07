@@ -53,8 +53,8 @@ export const ClientCapabilitiesSchema = z.object({
   animations: z.boolean(),
   interactiveElements: z.boolean(),
   customProperties: z.boolean(), // CSS custom properties (variables)
-  maxEmailWidth: z.number().positive().optional(),
-  maxEmailHeight: z.number().positive().optional(),
+  maxEmailWidth: z.number().positive().optional().nullable(),
+  maxEmailHeight: z.number().positive().optional().nullable(),
   imageFormats: z.array(z.enum(['jpeg', 'png', 'gif', 'webp', 'svg'])),
   videoSupport: z.boolean(),
   accessibilityFeatures: z.boolean()
@@ -81,8 +81,8 @@ export const ClientTestConfigSchema = z.object({
   retries: z.number().min(0).max(3).default(1),
   screenshotDelay: z.number().min(0).default(2000), // milliseconds
   loadWaitTime: z.number().min(0).default(5000), // milliseconds
-  customUserAgent: z.string().optional(),
-  customHeaders: z.record(z.string()).optional(),
+  customUserAgent: z.string().optional().nullable(),
+  customHeaders: z.record(z.string()).optional().nullable(),
   darkModeTest: z.boolean().default(true),
   viewports: z.array(ViewportConfigSchema).min(1)
 });
@@ -95,7 +95,7 @@ export const EmailClientSchema = z.object({
   name: z.string(),
   displayName: z.string(),
   vendor: z.string(),
-  version: z.string().optional(),
+  version: z.string().optional().nullable(),
   type: z.enum([ClientType.WEB, ClientType.DESKTOP, ClientType.MOBILE]),
   platform: z.enum([
     Platform.WINDOWS,
@@ -113,24 +113,24 @@ export const EmailClientSchema = z.object({
     RenderingEngine.WORD,
     RenderingEngine.NATIVE
   ]),
-  marketShare: z.number().min(0).max(100).optional(), // percentage
+  marketShare: z.number().min(0).max(100).optional().nullable(), // percentage
   capabilities: ClientCapabilitiesSchema,
   testConfig: ClientTestConfigSchema,
   automationConfig: z.object({
     workerType: z.enum(['docker', 'vm', 'browser']),
-      containerImage: z.string().optional(),
-  vmTemplate: z.string().optional(),
+      containerImage: z.string().optional().nullable(),
+  vmTemplate: z.string().optional().nullable(),
     browserConfig: z.object({
-      browser: z.enum(['chrome', 'firefox', 'safari', 'edge']).optional(),
+      browser: z.enum(['chrome', 'firefox', 'safari', 'edge']).optional().nullable(),
       headless: z.boolean().default(true),
-      args: z.array(z.string()).optional()
-    }).optional(),
-    setupCommands: z.array(z.string()).optional(),
-    teardownCommands: z.array(z.string()).optional()
+      args: z.array(z.string()).optional().nullable()
+    }).optional().nullable(),
+    setupCommands: z.array(z.string()).optional().nullable(),
+    teardownCommands: z.array(z.string()).optional().nullable()
   }),
   isActive: z.boolean().default(true),
   tags: z.array(z.string()).default([]),
-  notes: z.string().optional(),
+  notes: z.string().optional().nullable(),
   createdAt: z.date(),
   updatedAt: z.date()
 });

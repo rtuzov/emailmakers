@@ -3,12 +3,12 @@ import { z } from 'zod';
 export const pricingIntelligenceSchema = z.object({
   action: z.enum(['fetch_prices', 'analyze_market', 'get_deals']),
   destination: z.string(),
-  origin: z.string().default('Москва'),
+  origin: z.string(),
   travel_dates: z.object({
     departure: z.string(),
-    return: z.string().optional()
-  }).optional(),
-  passenger_count: z.number().default(1)
+    return: z.string().optional().nullable()
+  }).optional().nullable(),
+  passenger_count: z.number()
 });
 
 export type PricingIntelligenceParams = z.infer<typeof pricingIntelligenceSchema>;

@@ -13,7 +13,7 @@ export const ViewportSchema = z.object({
   height: z.number().min(568).max(1080),
   devicePixelRatio: z.number().min(1).max(3),
   name: z.string().min(1),
-  description: z.string().optional()
+  description: z.string().optional().nullable()
 });
 
 export type ViewportData = z.infer<typeof ViewportSchema>;
@@ -106,8 +106,8 @@ export const ClientCapabilitiesSchema = z.object({
   animations: z.boolean(),
   interactiveElements: z.boolean(),
   customProperties: z.boolean(),
-  maxEmailWidth: z.number().positive().optional(),
-  maxEmailHeight: z.number().positive().optional(),
+  maxEmailWidth: z.number().positive().optional().nullable(),
+  maxEmailHeight: z.number().positive().optional().nullable(),
   imageFormats: z.array(z.enum(['jpeg', 'png', 'gif', 'webp', 'svg'])),
   videoSupport: z.boolean(),
   accessibilityFeatures: z.boolean()
@@ -245,12 +245,12 @@ export class ClientCapabilities {
 export const TestConfigSchema = z.object({
   enabled: z.boolean(),
   priority: z.number().min(1).max(10),
-  timeout: z.number().positive(),
+  timeout: z.number().nullable().optional(),  // seconds
   retries: z.number().min(0).max(5),
   screenshotDelay: z.number().min(0),
   loadWaitTime: z.number().min(0),
-  customUserAgent: z.string().optional(),
-  customHeaders: z.record(z.string()).optional(),
+  customUserAgent: z.string().optional().nullable(),
+  customHeaders: z.record(z.string()).optional().nullable(),
   darkModeTest: z.boolean(),
   viewports: z.array(ViewportSchema).min(1)
 });
@@ -267,7 +267,7 @@ export class TestConfig {
 
   get enabled(): boolean { return this.data.enabled; }
   get priority(): number { return this.data.priority; }
-  get timeout(): number { return this.data.timeout; }
+  get timeout(): number | undefined { return this.data.timeout; }
   get retries(): number { return this.data.retries; }
   get screenshotDelay(): number { return this.data.screenshotDelay; }
   get loadWaitTime(): number { return this.data.loadWaitTime; }
@@ -280,7 +280,7 @@ export class TestConfig {
    * Get total estimated test time
    */
   getEstimatedTestTime(): number {
-    const baseTime = this.data.timeout;
+    const baseTime = this.data.timeout || 0; // Use 0 if timeout is null/undefined
     const viewportCount = this.data.viewports.length;
     const darkModeMultiplier = this.data.darkModeTest ? 2 : 1;
     
@@ -390,21 +390,21 @@ export class TestConfig {
 // Automation configuration value object
 export const AutomationConfigSchema = z.object({
   workerType: z.enum(['docker', 'vm', 'browser']),
-  containerImage: z.string().optional(),
-  vmTemplate: z.string().optional(),
+  containerImage: z.string().optional().nullable(),
+  vmTemplate: z.string().optional().nullable(),
   browserConfig: z.object({
-    browser: z.enum(['chrome', 'firefox', 'safari', 'edge']).optional(),
+    browser: z.enum(['chrome', 'firefox', 'safari', 'edge']).optional().nullable(),
     headless: z.boolean(),
-    args: z.array(z.string()).optional()
-  }).optional(),
-  setupCommands: z.array(z.string()).optional(),
-  teardownCommands: z.array(z.string()).optional(),
-  environment: z.record(z.string()).optional(),
+    args: z.array(z.string()).optional().nullable()
+  }).optional().nullable(),
+  setupCommands: z.array(z.string()).optional().nullable(),
+  teardownCommands: z.array(z.string()).optional().nullable(),
+  environment: z.record(z.string()).optional().nullable(),
   resourceLimits: z.object({
-    memory: z.string().optional(), // e.g., "2Gi"
-    cpu: z.string().optional(),    // e.g., "1000m"
+    memory: z.string().optional().nullable(), // e.g., "2Gi"
+    cpu: z.string().optional().nullable(),    // e.g., "1000m"
     timeout: z.number().optional()  // seconds
-  }).optional()
+  }).optional().nullable()
 });
 
 export type AutomationConfigData = z.infer<typeof AutomationConfigSchema>;

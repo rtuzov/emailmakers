@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 export const iataCodeResolverSchema = z.object({
   city_names: z.array(z.string()).describe('Array of city names in any language to convert to IATA codes'),
-  language: z.enum(['ru', 'en', 'auto']).default('auto').describe('Language of the input city names'),
-  include_alternatives: z.boolean().default(false).describe('Include alternative airport codes for the same city'),
-  validate_codes: z.boolean().default(true).describe('Validate that returned codes are real IATA codes')
+  language: z.enum(['ru', 'en', 'auto']).describe('Language of the input city names'),
+  include_alternatives: z.boolean().describe('Include alternative airport codes for the same city'),
+  validate_codes: z.boolean().describe('Validate that returned codes are real IATA codes')
 });
 
 export type IataCodeResolverParams = z.infer<typeof iataCodeResolverSchema>;

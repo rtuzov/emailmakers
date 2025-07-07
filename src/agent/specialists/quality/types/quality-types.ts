@@ -35,13 +35,16 @@ export type ComplianceStatus = 'pass' | 'fail' | 'warning';
 // Issue severity levels
 export type IssueSeverity = 'critical' | 'high' | 'medium' | 'low';
 
-// Email package structure
+// Email package structure (updated for ML-scoring compatibility)
 export interface EmailPackage {
   html_output: string;
+  html_content?: string; // Added for ML-scoring compatibility
   mjml_source?: string;
   assets_used?: any[];
   rendering_metadata?: any;
   subject?: string;
+  preheader?: string;
+  assets?: string[];
 }
 
 // Quality requirements configuration
@@ -91,7 +94,7 @@ export interface OptimizationGoals {
   automated_fixes: boolean;
 }
 
-// Main input interface for Quality Specialist Agent
+// Main input interface for Quality Specialist Agent (updated for ML-scoring)
 export interface QualitySpecialistInput {
   task_type: QualityTaskType;
   email_package: EmailPackage;
@@ -103,6 +106,17 @@ export interface QualitySpecialistInput {
   multi_destination_validation_criteria?: MultiDestinationValidationCriteria;
   multi_destination_context?: any; // Multi-destination campaign data
   handoff_data?: any; // Data from DesignSpecialist
+  brand_guidelines?: {
+    primary_color: string;
+    secondary_color: string;
+    font_family: string;
+    brand_voice: string;
+  };
+  design_tokens?: { // Added for ML-scoring compatibility
+    colors?: Record<string, string>;
+    fonts?: Record<string, string>;
+    spacing?: Record<string, string>;
+  };
 }
 
 // Quality issue structure
@@ -138,14 +152,22 @@ export interface ComplianceStatusReport {
   overall_compliance: ComplianceStatus;
 }
 
-// Analytics data structure
+// Analytics data structure (updated for ML-scoring)
 export interface QualityAnalytics {
-  execution_time: number;
-  tests_performed: number;
-  issues_detected: number;
-  fixes_applied: number;
-  confidence_score: number;
-  agent_efficiency: number;
+  execution_time?: number;
+  tests_performed?: number;
+  issues_detected?: number;
+  fixes_applied?: number;
+  confidence_score?: number;
+  agent_efficiency?: number;
+  // ML-scoring specific fields
+  total_checks: number;
+  passed_checks: number;
+  failed_checks: number;
+  processing_time_ms: number;
+  ml_score: number;
+  ml_issues: any[];
+  ml_recommendations: string[];
 }
 
 // Multi-destination validation configuration
@@ -204,8 +226,16 @@ export interface MultiDestinationValidationResults {
   };
 }
 
-// Task results structure
+// Task results structure (updated for ML-scoring)
 export interface TaskResults {
+  status: 'completed' | 'failed' | 'in_progress';
+  quality_score: number;
+  validation_passed: boolean;
+  recommendations: QualityRecommendations;
+  analytics: QualityAnalytics;
+  processing_time_ms: number;
+  timestamp: string;
+  // Optional legacy fields
   quality_data?: any;
   testing_data?: any;
   validation_data?: any;
@@ -214,17 +244,23 @@ export interface TaskResults {
   consultation_data?: any;
   detailed_check?: any;
   multi_destination_validation?: MultiDestinationValidationResults;
+  ml_quality_report?: any;
+  validation_result?: any;
+  error?: string;
 }
 
-// Recommendations structure
+// Quality recommendations structure (updated for ML-scoring)
 export interface QualityRecommendations {
   next_agent?: 'delivery_specialist';
   next_actions?: string[];
   critical_fixes?: string[];
+  critical_issues?: string[]; // Added for ML-scoring compatibility
+  improvements?: string[]; // Added for ML-scoring compatibility
   handoff_data?: any;
+  ml_recommendations?: string[];
 }
 
-// Main output interface for Quality Specialist Agent
+// Quality specialist output structure
 export interface QualitySpecialistOutput {
   success: boolean;
   task_type: string;
@@ -236,7 +272,7 @@ export interface QualitySpecialistOutput {
   error?: string;
 }
 
-// Service execution context
+// Quality service context structure
 export interface QualityServiceContext {
   traceId: string;
   startTime: number;
@@ -244,7 +280,7 @@ export interface QualityServiceContext {
   input: QualitySpecialistInput;
 }
 
-// Tool execution result
+// Tool execution result structure
 export interface ToolExecutionResult {
   success: boolean;
   data: any;
@@ -252,7 +288,7 @@ export interface ToolExecutionResult {
   execution_time: number;
 }
 
-// Performance metrics tracking
+// Performance metrics structure
 export interface PerformanceMetrics {
   averageExecutionTime: number;
   successRate: number;
@@ -263,7 +299,7 @@ export interface PerformanceMetrics {
   correctionAttempts: number;
 }
 
-// Agent capabilities
+// Agent capabilities structure
 export interface AgentCapabilities {
   agent_id: string;
   specialization: string;

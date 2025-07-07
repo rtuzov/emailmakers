@@ -9,11 +9,12 @@ import { z } from 'zod';
 import { splitFigmaSprite } from '../figma-sprite-splitter';
 
 export const assetSplitterSchema = z.object({
-  sprite_path: z.string().describe('Path to the PNG sprite file to split'),
-  h_gap: z.number().describe('Horizontal gap threshold in pixels'),
-  v_gap: z.number().describe('Vertical gap threshold in pixels'),
-  confidence_threshold: z.number().describe('Minimum confidence threshold for classification'),
-  output_prefix: z.string().default('asset').describe('Prefix for output filenames')
+  sprite_path: z.string().describe('Path to the sprite image file'),
+  output_directory: z.string().describe('Directory to save split assets'),
+  output_prefix: z.string().describe('Prefix for output filenames'),
+  h_gap: z.number().optional().describe('Horizontal gap between sprites'),
+  v_gap: z.number().optional().describe('Vertical gap between sprites'),
+  confidence_threshold: z.number().optional().describe('Confidence threshold for splitting algorithm')
 });
 
 export type AssetSplitterParams = z.infer<typeof assetSplitterSchema>;

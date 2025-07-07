@@ -509,7 +509,7 @@ export class HandoffValidator {
     const criticalFields = ['trace_id', 'timestamp', 'quality_score', 'html_content'];
     const fieldName = path[path.length - 1]?.toString();
     
-    if (criticalFields.includes(fieldName || '')) {
+    if (criticalFields.includes(fieldName ?? '')) {
       return 'critical';
     }
     

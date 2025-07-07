@@ -17,7 +17,7 @@ import {
   ServiceExecutionResult,
   ContentAnalysis
 } from '../types/design-types';
-import { ImagePlan, ImagePlanItem } from '../../../modules/image-planning';
+import { ImagePlan, ImagePlanItem } from '../../../tools/image-planning';
 
 export class AssetManagementService {
   private assetManager: AssetManager;
@@ -129,25 +129,13 @@ export class AssetManagementService {
           reasoning: 'AI-based tag selection using content analysis'
         };
       } catch (aiError) {
-        // Fallback to context-based selection
-        const contextTags = this.selectTagsByContext(context, tagsData);
-        return {
-          selected_tags: contextTags,
-          confidence_score: 0.7,
-          selection_method: 'context',
-          reasoning: 'Context-based tag selection due to AI failure'
-        };
+        console.error('❌ AI-based tag selection failed:', aiError);
+        throw aiError instanceof Error ? aiError : new Error(String(aiError));
       }
       
     } catch (error) {
-      // Final fallback
-      const fallbackTags = this.getFallbackTags(content);
-      return {
-        selected_tags: fallbackTags,
-        confidence_score: 0.3,
-        selection_method: 'fallback',
-        reasoning: 'Fallback tag selection due to system error'
-      };
+      console.error('❌ Tag selection failed:', error);
+      throw error instanceof Error ? error : new Error(String(error));
     }
   }
 
@@ -218,8 +206,8 @@ export class AssetManagementService {
       this.tagsCache.set(cacheKey, tagsData);
       return tagsData;
     } catch (error) {
-      console.warn('Failed to load tags data, using defaults');
-      return { categories: ['general'], seasonal: [], emotional: [], geographic: [] };
+      console.error('❌ Failed to load tags data.');
+      throw error;
     }
   }
 
@@ -289,18 +277,8 @@ export class AssetManagementService {
   /**
    * Get fallback tags
    */
-  private getFallbackTags(content: ExtractedContentPackage): string[] {
-    const fallbackTags = ['general', 'email', 'campaign'];
-    
-    if (content.title) {
-      fallbackTags.push('newsletter');
-    }
-    
-    if (content.description) {
-      fallbackTags.push('information');
-    }
-    
-    return fallbackTags.slice(0, 5);
+  private getFallbackTags(_: ExtractedContentPackage): never {
+    throw new Error('getFallbackTags is disabled by project policy.');
   }
 
   /**

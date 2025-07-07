@@ -10,16 +10,8 @@ import { ContentExtractor, ExtractedContentPackage } from '../core/content-extra
 import { AssetManager, StandardAsset, AssetSearchResult } from '../core/asset-manager';
 import { EmailRenderingService as CoreRenderingService, RenderingResult } from '../core/email-rendering-service';
 import { ErrorHandler, ErrorType } from '../core/error-handler';
-
-// Import new granular tools for better tracing visibility
-import { 
-  pricingIntelligenceTool,
-  dateIntelligenceTool,
-  figmaAssetSelectorTool,
-  mjmlCompilerTool,
-  htmlValidatorTool,
-  fileOrganizerTool
-} from '../modules/agent-tools';
+import { toolRegistry } from '../core/tool-registry';
+import { figmaCache } from '../../shared/cache/agent-cache';
 
 // Import modular services
 import { AssetManagementService } from './design/services/asset-management-service';
@@ -89,15 +81,8 @@ export class DesignSpecialistAgentV2 extends Agent {
         
         Always provide comprehensive analytics and prepare proper handoff data for quality specialist.
       `,
-      // Register granular tools for enhanced OpenAI SDK tracing visibility
-      tools: [
-        pricingIntelligenceTool,
-        dateIntelligenceTool,
-        figmaAssetSelectorTool,
-        mjmlCompilerTool,
-        htmlValidatorTool,
-        fileOrganizerTool
-      ]
+      // Load only design-specific tools for optimized performance
+      tools: toolRegistry.getToolsForAgent('design')
     });
 
     // Initialize core services

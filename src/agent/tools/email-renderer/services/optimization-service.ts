@@ -126,8 +126,8 @@ export class OptimizationService {
           rendering_engine: 'hybrid-pipeline',
           optimizations_applied: pipeline.pipeline_metadata.optimizations_applied,
           client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-          file_size: Buffer.byteLength(optimizedResult.html || '', 'utf8'),
-          load_time_estimate: this.calculateHybridLoadTime(optimizedResult.html || '')
+          file_size: Buffer.byteLength(optimizedResult.html ?? '', 'utf8'),
+          load_time_estimate: this.calculateHybridLoadTime(optimizedResult.html ?? '')
         },
         analytics,
         recommendations: this.generateHybridRecommendations(pipeline)
@@ -172,7 +172,13 @@ export class OptimizationService {
     
     // Get base HTML content
     const baseHtml = await this.getBaseHtmlContent(params);
+    
+    // Get MJML content from params
     const baseMjml = params.mjml_content || '';
+    
+    if (!baseMjml) {
+      console.warn('⚠️ No MJML content found, using HTML for optimization');
+    }
     
     // Create optimization context
     const context: OptimizationContext = {
@@ -208,7 +214,7 @@ export class OptimizationService {
     if (params.rendering_options?.email_client_optimization !== 'universal') {
       optimizedHtml = await this.optimizeForClient(
         optimizedHtml, 
-        params.rendering_options?.email_client_optimization || 'gmail'
+        params.rendering_options?.email_client_optimization ?? 'gmail'
       );
       optimizationsApplied.push('client_optimized');
     }
@@ -329,7 +335,7 @@ export class OptimizationService {
     
     // Stage 2: Apply enhancements in order
     const enhancementOrder = (config.priority_order && config.priority_order.length > 0) ? 
-      config.priority_order : (config.enhancements || []);
+      config.priority_order : (config.enhancements ?? []);
     
     for (const enhancement of enhancementOrder) {
       if (this.isValidEnhancement(enhancement) && config.enhancements && config.enhancements.includes(enhancement as any)) {

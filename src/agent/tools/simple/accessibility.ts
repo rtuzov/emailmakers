@@ -848,6 +848,6 @@ async function createDetailedReport(auditResults: any, includeRecommendations: b
 // Export minimal schema to satisfy imports
 export const accessibilitySchema = z.object({
   action: z.enum(['audit', 'fix', 'validate', 'report']),
-  html_content: z.string().optional(),
-  target_html: z.string().optional(),
+  html_content: z.string().optional().nullable(),
+  target_html: z.string().optional().nullable(),
 }); 

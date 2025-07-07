@@ -13,13 +13,15 @@ async function getLocalFigmaFoldersInfo() {
   return { success: false, error: 'getLocalFigmaFoldersInfo not implemented', data: null };
 }
 
-export const figmaFoldersSchema = z.object({
-  include_stats: z.boolean().default(true).describe('Include folder statistics (file counts, etc.)'),
-  include_priority: z.boolean().default(true).describe('Include priority information for folders'),
-  filter_by_priority: z.number().default(0).describe('Filter folders by minimum priority level (0 = no filter)')
+export const FigmaFoldersSchema = z.object({
+    project_id: z.string().describe('Figma project ID'),
+    access_token: z.string().describe('Figma access token'),
+    include_stats: z.boolean().describe('Include folder statistics (file counts, etc.)'),
+    include_priority: z.boolean().describe('Include priority information for folders'),
+    filter_by_priority: z.number().describe('Filter folders by minimum priority level (0 = no filter)')
 });
 
-export type FigmaFoldersParams = z.infer<typeof figmaFoldersSchema>;
+export type FigmaFoldersParams = z.infer<typeof FigmaFoldersSchema>;
 
 export interface FigmaFoldersResult {
   success: boolean;

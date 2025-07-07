@@ -6,8 +6,9 @@ import * as path from 'path';
 config({ path: path.resolve(process.cwd(), '.env.local') });
 
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
+import EmailFolderManager from './email-folder-manager';
 
 // Define ToolResult locally to avoid circular import
 interface ToolResult {
@@ -90,7 +91,7 @@ export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
 
     if (!awsAccessKey || !awsSecretKey || !s3Bucket) {
       console.warn('AWS credentials not available, using local URLs');
-      return generateLocalUrls(params);
+      return await generateLocalUrls(params);
     }
 
     try {
@@ -108,7 +109,7 @@ export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
 
     } catch (s3Error) {
       console.warn('S3 upload failed, using local URLs:', s3Error.message);
-      return generateLocalUrls(params);
+      return await generateLocalUrls(params);
     }
 
     } catch (error) {
@@ -153,46 +154,131 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
   };
 }
 
-function generateLocalUrls(params: UploadParams): ToolResult {
-  // Generate local development URLs
-  const campaignId = `local-${Date.now()}-${randomUUID().substring(0, 8)}`;
-  const baseUrl = `http://localhost:3000/generated/${campaignId}`;
-  
-  // Use full HTML for size calculation
-  const htmlToUse = params.html?.includes('...[truncated]') ? 
-    params.html.replace('...[truncated]', '') : params.html;
-  
-  // Calculate file sizes
-  const htmlSize = Buffer.byteLength(htmlToUse, 'utf8') / 1024;
-  const mjmlSize = params.mjml_source ? Buffer.byteLength(params.mjml_source, 'utf8') / 1024 : 0;
-  const totalSize = htmlSize + mjmlSize;
-  
-  // Generate local URLs
-  const htmlUrl = `${baseUrl}/email.html`;
-  const mjmlUrl = params.mjml_source ? `${baseUrl}/email.mjml` : undefined;
-  const assetUrls: string[] = [];
+async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
+  try {
+    // Use EmailFolderManager to create proper campaign structure
+    const campaignId = params.campaign_id || `auto_${Date.now()}`;
+    const emailFolder = await EmailFolderManager.createEmailFolder(
+      `Auto Campaign ${new Date().toISOString()}`,
+      'auto-generated'
+    );
+    
+    const baseUrl = `http://localhost:3000/generated/${emailFolder.campaignId}`;
+    
+    // Use full HTML for size calculation
+    const htmlToUse = params.html?.includes('...[truncated]') ? 
+      params.html.replace('...[truncated]', '') : params.html;
+    
+    // Calculate file sizes
+    const htmlSize = Buffer.byteLength(htmlToUse, 'utf8') / 1024;
+    const mjmlSize = params.mjml_source ? Buffer.byteLength(params.mjml_source, 'utf8') / 1024 : 0;
+    const totalSize = htmlSize + mjmlSize;
+    
+    // Generate local URLs
+    const htmlUrl = `${baseUrl}/email.html`;
+    const mjmlUrl = params.mjml_source ? `${baseUrl}/email.mjml` : undefined;
+    const assetUrls: string[] = [];
 
-  // Save files locally
-  saveToLocal(params, campaignId).catch(console.error);
+    // Save files using new system
+    await saveToLocalWithSharedAssets(params, emailFolder);
 
-  const result: UploadResult = {
-    html_url: htmlUrl,
-    mjml_url: mjmlUrl,
-    asset_urls: assetUrls,
-    total_size_kb: Math.round(totalSize * 10) / 10,
-    upload_summary: `Generated ${1 + (mjmlUrl ? 1 : 0) + assetUrls.length} local URLs (${totalSize.toFixed(1)}KB total)`
-  };
+    const result: UploadResult = {
+      html_url: htmlUrl,
+      mjml_url: mjmlUrl,
+      asset_urls: assetUrls,
+      total_size_kb: Math.round(totalSize * 10) / 10,
+      upload_summary: `Generated ${1 + (mjmlUrl ? 1 : 0) + assetUrls.length} local URLs (${totalSize.toFixed(1)}KB total) using shared assets`
+    };
 
-  return {
-    success: true,
-    data: result,
-    metadata: {
-      storage_type: 'local',
-      base_url: baseUrl,
-      warning: 'AWS credentials not available, using local storage',
-      timestamp: new Date().toISOString()
+    return {
+      success: true,
+      data: result,
+      metadata: {
+        storage_type: 'local_shared',
+        campaign_id: emailFolder.campaignId,
+        base_url: baseUrl,
+        warning: 'AWS credentials not available, using local storage with shared assets',
+        timestamp: new Date().toISOString()
+      }
+    };
+  } catch (error) {
+    console.error('Failed to generate local URLs with shared assets:', error);
+    // ❌ FALLBACK POLICY: do not generate local URLs automatically. Fail fast.
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+      metadata: {
+        storage_type: 'none',
+        timestamp: new Date().toISOString(),
+        note: 'Operation aborted due to failure; fallback disabled by policy'
+      }
+    };
+  }
+}
+
+// Removed generateLocalUrlsFallback: fallback logic disabled. Any attempt to call the old function will now throw.
+function generateLocalUrlsFallback(_: UploadParams): never {
+  throw new Error('generateLocalUrlsFallback is disabled by project policy.');
+}
+
+async function saveToLocalWithSharedAssets(params: UploadParams, emailFolder: any): Promise<void> {
+  try {
+    // Process HTML to replace Figma asset placeholders using shared assets
+    let processedHtml = params.html;
+    const figmaAssetPlaceholders = processedHtml.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/g);
+    
+    if (figmaAssetPlaceholders) {
+      console.log(`🎨 Processing ${figmaAssetPlaceholders.length} Figma asset placeholders with shared assets...`);
+      
+      for (const placeholder of figmaAssetPlaceholders) {
+        const filename = placeholder.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/)?.[1];
+        
+        if (!filename || typeof filename !== 'string' || !filename.trim()) {
+          throw new Error(`Invalid filename extracted from placeholder: ${placeholder}`);
+        }
+        
+        // Try to find the asset in figma-assets directory
+        const assetPath = path.join(process.cwd(), 'figma-assets', filename);
+        
+        try {
+          const fs = await import('fs/promises');
+          await fs.access(assetPath);
+          
+          // Add asset to shared storage and create link in campaign
+          const { hash } = await EmailFolderManager.addSharedAsset(emailFolder, assetPath, filename);
+          
+          // Create production URL pointing to shared asset
+          const assetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/generated/${emailFolder.campaignId}/assets/${filename}`;
+          processedHtml = processedHtml.replace(placeholder, assetUrl);
+          
+          console.log(`✅ Integrated shared Figma asset: ${filename} (${hash})`);
+          
+        } catch (error) {
+          throw new Error(`Required Figma asset not found: ${filename}. Please ensure all assets are available in figma-assets directory.`);
+        }
+      }
     }
-  };
+
+    // Save processed HTML using EmailFolderManager
+    await EmailFolderManager.saveHtml(emailFolder, processedHtml);
+
+    // Save MJML source if available
+    if (params.mjml_source) {
+      await EmailFolderManager.saveMjml(emailFolder, params.mjml_source);
+    }
+
+    // Update campaign status
+    await EmailFolderManager.updateMetadata(emailFolder, {
+      status: 'completed',
+      figma_assets_processed: figmaAssetPlaceholders?.length || 0
+    });
+
+    console.log(`✅ Campaign saved with shared assets: ${emailFolder.campaignId}`);
+
+  } catch (error) {
+    console.error('Failed to save files with shared assets:', error);
+    throw error;
+  }
 }
 
 async function saveToLocal(params: UploadParams, campaignId: string): Promise<void> {
@@ -276,44 +362,12 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
 }
 
 /**
- * Find a fallback asset for missing files
+ * Previously returned a replacement asset when a required file was missing.
+ * ❌ FALLBACK POLICY: Providing substitute assets is forbidden.
+ * Any invocation of this function now results in an immediate failure.
  */
-function findFallbackAsset(filename: string): string | null {
-  // Map common mock filenames to real Figma assets
-  const fallbackMap: Record<string, string> = {
-    'rabbit-happy.png': 'заяц -Общие- 01-x1.png',
-    'rabbit-angry.png': 'заяц -Общие- 03-x1.png',
-    'rabbit-neutral.png': 'заяц -Общие- 05-x1.png',
-    'rabbit-excited.png': 'заяц «Подборка»01-x1.png',
-    'rabbit-confused.png': 'заяц «Вопрос-ответ» 01-x1.png',
-    'rabbit-news.png': 'заяц «Новости» 01-x1.png',
-    'rabbit-deal.png': 'заяц -Билет дня- 01-x1.png',
-    'arrow-icon.png': 'стрелка 1_01-x4.png',
-    'heart-icon.png': 'сердце_01-x4.png',
-    'vector-icon.png': 'Vector-x4.png'
-  };
-  
-  // Direct mapping
-  if (fallbackMap[filename]) {
-    return fallbackMap[filename];
-  }
-  
-  // Pattern-based fallback for rabbit variants
-  if (filename.includes('rabbit-general-')) {
-    return 'заяц -Общие- 02-x1.png';
-  }
-  
-  // Default fallback for any rabbit
-  if (filename.includes('rabbit')) {
-    return 'заяц -Общие- 01-x1.png';
-  }
-  
-  // Default fallback for any icon
-  if (filename.includes('icon')) {
-    return 'Vector-x4.png';
-  }
-  
-  return null;
+function findFallbackAsset(_filename: string): never {
+  throw new Error('findFallbackAsset is disabled by project policy – required asset missing.');
 }
 
 /**

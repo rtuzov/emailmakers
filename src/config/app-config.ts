@@ -34,23 +34,23 @@ export const envSchema = z.object({
   OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required').describe('OpenAI API key for agents'),
   
   // Anthropic Configuration (fallback)
-  ANTHROPIC_API_KEY: z.string().optional().describe('Anthropic API key for fallback'),
+  ANTHROPIC_API_KEY: z.string().optional().nullable().describe('Anthropic API key for fallback'),
   
   // External Services
-  FIGMA_ACCESS_TOKEN: z.string().optional().describe('Figma API token for design assets'),
+  FIGMA_ACCESS_TOKEN: z.string().optional().nullable().describe('Figma API token for design assets'),
   
   // AWS Configuration
-  AWS_ACCESS_KEY_ID: z.string().optional(),
-  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_ACCESS_KEY_ID: z.string().optional().nullable(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional().nullable(),
   AWS_REGION: z.string().default('us-east-1'),
   
   // Redis Configuration  
-  REDIS_URL: z.string().optional(),
+  REDIS_URL: z.string().optional().nullable(),
   
   // OpenAI Agents SDK Configuration (из документации)
-  DEBUG: z.string().optional().describe('Debug logging: openai-agents*'),
-  OPENAI_AGENTS_DONT_LOG_MODEL_DATA: z.string().optional().transform(val => val === '1'),
-  OPENAI_AGENTS_DONT_LOG_TOOL_DATA: z.string().optional().transform(val => val === '1'),
+  DEBUG: z.string().optional().nullable().describe('Debug logging: openai-agents*'),
+  OPENAI_AGENTS_DONT_LOG_MODEL_DATA: z.string().nullable().optional().transform(val => val === '1'),
+  OPENAI_AGENTS_DONT_LOG_TOOL_DATA: z.string().nullable().optional().transform(val => val === '1'),
   
   // Custom Application Settings
   MAX_FILE_SIZE_MB: z.string().default('25').transform(Number),

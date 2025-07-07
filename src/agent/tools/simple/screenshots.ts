@@ -11,27 +11,33 @@ import { z } from 'zod';
 import { generateScreenshots } from '../screenshot-generator';
 
 
-export const screenshotsSchema = z.object({
-  html_content: z.string().describe('HTML email content to screenshot'),
-  screenshot_config: z.object({
-    clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).default(['gmail', 'outlook']).describe('Email clients to capture'),
-    devices: z.array(z.enum(['desktop', 'mobile', 'tablet'])).default(['desktop', 'mobile']).describe('Device types to capture'),
-    capture_modes: z.array(z.enum(['light', 'dark', 'images_blocked', 'images_enabled'])).default(['light', 'images_enabled']).describe('Rendering modes')
-  }).default({}).describe('Screenshot capture configuration'),
-  output_settings: z.object({
-    format: z.enum(['png', 'jpg', 'webp']).default('png').describe('Image format'),
-    quality: z.number().min(50).max(100).default(90).describe('Image quality percentage'),
-    resolution: z.enum(['standard', 'high', 'retina']).default('standard').describe('Screenshot resolution'),
-    include_annotations: z.boolean().default(false).describe('Add client/device annotations')
-  }).default({}).describe('Output format settings'),
-  comparison_options: z.object({
-    enable_comparison: z.boolean().default(true).describe('Generate comparison views'),
-    highlight_differences: z.boolean().default(true).describe('Highlight rendering differences'),
-    baseline_client: z.enum(['gmail', 'outlook', 'apple_mail']).default('gmail').describe('Reference client for comparison')
-  }).default({}).describe('Cross-client comparison options')
+const CaptureConfigSchema = z.object({
+    clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).describe('Email clients to capture'),
+    devices: z.array(z.enum(['desktop', 'mobile', 'tablet'])).describe('Device types to capture'),
+    capture_modes: z.array(z.enum(['light', 'dark', 'images_blocked', 'images_enabled'])).describe('Rendering modes')
 });
 
-export type ScreenshotsParams = z.infer<typeof screenshotsSchema>;
+const OutputSettingsSchema = z.object({
+    format: z.enum(['png', 'jpg', 'webp']).describe('Image format'),
+    quality: z.number().min(50).max(100).describe('Image quality percentage'),
+    resolution: z.enum(['standard', 'high', 'retina']).describe('Screenshot resolution'),
+    include_annotations: z.boolean().describe('Add client/device annotations')
+});
+
+const ComparisonOptionsSchema = z.object({
+    enable_comparison: z.boolean().describe('Generate comparison views'),
+    highlight_differences: z.boolean().describe('Highlight rendering differences'),
+    baseline_client: z.enum(['gmail', 'outlook', 'apple_mail']).describe('Reference client for comparison')
+});
+
+export const ScreenshotsSchema = z.object({
+    email_content: z.string().describe('HTML email content to capture'),
+    capture_config: CaptureConfigSchema.describe('Screenshot capture configuration'),
+    output_settings: OutputSettingsSchema.describe('Output format settings'),
+    comparison_options: ComparisonOptionsSchema.describe('Cross-client comparison options')
+});
+
+export type ScreenshotsParams = z.infer<typeof ScreenshotsSchema>;
 
 export interface ScreenshotsResult {
   success: boolean;
@@ -89,7 +95,7 @@ export async function screenshots(params: ScreenshotsParams): Promise<Screenshot
 
     try {
       // Validate input
-      if (!params.html_content || params.html_content.trim().length === 0) {
+      if (!params.email_content || params.email_content.trim().length === 0) {
         const errorResult: ScreenshotsResult = {
           success: false,
           screenshots: [],
@@ -111,7 +117,7 @@ export async function screenshots(params: ScreenshotsParams): Promise<Screenshot
       }
 
       // Default configuration
-      const config = params.screenshot_config;
+      const config = params.capture_config;
       const clients = config.clients;
       const devices = config.devices;
       const modes = config.capture_modes;
@@ -127,7 +133,7 @@ export async function screenshots(params: ScreenshotsParams): Promise<Screenshot
             
             try {
               const screenshot = await captureSingleScreenshot(
-                params.html_content,
+                params.email_content,
                 client,
                 device,
                 mode,

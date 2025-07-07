@@ -23,58 +23,58 @@ export const contextProviderSchema = z.object({
   action: z.enum(['get_current_context', 'get_seasonal_context', 'get_cultural_context', 'get_marketing_context', 'get_travel_context', 'get_comprehensive_context']).describe('Context provision operation'),
   
   // Базовые параметры (только простые типы)
-  target_date: z.string().default('').describe('Target date for context (ISO format, empty for current date)'),
-  timezone: z.string().default('Europe/Moscow').describe('Timezone for date/time context'),
-  locale: z.enum(['ru-RU', 'en-US', 'en-GB', 'de-DE', 'fr-FR']).default('ru-RU').describe('Locale for cultural context'),
+  target_date: z.string().describe('Target date for context (ISO format, empty for current date)'),
+  timezone: z.string().describe('Timezone for date/time context'),
+  locale: z.enum(['ru-RU', 'en-US', 'en-GB', 'de-DE', 'fr-FR']).describe('Locale for cultural context'),
   
   // География (упрощено)
-  primary_market: z.enum(['russia', 'europe', 'global', 'cis']).default('russia').describe('Primary geographic market'),
-  target_cities: z.array(z.string()).default([]).describe('Specific cities for localized context'),
-  include_weather: z.boolean().default(true).describe('Include weather context'),
-  include_events: z.boolean().default(true).describe('Include local events context'),
+  primary_market: z.enum(['russia', 'europe', 'global', 'cis']).describe('Primary geographic market'),
+  target_cities: z.array(z.string()).describe('Specific cities for localized context'),
+  include_weather: z.boolean().describe('Include weather context'),
+  include_events: z.boolean().describe('Include local events context'),
   
   // Сезонность (упрощено)
-  include_holidays: z.boolean().default(true).describe('Include holiday information'),
-  include_seasons: z.boolean().default(true).describe('Include seasonal context'),
-  holiday_types: z.array(z.enum(['national', 'religious', 'cultural', 'commercial', 'travel'])).default(['national', 'cultural', 'travel']).describe('Types of holidays to include'),
-  seasonal_depth: z.enum(['basic', 'detailed', 'comprehensive']).default('detailed').describe('Depth of seasonal analysis'),
+  include_holidays: z.boolean().describe('Include holiday information'),
+  include_seasons: z.boolean().describe('Include seasonal context'),
+  holiday_types: z.array(z.enum(['national', 'religious', 'cultural', 'commercial', 'travel'])).describe('Types of holidays to include'),
+  seasonal_depth: z.enum(['basic', 'detailed', 'comprehensive']).describe('Depth of seasonal analysis'),
   
   // Культура (упрощено)
-  cultural_events: z.boolean().default(true).describe('Include cultural events and celebrations'),
-  regional_preferences: z.boolean().default(true).describe('Include regional travel preferences'),
-  demographic_insights: z.boolean().default(true).describe('Include demographic trend data'),
-  language_nuances: z.boolean().default(true).describe('Include language and communication preferences'),
+  cultural_events: z.boolean().describe('Include cultural events and celebrations'),
+  regional_preferences: z.boolean().describe('Include regional travel preferences'),
+  demographic_insights: z.boolean().describe('Include demographic trend data'),
+  language_nuances: z.boolean().describe('Include language and communication preferences'),
   
   // Маркетинг (упрощено)
-  travel_trends: z.boolean().default(true).describe('Include current travel trends'),
-  pricing_trends: z.boolean().default(true).describe('Include pricing trend context'),
-  competitor_analysis: z.boolean().default(false).describe('Include competitor context'),
-  campaign_optimization: z.boolean().default(true).describe('Include campaign optimization suggestions'),
-  urgency_factors: z.boolean().default(true).describe('Analyze urgency and timing factors'),
+  travel_trends: z.boolean().describe('Include current travel trends'),
+  pricing_trends: z.boolean().describe('Include pricing trend context'),
+  competitor_analysis: z.boolean().describe('Include competitor context'),
+  campaign_optimization: z.boolean().describe('Include campaign optimization suggestions'),
+  urgency_factors: z.boolean().describe('Analyze urgency and timing factors'),
   
   // Путешествия (упрощено)
-  seasonal_demand: z.boolean().default(true).describe('Include seasonal travel demand patterns'),
-  destination_trends: z.boolean().default(true).describe('Include popular destination trends'),
-  booking_patterns: z.boolean().default(true).describe('Include booking behavior patterns'),
-  airline_insights: z.boolean().default(true).describe('Include airline industry insights'),
-  visa_requirements: z.boolean().default(false).describe('Include visa and travel requirement updates'),
+  seasonal_demand: z.boolean().describe('Include seasonal travel demand patterns'),
+  destination_trends: z.boolean().describe('Include popular destination trends'),
+  booking_patterns: z.boolean().describe('Include booking behavior patterns'),
+  airline_insights: z.boolean().describe('Include airline industry insights'),
+  visa_requirements: z.boolean().describe('Include visa and travel requirement updates'),
   
   // Кампания (упрощено)
-  campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter', 'none']).default('none').describe('Type of email campaign'),
-  target_audience: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers', 'general']).default('general').describe('Primary target audience'),
-  content_tone: z.enum(['formal', 'casual', 'friendly', 'urgent', 'premium']).default('friendly').describe('Desired content tone'),
-  brand_voice: z.enum(['professional', 'approachable', 'innovative', 'trustworthy', 'adventurous']).default('professional').describe('Brand voice alignment'),
+  campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter', 'none']).describe('Type of email campaign'),
+  target_audience: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers', 'general']).describe('Primary target audience'),
+  content_tone: z.enum(['formal', 'casual', 'friendly', 'urgent', 'premium']).describe('Desired content tone'),
+  brand_voice: z.enum(['professional', 'approachable', 'innovative', 'trustworthy', 'adventurous']).describe('Brand voice alignment'),
   
   // Обогащение данных (упрощено)
-  include_analytics: z.boolean().default(true).describe('Include contextual analytics'),
-  include_recommendations: z.boolean().default(true).describe('Include actionable recommendations'),
-  include_predictions: z.boolean().default(true).describe('Include trend predictions'),
-  historical_comparison: z.boolean().default(true).describe('Include historical context comparisons'),
-  real_time_data: z.boolean().default(true).describe('Include real-time data where available'),
+  include_analytics: z.boolean().describe('Include contextual analytics'),
+  include_recommendations: z.boolean().describe('Include actionable recommendations'),
+  include_predictions: z.boolean().describe('Include trend predictions'),
+  historical_comparison: z.boolean().describe('Include historical context comparisons'),
+  real_time_data: z.boolean().describe('Include real-time data where available'),
   
   // Форматирование вывода
-  output_format: z.enum(['structured', 'narrative', 'bullet_points', 'json', 'markdown']).default('structured').describe('Output format preference'),
-  detail_level: z.enum(['minimal', 'standard', 'detailed', 'comprehensive']).default('standard').describe('Level of detail in context')
+  output_format: z.enum(['structured', 'narrative', 'bullet_points', 'json', 'markdown']).describe('Output format preference'),
+  detail_level: z.enum(['minimal', 'standard', 'detailed', 'comprehensive']).describe('Level of detail in context')
 });
 
 export type ContextProviderParams = z.infer<typeof contextProviderSchema>;

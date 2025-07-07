@@ -14,10 +14,10 @@ import { uploadToS3 } from '../upload';
 export const s3UploadSchema = z.object({
   file_path: z.string().describe('Local file path to upload'),
   s3_key: z.string().describe('S3 object key (path in bucket)'),
-  bucket: z.string().default('email-templates').describe('S3 bucket name (uses default email-templates)'),
-  content_type: z.string().default('text/html').describe('MIME type of the file (defaults to text/html)'),
-  public_access: z.boolean().default(false).describe('Whether file should be publicly accessible (defaults to false)'),
-  metadata: z.string().default('{}').describe('Additional metadata for the file as JSON string')
+  bucket: z.string().describe('S3 bucket name'),
+  content_type: z.string().describe('MIME type of the file'),
+  public_access: z.boolean().describe('Whether file should be publicly accessible'),
+  metadata: z.string().describe('Additional metadata for the file as JSON string')
 });
 
 export type S3UploadParams = z.infer<typeof s3UploadSchema>;

@@ -243,9 +243,7 @@ function loadAirportsData(): Map<string, AirportData> {
     
   } catch (error) {
     console.error('❌ Failed to load airports.csv:', error);
-    // Return empty map as fallback
-    airportsData = new Map();
-    return airportsData;
+    throw error instanceof Error ? error : new Error(String(error));
   }
 }
 

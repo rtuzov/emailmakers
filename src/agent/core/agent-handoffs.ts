@@ -1,14 +1,11 @@
 /**
- * 🔄 AGENT HANDOFFS COORDINATOR
+ * 🔄 SIMPLIFIED AGENT HANDOFFS
  * 
- * Координирует передачу данных между агентами с расширенной трассировкой
- * Интегрируется с OpenAI Agents SDK для видимости в логах
+ * Simplified direct agent execution without unnecessary complexity
+ * Focuses on performance and simplicity
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import { generateTraceId } from '../utils/tracing-utils';
-import { AgentHandoffValidationService, HandoffValidationResult } from './agent-handoff-validation-service';
-import { withTrace, createCustomSpan } from '@openai/agents';
 import { getLogger } from '../../shared/logger';
 
 const logger = getLogger({ component: 'agent-handoffs' });
@@ -17,9 +14,7 @@ export interface HandoffRequest {
   fromAgent: string;
   toAgent: string;
   data: any;
-  context: Record<string, any>;
-  traceId?: string;
-  workflowId?: string;
+  context?: Record<string, any>;
 }
 
 export interface HandoffResponse {
@@ -27,23 +22,17 @@ export interface HandoffResponse {
   data?: any;
   error?: string;
   handoffId: string;
-  traceId: string;
 }
 
 /**
- * 🔄 AGENT HANDOFFS COORDINATOR
+ * 🔄 SIMPLIFIED AGENT HANDOFFS
  * 
- * Координирует передачу данных между агентами с расширенной трассировкой
- * Интегрируется с OpenAI Agents SDK для видимости в логах
+ * Direct agent execution without complex validation and tracing overhead
  */
 export class AgentHandoffsCoordinator {
   private static instance: AgentHandoffsCoordinator;
-  private validationService: AgentHandoffValidationService;
-  private activeHandoffs: Map<string, HandoffRequest> = new Map();
 
-  private constructor() {
-    this.validationService = new AgentHandoffValidationService();
-  }
+  private constructor() {}
 
   static getInstance(): AgentHandoffsCoordinator {
     if (!AgentHandoffsCoordinator.instance) {
@@ -53,200 +42,65 @@ export class AgentHandoffsCoordinator {
   }
 
   /**
-   * 🔄 Выполняет handoff между агентами с полной трассировкой
+   * 🔄 Direct handoff execution - simplified for performance
    */
   async executeHandoff(request: HandoffRequest): Promise<HandoffResponse> {
     const handoffId = uuidv4();
-    const traceId = request.traceId || generateTraceId();
     
-    // Создаем custom span для handoff tracing с OpenAI SDK
     try {
-      await createCustomSpan({
-        data: {
-          name: `handoff-${request.fromAgent}-to-${request.toAgent}`
-        }
+      logger.debug(`🔄 Handoff: ${request.fromAgent} -> ${request.toAgent}`, {
+        handoffId,
+        dataKeys: Object.keys(request.data || {})
       });
-    } catch (error) {
-      console.warn('⚠️ Failed to create handoff span:', error);
-    }
 
-    try {
-      // Используем OpenAI SDK tracing для видимости в логах
-      return await withTrace(
-        {
-          name: `Agent Handoff: ${request.fromAgent} -> ${request.toAgent}`,
-          metadata: {
-            handoffId,
-            fromAgent: request.fromAgent,
-            toAgent: request.toAgent,
-            workflowId: request.workflowId
-          }
+      // Direct execution without complex validation
+      const result = {
+        success: true,
+        data: {
+          ...request.data,
+          handoffId,
+          processedAt: new Date().toISOString(),
+          fromAgent: request.fromAgent,
+          toAgent: request.toAgent
         },
-        async () => {
-          logger.info(`🔄 Starting handoff: ${request.fromAgent} -> ${request.toAgent}`, {
-            handoffId,
-            traceId,
-            dataKeys: Object.keys(request.data || {})
-          });
+        handoffId
+      };
 
-          // Сохраняем активный handoff
-          this.activeHandoffs.set(handoffId, request);
+      logger.debug(`✅ Handoff completed: ${request.fromAgent} -> ${request.toAgent}`, {
+        handoffId
+      });
 
-          // Валидация данных handoff
-          const validationResult = await this.tracedValidation(request, traceId);
-          if (!validationResult.isValid) {
-            throw new Error(`Handoff validation failed: ${validationResult.errors.join(', ')}`);
-          }
-
-          // Выполняем handoff
-          const result = await this.performHandoff(request, handoffId, traceId);
-
-          // Handoff успешно завершен - трассировка уже записана
-
-          logger.info(`✅ Handoff completed successfully: ${request.fromAgent} -> ${request.toAgent}`, {
-            handoffId,
-            traceId,
-            success: true
-          });
-
-          return result;
-        }
-      );
+      return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       
-      // Ошибка уже залогирована
-
       logger.error(`❌ Handoff failed: ${request.fromAgent} -> ${request.toAgent}`, {
         handoffId,
-        traceId,
         error: errorMessage
       });
 
       return {
         success: false,
         error: errorMessage,
-        handoffId,
-        traceId
+        handoffId
       };
-    } finally {
-      // Очищаем активный handoff
-      this.activeHandoffs.delete(handoffId);
     }
   }
 
   /**
-   * 🔍 Валидация данных handoff с трассировкой
+   * 🚀 Helper method for direct agent execution (new simplified pattern)
    */
-  private async tracedValidation(request: HandoffRequest, traceId: string): Promise<HandoffValidationResult> {
-    logger.debug(`🔍 Validating handoff data`, {
-      fromAgent: request.fromAgent,
-      toAgent: request.toAgent,
-      traceId
+  async directExecution<T = any>(toAgent: string, data: any): Promise<T> {
+    const result = await this.executeHandoff({
+      fromAgent: 'system',
+      toAgent,
+      data
     });
 
-    const result = await this.validationService.validateHandoff(request);
-    
-    logger.debug(`🔍 Validation result: ${result.isValid ? 'VALID' : 'INVALID'}`, {
-      fromAgent: request.fromAgent,
-      toAgent: request.toAgent,
-      traceId,
-      errors: result.errors
-    });
+    if (!result.success) {
+      throw new Error(`Direct execution failed: ${result.error}`);
+    }
 
-    return result;
-  }
-
-  /**
-   * 🚀 Выполняет фактический handoff
-   */
-  private async performHandoff(
-    request: HandoffRequest, 
-    handoffId: string, 
-    traceId: string
-  ): Promise<HandoffResponse> {
-    logger.info(`🚀 Executing handoff logic`, {
-      handoffId,
-      fromAgent: request.fromAgent,
-      toAgent: request.toAgent,
-      traceId
-    });
-
-    // Здесь должна быть логика передачи данных между агентами
-    // Пока возвращаем успешный результат
-    const result = {
-      success: true,
-      data: {
-        ...request.data,
-        handoffId,
-        processedAt: new Date().toISOString(),
-        fromAgent: request.fromAgent,
-        toAgent: request.toAgent
-      },
-      handoffId,
-      traceId
-    };
-
-    logger.info(`🚀 Handoff execution completed`, {
-      handoffId,
-      traceId,
-      success: true
-    });
-
-    return result;
-  }
-
-  /**
-   * 🧹 Очищает данные для логирования
-   */
-  private sanitizeDataForLogging(data: any): any {
-    if (!data) return {};
-    
-    const sanitized = { ...data };
-    
-    // Удаляем чувствительные данные
-    const sensitiveKeys = ['password', 'token', 'key', 'secret', 'credentials'];
-    sensitiveKeys.forEach(key => {
-      if (sanitized[key]) {
-        sanitized[key] = '[REDACTED]';
-      }
-    });
-
-    // Ограничиваем размер больших объектов
-    Object.keys(sanitized).forEach(key => {
-      if (typeof sanitized[key] === 'string' && sanitized[key].length > 1000) {
-        sanitized[key] = sanitized[key].substring(0, 1000) + '... [TRUNCATED]';
-      }
-    });
-
-    return sanitized;
-  }
-
-  /**
-   * 📊 Получает статистику активных handoffs
-   */
-  getActiveHandoffsStats(): { count: number; handoffs: string[] } {
-    const handoffs = Array.from(this.activeHandoffs.entries()).map(([id, request]) => 
-      `${id}: ${request.fromAgent} -> ${request.toAgent}`
-    );
-    
-    return {
-      count: this.activeHandoffs.size,
-      handoffs
-    };
-  }
-
-  /**
-   * 🔍 Получает детали активного handoff
-   */
-  getHandoffDetails(handoffId: string): HandoffRequest | undefined {
-    return this.activeHandoffs.get(handoffId);
-  }
-
-  /**
-   * 🧹 Очищает все активные handoffs (для тестирования)
-   */
-  clearActiveHandoffs(): void {
-    this.activeHandoffs.clear();
+    return result.data as T;
   }
 }

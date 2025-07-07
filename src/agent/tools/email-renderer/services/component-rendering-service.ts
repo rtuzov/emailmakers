@@ -52,7 +52,7 @@ export class ComponentRenderingService {
           rendering_stats: {
             execution_time_ms: analytics.execution_time,
             components_rendered: 1,
-            optimizations_applied: optimizedResult.integration_points?.css_dependencies?.length || 0
+            optimizations_applied: optimizedResult.integration_points?.css_dependencies?.length ?? 0
           }
         },
         rendering_metadata: {
@@ -116,12 +116,12 @@ export class ComponentRenderingService {
           rendering_stats: optimizedResult.stats
         },
         rendering_metadata: {
-          template_type: params.advanced_config?.template_type || 'promotional',
+          template_type: params.advanced_config?.template_type ?? 'promotional',
           rendering_engine: 'advanced-system',
-          optimizations_applied: optimizedResult.optimizations_applied || [],
+          optimizations_applied: optimizedResult.optimizations_applied ?? [],
           client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-          file_size: Buffer.byteLength(optimizedResult.html || '', 'utf8'),
-          load_time_estimate: this.calculateAdvancedLoadTime(optimizedResult.html || '')
+          file_size: Buffer.byteLength(optimizedResult.html ?? '', 'utf8'),
+          load_time_estimate: this.calculateAdvancedLoadTime(optimizedResult.html ?? '')
         },
         analytics,
         recommendations: this.generateAdvancedRecommendations(optimizedResult)
@@ -179,12 +179,12 @@ export class ComponentRenderingService {
           rendering_stats: optimizedResult.stats
         },
         rendering_metadata: {
-          template_type: `seasonal_${params.seasonal_config?.season || 'generic'}`,
+          template_type: `seasonal_${params.seasonal_config?.season ?? 'generic'}`,
           rendering_engine: 'seasonal-system',
-          optimizations_applied: optimizedResult.optimizations_applied || [],
+          optimizations_applied: optimizedResult.optimizations_applied ?? [],
           client_compatibility: ['gmail', 'outlook', 'apple_mail', 'yahoo'],
-          file_size: Buffer.byteLength(optimizedResult.html || '', 'utf8'),
-          load_time_estimate: this.calculateSeasonalLoadTime(optimizedResult.html || '')
+          file_size: Buffer.byteLength(optimizedResult.html ?? '', 'utf8'),
+          load_time_estimate: this.calculateSeasonalLoadTime(optimizedResult.html ?? '')
         },
         analytics,
         recommendations: this.generateSeasonalRecommendations(optimizedResult, params.seasonal_config)
@@ -240,11 +240,11 @@ export class ComponentRenderingService {
     }
     
     return {
-      component_type: params.component_type || 'body',
+      component_type: params.component_type ?? 'body',
       component_props: componentProps,
-      content_data: params.content_data || {},
+      content_data: params.content_data ?? {},
       brand_guidelines: params.brand_guidelines,
-      rendering_options: params.rendering_options || {}
+      rendering_options: params.rendering_options ?? {}
     };
   }
   
@@ -352,11 +352,11 @@ export class ComponentRenderingService {
     
     try {
       const result = await advancedComponentSystem({
-        template_type: params.advanced_config?.template_type || 'promotional',
-        customization_level: params.advanced_config?.customization_level || 'standard',
-        content_data: params.content_data || {},
-        assets: params.assets || [],
-        brand_guidelines: params.brand_guidelines || {}
+        template_type: params.advanced_config?.template_type ?? 'promotional',
+        customization_level: params.advanced_config?.customization_level ?? 'standard',
+        content_data: params.content_data ?? {},
+        assets: params.assets ?? [],
+        brand_guidelines: params.brand_guidelines ?? {}
       });
       
       console.log('✅ Advanced component system completed');

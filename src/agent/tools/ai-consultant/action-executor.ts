@@ -206,20 +206,7 @@ export class ActionExecutor {
       
       console.error(`❌ Command failed: ${command.tool}`, error);
 
-      // Try fallback if available
-      if (command.fallback_strategy) {
-        console.log(`🔄 Trying fallback strategy for: ${command.tool}`);
-        try {
-          const fallbackResult = await this.executeCommand(command.fallback_strategy, context);
-          return {
-            ...fallbackResult,
-            recommendation_id: commandId,
-            command: command // Keep original command reference
-          };
-        } catch (fallbackError) {
-          console.error(`❌ Fallback also failed: ${command.tool}`, fallbackError);
-        }
-      }
+      // ❌ FALLBACK POLICY: do not attempt alternative strategies
 
       return {
         recommendation_id: commandId,

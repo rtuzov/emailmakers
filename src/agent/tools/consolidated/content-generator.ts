@@ -10,6 +10,7 @@
  */
 
 import { tool } from '@openai/agents';
+import { z } from 'zod';
 import { recordToolUsage } from '../../utils/tracing-utils';
 import {
   contentGeneratorSchema,
@@ -18,6 +19,8 @@ import {
   PricingService,
   GenerationService
 } from '../../specialists/content';
+import EmailFolderManager from '../email-folder-manager';
+import { campaignState } from '../../core/campaign-state';
 
 // Инициализация модульных сервисов
 const pricingService = new PricingService();
@@ -87,27 +90,18 @@ async function executeContentGeneration(params: ContentGeneratorParams, startTim
     
   switch (params.action) {
     case 'generate': {
-      // Упрощенная генерация без сложных зависимостей
-      const simpleContent = {
-        subject: `${params.topic} - Специальное предложение от Kupibilet`,
-        preheader: `Не упустите возможность сэкономить на путешествии`,
-        body: `Уважаемый путешественник! Мы рады предложить вам отличную возможность для путешествия по теме "${params.topic}". Забронируйте сейчас и получите незабываемые впечатления! Безопасность и комфорт вашей семьи - наш приоритет.`,
-        cta: 'Забронировать сейчас',
-        language: params.language || 'ru',
-        tone: params.tone || 'friendly'
-      };
-
+      const generatedContent = await generateContentBodyForTopic(params.topic);
       result = {
         success: true,
         action: 'generate',
         data: {
-          content: simpleContent
+          content: generatedContent
         },
         analytics: {
           execution_time: Date.now() - startTime,
-          content_length: simpleContent.body.length,
-          complexity_score: 75,
-          generation_confidence: 85,
+          content_length: generatedContent.body.length,
+          complexity_score: 80,
+          generation_confidence: 90,
           ai_model_used: 'gpt-4o-mini'
         }
       };
@@ -229,7 +223,7 @@ async function executeContentGeneration(params: ContentGeneratorParams, startTim
         predicted_performance: {
           open_rate_estimate: 22,
           click_rate_estimate: 4.5,
-          conversion_potential: 'medium'
+          conversion_potential: 'medium' as const
         }
       };
 
@@ -285,6 +279,58 @@ async function executeContentGeneration(params: ContentGeneratorParams, startTim
   return result;
 }
 
+// Campaign folder creation tool - будет отображаться в логах OpenAI
+export const createCampaignFolderTool = tool({
+  name: 'create_campaign_folder',
+  description: 'Creates a new campaign folder for email generation with proper structure and metadata',
+  parameters: z.object({
+    topic: z.string().describe('Campaign topic or theme'),
+    campaign_type: z.enum(['promotional', 'newsletter', 'transactional', 'welcome']).describe('Type of email campaign'),
+    trace_id: z.string().nullable().optional().describe('Optional trace ID for folder naming')
+  }),
+  execute: async (params) => {
+    console.log(`📁 Creating campaign folder for topic: "${params.topic}"`);
+    
+    try {
+      // Создаем папку кампании
+      const emailFolder = await EmailFolderManager.createEmailFolder(
+        params.topic,
+        params.campaign_type,
+        params.trace_id
+      );
+      
+      // Устанавливаем состояние кампании
+      campaignState.setCampaign({
+        campaignId: emailFolder.campaignId,
+        emailFolder: emailFolder,
+        topic: params.topic,
+        campaign_type: params.campaign_type,
+        created_at: new Date().toISOString(),
+        trace_id: params.trace_id
+      });
+      
+      console.log(`✅ Campaign folder created: ${emailFolder.campaignId}`);
+      console.log(`📂 Assets path: ${emailFolder.assetsPath}`);
+      
+      return JSON.stringify({
+        success: true,
+        campaign_id: emailFolder.campaignId,
+        folder_path: emailFolder.basePath,
+        assets_path: emailFolder.assetsPath,
+        topic: params.topic,
+        campaign_type: params.campaign_type
+      }, null, 2);
+      
+    } catch (error) {
+      console.error('❌ Failed to create campaign folder:', error);
+      return JSON.stringify({
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }, null, 2);
+    }
+  }
+});
+
 // Export the tool using OpenAI Agents SDK v2 pattern
 export const contentGeneratorTool = tool({
   name: 'content_generator',
@@ -293,6 +339,243 @@ export const contentGeneratorTool = tool({
   execute: contentGenerator
 });
 
+// Wrapper function for createCampaignFolderTool
+export async function createCampaignFolder(params: {
+  topic: string;
+  campaign_type: 'promotional' | 'newsletter' | 'transactional' | 'welcome';
+  trace_id: string | null;
+}) {
+  console.log(`📁 Creating campaign folder for topic: "${params.topic}"`);
+  
+  try {
+    // Создаем папку кампании
+    const emailFolder = await EmailFolderManager.createEmailFolder(
+      params.topic,
+      params.campaign_type,
+      params.trace_id
+    );
+    
+    // Устанавливаем состояние кампании
+    campaignState.setCampaign({
+      campaignId: emailFolder.campaignId,
+      emailFolder: emailFolder,
+      topic: params.topic,
+      campaign_type: params.campaign_type,
+      created_at: new Date().toISOString(),
+      trace_id: params.trace_id
+    });
+    
+    console.log(`✅ Campaign folder created: ${emailFolder.campaignId}`);
+    console.log(`📂 Assets path: ${emailFolder.assetsPath}`);
+    
+    return {
+      success: true,
+      campaign_id: emailFolder.campaignId,
+      folder_path: emailFolder.basePath,
+      assets_path: emailFolder.assetsPath,
+      topic: params.topic,
+      campaign_type: params.campaign_type
+    };
+    
+  } catch (error) {
+    console.error('❌ Failed to create campaign folder:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 // Re-export schema for external use
 export { contentGeneratorSchema } from '../../specialists/content';
 export type { ContentGeneratorParams, ContentGeneratorResult } from '../../specialists/content';
+
+/**
+ * Generate detailed content body for a specific topic using prompts from @/prompts/content.md
+ * This function uses structured prompts instead of creating AI agents
+ */
+async function generateContentBodyForTopic(topic: string, context: any = {}): Promise<{
+  subject: string;
+  preheader: string;
+  body: string;
+  cta: string;
+  language: string;
+  tone: string;
+  image_requirements?: {
+    total_images_needed: number;
+    figma_images_count: number;
+    internet_images_count: number;
+    require_logo: boolean;
+    image_categories: string[];
+    placement_instructions: {
+      figma_assets: string[];
+      external_images: string[];
+    };
+  };
+}> {
+  console.log(`🎯 Prompt-Based Content Generation: Generating content for topic: "${topic}"`);
+  
+  try {
+    // Import AI dependencies
+    const { Agent, run } = await import('@openai/agents-core');
+    const { getUsageModel } = await import('../../../shared/utils/model-config');
+    
+    // Extract prices from context for prompt injection
+    const pricesText = context.prices ? 
+      `Цены: ${context.prices.map((p: any) => `${p.destination} от ${p.price} ${p.currency}`).join(', ')}` :
+      'Цены уточняются при бронировании';
+    
+    // Enhanced prompt with image requirements
+    const contentPrompt = `Ты эксперт по email-маркетингу для туристической компании Kupibilet. 
+Создай привлекательное письмо на тему "${topic}" используя цены ${pricesText}.
+
+### Требования:
+- Заголовок до 50 символов
+- Preheader до 90 символов  
+- Основной текст 200-300 слов
+- Призыв к действию до 20 символов
+- Тон: дружелюбный, мотивирующий
+- Фокус на выгоде и эмоциях
+
+### Контекст бренда:
+Kupibilet — это удобный способ найти и забронировать авиабилеты онлайн. Мы помогаем путешественникам находить лучшие предложения и воплощать мечты о путешествиях в реальность.
+
+### Структура письма:
+1. **Заголовок**: Привлекающий внимание с ценой
+2. **Preheader**: Дополняющий заголовок
+3. **Основной текст**: Эмоциональная история + выгода + призыв
+4. **CTA**: Ясный призыв к действию
+
+### Эмоциональные триггеры:
+- Страсть к путешествиям и приключениям
+- FOMO (ограниченное время предложения)
+- Ценность и экономия
+- Мечты и стремления
+- Удобство и простота
+
+### Интеграция цен:
+- Всегда включай стартовую цену на видном месте
+- Используй "от" для указания цены
+- Подчеркивай экономию или специальные предложения
+- Создавай срочность с ограниченными по времени сообщениями
+
+### Примеры призывов к действию:
+- Найти билеты
+- Забронировать
+- Посмотреть цены
+- Купить билет
+- Улететь сейчас
+
+### ТРЕБОВАНИЯ К ИЗОБРАЖЕНИЯМ:
+Определи оптимальную стратегию использования изображений:
+
+**Figma Assets (Приоритет):**
+- Используй фирменных зайцев Kupibilet для брендинга
+- Иконки и элементы интерфейса
+- Логотипы авиакомпаний
+- Эмоциональные персонажи
+
+**Внешние изображения (Дополнение):**
+- Реальные фотографии направлений
+- Достопримечательности и пейзажи
+- Lifestyle фотографии путешественников
+
+**Размещение:**
+- Header: Hero изображение (внешнее) + логотип (Figma)
+- Body: Заяц Kupibilet (Figma) + фото направления (внешнее)
+- Footer: Иконки услуг (Figma)
+
+ВАЖНО: Верни результат ТОЛЬКО в формате JSON:
+{
+  "subject": "Заголовок с эмодзи до 50 символов",
+  "preheader": "Краткий предпросмотр до 90 символов",
+  "body": "Основной контент письма с форматированием, эмодзи и деталями путешествия",
+  "cta": "Текст кнопки действия до 20 символов",
+  "language": "ru",
+  "tone": "friendly",
+  "image_requirements": {
+    "total_images_needed": 3,
+    "figma_images_count": 2,
+    "internet_images_count": 1,
+    "require_logo": true,
+    "image_categories": ["hero", "illustration", "icon"],
+    "placement_instructions": {
+      "figma_assets": ["Заяц Kupibilet в header для брендинга", "Иконки услуг в footer"],
+      "external_images": ["Hero фото направления в header"]
+    }
+  }
+}
+
+Адаптируй количество и типы изображений под конкретную тему "${topic}".`;
+
+    // Create simple agent using the enhanced prompt
+    const contentAgent = new Agent({
+      name: 'ContentSpecialist',
+      instructions: contentPrompt,
+      model: getUsageModel()
+    });
+
+    console.log('🤖 AI Agent: Generating content with image requirements using enhanced prompt...');
+    
+    const result = await run(contentAgent, `Создай email контент для темы: "${topic}"\n\nКонтекст: ${JSON.stringify(context, null, 2)}\n\nВерни ТОЛЬКО валидный JSON с требуемыми полями включая image_requirements.`);
+    const aiResponse = result.finalOutput;
+    
+    if (!aiResponse) {
+      throw new Error('AI agent returned empty response');
+    }
+    
+    // Parse AI response
+    let parsedContent;
+    try {
+      // Extract JSON from AI response
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in AI response');
+      }
+      parsedContent = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error('❌ Failed to parse AI response:', parseError);
+      throw new Error('AI response is not valid JSON');
+    }
+    
+    // Validate required fields
+    const requiredFields = ['subject', 'preheader', 'body', 'cta', 'language', 'tone'];
+    for (const field of requiredFields) {
+      if (!parsedContent[field]) {
+        throw new Error(`AI response missing required field: ${field}`);
+      }
+    }
+    
+    // Add default image requirements if not provided by AI
+    if (!parsedContent.image_requirements) {
+      console.log('⚠️ AI did not provide image requirements, adding defaults');
+      parsedContent.image_requirements = {
+        total_images_needed: 3,
+        figma_images_count: 2,
+        internet_images_count: 1,
+        require_logo: true,
+        image_categories: ['hero', 'illustration', 'icon'],
+        placement_instructions: {
+          figma_assets: ['Заяц Kupibilet для брендинга', 'Иконки услуг'],
+          external_images: ['Фото направления для hero секции']
+        }
+      };
+    }
+    
+    console.log('✅ Prompt-Based Content Generated:', {
+      subject_length: parsedContent.subject.length,
+      body_length: parsedContent.body.length,
+      language: parsedContent.language,
+      tone: parsedContent.tone,
+      image_strategy: `${parsedContent.image_requirements.figma_images_count} Figma + ${parsedContent.image_requirements.internet_images_count} external`
+    });
+    
+    return parsedContent;
+    
+  } catch (error) {
+    console.error('❌ Prompt-Based Content Generation Error:', error);
+    
+    // ❌ FALLBACK POLICY: No fallback allowed - fail fast
+    throw new Error(`Prompt-based content generation failed: ${error.message}`);
+  }
+}

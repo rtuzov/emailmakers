@@ -28,7 +28,7 @@ export class SmartEmailAnalyzer {
    * Helper function to safely parse JSON from GPT responses
    * Handles both plain JSON and markdown code blocks
    */
-  private safeParseJSON(content: string, fallback: any): any {
+  private safeParseJSON(content: string): any {
     try {
       // First try to parse as-is
       return JSON.parse(content);
@@ -48,8 +48,8 @@ export class SmartEmailAnalyzer {
         
         throw new Error('No JSON found in response');
       } catch (parseError) {
-        console.warn('JSON parsing failed, using fallback:', parseError);
-        return fallback;
+        console.warn('JSON parsing failed:', parseError);
+        throw new Error(`Failed to parse AI response as JSON: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
       }
     }
   }
@@ -202,15 +202,19 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 60, issues: ['Analysis temporarily unavailable'], insights: [] });
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('Empty response from AI model');
+      }
+      const result = this.safeParseJSON(content);
       return {
         score: Math.max(0, Math.min(100, result.score)),
         issues: result.issues || [],
         insights: result.insights || []
       };
     } catch (error) {
-      console.warn('Content analysis fallback due to error:', error);
-      return { score: 60, issues: ['Analysis temporarily unavailable'], insights: [] };
+      console.error('Content analysis failed:', error);
+      throw new Error(`Content analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -294,7 +298,11 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 65, issues: ['Visual analysis temporarily unavailable'], insights: [] });
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('Empty response from AI model');
+      }
+      const result = this.safeParseJSON(content);
       
       console.log(`📸 Visual analysis completed with ${context.screenshots.desktop ? 'desktop' : 'no'} and ${context.screenshots.mobile ? 'mobile' : 'no'} screenshots`);
       
@@ -304,8 +312,8 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         insights: result.insights || []
       };
     } catch (error) {
-      console.warn('Visual analysis fallback due to error:', error);
-      return { score: 65, issues: ['Visual analysis temporarily unavailable'], insights: [] };
+      console.error('Visual analysis failed:', error);
+      throw new Error(`Visual analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -347,15 +355,19 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 75, issues: ['Technical analysis temporarily unavailable'], insights: [] });
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('Empty response from AI model');
+      }
+      const result = this.safeParseJSON(content);
       return {
         score: Math.max(0, Math.min(100, result.score)),
         issues: result.issues || [],
         insights: result.insights || []
       };
     } catch (error) {
-      console.warn('Technical analysis fallback due to error:', error);
-      return { score: 75, issues: ['Technical analysis temporarily unavailable'], insights: [] };
+      console.error('Technical analysis failed:', error);
+      throw new Error(`Technical analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -399,15 +411,19 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 55, issues: ['Emotional analysis temporarily unavailable'], insights: [] });
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('Empty response from AI model');
+      }
+      const result = this.safeParseJSON(content);
       return {
         score: Math.max(0, Math.min(100, result.score)),
         issues: result.issues || [],
         insights: result.insights || []
       };
     } catch (error) {
-      console.warn('Emotional analysis fallback due to error:', error);
-      return { score: 55, issues: ['Emotional analysis temporarily unavailable'], insights: [] };
+      console.error('Emotional analysis failed:', error);
+      throw new Error(`Emotional analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -454,15 +470,19 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const result = this.safeParseJSON(response.choices[0].message.content || '{"score": 50, "issues": [], "insights": []}', { score: 70, issues: ['Brand analysis temporarily unavailable'], insights: [] });
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('Empty response from AI model');
+      }
+      const result = this.safeParseJSON(content);
       return {
         score: Math.max(0, Math.min(100, result.score)),
         issues: result.issues || [],
         insights: result.insights || []
       };
     } catch (error) {
-      console.warn('Brand analysis fallback due to error:', error);
-      return { score: 70, issues: ['Brand analysis temporarily unavailable'], insights: [] };
+      console.error('Brand analysis failed:', error);
+      throw new Error(`Brand analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

@@ -25,30 +25,51 @@
 
 ## Инструкции по работе
 
-### Шаг 1: Анализ контента
+### Шаг 1: Анализ контента и плана ассетов
 - Получи контент от Content Specialist
-- Проанализируй план изображений
-- Определи структуру email
+- Получи план ассетов от Content Specialist
+- Проанализируй структуру email и требования к изображениям
 
-### Шаг 2: Создание дизайна
+### Шаг 2: Выбор ассетов
+- Используй `figma_asset_selector` с планом ассетов:
+```json
+{
+  "asset_plan": {
+    "figma_search_tags": ["теги из плана"],
+    "external_search_tags": ["внешние теги"],
+    "image_distribution": {
+      "figma_images_count": 2,
+      "external_images_count": 1,
+      "total_images_needed": 3
+    },
+    "asset_requirements": {
+      "hero_image": {"tags": ["заяц", "путешествия"], "description": "Hero изображение", "priority": "high"},
+      "content_images": [{"tags": ["авиация"], "description": "Контент", "placement": "main_content"}],
+      "footer_elements": [{"tags": ["иконка"], "description": "Footer", "type": "icon"}]
+    }
+  }
+}
+```
+
+### Шаг 3: Создание дизайна
 - Используй `email_renderer` tool с параметрами:
   - `content_data`: полученный контент как JSON строка
   - `action`: 'render_mjml' (по умолчанию)
-- Интегрируй Figma ассеты согласно плану изображений
+- Интегрируй выбранные ассеты в дизайн
 - Добавь фирменные элементы бренда
 
-### Шаг 3: Оптимизация дизайна
+### Шаг 4: Оптимизация дизайна
 - Обеспечь адаптивность для мобильных устройств
 - Оптимизируй для email клиентов (Gmail, Outlook, Apple Mail)
 - Добавь поддержку темного режима
 
-### Шаг 3b: Качественная проверка (quality_controller)
+### Шаг 4b: Качественная проверка (quality_controller)
 - Запусти `quality_controller` сразу после `email_renderer`
 - Передай обязательные параметры, перечисленные в Workflow Reminder
 - Если `quality_gate_passed` = false или `score` < 70, вернись к Шагу 2, внеси правки и повтори (макс 2 попытки)
 - Сохрани `validation_report` для передачи Quality Specialist
 
-### Шаг 4: Передача управления
+### Шаг 5: Передача управления
 - После завершения работы вызови `transfer_to_quality_specialist`
 - Передай все данные в JSON формате, включая:
   - `html_content`: финальный HTML код

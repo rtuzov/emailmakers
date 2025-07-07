@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import { AssetHashManager } from '../utils/asset-hash-manager';
 
 export interface EmailFolder {
   campaignId: string;
@@ -20,6 +21,8 @@ export interface EmailFolderMetadata {
   assets_count: number;
   figma_assets_processed: number;
   sprite_slices_generated: number;
+  shared_assets_used: number;
+  asset_hashes: string[];
   html_size_kb?: number;
   mjml_size_kb?: number;
   generation_time_ms?: number;
@@ -29,7 +32,7 @@ export interface EmailFolderMetadata {
 /**
  * Email Folder Manager - создает и управляет структурой папок для email кампаний
  */
-export class EmailFolderManager {
+export default class EmailFolderManager {
   /**
    * Создает новую папку для email кампании
    */
@@ -38,25 +41,40 @@ export class EmailFolderManager {
     campaignType: string = 'promotional',
     traceId?: string
   ): Promise<EmailFolder> {
-    // Используем trace_id если предоставлен, иначе генерируем короткий ID
+    const fs = require('fs').promises;
+    const path = require('path');
+    
+    // Очистка топика для создания имени папки
+    const cleanTopic = topic
+      .toLowerCase()
+      .replace(/[^a-z0-9а-я\s]/g, '') // Убираем специальные символы
+      .replace(/\s+/g, '-') // Заменяем пробелы на дефисы
+      .substring(0, 50); // Ограничиваем длину
+    
+    // Создаем УНИКАЛЬНЫЙ campaignId с timestamp для предотвращения переиспользования
     let campaignId: string;
+    const timestamp = Date.now().toString(36); // Короткий timestamp в base36
+    const shortId = Math.random().toString(36).substring(2, 6); // Короткий случайный ID
+    
     if (traceId) {
-      // Извлекаем первые 8 символов из trace_id для краткости
-      // trace_id имеет формат trace_<32_alphanumeric>, поэтому берем символы после "trace_"
-      const traceIdWithoutPrefix = traceId.startsWith('trace_') ? traceId.substring(6) : traceId;
-      const shortTraceId = traceIdWithoutPrefix.substring(0, 8);
-      campaignId = `campaign_${shortTraceId}`;
+      campaignId = `${cleanTopic}-${traceId}-${timestamp}`;
     } else {
-      const shortId = Math.random().toString(36).substring(2, 8);
-      campaignId = `campaign_${shortId}`;
+      campaignId = `${cleanTopic}-${shortId}-${timestamp}`;
     }
     
-    // Проверяем, существует ли уже папка с таким ID
-    const existingFolder = await EmailFolderManager.loadEmailFolder(campaignId);
-    if (existingFolder) {
-      console.log(`📁 Using existing email folder: ${campaignId}`);
-      return existingFolder;
+    // Ensure the folder name is valid and unique
+    if (!campaignId || campaignId.length < 3) {
+      campaignId = `campaign-${shortId}-${timestamp}`;
     }
+    
+    console.log(`📁 Creating NEW unique campaign folder: "${campaignId}" for topic: "${topic}"`);
+    
+    // ❌ REMOVED: Don't check for existing folders - always create new ones
+    // const existingFolder = await EmailFolderManager.loadEmailFolder(campaignId);
+    // if (existingFolder) {
+    //   console.log(`📁 Using existing email folder: ${campaignId}`);
+    //   return existingFolder;
+    // }
     
     const basePath = path.resolve(process.cwd(), 'mails', campaignId);
     const assetsPath = path.join(basePath, 'assets');
@@ -86,12 +104,14 @@ export class EmailFolderManager {
       assets_count: 0,
       figma_assets_processed: 0,
       sprite_slices_generated: 0,
+      shared_assets_used: 0,
+      asset_hashes: [],
       status: 'initializing'
     };
     
     await EmailFolderManager.updateMetadata(emailFolder, initialMetadata);
     
-    console.log(`📁 Created email folder: ${campaignId}`);
+    console.log(`📁 Created NEW email folder: ${campaignId}`);
     console.log(`📂 Assets path: ${assetsPath}`);
     
     return emailFolder;
@@ -102,29 +122,108 @@ export class EmailFolderManager {
    */
   static async loadEmailFolder(campaignId: string): Promise<EmailFolder | null> {
     try {
-      const basePath = path.resolve(process.cwd(), 'mails', campaignId);
-      const assetsPath = path.join(basePath, 'assets');
-      const spritePath = path.join(assetsPath, 'sprite-slices');
+      // Пробуем различные варианты имени папки
+      const possibleNames = [
+        campaignId, // Оригинальное имя
+        campaignId.replace(/-/g, '_'), // Заменяем дефисы на подчеркивания
+        campaignId.replace(/_/g, '-'), // Заменяем подчеркивания на дефисы
+        campaignId.toLowerCase(), // В нижнем регистре
+        campaignId.toLowerCase().replace(/-/g, '_'), // Нижний регистр с подчеркиваниями
+        campaignId.toLowerCase().replace(/_/g, '-'), // Нижний регистр с дефисами
+      ];
+
+      // Удаляем дубликаты
+      const uniqueNames = [...new Set(possibleNames)];
       
-      // Проверяем существование папки
-      await fs.access(basePath);
+      for (const name of uniqueNames) {
+        try {
+          const basePath = path.resolve(process.cwd(), 'mails', name);
+          const assetsPath = path.join(basePath, 'assets');
+          const spritePath = path.join(assetsPath, 'sprite-slices');
+          
+          // Проверяем существование папки
+          await fs.access(basePath);
+          
+          // Создаем недостающие подпапки если они не существуют
+          try {
+            await fs.mkdir(assetsPath, { recursive: true });
+            await fs.mkdir(spritePath, { recursive: true });
+            console.log(`📁 Ensured directory structure for: ${name}`);
+          } catch (dirError) {
+            console.warn(`⚠️ Could not create directories for ${name}:`, dirError);
+          }
+          
+          console.log(`📁 Found email folder: ${name} (searched for: ${campaignId})`);
+          
+          return {
+            campaignId: name, // Используем найденное имя
+            basePath,
+            assetsPath,
+            spritePath,
+            htmlPath: path.join(basePath, 'email.html'),
+            mjmlPath: path.join(basePath, 'email.mjml'),
+            metadataPath: path.join(basePath, 'metadata.json')
+          };
+        } catch {
+          // Продолжаем поиск
+          continue;
+        }
+      }
       
-      return {
-        campaignId,
-        basePath,
-        assetsPath,
-        spritePath,
-        htmlPath: path.join(basePath, 'email.html'),
-        mjmlPath: path.join(basePath, 'email.mjml'),
-        metadataPath: path.join(basePath, 'metadata.json')
-      };
+      // Если ничего не найдено, пробуем найти по части имени
+      try {
+        const mailsDir = path.resolve(process.cwd(), 'mails');
+        const existingFolders = await fs.readdir(mailsDir);
+        
+        // Ищем папку, которая содержит ключевые слова из campaignId
+        const searchTerms = campaignId.toLowerCase().split(/[-_\s]+/).filter(term => term.length > 2);
+        
+        for (const folder of existingFolders) {
+          if (folder === 'shared-assets') continue; // Пропускаем служебную папку
+          
+          const folderLower = folder.toLowerCase();
+          const matchCount = searchTerms.filter(term => folderLower.includes(term)).length;
+          
+          // Если папка содержит большинство ключевых слов, считаем её подходящей
+          if (matchCount >= Math.max(1, searchTerms.length - 1)) {
+            const basePath = path.resolve(process.cwd(), 'mails', folder);
+            const assetsPath = path.join(basePath, 'assets');
+            const spritePath = path.join(assetsPath, 'sprite-slices');
+            
+            // Создаем недостающие подпапки если они не существуют
+            try {
+              await fs.mkdir(assetsPath, { recursive: true });
+              await fs.mkdir(spritePath, { recursive: true });
+              console.log(`📁 Ensured directory structure for: ${folder}`);
+            } catch (dirError) {
+              console.warn(`⚠️ Could not create directories for ${folder}:`, dirError);
+            }
+            
+            console.log(`📁 Found similar email folder: ${folder} (searched for: ${campaignId}, matched ${matchCount}/${searchTerms.length} terms)`);
+            
+            return {
+              campaignId: folder,
+              basePath,
+              assetsPath,
+              spritePath,
+              htmlPath: path.join(basePath, 'email.html'),
+              mjmlPath: path.join(basePath, 'email.mjml'),
+              metadataPath: path.join(basePath, 'metadata.json')
+            };
+          }
+        }
+      } catch {
+        // Если не удалось прочитать директорию
+      }
+      
+      return null;
     } catch {
       return null;
     }
   }
   
   /**
-   * Сохраняет Figma ассет в папку кампании
+   * Сохраняет Figma ассет в папку кампании (legacy метод)
    */
   static async saveFigmaAsset(
     emailFolder: EmailFolder, 
@@ -149,6 +248,157 @@ export class EmailFolderManager {
     
     console.log(`💾 Saved asset: ${fileName} -> ${assetPath}`);
     return assetPath;
+  }
+
+  /**
+   * Добавляет ассет в общее хранилище и создает ссылку в кампании
+   */
+  static async addSharedAsset(
+    emailFolder: EmailFolder,
+    sourceFilePath: string,
+    fileName: string
+  ): Promise<{
+    assetPath: string;
+    hash: string;
+    wasExisting: boolean;
+  }> {
+    // Добавляем или получаем ассет из общего хранилища
+    const { sharedPath, hash, wasExisting } = await AssetHashManager.addOrGetSharedAsset(
+      sourceFilePath,
+      fileName
+    );
+
+    // Создаем ссылку в папке кампании
+    const linkPath = await AssetHashManager.linkAssetToCampaign(
+      hash,
+      emailFolder.assetsPath,
+      fileName
+    );
+
+    // Обновляем метаданные кампании
+    const currentMetadata = await EmailFolderManager.getMetadata(emailFolder);
+    const assetHashes = [...(currentMetadata.asset_hashes || [])];
+    
+    if (!assetHashes.includes(hash)) {
+      assetHashes.push(hash);
+      await EmailFolderManager.updateMetadata(emailFolder, {
+        asset_hashes: assetHashes,
+        shared_assets_used: assetHashes.length
+      });
+    }
+
+    return {
+      assetPath: linkPath,
+      hash,
+      wasExisting
+    };
+  }
+
+  /**
+   * Добавляет ассет из Figma с использованием общего хранилища
+   */
+  static async addFigmaAsset(
+    emailFolder: EmailFolder,
+    assetUrl: string,
+    fileName: string
+  ): Promise<{
+    assetPath: string;
+    hash: string;
+    wasExisting: boolean;
+  }> {
+    console.log(`🔍 DEBUG: addFigmaAsset called with:`, {
+      campaignId: emailFolder.campaignId,
+      assetUrl,
+      fileName,
+      metadataPath: emailFolder.metadataPath
+    });
+
+    // Ensure the assets directory exists
+    try {
+      await fs.mkdir(emailFolder.assetsPath, { recursive: true });
+      console.log(`📁 Assets directory ensured: ${emailFolder.assetsPath}`);
+    } catch (dirError) {
+      console.warn(`⚠️ Could not create assets directory: ${emailFolder.assetsPath}`, dirError);
+    }
+
+    // Проверяем существование metadata.json ПЕРЕД операцией
+    try {
+      await fs.access(emailFolder.metadataPath);
+      console.log(`✅ Metadata file exists: ${emailFolder.metadataPath}`);
+    } catch (metadataError) {
+      console.warn(`⚠️ Metadata file not accessible: ${emailFolder.metadataPath}`, metadataError);
+      // Создаем файл metadata.json если его нет
+      await EmailFolderManager.updateMetadata(emailFolder, {
+        campaign_id: emailFolder.campaignId,
+        created_at: new Date().toISOString(),
+        topic: 'Unknown',
+        campaign_type: 'promotional',
+        assets_count: 0,
+        figma_assets_processed: 0,
+        sprite_slices_generated: 0,
+        shared_assets_used: 0,
+        asset_hashes: [],
+        status: 'initializing'
+      });
+      console.log(`✅ Created metadata file: ${emailFolder.metadataPath}`);
+    }
+
+    // Временно скачиваем файл
+    const tempPath = path.join(emailFolder.assetsPath, `.temp_${fileName}`);
+    console.log(`📥 Temp file path: ${tempPath}`);
+    
+    try {
+      // Скачиваем или копируем файл во временное место
+      if (assetUrl.startsWith('http')) {
+        console.log(`🌐 Downloading from URL: ${assetUrl}`);
+        const response = await fetch(assetUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to download asset: ${response.statusText}`);
+        }
+        
+        const buffer = await response.arrayBuffer();
+        await fs.writeFile(tempPath, Buffer.from(buffer));
+        console.log(`✅ Downloaded to temp file: ${tempPath}`);
+      } else {
+        console.log(`📁 Copying local file: ${assetUrl}`);
+        // Проверяем существование исходного файла
+        try {
+          await fs.access(assetUrl);
+        await fs.copyFile(assetUrl, tempPath);
+          console.log(`✅ Copied to temp file: ${tempPath}`);
+        } catch (accessError) {
+          console.warn(`⚠️ Could not access source file: ${assetUrl}`, accessError);
+          throw new Error(`Source file does not exist: ${assetUrl}`);
+        }
+      }
+
+      // Добавляем в общее хранилище
+      console.log(`🔄 Adding to shared storage...`);
+      const result = await EmailFolderManager.addSharedAsset(emailFolder, tempPath, fileName);
+      console.log(`✅ Added to shared storage:`, result);
+
+      // Удаляем временный файл
+      try {
+      await fs.unlink(tempPath);
+        console.log(`🗑️ Removed temp file: ${tempPath}`);
+      } catch (unlinkError) {
+        console.warn(`⚠️ Could not remove temp file: ${tempPath}`, unlinkError);
+      }
+
+      console.log(`🎨 Added Figma asset: ${fileName} (${result.wasExisting ? 'existing' : 'new'})`);
+      return result;
+
+    } catch (error) {
+      console.error(`❌ Error in addFigmaAsset:`, error);
+      // Очищаем временный файл в случае ошибки
+      try {
+        await fs.unlink(tempPath);
+      } catch {}
+      
+      // Более информативная ошибка
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to add Figma asset ${fileName}: ${errorMessage}`);
+    }
   }
   
   /**
@@ -233,6 +483,8 @@ export class EmailFolderManager {
         assets_count: 0,
         figma_assets_processed: 0,
         sprite_slices_generated: 0,
+        shared_assets_used: 0,
+        asset_hashes: [],
         status: 'initializing'
       };
     }
@@ -250,8 +502,25 @@ export class EmailFolderManager {
    * Получает metadata кампании
    */
   static async getMetadata(emailFolder: EmailFolder): Promise<EmailFolderMetadata> {
+    try {
     const metadataContent = await fs.readFile(emailFolder.metadataPath, 'utf8');
     return JSON.parse(metadataContent);
+    } catch (error) {
+      // Если файл не существует или поврежден, возвращаем базовую структуру
+      console.warn(`⚠️ Could not read metadata from ${emailFolder.metadataPath}, creating default`);
+      return {
+        campaign_id: emailFolder.campaignId,
+        created_at: new Date().toISOString(),
+        topic: 'Unknown',
+        campaign_type: 'promotional',
+        assets_count: 0,
+        figma_assets_processed: 0,
+        sprite_slices_generated: 0,
+        shared_assets_used: 0,
+        asset_hashes: [],
+        status: 'initializing'
+      };
+    }
   }
   
   /**
@@ -318,6 +587,67 @@ export class EmailFolderManager {
   static getAssetPath(emailFolder: EmailFolder, fileName: string): string {
     return path.join(emailFolder.assetsPath, fileName);
   }
+
+  /**
+   * Получает статистику по общим ассетам системы
+   */
+  static async getSharedAssetsStats(): Promise<{
+    totalAssets: number;
+    totalSizeBytes: number;
+    totalSizeMB: number;
+    oldestAsset: string;
+    newestAsset: string;
+  }> {
+    const stats = await AssetHashManager.getStats();
+    return {
+      ...stats,
+      totalSizeMB: Math.round(stats.totalSizeBytes / (1024 * 1024) * 100) / 100
+    };
+  }
+
+  /**
+   * Очищает старые неиспользуемые ассеты
+   */
+  static async cleanupSharedAssets(keepDays: number = 30): Promise<number> {
+    return await AssetHashManager.cleanupUnusedAssets(keepDays);
+  }
+
+  /**
+   * Возвращает использование общих ассетов конкретной кампанией
+   */
+  static async getCampaignSharedAssets(emailFolder: EmailFolder): Promise<{
+    hashes: string[];
+    count: number;
+    details: Array<{
+      hash: string;
+      fileName: string;
+      size: number;
+      createdAt: string;
+    }>;
+  }> {
+    const metadata = await EmailFolderManager.getMetadata(emailFolder);
+    const hashes = metadata.asset_hashes || [];
+    
+    const details = [];
+    for (const hash of hashes) {
+      const asset = await AssetHashManager.getAssetByHash(hash);
+      if (asset) {
+        details.push({
+          hash,
+          fileName: asset.fileName,
+          size: asset.size,
+          createdAt: asset.createdAt
+        });
+      }
+    }
+
+    return {
+      hashes,
+      count: hashes.length,
+      details
+    };
+  }
 }
 
-export default EmailFolderManager; 
+// Named export for compatibility
+export { EmailFolderManager }; 

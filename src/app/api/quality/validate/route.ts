@@ -5,21 +5,21 @@ import { z } from 'zod';
 // Validation schema for quality assurance
 const ValidateQualitySchema = z.object({
   html: z.string().min(1, 'HTML content is required'),
-  mjml: z.string().optional(),
+  mjml: z.string().optional().nullable(),
   options: z.object({
-    skipLitmusTest: z.boolean().optional(),
-    skipAccessibilityTest: z.boolean().optional(),
-    skipPerformanceTest: z.boolean().optional(),
+    skipLitmusTest: z.boolean().optional().nullable(),
+    skipAccessibilityTest: z.boolean().optional().nullable(),
+    skipPerformanceTest: z.boolean().optional().nullable(),
     targetClients: z.array(z.enum([
       'gmail', 'outlook_2016', 'outlook_365', 'apple_mail', 
       'yahoo_mail', 'thunderbird', 'samsung_email'
-    ])).optional(),
+    ])).optional().nullable(),
     performanceThresholds: z.object({
-      maxFileSize: z.number().optional(),
-      maxLoadTime: z.number().optional(),
-      minAccessibilityScore: z.number().optional()
-    }).optional()
-  }).optional()
+      maxFileSize: z.number().optional().nullable(),
+      maxLoadTime: z.number().optional().nullable(),
+      minAccessibilityScore: z.number().optional().nullable()
+    }).optional().nullable()
+  }).optional().nullable()
 });
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

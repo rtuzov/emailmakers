@@ -8,33 +8,35 @@
 import { z } from 'zod';
 
 // Simplified schema for OpenAI Agents SDK compatibility
-export const campaignDeploymentSchema = z.object({
+export const CampaignDeploymentSchema = z.object({
   action: z.enum(['deploy_campaign', 'finalize', 'get_stats']),
   // Flattened fields to avoid complex nested objects
-  campaign_assets: z.array(z.string()).default([]),
-  deployment_target: z.string().default('staging'),
-  rollout_type: z.enum(['immediate', 'gradual', 'scheduled']).default('immediate'),
-  rollout_percentage: z.number().min(0).max(100).default(100),
-  enable_rollback: z.boolean().default(true),
-  run_quality_checks: z.boolean().default(true),
-  run_visual_tests: z.boolean().default(true),
-  run_performance_tests: z.boolean().default(true),
-  require_manual_approval: z.boolean().default(false),
-  campaign_id: z.string().default(''),
-  environment: z.string().default('staging'),
-  enable_monitoring: z.boolean().default(true),
-  notification_events: z.array(z.enum(['deployment_success', 'deployment_failure', 'rollback_triggered'])).default([]),
-  include_analytics: z.boolean().default(true),
-  session_id: z.string().default(''),
+  campaign_assets: z.array(z.string()),
+  deployment_target: z.string(),
+  rollout_type: z.enum(['immediate', 'gradual', 'scheduled']),
+  rollout_percentage: z.number().min(0).max(100),
+  enable_rollback: z.boolean(),
+  run_quality_checks: z.boolean(),
+  run_visual_tests: z.boolean(),
+  run_performance_tests: z.boolean(),
+  require_manual_approval: z.boolean(),
+  campaign_id: z.string(),
+  environment: z.string(),
+  enable_monitoring: z.boolean(),
+  notification_events: z.array(z.enum(['deployment_success', 'deployment_failure', 'rollback_triggered'])),
+  include_analytics: z.boolean(),
+  session_id: z.string(),
   // Flattened final_results fields
-  deployment_environment: z.string().default('staging'),
-  quality_score: z.number().default(0),
-  compliance_status: z.string().default('compliant'),
-  deployment_success: z.boolean().default(true),
-  finalized_at: z.string().default('')
+  deployment_metadata: z.object({
+    deployment_environment: z.string(),
+    quality_score: z.number(),
+    compliance_status: z.string(),
+    deployment_success: z.boolean(),
+    finalized_at: z.string()
+  })
 });
 
-export type CampaignDeploymentInput = z.infer<typeof campaignDeploymentSchema>;
+export type CampaignDeploymentInput = z.infer<typeof CampaignDeploymentSchema>;
 
 export interface CampaignDeploymentResult {
   success: boolean;
@@ -134,11 +136,11 @@ async function handleCampaignFinalization(params: CampaignDeploymentInput): Prom
 
   // Generate performance report (using flattened fields)
   const performanceReport = {
-    deployment_environment: params.deployment_environment || 'staging',
-    quality_score: params.quality_score || 85,
-    compliance_status: params.compliance_status || 'compliant',
-    deployment_success: params.deployment_success !== false,
-    finalized_at: params.finalized_at || new Date().toISOString(),
+    deployment_environment: params.deployment_metadata?.deployment_environment || 'staging',
+    quality_score: params.deployment_metadata?.quality_score || 85,
+    compliance_status: params.deployment_metadata?.compliance_status || 'compliant',
+    deployment_success: params.deployment_metadata?.deployment_success !== false,
+    finalized_at: params.deployment_metadata?.finalized_at || new Date().toISOString(),
     total_operations: 4,
     success_rate: 100
   };

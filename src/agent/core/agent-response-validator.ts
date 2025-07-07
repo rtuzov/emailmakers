@@ -15,64 +15,64 @@ import {
 
 // Специфичные схемы для каждого типа агента
 const ContentSpecialistResultsSchema = z.object({
-  context_data: z.any().optional(),
-  pricing_data: z.any().optional(),
-  content_data: z.any().optional(),
-  campaign_data: z.any().optional()
+  context_data: z.any().optional().nullable(),
+  pricing_data: z.any().optional().nullable(),
+  content_data: z.any().optional().nullable(),
+  campaign_data: z.any().optional().nullable()
 });
 
 const DesignSpecialistResultsSchema = z.object({
-  design_data: z.any().optional(),
-  template_data: z.any().optional(),
-  asset_data: z.any().optional()
+  design_data: z.any().optional().nullable(),
+  template_data: z.any().optional().nullable(),
+  asset_data: z.any().optional().nullable()
 });
 
 const QualitySpecialistResultsSchema = z.object({
-  quality_data: z.any().optional(),
-  validation_data: z.any().optional(),
-  test_data: z.any().optional()
+  quality_data: z.any().optional().nullable(),
+  validation_data: z.any().optional().nullable(),
+  test_data: z.any().optional().nullable()
 });
 
 const DeliverySpecialistResultsSchema = z.object({
-  delivery_data: z.any().optional(),
-  deployment_data: z.any().optional(),
-  monitoring_data: z.any().optional()
+  delivery_data: z.any().optional().nullable(),
+  deployment_data: z.any().optional().nullable(),
+  monitoring_data: z.any().optional().nullable()
 });
 
 // Полные схемы для каждого агента
 const ContentSpecialistOutputSchema = BaseAgentOutputSchema.extend({
   results: ContentSpecialistResultsSchema,
   recommendations: z.object({
-    next_agent: z.enum(['design_specialist', 'quality_specialist', 'delivery_specialist']).optional(),
-    next_actions: z.array(z.string()).optional(),
-    handoff_data: z.any().optional()
+    next_agent: z.enum(['design_specialist', 'quality_specialist', 'delivery_specialist']).optional().nullable(),
+    next_actions: z.array(z.string()).optional().nullable(),
+    handoff_data: z.any().optional().nullable()
   })
 });
 
 const DesignSpecialistOutputSchema = BaseAgentOutputSchema.extend({
   results: DesignSpecialistResultsSchema,
   recommendations: z.object({
-    next_agent: z.enum(['content_specialist', 'quality_specialist', 'delivery_specialist']).optional(),
-    next_actions: z.array(z.string()).optional(),
-    handoff_data: z.any().optional()
+    next_agent: z.enum(['content_specialist', 'quality_specialist', 'delivery_specialist']).optional().nullable(),
+    next_actions: z.array(z.string()).optional().nullable(),
+    handoff_data: z.any().optional().nullable()
   })
 });
 
 const QualitySpecialistOutputSchema = BaseAgentOutputSchema.extend({
   results: QualitySpecialistResultsSchema,
   recommendations: z.object({
-    next_agent: z.enum(['content_specialist', 'design_specialist', 'delivery_specialist']).optional(),
-    next_actions: z.array(z.string()).optional(),
-    handoff_data: z.any().optional()
+    next_agent: z.enum(['content_specialist', 'design_specialist', 'delivery_specialist']).optional().nullable(),
+    next_actions: z.array(z.string()).optional().nullable(),
+    handoff_data: z.any().optional().nullable()
   })
 });
 
 const DeliverySpecialistOutputSchema = BaseAgentOutputSchema.extend({
   results: DeliverySpecialistResultsSchema,
   recommendations: z.object({
-    next_agent: z.enum(['content_specialist', 'design_specialist', 'quality_specialist']).optional(),
-    next_actions: z.array(z.string()).optional(),
-    handoff_data: z.any().optional()
+    next_agent: z.enum(['content_specialist', 'design_specialist', 'quality_specialist']).optional().nullable(),
+    next_actions: z.array(z.string()).optional().nullable(),
+    handoff_data: z.any().optional().nullable()
   })
 });
 

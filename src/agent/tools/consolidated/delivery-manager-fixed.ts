@@ -18,27 +18,27 @@ export const deliveryManagerSchema = z.object({
   upload_config: z.object({
     files: z.array(z.object({
       file_path: z.string().describe('Local file path to upload'),
-      destination_key: z.string().default('auto-generated').describe('S3 key'),
-      content_type: z.string().default('auto-detect').describe('MIME type'),
-      metadata: z.string().default('{}').describe('File metadata JSON')
+      destination_key: z.string().describe('S3 key'),
+      content_type: z.string().describe('MIME type'),
+      metadata: z.string().describe('File metadata JSON')
     })).describe('Files to upload'),
-    bucket_name: z.string().default('default-bucket').describe('S3 bucket name'),
-    region: z.string().default('us-east-1').describe('AWS region')
+    bucket_name: z.string().describe('S3 bucket name'),
+    region: z.string().describe('AWS region')
   }).describe('Asset upload configuration'),
   
   // For screenshot generation
   screenshot_config: z.object({
     target_urls: z.array(z.string()).describe('URLs to screenshot'),
-    output_format: z.enum(['png', 'jpg', 'webp']).default('png').describe('Image format'),
-    viewport_width: z.number().default(1200).describe('Viewport width'),
-    viewport_height: z.number().default(800).describe('Viewport height')
+    output_format: z.enum(['png', 'jpg', 'webp']).describe('Image format'),
+    viewport_width: z.number().describe('Viewport width'),
+    viewport_height: z.number().describe('Viewport height')
   }).describe('Screenshot generation configuration'),
   
   // For visual testing  
   visual_testing_config: z.object({
     test_environments: z.array(z.string()).describe('Test environments'),
     baseline_images: z.array(z.string()).describe('Baseline image paths'),
-    threshold: z.number().default(0.1).describe('Visual difference threshold')
+    threshold: z.number().describe('Visual difference threshold')
   }).describe('Visual testing configuration'),
   
   // For campaign deployment
@@ -54,11 +54,11 @@ export const deliveryManagerSchema = z.object({
   archive_config: z.object({
     source_paths: z.array(z.string()).describe('Paths to archive'),
     archive_name: z.string().describe('Archive file name'),
-    compression: z.enum(['zip', 'tar', 'gzip']).default('zip').describe('Compression format'),
-    s3_bucket: z.string().default('archive-bucket').describe('S3 bucket for storage'),
+    compression: z.enum(['zip', 'tar', 'gzip']).describe('Compression format'),
+    s3_bucket: z.string().describe('S3 bucket for storage'),
     storage_config: z.object({
-      retention_days: z.number().default(365).describe('Retention period'),
-      s3_bucket: z.string().default('long-term-storage').describe('Long-term storage bucket')
+      retention_days: z.number().describe('Retention period'),
+      s3_bucket: z.string().describe('Long-term storage bucket')
     }).describe('Storage configuration')
   }).describe('Asset archiving configuration'),
   
@@ -69,12 +69,12 @@ export const deliveryManagerSchema = z.object({
   }).describe('CDN distribution configuration'),
   
   // General campaign settings
-  campaign_id: z.string().default('auto-generated').describe('Campaign ID'),
+  campaign_id: z.string().describe('Campaign ID'),
   
   // Notification settings
   notification_config: z.object({
-    webhook_url: z.string().default('').describe('Webhook URL for notifications'),
-    email: z.string().default('').describe('Email for notifications')
+    webhook_url: z.string().describe('Webhook URL for notifications'),
+    email: z.string().describe('Email for notifications')
   }).describe('Notification configuration')
 });
 

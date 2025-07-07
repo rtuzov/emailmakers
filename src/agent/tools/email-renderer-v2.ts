@@ -21,6 +21,8 @@ import { recordToolUsage } from '../utils/tracing-utils';
 import { MjmlCompilationService } from './email-renderer/services/mjml-compilation-service';
 import { ComponentRenderingService } from './email-renderer/services/component-rendering-service';
 import { OptimizationService } from './email-renderer/services/optimization-service';
+import EmailFolderManager from './email-folder-manager';
+import { campaignState } from '../core/campaign-state';
 
 // Import types and schema
 import { 
@@ -52,19 +54,66 @@ export const emailRendererV2 = tool({
         operation: params.action
       });
 
+      // Load email folder - try from params first, then campaign state
+      let emailFolder = undefined;
+      
+      console.log(`🔍 DEBUG: EmailRenderer V2 - params.emailFolder:`, params.emailFolder);
+      console.log(`🔍 DEBUG: EmailRenderer V2 - typeof params.emailFolder:`, typeof params.emailFolder);
+      
+      if (params.emailFolder) {
+        console.log(`🔍 DEBUG: Attempting to load email folder: ${params.emailFolder}`);
+        emailFolder = await EmailFolderManager.loadEmailFolder(params.emailFolder);
+        console.log(`🔍 DEBUG: LoadEmailFolder result:`, emailFolder);
+        if (!emailFolder) {
+          console.warn(`⚠️ Email folder not found: ${params.emailFolder}`);
+          
+          // 🔧 CRITICAL FIX: Create email folder if it doesn't exist
+          console.log(`📁 Creating missing email folder: ${params.emailFolder}`);
+          try {
+            // Extract topic from content_data or use folder name
+            const topic = (params.content_data as any)?.subject || (params.content_data as any)?.topic || params.emailFolder;
+            const campaignType = (params.content_data as any)?.campaign_type || 'promotional';
+            
+            console.log(`📁 Creating folder with topic: "${topic}", type: ${campaignType}`);
+            
+            emailFolder = await EmailFolderManager.createEmailFolder(topic, campaignType);
+            
+            console.log(`✅ Email folder created successfully: ${emailFolder.campaignId}`);
+            console.log(`📂 Base path: ${emailFolder.basePath}`);
+            
+            // Update campaign state with the new folder
+            const { campaignState } = await import('../core/campaign-state');
+            campaignState.setCampaign({
+              campaignId: emailFolder.campaignId,
+              emailFolder: emailFolder,
+              topic: topic,
+              campaign_type: campaignType,
+              created_at: new Date().toISOString()
+            });
+            
+          } catch (createError) {
+            console.error(`❌ Failed to create email folder for ${params.emailFolder}:`, createError);
+            console.warn(`⚠️ Continuing without email folder - files won't be saved`);
+          }
+        } else {
+          console.log(`✅ Email folder loaded successfully: ${emailFolder.campaignId}`);
+        }
+      } else {
+        // Try to get from campaign state
+        console.log(`🔍 DEBUG: No emailFolder in params, trying campaign state`);
+        emailFolder = campaignState.getCurrentEmailFolder();
+        if (emailFolder) {
+          console.log(`📁 Using email folder from campaign state: ${emailFolder.campaignId}`);
+        } else {
+          console.log(`⚠️ No email folder found in campaign state either`);
+        }
+      }
+
       // Create execution context
       const context: ServiceExecutionContext = {
         params,
         start_time: startTime,
-        email_folder: params.emailFolder ? {
-          campaignId: params.emailFolder,
-          basePath: params.emailFolder,
-          assetsPath: '',
-          htmlPath: '',
-          mjmlPath: '',
-          metadataPath: '',
-          spritePath: ''
-        } : undefined,
+        email_folder: emailFolder,
         trace_id: generateTraceId()
       };
 
@@ -111,7 +160,18 @@ export const emailRendererV2 = tool({
           ...context,
           params: {
             ...params,
-            action: 'optimize_output'
+            action: 'optimize_output',
+            mjml_content: result.data?.mjml || params.mjml_content || '',
+            content_data: {
+              subject: '',
+              preheader: '',
+              body: '',
+              cta_text: '',
+              cta_url: '',
+              pricing_data: '',
+              assets: [],
+              personalization: ''
+            }
           }
         });
       }
@@ -319,19 +379,66 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
       operation: params.action
     });
 
+    // Load email folder - try from params first, then campaign state
+    let emailFolder = undefined;
+    
+    console.log(`🔍 DEBUG: EmailRenderer (compat) - params.emailFolder:`, params.emailFolder);
+    console.log(`🔍 DEBUG: EmailRenderer (compat) - typeof params.emailFolder:`, typeof params.emailFolder);
+    
+    if (params.emailFolder) {
+      console.log(`🔍 DEBUG: Attempting to load email folder: ${params.emailFolder}`);
+      emailFolder = await EmailFolderManager.loadEmailFolder(params.emailFolder);
+      console.log(`🔍 DEBUG: LoadEmailFolder result:`, emailFolder);
+      if (!emailFolder) {
+        console.warn(`⚠️ Email folder not found: ${params.emailFolder}`);
+        
+        // 🔧 CRITICAL FIX: Create email folder if it doesn't exist
+        console.log(`📁 Creating missing email folder: ${params.emailFolder}`);
+        try {
+          // Extract topic from content_data or use folder name
+          const topic = (params.content_data as any)?.subject || (params.content_data as any)?.topic || params.emailFolder;
+          const campaignType = (params.content_data as any)?.campaign_type || 'promotional';
+          
+          console.log(`📁 Creating folder with topic: "${topic}", type: ${campaignType}`);
+          
+          emailFolder = await EmailFolderManager.createEmailFolder(topic, campaignType);
+          
+          console.log(`✅ Email folder created successfully: ${emailFolder.campaignId}`);
+          console.log(`📂 Base path: ${emailFolder.basePath}`);
+          
+          // Update campaign state with the new folder
+          const { campaignState } = await import('../core/campaign-state');
+          campaignState.setCampaign({
+            campaignId: emailFolder.campaignId,
+            emailFolder: emailFolder,
+            topic: topic,
+            campaign_type: campaignType,
+            created_at: new Date().toISOString()
+          });
+          
+        } catch (createError) {
+          console.error(`❌ Failed to create email folder for ${params.emailFolder}:`, createError);
+          console.warn(`⚠️ Continuing without email folder - files won't be saved`);
+        }
+      } else {
+        console.log(`✅ Email folder loaded successfully: ${emailFolder.campaignId}`);
+      }
+    } else {
+      // Try to get from campaign state
+      console.log(`🔍 DEBUG: No emailFolder in params, trying campaign state`);
+      emailFolder = campaignState.getCurrentEmailFolder();
+      if (emailFolder) {
+        console.log(`📁 Using email folder from campaign state: ${emailFolder.campaignId}`);
+      } else {
+        console.log(`⚠️ No email folder found in campaign state either`);
+      }
+    }
+
     // Create execution context
     const context: ServiceExecutionContext = {
       params,
       start_time: startTime,
-      email_folder: params.emailFolder ? {
-        campaignId: params.emailFolder,
-        basePath: params.emailFolder,
-        assetsPath: '',
-        htmlPath: '',
-        mjmlPath: '',
-        metadataPath: '',
-        spritePath: ''
-      } : undefined,
+      email_folder: emailFolder,
       trace_id: generateTraceId()
     };
 
@@ -378,7 +485,18 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
         ...context,
         params: {
           ...params,
-          action: 'optimize_output'
+          action: 'optimize_output',
+          mjml_content: result.data?.mjml || params.mjml_content || '',
+          content_data: {
+            subject: '',
+            preheader: '',
+            body: '',
+            cta_text: '',
+            cta_url: '',
+            pricing_data: '',
+            assets: [],
+            personalization: ''
+          }
         }
       });
     }

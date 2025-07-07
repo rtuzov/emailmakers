@@ -1,5 +1,5 @@
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import

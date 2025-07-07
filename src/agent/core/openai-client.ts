@@ -54,13 +54,13 @@ export class OpenAIClient {
         const specializedAgent = new Agent({
           name: 'SpecializedAgent',
           instructions: typeof systemMessage === 'string' ? systemMessage : 'You are a helpful assistant.',
-          model: (params as any).model || 'gpt-4o-mini'
+          model: (params as any).model ?? 'gpt-4o-mini'
         });
         
         result = await run(specializedAgent, userMessages);
       }
       
-      return result.finalOutput || '';
+      return result.finalOutput ?? '';
       
     } catch (error: any) {
       if (attempts >= 3) {
@@ -89,7 +89,7 @@ export class OpenAIClient {
     });
     
     const result = await run(agent, prompt);
-    return result.finalOutput || '';
+    return result.finalOutput ?? '';
   }
 
   /**

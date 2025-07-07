@@ -264,8 +264,8 @@ export const ProgressSchema = z.object({
   currentStep: z.string(),
   totalSteps: z.number().positive(),
   completedSteps: z.number().min(0),
-  estimatedTimeRemaining: z.number().min(0).optional(), // seconds
-  details: z.string().optional()
+  estimatedTimeRemaining: z.number().min(0).optional().nullable(), // seconds
+  details: z.string().optional().nullable()
 });
 
 export type ProgressData = z.infer<typeof ProgressSchema>;

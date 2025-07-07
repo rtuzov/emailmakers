@@ -1,271 +1,254 @@
-# ЗАДАЧИ: ОПТИМИЗАЦИЯ СИСТЕМЫ АГЕНТОВ
+# Email-Makers Agent Folder Optimization Project - Tasks
 
-## 🎯 ОБЩИЙ СТАТУС: АНАЛИЗ ЗАВЕРШЕН → РЕАЛИЗАЦИЯ ОЖИДАЕТ
+## PROJECT STATUS: 🚧 LEVEL 3 INTERMEDIATE FEATURE - ARCHITECTURAL OPTIMIZATION
 
-### Краткое описание
-Оптимизация архитектуры системы агентов Email-Makers на основе комплексного анализа. Цель: сокращение времени выполнения с 30-45 секунд до 10-15 секунд через упрощение архитектуры, параллелизацию и улучшение обратной связи.
-
----
-
-## 📋 ФАЗА 1: НЕМЕДЛЕННЫЕ ИСПРАВЛЕНИЯ (1-2 дня)
-
-### Приоритет: КРИТИЧЕСКИЙ ⚡
-**Цель:** Быстрые улучшения производительности на 30-40%
-
-#### ☐ Задача 1.1: Упростить HandoffsCoordinator
-- **Проблема:** Добавляет сложность без реальной ценности - только логирует и валидирует
-- **Решение:** Заменить на прямую передачу между агентами
-- **Файлы:** `src/agent/core/handoffs-coordinator.ts`
-- **Время:** 4 часа
-- **Код пример:**
-  ```typescript
-  // Вместо:
-  const handoff = await handdoffsCoordinator.performHandoff(from, to, data);
-  // Использовать:
-  const result = await toAgent.execute(data);
-  ```
-
-#### ☐ Задача 1.2: Оптимизировать Tool Registry
-- **Проблема:** Загружает ВСЕ инструменты для ВСЕХ агентов
-- **Решение:** Загружать только специфичные инструменты для каждого агента
-- **Файлы:** `src/agent/core/tool-registry.ts`
-- **Время:** 3 часа
-- **Код пример:**
-  ```typescript
-  getToolsForAgent(agentType: string): any[] {
-    const toolMap = {
-      content: ['content-generator', 'brand-voice-analyzer'],
-      design: ['figma-asset-selector', 'mjml-compiler'],
-      quality: ['quality-controller', 'accessibility-checker'],
-      delivery: ['delivery-manager', 'upload-manager']
-    };
-    return toolMap[agentType].map(name => this.getOpenAITool(name));
-  }
-  ```
-
-#### ☐ Задача 1.3: Добавить базовое кеширование
-- **Проблема:** Нет кеширования между итерациями
-- **Решение:** Кешировать Figma assets, pricing data, content templates
-- **Файлы:** Создать `src/shared/cache/agent-cache.ts`
-- **Время:** 5 часов
-- **Код пример:**
-```typescript
-  class AgentCache {
-    private cache = new Map<string, CachedResult>();
-    async get<T>(key: string, factory: () => Promise<T>): Promise<T> {
-      if (this.cache.has(key)) {
-        const cached = this.cache.get(key);
-        if (!this.isExpired(cached)) {
-          return cached.data as T;
-        }
-      }
-      const result = await factory();
-      this.cache.set(key, { data: result, timestamp: Date.now() });
-      return result;
-    }
-  }
-  ```
+**Task ID**: FOLDER-OPT-001  
+**Started**: 2025-01-07  
+**Complexity**: Level 3 (Intermediate Feature)  
+**Type**: Architectural Optimization & Code Consolidation
 
 ---
 
-## 📋 ФАЗА 2: ПАРАЛЛЕЛИЗАЦИЯ И ОШИБКИ (1 неделя)
+## 🎯 PROJECT OVERVIEW
 
-### Приоритет: ВЫСОКИЙ 🔥
-**Цель:** Сокращение времени выполнения на 50-70%
+**Objective**: Analyze and optimize `/src/agent/tools/` and `/src/agent/core/` directories for function duplication, remove architectural anti-patterns, consolidate duplicate files, and move unused files to useless folder.
 
-#### ☐ Задача 2.1: Внедрить параллельную обработку
-- **Проблема:** Жесткая последовательность Content → Design → Quality → Delivery
-- **Решение:** Использовать Promise.all для независимых операций
-- **Файлы:** Все specialist agents
-- **Время:** 2 дня
-- **Код пример:**
-  ```typescript
-  const [assets, prices, initialContent] = await Promise.all([
-    figmaService.fetchAssets(params),
-    pricingService.lookupPrices(routes),
-    contentService.generateInitial(brief)
-  ]);
-  ```
-
-#### ☐ Задача 2.2: Улучшить обработку ошибок
-- **Проблема:** Разные стратегии retry в разных местах
-- **Решение:** Единая стратегия retry с экспоненциальным backoff
-- **Файлы:** Создать `src/shared/utils/retry-strategy.ts`
-- **Время:** 1 день
-- **Код пример:**
-  ```typescript
-  class UnifiedRetryStrategy {
-    async execute<T>(
-      operation: () => Promise<T>,
-      options: RetryOptions = {}
-    ): Promise<T> {
-      const { maxAttempts = 3, baseDelay = 1000 } = options;
-      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-        try {
-          return await operation();
-        } catch (error) {
-          if (attempt === maxAttempts) throw error;
-          const delay = baseDelay * Math.pow(2, attempt - 1);
-          await this.delay(delay);
-        }
-      }
-    }
-  }
-  ```
-
-#### ☐ Задача 2.3: Оптимизировать промпты
-- **Проблема:** Избыточно детализированные с дублированием, смесь языков
-- **Решение:** Лаконичные промпты с четкой структурой
-- **Файлы:** Все файлы в `src/agent/prompts/`
-- **Время:** 2 дня
-- **Пример оптимизации:**
-  ```markdown
-  # Вместо длинного промпта:
-  ## РОЛЬ
-  Вы специалист по контенту для email-кампаний.
-  ## ЗАДАЧА
-  Создайте контент на основе брифа: {{brief}}
-  ## ТРЕБОВАНИЯ К РЕЗУЛЬТАТУ
-  - Заголовок: яркий, до 50 символов
-  - Текст: лаконичный, с призывом к действию
-  - Тональность: {{brandVoice}}
-  ## ФОРМАТ ОТВЕТА
-  JSON с полями: subject, preheader, body, cta
-  ```
+**Scope**: 
+- Function duplication analysis between folders
+- Architectural dependency cleanup
+- File usage verification against main agent
+- Code optimization and consolidation
+- System integrity verification
 
 ---
 
-## 📋 ФАЗА 3: ПРОДВИНУТЫЕ УЛУЧШЕНИЯ (2-3 недели)
+## 📊 ANALYSIS RESULTS
 
-### Приоритет: СРЕДНИЙ 📈
-**Цель:** Интеллектуальная система обратной связи
+### **MAJOR DUPLICATIONS IDENTIFIED**
 
-#### ☐ Задача 3.1: Внедрить ML-scoring для качества
-- **Проблема:** Примитивная оценка качества (базовые проверки)
-- **Решение:** ML-based анализ контента, дизайна, технических параметров
-- **Файлы:** Создать `src/agent/ml/quality-scoring.ts`
-- **Время:** 1 неделя
-- **Интерфейс:**
-  ```typescript
-  interface QualityScore {
-    content: number;     // ML-based content analysis
-    design: number;      // Visual consistency score
-    technical: number;   // Email client compatibility
-    performance: number; // Load time and size metrics
-  }
-  ```
+#### 1. **Email Rendering (3-Layer Duplication)**
+- **Issue**: Architectural anti-pattern with core service wrapping tool
+- **Files**:
+  - `/src/agent/core/email-rendering-service.ts` (557 lines) - ❌ REMOVE
+  - `/src/agent/tools/email-renderer-v2.ts` (532 lines) - ✅ KEEP (used by registry)
+  - `/src/agent/tools/email-renderer/services/` - ❓ VERIFY USAGE
+- **Problem**: Core service imports tool, creating wrong dependency direction
 
-#### ☐ Задача 3.2: Добавить адаптивные лимиты итераций
-- **Проблема:** Максимум 3 итерации захардкожены
-- **Решение:** Динамические лимиты на основе сложности и исторических данных
-- **Файлы:** Обновить все specialist agents
-- **Время:** 4 дня
-- **Логика:**
-  ```typescript
-  const maxIterations = calculateIterationLimit(complexity, historicalData);
-  ```
+#### 2. **Delivery Management (Version Duplication)**
+- **Issue**: Two versions of delivery manager exist
+- **Files**:
+  - `/src/agent/tools/consolidated/delivery-manager.ts` (886 lines) - ❌ REMOVE
+  - `/src/agent/tools/consolidated/delivery-manager-fixed.ts` (170 lines) - ✅ KEEP (used by registry)
+- **Problem**: Registry uses "fixed" version, original is unused
 
-#### ☐ Задача 3.3: Создать monitoring dashboard
-- **Проблема:** Нет визуализации производительности системы
-- **Решение:** Real-time dashboard с метриками агентов
-- **Файлы:** Создать `src/app/monitoring/` компоненты
-- **Время:** 1 неделя
-- **Метрики:** Время выполнения, качество, использование ресурсов
+#### 3. **Asset Management (Dependency Issue)**
+- **Issue**: Enhanced selector depends on core asset manager
+- **Files**:
+  - `/src/agent/core/asset-manager.ts` (519 lines) - ✅ KEEP (used by enhanced selector)
+  - `/src/agent/tools/enhanced-asset-selector.ts` (313 lines) - ✅ KEEP (used by registry)
+- **Problem**: Architecture is correct but could be optimized
 
----
+### **CONFIRMED ACTIVE TOOL IMPORTS**
+✅ **Used by Tool Registry (12 files)**:
+1. `../tools/asset-tag-planner.ts`
+2. `../tools/consolidated/content-generator.ts`
+3. `../tools/email-folder-manager.ts`
+4. `../tools/simple-pricing.ts`
+5. `../tools/date.ts`
+6. `../tools/email-renderer-v2.ts`
+7. `../tools/enhanced-asset-selector.ts`
+8. `../tools/image-planning.ts`
+9. `../tools/ml-scoring-tools.ts`
+10. `../tools/ai-consultant/workflow-quality-analyzer.ts`
+11. `../tools/consolidated/quality-controller.ts`
+12. `../tools/consolidated/delivery-manager-fixed.ts`
 
-## 🎯 КРИТЕРИИ УСПЕХА
-
-### Производительность
-- [ ] **Время выполнения:** 30-45 сек → 10-15 сек (67% улучшение)
-- [ ] **Throughput:** +200% одновременных операций
-- [ ] **Потребление памяти:** -30% оптимизация
-- [ ] **API calls:** -40% через кеширование
-
-### Качество
-- [ ] **Архитектура:** Упрощение на 50% (удаление избыточных слоев)
-- [ ] **Maintainability:** Стандартизация паттернов
-- [ ] **SDK compliance:** 100% соответствие OpenAI Agents SDK
-- [ ] **Test coverage:** >90% для оптимизированных компонентов
-
-### Бизнес-метрики
-- [ ] **User satisfaction:** Улучшение времени отклика
-- [ ] **Cost efficiency:** Снижение затрат на API на 25%
-- [ ] **Error rate:** Снижение на 40%
-- [ ] **System reliability:** 99.9% uptime
+### **POTENTIALLY UNUSED FILES**
+❓ **Files requiring verification**:
+- `/tools/simple/` directory (22 files) - Many might be unused
+- `/tools/email-renderer/services/` directory - Might be unused if v2 is used
+- `/tools/consolidated/delivery-manager.ts` - Confirmed unused (fixed version exists)
+- `/core/email-rendering-service.ts` - Confirmed unused (architectural anti-pattern)
 
 ---
 
-## 🔄 ПЛАН ТЕСТИРОВАНИЯ
+## 🚀 IMPLEMENTATION PLAN
 
-### Фаза 1 тестирование:
-- [ ] Unit тесты для новых компонентов
-- [ ] Performance тесты для кеширования
-- [ ] Integration тесты для упрощенных handoffs
+### **Phase 1: Immediate Duplications Cleanup**
+**Priority**: HIGH  
+**Estimated Time**: 2 hours
 
-### Фаза 2 тестирование:
-- [ ] Load тесты для параллельной обработки
-- [ ] Error handling тесты
-- [ ] Промпт A/B тестирование
+#### **Task 1.1: Remove Email Rendering Service Wrapper**
+- [ ] **Remove**: `/src/agent/core/email-rendering-service.ts`
+- [ ] **Reason**: Architectural anti-pattern (core importing tools)
+- [ ] **Verify**: No other files import this service
+- [ ] **Test**: Ensure main agent still works
 
-### Фаза 3 тестирование:
-- [ ] ML model validation
-- [ ] End-to-end workflow тесты
-- [ ] User acceptance тесты
+#### **Task 1.2: Remove Unused Delivery Manager**
+- [ ] **Remove**: `/src/agent/tools/consolidated/delivery-manager.ts`
+- [ ] **Reason**: Registry uses delivery-manager-fixed.ts instead
+- [ ] **Verify**: No imports of original delivery manager
+- [ ] **Test**: Ensure delivery functionality works
+
+#### **Task 1.3: Verify Email Renderer Services**
+- [ ] **Check**: If `/tools/email-renderer/services/` are used by email-renderer-v2.ts
+- [ ] **Action**: Remove if unused, keep if used
+- [ ] **Document**: Usage patterns for future maintenance
+
+### **Phase 2: Comprehensive File Usage Analysis**
+**Priority**: MEDIUM  
+**Estimated Time**: 3 hours
+
+#### **Task 2.1: Scan All Tool Files**
+- [ ] **Analyze**: All files in `/src/agent/tools/` and subdirectories
+- [ ] **Cross-reference**: With tool-registry.ts imports
+- [ ] **Check**: Direct imports in core files
+- [ ] **Identify**: Unused files for removal
+
+#### **Task 2.2: Verify Main Agent Integration**
+- [ ] **Test**: `/src/app/api/agent/run-improved/route.ts` functionality
+- [ ] **Check**: Specialist agents file imports
+- [ ] **Ensure**: All tool categories work correctly
+- [ ] **Document**: Integration points
+
+#### **Task 2.3: Create Unused Files List**
+- [ ] **Generate**: Complete list of unused files
+- [ ] **Categorize**: By reason for non-usage
+- [ ] **Verify**: Each file is truly unused (no indirect imports)
+- [ ] **Prepare**: For move to useless folder
+
+### **Phase 3: File Organization & Optimization**
+**Priority**: MEDIUM  
+**Estimated Time**: 2 hours
+
+#### **Task 3.1: Move Unused Files**
+- [ ] **Create**: `/src/agent/useless/` directory
+- [ ] **Move**: All confirmed unused files
+- [ ] **Maintain**: Directory structure in useless folder
+- [ ] **Document**: Reason for each moved file
+
+#### **Task 3.2: Optimize File Structure**
+- [ ] **Review**: `/tools/simple/` vs `/tools/consolidated/` organization
+- [ ] **Consolidate**: Similar functionality if beneficial
+- [ ] **Standardize**: Naming conventions
+- [ ] **Clean**: Empty directories
+
+#### **Task 3.3: Fix Architectural Dependencies**
+- [ ] **Ensure**: Core files don't import tool files
+- [ ] **Fix**: Any remaining dependency direction issues
+- [ ] **Optimize**: Import paths for better organization
+- [ ] **Document**: New architectural patterns
+
+### **Phase 4: System Verification & Testing**
+**Priority**: HIGH  
+**Estimated Time**: 2 hours
+
+#### **Task 4.1: Functionality Testing**
+- [ ] **Test**: Main agent API endpoint
+- [ ] **Verify**: All tool categories work
+- [ ] **Check**: Specialist agent handoffs
+- [ ] **Ensure**: No broken imports or missing files
+
+#### **Task 4.2: Performance Verification**
+- [ ] **Measure**: Tool loading times
+- [ ] **Check**: Registry initialization
+- [ ] **Verify**: No performance degradation
+- [ ] **Document**: Performance improvements
+
+#### **Task 4.3: Integration Testing**
+- [ ] **Test**: Complete email generation workflow
+- [ ] **Verify**: All tools accessible through registry
+- [ ] **Check**: Error handling for missing tools
+- [ ] **Ensure**: System stability
+
+### **Phase 5: Documentation & Cleanup**
+**Priority**: MEDIUM  
+**Estimated Time**: 1 hour
+
+#### **Task 5.1: Update Memory Bank**
+- [ ] **Update**: activeContext.md with optimization results
+- [ ] **Document**: Files removed and reasons
+- [ ] **Record**: Performance improvements
+- [ ] **Note**: Architectural improvements made
+
+#### **Task 5.2: Update Project Documentation**
+- [ ] **Document**: New file organization
+- [ ] **Update**: Import patterns and dependencies
+- [ ] **Record**: Optimization metrics
+- [ ] **Create**: File usage guide
 
 ---
 
-## 📊 МОНИТОРИНГ И МЕТРИКИ
+## 📋 DETAILED TASK CHECKLIST
 
-### Ключевые метрики для отслеживания:
-- **Время выполнения:** Средний, медиана, 95-й перцентиль
-- **Качество результатов:** ML-scoring, пользовательские оценки
-- **Использование ресурсов:** CPU, память, API calls
-- **Ошибки:** Количество, типы, время восстановления
+### **CRITICAL ACTIONS (Cannot be skipped)**
+- [ ] Remove email-rendering-service.ts (architectural anti-pattern)
+- [ ] Remove delivery-manager.ts (unused duplicate)
+- [ ] Verify main agent functionality after changes
+- [ ] Create useless/ directory for unused files
+- [ ] Update memory bank with results
 
-### Инструменты мониторинга:
-- Performance monitoring: Custom dashboard
-- Error tracking: Sentry или аналог
-- Metrics collection: Prometheus
-- Alerting: Слайм или email уведомления
+### **VERIFICATION STEPS**
+- [ ] All tool registry imports still work
+- [ ] Main agent API responds correctly
+- [ ] Specialist agents load properly
+- [ ] No broken imports remain
+- [ ] System performance maintained or improved
 
----
-
-## ⚠️ РИСКИ И МИТИГАЦИЯ
-
-### Технические риски:
-1. **Breaking changes** → Поэтапное внедрение с feature flags
-2. **Performance regression** → Benchmark тесты перед каждым релизом
-3. **Сложность ML** → Простые алгоритмы сначала, сложные потом
-4. **Caching invalidation** → Четкие стратегии TTL и invalidation
-
-### Процессные риски:
-1. **Scope creep** → Строгое следование phases
-2. **Timeline slip** → Weekly reviews и course correction
-3. **Resource allocation** → Dedicated team на каждую фазу
-4. **Quality compromise** → Никаких компромиссов в тестировании
+### **OPTIMIZATION TARGETS**
+- [ ] Reduce duplicate code by 50%+
+- [ ] Fix architectural anti-patterns
+- [ ] Improve file organization
+- [ ] Maintain 100% system functionality
+- [ ] Document all changes clearly
 
 ---
 
-## 🏁 ФИНАЛЬНЫЕ ШАГИ
+## 🏗️ ARCHITECTURAL IMPROVEMENTS
 
-### После завершения всех фаз:
-1. **Документация:** Обновить все README и API docs
-2. **Training:** Обучить команду новым паттернам
-3. **Rollout:** Постепенное внедрение в production
-4. **Monitoring:** Настроить алертинг и дашборды
-5. **Retrospective:** Анализ результатов и lessons learned
+### **DEPENDENCY DIRECTION FIXES**
+- **Before**: Core → Tools (wrong direction)
+- **After**: Tools → Core (correct direction)
+- **Impact**: Better maintainability and cleaner architecture
 
-### Подготовка к следующему этапу:
-- Планирование следующих оптимизаций
-- Сбор feedback от пользователей
-- Анализ новых возможностей SDK
-- Подготовка roadmap на следующий квартал
+### **FILE ORGANIZATION**
+- **Before**: Mixed usage patterns, duplicates
+- **After**: Clear separation, no duplicates
+- **Impact**: Easier maintenance and development
+
+### **PERFORMANCE OPTIMIZATION**
+- **Before**: Multiple service layers for same functionality
+- **After**: Single optimized implementation
+- **Impact**: Better performance and less complexity
 
 ---
 
-**Статус:** ✅ Готов к реализации  
-**Следующий шаг:** Начать Фазу 1, Задача 1.1 (упростить HandoffsCoordinator)  
-**Ответственный:** Senior Developer  
-**Дата начала:** 2024-12-20  
-**Ожидаемая дата завершения:** 2024-01-15
+## 🎯 SUCCESS METRICS
+
+### **QUANTITATIVE TARGETS**
+- **Files Removed**: 2+ duplicate files
+- **Unused Files Moved**: 10+ files to useless folder
+- **Architecture Issues Fixed**: 1+ dependency direction issues
+- **System Functionality**: 100% maintained
+
+### **QUALITATIVE IMPROVEMENTS**
+- **Code Quality**: Cleaner, more maintainable
+- **Architecture**: Proper dependency directions
+- **Organization**: Better file structure
+- **Documentation**: Clear usage patterns
+
+---
+
+## 🔄 NEXT STEPS AFTER COMPLETION
+
+1. **Monitor**: System performance for any issues
+2. **Document**: New architectural patterns
+3. **Review**: Periodically check for new duplications
+4. **Optimize**: Continue improving file organization
+
+---
+
+**CURRENT STATUS**: Ready for implementation  
+**COMPLEXITY LEVEL**: Level 3 (Intermediate Feature)  
+**ESTIMATED TOTAL TIME**: 10 hours  
+**RISK LEVEL**: Medium (system integration changes)

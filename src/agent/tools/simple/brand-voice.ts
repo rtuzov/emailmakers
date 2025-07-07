@@ -771,6 +771,6 @@ function generateDefinitionRecommendations(profile: any): string[] {
 // Export minimal schema to satisfy imports
 export const brandVoiceSchema = z.object({
   action: z.enum(['analyze', 'validate', 'adjust', 'define']),
-  content: z.string().optional(),
-  target_content: z.string().optional(),
+  content: z.string().optional().nullable(),
+  target_content: z.string().optional().nullable(),
 }); 

@@ -10,18 +10,55 @@
  * - Email client compatibility
  */
 
+import EmailFolderManager from '../../email-folder-manager';
+
 export class MjmlCompilationService {
   async handleMjmlRendering(context: any): Promise<any> {
     const { params } = context;
     console.log('🔧 MJML Rendering: Processing MJML content...');
     
-    // Generate proper MJML content if not provided
+    // 🔍 DEBUG: Comprehensive parameter analysis
+    console.log('🔍 DEBUG: MJML Service received params:', {
+      has_mjml_content: !!params.mjml_content,
+      mjml_content_type: typeof params.mjml_content,
+      mjml_content_length: params.mjml_content?.length || 0,
+      mjml_content_preview: params.mjml_content ? params.mjml_content.substring(0, 100) + '...' : 'NONE',
+      params_keys: Object.keys(params),
+      content_data_type: typeof params.content_data,
+      content_data_keys: params.content_data ? Object.keys(params.content_data) : 'NONE'
+    });
+    
+    // Use AI-generated MJML content - it should always be provided by the AI agents
     let mjmlContent = params.mjml_content;
     if (!mjmlContent) {
-      mjmlContent = this.generateStandardMjmlTemplate(params);
+      console.error('❌ MJML Rendering: No MJML content provided by AI agents!');
+      console.error('🔍 DEBUG: Available parameters:', Object.keys(params));
+      console.error('🔍 DEBUG: Content data:', params.content_data);
+      throw new Error('MJML content is required - AI agents must provide generated template');
     }
     
+    console.log('✅ MJML Rendering: Using AI-generated MJML content');
+    console.log('📄 MJML Content preview:', mjmlContent.substring(0, 200) + '...');
+    
     const compilationResult = await this.compile(mjmlContent);
+    
+    // Save HTML to mails folder if emailFolder is provided
+    if (context.email_folder && compilationResult.html) {
+      try {
+        // Copy images used in MJML to the email folder
+        const copiedImages = await this.copyMjmlImages(mjmlContent, context.email_folder);
+        
+        // Update image paths in HTML to point to local assets
+        const updatedHtml = this.updateImagePathsInHtml(compilationResult.html, copiedImages);
+        
+        await EmailFolderManager.saveHtml(context.email_folder, updatedHtml);
+        await EmailFolderManager.saveMjml(context.email_folder, mjmlContent);
+        
+        console.log(`💾 MJML Service: Saved HTML, MJML and images to ${context.email_folder.campaignId}`);
+      } catch (error) {
+        console.warn(`⚠️ MJML Service: Failed to save files:`, error);
+      }
+    }
     
     return {
       success: true,
@@ -43,235 +80,288 @@ export class MjmlCompilationService {
   async compile(mjmlContent: string): Promise<{ html: string; errors?: string[] }> {
     console.log('🔧 MJML Compilation: Converting MJML to standards-compliant HTML...');
     
+    // Validate input
+    if (!mjmlContent || typeof mjmlContent !== 'string') {
+      throw new Error('MJML content is required and must be a string');
+    }
+    
+    // Log MJML content for debugging
+    console.log('📄 MJML Content preview:', mjmlContent.substring(0, 200) + '...');
+    
+    // Basic MJML structure validation
+    if (!mjmlContent.includes('<mjml>') || !mjmlContent.includes('</mjml>')) {
+      console.warn('⚠️ MJML content missing required <mjml> tags, attempting to wrap...');
+      mjmlContent = `<mjml><mj-body>${mjmlContent}</mj-body></mjml>`;
+    }
+    
     try {
-      // For now, generate a standards-compliant HTML email template
-      // This follows email industry standards as specified in the project rules
-      const html = this.generateStandardsCompliantHtml(mjmlContent);
+      // Import MJML compiler - it's a direct function
+      const mjml = require('mjml');
       
+      if (typeof mjml !== 'function') {
+        throw new Error(`MJML compiler is not a function, got: ${typeof mjml}`);
+      }
+      
+      console.log('✅ MJML compiler loaded, compiling...');
+      
+      const result = mjml(mjmlContent, {
+        validationLevel: 'soft', // Changed from 'strict' to 'soft' to be more permissive
+        keepComments: false,
+        beautify: false
+        // Removed filePath as it causes issues with file system paths
+      });
+      
+      if (result.errors && result.errors.length > 0) {
+        console.warn('⚠️ MJML Compilation warnings:', result.errors);
+        // Only fail if there are actual errors, not warnings
+        const actualErrors = result.errors.filter(err => 
+          (err as any).level === 'error' || err.formattedMessage?.includes('error')
+        );
+        if (actualErrors.length > 0) {
+          throw new Error(`MJML validation errors: ${actualErrors.map(e => e.message).join(', ')}`);
+        }
+      }
+      
+      console.log('✅ MJML Compilation: Successfully compiled to HTML');
       return {
-        html: html,
-        errors: []
+        html: result.html,
+        errors: result.errors?.map(err => err.message) || []
       };
     } catch (error) {
       console.error('❌ MJML Compilation failed:', error);
-      return {
-        html: '',
-        errors: [error instanceof Error ? error.message : 'Unknown compilation error']
-      };
+      console.error('📄 Failed MJML content:', mjmlContent);
+      throw error instanceof Error ? error : new Error(String(error));
     }
   }
 
-  private generateStandardMjmlTemplate(params: any): string {
-    // Extract content data
-    let contentData: any = {};
+  /**
+   * Escape XML special characters to prevent MJML parsing errors
+   */
+  private escapeXml(text: string): string {
+    if (!text || typeof text !== 'string') return '';
+    
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+
+  /**
+   * Копирует изображения из MJML в папку письма
+   */
+  private async copyMjmlImages(mjmlContent: string, emailFolder: any): Promise<string[]> {
     try {
-      if (params.content_data) {
-        contentData = typeof params.content_data === 'string' 
-          ? JSON.parse(params.content_data) 
-          : params.content_data;
+      // Извлекаем пути изображений из MJML
+      const imagePaths = this.extractImagePaths(mjmlContent);
+      
+      console.log(`🖼️ Found ${imagePaths.length} images to copy:`, imagePaths);
+      
+      const copiedImages: string[] = [];
+      for (const imagePath of imagePaths) {
+        try {
+          let actualImagePath = imagePath;
+          let fileName = '';
+          
+          // Обрабатываем токены FIGMA_ASSET_URL
+          if (imagePath.includes('{{FIGMA_ASSET_URL:')) {
+            const tokenMatch = imagePath.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/);
+            if (tokenMatch) {
+              fileName = tokenMatch[1];
+              // Ищем файл в папке Figma assets
+              actualImagePath = await this.resolveFigmaAssetPath(fileName);
+              if (!actualImagePath) {
+                console.warn(`⚠️ Could not resolve Figma asset: ${fileName}`);
+                continue;
+              }
+            }
+          } else {
+            // Получаем имя файла из обычного пути
+            fileName = imagePath.split('/').pop() || '';
+          }
+          
+          if (!fileName) continue;
+          
+          // Преобразуем относительный путь в абсолютный
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          const absolutePath = path.resolve(actualImagePath);
+          
+          // Проверяем, существует ли файл
+          await fs.access(absolutePath);
+          
+          // Копируем изображение в папку письма
+          await EmailFolderManager.addFigmaAsset(emailFolder, absolutePath, fileName);
+          copiedImages.push(absolutePath);
+          
+          console.log(`✅ Copied image: ${fileName}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to copy image ${imagePath}:`, error);
+        }
       }
+      return copiedImages;
     } catch (error) {
-      console.warn('Could not parse content_data, using defaults');
+      console.error('❌ Failed to copy MJML images:', error);
+      return [];
     }
-
-    const topic = contentData.topic || params.topic || 'Путешествие';
-    const subject = contentData.subject || `${topic} - Специальные предложения от Kupibilet`;
-    const mainContent = contentData.content || contentData.body || `Откройте для себя лучшие предложения по направлению "${topic}".`;
-    
-    return `
-<mjml>
-  <mj-head>
-    <mj-title>${subject}</mj-title>
-    <mj-preview>Специальные предложения от Kupibilet</mj-preview>
-    <mj-attributes>
-      <mj-all font-family="Arial, sans-serif" />
-      <mj-text font-size="16px" color="#333333" line-height="1.6" />
-      <mj-button background-color="#4BFF7E" color="#ffffff" font-weight="bold" />
-    </mj-attributes>
-    <mj-style>
-      .brand-header { background-color: #4BFF7E; }
-      .kupibilet-content { background-color: #ffffff; }
-      .kupibilet-footer { background-color: #f8f9fa; }
-      @media only screen and (max-width: 600px) {
-        .mobile-padding { padding: 10px !important; }
-        .mobile-text { font-size: 14px !important; }
-      }
-    </mj-style>
-  </mj-head>
-  <mj-body background-color="#f8f9fa">
-    <!-- Header -->
-    <mj-section css-class="brand-header" padding="20px 0">
-      <mj-column>
-        <mj-text align="center" color="#ffffff" font-size="24px" font-weight="bold">
-          Brand Name
-        </mj-text>
-        <mj-text align="center" color="#ffffff" font-size="14px">
-          Ваш надежный партнер
-        </mj-text>
-      </mj-column>
-    </mj-section>
-
-    <!-- Main Content -->
-    <mj-section css-class="kupibilet-content" padding="40px 20px">
-      <mj-column>
-        <mj-text font-size="28px" font-weight="bold" color="#333333" align="center">
-          ${topic}
-        </mj-text>
-        <mj-text font-size="16px" color="#666666" line-height="1.6" padding="20px 0">
-          ${mainContent}
-        </mj-text>
-        <mj-button href="#" background-color="#4BFF7E" color="#ffffff" font-size="16px" font-weight="bold" padding="20px 0">
-          Найти билеты
-        </mj-button>
-      </mj-column>
-    </mj-section>
-
-    <!-- Footer -->
-    <mj-section css-class="kupibilet-footer" padding="20px">
-      <mj-column>
-        <mj-text align="center" font-size="12px" color="#999999">
-          © 2025 Brand. Все права защищены.
-        </mj-text>
-        <mj-text align="center" font-size="12px" color="#999999">
-          Если вы не хотите получать наши письма, <a href="#" style="color: #4BFF7E;">отписаться</a>
-        </mj-text>
-      </mj-column>
-    </mj-section>
-  </mj-body>
-</mjml>`;
   }
 
-  private generateStandardsCompliantHtml(mjmlContent: string): string {
-    // Generate standards-compliant HTML that follows email industry standards
-    // This includes proper DOCTYPE, table-based layout, inline CSS, etc.
+  /**
+   * Разрешает токен FIGMA_ASSET_URL в реальный путь к файлу
+   */
+  private async resolveFigmaAssetPath(fileName: string): Promise<string | null> {
+    const fs = await import('fs/promises');
+    const path = await import('path');
     
-    return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Brand - Специальные предложения</title>
-  <!--[if mso]>
-  <noscript>
-    <xml>
-      <o:OfficeDocumentSettings>
-        <o:AllowPNG/>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
-      </o:OfficeDocumentSettings>
-    </xml>
-  </noscript>
-  <![endif]-->
-  <style type="text/css">
-    /* Reset styles */
-    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-    img { -ms-interpolation-mode: bicubic; }
+    // Возможные пути поиска в папке Figma
+    const searchPaths = [
+      `./figma-all-pages-1750993353363/зайцы-общие/${fileName}`,
+      `./figma-all-pages-1750993353363/иллюстрации/${fileName}`,
+      `./figma-all-pages-1750993353363/иконки-допуслуг/${fileName}`,
+      `./figma-all-pages-1750993353363/логотипы-ак/${fileName}`,
+      `./figma-all-pages-1750993353363/зайцы-эмоции/${fileName}`,
+      `./figma-all-pages-1750993353363/зайцы-подборка/${fileName}`,
+      `./figma-all-pages-1750993353363/айдентика/${fileName}`,
+      // Также ищем в корне
+      `./figma-all-pages-1750993353363/${fileName}`
+    ];
     
-    /* Remove default margins */
-    body { margin: 0 !important; padding: 0 !important; }
-    
-    /* Dark mode support */
-    @media (prefers-color-scheme: dark) {
-      .dark-mode-bg { background-color: #1a1a1a !important; }
-      .dark-mode-text { color: #ffffff !important; }
+    // Пробуем найти файл в каждой папке (точное совпадение)
+    for (const searchPath of searchPaths) {
+      try {
+        const absolutePath = path.resolve(searchPath);
+        await fs.access(absolutePath);
+        console.log(`🔍 Found Figma asset: ${fileName} at ${searchPath}`);
+        return searchPath;
+      } catch {
+        // Файл не найден в этой папке, продолжаем поиск
+      }
     }
     
-    /* Mobile responsive */
-    @media only screen and (max-width: 600px) {
-      .mobile-width { width: 100% !important; }
-      .mobile-padding { padding: 10px !important; }
-      .mobile-text { font-size: 14px !important; }
-      .mobile-button { width: 100% !important; }
+    // Если точное совпадение не найдено, пробуем fuzzy поиск
+    console.log(`⚠️ Exact match not found for ${fileName}, trying fuzzy search...`);
+    
+    const baseName = fileName.replace(/\.[^/.]+$/, ''); // удаляем расширение
+    const searchDirectories = [
+      './figma-all-pages-1750993353363/зайцы-общие',
+      './figma-all-pages-1750993353363/иллюстрации',
+      './figma-all-pages-1750993353363/иконки-допуслуг',
+      './figma-all-pages-1750993353363/логотипы-ак',
+      './figma-all-pages-1750993353363/зайцы-эмоции',
+      './figma-all-pages-1750993353363/зайцы-подборка',
+      './figma-all-pages-1750993353363/айдентика',
+    ];
+    
+    for (const dirPath of searchDirectories) {
+      try {
+        const absoluteDirPath = path.resolve(dirPath);
+        await fs.access(absoluteDirPath);
+        const files = await fs.readdir(absoluteDirPath);
+        
+        // Ищем файл с наибольшим совпадением
+        let bestMatch = null;
+        let bestScore = 0;
+        
+        for (const file of files) {
+          if (!file.endsWith('.png') && !file.endsWith('.jpg') && !file.endsWith('.jpeg')) continue;
+          
+          const fileBaseName = file.replace(/\.[^/.]+$/, '');
+          
+          // Подсчитываем совпадающие слова
+          const fileWords = fileBaseName.toLowerCase().split(/[-_\s]+/);
+          const searchWords = baseName.toLowerCase().split(/[-_\s]+/);
+          
+          let score = 0;
+          for (const searchWord of searchWords) {
+            if (searchWord.length > 2) { // Игнорируем короткие слова
+              for (const fileWord of fileWords) {
+                if (fileWord.includes(searchWord) || searchWord.includes(fileWord)) {
+                  score += 1;
+                }
+              }
+            }
+          }
+          
+          // Добавляем бонус за частичное совпадение имени файла
+          if (fileBaseName.toLowerCase().includes(baseName.toLowerCase()) || 
+              baseName.toLowerCase().includes(fileBaseName.toLowerCase())) {
+            score += 2;
+          }
+          
+          if (score > bestScore) {
+            bestScore = score;
+            bestMatch = file;
+          }
+        }
+        
+        if (bestMatch && bestScore > 0) {
+          const foundPath = path.join(dirPath, bestMatch);
+          console.log(`🔍 Found similar Figma asset: ${fileName} -> ${bestMatch} at ${foundPath} (score: ${bestScore})`);
+          return foundPath;
+        }
+      } catch (dirError) {
+        // Папка не существует или недоступна, продолжаем
+        console.warn(`⚠️ Could not access directory ${dirPath}:`, dirError);
+      }
     }
-  </style>
-</head>
-<body style="margin: 0; padding: 0; background-color: #f8f9fa; font-family: Arial, sans-serif;">
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f8f9fa;">
-    <tr>
-      <td align="center" style="padding: 20px 0;">
-        <!-- Main container -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" class="mobile-width">
-          
-          <!-- Header -->
-          <tr>
-            <td style="background-color: #4BFF7E; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-                              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-                  Brand Name
-                </h1>
-                <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; font-family: Arial, sans-serif;">
-                  Ваш надежный партнер
-                </p>
-            </td>
-          </tr>
-          
-          <!-- Main Content -->
-          <tr>
-            <td style="padding: 40px 30px; text-align: center;" class="mobile-padding">
-              <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;" class="mobile-text">
-                Путешествие в Норвегию зимой
-              </h2>
-              <p style="margin: 0 0 30px 0; color: #666666; font-size: 16px; line-height: 1.6; font-family: Arial, sans-serif;" class="mobile-text">
-                Откройте для себя магию норвежской зимы! Северное сияние, заснеженные фьорды и уютные города ждут вас. Специальные предложения на авиабилеты в Норвегию от Kupibilet.
-              </p>
-              
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                <tr>
-                  <td style="border-radius: 6px; background-color: #4BFF7E;">
-                    <a href="#" style="display: inline-block; padding: 15px 30px; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; border-radius: 6px;" class="mobile-button">
-                      Найти билеты в Норвегию
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          
-          <!-- Features Section -->
-          <tr>
-            <td style="padding: 0 30px 40px 30px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td style="width: 50%; padding: 20px; text-align: center; vertical-align: top;">
-                    <h3 style="margin: 0 0 10px 0; color: #333333; font-size: 18px; font-weight: bold; font-family: Arial, sans-serif;">
-                      🌟 Лучшие цены
-                    </h3>
-                    <p style="margin: 0; color: #666666; font-size: 14px; font-family: Arial, sans-serif;">
-                      Сравниваем предложения всех авиакомпаний
-                    </p>
-                  </td>
-                  <td style="width: 50%; padding: 20px; text-align: center; vertical-align: top;">
-                    <h3 style="margin: 0 0 10px 0; color: #333333; font-size: 18px; font-weight: bold; font-family: Arial, sans-serif;">
-                      ⚡ Быстрое бронирование
-                    </h3>
-                    <p style="margin: 0; color: #666666; font-size: 14px; font-family: Arial, sans-serif;">
-                      Покупка билетов за 2 минуты
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          
-          <!-- Footer -->
-          <tr>
-            <td style="background-color: #f8f9fa; padding: 30px 20px; text-align: center; border-radius: 0 0 8px 8px;">
-                              <p style="margin: 0 0 10px 0; color: #999999; font-size: 12px; font-family: Arial, sans-serif;">
-                  © 2025 Brand. Все права защищены.
-                </p>
-              <p style="margin: 0; color: #999999; font-size: 12px; font-family: Arial, sans-serif;">
-                Если вы не хотите получать наши письма, <a href="#" style="color: #4BFF7E; text-decoration: underline;">отписаться</a>
-              </p>
-            </td>
-          </tr>
-          
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
+    
+    console.error(`❌ Could not find any matching asset for: ${fileName}`);
+    return null;
+  }
+
+  /**
+   * Извлекает пути изображений из MJML контента
+   */
+  private extractImagePaths(mjmlContent: string): string[] {
+    const imagePaths: string[] = [];
+    
+    // Ищем все теги mj-image с атрибутом src
+    const imageRegex = /<mj-image[^>]+src=["']([^"']+)["'][^>]*>/g;
+    let match;
+    
+    while ((match = imageRegex.exec(mjmlContent)) !== null) {
+      const imagePath = match[1];
+      if (imagePath && !imagePath.startsWith('http') && !imagePath.startsWith('data:')) {
+        imagePaths.push(imagePath);
+      }
+    }
+    
+    return imagePaths;
+  }
+
+  /**
+   * Обновляет пути изображений в HTML на локальные ассеты
+   */
+  private updateImagePathsInHtml(html: string, copiedImages: string[]): string {
+    let updatedHtml = html;
+    
+    // Извлекаем пути изображений из HTML (они могут отличаться от MJML после компиляции)
+    const htmlImageRegex = /src=["']([^"']+)["']/g;
+    let match;
+    
+    while ((match = htmlImageRegex.exec(html)) !== null) {
+      const originalPath = match[1];
+      
+      // Пропускаем http и data: URLs
+      if (originalPath.startsWith('http') || originalPath.startsWith('data:')) {
+        continue;
+      }
+      
+      // Получаем имя файла из оригинального пути
+      const fileName = originalPath.split('/').pop();
+      if (!fileName) continue;
+      
+      // Создаем новый локальный путь относительно HTML файла
+      const newPath = `./assets/${fileName}`;
+      
+      // Заменяем путь в HTML
+      updatedHtml = updatedHtml.replace(originalPath, newPath);
+      
+      console.log(`🔄 Updated image path: ${originalPath} -> ${newPath}`);
+    }
+    
+    return updatedHtml;
   }
 
   async validate(mjmlContent: string): Promise<{ valid: boolean; errors: string[] }> {

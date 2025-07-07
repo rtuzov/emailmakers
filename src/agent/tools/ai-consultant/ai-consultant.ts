@@ -3,9 +3,11 @@
  * 
  * Main orchestrator for intelligent email quality improvement system.
  * Coordinates analysis, recommendations, and iterative improvement workflow.
+ * 
+ * Updated to use OpenAI Agents SDK for enhanced AI analysis
  */
 
-import { SmartEmailAnalyzer } from './smart-analyzer';
+import { AgentEmailAnalyzer } from './agent-analyzer';
 import { RecommendationEngine } from './recommendation-engine';
 import { CommandGenerator } from './command-generator';
 import { ActionExecutor, ExecutionContext } from './action-executor';
@@ -23,9 +25,10 @@ import {
 } from './types';
 import { logger } from '../../core/logger';
 import { getValidatedUsageModel } from '../../../shared/utils/model-config';
+import { createAgentRunConfig, withSDKTrace } from '../../utils/tracing-utils';
 
 export class AIQualityConsultant {
-  private analyzer: SmartEmailAnalyzer;
+  private analyzer: AgentEmailAnalyzer;
   private recommendationEngine: RecommendationEngine;
   private commandGenerator: CommandGenerator;
   private actionExecutor: ActionExecutor;
@@ -33,7 +36,7 @@ export class AIQualityConsultant {
 
   constructor(config?: Partial<AIConsultantConfig>) {
     this.config = this.createDefaultConfig(config);
-    this.analyzer = new SmartEmailAnalyzer(this.config);
+    this.analyzer = new AgentEmailAnalyzer(this.config);
     this.recommendationEngine = new RecommendationEngine(this.config);
     this.commandGenerator = new CommandGenerator(this.config);
     this.actionExecutor = new ActionExecutor(this.config);
@@ -43,97 +46,99 @@ export class AIQualityConsultant {
    * Main entry point for AI quality consultation
    */
   async consultOnQuality(request: AIConsultantRequest): Promise<AIConsultantResponse> {
-    try {
-      logger.info(`🤖 AI Consultant starting analysis for: ${request.topic}`);
-      logger.info(`📊 Iteration ${(request.iteration_count || 0) + 1}/${this.config.max_iterations}`);
+    return withSDKTrace('AI Quality Consultation', async () => {
+      try {
+        logger.info(`🤖 AI Consultant starting analysis for: ${request.topic}`);
+        logger.info(`📊 Iteration ${(request.iteration_count || 0) + 1}/${this.config.max_iterations}`);
 
-      // Check iteration limits
-      if ((request.iteration_count || 0) >= this.config.max_iterations) {
-        return this.createCompletionResponse(
-          'Maximum iterations reached',
-          request.previous_analysis || this.createBasicAnalysis()
-        );
-      }
+        // Check iteration limits
+        if ((request.iteration_count || 0) >= this.config.max_iterations) {
+          return this.createCompletionResponse(
+            'Maximum iterations reached',
+            request.previous_analysis || this.createBasicAnalysis()
+          );
+        }
 
-      // Perform comprehensive quality analysis
-      const analysis = await this.analyzer.analyzeEmail(request);
+        // Perform comprehensive quality analysis using OpenAI Agents
+        const analysis = await this.analyzer.analyzeEmail(request);
 
-      // Check if quality gate is already passed
-      if (analysis.quality_gate_passed) {
-        logger.info(`✅ Quality gate passed with score: ${analysis.overall_score}/100`);
-        return this.createCompletionResponse(
-          'Quality gate passed - no improvements needed',
-          analysis
-        );
-      }
+        // Check if quality gate is already passed
+        if (analysis.quality_gate_passed) {
+          logger.info(`✅ Quality gate passed with score: ${analysis.overall_score}/100`);
+          return this.createCompletionResponse(
+            'Quality gate passed - no improvements needed',
+            analysis
+          );
+        }
 
-      // Generate actionable recommendations
-      const recommendations = await this.recommendationEngine.generateRecommendations(analysis, request);
-      
-      // Update analysis with recommendations
-      analysis.recommendations = recommendations;
-      analysis.auto_executable_count = recommendations.filter(r => r.category === 'auto_execute').length;
-      analysis.manual_approval_count = recommendations.filter(r => r.category === 'manual_approval').length;
-      analysis.critical_issues_count = recommendations.filter(r => r.priority === 'critical').length;
+        // Generate actionable recommendations
+        const recommendations = await this.recommendationEngine.generateRecommendations(analysis, request);
+        
+        // Update analysis with recommendations
+        analysis.recommendations = recommendations;
+        analysis.auto_executable_count = recommendations.filter(r => r.category === 'auto_execute').length;
+        analysis.manual_approval_count = recommendations.filter(r => r.category === 'manual_approval').length;
+        analysis.critical_issues_count = recommendations.filter(r => r.priority === 'critical').length;
 
-      // Generate optimized agent commands
-      const commands = this.commandGenerator.generateCommands(recommendations, request);
+        // Generate optimized agent commands
+        const commands = this.commandGenerator.generateCommands(recommendations, request);
 
-      // Execute commands if auto-execution is enabled
-      let executionResults: ExecutionResult[] = [];
-      if (this.config.enable_auto_execution) {
-        const executionContext: ExecutionContext = {
-          session_id: request.session_id || `session_${Date.now()}`,
-          iteration_number: (request.iteration_count || 0) + 1,
-          user_id: request.user_id,
-          approval_callback: request.approval_callback,
-          progress_callback: request.progress_callback
+        // Execute commands if auto-execution is enabled
+        let executionResults: ExecutionResult[] = [];
+        if (this.config.enable_auto_execution) {
+          const executionContext: ExecutionContext = {
+            session_id: request.session_id || `session_${Date.now()}`,
+            iteration_number: (request.iteration_count || 0) + 1,
+            user_id: request.user_id,
+            approval_callback: request.approval_callback,
+            progress_callback: request.progress_callback
+          };
+
+          executionResults = await this.actionExecutor.executeCommands(
+            commands,
+            recommendations,
+            executionContext
+          );
+
+          // Update analysis with execution results
+          const scoreImpact = executionResults.reduce((sum, result) => sum + (result.score_impact || 0), 0);
+          const finalScore = Math.min(100, analysis.overall_score + scoreImpact);
+          analysis.score_impact = scoreImpact;
+          analysis.overall_score = finalScore;
+          analysis.quality_gate_passed = finalScore >= this.config.quality_gate_threshold;
+        }
+
+        // Create execution plan
+        const executionPlan = this.createExecutionPlan(recommendations);
+
+        // Determine next actions
+        const nextActions = this.determineNextActions(analysis, executionPlan);
+
+        // Should we continue improving?
+        const shouldContinue = this.shouldContinueImprovement(analysis, request);
+
+        const response: AIConsultantResponse = {
+          analysis,
+          execution_plan: executionPlan,
+          next_actions: nextActions,
+          should_continue: shouldContinue,
+          completion_reason: shouldContinue ? undefined : this.getCompletionReason(analysis),
+          execution_results: executionResults
         };
 
-        executionResults = await this.actionExecutor.executeCommands(
-          commands,
-          recommendations,
-          executionContext
+        logger.info(`🎯 Generated ${recommendations.length} recommendations (${analysis.auto_executable_count} auto, ${analysis.manual_approval_count} manual)`);
+        
+        return response;
+
+      } catch (error) {
+        logger.error('❌ AI Consultant failed', { error });
+        throw new AIConsultantError(
+          'AI consultation failed',
+          'ANALYSIS_FAILED',
+          { error: error instanceof Error ? error.message : String(error), topic: request.topic }
         );
-
-        // Update analysis with execution results
-        const scoreImpact = executionResults.reduce((sum, result) => sum + (result.score_impact || 0), 0);
-        const finalScore = Math.min(100, analysis.overall_score + scoreImpact);
-        analysis.score_impact = scoreImpact;
-        analysis.overall_score = finalScore;
-        analysis.quality_gate_passed = finalScore >= this.config.quality_gate_threshold;
       }
-
-      // Create execution plan
-      const executionPlan = this.createExecutionPlan(recommendations);
-
-      // Determine next actions
-      const nextActions = this.determineNextActions(analysis, executionPlan);
-
-      // Should we continue improving?
-      const shouldContinue = this.shouldContinueImprovement(analysis, request);
-
-      const response: AIConsultantResponse = {
-        analysis,
-        execution_plan: executionPlan,
-        next_actions: nextActions,
-        should_continue: shouldContinue,
-        completion_reason: shouldContinue ? undefined : this.getCompletionReason(analysis),
-        execution_results: executionResults
-      };
-
-      logger.info(`🎯 Generated ${recommendations.length} recommendations (${analysis.auto_executable_count} auto, ${analysis.manual_approval_count} manual)`);
-      
-      return response;
-
-    } catch (error) {
-      logger.error('❌ AI Consultant failed', { error });
-      throw new AIConsultantError(
-        'AI consultation failed',
-        'ANALYSIS_FAILED',
-        { error: error instanceof Error ? error.message : String(error), topic: request.topic }
-      );
-    }
+    });
   }
 
   /**
@@ -253,27 +258,55 @@ export class AIQualityConsultant {
    * Determine if improvement process should continue
    */
   private shouldContinueImprovement(analysis: QualityAnalysisResult, request: AIConsultantRequest): boolean {
-    // Stop if quality gate passed
+    // If quality gate passed, we're done
     if (analysis.quality_gate_passed) {
+      console.log(`✅ Quality gate passed with score ${analysis.overall_score}/100 - stopping improvement`);
       return false;
     }
 
     // Stop if max iterations reached
-    if ((request.iteration_count || 0) >= this.config.max_iterations - 1) {
+    const currentIteration = request.iteration_count || 0;
+    if (currentIteration >= this.config.max_iterations - 1) {
+      console.log(`🛑 Max iterations reached: ${currentIteration + 1}/${this.config.max_iterations} - stopping improvement`);
       return false;
     }
 
     // Stop if no meaningful improvements possible
     if (analysis.improvement_potential < 5) {
+      console.log(`🛑 Low improvement potential: ${analysis.improvement_potential}% - stopping improvement`);
       return false;
     }
 
     // Stop if score is very low and we have critical issues (escalate instead)
     if (analysis.overall_score < this.config.critical_issue_threshold && analysis.critical_issues_count > 0) {
+      console.log(`🛑 Critical issues with low score: ${analysis.overall_score} (${analysis.critical_issues_count} critical issues) - stopping improvement`);
       return false;
     }
 
-    return true;
+    // 🔧 FIXED LOGIC: More strict conditions to prevent cycling
+    const hasAutoFixes = analysis.auto_executable_count > 0;
+    const scoreAcceptable = analysis.overall_score >= 60; // Minimum 60 points
+    const hasMinorIssuesOnly = analysis.critical_issues_count === 0;
+    
+    // Check progress: if previous analysis exists, quality should improve
+    if (request.previous_analysis && analysis.overall_score <= request.previous_analysis.overall_score) {
+      console.log(`🛑 No quality improvement: ${request.previous_analysis.overall_score} → ${analysis.overall_score} - stopping improvement`);
+      return false;
+    }
+
+    // Additional safety check: if score is below quality gate for multiple iterations, stop
+    if (analysis.overall_score < this.config.quality_gate_threshold && currentIteration >= 1) {
+      console.log(`🛑 Quality gate failed for multiple iterations (${currentIteration + 1}) with score ${analysis.overall_score} - stopping improvement`);
+      return false;
+    }
+
+    // Only continue if we have auto-fixes, acceptable score, and minor issues only
+    const shouldContinue = hasAutoFixes && scoreAcceptable && hasMinorIssuesOnly && currentIteration < 2;
+    
+    console.log(`🔄 Continue improvement decision: ${shouldContinue}`);
+    console.log(`   Score: ${analysis.overall_score}, Auto-fixes: ${analysis.auto_executable_count}, Critical: ${analysis.critical_issues_count}, Iteration: ${currentIteration + 1}`);
+    
+    return shouldContinue;
   }
 
   /**
@@ -281,18 +314,22 @@ export class AIQualityConsultant {
    */
   private getCompletionReason(analysis: QualityAnalysisResult): string {
     if (analysis.quality_gate_passed) {
-      return `Quality gate passed with score ${analysis.overall_score}/100`;
+      return `Quality gate passed with score ${analysis.overall_score}/100 - Ready for delivery`;
     }
     
     if (analysis.critical_issues_count > 0) {
-      return `Critical issues detected - requires human review`;
+      return `Quality gate FAILED - Critical issues detected, requires human review (Score: ${analysis.overall_score}/100)`;
+    }
+    
+    if (analysis.auto_executable_count === 0) {
+      return `Quality gate FAILED - No auto-fixable improvements available, manual intervention required (Score: ${analysis.overall_score}/100)`;
     }
     
     if (analysis.improvement_potential < 5) {
-      return `Limited improvement potential remaining`;
+      return `Quality gate FAILED - Limited improvement potential remaining (Score: ${analysis.overall_score}/100)`;
     }
     
-    return `Maximum iterations reached - current score ${analysis.overall_score}/100`;
+    return `Quality gate FAILED - Maximum iterations reached (Score: ${analysis.overall_score}/100)`;
   }
 
   /**
@@ -319,7 +356,7 @@ export class AIQualityConsultant {
   }
 
   /**
-   * Create basic analysis for fallback scenarios
+   * Create basic analysis for error scenarios
    */
   private createBasicAnalysis(): QualityAnalysisResult {
     return {
@@ -392,7 +429,7 @@ export class AIQualityConsultant {
    */
   updateConfig(updates: Partial<AIConsultantConfig>): void {
     this.config = { ...this.config, ...updates };
-    this.analyzer = new SmartEmailAnalyzer(this.config);
+    this.analyzer = new AgentEmailAnalyzer(this.config);
     this.recommendationEngine = new RecommendationEngine(this.config);
   }
 

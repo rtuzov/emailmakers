@@ -55,10 +55,10 @@ export type RenderJobConfig = z.infer<typeof RenderJobConfigSchema>;
 export const RenderJobSchema = z.object({
   id: z.string().uuid(),
   userId: z.string().uuid(),
-  templateId: z.string().uuid().optional(),
+  templateId: z.string().uuid().optional().nullable(),
   htmlContent: z.string().min(1, 'HTML content is required'),
-  subject: z.string().optional(),
-  preheader: z.string().optional(),
+  subject: z.string().optional().nullable(),
+  preheader: z.string().optional().nullable(),
   config: RenderJobConfigSchema,
   status: z.enum([
     RenderJobStatus.PENDING,
@@ -70,11 +70,11 @@ export const RenderJobSchema = z.object({
   ]),
   priority: z.number().min(1).max(4).default(JobPriority.NORMAL),
   progress: z.number().min(0).max(100).default(0),
-  startedAt: z.date().optional(),
-  completedAt: z.date().optional(),
-  errorMessage: z.string().optional(),
-  estimatedDuration: z.number().positive().optional(), // seconds
-  actualDuration: z.number().positive().optional(), // seconds
+  startedAt: z.date().optional().nullable(),
+  completedAt: z.date().optional().nullable(),
+  errorMessage: z.string().optional().nullable(),
+  estimatedDuration: z.number().positive().optional().nullable(), // seconds
+  actualDuration: z.number().positive().optional().nullable(), // seconds
   createdAt: z.date(),
   updatedAt: z.date()
 });

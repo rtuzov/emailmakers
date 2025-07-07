@@ -181,14 +181,14 @@ export const DESTINATION_PRIORITIES = [
 export const geographicalInfoSchema = z.object({
   country_code: z.string().min(2).max(3).describe('ISO код страны (например, FR, IT, ES)'),
   country_name: z.string().min(1).describe('Полное название страны'),
-  city: z.string().optional().describe('Основной город направления'),
+  city: z.string().nullable().optional().describe('Основной город направления'),
   region: z.enum(SUPPORTED_REGIONS).describe('Географический регион'),
   continent: z.string().describe('Континент'),
   coordinates: z.object({
     latitude: z.number().min(-90).max(90),
     longitude: z.number().min(-180).max(180)
-  }).optional().describe('Географические координаты для карт'),
-  timezone: z.string().optional().describe('Часовой пояс (например, Europe/Paris)')
+  }).nullable().optional().describe('Географические координаты для карт'),
+  timezone: z.string().nullable().optional().describe('Часовой пояс (например, Europe/Paris)')
 });
 
 /**
@@ -197,13 +197,13 @@ export const geographicalInfoSchema = z.object({
 export const seasonalContextSchema = z.object({
   primary_season: z.enum(TRAVEL_SEASONS).describe('Основной сезон для направления'),
   optimal_months: z.array(z.number().min(1).max(12)).describe('Оптимальные месяцы (1-12)'),
-  weather_description: z.string().optional().describe('Краткое описание погоды'),
-  seasonal_highlights: z.array(z.string()).optional().describe('Сезонные особенности и события'),
+  weather_description: z.string().nullable().optional().describe('Краткое описание погоды'),
+  seasonal_highlights: z.array(z.string()).nullable().optional().describe('Сезонные особенности и события'),
   temperature_range: z.object({
     min: z.number(),
     max: z.number(),
     unit: z.enum(['celsius', 'fahrenheit']).default('celsius')
-  }).optional().describe('Температурный диапазон')
+  }).nullable().optional().describe('Температурный диапазон')
 });
 
 /**
@@ -219,9 +219,9 @@ export const destinationPricingSchema = z.object({
   best_booking_period: z.object({
     start_date: z.string().describe('Начало лучшего периода бронирования'),
     end_date: z.string().describe('Конец лучшего периода бронирования')
-  }).optional().describe('Лучший период для бронирования'),
-  savings_potential: z.number().min(0).max(100).optional().describe('Потенциал экономии в процентах'),
-  price_trend: z.enum(['rising', 'falling', 'stable']).optional().describe('Тренд изменения цен')
+  }).nullable().optional().describe('Лучший период для бронирования'),
+  savings_potential: z.number().min(0).max(100).nullable().optional().describe('Потенциал экономии в процентах'),
+  price_trend: z.enum(['rising', 'falling', 'stable']).nullable().optional().describe('Тренд изменения цен')
 });
 
 /**
@@ -229,24 +229,24 @@ export const destinationPricingSchema = z.object({
  */
 export const destinationAssetsSchema = z.object({
   primary_image: z.object({
-    url: z.string().url().optional().describe('URL основного изображения'),
+    url: z.string().url().nullable().optional().describe('URL основного изображения'),
     alt_text: z.string().describe('Альтернативный текст для изображения'),
     source: z.enum(['figma', 'external', 'generated']).describe('Источник изображения')
   }).describe('Основное изображение направления'),
   gallery_images: z.array(z.object({
-    url: z.string().url().optional(),
+    url: z.string().url().nullable().optional(),
     alt_text: z.string(),
-    category: z.enum(['landmark', 'food', 'culture', 'nature', 'activity']).optional()
-  })).optional().describe('Дополнительные изображения'),
+    category: z.enum(['landmark', 'food', 'culture', 'nature', 'activity']).nullable().nullable().optional()
+  })).nullable().optional().describe('Дополнительные изображения'),
   icons: z.array(z.object({
     type: z.enum(['weather', 'activity', 'transport', 'accommodation']),
-    url: z.string().url().optional(),
+    url: z.string().url().nullable().optional(),
     description: z.string()
-  })).optional().describe('Иконки для категорий'),
+  })).nullable().optional().describe('Иконки для категорий'),
   brand_elements: z.object({
-    color_scheme: z.array(z.string()).optional().describe('Цветовая схема для направления'),
-    font_preferences: z.string().optional().describe('Предпочтения по шрифтам')
-  }).optional().describe('Брендовые элементы')
+    color_scheme: z.array(z.string()).nullable().optional().describe('Цветовая схема для направления'),
+    font_preferences: z.string().nullable().optional().describe('Предпочтения по шрифтам')
+  }).nullable().optional().describe('Брендовые элементы')
 });
 
 /**
@@ -257,9 +257,9 @@ export const destinationContentSchema = z.object({
   description: z.string().min(1).max(500).describe('Описание направления'),
   highlights: z.array(z.string()).min(1).max(5).describe('Ключевые особенности (1-5 пунктов)'),
   call_to_action: z.string().min(1).max(50).describe('Призыв к действию'),
-  unique_selling_points: z.array(z.string()).optional().describe('Уникальные преимущества'),
-  target_audience: z.enum(['families', 'couples', 'solo_travelers', 'business', 'adventure_seekers', 'luxury']).optional().describe('Целевая аудитория'),
-  content_tone: z.enum(['excited', 'relaxed', 'luxurious', 'adventurous', 'family_friendly']).optional().describe('Тон контента')
+  unique_selling_points: z.array(z.string()).nullable().optional().describe('Уникальные преимущества'),
+  target_audience: z.enum(['families', 'couples', 'solo_travelers', 'business', 'adventure_seekers', 'luxury']).nullable().optional().describe('Целевая аудитория'),
+  content_tone: z.enum(['excited', 'relaxed', 'luxurious', 'adventurous', 'family_friendly']).nullable().optional().describe('Тон контента')
 });
 
 /**
@@ -289,7 +289,7 @@ export const destinationPlanSchema = z.object({
     created_at: z.string().describe('Дата создания'),
     updated_at: z.string().describe('Дата обновления'),
     source: z.enum(['manual', 'ai_generated', 'api_import']).describe('Источник данных'),
-    confidence_score: z.number().min(0).max(100).optional().describe('Уверенность в данных')
+    confidence_score: z.number().min(0).max(100).nullable().optional().describe('Уверенность в данных')
   }).describe('Метаданные направления')
 });
 
@@ -327,8 +327,8 @@ export const unifiedLayoutPlanSchema = z.object({
   // MJML template mapping
   template_mapping: z.object({
     mjml_template: z.enum(['multi-destination-compact.mjml', 'multi-destination-grid.mjml', 'multi-destination-carousel.mjml']).describe('MJML шаблон'),
-    template_variables: z.record(z.string(), z.any()).optional().describe('Переменные для шаблона'),
-    custom_css: z.string().optional().describe('Дополнительные CSS стили')
+    template_variables: z.record(z.string(), z.any()).nullable().optional().describe('Переменные для шаблона'),
+    custom_css: z.string().nullable().optional().describe('Дополнительные CSS стили')
   }).describe('Привязка к MJML шаблону')
 });
 
@@ -338,7 +338,7 @@ export const unifiedLayoutPlanSchema = z.object({
 export const multiDestinationPlanSchema = z.object({
   id: z.string().min(1).describe('Уникальный идентификатор плана'),
   name: z.string().min(1).max(200).describe('Название кампании'),
-  description: z.string().optional().describe('Описание кампании'),
+  description: z.string().nullable().optional().describe('Описание кампании'),
   
   // Основные направления
   destinations: z.array(destinationPlanSchema).min(2).max(12).describe('Список направлений (минимум 2, максимум 12)'),
@@ -347,7 +347,7 @@ export const multiDestinationPlanSchema = z.object({
   campaign_context: z.object({
     theme: z.string().describe('Тема кампании (например, "Европа осенью")'),
     target_season: z.enum(TRAVEL_SEASONS).describe('Целевой сезон'),
-    target_region: z.enum(SUPPORTED_REGIONS).optional().describe('Основной регион'),
+    target_region: z.enum(SUPPORTED_REGIONS).nullable().optional().describe('Основной регион'),
     campaign_duration: z.object({
       start_date: z.string().describe('Начало кампании'),
       end_date: z.string().describe('Конец кампании')
@@ -373,8 +373,8 @@ export const multiDestinationPlanSchema = z.object({
     updated_at: z.string().describe('Дата последнего обновления'),
     version: z.string().default('1.0.0').describe('Версия плана'),
     created_by: z.enum(['user', 'ai_agent', 'import']).describe('Источник создания'),
-    optimization_score: z.number().min(0).max(100).optional().describe('Оценка оптимизации плана'),
-    a_b_test_variant: z.string().optional().describe('Вариант для A/B тестирования')
+    optimization_score: z.number().min(0).max(100).nullable().optional().describe('Оценка оптимизации плана'),
+    a_b_test_variant: z.string().nullable().optional().describe('Вариант для A/B тестирования')
   }).describe('Метаданные плана')
 });
 

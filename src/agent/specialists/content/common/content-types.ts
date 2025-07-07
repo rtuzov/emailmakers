@@ -15,7 +15,7 @@ export const contentGeneratorSchema = z.object({
   
   // Core content parameters
   topic: z.string().describe('Main topic for the email content'),
-  content_type: z.enum(['email', 'subject_line', 'preheader', 'call_to_action', 'body_text', 'complete_campaign']).default('complete_campaign').describe('Type of content to generate'),
+  content_type: z.enum(['email', 'subject_line', 'preheader', 'call_to_action', 'body_text', 'complete_campaign']).describe('Type of content to generate'),
   
   // Pricing context (enhanced from original generate_copy)
   pricing_data: z.object({
@@ -35,78 +35,107 @@ export const contentGeneratorSchema = z.object({
         min: z.number(),
         max: z.number()
       })
-    }).nullable().optional().describe('Enhanced pricing statistics')
-  }).nullable().optional().describe('Price data for content context'),
+    }).nullable().optional().nullable().describe('Enhanced pricing statistics')
+  }).nullable().optional().nullable().describe('Price data for content context'),
   
   // Content generation strategy
-  generation_strategy: z.enum(['speed', 'quality', 'creative', 'data_driven', 'emotional']).default('quality').describe('Generation approach'),
-  tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).default('friendly').describe('Content tone'),
-  language: z.enum(['ru', 'en']).default('ru').describe('Content language'),
+  generation_strategy: z.enum(['speed', 'quality', 'creative', 'data_driven', 'emotional']).describe('Generation approach'),
+  tone: z.enum(['professional', 'friendly', 'urgent', 'casual', 'luxury', 'family']).describe('Content tone'),
+  language: z.enum(['ru', 'en']).describe('Content language'),
   
   // Target audience and personalization
   target_audience: z.object({
     primary: z.enum(['families', 'business_travelers', 'young_adults', 'seniors', 'budget_conscious', 'luxury_seekers']).describe('Primary audience segment'),
     demographics: z.object({
-      age_range: z.enum(['18-25', '26-35', '36-45', '46-55', '55+']).nullable().optional(),
-      income_level: z.enum(['budget', 'middle', 'premium', 'luxury']).nullable().optional(),
-      travel_frequency: z.enum(['first_time', 'occasional', 'frequent', 'business']).nullable().optional()
-    }).nullable().optional().describe('Detailed demographics'),
+      age_range: z.enum(['18-25', '26-35', '36-45', '46-55', '55+']).nullable().optional().nullable(),
+      income_level: z.enum(['budget', 'middle', 'premium', 'luxury']).nullable().optional().nullable(),
+      travel_frequency: z.enum(['first_time', 'occasional', 'frequent', 'business']).nullable().optional().nullable()
+    }).nullable().optional().nullable().describe('Detailed demographics'),
     psychographics: z.object({
-      motivations: z.array(z.enum(['save_money', 'convenience', 'comfort', 'experience', 'status'])).nullable().optional(),
-      booking_behavior: z.enum(['last_minute', 'planner', 'deal_hunter', 'loyalty_focused']).nullable().optional()
-    }).nullable().optional().describe('Psychological and behavioral traits')
-  }).nullable().optional().describe('Target audience specification'),
+      motivations: z.array(z.enum(['save_money', 'convenience', 'comfort', 'experience', 'status'])).nullable().optional().nullable(),
+      booking_behavior: z.enum(['last_minute', 'planner', 'deal_hunter', 'loyalty_focused']).nullable().optional().nullable()
+    }).nullable().optional().nullable().describe('Psychological and behavioral traits')
+  }).nullable().optional().nullable().describe('Target audience specification'),
   
   // Campaign context
   campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).nullable().optional(),
-    seasonality: z.enum(['spring', 'summer', 'autumn', 'winter', 'holiday', 'general']).nullable().optional(),
-    urgency_level: z.enum(['low', 'medium', 'high', 'critical']).nullable().optional(),
+    campaign_type: z.enum(['promotional', 'informational', 'seasonal', 'urgent', 'newsletter']).nullable().optional().nullable(),
+    seasonality: z.enum(['spring', 'summer', 'autumn', 'winter', 'holiday', 'general']).nullable().optional().nullable(),
+    urgency_level: z.enum(['low', 'medium', 'high', 'critical']).nullable().optional().nullable(),
     promotion_details: z.object({
-      discount_percentage: z.number().nullable().optional(),
-      validity_period: z.string().nullable().optional(),
-      limited_availability: z.boolean().nullable().optional()
-    }).nullable().optional()
-  }).nullable().optional().describe('Campaign-specific context'),
+      discount_percentage: z.number().nullable().optional().nullable(),
+      validity_period: z.string().nullable().optional().nullable(),
+      limited_availability: z.boolean().nullable().optional().nullable()
+    }).nullable().optional().nullable()
+  }).nullable().optional().nullable().describe('Campaign-specific context'),
   
   // Assets and visual context
   assets_context: z.object({
     available_assets: z.array(z.object({
       type: z.enum(['rabbit_emotion', 'airline_logo', 'illustration', 'icon']),
-      emotion: z.string().nullable().optional(),
-      description: z.string().nullable().optional()
-    })).nullable().optional().describe('Available visual assets for content alignment'),
+      emotion: z.string().nullable().optional().nullable(),
+      description: z.string().nullable().optional().nullable()
+    })).nullable().optional().nullable().describe('Available visual assets for content alignment'),
     brand_elements: z.object({
-      colors: z.array(z.string()).nullable().optional(),
-      mascot_personality: z.string().nullable().optional()
-    }).nullable().optional()
-  }).nullable().optional().describe('Visual assets context for content alignment'),
+      colors: z.array(z.string()).nullable().optional().nullable(),
+      mascot_personality: z.string().nullable().optional().nullable()
+    }).nullable().optional().nullable(),
+    image_requirements: z.object({
+      total_images_needed: z.number().min(1).max(10).describe('Total number of images needed for the email'),
+      figma_images_count: z.number().min(0).max(8).describe('Number of images to source from Figma assets'),
+      internet_images_count: z.number().min(0).max(5).describe('Number of images to source from external internet sources'),
+      require_logo: z.boolean().describe('Whether a logo/brand asset is required'),
+      image_categories: z.array(z.enum(['illustration', 'photo', 'icon', 'banner', 'background', 'mascot'])).nullable().optional().nullable().describe('Categories of images needed'),
+      placement_instructions: z.object({
+        hero_image: z.object({
+          source: z.enum(['figma', 'internet']).describe('Source for hero/header image'),
+          category: z.enum(['illustration', 'photo', 'mascot']).describe('Type of hero image'),
+          description: z.string().describe('Description of desired hero image')
+        }).nullable().optional().nullable(),
+        content_images: z.array(z.object({
+          source: z.enum(['figma', 'internet']).describe('Source for content image'),
+          category: z.enum(['illustration', 'photo', 'icon']).describe('Type of content image'),
+          description: z.string().describe('Description of desired content image')
+        })).nullable().optional().nullable().describe('Specific content images with placement'),
+        footer_elements: z.array(z.object({
+          source: z.enum(['figma', 'internet']).describe('Source for footer element'),
+          category: z.enum(['logo', 'icon', 'mascot']).describe('Type of footer element'),
+          description: z.string().describe('Description of desired footer element')
+        })).nullable().optional().nullable().describe('Footer visual elements')
+      }).nullable().optional().nullable().describe('Specific placement instructions for different image types'),
+      size_constraints: z.object({
+        max_width: z.number().describe('Maximum width in pixels'),
+        max_height: z.number().describe('Maximum height in pixels'),
+        max_file_size_kb: z.number().describe('Maximum file size in KB')
+      }).nullable().optional().nullable().describe('Technical constraints for images')
+    }).nullable().optional().nullable().describe('Detailed image requirements and distribution strategy')
+  }).nullable().optional().nullable().describe('Visual assets context for content alignment'),
   
   // Content specifications
   content_specs: z.object({
-    max_length: z.number().nullable().optional().describe('Maximum content length in characters'),
-    include_prices: z.boolean().default(true).describe('Include pricing information'),
-    include_cta: z.boolean().default(true).describe('Include call-to-action'),
-    email_client_optimization: z.boolean().default(true).describe('Optimize for email clients'),
-    accessibility_compliance: z.boolean().default(true).describe('Ensure accessibility compliance')
-  }).nullable().optional().describe('Content technical specifications'),
+    max_length: z.number().nullable().optional().nullable().describe('Maximum content length in characters'),
+    include_prices: z.boolean().describe('Include pricing information'),
+    include_cta: z.boolean().describe('Include call-to-action'),
+    email_client_optimization: z.boolean().describe('Optimize for email clients'),
+    accessibility_compliance: z.boolean().describe('Ensure accessibility compliance')
+  }).nullable().optional().nullable().describe('Content technical specifications'),
   
   // A/B testing and variations
   variant_options: z.object({
-    generate_variants: z.boolean().default(false).describe('Generate multiple content variations'),
-    variant_count: z.number().min(1).max(5).default(2).describe('Number of variants to generate'),
-    variation_focus: z.enum(['tone', 'structure', 'cta', 'pricing_emphasis', 'emotional_appeal']).nullable().optional().describe('Primary variation dimension')
-  }).nullable().optional().describe('A/B testing variant generation'),
+    generate_variants: z.boolean().describe('Generate multiple content variations'),
+    variant_count: z.number().min(1).max(5).describe('Number of variants to generate'),
+    variation_focus: z.enum(['tone', 'structure', 'cta', 'pricing_emphasis', 'emotional_appeal']).nullable().optional().nullable().describe('Primary variation dimension')
+  }).nullable().optional().nullable().describe('A/B testing variant generation'),
   
   // Analysis and optimization
-  existing_content: z.string().nullable().optional().describe('Existing content to analyze or optimize'),
-  benchmark_content: z.string().nullable().optional().describe('Benchmark content for comparison'),
-  optimization_goals: z.array(z.enum(['open_rate', 'click_rate', 'conversion', 'engagement', 'brand_awareness'])).nullable().optional().describe('Optimization objectives'),
+  existing_content: z.string().nullable().optional().nullable().describe('Existing content to analyze or optimize'),
+  benchmark_content: z.string().nullable().optional().nullable().describe('Benchmark content for comparison'),
+  optimization_goals: z.array(z.enum(['open_rate', 'click_rate', 'conversion', 'engagement', 'brand_awareness'])).nullable().optional().nullable().describe('Optimization objectives'),
   
   // Output preferences
-  output_format: z.enum(['structured', 'plain_text', 'json', 'marketing_brief']).default('structured').describe('Output format preference'),
-  include_analytics: z.boolean().default(true).describe('Include content analytics and insights'),
-  include_recommendations: z.boolean().default(true).describe('Include optimization recommendations')
+  output_format: z.enum(['structured', 'plain_text', 'json', 'marketing_brief']).describe('Output format preference'),
+  include_analytics: z.boolean().describe('Include content analytics and insights'),
+  include_recommendations: z.boolean().describe('Include optimization recommendations')
 });
 
 export type ContentGeneratorParams = z.infer<typeof contentGeneratorSchema>;
@@ -180,6 +209,8 @@ export interface ContentGeneratorResult {
     variants?: ContentVariant[];
     analysis?: ContentAnalysis;
     optimization_suggestions?: string[];
+    campaign_id?: string;
+    email_folder?: string;
   };
   content_insights?: ContentInsights;
   marketing_intelligence?: MarketingIntelligence;

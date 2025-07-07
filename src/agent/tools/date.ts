@@ -1,5 +1,5 @@
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import
@@ -63,8 +63,8 @@ export async function getCurrentDate(params: DateParams = {}): Promise<ToolResul
     const dateSelection = generateIntelligentDateSelection(now, params.campaign_context);
     
     // Базовые параметры с учетом контекста
-    const monthsAhead = params.months_ahead || dateSelection.recommended_months_ahead;
-    const searchWindow = params.search_window || dateSelection.recommended_search_window;
+    const monthsAhead = params.months_ahead ?? dateSelection.recommended_months_ahead;
+    const searchWindow = params.search_window ?? dateSelection.recommended_search_window;
     
     // Динамическое определение начальной даты поиска
     const searchStartDate = new Date(now);
@@ -404,7 +404,10 @@ function getNextWeekRange(startDate: Date) {
 function getSeasonalRanges(startDate: Date, topic?: string) {
   const ranges = [];
   const currentMonth = startDate.getMonth();
-  const topicLower = topic?.toLowerCase() || '';
+  if (!topic) {
+    throw new Error('Topic parameter is required');
+  }
+  const topicLower = topic.toLowerCase();
   
   // Осенний сезон (сентябрь-ноябрь)
   if (topicLower.includes('осен')) {

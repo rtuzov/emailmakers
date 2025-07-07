@@ -11,7 +11,7 @@
  */
 
 import { run, Agent } from '@openai/agents';
-import { createEmailCampaignOrchestrator } from '../modules/specialist-agents';
+import { createEmailCampaignOrchestrator } from '../specialists/specialist-agents';
 import { toolRegistry } from './tool-registry';
 
 export interface OrchestrationConfig {

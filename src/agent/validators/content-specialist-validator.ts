@@ -11,25 +11,25 @@ import { BaseAgentOutputSchema, AgentResponseUtils, AgentErrorCodes, AgentError 
 // Схема для контекстных данных
 export const ContextDataSchema = z.object({
   seasonal_context: z.object({
-    current_season: z.enum(['spring', 'summer', 'autumn', 'winter']).optional(),
-    holidays: z.array(z.string()).optional(),
-    seasonal_trends: z.array(z.string()).optional()
-  }).optional(),
+    current_season: z.enum(['spring', 'summer', 'autumn', 'winter']).optional().nullable(),
+    holidays: z.array(z.string()).optional().nullable(),
+    seasonal_trends: z.array(z.string()).optional().nullable()
+  }).optional().nullable(),
   cultural_context: z.object({
-    regional_preferences: z.record(z.any()).optional(),
-    cultural_events: z.array(z.string()).optional(),
-    demographic_insights: z.record(z.any()).optional()
-  }).optional(),
+    regional_preferences: z.record(z.any()).optional().nullable(),
+    cultural_events: z.array(z.string()).optional().nullable(),
+    demographic_insights: z.record(z.any()).optional().nullable()
+  }).optional().nullable(),
   marketing_context: z.object({
-    travel_trends: z.array(z.string()).optional(),
-    pricing_trends: z.record(z.any()).optional(),
-    urgency_factors: z.array(z.string()).optional()
-  }).optional(),
+    travel_trends: z.array(z.string()).optional().nullable(),
+    pricing_trends: z.record(z.any()).optional().nullable(),
+    urgency_factors: z.array(z.string()).optional().nullable()
+  }).optional().nullable(),
   travel_context: z.object({
-    seasonal_demand: z.record(z.any()).optional(),
-    destination_trends: z.array(z.string()).optional(),
-    booking_patterns: z.record(z.any()).optional()
-  }).optional()
+    seasonal_demand: z.record(z.any()).optional().nullable(),
+    destination_trends: z.array(z.string()).optional().nullable(),
+    booking_patterns: z.record(z.any()).optional().nullable()
+  }).optional().nullable()
 });
 
 // Схема для ценовых данных
@@ -37,25 +37,25 @@ export const PricingDataSchema = z.object({
   prices: z.array(z.object({
     price: z.number(),
     currency: z.string(),
-    date: z.string().optional(),
-    airline: z.string().optional()
-  })).optional(),
+    date: z.string().optional().nullable(),
+    airline: z.string().optional().nullable()
+  })).optional().nullable(),
   statistics: z.object({
-    min_price: z.number().optional(),
-    max_price: z.number().optional(),
-    avg_price: z.number().optional(),
-    median_price: z.number().optional()
-  }).optional(),
+    min_price: z.number().optional().nullable(),
+    max_price: z.number().optional().nullable(),
+    avg_price: z.number().optional().nullable(),
+    median_price: z.number().optional().nullable()
+  }).optional().nullable(),
   pricing_insights: z.object({
-    price_trend: z.enum(['increasing', 'decreasing', 'stable']).optional(),
-    urgency_level: z.enum(['low', 'medium', 'high']).optional(),
-    best_booking_time: z.string().optional()
-  }).optional(),
+    price_trend: z.enum(['increasing', 'decreasing', 'stable']).optional().nullable(),
+    urgency_level: z.enum(['low', 'medium', 'high']).optional().nullable(),
+    best_booking_time: z.string().optional().nullable()
+  }).optional().nullable(),
   marketing_copy: z.object({
-    urgency_message: z.string().optional(),
-    price_highlight: z.string().optional(),
-    value_proposition: z.string().optional()
-  }).optional()
+    urgency_message: z.string().optional().nullable(),
+    price_highlight: z.string().optional().nullable(),
+    value_proposition: z.string().optional().nullable()
+  }).optional().nullable()
 });
 
 // Схема для контентных данных
@@ -70,16 +70,16 @@ export const ContentDataSchema = z.object({
   }),
   content_metadata: z.object({
     content_type: z.string(),
-    generation_confidence: z.number().min(0).max(100).optional(),
-    optimization_score: z.number().min(0).max(100).optional(),
-    complexity: z.number().min(0).max(100).optional(),
-    word_count: z.number().optional(),
-    reading_time: z.number().optional()
-  }).optional(),
+    generation_confidence: z.number().min(0).max(100).optional().nullable(),
+    optimization_score: z.number().min(0).max(100).optional().nullable(),
+    complexity: z.number().min(0).max(100).optional().nullable(),
+    word_count: z.number().optional().nullable(),
+    reading_time: z.number().optional().nullable()
+  }).optional().nullable(),
   variants: z.array(z.object({
     type: z.string(),
     content: z.record(z.string())
-  })).optional()
+  })).optional().nullable()
 });
 
 // Схема для данных кампании
@@ -87,79 +87,79 @@ export const CampaignDataSchema = z.object({
   campaign_id: z.string(),
   folder_path: z.string(),
   status: z.enum(['initialized', 'in_progress', 'completed', 'failed']),
-  created_at: z.string().optional(),
-  performance_metrics: z.record(z.any()).optional()
+  created_at: z.string().optional().nullable(),
+  performance_metrics: z.record(z.any()).optional().nullable()
 });
 
 // Схема для handoff данных
 export const HandoffDataSchema = z.object({
   content_package: z.object({
     content: ContentDataSchema.shape.complete_content
-  }).optional(),
-  context_intelligence: z.any().optional(),
-  pricing_intelligence: z.any().optional(),
-  campaign_info: z.any().optional(),
+  }).optional().nullable(),
+  context_intelligence: z.any().optional().nullable(),
+  pricing_intelligence: z.any().optional().nullable(),
+  campaign_info: z.any().optional().nullable(),
   design_requirements: z.object({
     tone: z.string(),
     style: z.string(),
     color_scheme: z.string(),
     imagery_focus: z.string(),
     layout_priority: z.string(),
-    template_type: z.string().optional(),
-    visual_hierarchy: z.string().optional(),
-    responsive_breakpoints: z.array(z.string()).optional(),
+    template_type: z.string().optional().nullable(),
+    visual_hierarchy: z.string().optional().nullable(),
+    responsive_breakpoints: z.array(z.string()).optional().nullable(),
     accessibility_requirements: z.object({
       contrast_ratio: z.string(),
       font_size_min: z.string(),
       alt_text_required: z.boolean()
-    }).optional()
+    }).optional().nullable()
   }),
   brand_guidelines: z.object({
     brand_voice: z.string(),
     visual_style: z.string(),
     color_palette: z.array(z.string()),
     typography: z.string(),
-    brand_name: z.string().optional(),
+    brand_name: z.string().optional().nullable(),
     logo_requirements: z.object({
       position: z.string(),
       size: z.string(),
       variant: z.string()
-    }).optional(),
+    }).optional().nullable(),
     tone_guidelines: z.object({
       primary_tone: z.string(),
       voice_attributes: z.array(z.string()),
       language: z.enum(['ru', 'en'])
-    }).optional(),
+    }).optional().nullable(),
     visual_guidelines: z.object({
       imagery_style: z.string(),
       icon_style: z.string(),
       button_style: z.string()
-    }).optional()
+    }).optional().nullable()
   }),
-  content_metadata: z.any().optional(),
-  pricing_context: z.any().optional(),
+  content_metadata: z.any().optional().nullable(),
+  pricing_context: z.any().optional().nullable(),
   market_insights: z.object({
     trend: z.string(),
     urgency: z.string(),
     opportunities: z.array(z.string())
-  }).optional(),
-  content_suggestions: z.array(z.string()).optional(),
-  recommendations: z.array(z.string()).optional()
+  }).optional().nullable(),
+  content_suggestions: z.array(z.string()).optional().nullable(),
+  recommendations: z.array(z.string()).optional().nullable()
 });
 
 // Основная схема для ContentSpecialistOutput
 export const ContentSpecialistOutputSchema = BaseAgentOutputSchema.extend({
   task_type: z.enum(['analyze_context', 'get_pricing', 'generate_content', 'manage_campaign']),
   results: z.object({
-    context_data: z.any().optional(),
-    pricing_data: z.any().optional(),
-    content_data: z.any().optional(),
-    campaign_data: z.any().optional()
+    context_data: z.any().optional().nullable(),
+    pricing_data: z.any().optional().nullable(),
+    content_data: z.any().optional().nullable(),
+    campaign_data: z.any().optional().nullable()
   }),
   recommendations: z.object({
-    next_agent: z.enum(['design_specialist', 'quality_specialist', 'delivery_specialist']).optional(),
-    next_actions: z.array(z.string()).optional(),
-    handoff_data: HandoffDataSchema.optional()
+    next_agent: z.enum(['design_specialist', 'quality_specialist', 'delivery_specialist']).optional().nullable(),
+    next_actions: z.array(z.string()).optional().nullable(),
+    handoff_data: HandoffDataSchema.optional().nullable()
   })
 });
 

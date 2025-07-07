@@ -5,35 +5,35 @@ import { z } from 'zod';
 // Request validation schema - updated to match frontend data structure
 const GenerateTemplateSchema = z.object({
   // Accept both old and new field names for backward compatibility
-  content: z.string().min(1, 'Content is required').optional(),
-  content_brief: z.string().min(1, 'Content brief is required').optional(),
-  template_name: z.string().min(1, 'Template name is required').optional(),
-  title: z.string().optional(),
-  campaign_type: z.string().optional(),
-  tone: z.string().optional(), 
-  target_audience: z.string().optional(),
-  language: z.string().optional(),
-  email_type: z.string().optional(),
-  brand: z.string().optional(),
+  content: z.string().min(1, 'Content is required').nullable().optional(),
+  content_brief: z.string().min(1, 'Content brief is required').nullable().optional(),
+  template_name: z.string().min(1, 'Template name is required').nullable().optional(),
+  title: z.string().nullable().optional(),
+  campaign_type: z.string().nullable().optional(),
+  tone: z.string().nullable().optional(), 
+  target_audience: z.string().nullable().optional(),
+  language: z.string().nullable().optional(),
+  email_type: z.string().nullable().optional(),
+  brand: z.string().nullable().optional(),
   
   // Legacy fields for backward compatibility
-  type: z.enum(['text', 'json', 'figma_url']).optional(),
-  description: z.string().optional(),
+  type: z.enum(['text', 'json', 'figma_url']).nullable().optional(),
+  description: z.string().nullable().optional(),
   options: z.object({
-    figmaUrl: z.string().url().optional(),
-    campaignType: z.enum(['newsletter', 'promotional', 'transactional', 'welcome']).optional(),
-    priorityProvider: z.enum(['openai', 'anthropic']).optional(),
-    skipCache: z.boolean().optional(),
-    qualityThreshold: z.number().min(0).max(1).optional(),
+    figmaUrl: z.string().url().nullable().optional(),
+    campaignType: z.enum(['newsletter', 'promotional', 'transactional', 'welcome']).nullable().optional(),
+    priorityProvider: z.enum(['openai', 'anthropic']).nullable().optional(),
+    skipCache: z.boolean().nullable().optional(),
+    qualityThreshold: z.number().min(0).max(1).nullable().optional(),
     brandGuidelines: z.object({
-      tone: z.enum(['professional', 'casual', 'friendly', 'formal', 'playful', 'urgent']).optional(),
-      voice: z.enum(['authoritative', 'conversational', 'empathetic', 'enthusiastic', 'informative']).optional(),
-      values: z.array(z.string()).optional(),
-      prohibitedWords: z.array(z.string()).optional(),
-      preferredLanguage: z.string().optional()
-    }).optional(),
-    targetAudience: z.string().optional()
-  }).optional()
+      tone: z.enum(['professional', 'casual', 'friendly', 'formal', 'playful', 'urgent']).nullable().optional(),
+      voice: z.enum(['authoritative', 'conversational', 'empathetic', 'enthusiastic', 'informative']).nullable().optional(),
+      values: z.array(z.string()).nullable().optional(),
+      prohibitedWords: z.array(z.string()).nullable().optional(),
+      preferredLanguage: z.string().nullable().nullable().optional()
+    }).nullable().optional(),
+    targetAudience: z.string().nullable().nullable().optional()
+  }).nullable().nullable().optional()
 }).refine(data => data.content || data.content_brief, {
   message: "Either 'content' or 'content_brief' is required",
   path: ["content", "content_brief"]

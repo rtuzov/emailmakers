@@ -32,14 +32,14 @@ export const qualityControllerSchema = z.object({
   }).describe('Content for quality analysis'),
   
   analysis_scope: z.object({
-    technical_validation: z.boolean().default(true).describe('Validate HTML/CSS for email clients'),
-    content_quality: z.boolean().default(true).describe('Analyze content quality and engagement'),
-    accessibility: z.boolean().default(true).describe('Check accessibility compliance'),
-    performance: z.boolean().default(true).describe('Analyze performance metrics'),
-    brand_compliance: z.boolean().default(true).describe('Check brand guideline compliance'),
-    cross_client_compatibility: z.boolean().default(true).describe('Test email client compatibility'),
-    deliverability: z.boolean().default(true).describe('Analyze spam score and deliverability'),
-    mobile_optimization: z.boolean().default(true).describe('Check mobile rendering')
+    technical_validation: z.boolean().describe('Validate HTML/CSS for email clients'),
+    content_quality: z.boolean().describe('Analyze content quality and engagement'),
+    accessibility: z.boolean().describe('Check accessibility compliance'),
+    performance: z.boolean().describe('Analyze performance metrics'),
+    brand_compliance: z.boolean().describe('Check brand guideline compliance'),
+    cross_client_compatibility: z.boolean().describe('Test email client compatibility'),
+    deliverability: z.boolean().describe('Analyze spam score and deliverability'),
+    mobile_optimization: z.boolean().describe('Check mobile rendering')
   }).describe('Scope of quality analysis'),
   
   // For compare_versions action (replaces diff_html)
@@ -177,6 +177,28 @@ export async function qualityController(params: QualityControllerParams): Promis
   console.log(`🔍 Quality Controller: Executing action "${params.action}"`);
   
   try {
+    // Add iteration tracking to prevent cycling
+    const currentIteration = (params as any).iteration_count || 0;
+    const maxIterations = 3;
+    
+    if (currentIteration >= maxIterations) {
+      console.log(`🛑 Quality Controller: Max iterations reached (${currentIteration}/${maxIterations})`);
+      return {
+        success: false,
+        action: params.action,
+        error: `Maximum iterations reached (${currentIteration}/${maxIterations}). Manual intervention required.`,
+        analytics: {
+          execution_time: Date.now() - startTime,
+          tests_performed: 0,
+          issues_detected: 0,
+          fixes_applied: 0,
+          confidence_score: 0
+        }
+      };
+    }
+    
+    console.log(`🔄 Quality Controller: Iteration ${currentIteration + 1}/${maxIterations}`);
+    
     let result: QualityControllerResult;
       
       switch (params.action) {
@@ -261,7 +283,7 @@ async function handleQualityAnalysis(params: QualityControllerParams, startTime:
   
   // Use existing AI quality consultant with enhanced parameters
   const aiAnalysisResult = await aiQualityConsultant({
-    html_content: params.content_to_analyze.html || '',
+    html_content: params.content_to_analyze.html ?? '',
     topic: params.content_to_analyze.subject || 'Email Campaign Quality Analysis',
     campaign_type: 'promotional',
     target_audience: 'general',
@@ -513,10 +535,10 @@ async function handleAutomatedFix(params: QualityControllerParams, startTime: nu
     patchResult = await handlePatchApplication({
       ...params,
       patch_operations: {
-        target_html: params.content_to_analyze?.html || '',
+        target_html: params.content_to_analyze?.html ?? '',
         patches: autoFixPatches,
         validation_after_patch: true,
-        backup_original: true
+        backup_original: params.patch_operations.backup_original
       }
     }, startTime);
   }
@@ -615,7 +637,7 @@ async function enhancePatchResults(data: any, params: QualityControllerParams) {
     patches_applied: totalPatches,
     successful_patches: successfulPatches,
     failed_patches: [],
-    final_html: data.patched_html || '',
+    final_html: data.patched_html ?? '',
     validation_passed: data.validation_passed || true
   };
 }

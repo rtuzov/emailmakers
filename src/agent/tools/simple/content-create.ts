@@ -52,43 +52,7 @@ export interface ContentCreateResult {
 }
 
 export async function contentCreate(params: ContentCreateParams): Promise<ContentCreateResult> {
-  return executeToolWithTrace(
-    'content-create',
-    'generate',
-    async () => {
-      console.log(`✍️ Creating ${params.content_type} content for topic: ${params.topic}`);
-      
-      // Simulate content generation based on parameters
-      const content = await generateContentBasedOnParams(params);
-      const analytics = await analyzeGeneratedContent(content, params);
-      const recommendations = await generateRecommendations(content, params);
-      
-      return {
-        success: true,
-        content_data: {
-          generated_content: content,
-          content_type: params.content_type,
-          language: params.language,
-          tone: params.tone,
-          word_count: content.split(' ').length,
-          estimated_read_time: calculateReadTime(content),
-          seo_keywords: extractKeywords(content),
-          engagement_score: analytics.engagement_score,
-          personalization_tokens: extractPersonalizationTokens(content)
-        },
-        analytics,
-        recommendations
-      };
-    },
-    {
-      name: 'content-create',
-      metadata: {
-        content_type: params.content_type,
-        language: params.language,
-        tone: params.tone
-      }
-    }
-  );
+  throw new Error('content-create simple tool disabled by policy.');
 }
 
 function extractContentData(result: any, contentType: string): any {

@@ -57,6 +57,17 @@ export class ComplianceService {
         success: true,
         task_type: 'validate_compliance',
         results: {
+          status: 'completed' as const,
+          quality_score: this.extractComplianceScore(complianceResult),
+          validation_passed: complianceStatus.overall_compliance === 'pass',
+          recommendations: {
+            next_actions: this.generateComplianceActions(complianceStatus),
+            critical_fixes: [],
+            improvements: []
+          },
+          analytics: analytics,
+          processing_time_ms: Date.now() - startTime,
+          timestamp: new Date().toISOString(),
           validation_data: complianceResult,
           detailed_check: detailedCheck
         },
@@ -204,7 +215,28 @@ Please use appropriate validation tools to perform comprehensive compliance chec
     return {
       success: false,
       task_type: input.task_type,
-      results: {},
+      results: {
+        status: 'failed' as const,
+        quality_score: 0,
+        validation_passed: false,
+        recommendations: {
+          next_actions: ['Retry compliance validation', 'Manual compliance review required'],
+          critical_fixes: [],
+          improvements: []
+        },
+        analytics: {
+          total_checks: 0,
+          passed_checks: 0,
+          failed_checks: 1,
+          processing_time_ms: Date.now() - startTime,
+          ml_score: 0,
+          ml_issues: [],
+          ml_recommendations: []
+        },
+        processing_time_ms: Date.now() - startTime,
+        timestamp: new Date().toISOString(),
+        error: error?.message || 'Compliance validation failed'
+      },
       quality_report: ReportGeneratorUtils.generateFailureReport(),
       compliance_status: ComplianceAssessmentUtils.generateFailureComplianceStatus(),
       recommendations: {
@@ -216,7 +248,14 @@ Please use appropriate validation tools to perform comprehensive compliance chec
         issues_detected: 1,
         fixes_applied: 0,
         confidence_score: 0,
-        agent_efficiency: 0
+        agent_efficiency: 0,
+        total_checks: 0,
+        passed_checks: 0,
+        failed_checks: 1,
+        processing_time_ms: Date.now() - startTime,
+        ml_score: 0,
+        ml_issues: [],
+        ml_recommendations: []
       },
       error: error instanceof Error ? error.message : 'Unknown compliance error'
     };

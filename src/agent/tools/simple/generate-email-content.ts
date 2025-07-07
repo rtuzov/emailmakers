@@ -28,23 +28,5 @@ export interface GenerateEmailContentResult {
  * The actual content generation happens through the model's instructions
  */
 export async function generateEmailContent(params: GenerateEmailContentParams): Promise<GenerateEmailContentResult> {
-  try {
-    console.log('📧 generateEmailContent tool called with:', params);
-    
-    // This tool signals to the OpenAI model that it should generate content
-    // The model will see this function call and generate the actual content
-    return {
-      success: true,
-      subject: `Please generate a compelling subject line for: ${params.topic}`,
-      preheader: `Please generate a preheader for: ${params.topic}`,
-      body: `Please generate email body content for topic: ${params.topic} with ${params.tone} tone in ${params.language} language`,
-      cta: 'Please generate a call-to-action button text'
-    };
-  } catch (error) {
-    console.error('❌ generateEmailContent failed:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
+  throw new Error('generate-email-content tool disabled by policy.');
 } 

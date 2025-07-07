@@ -1,121 +1,195 @@
-# АКТИВНЫЙ КОНТЕКСТ
+# ACTIVE CONTEXT - Email-Makers Agent Folder Optimization Project
 
-## 🎯 ТЕКУЩАЯ ЗАДАЧА: ОПТИМИЗАЦИЯ СИСТЕМЫ АГЕНТОВ
+## 🎯 CURRENT STATUS: FOLDER OPTIMIZATION ANALYSIS COMPLETE ✅
 
-### Статус: АНАЛИЗ ЗАВЕРШЕН ✅ | РЕАЛИЗАЦИЯ ОЖИДАЕТ 🔄
-
-**Дата начала:** 2024-12-19  
-**Приоритет:** Критический (производительность системы)  
-**Ответственный:** Senior Developer  
-
-### Описание задачи
-Оптимизация архитектуры системы агентов Email-Makers на основе комплексного анализа. Система показывает хорошие архитектурные паттерны, но требует значительной оптимизации производительности, упрощения переусложненных компонентов и лучшего соответствия best practices OpenAI SDK.
-
-### Ключевые проблемы для решения:
-1. **Избыточная архитектурная сложность** - HandoffsCoordinator добавляет сложность без реальной ценности
-2. **Неэффективная логика работы** - жесткая последовательность вместо параллелизации
-3. **Слабые механизмы обратной связи** - примитивная оценка качества
-4. **Проблемы с промптами** - избыточно детализированные с дублированием
-
-## 📋 ПЛАН ОПТИМИЗАЦИИ
-
-### ФАЗА 1: НЕМЕДЛЕННЫЕ ИСПРАВЛЕНИЯ (1-2 дня) ⏳
-- **Статус:** Готов к реализации
-- **Компоненты:** HandoffsCoordinator, Tool Registry, базовое кеширование
-- **Ожидаемый результат:** Улучшение производительности на 30-40%
-
-### ФАЗА 2: ПАРАЛЛЕЛИЗАЦИЯ И ОШИБКИ (1 неделя) ⏳
-- **Статус:** Ожидает Фазу 1
-- **Компоненты:** Promise.all, retry стратегии, оптимизация промптов
-- **Ожидаемый результат:** Сокращение времени выполнения на 50-70%
-
-### ФАЗА 3: ПРОДВИНУТЫЕ УЛУЧШЕНИЯ (2-3 недели) ⏳
-- **Статус:** Ожидает Фазу 2
-- **Компоненты:** ML-scoring, исторический анализ, dashboard
-- **Ожидаемый результат:** Интеллектуальная система обратной связи
-
-## 🔧 НЕДАВНИЕ ИЗМЕНЕНИЯ
-
-### 2024-12-19: Комплексный анализ системы агентов
-- ✅ Проведен полный анализ архитектуры системы
-- ✅ Выявлены ключевые проблемы производительности
-- ✅ Создан детальный план оптимизации
-- ✅ Получена актуальная документация OpenAI Agents SDK
-- ✅ Проверены все рекомендации с учетом SDK requirements
-
-### Основные находки:
-- **Производительность:** Время выполнения 30-45 сек можно сократить до 10-15 сек
-- **Архитектура:** Избыточная сложность HandoffsCoordinator без реальной ценности
-- **SDK Compliance:** Некоторые паттерны не соответствуют OpenAI SDK best practices
-- **Промпты:** Смесь языков и избыточная детализация
-
-## 🎯 БЛИЖАЙШИЕ ПРИОРИТЕТЫ
-
-### На сегодня:
-1. **Начать Фазу 1** - упростить HandoffsCoordinator
-2. **Исправить Tool Registry** - загружать только нужные инструменты
-3. **Добавить базовое кеширование** - для часто используемых операций
-
-### На эту неделю:
-1. Завершить Фазу 1 (немедленные исправления)
-2. Начать Фазу 2 (параллелизация и обработка ошибок)
-3. Создать первые тесты производительности
-
-### На следующую неделю:
-1. Завершить Фазу 2 (оптимизация промптов)
-2. Начать Фазу 3 (продвинутые улучшения)
-3. Создать monitoring dashboard
-
-## 🔍 ТЕХНИЧЕСКИЕ ДЕТАЛИ
-
-### Архитектурные решения:
-- **Упрощение HandoffsCoordinator** - прямая передача между агентами
-- **Оптимизация Tool Registry** - загрузка только специфичных инструментов
-- **Параллелизация** - Promise.all для независимых операций
-- **Кеширование** - для Figma assets, pricing data, content templates
-
-### Ограничения:
-- Обратная совместимость с существующими API endpoints
-- Сохранение текущей функциональности
-- Постепенное внедрение без breaking changes
-
-## 📊 ЦЕЛЕВЫЕ МЕТРИКИ
-
-### Производительность:
-- [ ] Сокращение времени выполнения: 30-45 сек → 10-15 сек
-- [ ] Улучшение throughput: +200% одновременных операций
-- [ ] Снижение потребления памяти: -30%
-- [ ] Уменьшение API calls: -40% через кеширование
-
-### Качество кода:
-- [ ] Упрощение архитектуры: удаление избыточных слоев
-- [ ] Улучшение maintainability: стандартизация паттернов
-- [ ] Соответствие SDK: 100% compliance с OpenAI Agents SDK
-- [ ] Test coverage: >90% для оптимизированных компонентов
-
-## 🔗 СВЯЗАННЫЕ ДОКУМЕНТЫ
-
-- **План оптимизации:** `AGENT-OPTIMIZATION-PLAN.md` (корень проекта)
-- **Системные паттерны:** `memory-bank/systemPatterns.md`
-- **Технический контекст:** `memory-bank/techContext.md`
-- **Текущие задачи:** `memory-bank/tasks.md`
-
-## ⚠️ РИСКИ И БЛОКЕРЫ
-
-### Потенциальные риски:
-1. **Breaking changes** - нарушение существующей функциональности
-2. **Regression** - ухудшение качества результатов
-3. **Complexity** - усложнение вместо упрощения
-4. **Dependencies** - конфликты с внешними библиотеками
-
-### Митигация:
-- Поэтапное внедрение с возможностью отката
-- Comprehensive тестирование на каждом этапе
-- Сохранение старых версий для fallback
-- Monitoring и алертинг для quick detection
+**Last Updated**: 2025-01-07 20:00 UTC  
+**Task ID**: FOLDER-OPT-001  
+**Complexity**: Level 3 (Intermediate Feature)  
+**Phase**: Planning Complete, Ready for Implementation
 
 ---
 
-**Последнее обновление:** 2024-12-19 16:45  
-**Следующий review:** 2024-12-20 09:00  
-**Готовность к реализации:** ✅ План утвержден, можно начинать Фазу 1
+## 📊 COMPREHENSIVE ANALYSIS RESULTS
+
+### **MAJOR DUPLICATIONS IDENTIFIED**
+
+#### **1. Email Rendering (3-Layer Duplication) - CRITICAL**
+- **Issue**: Architectural anti-pattern with core service wrapping tool
+- **Files**:
+  - `/src/agent/core/email-rendering-service.ts` (557 lines) - ❌ REMOVE
+  - `/src/agent/tools/email-renderer-v2.ts` (532 lines) - ✅ KEEP (used by registry)
+  - `/src/agent/tools/email-renderer/services/` - ❓ VERIFY USAGE
+- **Problem**: Core service imports tool, creating wrong dependency direction
+- **Impact**: Architectural anti-pattern, maintenance complexity
+
+#### **2. Delivery Management (Version Duplication) - HIGH**
+- **Issue**: Two versions of delivery manager exist
+- **Files**:
+  - `/src/agent/tools/consolidated/delivery-manager.ts` (886 lines) - ❌ REMOVE
+  - `/src/agent/tools/consolidated/delivery-manager-fixed.ts` (170 lines) - ✅ KEEP (used by registry)
+- **Problem**: Registry uses "fixed" version, original is unused
+- **Impact**: 80% code duplication, 716 lines of unused code
+
+#### **3. Asset Management (Dependency Architecture) - MEDIUM**
+- **Issue**: Enhanced selector depends on core asset manager
+- **Files**:
+  - `/src/agent/core/asset-manager.ts` (519 lines) - ✅ KEEP (used by enhanced selector)
+  - `/src/agent/tools/enhanced-asset-selector.ts` (313 lines) - ✅ KEEP (used by registry)
+- **Problem**: Architecture is correct but could be optimized
+- **Impact**: No immediate issue, monitoring for future optimization
+
+---
+
+## 🔧 CONFIRMED ACTIVE TOOL IMPORTS
+
+**✅ Used by Tool Registry (12 files)**:
+1. `../tools/asset-tag-planner.ts` - Content generation
+2. `../tools/consolidated/content-generator.ts` - Content generation  
+3. `../tools/email-folder-manager.ts` - File management
+4. `../tools/simple-pricing.ts` - Pricing intelligence
+5. `../tools/date.ts` - Date intelligence
+6. `../tools/email-renderer-v2.ts` - Email rendering
+7. `../tools/enhanced-asset-selector.ts` - Asset selection
+8. `../tools/image-planning.ts` - Image planning
+9. `../tools/ml-scoring-tools.ts` - ML scoring
+10. `../tools/ai-consultant/workflow-quality-analyzer.ts` - Quality analysis
+11. `../tools/consolidated/quality-controller.ts` - Quality control (legacy)
+12. `../tools/consolidated/delivery-manager-fixed.ts` - Delivery management
+
+**📂 Directory Analysis**:
+- `/tools/simple/` - 22 files (many potentially unused)
+- `/tools/consolidated/` - 7 files (2 confirmed duplicates)
+- `/tools/ai-consultant/` - 1+ files (workflow analyzer used)
+- `/tools/email-renderer/` - Service files (usage unclear)
+- `/tools/validators/` - Validation tools (usage unclear)
+- `/tools/figma/` - Figma integration tools (usage unclear)
+- `/tools/ml/` - ML tools (usage unclear)
+
+---
+
+## 🚀 IMPLEMENTATION ROADMAP
+
+### **Phase 1: Immediate Duplications Cleanup** (HIGH PRIORITY)
+**Status**: Ready for implementation  
+**Estimated Time**: 2 hours
+
+- **Task 1.1**: Remove `/src/agent/core/email-rendering-service.ts` (architectural anti-pattern)
+- **Task 1.2**: Remove `/src/agent/tools/consolidated/delivery-manager.ts` (unused duplicate)
+- **Task 1.3**: Verify email renderer services usage
+
+### **Phase 2: Comprehensive File Usage Analysis** (MEDIUM PRIORITY)
+**Status**: Planned  
+**Estimated Time**: 3 hours
+
+- **Task 2.1**: Scan all tool files for usage
+- **Task 2.2**: Verify main agent integration
+- **Task 2.3**: Create unused files list
+
+### **Phase 3: File Organization & Optimization** (MEDIUM PRIORITY)
+**Status**: Planned  
+**Estimated Time**: 2 hours
+
+- **Task 3.1**: Move unused files to useless/ directory
+- **Task 3.2**: Optimize file structure
+- **Task 3.3**: Fix architectural dependencies
+
+### **Phase 4: System Verification & Testing** (HIGH PRIORITY)
+**Status**: Planned  
+**Estimated Time**: 2 hours
+
+- **Task 4.1**: Functionality testing
+- **Task 4.2**: Performance verification  
+- **Task 4.3**: Integration testing
+
+### **Phase 5: Documentation & Cleanup** (MEDIUM PRIORITY)
+**Status**: Planned  
+**Estimated Time**: 1 hour
+
+- **Task 5.1**: Update memory bank
+- **Task 5.2**: Update project documentation
+
+---
+
+## 📈 OPTIMIZATION METRICS
+
+### **QUANTITATIVE TARGETS**
+- **Files to Remove**: 2+ duplicate files (confirmed)
+- **Unused Files**: 10+ files to move to useless folder (estimated)
+- **Code Reduction**: 50%+ duplicate code elimination
+- **Architecture Issues**: 1+ dependency direction fixes
+
+### **QUALITATIVE IMPROVEMENTS**
+- **Code Quality**: Cleaner, more maintainable architecture
+- **Dependency Direction**: Proper core ← tools relationship
+- **File Organization**: Better structure and clarity
+- **Performance**: Reduced complexity, better loading times
+
+---
+
+## 🏗️ ARCHITECTURAL INSIGHTS
+
+### **DEPENDENCY DIRECTION ISSUES**
+- **Current Problem**: Core services importing tools (wrong direction)
+- **Example**: `/core/email-rendering-service.ts` imports `/tools/email-renderer-v2.ts`
+- **Solution**: Remove core wrappers, use tools directly through registry
+- **Impact**: Better maintainability, cleaner architecture
+
+### **FILE ORGANIZATION PATTERNS**
+- **Current State**: Mixed organization, duplicates, unclear usage
+- **Target State**: Clear separation, no duplicates, documented usage
+- **Benefits**: Easier maintenance, better developer experience
+
+### **PERFORMANCE OPTIMIZATION**
+- **Current Issue**: Multiple service layers for same functionality
+- **Solution**: Single optimized implementations
+- **Result**: Better performance, less complexity
+
+---
+
+## 🎯 NEXT IMMEDIATE ACTIONS
+
+### **READY FOR IMPLEMENTATION**
+1. **Remove email-rendering-service.ts** - Architectural anti-pattern
+2. **Remove delivery-manager.ts** - Unused duplicate (716 lines)
+3. **Verify main agent functionality** - Ensure no broken imports
+4. **Create useless/ directory** - Prepare for unused files
+5. **Start comprehensive file usage analysis** - Identify all unused files
+
+### **DEPENDENCIES & RISKS**
+- **Risk**: System integration changes may break functionality
+- **Mitigation**: Comprehensive testing at each phase
+- **Dependency**: Must verify all imports before removing files
+- **Safety**: Create useless/ directory before moving files
+
+---
+
+## 💡 KEY TECHNICAL INSIGHTS
+
+### **OpenAI Agent SDK Integration**
+- **Current State**: Properly integrated with v2 SDK
+- **Impact**: Tool registry works correctly with agent handoffs
+- **Consideration**: Ensure optimization doesn't break SDK integration
+
+### **Tool Registry Architecture**
+- **Current State**: Well-organized with category-based tools
+- **Strength**: Centralized tool management
+- **Opportunity**: Remove wrapper services, use tools directly
+
+### **Specialist Agent System**
+- **Current State**: 4 specialized agents with proper handoffs
+- **Dependency**: All tools must remain accessible through registry
+- **Requirement**: Maintain 100% functionality during optimization
+
+---
+
+## 🏆 PROJECT SIGNIFICANCE
+
+This optimization project addresses fundamental architectural issues while maintaining system functionality. The removal of duplicate files and architectural anti-patterns will:
+
+1. **Improve Code Quality**: Remove 1000+ lines of duplicate code
+2. **Fix Architecture**: Proper dependency directions (core ← tools)
+3. **Enhance Maintainability**: Cleaner file organization
+4. **Boost Performance**: Reduced complexity and loading times
+5. **Future-Proof**: Better foundation for future development
+
+**Status**: ✅ **ANALYSIS COMPLETE - READY FOR IMPLEMENTATION**

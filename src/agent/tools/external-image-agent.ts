@@ -91,18 +91,9 @@ export class ExternalImageAgent {
         results.images.push(...pexelsResults);
       }
 
-      // Если не найдено достаточно изображений, генерируем AI
-      if (results.images.length === 0 && params.fallback_generation?.fallback_enabled) {
-        console.log('🎨 Генерируем изображение с помощью AI...');
-        const generatedImage = await this.generateAIImage(params);
-        if (generatedImage) {
-          results.images.push(generatedImage);
-          results.generation_info = {
-            ai_generated: true,
-            prompt_used: params.fallback_generation.ai_prompt,
-            generation_time_ms: 5000 // Примерное время
-          };
-        }
+      // ❌ FALLBACK POLICY: do not auto-generate images when none are found
+      if (results.images.length === 0) {
+        throw new Error('ExternalImageAgent: No external images found and auto-generation is disabled by policy.');
       }
 
       results.success = results.images.length > 0;

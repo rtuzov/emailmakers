@@ -1,7 +1,18 @@
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-orchestrator';
+import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 import { recordToolUsage, tracedAsync } from '../utils/tracing-utils';
+
+// Import file path constants
+import { 
+  CAMPAIGN_STRUCTURE, 
+  FILE_NAMES, 
+  EmailFilePaths, 
+  FileValidator 
+} from '../../shared/constants/file-paths';
+
+// Import EmailFolder type
+import { EmailFolder } from './email-renderer/types/email-renderer-types';
 
 // Define types locally to avoid circular import
 interface ToolResult {
@@ -25,8 +36,193 @@ function handleToolError(toolName: string, error: any): ToolResult {
   logger.error(`Tool ${toolName} failed`, { error });
   return handleToolErrorUnified(toolName, error);
 }
+
+/**
+ * 📁 PROGRESSIVE FILE SAVER
+ * 
+ * Implements progressive file saving scheme for email generation pipeline:
+ * - STAGE 1: Save MJML after AI generation with "AI_answer" tag
+ * - STAGE 2: Save MJML after technical modifications locally  
+ * - STAGE 3: Save HTML after MJML to HTML conversion
+ */
+
+import { promises as fs } from 'fs';
 import * as path from 'path';
-import { EmailFolderManager, EmailFolder } from './email-folder-manager';
+// Using CAMPAIGN_STRUCTURE already imported above
+
+export class ProgressiveFileSaver {
+  private campaignId: string;
+  private basePath: string;
+
+  constructor(campaignId: string) {
+    this.campaignId = campaignId;
+    this.basePath = path.resolve(process.cwd(), 'mails', campaignId);
+  }
+
+  /**
+   * STAGE 1: Save AI-generated MJML immediately after creation
+   */
+  async saveAiGeneratedMjml(mjmlContent: string, tag: string = 'ai_answer'): Promise<void> {
+    try {
+      const fileName = `email-ai-${tag}.mjml`;
+      const filePath = path.join(this.basePath, fileName);
+      
+      // Ensure directory exists
+      await fs.mkdir(this.basePath, { recursive: true });
+      
+      // Save MJML with AI tag
+      await fs.writeFile(filePath, mjmlContent, 'utf8');
+      
+      console.log(`✅ STAGE 1: AI MJML saved to ${fileName} (${mjmlContent.length} chars)`);
+      
+      // Update metadata
+      await this.updateStageMetadata('stage1_ai_mjml', {
+        file_name: fileName,
+        size_chars: mjmlContent.length,
+        saved_at: new Date().toISOString(),
+        tag: tag
+      });
+      
+    } catch (error) {
+      console.error('❌ STAGE 1: Failed to save AI-generated MJML:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * STAGE 2: Save MJML after technical modifications
+   */
+  async saveTechnicalMjml(mjmlContent: string): Promise<void> {
+    try {
+      const fileName = 'email.mjml';
+      const filePath = path.join(this.basePath, fileName);
+      
+      // Ensure directory exists
+      await fs.mkdir(this.basePath, { recursive: true });
+      
+      // Save final MJML
+      await fs.writeFile(filePath, mjmlContent, 'utf8');
+      
+      console.log(`✅ STAGE 2: Technical MJML saved to ${fileName} (${mjmlContent.length} chars)`);
+      
+      // Update metadata
+      await this.updateStageMetadata('stage2_technical_mjml', {
+        file_name: fileName,
+        size_chars: mjmlContent.length,
+        saved_at: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error('❌ STAGE 2: Failed to save technical MJML:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * STAGE 3: Save HTML after MJML to HTML conversion
+   */
+  async saveFinalHtml(htmlContent: string): Promise<void> {
+    try {
+      const fileName = 'email.html';
+      const filePath = path.join(this.basePath, fileName);
+      
+      // Ensure directory exists
+      await fs.mkdir(this.basePath, { recursive: true });
+      
+      // Save final HTML
+      await fs.writeFile(filePath, htmlContent, 'utf8');
+      
+      console.log(`✅ STAGE 3: Final HTML saved to ${fileName} (${htmlContent.length} chars)`);
+      
+      // Update metadata
+      await this.updateStageMetadata('stage3_final_html', {
+        file_name: fileName,
+        size_chars: htmlContent.length,
+        saved_at: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error('❌ STAGE 3: Failed to save final HTML:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Check which stages have been completed
+   */
+  async checkSavedStages(): Promise<{
+    stage1_ai_mjml: boolean;
+    stage2_technical_mjml: boolean;
+    stage3_final_html: boolean;
+    details: any;
+  }> {
+    try {
+      const metadataPath = path.join(this.basePath, 'progressive-saving.json');
+      
+      let metadata = {};
+      try {
+        const content = await fs.readFile(metadataPath, 'utf8');
+        metadata = JSON.parse(content);
+      } catch {
+        // File doesn't exist yet
+      }
+      
+      return {
+        stage1_ai_mjml: !!(metadata as any).stage1_ai_mjml,
+        stage2_technical_mjml: !!(metadata as any).stage2_technical_mjml,
+        stage3_final_html: !!(metadata as any).stage3_final_html,
+        details: metadata
+      };
+      
+    } catch (error) {
+      console.error('❌ Failed to check saved stages:', error);
+      return {
+        stage1_ai_mjml: false,
+        stage2_technical_mjml: false,
+        stage3_final_html: false,
+        details: {}
+      };
+    }
+  }
+
+  /**
+   * Update metadata for progressive saving stages
+   */
+  private async updateStageMetadata(stage: string, data: any): Promise<void> {
+    try {
+      const metadataPath = path.join(this.basePath, 'progressive-saving.json');
+      
+      let metadata = {};
+      try {
+        const content = await fs.readFile(metadataPath, 'utf8');
+        metadata = JSON.parse(content);
+      } catch {
+        // File doesn't exist yet, start with empty metadata
+      }
+      
+      (metadata as any)[stage] = data;
+      (metadata as any).last_updated = new Date().toISOString();
+      
+      await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2), 'utf8');
+      
+    } catch (error) {
+      console.warn(`⚠️ Failed to update stage metadata for ${stage}:`, error);
+    }
+  }
+}
+
+/**
+ * Экспорт типов для использования в других файлах
+ */
+export interface ProgressiveFileSaverOptions {
+  campaignId: string;
+  stage: 'ai_generated' | 'technical' | 'final';
+  content: string;
+  tag?: string;
+}
+
+export default ProgressiveFileSaver;
+
 
 interface MjmlParams {
   content: ContentInfo;
@@ -55,10 +251,15 @@ interface MjmlResult {
   full_html_saved?: boolean; // Индикатор что полный HTML сохранен
   html_length?: number; // Полная длина HTML
   mjml_length?: number; // Полная длина MJML
+  progressive_saves?: {
+    ai_mjml_saved: boolean;
+    technical_mjml_saved: boolean;
+    final_html_saved: boolean;
+  };
 }
 
 /**
- * T4: Render MJML Tool
+ * T4: Render MJML Tool with Progressive File Saving
  * Render email using MJML template with content and assets
  */
 export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
@@ -68,7 +269,7 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
     params
   }, async () => {
     try {
-      console.log('T4: Rendering MJML template');
+      console.log('T4: Rendering MJML template with Progressive File Saving');
       console.log('🔍 T4: Input params validation:', {
         hasContent: !!params.content,
         hasAssets: !!params.assets,
@@ -135,18 +336,56 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       result: { valid: true, assetsCount: params.assets.paths.length }
     });
 
-    // Use provided MJML content (required parameter)
+    // 🚫 FAIL-FAST: MJML content is required
     if (!params.mjmlContent) {
-      throw new Error('MJML content is required. Static templates are no longer supported.');
+      throw new Error('MJML content is required - no fallback templates available');
     }
     
-    console.log('🔄 T4: Using provided MJML content...');
+    console.log('🔄 T4: Using provided MJML content for progressive saving...');
     const renderedMjml = params.mjmlContent;
+    
+    // 📁 STEP 1: Получить campaignId для Progressive File Saver
+    let campaignId: string | null = null;
+    
+    // Попробовать получить из campaign state
+    try {
+      const { campaignState } = await import('../core/campaign-state');
+      const currentEmailFolder = campaignState.getCurrentEmailFolder();
+      if (currentEmailFolder?.campaignId) {
+        campaignId = currentEmailFolder.campaignId;
+        console.log('✅ T4: Campaign ID получен из campaign state:', campaignId);
+      }
+    } catch (error) {
+      console.warn('⚠️ T4: Campaign state недоступен:', error.message);
+    }
+    
+    // Fallback: получить из emailFolder parameter
+    if (!campaignId && params.emailFolder) {
+      if (typeof params.emailFolder === 'string') {
+        campaignId = params.emailFolder;
+      } else if (typeof params.emailFolder === 'object' && params.emailFolder.campaignId) {
+        campaignId = params.emailFolder.campaignId;
+      }
+      console.log('✅ T4: Campaign ID получен из emailFolder parameter:', campaignId);
+    }
+    
+    // FAIL-FAST: Не можем продолжить без campaignId
+    if (!campaignId) {
+      throw new Error('Campaign ID is required for progressive file saving - no campaign context available');
+    }
+    
+    // 📁 STEP 2: Инициализировать Progressive File Saver
+    const progressiveSaver = new ProgressiveFileSaver(campaignId);
+    
+    // 📁 STEP 2.1: Сохранить Technical MJML (после возможных правок)
+    console.log('💾 T4: STAGE 2 - Saving Technical MJML...');
+    await progressiveSaver.saveTechnicalMjml(renderedMjml);
+    const technicalMjmlSaved = true;
     
     logger.addTraceStep(traceId, {
       tool: 'render_mjml',
-      action: 'use_provided_mjml',
-      result: { mjmlLength: renderedMjml.length }
+      action: 'save_technical_mjml',
+      result: { success: technicalMjmlSaved, campaignId }
     });
     
     // Compile MJML to HTML
@@ -186,6 +425,17 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       throw new Error(`MJML compilation failed: ${compilationError.message}`);
     }
     
+    // 📁 STEP 3: Сохранить Final HTML после конвертации
+    console.log('💾 T4: STAGE 3 - Saving Final HTML...');
+    await progressiveSaver.saveFinalHtml(html);
+    const finalHtmlSaved = true;
+    
+    logger.addTraceStep(traceId, {
+      tool: 'render_mjml',
+      action: 'save_final_html',
+      result: { success: finalHtmlSaved, htmlLength: html.length }
+    });
+    
     // Calculate size
     const sizeKb = Buffer.byteLength(html, 'utf8') / 1024;
     
@@ -193,79 +443,16 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       console.warn(`Email size ${sizeKb.toFixed(1)}KB exceeds 100KB limit`);
     }
 
-    // Save to email folder if provided
-    if (params.emailFolder) {
-      console.log('🔍 T4: EmailFolder object received:', params.emailFolder);
-      
-      // Проверяем и дополняем emailFolder если нужно
-      let emailFolder = params.emailFolder;
-      
-      // Если это неполный объект, создаем полный
-      if (!emailFolder.htmlPath || !emailFolder.mjmlPath || !emailFolder.metadataPath) {
-        console.log('🔧 T4: Converting incomplete emailFolder to complete EmailFolder interface');
-        
-        const emailFolderAny = emailFolder as any;
-        
-        // Определяем базовый путь
-        let basePath = emailFolder.basePath;
-        if (!basePath && emailFolderAny.folderPath) {
-          // Если folderPath не является полным путем, создаем полный путь
-          if (!emailFolderAny.folderPath.startsWith('/')) {
-            basePath = path.join(process.cwd(), 'mails', emailFolder.campaignId);
-          } else {
-            basePath = emailFolderAny.folderPath;
-          }
-        }
-        if (!basePath) {
-          basePath = path.join(process.cwd(), 'mails', emailFolder.campaignId);
-        }
-        
-        // Определяем путь к ассетам
-        let assetsPath = emailFolder.assetsPath;
-        if (!assetsPath || !assetsPath.startsWith('/')) {
-          assetsPath = path.join(basePath, 'assets');
-        }
-        
-        console.log('🔍 T4: Path construction:', {
-          originalBasePath: emailFolder.basePath,
-          originalFolderPath: emailFolderAny.folderPath,
-          originalAssetsPath: emailFolder.assetsPath,
-          computedBasePath: basePath,
-          computedAssetsPath: assetsPath,
-          campaignId: emailFolder.campaignId
-        });
-        
-        // Дополнительная проверка путей перед созданием объекта
-        if (!basePath || typeof basePath !== 'string') {
-          throw new Error(`Invalid basePath: ${basePath} (type: ${typeof basePath})`);
-        }
-        if (!assetsPath || typeof assetsPath !== 'string') {
-          throw new Error(`Invalid assetsPath: ${assetsPath} (type: ${typeof assetsPath})`);
-        }
-        
-        emailFolder = {
-          campaignId: emailFolder.campaignId,
-          basePath: basePath,
-          assetsPath: assetsPath,
-          spritePath: path.join(assetsPath, 'sprite-slices'),
-          htmlPath: path.join(basePath, 'email.html'),
-          mjmlPath: path.join(basePath, 'email.mjml'),
-          metadataPath: path.join(basePath, 'metadata.json')
-        };
-        
-        console.log('✅ T4: Created complete EmailFolder:', emailFolder);
-      }
-      
-      await EmailFolderManager.saveHtml(emailFolder, html);
-      await EmailFolderManager.saveMjml(emailFolder, renderedMjml);
-      
-      // Update metadata with rendering info
-      await EmailFolderManager.updateMetadata(emailFolder, {
-        status: 'processing'
-      });
-      
-      console.log(`💾 T4: Saved HTML and MJML to email folder: ${emailFolder.campaignId}`);
-    }
+    // 📁 STEP 4: Проверить состояние всех сохранений
+    const savedStages = await progressiveSaver.checkSavedStages();
+    
+    console.log('📊 T4: Progressive File Saving Summary:', {
+      campaign_id: campaignId,
+      technical_mjml_saved: technicalMjmlSaved,
+      final_html_saved: finalHtmlSaved,
+      stages_check: savedStages,
+      all_stages_completed: savedStages.stage2_technical_mjml && savedStages.stage3_final_html
+    });
 
     // Агрессивная оптимизация: возвращаем минимум данных агенту
     const htmlPreview = html.substring(0, 200) + '...[truncated]';
@@ -275,20 +462,26 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       html: htmlPreview, // Сокращенная версия для агента
       size_kb: Math.round(sizeKb * 10) / 10,
       mjml_source: mjmlPreview, // Сокращенная версия для агента
-      full_html_saved: !!params.emailFolder, // Индикатор что полный HTML сохранен
+      full_html_saved: finalHtmlSaved,
       html_length: html.length,
-      mjml_length: renderedMjml.length
+      mjml_length: renderedMjml.length,
+      progressive_saves: {
+        ai_mjml_saved: savedStages.stage1_ai_mjml,
+        technical_mjml_saved: savedStages.stage2_technical_mjml,
+        final_html_saved: savedStages.stage3_final_html
+      }
     };
 
-    console.log('✅ T4: MJML rendering completed successfully:', {
+    console.log('✅ T4: MJML rendering completed with Progressive File Saving:', {
       htmlLength: html.length,
       sizeKb: result.size_kb,
       mjmlLength: renderedMjml.length,
-      hasValidHtml: html.includes('<html>') && html.includes('</html>')
+      hasValidHtml: html.includes('<html>') && html.includes('</html>'),
+      progressive_saves_summary: result.progressive_saves
     });
 
     console.log(`🔄 T4: Response optimization: HTML ${html.length}→${htmlPreview.length} chars (${Math.round((1-htmlPreview.length/html.length)*100)}% reduction)`);
-    console.log(`💾 T4: Full HTML saved to file: ${!!params.emailFolder}`);
+    console.log(`💾 T4: Progressive saves completed: ${JSON.stringify(result.progressive_saves)}`);
 
     logger.addTraceStep(traceId, {
       tool: 'render_mjml',
@@ -297,7 +490,7 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
         htmlLength: html.length,
         sizeKb: result.size_kb,
         mjmlLength: renderedMjml.length,
-        fullHtmlSaved: result.full_html_saved
+        progressive_saves: result.progressive_saves
       }
     });
 
@@ -306,10 +499,11 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       data: result,
       metadata: {
         size_status: sizeKb <= 100 ? 'pass' : 'fail',
-        template_source: 'kupibilet-base',
+        template_source: 'ai-generated-progressive',
         assets_count: (params.assets.paths || []).length,
-        saved_to_folder: !!params.emailFolder,
-        campaign_id: params.emailFolder?.campaignId,
+        campaign_id: campaignId,
+        progressive_saving_enabled: true,
+        saved_stages: result.progressive_saves,
         timestamp: new Date().toISOString()
       }
     };
@@ -341,6 +535,40 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       return handleToolError('render_mjml', error);
     }
   }).then(traceResult => traceResult.data || traceResult);
+}
+
+/**
+ * Enhanced MJML Generator with Progressive File Saving
+ * Генерирует MJML с поэтапным сохранением на этапе ИИ генерации
+ */
+export async function generateMjmlWithProgressiveSaving(
+  mjmlContent: string, 
+  campaignId: string,
+  stage: 'AI_answer' = 'AI_answer'
+): Promise<{ mjmlContent: string; aiSaveSuccess: boolean }> {
+  try {
+    console.log(`🤖 Generating MJML with Progressive Saving - Stage: ${stage}`);
+    
+    // 📁 STEP 1: Сохранить AI-сгенерированный MJML
+    const progressiveSaver = new ProgressiveFileSaver(campaignId);
+    await progressiveSaver.saveAiGeneratedMjml(mjmlContent, stage);
+    const aiSaveSuccess = true;
+    
+    console.log(`✅ Progressive MJML Generation completed:`, {
+      stage,
+      campaign_id: campaignId,
+      mjml_length: mjmlContent.length,
+      ai_save_success: aiSaveSuccess
+    });
+    
+    return {
+      mjmlContent,
+      aiSaveSuccess
+    };
+  } catch (error) {
+    console.error('❌ Progressive MJML Generation failed:', error);
+    throw new Error(`Progressive MJML generation failed: ${error.message}`);
+  }
 }
 
 
@@ -399,13 +627,13 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
 async function compileMjmlToHtml(mjmlContent: string): Promise<string> {
   try {
     // Use dynamic import with proper error handling for Next.js
-    const mjml = await import('mjml').then(module => module.default || module);
+    const mjml = await import('mjml');
     
-    if (typeof mjml !== 'function') {
+    if (typeof mjml.default !== 'function') {
       throw new Error('MJML compiler function not found');
     }
     
-    const result = mjml(mjmlContent, {
+    const result = mjml.default(mjmlContent, {
       minify: false,
       beautify: false,
       validationLevel: 'soft'

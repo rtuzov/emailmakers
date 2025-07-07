@@ -9,22 +9,23 @@ import { z } from 'zod';
 import { recordToolUsage } from '../../utils/tracing-utils';
 import { aiQualityConsultant } from '../ai-quality-consultant';
 
-export const htmlValidateSchema = z.object({
-  html_content: z.string().describe('HTML content to validate'),
-  validation_options: z.object({
-    validation_level: z.enum(['basic', 'standard', 'strict']).describe('Validation strictness level'),
-    specific_checks: z.object({
-      check_doctype: z.boolean().default(true),
-      check_table_layout: z.boolean().default(true),
-      check_inline_styles: z.boolean().default(true),
-      check_image_alt: z.boolean().default(true),
-      check_email_width: z.boolean().default(true)
-    }).default({}),
-    target_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird'])).describe('Target email clients for validation')
-  }).describe('Validation configuration options')
+const ValidationOptionsSchema = z.object({
+    check_doctype: z.boolean(),
+    check_table_layout: z.boolean(),
+    check_inline_styles: z.boolean(),
+    check_image_alt: z.boolean(),
+    check_email_width: z.boolean(),
+    validation_level: z.string().optional(),
+    target_clients: z.array(z.string()).optional(),
+    specific_checks: z.array(z.string()).optional()
 });
 
-export type HtmlValidateParams = z.infer<typeof htmlValidateSchema>;
+const HtmlValidateSchema = z.object({
+  html_content: z.string().describe('HTML content to validate'),
+    validation_options: ValidationOptionsSchema.describe('Validation options')
+});
+
+export type HtmlValidateParams = z.infer<typeof HtmlValidateSchema>;
 
 export interface HtmlValidateResult {
   success: boolean;

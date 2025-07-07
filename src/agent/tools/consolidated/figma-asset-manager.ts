@@ -39,62 +39,62 @@ export const figmaAssetManagerSchema = z.object({
   action: z.enum(['search', 'list_folders', 'split_sprite', 'select_identica', 'bulk_process', 'analyze_assets']).describe('Figma asset operation to perform'),
   
   // For search action (replaces get_figma_assets) - make tags required for search
-  tags: z.array(z.string()).default([]).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
+  tags: z.array(z.string()).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
   search_context: z.object({
-    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).nullable().default(null).describe('Type of email campaign'),
-    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).nullable().default(null).describe('Emotional tone of the campaign'),
-    target_count: z.number().nullable().default(2).describe('Number of assets to return (default: 2)'),
-    diversity_mode: z.boolean().nullable().default(false).describe('Select diverse assets from different categories'),
-    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).nullable().default(null).describe('Preferred rabbit emotion'),
-    airline: z.string().nullable().default(null).describe('Specific airline for logo search'),
-    use_local_only: z.boolean().nullable().default(true).describe('Force local-only search (always true now)')
-  }).nullable().default(null).describe('Search context for intelligent asset selection'),
+    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).nullable().describe('Type of email campaign'),
+    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).nullable().describe('Emotional tone of the campaign'),
+    target_count: z.number().nullable().describe('Number of assets to return (default: 2)'),
+    diversity_mode: z.boolean().nullable().describe('Select diverse assets from different categories'),
+    preferred_emotion: z.enum(['happy', 'angry', 'neutral', 'sad', 'confused']).nullable().describe('Preferred rabbit emotion'),
+    airline: z.string().nullable().describe('Specific airline for logo search'),
+    use_local_only: z.boolean().nullable().describe('Force local-only search (always true now)')
+  }).nullable().describe('Search context for intelligent asset selection'),
   
   // For split_sprite action
-  sprite_path: z.string().nullable().default(null).describe('Path to the PNG sprite file to split'),
+  sprite_path: z.string().nullable().describe('Path to the PNG sprite file to split'),
   split_options: z.object({
-    h_gap: z.number().default(15).describe('Horizontal gap threshold in pixels'),
-    v_gap: z.number().default(15).describe('Vertical gap threshold in pixels'),
-    confidence_threshold: z.number().default(0.9).describe('Minimum confidence threshold for classification')
-  }).nullable().default(null).describe('Sprite splitting options'),
+    h_gap: z.number().describe('Horizontal gap threshold in pixels'),
+    v_gap: z.number().describe('Vertical gap threshold in pixels'),
+    confidence_threshold: z.number().describe('Minimum confidence threshold for classification')
+  }).nullable().describe('Sprite splitting options'),
   
   // For select_identica action
   identica_criteria: z.object({
-    campaign_type: z.enum(['promotional', 'informational', 'brand', 'logo', 'premium']).nullable().default(null).describe('Campaign type for creative selection'),
-    emotional_tone: z.enum(['позитивный', 'нейтральный', 'дружелюбный']).nullable().default(null).describe('Desired emotional tone'),
-    usage_context: z.array(z.string()).nullable().default(null).describe('Usage context for creatives'),
-    tags: z.array(z.string()).nullable().default(null).describe('Specific tags for creative search'),
-    target_count: z.number().default(2).describe('Number of creatives to select'),
-    prefer_logo: z.boolean().default(false).describe('Prefer logos in selection'),
-    prefer_premium: z.boolean().default(false).describe('Prefer premium creatives')
-  }).nullable().default(null).describe('Criteria for identica selection'),
+    campaign_type: z.enum(['promotional', 'informational', 'brand', 'logo', 'premium']).nullable().describe('Campaign type for creative selection'),
+    emotional_tone: z.enum(['позитивный', 'нейтральный', 'дружелюбный']).nullable().describe('Desired emotional tone'),
+    usage_context: z.array(z.string()).nullable().describe('Usage context for creatives'),
+    tags: z.array(z.string()).nullable().describe('Specific tags for creative search'),
+    target_count: z.number().describe('Number of creatives to select'),
+    prefer_logo: z.boolean().describe('Prefer logos in selection'),
+    prefer_premium: z.boolean().describe('Prefer premium creatives')
+  }).nullable().describe('Criteria for identica selection'),
   
   // For bulk_process action
   bulk_operations: z.array(z.object({
     operation: z.enum(['search', 'split', 'analyze']),
     parameters: z.object({
-      tags: z.array(z.string()).nullable().default(null),
-      action_specific_data: z.string().nullable().default(null)
-    }).nullable().default(null)
-  })).nullable().default(null).describe('Multiple operations to perform in sequence'),
+      tags: z.array(z.string()).nullable(),
+      action_specific_data: z.string().nullable()
+    }).nullable()
+  })).nullable().describe('Multiple operations to perform in sequence'),
   
   // Common options - required with defaults
-  quality_filter: z.enum(['any', 'medium', 'high', 'premium']).default('medium').describe('Quality filter for assets'),
-  format_preference: z.array(z.enum(['png', 'svg', 'jpg', 'webp'])).default(['png', 'svg']).describe('Preferred asset formats'),
+  quality_filter: z.enum(['any', 'medium', 'high', 'premium']).describe('Quality filter for assets'),
+  format_preference: z.array(z.enum(['png', 'svg', 'jpg', 'webp'])).describe('Preferred asset formats'),
   size_constraints: z.object({
-    min_width: z.number().nullable().default(null),
-    max_width: z.number().nullable().default(null),
-    min_height: z.number().nullable().default(null),
-    max_height: z.number().nullable().default(null)
-  }).nullable().default(null).describe('Size constraints for assets'),
+    min_width: z.number().nullable(),
+    max_width: z.number().nullable(),
+    min_height: z.number().nullable(),
+    max_height: z.number().nullable()
+  }).nullable().describe('Size constraints for assets'),
   
   // Performance and caching - required with defaults
-  cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).default('normal').describe('Caching strategy for assets'),
-  parallel_processing: z.boolean().default(true).describe('Enable parallel processing for multiple operations'),
+  cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).describe('Caching strategy for assets'),
+  parallel_processing: z.boolean().describe('Enable parallel processing for multiple operations'),
   
   // Analytics and tracking - required with defaults
-  include_analytics: z.boolean().default(true).describe('Include performance analytics in response'),
-  track_usage: z.boolean().default(false).describe('Track asset usage for optimization')
+  include_analytics: z.boolean().describe('Include performance analytics in response'),
+  track_usage: z.boolean().describe('Track asset usage for optimization')
 });
 
 export type FigmaAssetManagerParams = z.infer<typeof figmaAssetManagerSchema>;
@@ -471,7 +471,7 @@ function applyAdvancedFiltering(assets: string[], params: FigmaAssetManagerParam
 
 async function enrichAssetMetadata(assets: string[], params: FigmaAssetManagerParams) {
   return assets.map(asset => ({
-    fileName: asset.split('/').pop() || '',
+    fileName: asset.split('/').pop() ?? '',
     filePath: asset,
     tags: [], // Extract from file analysis
     description: '', // Generate from context

@@ -15,89 +15,89 @@ export const emailRendererSchema = z.object({
   action: z.enum(['render_mjml', 'render_component', 'render_advanced', 'render_seasonal', 'render_hybrid', 'optimize_output']).describe('Email rendering operation'),
   
   // For render_mjml action
-  mjml_content: z.string().default('').describe('MJML content to compile to HTML'),
+  mjml_content: z.string().describe('MJML content to compile to HTML'),
   
   // For render_component action
-  component_type: z.enum(['header', 'footer', 'body', 'cta', 'pricing_block', 'hero', 'newsletter']).default('body').describe('Type of React component to render'),
-  component_props: z.string().default('{}').describe('Props to pass to the React component (JSON string)'),
+  component_type: z.enum(['header', 'footer', 'body', 'cta', 'pricing_block', 'hero', 'newsletter']).describe('Type of React component to render'),
+  component_props: z.string().describe('Props to pass to the React component (JSON string)'),
   
   // For render_advanced action
   advanced_config: z.object({
     template_type: z.enum(['promotional', 'transactional', 'newsletter', 'premium', 'responsive']).describe('Advanced template type'),
-    customization_level: z.enum(['basic', 'standard', 'advanced', 'enterprise']).default('standard').describe('Customization complexity'),
-    features: z.array(z.enum(['dark_mode', 'interactive', 'animation', 'personalization', 'a_b_testing'])).default([]).describe('Advanced features to include'),
+    customization_level: z.enum(['basic', 'standard', 'advanced', 'enterprise']).describe('Customization complexity'),
+    features: z.array(z.enum(['dark_mode', 'interactive', 'animation', 'personalization', 'a_b_testing'])).describe('Advanced features to include'),
     brand_guidelines: z.object({
-      primary_color: z.string().default(''),
-      secondary_color: z.string().default(''),
-      font_family: z.string().default(''),
-      logo_url: z.string().default('')
-    }).default({}).describe('Brand customization')
-  }).default({}).describe('Advanced component configuration'),
+      primary_color: z.string(),
+      secondary_color: z.string(),
+      font_family: z.string(),
+      logo_url: z.string()
+    }).describe('Brand customization')
+  }).describe('Advanced component configuration'),
   
   // For render_seasonal action
   seasonal_config: z.object({
     season: z.enum(['spring', 'summer', 'autumn', 'winter', 'holiday', 'new_year', 'valentine', 'easter']).describe('Seasonal theme'),
-    seasonal_intensity: z.enum(['subtle', 'moderate', 'festive', 'full_theme']).default('moderate').describe('How prominent seasonal elements should be'),
-    cultural_context: z.enum(['russian', 'international', 'european', 'mixed']).default('russian').describe('Cultural context for seasonal elements'),
-    include_animations: z.boolean().default(false).describe('Include seasonal animations')
-  }).default({}).describe('Seasonal rendering configuration'),
+    seasonal_intensity: z.enum(['subtle', 'moderate', 'festive', 'full_theme']).describe('How prominent seasonal elements should be'),
+    cultural_context: z.enum(['russian', 'international', 'european', 'mixed']).describe('Cultural context for seasonal elements'),
+    include_animations: z.boolean().describe('Include seasonal animations')
+  }).describe('Seasonal rendering configuration'),
   
   // For render_hybrid action (combines multiple systems)
   hybrid_config: z.object({
     base_template: z.enum(['mjml', 'react', 'advanced', 'seasonal']).describe('Base rendering system'),
     enhancements: z.array(z.enum(['seasonal_overlay', 'advanced_components', 'react_widgets', 'mjml_structure'])).describe('Additional rendering layers'),
-    priority_order: z.array(z.string()).default([]).describe('Order of rendering operations')
-  }).default({}).describe('Hybrid rendering configuration'),
+    priority_order: z.array(z.string()).describe('Order of rendering operations')
+  }).describe('Hybrid rendering configuration'),
   
   // Content and data
   content_data: z.object({
-    subject: z.string().default(''),
-    preheader: z.string().default(''),
-    body: z.string().default(''),
-    cta_text: z.string().default(''),
-    cta_url: z.string().default(''),
-    pricing_data: z.string().default(''),
-    assets: z.array(z.string()).default([]),
-    personalization: z.string().default('{}')
-  }).default({}).describe('Content data for rendering'),
+    subject: z.string(),
+    preheader: z.string(),
+    body: z.string(),
+    cta_text: z.string(),
+    cta_url: z.string(),
+    pricing_data: z.string(),
+    assets: z.array(z.string()),
+    personalization: z.string()
+  }).describe('Content data for rendering'),
   
   // Additional parameters for backward compatibility
-  assets: z.array(z.string()).default([]).describe('Asset paths for email rendering'),
-  pricing_data: z.string().default('').describe('Pricing data for content'),
+  assets: z.array(z.string()).describe('Asset paths for email rendering'),
+  pricing_data: z.string().describe('Pricing data for content'),
   brand_guidelines: z.object({
-    brand_voice: z.string().default(''),
-    visual_style: z.string().default(''),
-    color_palette: z.array(z.string()).default([]),
-    typography: z.string().default(''),
-    primary_color: z.string().default(''),
-    secondary_color: z.string().default(''),
-    font_family: z.string().default(''),
-    logo_url: z.string().default('')
-  }).default({}).describe('Brand guidelines for rendering'),
+    brand_voice: z.string(),
+    visual_style: z.string(),
+    color_palette: z.array(z.string()),
+    typography: z.string(),
+    primary_color: z.string(),
+    secondary_color: z.string(),
+    font_family: z.string(),
+    logo_url: z.string()
+  }).describe('Brand guidelines for rendering'),
   
   // Rendering options
   rendering_options: z.object({
-    output_format: z.enum(['html', 'mjml', 'amp', 'text', 'preview']).default('html').describe('Output format'),
-    email_client_optimization: z.enum(['gmail', 'outlook', 'apple_mail', 'universal', 'all']).default('universal').describe('Target email client optimization'),
-    responsive_design: z.boolean().default(true).describe('Enable responsive design'),
-    inline_css: z.boolean().default(true).describe('Inline CSS for email client compatibility'),
-    minify_output: z.boolean().default(true).describe('Minify HTML output'),
-    validate_html: z.boolean().default(true).describe('Validate HTML for email standards'),
-    accessibility_compliance: z.boolean().default(true).describe('Ensure accessibility compliance')
-  }).default({}).describe('Rendering optimization options'),
+    output_format: z.enum(['html', 'mjml', 'amp', 'text', 'preview']).describe('Output format'),
+    email_client_optimization: z.enum(['gmail', 'outlook', 'apple_mail', 'universal', 'all']).describe('Target email client optimization'),
+    responsive_design: z.boolean().describe('Enable responsive design'),
+    inline_css: z.boolean().describe('Inline CSS for email client compatibility'),
+    minify_output: z.boolean().describe('Minify HTML output'),
+    validate_html: z.boolean().describe('Validate HTML for email standards'),
+    accessibility_compliance: z.boolean().describe('Ensure accessibility compliance')
+  }).describe('Rendering optimization options'),
   
   // Performance and caching
   performance_config: z.object({
-    cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).default('normal').describe('Caching strategy'),
-    parallel_rendering: z.boolean().default(true).describe('Enable parallel rendering for components'),
-    lazy_loading: z.boolean().default(false).describe('Enable lazy loading for images'),
-    image_optimization: z.boolean().default(true).describe('Optimize images during rendering')
-  }).default({}).describe('Performance optimization settings'),
+    cache_strategy: z.enum(['aggressive', 'normal', 'minimal', 'disabled']).describe('Caching strategy'),
+    parallel_rendering: z.boolean().describe('Enable parallel rendering for components'),
+    lazy_loading: z.boolean().describe('Enable lazy loading for images'),
+    image_optimization: z.boolean().describe('Optimize images during rendering')
+  }).describe('Performance optimization settings'),
   
   // Analytics and debugging
-  include_analytics: z.boolean().default(true).describe('Include rendering analytics'),
-  debug_mode: z.boolean().default(false).describe('Enable debug output and logging'),
-  render_metadata: z.boolean().default(true).describe('Include rendering metadata in output'),
+  include_analytics: z.boolean().describe('Include rendering analytics'),
+  debug_mode: z.boolean().describe('Enable debug output and logging'),
+  render_metadata: z.boolean().describe('Include rendering metadata in output'),
   
   // Email folder for saving files
   emailFolder: z.string().describe('Email folder path or identifier')

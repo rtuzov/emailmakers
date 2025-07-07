@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Agent, run } from '@openai/agents';
 import { generateTraceId, addTraceContext } from '../../../../agent/utils/tracing-utils';
-import { createEmailCampaignOrchestratorImproved } from '../../../../agent/modules/specialist-agents-improved';
+import { createEmailCampaignOrchestratorImproved } from '../../../../agent/specialists/specialist-agents-improved';
 import { validateAgentRequest } from '../../../../agent/validators/agent-request-validator';
 import { getLogger } from '../../../../shared/utils/logger';
 
@@ -67,7 +67,14 @@ export async function POST(request: NextRequest) {
 
     // Execute agent with proper input format - using OpenAI Agents SDK run() function
     const inputString = typeof input === 'string' ? input : JSON.stringify(input);
-    const result = await run(selectedAgent, inputString);
+    const result = await run(selectedAgent, inputString, {
+      maxTurns: 25, // Увеличиваем лимит для сложных email кампаний
+      context: {
+        traceId,
+        taskType: task_type,
+        ...context
+      }
+    });
 
     // Add success trace context
     addTraceContext(traceId, {

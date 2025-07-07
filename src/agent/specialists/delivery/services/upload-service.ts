@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { Agent, run } from '@openai/agents';
 
 import { s3Upload, s3UploadSchema } from '../../../tools/simple/s3-upload';
-import { fileOrganizerTool } from '../../../modules/agent-tools';
+import { fileOrganizerTool } from '../../../tools/agent-tools';
 import { runWithTimeout } from '../../../utils/run-with-timeout';
 import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';

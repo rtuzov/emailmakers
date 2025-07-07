@@ -24,16 +24,16 @@ const AgentRequestSchema = z.object({
     z.object({}).passthrough().describe('Structured input object')
   ]).describe('Input data for the agent'),
   
-  context: z.object({}).passthrough().optional().describe('Additional context for the task'),
+  context: z.object({}).passthrough().nullable().optional().describe('Additional context for the task'),
   
-  threadId: z.string().optional().describe('Thread ID for conversation continuity'),
+  threadId: z.string().nullable().optional().describe('Thread ID for conversation continuity'),
   
   metadata: z.object({
-    traceId: z.string().optional(),
-    parentTraceId: z.string().optional(),
-    userId: z.string().optional(),
-    sessionId: z.string().optional()
-  }).optional().describe('Request metadata')
+    traceId: z.string().nullable().optional(),
+    parentTraceId: z.string().nullable().optional(),
+    userId: z.string().nullable().optional(),
+    sessionId: z.string().nullable().nullable().optional()
+  }).nullable().optional().describe('Request metadata')
 });
 
 export type AgentRequest = z.infer<typeof AgentRequestSchema>;
@@ -108,9 +108,9 @@ export function validateTaskInput(taskType: string, input: any): ValidationResul
 function validateContentGenerationInput(input: any): ValidationResult {
   const schema = z.object({
     brief: z.string().min(10).describe('Content brief'),
-    tone: z.string().optional().describe('Content tone'),
-    target_audience: z.string().optional().describe('Target audience'),
-    brand_guidelines: z.object({}).passthrough().optional().describe('Brand guidelines')
+    tone: z.string().nullable().optional().describe('Content tone'),
+    target_audience: z.string().nullable().optional().describe('Target audience'),
+    brand_guidelines: z.object({}).passthrough().nullable().optional().describe('Brand guidelines')
   });
   
   try {
@@ -130,7 +130,7 @@ function validateContentGenerationInput(input: any): ValidationResult {
 function validateBriefAnalysisInput(input: any): ValidationResult {
   const schema = z.object({
     brief: z.string().min(5).describe('Brief to analyze'),
-    analysis_type: z.enum(['basic', 'detailed', 'strategic']).optional().describe('Analysis depth')
+    analysis_type: z.enum(['basic', 'detailed', 'strategic']).nullable().optional().describe('Analysis depth')
   });
   
   try {
@@ -150,11 +150,11 @@ function validateBriefAnalysisInput(input: any): ValidationResult {
 function validateMultiDestinationInput(input: any): ValidationResult {
   const schema = z.object({
     destinations: z.array(z.string()).min(2).describe('List of destinations'),
-    campaign_type: z.enum(['vacation', 'business', 'adventure']).optional().describe('Campaign type'),
+    campaign_type: z.enum(['vacation', 'business', 'adventure']).nullable().optional().describe('Campaign type'),
     budget_range: z.object({
-      min: z.number().optional(),
-      max: z.number().optional()
-    }).optional().describe('Budget range')
+      min: z.number().nullable().optional(),
+      max: z.number().nullable().nullable().optional()
+    }).nullable().optional().describe('Budget range')
   });
   
   try {
@@ -174,8 +174,8 @@ function validateMultiDestinationInput(input: any): ValidationResult {
 function validateDesignCreationInput(input: any): ValidationResult {
   const schema = z.object({
     design_brief: z.string().min(10).describe('Design brief'),
-    layout_type: z.enum(['compact', 'grid', 'carousel']).optional().describe('Layout type'),
-    color_scheme: z.string().optional().describe('Color scheme preference')
+    layout_type: z.enum(['compact', 'grid', 'carousel']).nullable().optional().describe('Layout type'),
+    color_scheme: z.string().nullable().optional().describe('Color scheme preference')
   });
   
   try {
@@ -195,7 +195,7 @@ function validateDesignCreationInput(input: any): ValidationResult {
 function validateFigmaExtractionInput(input: any): ValidationResult {
   const schema = z.object({
     figma_url: z.string().url().describe('Figma URL'),
-    extraction_type: z.enum(['tokens', 'assets', 'components']).optional().describe('What to extract')
+    extraction_type: z.enum(['tokens', 'assets', 'components']).nullable().optional().describe('What to extract')
   });
   
   try {
@@ -215,7 +215,7 @@ function validateFigmaExtractionInput(input: any): ValidationResult {
 function validateTemplateRenderingInput(input: any): ValidationResult {
   const schema = z.object({
     template_data: z.object({}).passthrough().describe('Template data'),
-    template_type: z.enum(['mjml', 'html']).optional().describe('Template type')
+    template_type: z.enum(['mjml', 'html']).nullable().optional().describe('Template type')
   });
   
   try {
@@ -235,7 +235,7 @@ function validateTemplateRenderingInput(input: any): ValidationResult {
 function validateHtmlValidationInput(input: any): ValidationResult {
   const schema = z.object({
     html_content: z.string().min(1).describe('HTML content to validate'),
-    validation_rules: z.array(z.string()).optional().describe('Specific validation rules')
+    validation_rules: z.array(z.string()).nullable().optional().describe('Specific validation rules')
   });
   
   try {
@@ -257,8 +257,8 @@ function validateAssetUploadInput(input: any): ValidationResult {
     assets: z.array(z.object({
       name: z.string(),
       type: z.string(),
-      size: z.number().optional(),
-      url: z.string().url().optional()
+      size: z.number().nullable().optional(),
+      url: z.string().url().nullable().nullable().optional()
     })).min(1).describe('Assets to upload')
   });
   
@@ -280,7 +280,7 @@ function validateTemplateDeploymentInput(input: any): ValidationResult {
   const schema = z.object({
     template_id: z.string().min(1).describe('Template ID'),
     deployment_target: z.enum(['staging', 'production']).describe('Deployment target'),
-    configuration: z.object({}).passthrough().optional().describe('Deployment configuration')
+    configuration: z.object({}).passthrough().nullable().optional().describe('Deployment configuration')
   });
   
   try {

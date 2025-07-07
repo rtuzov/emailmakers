@@ -8,15 +8,15 @@
 import { z } from 'zod';
 import { getLocalFigmaAssets } from '../figma-local-processor';
 
-export const figmaSearchSchema = z.object({
-  tags: z.array(z.string()).describe('Tags to search for. Examples: ["заяц", "счастлив"] for happy rabbit'),
-  emotional_tone: z.string().default('positive').describe('Emotional tone of the campaign: positive, neutral, urgent, friendly'),
-  target_count: z.number().default(2).describe('Number of assets to return'),
-  preferred_emotion: z.string().default('').describe('Preferred rabbit emotion: happy, angry, neutral, sad, confused'),
-  airline: z.string().default('').describe('Specific airline for logo search')
+export const FigmaSearchSchema = z.object({
+    search_query: z.string().describe('Search query for Figma assets'),
+    emotional_tone: z.string().describe('Emotional tone of the campaign: positive, neutral, urgent, friendly'),
+    target_count: z.number().describe('Number of assets to return'),
+    preferred_emotion: z.string().describe('Preferred rabbit emotion: happy, angry, neutral, sad, confused'),
+    airline: z.string().describe('Specific airline for logo search')
 });
 
-export type FigmaSearchParams = z.infer<typeof figmaSearchSchema>;
+export type FigmaSearchParams = z.infer<typeof FigmaSearchSchema>;
 
 export interface FigmaSearchResult {
   success: boolean;
@@ -42,7 +42,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
   
   try {
     // Simplified logging - detailed logs are in figma-local-processor
-    console.log(`🔍 Figma search: ${params.tags.length} tags, target: ${params.target_count}`);
+    console.log(`🔍 Figma search: ${params.search_query.length} tags, target: ${params.target_count}`);
 
     // Use existing local processor with search context
     const emotionalTone = params.emotional_tone || 'positive';
@@ -64,7 +64,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
     };
 
     const result = await getLocalFigmaAssets({
-      tags: params.tags,
+      tags: [params.search_query],
       context: searchContext
     });
     const searchTime = Date.now() - startTime;
@@ -74,7 +74,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
         success: false,
         assets: [],
         search_metadata: {
-          query_tags: params.tags,
+          query_tags: [params.search_query],
           assets_found: 0,
           search_time: searchTime,
           recommendations: ['Try different tags', 'Check if assets exist locally']
@@ -100,7 +100,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
       success: true,
       assets,
       search_metadata: {
-        query_tags: params.tags,
+        query_tags: [params.search_query],
         assets_found: assets.length,
         search_time: searchTime,
         recommendations
@@ -115,7 +115,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
       success: false,
       assets: [],
       search_metadata: {
-        query_tags: params.tags,
+        query_tags: [params.search_query],
         assets_found: 0,
         search_time: searchTime,
         recommendations: ['Check error logs', 'Verify local assets exist']

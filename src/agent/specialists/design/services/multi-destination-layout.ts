@@ -175,9 +175,7 @@ export class MultiDestinationLayoutService {
 
     } catch (error) {
       console.error('❌ Template selection error:', error);
-      
-      // Возвращаем безопасный fallback
-      return this.getFallbackTemplate(criteria.destinationCount);
+      throw error instanceof Error ? error : new Error(String(error));
     }
   }
 
@@ -211,9 +209,7 @@ export class MultiDestinationLayoutService {
 
     } catch (error) {
       console.error('❌ Image planning error:', error);
-      
-      // Возвращаем минимальные планы для всех направлений
-      return this.createMinimalImagePlans(destinations);
+      throw error instanceof Error ? error : new Error(String(error));
     }
   }
 
@@ -270,7 +266,7 @@ export class MultiDestinationLayoutService {
 
     } catch (error) {
       console.error('❌ Layout optimization error:', error);
-      throw error;
+      throw error instanceof Error ? error : new Error(String(error));
     }
   }
 
@@ -645,21 +641,8 @@ export class MultiDestinationLayoutService {
   /**
    * Создание минимальных планов изображений (fallback)
    */
-  private createMinimalImagePlans(destinations: DestinationPlan[]): ImagePlan[] {
-    return destinations.map(destination => ({
-      destinationId: destination.id,
-      images: {
-        primary: {
-          dimensions: { width: 400, height: 300 },
-          format: 'jpg' as const,
-          quality: 80,
-          alt: destination.content.title,
-          loading: 'lazy' as const
-        }
-      },
-      totalEstimatedSize: 15000,
-      compressionStrategy: 'balanced' as const
-    }));
+  private createMinimalImagePlans(_: DestinationPlan[]): never {
+    throw new Error('createMinimalImagePlans is disabled by project policy.');
   }
 
   /**
@@ -754,22 +737,7 @@ export class MultiDestinationLayoutService {
   /**
    * Получение fallback шаблона
    */
-  private getFallbackTemplate(destinationCount: number): SelectedTemplate {
-    const templateName = destinationCount <= 3 
-      ? 'multi-destination-compact.mjml'
-      : destinationCount <= 6 
-        ? 'multi-destination-grid.mjml'
-        : 'multi-destination-carousel.mjml';
-    
-    return {
-      templateName,
-      templatePath: `${this.config.templateBaseDirectory}/${templateName}`,
-      layoutType: destinationCount <= 3 ? 'compact' : destinationCount <= 6 ? 'grid' : 'carousel',
-      estimatedFileSize: 20000,
-      optimizedFor: ['mobile', 'tablet', 'desktop'],
-      renderingComplexity: 'medium',
-      mjmlVersion: '4.15.0',
-      compatibilityScore: 75
-    };
+  private getFallbackTemplate(_destinationCount: number): never {
+    throw new Error('getFallbackTemplate is disabled by project policy.');
   }
 }

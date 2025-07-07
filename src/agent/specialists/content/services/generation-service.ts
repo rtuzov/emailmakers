@@ -323,22 +323,8 @@ export class GenerationService implements BaseContentService {
     };
   }
 
-  private async generateContentWithAI(topic: string, pricingData: any, params: ContentGeneratorParams): Promise<any> {
-    // Симуляция AI генерации - в реальности здесь будет вызов OpenAI API
-    const baseContent = {
-      subject: `${topic} - Специальное предложение`,
-      preheader: `Не упустите возможность сэкономить на путешествии`,
-      body: `Уважаемый путешественник! Мы рады предложить вам отличную возможность для путешествия по теме "${topic}". ${pricingData && pricingData.cheapest ? `Цены от ${pricingData.cheapest} ${pricingData.currency}.` : ''} Забронируйте сейчас и получите незабываемые впечатления!`,
-      cta: 'Забронировать сейчас',
-      language: params.language || 'ru',
-      tone: params.tone || 'friendly'
-    };
-
-    return {
-      data: baseContent,
-      model_used: 'gpt-4o-mini',
-      tokens_used: Math.floor(Math.random() * 1000) + 500
-    };
+  private async generateContentWithAI(_topic: string, _pricingData: any, _params: ContentGeneratorParams): Promise<any> {
+    throw new Error('GenerationService.generateContentWithAI: placeholder implementation disabled. Integrate real LLM.');
   }
 
   private enhanceGeneratedContent(baseContent: any, params: ContentGeneratorParams, context: GenerationContext): ContentResult {
@@ -638,15 +624,8 @@ export class GenerationService implements BaseContentService {
     return body;
   }
 
-  private getDefaultContent(params: ContentGeneratorParams): ContentResult {
-    return {
-      subject: `Путешествие: ${params.topic}`,
-      preheader: 'Откройте для себя новые горизонты',
-      body: `Добро пожаловать в увлекательное путешествие по теме "${params.topic}". Мы предлагаем вам качественный сервис и незабываемые впечатления.`,
-      cta: 'Узнать подробнее',
-      language: params.language || 'ru',
-      tone: params.tone || 'friendly'
-    };
+  private getDefaultContent(_: ContentGeneratorParams): never {
+    throw new Error('GenerationService.getDefaultContent: default content disabled by policy.');
   }
 
   private getDefaultAnalysis(): ContentAnalysis {

@@ -1073,5 +1073,5 @@ export const emailOptimizationSchema = z.object({
   email_content: z.object({
     subject: z.string(),
     body_html: z.string(),
-  }).optional(),
+  }).optional().nullable(),
 }); 

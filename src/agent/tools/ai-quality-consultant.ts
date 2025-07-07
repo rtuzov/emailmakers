@@ -15,6 +15,7 @@ import {
   ImprovementIteration
 } from './ai-consultant/types';
 import { getValidatedUsageModel } from '../../shared/utils/model-config';
+import { AgentEmailAnalyzer } from './ai-consultant/agent-analyzer';
 
 // Zod schema for agent tool parameters
 export const aiQualityConsultantSchema = z.object({
@@ -99,6 +100,13 @@ export type AIQualityConsultantParams = z.infer<typeof aiQualityConsultantSchema
 export async function aiQualityConsultant(params: AIQualityConsultantParams) {
   try {
     console.log(`🤖 T11: AI Quality Consultant starting for topic: ${params.topic}`);
+    
+    // Initialize OpenAI Agents SDK once (idempotent)
+    try {
+      await AgentEmailAnalyzer.initializeSDK();
+    } catch (sdkError) {
+      console.warn('⚠️ T11: SDK already initialized or initialization failed:', sdkError.message);
+    }
     
     // Получаем полный HTML если он сокращен
     let fullHtml = params.html_content;
@@ -239,8 +247,19 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     });
     
     console.log(`🚦 Quality Gate: ${consultation.analysis.overall_score >= 70 ? '✅ PASSED' : '❌ FAILED'}`);
-    console.log(`🔄 Should Continue: ${consultation.should_continue ? 'Yes' : 'No'}`);
-    console.log(`📝 Completion Reason: ${consultation.completion_reason}`);
+    
+    // Improved status messages
+    if (consultation.analysis.overall_score >= 70) {
+      console.log(`✅ Next Action: Ready for delivery`);
+    } else if (consultation.should_continue) {
+      console.log(`🔧 Next Action: Auto-fix available - will attempt improvements`);
+    } else {
+      console.log(`🛑 Next Action: Manual intervention required or max iterations reached`);
+    }
+    
+    if (consultation.completion_reason) {
+      console.log(`📝 Status: ${consultation.completion_reason}`);
+    }
     console.log(`🤖 === END AI CONSULTANT ANALYSIS ===\n`);
     
     // Format response for agent
@@ -253,17 +272,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     
   } catch (error) {
     console.error('❌ T11: AI Quality Consultant failed:', error);
-    
-    // Return fallback response
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : String(error),
-      quality_gate_passed: false,
-      score: 0,
-      recommendations: [],
-      next_action: 'escalate',
-      message: 'AI Quality Consultant encountered an error - manual review required'
-    };
+    throw error instanceof Error ? error : new Error(String(error));
   }
 }
 
@@ -354,36 +363,36 @@ function generateStatusMessage(analysis: QualityAnalysisResult, nextAction: stri
   const recCount = analysis.recommendations.length;
   
   if (analysis.quality_gate_passed) {
-    return `✅ Quality gate passed! Score: ${score}/100 (Grade ${grade}). Email ready for upload.`;
+    return `✅ Quality gate PASSED! Score: ${score}/100 (Grade ${grade}). Email ready for delivery.`;
   }
   
-  if (nextAction === 'auto_execute') {
-    return `🔄 Score: ${score}/100 (Grade ${grade}). ${analysis.auto_executable_count} improvements will be applied automatically.`;
+  // Quality gate failed - explain what happens next
+  if (nextAction === 'auto_execute' && shouldContinue) {
+    return `🔄 Quality gate FAILED (${score}/100, Grade ${grade}). Auto-fixing ${analysis.auto_executable_count} issues now...`;
   }
   
   if (nextAction === 'request_approval') {
-    return `👤 Score: ${score}/100 (Grade ${grade}). ${analysis.manual_approval_count} improvements need your approval.`;
+    return `👤 Quality gate FAILED (${score}/100, Grade ${grade}). ${analysis.manual_approval_count} improvements need your approval.`;
   }
   
   if (nextAction === 'escalate') {
-    return `⚠️ Score: ${score}/100 (Grade ${grade}). Critical issues detected - manual review required.`;
+    return `⚠️ Quality gate FAILED (${score}/100, Grade ${grade}). Critical issues detected - manual review required.`;
   }
   
   if (!shouldContinue) {
-    return `🏁 Final score: ${score}/100 (Grade ${grade}). ${recCount} recommendations generated. Ready for upload.`;
+    return `⏹️ Quality gate FAILED (${score}/100, Grade ${grade}). ${recCount} recommendations available, but improvement potential limited.`;
   }
   
-  return `📊 Score: ${score}/100 (Grade ${grade}). ${recCount} recommendations generated for improvement.`;
+  return `📊 Quality gate FAILED (${score}/100, Grade ${grade}). ${recCount} recommendations available for improvement.`;
 }
 
 // Export the tool configuration
 export const aiQualityConsultantTool = {
   name: 'ai_quality_consultant',
-  description: 'T11: Intelligent email quality analysis and improvement recommendations with automated execution',
+  description: 'T11: Intelligent email quality analysis and improvement recommendations',
   parameters: aiQualityConsultantSchema,
   function: aiQualityConsultant
 };
 
-// Type exports for use in other modules
 export { AIQualityConsultant } from './ai-consultant/ai-consultant';
-export * from './ai-consultant/types'; 
+export * from './ai-consultant/types';

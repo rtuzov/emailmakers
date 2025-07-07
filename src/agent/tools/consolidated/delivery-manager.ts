@@ -282,6 +282,30 @@ async function handleAssetUpload(params: DeliveryManagerParams, startTime: numbe
   
   console.log(`📤 Uploading ${params.upload_config.files.length} assets to S3`);
   
+  // Load HTML content from campaign folder using standardized paths
+  let htmlContent = '';
+  let mjmlContent = '';
+  
+  try {
+    const fs = await import('fs/promises');
+    const { EmailFilePaths, FileValidator } = await import('../../../shared/constants/file-paths');
+    
+    const emailPaths = new EmailFilePaths(params.campaign_id);
+    
+    // Find and load HTML file - FAIL FAST if not found
+    const htmlPath = await FileValidator.findExistingFile(emailPaths.getHtmlFilePaths());
+    htmlContent = await fs.readFile(htmlPath, 'utf8');
+    console.log(`✅ Loaded HTML content from ${htmlPath}: ${htmlContent.length} characters`);
+    
+    // Try to load MJML file - fail fast if required
+    const mjmlPath = await FileValidator.findExistingFile(emailPaths.getMjmlFilePaths());
+    mjmlContent = await fs.readFile(mjmlPath, 'utf8');
+    console.log(`✅ Loaded MJML content from ${mjmlPath}: ${mjmlContent.length} characters`);
+    
+  } catch (error) {
+    throw new Error(`Could not load email content from campaign folder: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+  
   const uploadedFiles = [];
   const failedUploads = [];
   let totalSize = 0;
@@ -289,8 +313,8 @@ async function handleAssetUpload(params: DeliveryManagerParams, startTime: numbe
   for (const file of params.upload_config.files) {
     try {
       const uploadResult = await uploadToS3({
-        html: file.file_path, // Required field - using file_path as html content path
-        mjml_source: file.destination_key,
+        html: htmlContent, // Use actual HTML content
+        mjml_source: mjmlContent || null,
         campaign_id: params.campaign_id,
         assets: {
           images: [file.file_path],
@@ -367,8 +391,29 @@ async function handleScreenshotGeneration(params: DeliveryManagerParams, startTi
   
   console.log('📸 Generating email screenshots across multiple clients and viewports');
   
+  // Load full HTML content from campaign folder if needed
+  let htmlContent = params.screenshot_config.target_content;
+  
+  // Validate content is not empty - fail fast if invalid
+  if (!htmlContent || htmlContent.trim().length === 0) {
+    throw new Error('HTML content is required and cannot be empty');
+  }
+  
+  // Load from campaign folder if content appears to be a reference
+  if (htmlContent.includes('...[truncated]') || htmlContent.includes('mails/') || htmlContent.length < 100) {
+    console.log('🔄 Loading full HTML content from campaign folder...');
+      const fs = await import('fs/promises');
+    const { EmailFilePaths, FileValidator } = await import('../../../shared/constants/file-paths');
+    
+    const emailPaths = new EmailFilePaths(params.campaign_id);
+    const htmlPath = await FileValidator.findExistingFile(emailPaths.getHtmlFilePaths());
+      
+      htmlContent = await fs.readFile(htmlPath, 'utf8');
+      console.log(`✅ Loaded full HTML content from ${htmlPath}: ${htmlContent.length} characters`);
+  }
+  
   const screenshotResult = await generateScreenshots({
-    html_content: params.screenshot_config.target_content,
+    html_content: htmlContent,
     campaign_id: params.campaign_id,
     viewport_width: params.screenshot_config.viewport_width,
     viewport_height: params.screenshot_config.viewport_height,
@@ -393,7 +438,7 @@ async function handleScreenshotGeneration(params: DeliveryManagerParams, startTi
     analytics: params.include_analytics ? {
       execution_time: Date.now() - startTime,
       operations_performed: enhancedResults.total_screenshots,
-      data_transferred: enhancedResults.generated_screenshots.reduce((sum, s) => sum + s.size, 0),
+      data_transferred: enhancedResults.generated_screenshots?.reduce((sum, s) => sum + (s.size || 0), 0) || 0,
       success_rate: 100,
       estimated_cost: calculateScreenshotCost(enhancedResults.total_screenshots)
     } : undefined
@@ -584,10 +629,21 @@ async function handleMultiDestinationAssetOrganization(params: DeliveryManagerPa
  */
 
 async function enhanceScreenshotResults(data: any, params: DeliveryManagerParams) {
+  const screenshots = data.screenshots || [];
+  
+  // Ensure each screenshot has required properties
+  const enhancedScreenshots = screenshots.map((screenshot: any, index: number) => ({
+    filename: screenshot.filename || `screenshot_${index + 1}.png`,
+    url: screenshot.url || screenshot.path || '',
+    viewport: screenshot.viewport || 'desktop',
+    client: screenshot.client || 'browser',
+    size: screenshot.size || 0 // Default size to 0 if not provided
+  }));
+  
   return {
-    generated_screenshots: data.screenshots || [],
+    generated_screenshots: enhancedScreenshots,
     comparison_results: data.comparisons,
-    total_screenshots: data.screenshots?.length || 0
+    total_screenshots: enhancedScreenshots.length
   };
 }
 
@@ -814,6 +870,13 @@ function calculateCdnCost(assetCount: number): number {
 }
 
 function calculateMultiDestinationOrganizationCost(assetCount: number): number {
+  // Multi-destination organization cost simulation
+  const baseCost = 0.005; // $0.005 base cost
+  const perAssetCost = assetCount * 0.0001; // $0.0001 per asset organized
+  const organizationComplexityCost = Math.ceil(assetCount / 10) * 0.001; // $0.001 per 10 assets for organization complexity
+  
+  return baseCost + perAssetCost + organizationComplexityCost;
+}
   // Multi-destination organization cost simulation
   const baseCost = 0.005; // $0.005 base cost
   const perAssetCost = assetCount * 0.0001; // $0.0001 per asset organized
