@@ -38,7 +38,7 @@
     "@anthropic-ai/sdk": "^0.28.0",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
-    "@openai/agents": "^0.1.0",
+    "@openai/agents": "^0.0.10",
     "@playwright/test": "^1.53.1",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",
