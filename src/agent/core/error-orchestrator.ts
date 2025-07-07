@@ -1,4 +1,4 @@
-import { SmartErrorHandler } from '../ultrathink/smart-error-handler';
+import { SmartErrorHandler } from '../utils/ultrathink-stub';
 import { logger } from './logger';
 
 export const ErrorOrchestrator = SmartErrorHandler;

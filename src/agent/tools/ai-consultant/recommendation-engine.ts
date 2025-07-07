@@ -14,7 +14,7 @@ import {
   AIConsultantConfig,
   AIConsultantError
 } from './types';
-import { BRAND_COLORS } from '../../../shared/constants';
+import { BRAND_COLORS } from '../../../config/constants';
 
 export class RecommendationEngine {
   private openai: OpenAI;

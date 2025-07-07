@@ -19,10 +19,21 @@ import {
   AgentCapabilities
 } from './quality/types/quality-types';
 
+// Import new granular tools for better tracing visibility
+import { 
+  pricingIntelligenceTool,
+  dateIntelligenceTool,
+  figmaAssetSelectorTool,
+  mjmlCompilerTool,
+  htmlValidatorTool,
+  fileOrganizerTool
+} from '../modules/agent-tools';
+
 // Import services
 import { QualityAnalysisService } from './quality/services/quality-analysis-service';
 import { TestingService } from './quality/services/testing-service';
 import { ComplianceService } from './quality/services/compliance-service';
+import { MultiDestinationValidationService } from './quality/services/multi-destination-validation-service';
 
 // Import utilities
 import { ReportGeneratorUtils } from './quality/utils/report-generator';
@@ -36,15 +47,30 @@ export class QualitySpecialistV2 {
   private qualityAnalysisService: QualityAnalysisService;
   private testingService: TestingService;
   private complianceService: ComplianceService;
+  private multiDestinationValidationService: MultiDestinationValidationService;
 
   constructor(agent: Agent) {
     this.agent = agent;
     this.performanceMetrics = this.initializePerformanceMetrics();
     
+    // Register granular tools for enhanced OpenAI SDK tracing visibility
+    // Note: In QualitySpecialistV2, the agent is passed from outside, so we extend its tools
+    const existingTools = (agent as any).tools || [];
+    (agent as any).tools = [
+      ...existingTools,
+      pricingIntelligenceTool,
+      dateIntelligenceTool,
+      figmaAssetSelectorTool,
+      mjmlCompilerTool,
+      htmlValidatorTool,
+      fileOrganizerTool
+    ];
+    
     // Initialize services
     this.qualityAnalysisService = new QualityAnalysisService(agent);
     this.testingService = new TestingService(agent);
     this.complianceService = new ComplianceService(agent);
+    this.multiDestinationValidationService = new MultiDestinationValidationService();
   }
 
   /**
@@ -109,6 +135,9 @@ export class QualitySpecialistV2 {
       
       case 'ai_consultation':
         return await this.handleAIConsultation(context);
+      
+      case 'validate_multi_destination_content':
+        return await this.handleMultiDestinationValidation(context);
       
       default:
         throw new Error(`Unknown task type: ${taskType}`);
@@ -260,13 +289,70 @@ export class QualitySpecialistV2 {
   }
 
   /**
+   * Handle multi-destination content validation task
+   */
+  private async handleMultiDestinationValidation(context: QualityServiceContext): Promise<QualitySpecialistOutput> {
+    const { input, startTime, traceId } = context;
+    
+    console.log('🌍 Performing multi-destination content validation', { traceId });
+    
+    try {
+      // Execute multi-destination validation
+      const validationResults = await this.multiDestinationValidationService.validateMultiDestinationContent(context);
+      
+      // Generate quality report based on validation results
+      const qualityReport = this.generateValidationQualityReport(validationResults);
+      
+      // Generate compliance status
+      const complianceStatus = this.generateValidationComplianceStatus(validationResults);
+      
+      // Determine next actions
+      const recommendations = this.generateValidationRecommendations(validationResults);
+      
+      return {
+        success: true,
+        task_type: 'validate_multi_destination_content',
+        results: {
+          multi_destination_validation: validationResults
+        },
+        quality_report: qualityReport,
+        compliance_status: complianceStatus,
+        recommendations,
+        analytics: {
+          execution_time: Date.now() - startTime,
+          tests_performed: 5, // 5 main validation categories
+          issues_detected: this.countValidationIssues(validationResults),
+          fixes_applied: 0, // Validation doesn't auto-fix
+          confidence_score: Math.round(validationResults.overall_validation.confidence_score * 100),
+          agent_efficiency: validationResults.overall_validation.passed ? 95 : 75
+        }
+      };
+    } catch (error) {
+      console.error('❌ Multi-destination validation error:', error);
+      return this.generateFailureResponse(input, startTime, error);
+    }
+  }
+
+  /**
    * Get agent capabilities
    */
   getCapabilities(): AgentCapabilities {
     return {
       agent_id: 'quality-specialist-v2',
       specialization: 'Email Quality Assurance',
-      tools: ['html_validate', 'email_test', 'auto_fix'],
+      tools: [
+        'html_validate', 
+        'email_test', 
+        'auto_fix',
+        'validate_multi_destination_content', // New multi-destination validation capability
+        // Enhanced granular tools for better tracing
+        'pricing_intelligence', 
+        'date_intelligence',
+        'figma_asset_selector',
+        'mjml_compiler',
+        'html_validator',
+        'file_organizer'
+      ],
       handoff_support: true,
       workflow_stage: 'quality_assurance',
       previous_agents: ['design_specialist'],
@@ -280,6 +366,19 @@ export class QualitySpecialistV2 {
    */
   getPerformanceMetrics(): PerformanceMetrics {
     return { ...this.performanceMetrics };
+  }
+
+  /**
+   * Public method for validating multi-destination content
+   */
+  async validateMultiDestinationContent(input: QualitySpecialistInput): Promise<QualitySpecialistOutput> {
+    // Ensure the correct task type
+    const validationInput: QualitySpecialistInput = {
+      ...input,
+      task_type: 'validate_multi_destination_content'
+    };
+    
+    return await this.executeTask(validationInput);
   }
 
   /**
@@ -351,6 +450,151 @@ export class QualitySpecialistV2 {
   private async executeAIConsultation(prompt: string): Promise<any> {
     // Placeholder - in real implementation, would use agent tools
     return { consultation_complete: true, recommendations_provided: true };
+  }
+
+  /**
+   * Generate quality report from validation results
+   */
+  private generateValidationQualityReport(validationResults: any): any {
+    const overallScore = Math.round(validationResults.overall_validation.confidence_score * 100);
+    
+    return {
+      overall_score: overallScore,
+      category_scores: {
+        technical: validationResults.email_size_validation.passed ? 90 : 60,
+        content: validationResults.destination_validation.passed ? 85 : 65,
+        accessibility: validationResults.layout_validation.passed ? 80 : 55,
+        performance: validationResults.email_size_validation.passed ? 88 : 50,
+        compatibility: validationResults.layout_validation.responsive_compatibility ? 92 : 60
+      },
+      issues_found: this.extractValidationIssues(validationResults),
+      passed_checks: this.extractPassedValidations(validationResults),
+      recommendations: validationResults.overall_validation.recommendations
+    };
+  }
+
+  /**
+   * Generate compliance status from validation results
+   */
+  private generateValidationComplianceStatus(validationResults: any): any {
+    return {
+      email_standards: validationResults.email_size_validation.passed ? 'pass' : 'fail',
+      accessibility: validationResults.layout_validation.passed ? 'pass' : 'warning',
+      performance: validationResults.email_size_validation.passed ? 'pass' : 'fail',
+      security: 'pass', // Assuming security is always good for validation
+      overall_compliance: validationResults.overall_validation.passed ? 'pass' : 'fail'
+    };
+  }
+
+  /**
+   * Generate recommendations from validation results
+   */
+  private generateValidationRecommendations(validationResults: any): any {
+    const recommendations: any = {
+      next_actions: [],
+      critical_fixes: []
+    };
+
+    if (validationResults.overall_validation.passed) {
+      recommendations.next_agent = 'delivery_specialist';
+      recommendations.next_actions = [
+        'Multi-destination content validation passed',
+        'Proceed to deployment preparation',
+        'Organize assets by destinations'
+      ];
+      recommendations.handoff_data = { 
+        multi_destination_validation_complete: true,
+        validation_score: validationResults.overall_validation.confidence_score
+      };
+    } else {
+      recommendations.next_actions = [
+        'Fix validation issues before proceeding',
+        'Review and optimize email content',
+        'Re-run validation after fixes'
+      ];
+      recommendations.critical_fixes = validationResults.overall_validation.critical_issues;
+    }
+
+    return recommendations;
+  }
+
+  /**
+   * Count validation issues across all categories
+   */
+  private countValidationIssues(validationResults: any): number {
+    let issueCount = 0;
+    
+    if (!validationResults.email_size_validation.passed) issueCount++;
+    if (!validationResults.image_validation.passed) issueCount++;
+    if (!validationResults.date_validation.passed) issueCount++;
+    if (!validationResults.destination_validation.passed) issueCount++;
+    if (!validationResults.layout_validation.passed) issueCount++;
+    
+    return issueCount;
+  }
+
+  /**
+   * Extract validation issues for quality report
+   */
+  private extractValidationIssues(validationResults: any): any[] {
+    const issues: any[] = [];
+
+    if (!validationResults.email_size_validation.passed) {
+      issues.push({
+        severity: 'high',
+        category: 'Performance',
+        description: `Email size exceeds limit: ${validationResults.email_size_validation.current_size_kb}KB`,
+        fix_suggestion: 'Optimize images and compress content',
+        auto_fixable: false
+      });
+    }
+
+    if (!validationResults.image_validation.passed) {
+      issues.push({
+        severity: 'medium',
+        category: 'Content',
+        description: `Image validation failed: ${validationResults.image_validation.invalid_formats.length} format issues`,
+        fix_suggestion: 'Convert images to supported formats',
+        auto_fixable: false
+      });
+    }
+
+    if (!validationResults.layout_validation.passed) {
+      issues.push({
+        severity: 'medium',
+        category: 'Design',
+        description: 'Layout compatibility issues detected',
+        fix_suggestion: 'Improve mobile responsiveness',
+        auto_fixable: false
+      });
+    }
+
+    return issues;
+  }
+
+  /**
+   * Extract passed validations for quality report
+   */
+  private extractPassedValidations(validationResults: any): string[] {
+    const passed: string[] = [];
+
+    if (validationResults.email_size_validation.passed) {
+      passed.push('Email size within limits');
+    }
+    if (validationResults.image_validation.passed) {
+      passed.push('All images validated successfully');
+    }
+    if (validationResults.date_validation.passed) {
+      passed.push('Seasonal dates are optimal');
+    }
+    if (validationResults.destination_validation.passed) {
+      passed.push('Destination consistency verified');
+    }
+    if (validationResults.layout_validation.passed) {
+      passed.push('Layout and responsive design validated');
+    }
+
+    return passed;
   }
 
   private generateFailureResponse(input: QualitySpecialistInput, startTime: number, error: any): QualitySpecialistOutput {

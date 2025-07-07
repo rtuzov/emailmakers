@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ValidationMonitor } from '../monitoring/validation-monitor';
+import { ValidationMonitor } from '../utils/validation-monitor-stub';
 import { generateTraceId } from '../utils/tracing-utils';
 import {
   HandoffDataUnion,

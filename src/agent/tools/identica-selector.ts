@@ -55,7 +55,7 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
   try {
     console.log('🎨 T16: Selecting identica creatives with params:', params);
     
-    const identicaPath = path.join(process.cwd(), 'src', 'agent', 'figma-all-pages-1750993353363', 'айдентика');
+    const identicaPath = path.join(process.cwd(), 'figma-all-pages-1750993353363', 'айдентика');
     
     // Загружаем метаданные из agent-file-mapping.json
     const mappingPath = path.join(identicaPath, 'agent-file-mapping.json');

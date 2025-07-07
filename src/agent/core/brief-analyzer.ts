@@ -4,7 +4,7 @@
  */
 
 import { EmailGenerationRequest } from '../types';
-import { UltraThinkEngine } from '../ultrathink';
+import { UltraThinkEngine } from '../utils/ultrathink-stub';
 
 export interface AmbiguityIssue {
   type: 'missing_info' | 'unclear_intent' | 'conflicting_params' | 'optimization_opportunity';

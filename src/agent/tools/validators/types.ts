@@ -5,7 +5,7 @@
  * Integrates with T1-T10 workflow, positioned between T8 (render_test) and T9 (upload_s3)
  */
 
-import { EmailGenerationRequest } from '../../agent';
+import { EmailGenerationRequest } from '../../types';
 
 // ========================================
 // CORE VALIDATION INTERFACES

@@ -1,320 +1,271 @@
-# 🎯 ACTIVE TASKS - Email-Makers Project
+# ЗАДАЧИ: ОПТИМИЗАЦИЯ СИСТЕМЫ АГЕНТОВ
 
-## 📋 Current Focus: Agent Comprehensive Inspection & Refactoring Plan
+## 🎯 ОБЩИЙ СТАТУС: АНАЛИЗ ЗАВЕРШЕН → РЕАЛИЗАЦИЯ ОЖИДАЕТ
 
-### ✅ **PHASE 1 COMPLETED: CRITICAL BUILD FIXES** (Level 1)
-- **Status**: ✅ **COMPLETED** 
-- **Duration**: 2 hours
-- **Results**: 
-  - ✅ **86 TypeScript errors RESOLVED** - Build now passes successfully
-  - ✅ **Missing core modules verified** - All modules exist and accessible
-  - ✅ **Import paths corrected** - All imports working correctly
-  - ✅ **OpenAI Agent SDK documentation obtained** - Updated with latest patterns
-  - ✅ **Next.js build successful** - Production build passes
-
-### ✅ **PHASE 2 COMPLETED: STRUCTURAL CLEANUP** (Level 2)
-- **Status**: ✅ **COMPLETED**
-- **Duration**: 1 hour
-- **Results**:
-  - ✅ **Duplicate files archived** - Moved to `useless/` directory:
-    - `quality-specialist-agent.ts` (76KB) → `useless/agents/`
-    - `design-specialist-agent-v2.ts` (71KB) → `useless/agents/`
-    - `multi-handoff-agent-original.ts` → `useless/agents/`
-  - ✅ **Import references updated** - All API routes now use new agent versions
-  - ✅ **Architecture organized** - Clear separation between old and new versions
-  - ✅ **Build system validated** - All imports working correctly
-
-### ✅ **PHASE 3 COMPLETED: COMPLETE REFACTORING** (Level 3)
-- **Status**: ✅ **COMPLETED**
-- **Duration**: 3 hours
-- **Results**:
-  - ✅ **email-renderer.ts refactored** - 1768 → 400 lines (77% reduction)
-    - Original file archived to `useless/tools/email-renderer-original-1768-lines.ts`
-    - New modular architecture following OpenAI Agents SDK patterns
-    - Proper service-based design with tool() function
-    - Comprehensive error handling and tracing
-    - Backward compatibility maintained
-  - ✅ **OpenAI Agents SDK integration** - Latest patterns applied
-  - ✅ **Service architecture standardized** - All services follow consistent patterns
-  - ✅ **Build system stable** - All compilation passes successfully
-
-### ✅ **PHASE 4 COMPLETED: COMPREHENSIVE SYSTEM VALIDATION** (Level 4)
-- **Status**: ✅ **COMPLETED**
-- **Duration**: 1 hour
-- **Results**:
-  - ✅ **Integration Testing** - All refactored agents working correctly
-  - ✅ **Import Path Corrections** - All references updated to new architecture
-  - ✅ **Build System Validation** - Production build passes successfully
-  - ✅ **Architecture Verification** - Clean, modular, maintainable structure confirmed
-  - ✅ **Performance Optimization** - Significantly improved build and runtime performance
-
-## 🏆 **PROJECT COMPLETION: COMPREHENSIVE AGENT REFACTORING**
-
-### **🎯 MISSION ACCOMPLISHED**
-The Email-Makers agent system has been **completely transformed** from a monolithic, error-prone codebase to a **clean, modular, production-ready architecture**.
-
-### **📊 FINAL METRICS**
-
-#### **Code Reduction Achievement**
-- **Before**: 9,527 lines of monolithic code
-- **After**: 1,480 lines of modular code
-- **Reduction**: **8,047 lines eliminated (84.5% reduction)**
-
-#### **Refactoring Results (5/5 major files)**
-1. ✅ **multi-handoff-agent.ts**: 1187 → 47 lines (96% reduction)
-2. ✅ **agent/logs/route.ts**: 2829 → 366 lines (87% reduction)
-3. ✅ **quality-specialist-agent.ts**: 1927 → 317 lines (84% reduction)
-4. ✅ **design-specialist-agent-v2.ts**: 1818 → 350 lines (81% reduction)
-5. ✅ **email-renderer.ts**: 1768 → 400 lines (77% reduction)
-
-#### **Architecture Transformation**
-- **OpenAI Agents SDK Integration**: ✅ All agents follow modern patterns
-- **Service-Based Architecture**: ✅ Clean separation of concerns
-- **Type Safety**: ✅ Full TypeScript coverage, zero compilation errors
-- **Error Handling**: ✅ Comprehensive error management and tracing
-- **Build Performance**: ✅ Dramatically improved compilation speed
-- **Maintainability**: ✅ Code is now modular, testable, and scalable
-
-#### **File Organization**
-- **Active TypeScript files**: 259 files in clean, organized structure
-- **Archived files**: 39 files safely preserved in `useless/` directory
-- **Zero data loss**: All original code preserved for reference
-
-### **🚀 SYSTEM HEALTH STATUS**
-
-#### **Build System: 🟢 EXCELLENT**
-- ✅ **Next.js Build**: Production build successful
-- ✅ **TypeScript Compilation**: Zero errors
-- ✅ **Import Resolution**: All paths correctly resolved
-- ✅ **Bundle Size**: Optimized and efficient
-
-#### **Architecture Quality: 🟢 EXCELLENT**
-- ✅ **Modularity**: Clean service-based design
-- ✅ **Reusability**: Components shared across agents
-- ✅ **Testability**: Easy to unit test and maintain
-- ✅ **Scalability**: Ready for future enhancements
-
-#### **Performance: 🟢 EXCELLENT**
-- ✅ **Build Speed**: Significantly faster compilation
-- ✅ **Runtime Performance**: Optimized execution
-- ✅ **Memory Usage**: Reduced footprint
-- ✅ **Load Times**: Improved application startup
-
-### **🎁 DELIVERABLES**
-
-#### **Refactored Architecture**
-- **Modern Agent System**: Following OpenAI Agents SDK best practices
-- **Service-Based Design**: Modular, reusable components
-- **Clean Code**: Easy to read, understand, and maintain
-- **Type Safety**: Full TypeScript coverage
-
-#### **Preserved Functionality**
-- **100% Feature Preservation**: All original functionality maintained
-- **Enhanced Error Handling**: Better error management and recovery
-- **Improved Performance**: Faster and more efficient execution
-- **Future-Ready**: Architecture ready for new features
-
-#### **Documentation & Migration**
-- **Code Comments**: Comprehensive inline documentation
-- **Architecture Patterns**: Clear service-based design
-- **Migration Path**: Old code safely archived for reference
-- **Development Guide**: Clear patterns for future development
-
-## 🎯 **SUCCESS CRITERIA: 100% ACHIEVED**
-
-✅ **Build System Stability**: From 86 errors to 0 errors
-✅ **Code Quality**: 84.5% reduction while maintaining functionality
-✅ **Architecture Modernization**: OpenAI Agents SDK patterns implemented
-✅ **Performance Optimization**: Significantly improved build and runtime
-✅ **Maintainability**: Clean, modular, testable codebase
-✅ **Zero Data Loss**: All original code safely preserved
-✅ **Production Ready**: System ready for deployment
-
-## 🌟 **PROJECT IMPACT**
-
-### **Developer Experience**
-- **Faster Development**: Modular architecture enables rapid feature development
-- **Easier Debugging**: Clean separation of concerns simplifies troubleshooting
-- **Better Testing**: Service-based design enables comprehensive unit testing
-- **Clearer Code**: Well-organized, documented, and maintainable
-
-### **System Reliability**
-- **Improved Stability**: Better error handling and recovery
-- **Enhanced Performance**: Optimized for speed and efficiency
-- **Future-Proof**: Architecture ready for scaling and new features
-- **Production Ready**: Thoroughly tested and validated
-
-### **Business Value**
-- **Reduced Technical Debt**: Legacy code eliminated
-- **Faster Time to Market**: Streamlined development process
-- **Lower Maintenance Costs**: Clean, maintainable codebase
-- **Scalability**: Ready for future growth and enhancements
+### Краткое описание
+Оптимизация архитектуры системы агентов Email-Makers на основе комплексного анализа. Цель: сокращение времени выполнения с 30-45 секунд до 10-15 секунд через упрощение архитектуры, параллелизацию и улучшение обратной связи.
 
 ---
 
-## 🏁 **PROJECT STATUS: COMPLETE**
+## 📋 ФАЗА 1: НЕМЕДЛЕННЫЕ ИСПРАВЛЕНИЯ (1-2 дня)
 
-The comprehensive agent inspection, refactoring, and cleanup has been **successfully completed**. The Email-Makers system now features a **modern, scalable, and maintainable architecture** that will serve as a solid foundation for future development.
+### Приоритет: КРИТИЧЕСКИЙ ⚡
+**Цель:** Быстрые улучшения производительности на 30-40%
 
-**Total Development Time**: ~12 hours across 4 phases
-**Lines of Code Reduced**: 8,047 lines (84.5% reduction)
-**Architecture Quality**: Transformed from monolithic to modular
-**System Health**: Excellent across all metrics
+#### ☐ Задача 1.1: Упростить HandoffsCoordinator
+- **Проблема:** Добавляет сложность без реальной ценности - только логирует и валидирует
+- **Решение:** Заменить на прямую передачу между агентами
+- **Файлы:** `src/agent/core/handoffs-coordinator.ts`
+- **Время:** 4 часа
+- **Код пример:**
+  ```typescript
+  // Вместо:
+  const handoff = await handdoffsCoordinator.performHandoff(from, to, data);
+  // Использовать:
+  const result = await toAgent.execute(data);
+  ```
 
-## 🔍 **FINAL VALIDATION: ✅ ALL SYSTEMS VERIFIED (JANUARY 2025)**
+#### ☐ Задача 1.2: Оптимизировать Tool Registry
+- **Проблема:** Загружает ВСЕ инструменты для ВСЕХ агентов
+- **Решение:** Загружать только специфичные инструменты для каждого агента
+- **Файлы:** `src/agent/core/tool-registry.ts`
+- **Время:** 3 часа
+- **Код пример:**
+  ```typescript
+  getToolsForAgent(agentType: string): any[] {
+    const toolMap = {
+      content: ['content-generator', 'brand-voice-analyzer'],
+      design: ['figma-asset-selector', 'mjml-compiler'],
+      quality: ['quality-controller', 'accessibility-checker'],
+      delivery: ['delivery-manager', 'upload-manager']
+    };
+    return toolMap[agentType].map(name => this.getOpenAITool(name));
+  }
+  ```
 
-### **Build System Validation**
-```bash
-# TypeScript Compilation Check
-npx tsc --noEmit
-# ✅ Exit code: 0 (Success)
-
-# Next.js Production Build Check  
-npm run build
-# ✅ Exit code: 0 (Success)
-# ✅ All 61 static pages generated successfully
-# ✅ Build size optimized (87.1 kB shared JS)
-```
-
-### **OpenAI Agents SDK Compatibility Validation**
-```bash
-# Latest Documentation Integration ✅
-mcp_context7_get-library-docs("/openai/openai-agents-js")
-# ✅ Latest SDK documentation integrated (January 2025)
-
-# Span Data Structure Compatibility ✅
-# ✅ Fixed enhanced-tracing.ts to match OpenAI Agents SDK v2 standards
-# ✅ FunctionSpanData: { type: 'function', name, input, output }
-# ✅ CustomSpanData: { type: 'custom', name, data: Record<string, any> }
-# ✅ GenerationSpanData: { type: 'generation', model, input, output }
-```
-
----
-
-## ✅ **PHASE 4 COMPLETE: SYSTEM VALIDATION & OPENAI SDK INTEGRATION**
-
-### **Critical Issues Resolved**
-- ✅ **OpenAI Agents SDK Compatibility**: Enhanced tracing now fully compatible with SDK v2
-- ✅ **Span Data Structure**: Fixed all TypeScript compilation errors in enhanced-tracing.ts
-- ✅ **Type Safety**: Full compatibility with OpenAI Agents SDK types
-- ✅ **Production Build**: All 61 static pages generated successfully
-
-### **Final Implementation Details**
-
-#### **Enhanced Tracing System Fixes**
-1. **FunctionSpanData Structure** ✅
-   ```typescript
-   {
-     type: 'function',
-     name: string,
-     input: string,
-     output: string
-   }
-   ```
-
-2. **CustomSpanData Structure** ✅
-   ```typescript
-   {
-     type: 'custom',
-     name: string,
-     data: Record<string, any>
-   }
-   ```
-
-3. **GenerationSpanData Structure** ✅
-   ```typescript
-   {
-     type: 'generation',
-     model?: string,
-     input?: Array<Record<string, any>>,
-     output?: Array<Record<string, any>>
-   }
-   ```
-
-#### **System Validation Results**
-- **TypeScript Compilation**: ✅ Zero errors
-- **Next.js Build**: ✅ Successful production build
-- **OpenAI SDK Integration**: ✅ Fully compatible
-- **Performance**: ✅ Optimized bundle sizes
+#### ☐ Задача 1.3: Добавить базовое кеширование
+- **Проблема:** Нет кеширования между итерациями
+- **Решение:** Кешировать Figma assets, pricing data, content templates
+- **Файлы:** Создать `src/shared/cache/agent-cache.ts`
+- **Время:** 5 часов
+- **Код пример:**
+```typescript
+  class AgentCache {
+    private cache = new Map<string, CachedResult>();
+    async get<T>(key: string, factory: () => Promise<T>): Promise<T> {
+      if (this.cache.has(key)) {
+        const cached = this.cache.get(key);
+        if (!this.isExpired(cached)) {
+          return cached.data as T;
+        }
+      }
+      const result = await factory();
+      this.cache.set(key, { data: result, timestamp: Date.now() });
+      return result;
+    }
+  }
+  ```
 
 ---
 
-## 📊 **COMPLETE PROJECT SUMMARY**
+## 📋 ФАЗА 2: ПАРАЛЛЕЛИЗАЦИЯ И ОШИБКИ (1 неделя)
 
-### **Phase 1: Critical Build Fixes** ✅ **COMPLETE**
-- **Duration**: 2 hours
-- **Achievement**: Fixed all 86 TypeScript compilation errors
-- **Result**: Successful Next.js production build achieved
+### Приоритет: ВЫСОКИЙ 🔥
+**Цель:** Сокращение времени выполнения на 50-70%
 
-### **Phase 2: Structural Cleanup** ✅ **COMPLETE**
-- **Duration**: 3 hours  
-- **Achievement**: Moved 4,933 lines of legacy code to `useless/` directory
-- **Result**: Clean project structure with maintained backward compatibility
+#### ☐ Задача 2.1: Внедрить параллельную обработку
+- **Проблема:** Жесткая последовательность Content → Design → Quality → Delivery
+- **Решение:** Использовать Promise.all для независимых операций
+- **Файлы:** Все specialist agents
+- **Время:** 2 дня
+- **Код пример:**
+  ```typescript
+  const [assets, prices, initialContent] = await Promise.all([
+    figmaService.fetchAssets(params),
+    pricingService.lookupPrices(routes),
+    contentService.generateInitial(brief)
+  ]);
+  ```
 
-### **Phase 3: Complete Refactoring** ✅ **COMPLETE**
-- **Duration**: 5 hours
-- **Achievement**: Refactored email-renderer from 1,768 to 400 lines (77% reduction)
-- **Result**: Modern OpenAI Agents SDK compatible architecture
+#### ☐ Задача 2.2: Улучшить обработку ошибок
+- **Проблема:** Разные стратегии retry в разных местах
+- **Решение:** Единая стратегия retry с экспоненциальным backoff
+- **Файлы:** Создать `src/shared/utils/retry-strategy.ts`
+- **Время:** 1 день
+- **Код пример:**
+  ```typescript
+  class UnifiedRetryStrategy {
+    async execute<T>(
+      operation: () => Promise<T>,
+      options: RetryOptions = {}
+    ): Promise<T> {
+      const { maxAttempts = 3, baseDelay = 1000 } = options;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          return await operation();
+        } catch (error) {
+          if (attempt === maxAttempts) throw error;
+          const delay = baseDelay * Math.pow(2, attempt - 1);
+          await this.delay(delay);
+        }
+      }
+    }
+  }
+  ```
 
-### **Phase 4: System Validation** ✅ **COMPLETE**
-- **Duration**: 2 hours
-- **Achievement**: Fixed OpenAI Agents SDK compatibility issues
-- **Result**: Production-ready system with zero technical debt
+#### ☐ Задача 2.3: Оптимизировать промпты
+- **Проблема:** Избыточно детализированные с дублированием, смесь языков
+- **Решение:** Лаконичные промпты с четкой структурой
+- **Файлы:** Все файлы в `src/agent/prompts/`
+- **Время:** 2 дня
+- **Пример оптимизации:**
+  ```markdown
+  # Вместо длинного промпта:
+  ## РОЛЬ
+  Вы специалист по контенту для email-кампаний.
+  ## ЗАДАЧА
+  Создайте контент на основе брифа: {{brief}}
+  ## ТРЕБОВАНИЯ К РЕЗУЛЬТАТУ
+  - Заголовок: яркий, до 50 символов
+  - Текст: лаконичный, с призывом к действию
+  - Тональность: {{brandVoice}}
+  ## ФОРМАТ ОТВЕТА
+  JSON с полями: subject, preheader, body, cta
+  ```
 
 ---
 
-## 🎯 **FINAL METRICS & ACHIEVEMENTS**
+## 📋 ФАЗА 3: ПРОДВИНУТЫЕ УЛУЧШЕНИЯ (2-3 недели)
 
-### **Code Reduction Achievement**
-```
-Before Refactoring:
-├── 9,527 lines of monolithic code
-├── 86 TypeScript compilation errors
-├── Poor maintainability
-└── Build system blocked
+### Приоритет: СРЕДНИЙ 📈
+**Цель:** Интеллектуальная система обратной связи
 
-After Refactoring:
-├── 1,480 lines of modular code (84.5% reduction)
-├── Zero compilation errors
-├── Excellent maintainability
-└── Production-ready build system
-```
+#### ☐ Задача 3.1: Внедрить ML-scoring для качества
+- **Проблема:** Примитивная оценка качества (базовые проверки)
+- **Решение:** ML-based анализ контента, дизайна, технических параметров
+- **Файлы:** Создать `src/agent/ml/quality-scoring.ts`
+- **Время:** 1 неделя
+- **Интерфейс:**
+  ```typescript
+  interface QualityScore {
+    content: number;     // ML-based content analysis
+    design: number;      // Visual consistency score
+    technical: number;   // Email client compatibility
+    performance: number; // Load time and size metrics
+  }
+  ```
 
-### **Refactoring Results (5/5 major files completed)**
-1. **multi-handoff-agent.ts**: 1187 → 47 lines (96% reduction) ✅
-2. **agent/logs/route.ts**: 2829 → 366 lines (87% reduction) ✅
-3. **quality-specialist-agent.ts**: 1927 → 317 lines (84% reduction) ✅
-4. **design-specialist-agent-v2.ts**: 1818 → 350 lines (81% reduction) ✅
-5. **email-renderer.ts**: 1768 → 400 lines (77% reduction) ✅
+#### ☐ Задача 3.2: Добавить адаптивные лимиты итераций
+- **Проблема:** Максимум 3 итерации захардкожены
+- **Решение:** Динамические лимиты на основе сложности и исторических данных
+- **Файлы:** Обновить все specialist agents
+- **Время:** 4 дня
+- **Логика:**
+  ```typescript
+  const maxIterations = calculateIterationLimit(complexity, historicalData);
+  ```
 
-### **System Health Metrics**
-- **Build Status**: ✅ All compilation successful
-- **TypeScript**: ✅ Zero compilation errors  
-- **Next.js Build**: ✅ Production build passes (61 static pages)
-- **Architecture**: ✅ Clean, modular, maintainable
-- **OpenAI SDK**: ✅ Fully compatible with latest version
-- **File Organization**: ✅ 259 active TypeScript files, 39 archived files
+#### ☐ Задача 3.3: Создать monitoring dashboard
+- **Проблема:** Нет визуализации производительности системы
+- **Решение:** Real-time dashboard с метриками агентов
+- **Файлы:** Создать `src/app/monitoring/` компоненты
+- **Время:** 1 неделя
+- **Метрики:** Время выполнения, качество, использование ресурсов
 
 ---
 
-## 🚀 **PROJECT OUTCOME: PRODUCTION READY**
+## 🎯 КРИТЕРИИ УСПЕХА
 
-The Email-Makers project has been **successfully transformed** from a monolithic, error-prone system into a **modern, scalable, and maintainable architecture**:
+### Производительность
+- [ ] **Время выполнения:** 30-45 сек → 10-15 сек (67% улучшение)
+- [ ] **Throughput:** +200% одновременных операций
+- [ ] **Потребление памяти:** -30% оптимизация
+- [ ] **API calls:** -40% через кеширование
 
-### **Key Achievements**
-- ✅ **84.5% code reduction** while maintaining full functionality
-- ✅ **Zero technical debt** - all legacy code properly archived
-- ✅ **Modern architecture** following OpenAI Agents SDK best practices
-- ✅ **Production-ready build** with optimized performance
-- ✅ **Comprehensive documentation** for future development
+### Качество
+- [ ] **Архитектура:** Упрощение на 50% (удаление избыточных слоев)
+- [ ] **Maintainability:** Стандартизация паттернов
+- [ ] **SDK compliance:** 100% соответствие OpenAI Agents SDK
+- [ ] **Test coverage:** >90% для оптимизированных компонентов
 
-### **Ready for Deployment**
-The system is now ready for production deployment with:
-- Modern OpenAI Agents SDK integration
-- Clean, maintainable codebase
-- Excellent performance characteristics
-- Zero compilation errors
-- Comprehensive testing capabilities
+### Бизнес-метрики
+- [ ] **User satisfaction:** Улучшение времени отклика
+- [ ] **Cost efficiency:** Снижение затрат на API на 25%
+- [ ] **Error rate:** Снижение на 40%
+- [ ] **System reliability:** 99.9% uptime
 
-**🎉 MISSION ACCOMPLISHED: Email-Makers is production-ready! 🎉**
+---
 
+## 🔄 ПЛАН ТЕСТИРОВАНИЯ
+
+### Фаза 1 тестирование:
+- [ ] Unit тесты для новых компонентов
+- [ ] Performance тесты для кеширования
+- [ ] Integration тесты для упрощенных handoffs
+
+### Фаза 2 тестирование:
+- [ ] Load тесты для параллельной обработки
+- [ ] Error handling тесты
+- [ ] Промпт A/B тестирование
+
+### Фаза 3 тестирование:
+- [ ] ML model validation
+- [ ] End-to-end workflow тесты
+- [ ] User acceptance тесты
+
+---
+
+## 📊 МОНИТОРИНГ И МЕТРИКИ
+
+### Ключевые метрики для отслеживания:
+- **Время выполнения:** Средний, медиана, 95-й перцентиль
+- **Качество результатов:** ML-scoring, пользовательские оценки
+- **Использование ресурсов:** CPU, память, API calls
+- **Ошибки:** Количество, типы, время восстановления
+
+### Инструменты мониторинга:
+- Performance monitoring: Custom dashboard
+- Error tracking: Sentry или аналог
+- Metrics collection: Prometheus
+- Alerting: Слайм или email уведомления
+
+---
+
+## ⚠️ РИСКИ И МИТИГАЦИЯ
+
+### Технические риски:
+1. **Breaking changes** → Поэтапное внедрение с feature flags
+2. **Performance regression** → Benchmark тесты перед каждым релизом
+3. **Сложность ML** → Простые алгоритмы сначала, сложные потом
+4. **Caching invalidation** → Четкие стратегии TTL и invalidation
+
+### Процессные риски:
+1. **Scope creep** → Строгое следование phases
+2. **Timeline slip** → Weekly reviews и course correction
+3. **Resource allocation** → Dedicated team на каждую фазу
+4. **Quality compromise** → Никаких компромиссов в тестировании
+
+---
+
+## 🏁 ФИНАЛЬНЫЕ ШАГИ
+
+### После завершения всех фаз:
+1. **Документация:** Обновить все README и API docs
+2. **Training:** Обучить команду новым паттернам
+3. **Rollout:** Постепенное внедрение в production
+4. **Monitoring:** Настроить алертинг и дашборды
+5. **Retrospective:** Анализ результатов и lessons learned
+
+### Подготовка к следующему этапу:
+- Планирование следующих оптимизаций
+- Сбор feedback от пользователей
+- Анализ новых возможностей SDK
+- Подготовка roadmap на следующий квартал
+
+---
+
+**Статус:** ✅ Готов к реализации  
+**Следующий шаг:** Начать Фазу 1, Задача 1.1 (упростить HandoffsCoordinator)  
+**Ответственный:** Senior Developer  
+**Дата начала:** 2024-12-20  
+**Ожидаемая дата завершения:** 2024-01-15

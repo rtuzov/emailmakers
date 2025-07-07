@@ -1,4 +1,4 @@
-import { DEFAULT_RETRY_POLICY, RETRY_BACKOFF_MAX } from '../../shared/constants';
+import { DEFAULT_RETRY_POLICY, RETRY_BACKOFF_MAX } from '../../config/constants';
 import { delay } from '../utils/common';
 import { getLogger } from '../../shared/logger';
 

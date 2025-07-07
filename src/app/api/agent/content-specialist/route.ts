@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ContentSpecialistAgent, ContentSpecialistInput } from '@/agent/specialists/content-specialist-agent';
+import { ContentSpecialistAgent, ContentSpecialistInput } from '@/agent/specialists/content-specialist-stub';
 
 // @ts-nocheck
 

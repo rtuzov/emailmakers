@@ -326,9 +326,9 @@ export class EmailRenderingService {
   private generateColorScheme(campaignContext: any): any {
     const schemes = {
       promotional: {
-        primary: '#FF6B35',
-        secondary: '#F7931E',
-        accent: '#FFE66D',
+        primary: '#4BFF7E',
+        secondary: '#1DA857',
+        accent: '#2C3959',
         background: '#FFFFFF',
         text: '#333333',
         link: '#0066CC',

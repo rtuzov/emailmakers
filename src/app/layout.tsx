@@ -15,8 +15,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-blue-900 to-slate-800`}>
+    <html lang="en" suppressHydrationWarning>
+      <body 
+        className={`${inter.className} min-h-screen bg-gradient-to-br from-blue-900 to-slate-800`}
+        suppressHydrationWarning
+      >
         <main className="min-h-screen">
           {children}
         </main>

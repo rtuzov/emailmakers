@@ -1,0 +1,5396 @@
+{
+  "version": "1.0.0",
+  "createdAt": "2025-06-27T03:48:18.760Z",
+  "updatedAt": "2025-06-27T03:50:39.208Z",
+  "totalFiles": 23,
+  "totalTags": 37,
+  "uniqueTags": [
+    "Батуми",
+    "Владикавказ",
+    "Москва",
+    "Санкт-Петербург",
+    "Сочи",
+    "акции",
+    "акция",
+    "бunny",
+    "билет",
+    "билет дня",
+    "вдохновение",
+    "доступные цены",
+    "досуг",
+    "дружелюбие",
+    "дружелюбный",
+    "забавный",
+    "забавный персонаж",
+    "заяц",
+    "зеленый",
+    "информация",
+    "конкурс",
+    "кролик",
+    "мультимедиа",
+    "мультфильм",
+    "новости",
+    "обновления",
+    "позитив",
+    "позитивный",
+    "приз",
+    "простота",
+    "путешествие",
+    "путешествия",
+    "развлечение",
+    "скидка",
+    "скидки",
+    "чтение",
+    "эмоции"
+  ],
+  "entries": {
+    "билетдня-скидка-москва-батуми-путешествие": {
+      "originalName": "рекламное-предложение-на-билет-между-карагандой-и-сочи-с-ценой-3000-рублей.png",
+      "shortName": "билетдня-скидка-москва-батуми-путешествие",
+      "allTags": [
+        "билет дня",
+        "Москва",
+        "Батуми",
+        "путешествия",
+        "скидка"
+      ],
+      "selectedTags": [
+        "билет дня",
+        "скидка",
+        "Москва",
+        "Батуми",
+        "путешествие"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Предложение на билет из Москвы в Батуми по специальной цене.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "email-рассылка",
+          "акции",
+          "путешествия"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: направление путешествия, цена и концепция 'билета дня', что делает их релевантными для email-маркетинга."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1737",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:27.219Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2196,
+          "height": 2478,
+          "format": "png",
+          "fileSize": 218139,
+          "fileSizeFormatted": "213.03 KB",
+          "aspectRatio": "0.89",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:21.024Z",
+          "created": "2025-06-27T03:48:21.023Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "2196x2478",
+            "megapixels": 5.44,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 218139,
+            "sizeKB": 213,
+            "sizeMB": 0.21,
+            "sizeCategory": "large",
+            "compressionRatio": 0.01,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.89,
+            "composition": "portrait",
+            "complexity": "complex",
+            "resolution": "2196x2478",
+            "pixelDensity": 5.44
+          },
+          "quality": {
+            "resolution": "2196x2478",
+            "megapixels": 5.44,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 218139,
+          "dimensions": "2196x2478",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 218139,
+            "sizeKB": 213,
+            "sizeMB": 0.21,
+            "sizeCategory": "large",
+            "compressionRatio": 0.01,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "slow"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 78.1861,
+          "overall": 27,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "путешествие-москва-батуми-акции-доступныецены": {
+      "originalName": "иллюстрация-зайца-читающего-газету-с-заголовком-news.png",
+      "shortName": "путешествие-москва-батуми-акции-доступныецены",
+      "allTags": [
+        "путешествия",
+        "Москва",
+        "Батуми",
+        "акции",
+        "доступные цены"
+      ],
+      "selectedTags": [
+        "путешествие",
+        "Москва",
+        "Батуми",
+        "акции",
+        "доступные цены"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Специальное предложение на поездку из Москвы в Батуми за 3000 рублей.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама туристических услуг"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: города, цена и тематика путешествий. Позитивный тон соответствует привлекательному предложению."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1715",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:32.385Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2135,
+          "height": 1246,
+          "format": "png",
+          "fileSize": 85931,
+          "fileSizeFormatted": "83.92 KB",
+          "aspectRatio": "1.71",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:28.351Z",
+          "created": "2025-06-27T03:48:28.350Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2135x1246",
+            "megapixels": 2.66,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 85931,
+            "sizeKB": 84,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.71,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2135x1246",
+            "pixelDensity": 2.66
+          },
+          "quality": {
+            "resolution": "2135x1246",
+            "megapixels": 2.66,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 85931,
+          "dimensions": "2135x1246",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 85931,
+            "sizeKB": 84,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 91.40690000000001,
+          "overall": 31,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "авиабилет-акция-путешествие": {
+      "originalName": "акция-на-билеты-из-владиккавказа-в-питер-за-3000-рублей.png",
+      "shortName": "авиабилет-акция-путешествие",
+      "allTags": [
+        "билет",
+        "акция",
+        "путешествие"
+      ],
+      "selectedTags": [
+        "авиабилет",
+        "акция",
+        "путешествие"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Рекламное предложение на билет между Карагандой и Сочи с ценой 3000 рублей.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе содержания изображения, которое связано с предложением билета и акцией. Тон дружелюбный, так как изображение с зайцем создает позитивное восприятие. Контекст использования соответствует email-маркетингу."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1736",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:39.205Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2276,
+          "height": 3162,
+          "format": "png",
+          "fileSize": 221092,
+          "fileSizeFormatted": "215.91 KB",
+          "aspectRatio": "0.72",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:33.500Z",
+          "created": "2025-06-27T03:48:33.499Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "2276x3162",
+            "megapixels": 7.2,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 221092,
+            "sizeKB": 216,
+            "sizeMB": 0.21,
+            "sizeCategory": "large",
+            "compressionRatio": 0.008,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.72,
+            "composition": "portrait",
+            "complexity": "complex",
+            "resolution": "2276x3162",
+            "pixelDensity": 7.2
+          },
+          "quality": {
+            "resolution": "2276x3162",
+            "megapixels": 7.2,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 221092,
+          "dimensions": "2276x3162",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 221092,
+            "sizeKB": 216,
+            "sizeMB": 0.21,
+            "sizeCategory": "large",
+            "compressionRatio": 0.008,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "slow"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 77.8908,
+          "overall": 27,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "эмоции-дружелюбие-простота": {
+      "originalName": "иллюстрация-кролика-читающего-газету-что-символизирует-получение-новостей-и-информации.png",
+      "shortName": "эмоции-дружелюбие-простота",
+      "allTags": [
+        "эмоции",
+        "дружелюбие",
+        "простота"
+      ],
+      "selectedTags": [
+        "эмоции",
+        "дружелюбие",
+        "простота"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Симпатичное и дружелюбное лицо, создающее позитивное впечатление.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "промо-акции",
+          "новости компании"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе дружелюбного и позитивного выражения лица, что подходит для маркетинговых кампаний, направленных на создание положительного имиджа и вовлечения клиентов."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1186",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:43.004Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 99,
+          "height": 141,
+          "format": "png",
+          "fileSize": 3322,
+          "fileSizeFormatted": "3.24 KB",
+          "aspectRatio": "0.70",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:39.991Z",
+          "created": "2025-06-27T03:48:39.991Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "file": {
+            "sizeBytes": 3322,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.059,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.7,
+            "composition": "portrait",
+            "complexity": "simple",
+            "resolution": "99x141",
+            "pixelDensity": 0.01
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 3322,
+          "dimensions": "99x141",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 3322,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.059,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "header_banner",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "header": "excellent",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "fast"
+          },
+          "general": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 99.6678,
+          "overall": 34,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 50
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "путешествие-акции-сочи": {
+      "originalName": "симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+      "shortName": "путешествие-акции-сочи",
+      "allTags": [
+        "путешествия",
+        "акции",
+        "Сочи"
+      ],
+      "selectedTags": [
+        "путешествие",
+        "акции",
+        "Сочи"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Специальное предложение на поездки из Караганды в Сочи за 3000 рублей.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: направление путешествия (Караганда - Сочи), цена, а также акцент на специальные предложения, что делает их релевантными для email-маркетинга."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1728",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:47.789Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2121,
+          "height": 1192,
+          "format": "png",
+          "fileSize": 81734,
+          "fileSizeFormatted": "79.82 KB",
+          "aspectRatio": "1.78",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:44.105Z",
+          "created": "2025-06-27T03:48:44.105Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2121x1192",
+            "megapixels": 2.53,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 81734,
+            "sizeKB": 80,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.78,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2121x1192",
+            "pixelDensity": 2.53
+          },
+          "quality": {
+            "resolution": "2121x1192",
+            "megapixels": 2.53,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 81734,
+          "dimensions": "2121x1192",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 81734,
+            "sizeKB": 80,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 91.8266,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "билетдня-акция-путешествие": {
+      "originalName": "симпатичное-и-дружелюбное-лицо-создающее-позитивное-впечатление.png",
+      "shortName": "билетдня-акция-путешествие",
+      "allTags": [
+        "билет дня",
+        "акция",
+        "путешествия"
+      ],
+      "selectedTags": [
+        "билет дня",
+        "акция",
+        "путешествие"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Акция на билеты из Владиккавказа в Питер за 3000 рублей.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе акционного предложения и тематики путешествий, что соответствует содержанию изображения и его целям."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1746",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:52.018Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2180,
+          "height": 2166,
+          "format": "png",
+          "fileSize": 189507,
+          "fileSizeFormatted": "185.07 KB",
+          "aspectRatio": "1.01",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:48.567Z",
+          "created": "2025-06-27T03:48:48.566Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "2180x2166",
+            "megapixels": 4.72,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 189507,
+            "sizeKB": 185,
+            "sizeMB": 0.18,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.01,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.01,
+            "composition": "square",
+            "complexity": "complex",
+            "resolution": "2180x2166",
+            "pixelDensity": 4.72
+          },
+          "quality": {
+            "resolution": "2180x2166",
+            "megapixels": 4.72,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 189507,
+          "dimensions": "2180x2166",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 189507,
+            "sizeKB": 185,
+            "sizeMB": 0.18,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.01,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 81.0493,
+          "overall": 28,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "путешествие-владикавказ-питер": {
+      "originalName": "предложение-на-билет-дня-в-сочи-с-акционной-ценой.png",
+      "shortName": "путешествие-владикавказ-питер",
+      "allTags": [
+        "путешествия",
+        "Владикавказ",
+        "Санкт-Петербург"
+      ],
+      "selectedTags": [
+        "путешествие",
+        "Владикавказ",
+        "питер"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Информация о путешествии из Владикавказа в Санкт-Петербург с указанием цены.",
+        "emotionalTone": "нейтральный",
+        "usageContext": [
+          "маркетинг",
+          "путешествия"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе указания городов и темы путешествий, что соответствует контенту email-кампании."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1739",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:48:56.478Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2077,
+          "height": 1050,
+          "format": "png",
+          "fileSize": 76378,
+          "fileSizeFormatted": "74.59 KB",
+          "aspectRatio": "1.98",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:48:52.760Z",
+          "created": "2025-06-27T03:48:52.759Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2077x1050",
+            "megapixels": 2.18,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 76378,
+            "sizeKB": 75,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.009,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.98,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2077x1050",
+            "pixelDensity": 2.18
+          },
+          "quality": {
+            "resolution": "2077x1050",
+            "megapixels": 2.18,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 76378,
+          "dimensions": "2077x1050",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 76378,
+            "sizeKB": 75,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.009,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 92.3622,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "билетдня-акция-сочи": {
+      "originalName": "иллюстрация-зайца-читающего-газету-с-новостями.png",
+      "shortName": "билетдня-акция-сочи",
+      "allTags": [
+        "билет дня",
+        "акция",
+        "Сочи"
+      ],
+      "selectedTags": [
+        "билет дня",
+        "акция",
+        "Сочи"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Предложение на билет дня в Сочи с акционной ценой.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "маркетинговая кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе элементов изображения и контекста предложения, включая акцию и локацию."
+      },
+      "metadata": {
+        "figmaNodeId": "2019:261",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:54.844Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2208,
+          "height": 2850,
+          "format": "png",
+          "fileSize": 225968,
+          "fileSizeFormatted": "220.67 KB",
+          "aspectRatio": "0.77",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:50.737Z",
+          "created": "2025-06-27T03:49:50.736Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "2208x2850",
+            "megapixels": 6.29,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 225968,
+            "sizeKB": 221,
+            "sizeMB": 0.22,
+            "sizeCategory": "large",
+            "compressionRatio": 0.009,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.77,
+            "composition": "portrait",
+            "complexity": "complex",
+            "resolution": "2208x2850",
+            "pixelDensity": 6.29
+          },
+          "quality": {
+            "resolution": "2208x2850",
+            "megapixels": 6.29,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 225968,
+          "dimensions": "2208x2850",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 225968,
+            "sizeKB": 221,
+            "sizeMB": 0.22,
+            "sizeCategory": "large",
+            "compressionRatio": 0.009,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "slow",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "slow"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 77.4032,
+          "overall": 27,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "сочи-путешествие-акции": {
+      "originalName": "иллюстрация-кролика-читающего-газету-с-заголовком-news.png",
+      "shortName": "сочи-путешествие-акции",
+      "allTags": [
+        "Сочи",
+        "путешествия",
+        "акции"
+      ],
+      "selectedTags": [
+        "Сочи",
+        "путешествие",
+        "акции"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Предложение о поездке в Сочи с ценой.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе упоминания Сочи как места, а также акцент на цене, что может привлечь внимание к предложениям о путешествиях."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1748",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:06.338Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2084,
+          "height": 1073,
+          "format": "png",
+          "fileSize": 69877,
+          "fileSizeFormatted": "68.24 KB",
+          "aspectRatio": "1.94",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:02.034Z",
+          "created": "2025-06-27T03:49:02.034Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2084x1073",
+            "megapixels": 2.24,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 69877,
+            "sizeKB": 68,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.94,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2084x1073",
+            "pixelDensity": 2.24
+          },
+          "quality": {
+            "resolution": "2084x1073",
+            "megapixels": 2.24,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 69877,
+          "dimensions": "2084x1073",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 69877,
+            "sizeKB": 68,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 93.0123,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "сочи-путешествие-скидки": {
+      "originalName": "предложение-о-поездке-в-сочи-с-ценой.png",
+      "shortName": "сочи-путешествие-скидки",
+      "allTags": [
+        "Сочи",
+        "путешествия",
+        "скидки"
+      ],
+      "selectedTags": [
+        "Сочи",
+        "путешествие",
+        "скидки"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Специальное предложение на поездку в Сочи за 3000 рублей.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "акции",
+          "путешествия"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: упоминание Сочи, цена и контекст путешествий. Тон дружелюбный, так как предложение выглядит привлекательно."
+      },
+      "metadata": {
+        "figmaNodeId": "2019:219",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:21.974Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2098,
+          "height": 1115,
+          "format": "png",
+          "fileSize": 71474,
+          "fileSizeFormatted": "69.8 KB",
+          "aspectRatio": "1.88",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:18.086Z",
+          "created": "2025-06-27T03:49:18.085Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2098x1115",
+            "megapixels": 2.34,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 71474,
+            "sizeKB": 70,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.88,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2098x1115",
+            "pixelDensity": 2.34
+          },
+          "quality": {
+            "resolution": "2098x1115",
+            "megapixels": 2.34,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 71474,
+          "dimensions": "2098x1115",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 71474,
+            "sizeKB": 70,
+            "sizeMB": 0.07,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 92.8526,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "вдохновение": {
+      "originalName": "предложение-на-билет-из-москвы-в-батуми-по-специальной-цене.png",
+      "shortName": "вдохновение",
+      "allTags": [
+        "дружелюбный",
+        "позитивный",
+        "вдохновение"
+      ],
+      "selectedTags": [
+        "вдохновение"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Симпатичное и дружелюбное изображение, вызывающее положительные эмоции.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "рассылка новостей",
+          "промо-акции"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе дружелюбного и позитивного характера изображения, что подходит для email-кампаний, направленных на создание положительного впечатления у получателей."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1229",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:31.077Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 99,
+          "height": 141,
+          "format": "png",
+          "fileSize": 3338,
+          "fileSizeFormatted": "3.26 KB",
+          "aspectRatio": "0.70",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:28.323Z",
+          "created": "2025-06-27T03:49:28.323Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "file": {
+            "sizeBytes": 3338,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.06,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.7,
+            "composition": "portrait",
+            "complexity": "simple",
+            "resolution": "99x141",
+            "pixelDensity": 0.01
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 3338,
+          "dimensions": "99x141",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 3338,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.06,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "header_banner",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "header": "excellent",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "fast"
+          },
+          "general": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 99.6662,
+          "overall": 34,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 50
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "конкурс-путешествие-сочи": {
+      "originalName": "уникальный-конкурс-с-призом-в-3000-рублей-для-участников-желающих-посетить-сочи.png",
+      "shortName": "конкурс-путешествие-сочи",
+      "allTags": [
+        "конкурс",
+        "путешествия",
+        "Сочи"
+      ],
+      "selectedTags": [
+        "конкурс",
+        "путешествие",
+        "Сочи"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Уникальный конкурс с призом в 3000 рублей для участников, желающих посетить Сочи.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "рекламная кампания"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: конкурс, приз и упоминание города Сочи, что делает их релевантными для email-маркетинга."
+      },
+      "metadata": {
+        "figmaNodeId": "2019:226",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:35.758Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2038,
+          "height": 946,
+          "format": "png",
+          "fileSize": 55877,
+          "fileSizeFormatted": "54.57 KB",
+          "aspectRatio": "2.15",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:31.739Z",
+          "created": "2025-06-27T03:49:31.739Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2038x946",
+            "megapixels": 1.93,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 55877,
+            "sizeKB": 55,
+            "sizeMB": 0.05,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.007,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "header_banner",
+              "footer_banner"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 2.15,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2038x946",
+            "pixelDensity": 1.93
+          },
+          "quality": {
+            "resolution": "2038x946",
+            "megapixels": 1.93,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 55877,
+          "dimensions": "2038x946",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 55877,
+            "sizeKB": 55,
+            "sizeMB": 0.05,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.007,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "header_banner",
+              "footer_banner"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 94.4123,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "эмоции-дружелюбие": {
+      "originalName": "эмоции-дружелюбие.png",
+      "shortName": "эмоции-дружелюбие",
+      "allTags": [
+        "эмоции",
+        "дружелюбие",
+        "позитив"
+      ],
+      "selectedTags": [
+        "эмоции",
+        "дружелюбие"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Симпатичное и дружелюбное лицо, вызывающее положительные эмоции.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "рекламные рассылки",
+          "сообщения о новых продуктах"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе дружелюбного и позитивного выражения, что подходит для email-кампаний, направленных на создание положительного впечатления у получателей."
+      },
+      "metadata": {
+        "figmaNodeId": "2016:1301",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:45.552Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 99,
+          "height": 141,
+          "format": "png",
+          "fileSize": 3351,
+          "fileSizeFormatted": "3.27 KB",
+          "aspectRatio": "0.70",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:42.450Z",
+          "created": "2025-06-27T03:49:42.450Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "file": {
+            "sizeBytes": 3351,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.06,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.7,
+            "composition": "portrait",
+            "complexity": "simple",
+            "resolution": "99x141",
+            "pixelDensity": 0.01
+          },
+          "quality": {
+            "resolution": "99x141",
+            "megapixels": 0.01,
+            "pixelDensity": 72,
+            "qualityLevel": "standard",
+            "sharpness": "low"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": true,
+            "isMedium": false,
+            "isLarge": false,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 3351,
+          "dimensions": "99x141",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 3351,
+            "sizeKB": 3,
+            "sizeMB": 0,
+            "sizeCategory": "small",
+            "compressionRatio": 0.06,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "fast",
+            "mobileOptimized": true,
+            "retinalReady": false,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "header_banner",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "header": "excellent",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "fast"
+          },
+          "general": {
+            "bestFor": [
+              "thumbnail",
+              "avatar",
+              "small_banner"
+            ],
+            "emailContext": [
+              "inline_icon",
+              "content_accent"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "native",
+              "tablet": "native",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 99.6649,
+          "overall": 34,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 50
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "заяц-акция-сочи": {
+      "originalName": "заяц",
+      "shortName": "заяц-акция-сочи",
+      "allTags": [
+        "заяц",
+        "Сочи",
+        "акция"
+      ],
+      "selectedTags": [
+        "заяц",
+        "акция",
+        "Сочи"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Специальное предложение на поездку в Сочи за 3000 рублей.",
+        "emotionalTone": "позитивный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: название 'заяц', упоминание города 'Сочи' и цена '3000₽', что указывает на акцию или специальное предложение."
+      },
+      "metadata": {
+        "figmaNodeId": "2019:235",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:49:49.628Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2124,
+          "height": 1872,
+          "format": "png",
+          "fileSize": 104391,
+          "fileSizeFormatted": "101.94 KB",
+          "aspectRatio": "1.13",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:46.276Z",
+          "created": "2025-06-27T03:49:46.275Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2124x1872",
+            "megapixels": 3.98,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 104391,
+            "sizeKB": 102,
+            "sizeMB": 0.1,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.007,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.13,
+            "composition": "landscape",
+            "complexity": "complex",
+            "resolution": "2124x1872",
+            "pixelDensity": 3.98
+          },
+          "quality": {
+            "resolution": "2124x1872",
+            "megapixels": 3.98,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 104391,
+          "dimensions": "2124x1872",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 104391,
+            "sizeKB": 102,
+            "sizeMB": 0.1,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.007,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 89.5609,
+          "overall": 31,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "конкурс-сочи-приз": {
+      "originalName": "специальное-предложение-на-поездки-из-караганды-в-сочи-за-3000-рублей.png",
+      "shortName": "конкурс-сочи-приз",
+      "allTags": [
+        "конкурс",
+        "Сочи",
+        "приз"
+      ],
+      "selectedTags": [
+        "конкурс",
+        "Сочи",
+        "приз"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Информация о конкурсе с призом в 3000 рублей в Сочи.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "промоакция"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе ключевых элементов изображения: конкурс, географическая локация и приз. Тон дружелюбный, так как конкурс предполагает участие и взаимодействие."
+      },
+      "metadata": {
+        "figmaNodeId": "2019:249",
+        "componentType": "INSTANCE",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:00.888Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 2125,
+          "height": 1208,
+          "format": "png",
+          "fileSize": 80863,
+          "fileSizeFormatted": "78.97 KB",
+          "aspectRatio": "1.76",
+          "orientation": "landscape",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:49:56.053Z",
+          "created": "2025-06-27T03:49:56.052Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          },
+          "quality": {
+            "resolution": "2125x1208",
+            "megapixels": 2.57,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 80863,
+            "sizeKB": 79,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 1.76,
+            "composition": "wide_landscape",
+            "complexity": "medium",
+            "resolution": "2125x1208",
+            "pixelDensity": 2.57
+          },
+          "quality": {
+            "resolution": "2125x1208",
+            "megapixels": 2.57,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": true,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": true
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 80863,
+          "dimensions": "2125x1208",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 80863,
+            "sizeKB": 79,
+            "sizeMB": 0.08,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.008,
+            "efficiency": "optimal"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "excellent",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "optimal",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 91.9137,
+          "overall": 32,
+          "fileOptimization": 100,
+          "emailReadiness": 100,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-мультфильм-кролик-досуг-развлечение": {
+      "originalName": "специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+      "shortName": "новости-мультфильм-кролик-досуг-развлечение",
+      "allTags": [
+        "мультфильм",
+        "кролик",
+        "новости",
+        "досуг",
+        "развлечение"
+      ],
+      "selectedTags": [
+        "новости",
+        "мультфильм",
+        "кролик",
+        "досуг",
+        "развлечение"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Мультяшный кролик читает газету, сидя на кресле.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "информационные бюллетени"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов изображения, таких как кролик и чтение новостей, что создает дружелюбный и развлекательный контекст для email-маркетинга."
+      },
+      "metadata": {
+        "figmaNodeId": "2021:350",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:06.200Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 973,
+          "height": 1793,
+          "format": "png",
+          "fileSize": 150627,
+          "fileSizeFormatted": "147.1 KB",
+          "aspectRatio": "0.54",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:02.018Z",
+          "created": "2025-06-27T03:50:02.017Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 150627,
+            "sizeKB": 147,
+            "sizeMB": 0.14,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.54,
+            "composition": "tall_portrait",
+            "complexity": "complex",
+            "resolution": "973x1793",
+            "pixelDensity": 1.74
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 150627,
+          "dimensions": "973x1793",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 150627,
+            "sizeKB": 147,
+            "sizeMB": 0.14,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 84.9373,
+          "overall": 29,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-забавныйперсонаж-чтение": {
+      "originalName": "специальное-предложение-на-поездку-из-москвы-в-батуми-за-3000-рублей.png",
+      "shortName": "новости-забавныйперсонаж-чтение",
+      "allTags": [
+        "новости",
+        "забавный персонаж",
+        "чтение"
+      ],
+      "selectedTags": [
+        "новости",
+        "забавный персонаж",
+        "чтение"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Мультяшный кролик читает газету, создавая дружелюбную атмосферу.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "рассылка новостей",
+          "развлекательный контент"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе изображения кролика, который читает газету, что ассоциируется с новостями и развлекательным контентом. Дружелюбный тон подчеркивает позитивное восприятие изображения."
+      },
+      "metadata": {
+        "figmaNodeId": "2241:905",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:10.492Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 973,
+          "height": 1793,
+          "format": "png",
+          "fileSize": 152710,
+          "fileSizeFormatted": "149.13 KB",
+          "aspectRatio": "0.54",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:06.507Z",
+          "created": "2025-06-27T03:50:06.506Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 152710,
+            "sizeKB": 149,
+            "sizeMB": 0.15,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.54,
+            "composition": "tall_portrait",
+            "complexity": "complex",
+            "resolution": "973x1793",
+            "pixelDensity": 1.74
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 152710,
+          "dimensions": "973x1793",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 152710,
+            "sizeKB": 149,
+            "sizeMB": 0.15,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 84.729,
+          "overall": 29,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-мультфильм-забавный": {
+      "originalName": "Property 1=Default",
+      "shortName": "новости-мультфильм-забавный",
+      "allTags": [
+        "мультфильм",
+        "забавный",
+        "новости"
+      ],
+      "selectedTags": [
+        "новости",
+        "мультфильм",
+        "забавный"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Мультяшный кролик читает газету, создавая дружелюбную атмосферу.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "реклама",
+          "социальные сети"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов, таких как мультяшный стиль и позитивное взаимодействие с газетой, что подходит для дружелюбного и развлекательного контента в email-маркетинге."
+      },
+      "metadata": {
+        "figmaNodeId": "2021:350",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:15.463Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 973,
+          "height": 1793,
+          "format": "png",
+          "fileSize": 150627,
+          "fileSizeFormatted": "147.1 KB",
+          "aspectRatio": "0.54",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:11.574Z",
+          "created": "2025-06-27T03:50:11.573Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 150627,
+            "sizeKB": 147,
+            "sizeMB": 0.14,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.54,
+            "composition": "tall_portrait",
+            "complexity": "complex",
+            "resolution": "973x1793",
+            "pixelDensity": 1.74
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 150627,
+          "dimensions": "973x1793",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 150627,
+            "sizeKB": 147,
+            "sizeMB": 0.14,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 84.9373,
+          "overall": 29,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-кролик-чтение": {
+      "originalName": "мультяшный-кролик-читает-газету-сидя-на-кресле.png",
+      "shortName": "новости-кролик-чтение",
+      "allTags": [
+        "кролик",
+        "чтение",
+        "новости"
+      ],
+      "selectedTags": [
+        "новости",
+        "кролик",
+        "чтение"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация кролика, читающего газету, что символизирует получение новостей и информации.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "информационные обновления"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе изображения кролика, который читает газету, что ассоциируется с новостями и информацией. Дружелюбный тон подходит для маркетинга, направленного на привлечение внимания и создание позитивного имиджа."
+      },
+      "metadata": {
+        "figmaNodeId": "2241:905",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:19.974Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 973,
+          "height": 1793,
+          "format": "png",
+          "fileSize": 152710,
+          "fileSizeFormatted": "149.13 KB",
+          "aspectRatio": "0.54",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:16.485Z",
+          "created": "2025-06-27T03:50:16.484Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 152710,
+            "sizeKB": 149,
+            "sizeMB": 0.15,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.54,
+            "composition": "tall_portrait",
+            "complexity": "complex",
+            "resolution": "973x1793",
+            "pixelDensity": 1.74
+          },
+          "quality": {
+            "resolution": "973x1793",
+            "megapixels": 1.74,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": false,
+            "isWide": false,
+            "isTall": true,
+            "isPortrait": true,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 152710,
+          "dimensions": "973x1793",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 152710,
+            "sizeKB": 149,
+            "sizeMB": 0.15,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.022,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "native"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 84.729,
+          "overall": 29,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-информация-забавный": {
+      "originalName": "информация-о-конкурсе-с-призом-в-3000-рублей-в-сочи.png",
+      "shortName": "новости-информация-забавный",
+      "allTags": [
+        "новости",
+        "информация",
+        "забавный"
+      ],
+      "selectedTags": [
+        "новости",
+        "информация",
+        "забавный"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация кролика, читающего газету с заголовком 'NEWS'.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "информационный бюллетень"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуального контента, который передает дружелюбный и информативный тон, подходящий для новостных рассылок."
+      },
+      "metadata": {
+        "figmaNodeId": "2021:351",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:25.077Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 1356,
+          "height": 1393,
+          "format": "png",
+          "fileSize": 118680,
+          "fileSizeFormatted": "115.9 KB",
+          "aspectRatio": "0.97",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:21.490Z",
+          "created": "2025-06-27T03:50:21.489Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 118680,
+            "sizeKB": 116,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.97,
+            "composition": "square",
+            "complexity": "complex",
+            "resolution": "1356x1393",
+            "pixelDensity": 1.89
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 118680,
+          "dimensions": "1356x1393",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 118680,
+            "sizeKB": 116,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 88.132,
+          "overall": 30,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-информация-обновления": {
+      "originalName": "информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+      "shortName": "новости-информация-обновления",
+      "allTags": [
+        "новости",
+        "информация",
+        "обновления"
+      ],
+      "selectedTags": [
+        "новости",
+        "информация",
+        "обновления"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация зайца, читающего газету с новостями.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "информационный бюллетень"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе изображения, которое связано с новостями и информацией, что делает их актуальными для email-маркетинга. Дружелюбный тон соответствует образу зайца, создавая позитивное восприятие."
+      },
+      "metadata": {
+        "figmaNodeId": "2241:978",
+        "componentType": "VARIANT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:29.227Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 1356,
+          "height": 1393,
+          "format": "png",
+          "fileSize": 118115,
+          "fileSizeFormatted": "115.35 KB",
+          "aspectRatio": "0.97",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:25.402Z",
+          "created": "2025-06-27T03:50:25.402Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 118115,
+            "sizeKB": 115,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.97,
+            "composition": "square",
+            "complexity": "complex",
+            "resolution": "1356x1393",
+            "pixelDensity": 1.89
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 118115,
+          "dimensions": "1356x1393",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 118115,
+            "sizeKB": 115,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 88.1885,
+          "overall": 30,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-бunny": {
+      "originalName": "Property 1=Default",
+      "shortName": "новости-бunny",
+      "allTags": [
+        "новости",
+        "зеленый",
+        "бunny"
+      ],
+      "selectedTags": [
+        "новости",
+        "бunny"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация зайца, читающего газету с заголовком 'NEWS'.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "информирование"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуальных элементов и контекста, связанного с новостями и дружелюбным образом, что подходит для email-маркетинга."
+      },
+      "metadata": {
+        "figmaNodeId": "2021:351",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:33.798Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 1356,
+          "height": 1393,
+          "format": "png",
+          "fileSize": 118680,
+          "fileSizeFormatted": "115.9 KB",
+          "aspectRatio": "0.97",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:29.986Z",
+          "created": "2025-06-27T03:50:29.985Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 118680,
+            "sizeKB": 116,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.97,
+            "composition": "square",
+            "complexity": "complex",
+            "resolution": "1356x1393",
+            "pixelDensity": 1.89
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 118680,
+          "dimensions": "1356x1393",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 118680,
+            "sizeKB": 116,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 88.132,
+          "overall": 30,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    },
+    "новости-информация-мультимедиа": {
+      "originalName": "мультяшный-кролик-читает-газету-создавая-дружелюбную-атмосферу.png",
+      "shortName": "новости-информация-мультимедиа",
+      "allTags": [
+        "новости",
+        "информация",
+        "мультимедиа"
+      ],
+      "selectedTags": [
+        "новости",
+        "информация",
+        "мультимедиа"
+      ],
+      "aiAnalysis": {
+        "contentDescription": "Иллюстрация зайца, читающего газету с заголовком 'NEWS'.",
+        "emotionalTone": "дружелюбный",
+        "usageContext": [
+          "email-рассылка",
+          "информационные бюллетени"
+        ],
+        "confidence": 0.95,
+        "reasoning": "Теги выбраны на основе визуального контента, который ассоциируется с новостями и информацией. Дружелюбный тон изображения делает его подходящим для коммуникации с аудиторией."
+      },
+      "metadata": {
+        "figmaNodeId": "2241:978",
+        "componentType": "COMPONENT",
+        "hasVariants": false,
+        "createdAt": "2025-06-27T03:50:39.203Z"
+      },
+      "imageMetadata": {
+        "technical": {
+          "width": 1356,
+          "height": 1393,
+          "format": "png",
+          "fileSize": 118115,
+          "fileSizeFormatted": "115.35 KB",
+          "aspectRatio": "0.97",
+          "orientation": "portrait",
+          "density": 72,
+          "channels": 4,
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "compression": null,
+          "lastModified": "2025-06-27T03:50:35.426Z",
+          "created": "2025-06-27T03:50:35.425Z"
+        },
+        "analysis": {
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "file": {
+            "sizeBytes": 118115,
+            "sizeKB": 115,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "technical": {
+            "format": "png",
+            "hasAlpha": true,
+            "channels": 4,
+            "colorSpace": "srgb",
+            "bitDepth": 32,
+            "isTransparent": true,
+            "isOptimized": true
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          },
+          "usageRecommendations": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        }
+      },
+      "analysis": {
+        "visual": {
+          "colors": {
+            "dominant": {
+              "red": 8,
+              "green": 8,
+              "blue": 8
+            },
+            "primaryColor": "black",
+            "brightness": 8,
+            "saturation": 0
+          },
+          "composition": {
+            "aspectRatio": 0.97,
+            "composition": "square",
+            "complexity": "complex",
+            "resolution": "1356x1393",
+            "pixelDensity": 1.89
+          },
+          "quality": {
+            "resolution": "1356x1393",
+            "megapixels": 1.89,
+            "pixelDensity": 72,
+            "qualityLevel": "high",
+            "sharpness": "high"
+          },
+          "dimensions": {
+            "isIcon": false,
+            "isSmall": false,
+            "isMedium": false,
+            "isLarge": true,
+            "isSquare": true,
+            "isWide": false,
+            "isTall": false,
+            "isPortrait": false,
+            "isLandscape": false
+          }
+        },
+        "content": {
+          "categories": [],
+          "primaryTheme": "general",
+          "contentElements": [],
+          "complexity": "single_theme"
+        },
+        "technical": {
+          "fileSize": 118115,
+          "dimensions": "1356x1393",
+          "format": "png",
+          "hasAlpha": true,
+          "colorSpace": "srgb",
+          "channels": 4,
+          "bitDepth": 32,
+          "isTransparent": true,
+          "isOptimized": true,
+          "file": {
+            "sizeBytes": 118115,
+            "sizeKB": 115,
+            "sizeMB": 0.11,
+            "sizeCategory": "medium",
+            "compressionRatio": 0.016,
+            "efficiency": "acceptable"
+          },
+          "emailCompatibility": {
+            "sizeForEmail": "good",
+            "loadingSpeed": "medium",
+            "mobileOptimized": false,
+            "retinalReady": true,
+            "webOptimized": true
+          }
+        },
+        "usage": {
+          "email": {
+            "recommendations": [
+              "hero_image",
+              "dark_theme_accent"
+            ],
+            "suitability": {
+              "hero": "good",
+              "darkTheme": "good"
+            },
+            "fileSize": "acceptable",
+            "loadingSpeed": "medium"
+          },
+          "general": {
+            "bestFor": [
+              "hero_image",
+              "background",
+              "large_banner"
+            ],
+            "emailContext": [
+              "main_content",
+              "featured_image"
+            ],
+            "responsiveBreakpoints": {
+              "mobile": "needs_scaling",
+              "tablet": "needs_scaling",
+              "desktop": "full_width"
+            }
+          }
+        },
+        "scores": {
+          "visual": 3,
+          "content": 0,
+          "technical": 88.1885,
+          "overall": 30,
+          "fileOptimization": 75,
+          "emailReadiness": 75,
+          "qualityScore": 100
+        },
+        "analysisMetadata": {
+          "version": "2.0.0",
+          "timestamp": "2025-06-27T04:54:58.544Z",
+          "analysisType": "comprehensive",
+          "features": [
+            "visual_analysis",
+            "content_analysis",
+            "technical_analysis",
+            "email_optimization",
+            "usage_recommendations",
+            "quality_assessment"
+          ]
+        }
+      }
+    }
+  },
+  "statistics": {
+    "enrichedFiles": 23,
+    "lastEnriched": "2025-06-27T04:45:27.774Z",
+    "enrichmentVersion": "1.0.0"
+  },
+  "analysisMetadata": {
+    "lastAnalysis": "2025-06-27T04:50:25.610Z",
+    "totalFiles": 23,
+    "analyzedFiles": 23,
+    "version": "1.0.0"
+  },
+  "analysisVersion": "2.0.0",
+  "lastMerge": "2025-06-27T04:54:58.544Z",
+  "mergedAnalysis": {
+    "totalFiles": 23,
+    "processedFiles": 23,
+    "features": [
+      "unified_analysis",
+      "extended_metadata",
+      "comprehensive_scoring",
+      "email_optimization"
+    ]
+  }
+}

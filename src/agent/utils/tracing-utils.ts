@@ -24,12 +24,12 @@ export interface TraceMetadata {
 
 /**
  * Создает trace_id в правильном формате согласно SDK
- * Формат: trace_<32_alphanumeric>
+ * Формат: <16_alphanumeric>
  */
 export function generateTraceId(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = 'trace_';
-  for (let i = 0; i < 32; i++) {
+  let result = '';
+  for (let i = 0; i < 16; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
@@ -173,6 +173,33 @@ export async function tracedAsync<T>(
 ): Promise<T> {
   const operationName = config.name || config.toolName || config.operation || 'operation';
   return withSDKTrace(operationName, fn);
+}
+
+/**
+ * In-memory trace context store
+ */
+const traceContextStore = new Map<string, any>();
+
+/**
+ * Add trace context data
+ */
+export function addTraceContext(traceId: string, context: any): void {
+  const existing = traceContextStore.get(traceId) || {};
+  traceContextStore.set(traceId, { ...existing, ...context });
+}
+
+/**
+ * Get trace context data
+ */
+export function getTraceContext(traceId: string): any {
+  return traceContextStore.get(traceId);
+}
+
+/**
+ * Clear trace context
+ */
+export function clearTraceContext(traceId: string): void {
+  traceContextStore.delete(traceId);
 }
 
 /**

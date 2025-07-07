@@ -180,7 +180,7 @@ Return only the JSON array, no explanations.`;
     const path = require('path');
     
     try {
-      const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+      const basePath = path.resolve(process.cwd(), 'figma-all-pages-1750993353363');
       const aiOptimizedTagsPath = path.join(basePath, 'ai-optimized-tags.json');
       
       const content = await fs.readFile(aiOptimizedTagsPath, 'utf-8');

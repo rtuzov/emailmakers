@@ -43,7 +43,7 @@ describe('🚀 DESIGN SPECIALIST AGENT V2 - REAL PRODUCTION TEST', () => {
           },
           brand_guidelines: {
             colors: {
-              primary: '#FF6B35',
+              primary: '#4BFF7E',
               secondary: '#004E89',
               accent: '#FFD23F'
             },

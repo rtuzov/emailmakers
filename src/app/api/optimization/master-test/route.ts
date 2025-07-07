@@ -271,7 +271,7 @@ async function runCustomTest(config: any) {
 async function getTestStatus() {
   try {
     // Получаем статус системы оптимизации
-    const { createOptimizationService } = await import('../../../../agent/optimization');
+    const { createOptimizationService } = await import('../../../../agent/optimization-stub');
     
     const service = createOptimizationService({ enabled: true });
     await service.initialize();

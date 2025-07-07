@@ -16,7 +16,7 @@ import { EmailFolderManager } from '../tools/email-folder-manager';
 import { generateTraceId } from '@openai/agents';
 import { StandardAsset } from './asset-manager';
 import { ExtractedContentPackage } from './content-extractor';
-import { BRAND_COLORS } from '../../shared/constants';
+import { BRAND_COLORS } from '../../config/constants';
 import { cacheGet, cacheSet } from '../../shared/cache';
 
 export interface RenderingParams {

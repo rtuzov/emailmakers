@@ -151,21 +151,71 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
     const path = await import('path');
     
     // Define Figma asset directories to search
-    const figmaBasePath = path.join(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    const figmaBasePath = path.join(process.cwd(), 'figma-all-pages-1750993353363');
     
-    // Map image types to preferred directories
+    // Load AI-optimized tags to understand available assets
+    const tagsFilePath = path.join(figmaBasePath, 'ai-optimized-tags.json');
+    let availableTags: any = {};
+    
+    try {
+      const tagsContent = await fs.readFile(tagsFilePath, 'utf-8');
+      availableTags = JSON.parse(tagsContent);
+      console.log('📚 Loaded AI-optimized tags for asset selection');
+    } catch (tagsError) {
+      console.warn('⚠️ Could not load AI-optimized tags, using basic search');
+    }
+    
+    // Map image types to preferred directories based on AI tags
     const directoryMapping: Record<string, string[]> = {
-      'hero': ['иллюстрации', 'зайцы-общие'],
-      'illustration': ['зайцы-общие', 'зайцы-эмоции'],
-      'icon': ['иконки-допуслуг', 'логотипы-ак'],
-      'product': ['иллюстрации', 'зайцы-общие'],
+      'hero': ['иллюстрации', 'зайцы-общие', 'зайцы-новости'],
+      'illustration': ['зайцы-общие', 'зайцы-эмоции', 'зайцы-новости'],
+      'icon': ['иконки-допуслуг', 'айдентика', 'логотипы-ак'],
+      'product': ['иллюстрации', 'зайцы-общие', 'айдентика'],
       'background': ['иллюстрации', 'цвета'],
       'testimonial': ['зайцы-эмоции', 'зайцы-общие']
     };
     
     const searchDirectories = directoryMapping[imageType] || ['зайцы-общие', 'иллюстрации'];
     
-    // Search through directories
+    // Enhanced search using AI tags if available
+    if (availableTags.folders) {
+      for (const directory of searchDirectories) {
+        const folderInfo = availableTags.folders[directory];
+        if (!folderInfo) continue;
+        
+        // Find matching tags in this folder
+        const matchingTags = searchTags.filter(tag => 
+          folderInfo.tags?.some((folderTag: string) => 
+            folderTag.toLowerCase().includes(tag.toLowerCase()) ||
+            tag.toLowerCase().includes(folderTag.toLowerCase())
+          )
+        );
+        
+        if (matchingTags.length > 0) {
+          console.log(`🎯 Found matching tags in ${directory}:`, matchingTags);
+          
+          // Search for actual files in this directory
+          const dirPath = path.join(figmaBasePath, directory);
+          try {
+            const files = await fs.readdir(dirPath);
+            const pngFiles = files.filter(file => file.endsWith('.png'));
+            
+            if (pngFiles.length > 0) {
+              // Return first available file from matching directory
+              const selectedFile = pngFiles[0];
+              const fullPath = path.join(dirPath, selectedFile);
+              console.log(`✅ Selected Figma asset: ${selectedFile} from ${directory}`);
+              return fullPath;
+            }
+          } catch (dirError) {
+            console.warn(`⚠️ Could not read directory ${directory}:`, dirError);
+            continue;
+          }
+        }
+      }
+    }
+    
+    // Fallback: basic file name search
     for (const directory of searchDirectories) {
       const dirPath = path.join(figmaBasePath, directory);
       
@@ -173,23 +223,27 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
         const files = await fs.readdir(dirPath);
         const pngFiles = files.filter(file => file.endsWith('.png'));
         
-        // Find files matching search tags
+        // Find files matching search tags by filename
         for (const tag of searchTags) {
           const matchingFiles = pngFiles.filter(file => 
             file.toLowerCase().includes(tag.toLowerCase())
           );
           
           if (matchingFiles.length > 0) {
-            // Return the first matching file
             const selectedFile = matchingFiles[0];
             const fullPath = path.join(dirPath, selectedFile);
-            console.log(`🎯 Found Figma asset: ${selectedFile} in ${directory} for tag "${tag}"`);
+            console.log(`🎯 Found Figma asset by filename: ${selectedFile} in ${directory}`);
             return fullPath;
           }
         }
         
-        // If no tag matches, return null
-        return null;
+        // If no specific matches, use first available file from priority directory
+        if (pngFiles.length > 0 && directory === searchDirectories[0]) {
+          const selectedFile = pngFiles[0];
+          const fullPath = path.join(dirPath, selectedFile);
+          console.log(`📁 Using first available asset from ${directory}: ${selectedFile}`);
+          return fullPath;
+        }
         
       } catch (dirError) {
         console.warn(`⚠️ Could not read directory ${directory}:`, dirError);
@@ -197,12 +251,52 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
     }
     
     console.warn(`⚠️ No Figma assets found for tags: ${searchTags.join(', ')} and type: ${imageType}`);
-    return null;
+    
+    // Fallback to external images via Unsplash
+    const fallbackUrl = generateUnsplashFallback(searchTags, imageType);
+    console.log(`🌐 Using external fallback image: ${fallbackUrl}`);
+    return fallbackUrl;
     
   } catch (error) {
     console.error('❌ Error selecting Figma asset:', error);
     return null;
   }
+}
+
+/**
+ * Generates fallback external image URL when Figma assets are not found
+ */
+export function generateUnsplashFallback(searchTags: string[], imageType: string): string {
+  const baseUrl = 'https://images.unsplash.com/photo-';
+  
+  // Map image types and tags to curated Unsplash photo IDs
+  const imageMapping: Record<string, string[]> = {
+    'hero': [
+      '1488646953-e3888c8e4c0a', // Travel destination
+      '1488646953-e3888c8e4c0a', // Beautiful landscape
+      '1506905925-b8e7b0c7d8d8'  // City view
+    ],
+    'illustration': [
+      '1542314831-2b2e3b4e5c6d', // Cute character
+      '1542314831-2b2e3b4e5c6d'  // Friendly mascot
+    ],
+    'icon': [
+      '1541963463-b8e7b0c7d8d8', // Simple icon
+      '1541963463-b8e7b0c7d8d8'  // Clean symbol
+    ],
+    'product': [
+      '1488646953-e3888c8e4c0a', // Travel product
+      '1488646953-e3888c8e4c0a'  // Service visualization
+    ]
+  };
+  
+  // Get appropriate photo IDs for the image type
+  const photoIds = imageMapping[imageType] || imageMapping['hero'];
+  const randomId = photoIds[Math.floor(Math.random() * photoIds.length)];
+  
+  // Build URL with appropriate dimensions
+  const dimensions = imageType === 'hero' ? 'w=800&h=400' : 'w=400&h=300';
+  return `${baseUrl}${randomId}?${dimensions}&fit=crop&auto=format`;
 }
 
 /**

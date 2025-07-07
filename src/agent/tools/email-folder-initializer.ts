@@ -1,6 +1,7 @@
 import { ToolResult, handleToolError } from './index';
 import EmailFolderManager, { EmailFolder } from './email-folder-manager';
 import { getCurrentTrace } from '@openai/agents';
+import { campaignState } from '../core/campaign-state';
 
 interface InitializeFolderParams {
   topic: string;
@@ -17,6 +18,30 @@ interface InitializeFolderParams {
 export async function initializeEmailFolder(params: InitializeFolderParams): Promise<ToolResult> {
   try {
     console.log('T0: Initializing email folder structure for campaign:', params.topic);
+
+    // Проверяем, есть ли уже активная кампания
+    if (campaignState.hasActiveCampaign()) {
+      const existingCampaign = campaignState.getCurrentCampaign();
+      console.log(`📁 Using existing campaign: ${existingCampaign?.campaignId}`);
+      
+      return {
+        success: true,
+        data: {
+          emailFolder: existingCampaign?.emailFolder,
+          campaignId: existingCampaign?.campaignId,
+          paths: {
+            base: existingCampaign?.emailFolder.basePath,
+            assets: existingCampaign?.emailFolder.assetsPath,
+            sprites: existingCampaign?.emailFolder.spritePath,
+            html: existingCampaign?.emailFolder.htmlPath,
+            mjml: existingCampaign?.emailFolder.mjmlPath,
+            metadata: existingCampaign?.emailFolder.metadataPath
+          },
+          structure_created: false,
+          reused_existing: true
+        }
+      };
+    }
 
     // Валидация параметров
     if (!params.topic || params.topic.trim().length === 0) {
@@ -81,6 +106,16 @@ export async function initializeEmailFolder(params: InitializeFolderParams): Pro
       params.campaign_type || 'promotional',
       traceId
     );
+
+    // Сохраняем кампанию в глобальном состоянии
+    campaignState.setCampaign({
+      campaignId: emailFolder.campaignId,
+      emailFolder,
+      topic: params.topic.trim(),
+      campaign_type: params.campaign_type || 'promotional',
+      created_at: new Date().toISOString(),
+      trace_id: traceId
+    });
 
     console.log(`✅ T0: Email folder structure created successfully`);
     console.log(`📁 Campaign ID: ${emailFolder.campaignId}`);

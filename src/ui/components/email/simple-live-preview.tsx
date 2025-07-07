@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { useClientOnly } from '../../../hooks/useClientOnly'
 
 interface SimpleLivePreviewProps {
   htmlContent: string
@@ -14,7 +16,7 @@ interface SimpleLivePreviewProps {
   }
 }
 
-export default function SimpleLivePreview({ 
+function SimpleLivePreviewComponent({ 
   htmlContent, 
   subject,
   preheader,
@@ -23,6 +25,7 @@ export default function SimpleLivePreview({
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [showCode, setShowCode] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const isClient = useClientOnly()
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -31,6 +34,8 @@ export default function SimpleLivePreview({
   }, [htmlContent])
 
   const handleCopyHTML = () => {
+    if (!isClient) return
+    
     if (navigator.clipboard) {
       navigator.clipboard.writeText(htmlContent)
         .then(() => alert('HTML copied to clipboard!'))
@@ -52,6 +57,8 @@ export default function SimpleLivePreview({
   }
 
   const handleDownloadHTML = () => {
+    if (!isClient) return
+    
     const blob = new Blob([htmlContent], { type: 'text/html' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -59,6 +66,26 @@ export default function SimpleLivePreview({
     a.download = `email-template-${Math.random().toString(36).substring(2, 9)}.html`
     a.click()
     URL.revokeObjectURL(url)
+  }
+  
+  if (!isClient) {
+    return (
+      <div className="mt-8 rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass">
+        <div className="p-4 border-b border-glass-border">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            📧 Generated Email Template
+          </h3>
+        </div>
+        <div className="p-4">
+          <div className="flex items-center justify-center h-96">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-white/70">Loading preview...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -189,4 +216,28 @@ export default function SimpleLivePreview({
       </div>
     </div>
   )
-} 
+}
+
+// Export as dynamic component to prevent SSR hydration issues
+const SimpleLivePreview = dynamic(() => Promise.resolve(SimpleLivePreviewComponent), {
+  ssr: false,
+  loading: () => (
+    <div className="mt-8 rounded-xl border backdrop-blur transition-all duration-300 ease-in-out bg-glass-primary border-glass-border shadow-glass">
+      <div className="p-4 border-b border-glass-border">
+        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+          📧 Generated Email Template
+        </h3>
+      </div>
+      <div className="p-4">
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-white/70">Loading preview...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
+export default SimpleLivePreview 

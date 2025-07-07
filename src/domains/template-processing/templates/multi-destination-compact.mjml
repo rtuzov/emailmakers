@@ -1,0 +1,450 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{campaign_name}} - Compact Multi-Destination Campaign</mj-title>
+    <mj-preview>{{preview_text}} Откройте лучшие направления</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif" />
+      <mj-text font-size="16px" color="#1E293B" line-height="1.6" />
+      <mj-button background-color="#2563EB" color="white" font-size="16px" font-weight="600" border-radius="8px" />
+      <mj-section background-color="white" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        .dark-mode-bg { background-color: #111827 !important; }
+        .dark-mode-text { color: #F3F4F6 !important; }
+        .dark-mode-card { background-color: #1F2937 !important; }
+      }
+      
+      /* Compact layout styles */
+      .compact-card {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: white;
+      }
+      
+      .compact-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+      }
+      
+      .hero-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        position: relative;
+      }
+      
+      .hero-overlay {
+        background: linear-gradient(
+          135deg, 
+          rgba(0, 0, 0, 0.3) 0%, 
+          rgba(0, 0, 0, 0.6) 100%
+        );
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+      
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .price-badge-large {
+        background: linear-gradient(135deg, #10B981, #059669);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: 700;
+        display: inline-block;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+      }
+      
+      .price-badge-small {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+      }
+      
+      .seasonal-indicator {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      
+      .highlight-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .highlight-item-compact {
+        background-color: #F8FAFC;
+        border-left: 4px solid #2563EB;
+        padding: 12px 16px;
+        margin: 8px 0;
+        border-radius: 6px;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      
+      .cta-hero {
+        background: linear-gradient(135deg, #FFFFFF, #F8FAFC);
+        color: #2563EB;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+      
+      .cta-secondary {
+        background: linear-gradient(135deg, #2563EB, #1D4ED8);
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      
+      /* Mobile responsiveness */
+      @media screen and (max-width: 600px) {
+        .mobile-stack {
+          width: 100% !important;
+          display: block !important;
+          margin-bottom: 20px !important;
+        }
+        
+        .mobile-hero {
+          padding: 30px 20px !important;
+        }
+        
+        .mobile-secondary {
+          padding: 20px 15px !important;
+        }
+      }
+      
+      /* Feature icons */
+      .feature-icon {
+        width: 24px;
+        height: 24px;
+        background: #2563EB;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        position: relative;
+      }
+      
+      .feature-icon::after {
+        content: '✓';
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+      }
+    </mj-style>
+  </mj-head>
+  
+  <mj-body background-color="#F8FAFC" css-class="dark-mode-bg">
+    
+    <!-- Header Section -->
+    <mj-section background-color="white" css-class="dark-mode-card" padding="25px 20px">
+      <mj-column>
+        <mj-image 
+          src="{{brand_logo_url}}" 
+          alt="{{brand_name}}" 
+          width="100px" 
+          align="center"
+          padding="0 0 15px 0"
+        />
+        <mj-text align="center" font-size="28px" font-weight="700" color="#1E293B" css-class="dark-mode-text" padding="0 0 8px 0">
+          {{campaign_name}}
+        </mj-text>
+        <mj-text align="center" font-size="16px" color="#64748B" css-class="dark-mode-text" padding="0 0 15px 0">
+          {{campaign_description}}
+        </mj-text>
+        {{#if seasonal_context}}
+        <mj-text align="center" padding="0">
+          <span class="seasonal-indicator">{{seasonal_context.season_name}} {{seasonal_context.year}}</span>
+        </mj-text>
+        {{/if}}
+      </mj-column>
+    </mj-section>
+
+    <!-- Hero Destination (First/Primary) -->
+    {{#each destinations}}
+    {{#if (eq @index 0)}}
+    <mj-section background-image="{{assets.primary_image.url}}" background-size="cover" background-position="center" css-class="hero-card" padding="0">
+      <mj-column>
+        <!-- Hero overlay and content -->
+        <mj-text padding="40px 30px" css-class="mobile-hero hero-content">
+          <div class="hero-overlay"></div>
+          <div style="position: relative; z-index: 2;">
+            <h2 style="color: white; font-size: 32px; font-weight: 700; margin: 0 0 8px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+              {{geographical_info.city}}
+            </h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin: 0 0 15px 0; text-shadow: 0 1px 4px rgba(0,0,0,0.3);">
+              {{geographical_info.country}} • {{geographical_info.region}}
+            </p>
+            
+            <!-- Price badge -->
+            <div style="margin: 20px 0;">
+              <span class="price-badge-large">от {{pricing.base_price}} {{pricing.currency}}</span>
+              {{#if pricing.savings_potential}}
+              <p style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 8px 0 0 0;">
+                Экономия до {{pricing.savings_potential}}%
+              </p>
+              {{/if}}
+            </div>
+            
+            <!-- Hero highlights -->
+            <div style="margin: 25px 0;">
+              {{#each content.highlights}}
+              {{#if (lt @index 3)}}
+              <div style="color: white; font-size: 16px; margin: 8px 0; text-shadow: 0 1px 4px rgba(0,0,0,0.3);">
+                <span class="feature-icon"></span> {{this}}
+              </div>
+              {{/if}}
+              {{/each}}
+            </div>
+          </div>
+        </mj-text>
+        
+        <!-- Hero CTA -->
+        <mj-button 
+          href="{{content.call_to_action.url}}" 
+          css-class="cta-hero"
+          width="250px"
+          padding="0 30px 40px 30px"
+        >
+          {{content.call_to_action.text}}
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    {{/if}}
+    {{/each}}
+
+    <!-- Secondary Destinations Grid -->
+    <mj-section background-color="#F8FAFC" css-class="dark-mode-bg" padding="30px 15px">
+      
+      <!-- Two destinations layout -->
+      {{#if (eq destinations.length 2)}}
+      <mj-group width="100%">
+        {{#each destinations}}
+        {{#if (eq @index 1)}}
+        <mj-column width="100%" padding="15px" css-class="mobile-stack">
+          <mj-section background-color="white" css-class="compact-card dark-mode-card" border-radius="16px" padding="0">
+            <mj-column>
+              <mj-image 
+                src="{{assets.primary_image.url}}" 
+                alt="{{geographical_info.city}}, {{geographical_info.country}}" 
+                width="100%"
+                height="200px"
+                border-radius="16px 16px 0 0"
+                padding="0"
+              />
+              <mj-text align="center" font-size="24px" font-weight="600" color="#1E293B" css-class="dark-mode-text" padding="20px 20px 8px 20px">
+                {{geographical_info.city}}
+              </mj-text>
+              <mj-text align="center" font-size="14px" color="#64748B" css-class="dark-mode-text" padding="0 20px 15px 20px">
+                {{geographical_info.country}} • {{geographical_info.region}}
+              </mj-text>
+              
+              <!-- Price badge -->
+              <mj-text align="center" padding="0 20px 15px 20px">
+                <span class="price-badge-small">от {{pricing.base_price}} {{pricing.currency}}</span>
+              </mj-text>
+              
+              <!-- Highlights -->
+              <mj-text font-size="14px" color="#475569" css-class="dark-mode-text" padding="0 20px 20px 20px">
+                {{#each content.highlights}}
+                {{#if (lt @index 3)}}
+                <div class="highlight-item-compact">{{this}}</div>
+                {{/if}}
+                {{/each}}
+              </mj-text>
+              
+              <!-- CTA Button -->
+              <mj-button 
+                href="{{content.call_to_action.url}}" 
+                css-class="cta-secondary"
+                width="85%"
+                padding="0 20px 25px 20px"
+              >
+                {{content.call_to_action.text}}
+              </mj-button>
+            </mj-column>
+          </mj-section>
+        </mj-column>
+        {{/if}}
+        {{/each}}
+      </mj-group>
+      {{/if}}
+
+      <!-- Three destinations layout -->
+      {{#if (eq destinations.length 3)}}
+      <mj-group width="100%">
+        {{#each destinations}}
+        {{#if (gte @index 1)}}
+        <mj-column width="48%" padding="10px" css-class="mobile-stack">
+          <mj-section background-color="white" css-class="compact-card dark-mode-card" border-radius="16px" padding="0">
+            <mj-column>
+              <mj-image 
+                src="{{assets.primary_image.url}}" 
+                alt="{{geographical_info.city}}, {{geographical_info.country}}" 
+                width="100%"
+                height="160px"
+                border-radius="16px 16px 0 0"
+                padding="0"
+              />
+              <mj-text align="center" font-size="20px" font-weight="600" color="#1E293B" css-class="dark-mode-text" padding="15px 15px 6px 15px">
+                {{geographical_info.city}}
+              </mj-text>
+              <mj-text align="center" font-size="13px" color="#64748B" css-class="dark-mode-text" padding="0 15px 10px 15px">
+                {{geographical_info.country}}
+              </mj-text>
+              
+              <!-- Price badge -->
+              <mj-text align="center" padding="0 15px 12px 15px">
+                <span class="price-badge-small" style="font-size: 13px;">от {{pricing.base_price}} {{pricing.currency}}</span>
+              </mj-text>
+              
+              <!-- Highlights (limited for compact view) -->
+              <mj-text font-size="13px" color="#475569" css-class="dark-mode-text" padding="0 15px 15px 15px" align="center">
+                {{#each content.highlights}}
+                {{#if (lt @index 2)}}
+                • {{this}}<br/>
+                {{/if}}
+                {{/each}}
+              </mj-text>
+              
+              <!-- CTA Button -->
+              <mj-button 
+                href="{{content.call_to_action.url}}" 
+                css-class="cta-secondary"
+                font-size="14px"
+                width="80%"
+                padding="0 15px 20px 15px"
+              >
+                Подробнее
+              </mj-button>
+            </mj-column>
+          </mj-section>
+        </mj-column>
+        {{/if}}
+        {{/each}}
+      </mj-group>
+      {{/if}}
+
+    </mj-section>
+
+    <!-- Campaign Summary -->
+    {{#if campaign_insights}}
+    <mj-section background-color="white" css-class="dark-mode-card" padding="25px 20px">
+      <mj-column>
+        <mj-text align="center" font-size="18px" font-weight="600" color="#1E293B" css-class="dark-mode-text" padding="0 0 15px 0">
+          Почему именно эти направления?
+        </mj-text>
+        <mj-text align="center" font-size="14px" color="#64748B" css-class="dark-mode-text" padding="0 0 15px 0">
+          <strong>{{campaign_insights.total_destinations}}</strong> тщательно отобранных направления • 
+          <strong>{{campaign_insights.regions_covered.length}}</strong> {{#if campaign_insights.regions_covered.length}}региона{{/if}}
+          {{#if seasonal_optimization}}• Сезонно оптимизировано{{/if}}
+        </mj-text>
+        
+        {{#if recommendations.optimization_suggestions}}
+        {{#each recommendations.optimization_suggestions}}
+        {{#if (lt @index 2)}}
+        <mj-text font-size="14px" color="#475569" css-class="dark-mode-text" padding="5px 0" align="center">
+          <span class="feature-icon" style="margin-right: 10px;"></span> {{this}}
+        </mj-text>
+        {{/if}}
+        {{/each}}
+        {{/if}}
+      </mj-column>
+    </mj-section>
+    {{/if}}
+
+    <!-- Seasonal Optimization Notice -->
+    {{#if seasonal_optimization}}
+    <mj-section background-color="white" css-class="dark-mode-card" padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="14px" color="#059669" padding="15px" background-color="#ECFDF5" border-radius="12px">
+          <strong>🗓️ Оптимальное время для путешествий:</strong><br/>
+          {{seasonal_optimization.optimization_summary.overall_score}}% соответствие сезону
+          {{#if seasonal_optimization.optimization_summary.weather_optimization}}
+          • {{seasonal_optimization.optimization_summary.weather_optimization}}% погодная оптимизация
+          {{/if}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    {{/if}}
+
+    <!-- Main CTA Section -->
+    <mj-section background-color="#2563EB" padding="35px 20px">
+      <mj-column>
+        <mj-text align="center" font-size="26px" font-weight="700" color="white" padding="0 0 12px 0">
+          {{positioning_strategy.primary_value_proposition}}
+        </mj-text>
+        <mj-text align="center" font-size="16px" color="#E2E8F0" padding="0 0 25px 0">
+          {{positioning_strategy.call_to_action_text}}
+        </mj-text>
+        <mj-button 
+          href="{{main_cta_url}}" 
+          background-color="white" 
+          color="#2563EB"
+          font-size="18px"
+          font-weight="700"
+          border-radius="12px"
+          width="280px"
+        >
+          Выбрать направление
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer Section -->
+    <mj-section background-color="#F1F5F9" css-class="dark-mode-bg" padding="25px 20px">
+      <mj-column>
+        <mj-text align="center" font-size="14px" color="#64748B" css-class="dark-mode-text" padding="0 0 10px 0">
+          {{brand_name}} • {{contact_info.phone}} • {{contact_info.email}}
+        </mj-text>
+        <mj-social font-size="15px" icon-size="30px" mode="horizontal" padding="10px 0" align="center">
+          {{#if social_links.facebook}}
+          <mj-social-element name="facebook" href="{{social_links.facebook}}" background-color="#3b5998">
+          </mj-social-element>
+          {{/if}}
+          {{#if social_links.instagram}}
+          <mj-social-element name="instagram" href="{{social_links.instagram}}" background-color="#e4405f">
+          </mj-social-element>
+          {{/if}}
+          {{#if social_links.telegram}}
+          <mj-social-element name="twitter" href="{{social_links.telegram}}" background-color="#0088cc">
+          </mj-social-element>
+          {{/if}}
+        </mj-social>
+        <mj-text align="center" font-size="12px" color="#94A3B8" css-class="dark-mode-text" padding="15px 0 0 0">
+          Вы получили это письмо, потому что подписались на наши уведомления.<br/>
+          <a href="{{unsubscribe_url}}" style="color: #64748B;">Отписаться</a> | 
+          <a href="{{preferences_url}}" style="color: #64748B;">Настройки</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

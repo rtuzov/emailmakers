@@ -11,12 +11,7 @@
 
 import { Agent } from '@openai/agents';
 import { PromptManager } from '../core/prompt-manager';
-import { 
-  contentGeneratorTool, 
-  emailRendererTool, 
-  qualityControllerTool, 
-  deliveryManagerTool 
-} from './agent-tools';
+import { toolRegistry } from '../core/tool-registry';
 
 export async function createSpecialistAgents() {
   const promptManager = PromptManager.getInstance();
@@ -27,12 +22,25 @@ export async function createSpecialistAgents() {
   const qualityPrompt = promptManager.getSpecialistPrompt('quality');
   const deliveryPrompt = promptManager.getSpecialistPrompt('delivery');
 
+  // Получаем инструменты из Tool Registry для каждого типа агента
+  const deliveryTools = toolRegistry.getToolsForAgent('delivery');
+  const qualityTools = toolRegistry.getToolsForAgent('quality');
+  const designTools = toolRegistry.getToolsForAgent('design');
+  const contentTools = toolRegistry.getToolsForAgent('content');
+
+  console.log('🔧 Loading tools from Tool Registry:', {
+    delivery_tools: deliveryTools.length,
+    quality_tools: qualityTools.length,
+    design_tools: designTools.length,
+    content_tools: contentTools.length
+  });
+
   // Создаем агентов в правильном порядке (от конца к началу цепочки)
   const deliverySpecialist = new Agent({
     name: 'Delivery Specialist',
     instructions: deliveryPrompt,
     handoffDescription: 'Финализирует email кампанию, сохраняет файлы и создает итоговую отчетность',
-    tools: [deliveryManagerTool],
+    tools: deliveryTools,
     handoffs: [] // Последний в цепочке
   });
 
@@ -40,7 +48,7 @@ export async function createSpecialistAgents() {
     name: 'Quality Specialist', 
     instructions: qualityPrompt,
     handoffDescription: 'Проверяет качество email шаблонов, совместимость с клиентами и отправляет на доработку при необходимости',
-    tools: [qualityControllerTool],
+    tools: qualityTools,
     handoffs: [deliverySpecialist] // Может передавать только Delivery Specialist
   });
 
@@ -48,7 +56,7 @@ export async function createSpecialistAgents() {
     name: 'Design Specialist',
     instructions: designPrompt,
     handoffDescription: 'Создает красивые, адаптивные HTML email шаблоны с логотипом Kupibilet и фирменными цветами',
-    tools: [emailRendererTool],
+    tools: designTools,
     handoffs: [qualitySpecialist] // Может передавать только Quality Specialist
   });
 
@@ -56,7 +64,7 @@ export async function createSpecialistAgents() {
     name: 'Content Specialist',
     instructions: contentPrompt,
     handoffDescription: 'Создает качественный email контент на русском языке с реальными ценами и актуальной информацией',
-    tools: [contentGeneratorTool],
+    tools: contentTools,
     handoffs: [designSpecialist] // Может передавать только Design Specialist
   });
 

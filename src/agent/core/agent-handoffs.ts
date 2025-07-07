@@ -8,7 +8,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { generateTraceId } from '../utils/tracing-utils';
 import { AgentHandoffValidationService, HandoffValidationResult } from './agent-handoff-validation-service';
-import { enhancedTracing } from './enhanced-tracing';
 import { withTrace, createCustomSpan } from '@openai/agents';
 import { getLogger } from '../../shared/logger';
 
@@ -60,14 +59,16 @@ export class AgentHandoffsCoordinator {
     const handoffId = uuidv4();
     const traceId = request.traceId || generateTraceId();
     
-    // Регистрируем handoff в enhanced tracing
-    await enhancedTracing.traceHandoff(
-      traceId,
-      request.fromAgent,
-      request.toAgent,
-      request.data,
-      request.context
-    );
+    // Создаем custom span для handoff tracing с OpenAI SDK
+    try {
+      await createCustomSpan({
+        data: {
+          name: `handoff-${request.fromAgent}-to-${request.toAgent}`
+        }
+      });
+    } catch (error) {
+      console.warn('⚠️ Failed to create handoff span:', error);
+    }
 
     try {
       // Используем OpenAI SDK tracing для видимости в логах

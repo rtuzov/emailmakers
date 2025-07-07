@@ -18,36 +18,36 @@ import { percySnap } from '../percy';
 
 // Unified schema for all delivery management operations
 export const deliveryManagerSchema = z.object({
-  action: z.enum(['upload_assets', 'generate_screenshots', 'visual_testing', 'deploy_campaign', 'archive_assets', 'cdn_distribution']).describe('Action to perform'),
+  action: z.enum(['upload_assets', 'generate_screenshots', 'visual_testing', 'deploy_campaign', 'archive_assets', 'cdn_distribution', 'organize_multi_destination_assets']).describe('Action to perform'),
   
   // For upload_assets action
   upload_config: z.object({
     files: z.array(z.object({
       file_path: z.string().describe('Local file path to upload'),
-      destination_key: z.string().nullable().default(null).describe('S3 key (auto-generated if not provided)'),
-      content_type: z.string().nullable().default(null).describe('MIME type (auto-detected if not provided)'),
-      metadata: z.string().nullable().default(null).describe('File metadata (JSON string)')
+      destination_key: z.string().describe('S3 key'),
+      content_type: z.string().describe('MIME type'),
+      metadata: z.string().describe('File metadata (JSON string)')
     })).describe('Files to upload'),
-    bucket_name: z.string().nullable().default(null).describe('S3 bucket name'),
-    access_level: z.enum(['private', 'public-read']).default('public-read').describe('S3 access level')
-  }).nullable().default(null).describe('Asset upload configuration'),
+    bucket_name: z.string().describe('S3 bucket name'),
+    access_level: z.enum(['private', 'public-read']).describe('S3 access level')
+  }).describe('Asset upload configuration'),
 
   // For generate_screenshots action
   screenshot_config: z.object({
     target_content: z.string().describe('HTML content or URL to capture'),
-    content_type: z.enum(['html', 'url', 'mjml']).default('html').describe('Type of content to capture'),
-    viewport_width: z.number().default(1200).describe('Viewport width'),
-    viewport_height: z.number().default(800).describe('Viewport height'),
-    format: z.enum(['png', 'jpg']).default('png').describe('Output image format')
-  }).nullable().default(null).describe('Screenshot generation configuration'),
+    content_type: z.enum(['html', 'url', 'mjml']).describe('Type of content to capture'),
+    viewport_width: z.number().describe('Viewport width'),
+    viewport_height: z.number().describe('Viewport height'),
+    format: z.enum(['png', 'jpg']).describe('Output image format')
+  }).describe('Screenshot generation configuration'),
 
   // For visual_testing action
   visual_testing_config: z.object({
     test_name: z.string().describe('Name for the visual test'),
     content_source: z.string().describe('HTML content or URL for testing'),
-    source_type: z.enum(['html', 'url']).default('html').describe('Type of content source'),
-    threshold: z.number().min(0).max(1).default(0.1).describe('Visual difference threshold (0-1)')
-  }).nullable().default(null).describe('Visual testing configuration'),
+    source_type: z.enum(['html', 'url']).describe('Type of content source'),
+    threshold: z.number().min(0).max(1).describe('Visual difference threshold (0-1)')
+  }).describe('Visual testing configuration'),
 
   // For deploy_campaign action
   deploy_config: z.object({
@@ -57,39 +57,53 @@ export const deliveryManagerSchema = z.object({
     platform: z.enum(['mailchimp', 'sendgrid', 'aws_ses']).describe('Email platform to deploy to'),
     from_email: z.string().email().describe('Sender email address'),
     from_name: z.string().describe('Sender display name'),
-    test_mode: z.boolean().default(true).describe('Deploy in test mode first'),
-    run_quality_checks: z.boolean().default(true).describe('Run quality checks before deployment'),
-    run_visual_tests: z.boolean().default(true).describe('Run visual tests before deployment'),
-    run_performance_tests: z.boolean().default(true).describe('Run performance tests before deployment')
-  }).nullable().default(null).describe('Campaign deployment configuration'),
+    test_mode: z.boolean().describe('Deploy in test mode first'),
+    run_quality_checks: z.boolean().describe('Run quality checks before deployment'),
+    run_visual_tests: z.boolean().describe('Run visual tests before deployment'),
+    run_performance_tests: z.boolean().describe('Run performance tests before deployment')
+  }).describe('Campaign deployment configuration'),
 
   // For archive_assets action
   archive_config: z.object({
     source_assets: z.array(z.string()).describe('Paths to assets to archive'),
-    archive_format: z.enum(['zip', 'tar']).default('zip').describe('Archive format'),
-    s3_bucket: z.string().nullable().default(null).describe('S3 bucket for storage'),
-    retention_days: z.number().default(30).describe('Archive retention period in days'),
+    archive_format: z.enum(['zip', 'tar']).describe('Archive format'),
+    s3_bucket: z.string().describe('S3 bucket for storage'),
+    retention_days: z.number().describe('Archive retention period in days'),
     storage_config: z.object({
-      s3_bucket: z.string().nullable().default(null).describe('S3 bucket for storage')
-    }).nullable().default(null).describe('Storage configuration')
-  }).nullable().default(null).describe('Asset archiving configuration'),
+      s3_bucket: z.string().describe('S3 bucket for storage')
+    }).describe('Storage configuration')
+  }).describe('Asset archiving configuration'),
 
   // For cdn_distribution action
   cdn_distribution_config: z.object({
     assets_to_distribute: z.array(z.string()).describe('Asset paths to distribute via CDN'),
-    cdn_provider: z.enum(['cloudflare', 'aws_cloudfront']).default('cloudflare').describe('CDN provider'),
-    cache_ttl: z.number().default(86400).describe('Cache TTL in seconds')
-  }).nullable().default(null).describe('CDN distribution configuration'),
+    cdn_provider: z.enum(['cloudflare', 'aws_cloudfront']).describe('CDN provider'),
+    cache_ttl: z.number().describe('Cache TTL in seconds')
+  }).describe('CDN distribution configuration'),
+
+  // For organize_multi_destination_assets action
+  multi_destination_organization_config: z.object({
+    destinations: z.array(z.object({
+      name: z.string().describe('Destination name (e.g., Paris, Rome, Tokyo)'),
+      country_code: z.string().describe('ISO country code (e.g., FR, IT, JP)'),
+      region: z.string().describe('Geographic region (e.g., Europe, Asia)'),
+      assets: z.array(z.string()).describe('Asset paths associated with this destination')
+    })).describe('Array of destinations with their associated assets'),
+    organization_strategy: z.enum(['by_country', 'by_region', 'by_destination', 'hierarchical']).describe('Asset organization strategy'),
+    base_path: z.string().describe('Base path for organized assets'),
+    include_metadata: z.boolean().describe('Include destination metadata in organization'),
+    create_index_files: z.boolean().describe('Create index files for each organized category')
+  }).describe('Multi-destination asset organization configuration'),
 
   // Common options
-  campaign_id: z.string().nullable().default(null).describe('Campaign ID for asset organization'),
-  environment: z.enum(['development', 'staging', 'production']).default('staging').describe('Target environment'),
-  enable_monitoring: z.boolean().default(true).describe('Enable delivery monitoring'),
-  include_analytics: z.boolean().default(true).describe('Include delivery analytics in response'),
+  campaign_id: z.string().describe('Campaign ID for asset organization'),
+  environment: z.enum(['development', 'staging', 'production']).describe('Target environment'),
+  enable_monitoring: z.boolean().describe('Enable delivery monitoring'),
+  include_analytics: z.boolean().describe('Include delivery analytics in response'),
   notifications: z.object({
-    webhook_url: z.string().nullable().default(null).describe('Webhook URL for notifications'),
-    email: z.string().nullable().default(null).describe('Email for notifications')
-  }).nullable().default(null).describe('Notification configuration')
+    webhook_url: z.string().describe('Webhook URL for notifications'),
+    email: z.string().describe('Email for notifications')
+  }).describe('Notification configuration')
 }).describe('Delivery management parameters');
 
 export type DeliveryManagerParams = z.infer<typeof deliveryManagerSchema>;
@@ -151,6 +165,18 @@ interface DeliveryManagerResult {
     cache_invalidations: number;
     deployment_status: string;
   };
+  multi_destination_organization_results?: {
+    organized_structure: Record<string, string[]>;
+    total_assets_organized: number;
+    organization_strategy_used: string;
+    created_directories: string[];
+    metadata_files_created: string[];
+    organization_summary: {
+      by_country: Record<string, number>;
+      by_region: Record<string, number>;
+      total_destinations: number;
+    };
+  };
   analytics?: {
     execution_time: number;
     operations_performed: number;
@@ -195,6 +221,10 @@ export async function deliveryManager(params: DeliveryManagerParams): Promise<De
           
         case 'cdn_distribution':
           result = await handleCdnDistribution(params, startTime);
+          break;
+
+        case 'organize_multi_destination_assets':
+          result = await handleMultiDestinationAssetOrganization(params, startTime);
           break;
           
         default:
@@ -520,6 +550,36 @@ async function handleCdnDistribution(params: DeliveryManagerParams, startTime: n
 }
 
 /**
+ * Handle multi-destination asset organization
+ */
+async function handleMultiDestinationAssetOrganization(params: DeliveryManagerParams, startTime: number): Promise<DeliveryManagerResult> {
+  if (!params.multi_destination_organization_config) {
+    throw new Error('Multi-destination organization configuration is required');
+  }
+
+  const config = params.multi_destination_organization_config;
+  console.log(`📂 Organizing ${config.destinations.length} destinations with strategy: ${config.organization_strategy}`);
+
+  const organizationResults = await executeMultiDestinationOrganization(config, params);
+
+  console.log(`✅ Multi-destination organization completed: ${organizationResults.total_assets_organized} assets organized`);
+
+  return {
+    success: true,
+    action: 'organize_multi_destination_assets',
+    data: organizationResults,
+    multi_destination_organization_results: organizationResults,
+    analytics: params.include_analytics ? {
+      execution_time: Date.now() - startTime,
+      operations_performed: organizationResults.total_assets_organized,
+      data_transferred: 0,
+      success_rate: 100,
+      estimated_cost: calculateMultiDestinationOrganizationCost(organizationResults.total_assets_organized)
+    } : undefined
+  };
+}
+
+/**
  * Helper functions for enhanced delivery intelligence
  */
 
@@ -616,6 +676,92 @@ async function executeCdnDistribution(cdnConfig: any, params: DeliveryManagerPar
   };
 }
 
+async function executeMultiDestinationOrganization(organizationConfig: any, params: DeliveryManagerParams) {
+  const { destinations, organization_strategy, base_path, include_metadata, create_index_files } = organizationConfig;
+  
+  // Initialize organization results
+  const organizedStructure: Record<string, string[]> = {};
+  const createdDirectories: string[] = [];
+  const metadataFilesCreated: string[] = [];
+  const countryStats: Record<string, number> = {};
+  const regionStats: Record<string, number> = {};
+  
+  let totalAssetsOrganized = 0;
+
+  // Process each destination based on organization strategy
+  for (const destination of destinations) {
+    const { name, country_code, region, assets } = destination;
+    
+    // Count assets by country and region
+    countryStats[country_code] = (countryStats[country_code] || 0) + assets.length;
+    regionStats[region] = (regionStats[region] || 0) + assets.length;
+    
+    let organizationPath: string;
+    
+    // Determine organization path based on strategy
+    switch (organization_strategy) {
+      case 'by_country':
+        organizationPath = `${base_path}/${country_code}`;
+        break;
+      case 'by_region':
+        organizationPath = `${base_path}/${region}`;
+        break;
+      case 'by_destination':
+        organizationPath = `${base_path}/${name.toLowerCase().replace(/\s+/g, '-')}`;
+        break;
+      case 'hierarchical':
+        organizationPath = `${base_path}/${region}/${country_code}/${name.toLowerCase().replace(/\s+/g, '-')}`;
+        break;
+      default:
+        organizationPath = `${base_path}/${name.toLowerCase().replace(/\s+/g, '-')}`;
+    }
+    
+    // Organize assets
+    const organizedAssets = assets.map(asset => {
+      const fileName = asset.split('/').pop() || asset;
+      return `${organizationPath}/${fileName}`;
+    });
+    
+    organizedStructure[destination.name] = organizedAssets;
+    createdDirectories.push(organizationPath);
+    totalAssetsOrganized += assets.length;
+    
+    // Create metadata files if requested
+    if (include_metadata) {
+      const metadataPath = `${organizationPath}/metadata.json`;
+      metadataFilesCreated.push(metadataPath);
+    }
+    
+    // Create index files if requested
+    if (create_index_files) {
+      const indexPath = `${organizationPath}/index.html`;
+      createdDirectories.push(indexPath);
+    }
+  }
+  
+  // Create regional index files for hierarchical organization
+  if (organization_strategy === 'hierarchical' && create_index_files) {
+    const regions = Array.from(new Set(destinations.map(d => d.region)));
+    for (const region of regions) {
+      const regionIndexPath = `${base_path}/${region}/index.html`;
+      createdDirectories.push(regionIndexPath);
+    }
+  }
+
+  return {
+    organized_structure: organizedStructure,
+    total_assets_organized: totalAssetsOrganized,
+    organization_strategy_used: organization_strategy,
+    created_directories: [...new Set(createdDirectories)], // Remove duplicates
+    metadata_files_created: metadataFilesCreated,
+    organization_summary: {
+      by_country: countryStats,
+      by_region: regionStats,
+      total_destinations: destinations.length
+    }
+  };
+}
+
 async function sendDeliveryNotification(event: string, data: any, notificationConfig: any) {
   // Send notifications via configured channels
   console.log(`📢 Sending notification for event: ${event}`);
@@ -665,4 +811,13 @@ function calculateArchiveCost(sizeBytes: number, destination: string): number {
 function calculateCdnCost(assetCount: number): number {
   // CDN distribution cost simulation
   return assetCount * 0.0001; // $0.0001 per asset distributed
+}
+
+function calculateMultiDestinationOrganizationCost(assetCount: number): number {
+  // Multi-destination organization cost simulation
+  const baseCost = 0.005; // $0.005 base cost
+  const perAssetCost = assetCount * 0.0001; // $0.0001 per asset organized
+  const organizationComplexityCost = Math.ceil(assetCount / 10) * 0.001; // $0.001 per 10 assets for organization complexity
+  
+  return baseCost + perAssetCost + organizationComplexityCost;
 }

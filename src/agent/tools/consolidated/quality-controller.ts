@@ -24,12 +24,12 @@ export const qualityControllerSchema = z.object({
   
   // For analyze_quality action (replaces ai_quality_consultant)
   content_to_analyze: z.object({
-    html: z.string().nullable().default(null).describe('HTML content to analyze'),
-    mjml: z.string().nullable().default(null).describe('MJML content to analyze'),
-    subject: z.string().nullable().default(null).describe('Email subject line'),
-    text_version: z.string().nullable().default(null).describe('Text version of email'),
-    metadata: z.string().nullable().default(null).describe('Additional content metadata (JSON string)')
-  }).nullable().default(null).describe('Content for quality analysis'),
+    html: z.string().describe('HTML content to analyze'),
+    mjml: z.string().describe('MJML content to analyze'),
+    subject: z.string().describe('Email subject line'),
+    text_version: z.string().describe('Text version of email'),
+    metadata: z.string().describe('Additional content metadata (JSON string)')
+  }).describe('Content for quality analysis'),
   
   analysis_scope: z.object({
     technical_validation: z.boolean().default(true).describe('Validate HTML/CSS for email clients'),
@@ -40,16 +40,16 @@ export const qualityControllerSchema = z.object({
     cross_client_compatibility: z.boolean().default(true).describe('Test email client compatibility'),
     deliverability: z.boolean().default(true).describe('Analyze spam score and deliverability'),
     mobile_optimization: z.boolean().default(true).describe('Check mobile rendering')
-  }).nullable().default(null).describe('Scope of quality analysis'),
+  }).describe('Scope of quality analysis'),
   
   // For compare_versions action (replaces diff_html)
   version_comparison: z.object({
     original_html: z.string().describe('Original HTML version'),
     updated_html: z.string().describe('Updated HTML version'),
-    comparison_type: z.enum(['structural', 'visual', 'semantic', 'performance', 'comprehensive']).default('comprehensive').describe('Type of comparison to perform'),
-    ignore_whitespace: z.boolean().default(true).describe('Ignore whitespace differences'),
-    highlight_changes: z.boolean().default(true).describe('Highlight visual changes')
-  }).nullable().default(null).describe('Version comparison parameters'),
+    comparison_type: z.enum(['structural', 'visual', 'semantic', 'performance', 'comprehensive']).describe('Type of comparison to perform'),
+    ignore_whitespace: z.boolean().describe('Ignore whitespace differences'),
+    highlight_changes: z.boolean().describe('Highlight visual changes')
+  }).describe('Version comparison parameters'),
   
   // For apply_patches action (replaces patch_html)
   patch_operations: z.object({
@@ -57,52 +57,52 @@ export const qualityControllerSchema = z.object({
     patches: z.array(z.object({
       type: z.enum(['replace', 'insert', 'delete', 'modify']).describe('Type of patch operation'),
       selector: z.string().describe('CSS selector or XPath for target element'),
-      content: z.string().nullable().default(null).describe('New content (for replace/insert operations)'),
-      attributes: z.string().nullable().default(null).describe('Attributes to modify (JSON string)'),
-      position: z.enum(['before', 'after', 'inside', 'replace']).nullable().default(null).describe('Position for insertion')
+      content: z.string().describe('New content (for replace/insert operations)'),
+      attributes: z.string().describe('Attributes to modify (JSON string)'),
+      position: z.enum(['before', 'after', 'inside', 'replace']).describe('Position for insertion')
     })).describe('Array of patch operations to apply'),
-    validation_after_patch: z.boolean().default(true).describe('Validate HTML after applying patches'),
-    backup_original: z.boolean().default(true).describe('Keep backup of original content')
-  }).nullable().default(null).describe('Patch application parameters'),
+    validation_after_patch: z.boolean().describe('Validate HTML after applying patches'),
+    backup_original: z.boolean().describe('Keep backup of original content')
+  }).describe('Patch application parameters'),
   
   // For test_rendering action (replaces render_test)
   rendering_tests: z.object({
     test_content: z.string().describe('HTML content to test'),
-    test_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird', 'all'])).default(['all']).describe('Email clients to test'),
-    test_devices: z.array(z.enum(['desktop', 'mobile', 'tablet', 'all'])).default(['all']).describe('Device types to test'),
-    screenshot_comparison: z.boolean().default(true).describe('Generate visual comparison screenshots'),
-    performance_metrics: z.boolean().default(true).describe('Collect performance metrics'),
-    accessibility_testing: z.boolean().default(true).describe('Run accessibility tests')
-  }).nullable().default(null).describe('Rendering test configuration'),
+    test_clients: z.array(z.enum(['gmail', 'outlook', 'apple_mail', 'yahoo', 'thunderbird', 'all'])).describe('Email clients to test'),
+    test_devices: z.array(z.enum(['desktop', 'mobile', 'tablet', 'all'])).describe('Device types to test'),
+    screenshot_comparison: z.boolean().describe('Generate visual comparison screenshots'),
+    performance_metrics: z.boolean().describe('Collect performance metrics'),
+    accessibility_testing: z.boolean().describe('Run accessibility tests')
+  }).describe('Rendering test configuration'),
   
   // For comprehensive_audit action
   audit_config: z.object({
-    audit_depth: z.enum(['basic', 'standard', 'thorough', 'enterprise']).default('standard').describe('Depth of quality audit'),
-    include_recommendations: z.boolean().default(true).describe('Include improvement recommendations'),
-    generate_report: z.boolean().default(true).describe('Generate comprehensive quality report'),
-    benchmark_comparison: z.boolean().default(false).describe('Compare against industry benchmarks'),
-    priority_issues_only: z.boolean().default(false).describe('Focus only on high-priority issues')
-  }).nullable().default(null).describe('Comprehensive audit configuration'),
+    audit_depth: z.enum(['basic', 'standard', 'thorough', 'enterprise']).describe('Depth of quality audit'),
+    include_recommendations: z.boolean().describe('Include improvement recommendations'),
+    generate_report: z.boolean().describe('Generate comprehensive quality report'),
+    benchmark_comparison: z.boolean().describe('Compare against industry benchmarks'),
+    priority_issues_only: z.boolean().describe('Focus only on high-priority issues')
+  }).describe('Comprehensive audit configuration'),
   
   // For automated_fix action
   auto_fix_config: z.object({
-    fix_types: z.array(z.enum(['html_validation', 'css_optimization', 'accessibility', 'performance', 'compatibility', 'all'])).default(['all']).describe('Types of issues to automatically fix'),
-    aggressive_fixes: z.boolean().default(false).describe('Apply aggressive optimization fixes'),
-    preserve_original: z.boolean().default(true).describe('Preserve original content structure'),
-    test_fixes: z.boolean().default(true).describe('Test fixes before applying')
-  }).nullable().default(null).describe('Automated fix configuration'),
+    fix_types: z.array(z.enum(['html_validation', 'css_optimization', 'accessibility', 'performance', 'compatibility', 'all'])).describe('Types of issues to automatically fix'),
+    aggressive_fixes: z.boolean().describe('Apply aggressive optimization fixes'),
+    preserve_original: z.boolean().describe('Preserve original content structure'),
+    test_fixes: z.boolean().describe('Test fixes before applying')
+  }).describe('Automated fix configuration'),
   
   // Common options
-  quality_threshold: z.number().min(0).max(100).default(80).describe('Minimum quality threshold (0-100)'),
-  include_analytics: z.boolean().default(true).describe('Include detailed analytics in response'),
-  priority_focus: z.array(z.enum(['performance', 'accessibility', 'compatibility', 'content', 'technical'])).default([]).describe('Priority areas for quality control'),
+  quality_threshold: z.number().min(0).max(100).describe('Minimum quality threshold (0-100)'),
+  include_analytics: z.boolean().describe('Include detailed analytics in response'),
+  priority_focus: z.array(z.enum(['performance', 'accessibility', 'compatibility', 'content', 'technical'])).describe('Priority areas for quality control'),
   
   // Context and metadata
   campaign_context: z.object({
-    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).nullable().default(null),
-    target_audience: z.string().nullable().default(null),
-    brand_guidelines: z.string().nullable().default(null)
-  }).nullable().default(null).describe('Campaign context for quality assessment')
+    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'reminder']).describe('Campaign type'),
+    target_audience: z.string().describe('Target audience'),
+    brand_guidelines: z.string().describe('Brand guidelines')
+  }).describe('Campaign context for quality assessment')
 });
 
 export type QualityControllerParams = z.infer<typeof qualityControllerSchema>;

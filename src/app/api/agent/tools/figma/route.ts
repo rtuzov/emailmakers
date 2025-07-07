@@ -12,24 +12,20 @@ export async function POST(request: NextRequest) {
       max_results = 5
     } = body;
 
-    // Call the figma tool implementation directly to avoid OpenAI Agent SDK issues
-    const { getFigmaAssetsImpl } = await import('@/agent/tools/figma-impl');
-    const result = await getFigmaAssetsImpl({
+    // Call the AssetManager to search for Figma assets
+    const { AssetManager } = await import('@/agent/core/asset-manager');
+    const assetManager = new AssetManager();
+    const result = await assetManager.searchAssets({
       tags,
-      context: {
-        campaign_type: context.campaign_type || 'promotional',
-        emotional_tone: context.emotional_tone || 'positive',
-        target_count: context.target_count || max_results,
-        diversity_mode: require_diversity,
-        ...context
-      }
-    });
+      emotional_tone: context.emotional_tone || 'positive',
+      campaign_type: context.campaign_type || 'promotional',
+      target_count: max_results
+    }, context);
     
     console.log('✅ Figma API response:', {
       success: result.success,
-      paths: result.data?.paths?.length || 0,
-      metadata: result.data?.metadata ? Object.keys(result.data.metadata).length : 0,
-      selectionStrategy: result.data?.selection_strategy?.strategy_used
+      assets_count: result.assets?.length || 0,
+      message: (result as any).message || 'Assets search completed'
     });
 
     return NextResponse.json(result);

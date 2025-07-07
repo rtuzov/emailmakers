@@ -12,6 +12,7 @@
 
 import { run, Agent } from '@openai/agents';
 import { createEmailCampaignOrchestrator } from '../modules/specialist-agents';
+import { toolRegistry } from './tool-registry';
 
 export interface OrchestrationConfig {
   workflowName?: string;
@@ -32,8 +33,13 @@ export class EmailCampaignOrchestrator {
 
   async initialize(): Promise<void> {
     if (!this.orchestrator) {
+      // Log Tool Registry status before initializing orchestrator
+      console.log('🔧 Tool Registry Status:', toolRegistry.getToolStats());
+      
       const { orchestrator } = await createEmailCampaignOrchestrator();
       this.orchestrator = orchestrator;
+      
+      console.log('✅ Email Campaign Orchestrator initialized with Tool Registry support');
     }
   }
 

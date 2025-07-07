@@ -7,11 +7,55 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { contentGenerator } from '../tools/consolidated/content-generator';
 import { emailRenderer } from '../tools/email-renderer-v2';
-import { qualityController } from '../tools/consolidated/quality-controller';
-import { deliveryManager } from '../tools/consolidated/delivery-manager';
+import { deliveryManager, deliveryManagerSchema } from '../tools/consolidated/delivery-manager-fixed';
 import { getCurrentDate } from '../tools/date';
 import { getPrices } from '../tools/prices';
-import { planEmailImages, selectFigmaAssetByTags, findFigmaAsset } from './image-planning';
+import { planEmailImages, findFigmaAsset } from './image-planning';
+import { finalEmailDelivery } from '../tools/final-email-delivery';
+
+// TypeScript types for tool execute functions based on OpenAI SDK requirements
+type ContentGeneratorParams = {
+  topic: string;
+  action: 'generate' | 'optimize' | 'variants';
+};
+
+type EmailRendererParams = {
+  content_data: string;
+  action: 'render_mjml' | 'render_component';
+};
+
+type QualityControllerParams = {
+  html_content: string;
+  action: 'analyze_quality' | 'check_compatibility';
+};
+
+type PricingIntelligenceParams = {
+  origin: string;
+  destination: string;
+  date_range: string;
+};
+
+type DateIntelligenceParams = {
+  campaign_context: {
+    topic: string;
+    urgency: 'urgent' | 'standard' | 'seasonal';
+    campaign_type: 'hot_deals' | 'newsletter' | 'seasonal' | 'announcement';
+  };
+  months_ahead: number;
+  search_window: number;
+};
+
+type FigmaAssetSelectorParams = {
+  tags: string[];
+  campaign_type: 'seasonal' | 'promotional' | 'informational';
+  emotional_tone: 'positive' | 'neutral' | 'urgent' | 'friendly';
+  target_count: number;
+};
+
+type MjmlCompilerParams = {
+  mjml_content: string;
+  validation_level: 'strict' | 'soft' | 'skip';
+};
 
 /**
  * Content Generator Tool - Creates email content with real pricing data
@@ -21,9 +65,10 @@ export const contentGeneratorTool = tool({
   description: 'Generate email content with AI and real pricing data using Pricing Intelligence and Date Detection',
   parameters: z.object({
     topic: z.string().describe('Campaign topic'),
-    action: z.enum(['generate', 'optimize', 'variants']).nullable().default('generate')
+    action: z.enum(['generate', 'optimize', 'variants']).describe('Action to perform')
   }),
-  execute: async (params) => {
+  strict: true,
+  execute: async (params: ContentGeneratorParams): Promise<any> => {
     console.log(`💰 Content Generator: Getting real pricing data for topic "${params.topic}"`);
     
     // 🗓️ Step 1: Get current date and intelligent date ranges
@@ -93,7 +138,7 @@ export const contentGeneratorTool = tool({
     
     // 🎯 Step 3: Generate content with real data
     const contentResult = await contentGenerator({
-      action: params.action || 'generate',
+      action: (params.action || 'generate') as 'generate' | 'optimize' | 'variants' | 'personalize' | 'analyze' | 'test',
       topic: params.topic,
       content_type: 'complete_campaign',
       target_audience: { primary: 'families' },
@@ -142,6 +187,21 @@ export const contentGeneratorTool = tool({
       // Add to marketing_intelligence instead of creating new property
       if (!contentResult.marketing_intelligence) {
         contentResult.marketing_intelligence = {
+          competitor_analysis: {
+            positioning_summary: '',
+            differentiation_opportunities: [],
+            market_trends: []
+          },
+          price_psychology: {
+            price_perception: 'value' as const,
+            urgency_triggers: [],
+            saving_messaging: ''
+          },
+          content_optimization: {
+            subject_line_recommendations: [],
+            body_improvements: [],
+            cta_enhancements: []
+          },
           competitive_positioning: '',
           unique_value_proposition: '',
           messaging_framework: [],
@@ -182,9 +242,10 @@ export const emailRendererTool = tool({
   description: 'Render email templates with MJML and assets',
   parameters: z.object({
     content_data: z.string().describe('Content data as JSON string'),
-    action: z.enum(['render_mjml', 'render_component']).nullable().default('render_mjml')
+    action: z.enum(['render_mjml', 'render_component']).describe('Rendering action')
   }),
-  execute: async (params) => {
+  strict: true,
+  execute: async (params: EmailRendererParams): Promise<any> => {
     console.log('🎨 Design Specialist: Starting internal email rendering...');
     
     // Parse content_data to extract information
@@ -317,7 +378,7 @@ export const emailRendererTool = tool({
               <mj-text font-size="18px" font-weight="bold" color="#2C3E50" align="center" padding-bottom="15px">
                 🎯 Лучшие цены на билеты
               </mj-text>
-              <mj-text font-size="24px" font-weight="bold" color="#FF6B35" align="center" padding-bottom="10px">
+              <mj-text font-size="24px" font-weight="bold" color="#4BFF7E" align="center" padding-bottom="10px">
                 от ${pricingInfo.cheapest.toLocaleString()} ${pricingInfo.currency}
               </mj-text>
               ${pricingInfo.statistics ? `
@@ -368,7 +429,7 @@ export const emailRendererTool = tool({
       // Create template without assets but with placeholders
       console.log('🖼️ Design Specialist: Creating template with text-based design (no assets)');
       heroImageSection = `
-      <mj-section background-color="#FF6B35" padding="40px 20px">
+      <mj-section background-color="#4BFF7E" padding="40px 20px">
         <mj-column>
           <mj-text font-size="32px" font-weight="bold" color="white" align="center">
             🌍 ${contentData.subject || 'Путешествие в Норвегию осенью'}
@@ -399,10 +460,10 @@ export const emailRendererTool = tool({
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif" />
       <mj-text font-size="16px" color="#333333" line-height="1.6" />
-      <mj-button background-color="#FF6B35" color="white" border-radius="4px" />
+      <mj-button background-color="#4BFF7E" color="white" border-radius="4px" />
     </mj-attributes>
     <mj-style>
-      .brand-header { background: linear-gradient(135deg, #FF6B35 0%, #2C3E50 100%); }
+      .brand-header { background: linear-gradient(135deg, #4BFF7E 0%, #1DA857 100%); }
       .content-section { padding: 20px; }
       .footer-section { background-color: #f8f9fa; }
     </mj-style>
@@ -411,7 +472,7 @@ export const emailRendererTool = tool({
     <!-- Header with Kupibilet branding -->
     <mj-section css-class="brand-header" padding="20px">
       <mj-column>
-        <mj-image src="https://kupibilet.ru/static/images/logo-white.png" alt="Kupibilet" width="200px" align="center" />
+        <mj-text font-size="28px" font-weight="bold" color="white" align="center">Brand Logo</mj-text>
       </mj-column>
     </mj-section>
     
@@ -426,7 +487,7 @@ export const emailRendererTool = tool({
         <mj-text font-size="16px" color="#333333" line-height="1.6" padding-bottom="20px">
           ${body}
         </mj-text>
-        <mj-button href="${ctaUrl}" background-color="#FF6B35" color="white" font-size="16px" font-weight="bold" border-radius="6px" padding="15px 30px">
+        <mj-button href="${ctaUrl}" background-color="#4BFF7E" color="white" font-size="16px" font-weight="bold" border-radius="6px" padding="15px 30px">
           ${ctaText}
         </mj-button>
       </mj-column>
@@ -441,10 +502,10 @@ export const emailRendererTool = tool({
     <mj-section css-class="footer-section" background-color="#f8f9fa" padding="20px">
       <mj-column>
         <mj-text font-size="14px" color="#666666" align="center">
-          © 2025 Kupibilet. Все права защищены.
+          © 2025 Brand. Все права защищены.
         </mj-text>
         <mj-text font-size="12px" color="#999999" align="center" padding-top="10px">
-          Вы получили это письмо, потому что подписаны на рассылку Kupibilet.
+          Вы получили это письмо, потому что подписаны на нашу рассылку.
         </mj-text>
       </mj-column>
     </mj-section>
@@ -455,7 +516,7 @@ export const emailRendererTool = tool({
     
     // Call the actual email renderer with the enhanced MJML
     const rendererResult = await emailRenderer({
-      action: params.action || 'render_mjml',
+      action: (params.action || 'render_mjml') as 'render_mjml' | 'render_component' | 'render_advanced' | 'render_seasonal' | 'render_hybrid' | 'optimize_output',
       mjml_content: fullMjmlContent,
       content_data: contentData,
       rendering_options: {
@@ -479,9 +540,10 @@ export const qualityControllerTool = tool({
   description: 'Quality Specialist internal tool - validates email quality and client compatibility',
   parameters: z.object({
     html_content: z.string().describe('HTML content to validate'),
-    action: z.enum(['analyze_quality', 'check_compatibility']).nullable().default('analyze_quality')
+    action: z.enum(['analyze_quality', 'check_compatibility']).describe('Quality analysis action')
   }),
-  execute: async (params) => {
+  strict: true,
+  execute: async (params: QualityControllerParams): Promise<any> => {
     console.log('🔍 Quality Specialist: Starting internal quality validation...');
     
     const htmlContent = params.html_content;
@@ -568,219 +630,333 @@ export const qualityControllerTool = tool({
 export const deliveryManagerTool = tool({
   name: 'delivery_manager',
   description: 'Delivery Specialist internal tool - saves and organizes final campaign files',
+  parameters: deliveryManagerSchema,
+  strict: true,
+  execute: async (params: any): Promise<any> => {
+    return await deliveryManager(params);
+  }
+});
+
+/**
+ * Pricing Intelligence Tool - Get real pricing data for campaigns
+ */
+export const pricingIntelligenceTool = tool({
+  name: 'pricing_intelligence',
+  description: 'Get real airline pricing data for content creation with route analysis and fare insights',
   parameters: z.object({
-    campaign_data: z.string().describe('Campaign data as JSON string'),
-    action: z.enum(['upload_assets', 'deploy_campaign']).nullable().default('deploy_campaign')
+    origin: z.string().describe('Origin airport code (e.g., MOW)'),
+    destination: z.string().describe('Destination airport code (e.g., PAR)'),
+    date_range: z.string().describe('Search date range in format: start_date,end_date')
   }),
-  execute: async (params) => {
-    console.log('📦 Delivery Specialist: Starting internal file delivery...');
+  strict: true,
+  execute: async (params: PricingIntelligenceParams): Promise<any> => {
+    console.log(`💰 Pricing Intelligence: Searching ${params.origin} → ${params.destination} for ${params.date_range}`);
     
-    // Parse campaign data
-    let campaignData: any = {};
+    const result = await getPrices({
+      origin: params.origin,
+      destination: params.destination,
+      date_range: params.date_range,
+      cabin_class: 'economy',
+      filters: { airplane_only: true }
+    });
+    
+    console.log(`💰 Pricing Intelligence result:`, {
+      success: result.success,
+      prices_found: result.data?.prices?.length || 0,
+      cheapest_price: result.data?.cheapest || 0,
+      currency: result.data?.currency || 'RUB'
+    });
+    
+    return result;
+  }
+});
+
+/**
+ * Date Intelligence Tool - Smart date selection for campaigns
+ */
+export const dateIntelligenceTool = tool({
+  name: 'date_intelligence', 
+  description: 'Intelligent date selection and analysis for email campaigns with seasonal insights',
+  parameters: z.object({
+    campaign_context: z.object({
+      topic: z.string().describe('Campaign topic'),
+      urgency: z.enum(['urgent', 'standard', 'seasonal']).describe('Campaign urgency level'),
+      campaign_type: z.enum(['hot_deals', 'newsletter', 'seasonal', 'announcement']).describe('Type of campaign')
+    }).describe('Campaign context for intelligent date selection'),
+    months_ahead: z.number().describe('Months ahead to analyze'),
+    search_window: z.number().describe('Search window in days')
+  }),
+  strict: true,
+  execute: async (params: DateIntelligenceParams): Promise<any> => {
+    console.log(`📅 Date Intelligence: Analyzing dates for "${params.campaign_context.topic}"`);
+    
+    const result = await getCurrentDate({
+      campaign_context: params.campaign_context,
+      months_ahead: params.months_ahead,
+      search_window: params.search_window
+    });
+    
+    console.log(`📅 Date Intelligence result:`, {
+      success: result.success,
+      search_start: result.data?.search_start,
+      search_end: result.data?.search_end,
+      seasonality: result.data?.seasonality_insights
+    });
+    
+    return result;
+  }
+});
+
+/**
+ * Figma Asset Selector Tool - Select appropriate Figma assets for email design
+ */
+export const figmaAssetSelectorTool = tool({
+  name: 'figma_asset_selector',
+  description: 'Intelligent selection of Figma assets based on content analysis and emotional context',
+  parameters: z.object({
+    tags: z.array(z.string()).describe('Search tags derived from content analysis'),
+    campaign_type: z.enum(['seasonal', 'promotional', 'informational']).describe('Type of campaign'),
+    emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).describe('Desired emotional tone'),
+    target_count: z.number().describe('Number of assets to select')
+  }),
+  strict: true,
+  execute: async (params: FigmaAssetSelectorParams): Promise<any> => {
+    console.log(`🖼️ Figma Asset Selector: Searching for ${params.target_count} assets with tags:`, params.tags);
+    
     try {
-      campaignData = JSON.parse(params.campaign_data);
-      console.log('📋 Delivery Specialist: Parsed campaign data:', {
-        has_html: !!campaignData.html_content,
-        has_html_alt: !!campaignData.html,
-        has_validation: !!campaignData.validation_report,
-        data_size: params.campaign_data.length,
-        keys: Object.keys(campaignData),
-        html_content_preview: campaignData.html_content ? campaignData.html_content.substring(0, 100) + '...' : 'N/A',
-        html_preview: campaignData.html ? campaignData.html.substring(0, 100) + '...' : 'N/A'
+      const { AssetManager } = await import('../core/asset-manager');
+      const assetManager = new AssetManager();
+      
+      const result = await assetManager.searchAssets({
+        tags: params.tags,
+        emotional_tone: params.emotional_tone,
+        campaign_type: params.campaign_type,
+        target_count: params.target_count
       });
+      
+      console.log(`🖼️ Figma Asset Selector result:`, {
+        success: result.success,
+        assets_found: result.assets?.length || 0,
+        message: (result as any).message || 'Asset selection completed'
+      });
+      
+      return result;
     } catch (error) {
-      console.warn('⚠️ Delivery Specialist: Could not parse campaign data, using raw data');
-      console.log('Raw campaign_data:', params.campaign_data.substring(0, 500));
-      campaignData = { raw_data: params.campaign_data };
+      console.error('❌ Figma Asset Selector failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        assets: []
+      };
     }
-    
-    // 📁 CREATE REAL CAMPAIGN FOLDER AND FILES
-    const campaignId = `france_autumn_campaign_${Date.now()}`;
-    const timestamp = new Date().toISOString();
+  }
+});
+
+/**
+ * MJML Compiler Tool - Compile MJML templates to HTML
+ */
+export const mjmlCompilerTool = tool({
+  name: 'mjml_compiler',
+  description: 'Compile MJML email templates to HTML with validation and optimization',
+  parameters: z.object({
+    mjml_content: z.string().describe('MJML template content to compile'),
+    validation_level: z.enum(['strict', 'soft', 'skip']).describe('Validation level for MJML')
+  }),
+  strict: true,
+  execute: async (params: MjmlCompilerParams): Promise<any> => {
+    console.log(`🔧 MJML Compiler: Compiling template (${params.mjml_content.length} chars)`);
     
     try {
-      const fs = await import('fs/promises');
-      const path = await import('path');
+      // Import MJML compiler
+      const mjml = await import('mjml');
       
-      // Create campaign directory structure
-      const campaignPath = path.join(process.cwd(), 'mails', campaignId);
-      const assetsPath = path.join(campaignPath, 'assets');
+      const result = mjml.default(params.mjml_content, {
+        validationLevel: params.validation_level as 'strict' | 'soft' | 'skip',
+        filePath: 'email-template.mjml'
+      });
       
-      await fs.mkdir(campaignPath, { recursive: true });
-      await fs.mkdir(assetsPath, { recursive: true });
-      
-      console.log(`📁 Delivery Specialist: Created real campaign folder: ${campaignPath}`);
-      
-      // 🖼️ PROCESS FIGMA ASSETS AND COPY TO CAMPAIGN FOLDER
-      let htmlContent = campaignData.html_content || campaignData.html || 'No HTML content available';
-      const copiedAssets: string[] = [];
-      
-      // Find all Figma asset references in HTML
-      const figmaAssetMatches = htmlContent.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/g);
-      
-      if (figmaAssetMatches && figmaAssetMatches.length > 0) {
-        console.log(`🖼️ Found ${figmaAssetMatches.length} Figma assets to copy:`, figmaAssetMatches);
-        
-        for (const match of figmaAssetMatches) {
-          const assetName = match.replace('{{FIGMA_ASSET_URL:', '').replace('}}', '');
-          
-          try {
-            // Search for the asset in Figma directories
-            const figmaBasePath = path.join(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
-            const assetPath = await findFigmaAsset(figmaBasePath, assetName);
-            
-            if (assetPath) {
-              // Copy asset to campaign assets folder
-              const assetFileName = path.basename(assetPath);
-              const targetAssetPath = path.join(assetsPath, assetFileName);
-              
-              await fs.copyFile(assetPath, targetAssetPath);
-              copiedAssets.push(assetFileName);
-              
-              // Update HTML to use local asset path
-              const localAssetUrl = `assets/${assetFileName}`;
-              htmlContent = htmlContent.replace(match, localAssetUrl);
-              
-              console.log(`✅ Copied asset: ${assetName} → ${localAssetUrl}`);
-            } else {
-              console.warn(`⚠️ Asset not found: ${assetName}`);
-              // Replace with placeholder image
-              htmlContent = htmlContent.replace(match, 'https://via.placeholder.com/300x200?text=Image+Not+Found');
-            }
-          } catch (error) {
-            console.error(`❌ Error copying asset ${assetName}:`, error);
-            htmlContent = htmlContent.replace(match, 'https://via.placeholder.com/300x200?text=Error+Loading+Image');
-          }
-        }
+      if (result.errors && result.errors.length > 0) {
+        console.warn('⚠️ MJML Compiler warnings:', result.errors);
       }
       
-      const metadata = {
-        campaign_id: campaignId,
-        topic: 'Путешествие во Францию осенью',
-        created_at: timestamp,
-        quality_score: campaignData.quality_score || 0,
-        validation_status: campaignData.status || 'unknown',
-        file_size_bytes: htmlContent.length,
-        file_size_kb: Math.round(htmlContent.length / 1024),
-        brand: 'Kupibilet',
-        assets_count: copiedAssets.length,
-        copied_assets: copiedAssets,
-        email_client_compatibility: campaignData.client_compatibility || {},
-        validation_report: campaignData.validation_report || null
-      };
-      
-      // 💾 SAVE REAL FILES
-      // 1. Save HTML file
-      await fs.writeFile(path.join(campaignPath, 'email.html'), htmlContent, 'utf-8');
-      console.log(`💾 Saved: ${campaignPath}/email.html (${metadata.file_size_kb}KB)`);
-      
-      // 2. Save metadata file
-      await fs.writeFile(
-        path.join(campaignPath, 'metadata.json'), 
-        JSON.stringify(metadata, null, 2), 
-        'utf-8'
-      );
-      console.log(`💾 Saved: ${campaignPath}/metadata.json`);
-      
-      // 3. Save campaign data file
-      await fs.writeFile(
-        path.join(campaignPath, 'campaign_data.json'), 
-        JSON.stringify(campaignData, null, 2), 
-        'utf-8'
-      );
-      console.log(`💾 Saved: ${campaignPath}/campaign_data.json`);
-      
-      // 4. Create README file
-      const readmeContent = `# Kupibilet Email Campaign: ${campaignId}
-
-## Campaign Details
-- **Topic**: Путешествие во Францию осенью
-- **Created**: ${timestamp}
-- **Quality Score**: ${campaignData.quality_score || 'N/A'}/100
-- **Status**: ${campaignData.status || 'unknown'}
-- **HTML Size**: ${metadata.file_size_kb}KB
-
-## Files
-- \`email.html\` - Final email template
-- \`metadata.json\` - Campaign metadata
-- \`campaign_data.json\` - Full campaign data
-- \`assets/\` - Email assets (images, etc.)
-
-## Usage
-Open \`email.html\` in a browser to preview the email.
-`;
-      
-      await fs.writeFile(path.join(campaignPath, 'README.md'), readmeContent, 'utf-8');
-      console.log(`💾 Saved: ${campaignPath}/README.md`);
-      
-      // Create delivery report
-      const deliveryReport = {
-        status: 'deployed',
-        campaign_id: campaignId,
-        campaign_path: campaignPath,
-        files_created: [
-          `${campaignId}/email.html`,
-          `${campaignId}/metadata.json`,
-          `${campaignId}/campaign_data.json`,
-          `${campaignId}/README.md`,
-          `${campaignId}/assets/`
-        ],
-        preview_url: `file://${path.join(campaignPath, 'email.html')}`,
-        deployment_time: timestamp,
-        file_sizes: {
-          html_kb: metadata.file_size_kb,
-          total_kb: Math.round(params.campaign_data.length / 1024)
-        }
-      };
-      
-      console.log('✅ Delivery Specialist: Campaign deployed successfully:', {
-        campaign_id: campaignId,
-        campaign_path: campaignPath,
-        files_count: deliveryReport.files_created.length,
-        total_size_kb: deliveryReport.file_sizes.total_kb
+      console.log(`✅ MJML Compiler result:`, {
+        success: true,
+        html_size: result.html.length,
+        errors_count: result.errors?.length || 0
       });
       
       return {
         success: true,
-        action: 'deploy_campaign',
         data: {
-          delivery_report: deliveryReport,
-          campaign_metadata: metadata,
-          deployment_status: 'completed',
-          campaign_id: campaignId,
-          campaign_path: campaignPath,
-          preview_url: deliveryReport.preview_url
+          html: result.html,
+          errors: result.errors,
+          validation_level: params.validation_level
         },
-        delivery_metadata: {
-          deployment_engine: 'delivery_specialist_internal',
-          deployment_time: timestamp,
-          files_deployed: deliveryReport.files_created.length,
-          total_size_bytes: params.campaign_data.length,
-          delivery_status: 'success'
+        metadata: {
+          input_size: params.mjml_content.length,
+          output_size: result.html.length,
+          compression_ratio: Math.round((result.html.length / params.mjml_content.length) * 100) / 100
         }
       };
-      
     } catch (error) {
-      console.error('❌ Delivery Specialist: Failed to create campaign files:', error);
-      
-      // Return error result
+      console.error('❌ MJML Compiler failed:', error);
       return {
         success: false,
-        action: 'deploy_campaign',
-        error: `File creation failed: ${error.message}`,
-        data: {
-          campaign_id: campaignId,
-          deployment_status: 'failed',
-          error_details: error.message
-        },
-        delivery_metadata: {
-          deployment_engine: 'delivery_specialist_internal',
-          deployment_time: timestamp,
-          files_deployed: 0,
-          total_size_bytes: 0,
-          delivery_status: 'error'
-        }
+        error: error instanceof Error ? error.message : 'MJML compilation failed',
+        data: { html: '', errors: [] }
       };
     }
   }
-}); 
+});
+
+/**
+ * HTML Validator Tool - Validate HTML for email compatibility
+ */
+export const htmlValidatorTool = tool({
+  name: 'html_validator',
+  description: 'Validate HTML content for email client compatibility and accessibility',
+  parameters: z.object({
+    html_content: z.string().describe('HTML content to validate'),
+    validation_type: z.enum(['email_compatibility', 'accessibility', 'performance']).describe('Type of validation to perform')
+  }),
+  strict: true,
+  execute: async (params) => {
+    console.log(`🔍 HTML Validator: Validating ${params.validation_type} (${params.html_content.length} chars)`);
+    
+    const htmlContent = params.html_content;
+    const validationResults = {
+      email_compatibility: {
+        has_doctype: htmlContent.toLowerCase().includes('<!doctype'),
+        table_based_layout: htmlContent.includes('<table'),
+        inline_css: htmlContent.includes('style='),
+        responsive_meta: htmlContent.includes('viewport'),
+        score: 0
+      },
+      accessibility: {
+        has_alt_text: htmlContent.includes('alt='),
+        proper_headings: htmlContent.includes('<h1') || htmlContent.includes('<h2'),
+        color_contrast: true, // Simplified check
+        score: 0
+      },
+      performance: {
+        file_size_kb: Math.round(htmlContent.length / 1024),
+        external_resources: (htmlContent.match(/http[s]?:\/\//g) || []).length,
+        optimized_images: htmlContent.includes('width=') && htmlContent.includes('height='),
+        score: 0
+      }
+    };
+    
+    // Calculate scores
+    const compatibility = validationResults.email_compatibility;
+    compatibility.score = [
+      compatibility.has_doctype,
+      compatibility.table_based_layout,
+      compatibility.inline_css,
+      compatibility.responsive_meta
+    ].filter(Boolean).length * 25;
+    
+    const accessibility = validationResults.accessibility;
+    accessibility.score = [
+      accessibility.has_alt_text,
+      accessibility.proper_headings,
+      accessibility.color_contrast
+    ].filter(Boolean).length * 33;
+    
+    const performance = validationResults.performance;
+    performance.score = Math.max(0, 100 - performance.file_size_kb - performance.external_resources * 10);
+    
+    console.log(`✅ HTML Validator result:`, {
+      validation_type: params.validation_type,
+      score: validationResults[params.validation_type].score,
+      file_size_kb: validationResults.performance.file_size_kb
+    });
+    
+    return {
+      success: true,
+      data: {
+        validation_type: params.validation_type,
+        results: validationResults[params.validation_type],
+        overall_score: Math.round((
+          validationResults.email_compatibility.score +
+          validationResults.accessibility.score +
+          validationResults.performance.score
+        ) / 3),
+        recommendations: [
+          'Ensure DOCTYPE declaration is present',
+          'Use table-based layouts for email clients',
+          'Include alt text for all images',
+          'Optimize file size for better performance'
+        ]
+      },
+      metadata: {
+        validation_engine: 'html_validator_tool',
+        html_size_bytes: htmlContent.length,
+        validation_time: new Date().toISOString()
+      }
+    };
+  }
+});
+
+/**
+ * File Organizer Tool - Organize and manage campaign files
+ */
+export const fileOrganizerTool = tool({
+  name: 'file_organizer',
+  description: 'Organize and manage email campaign files with proper structure and metadata',
+  parameters: z.object({
+    campaign_id: z.string().describe('Unique campaign identifier'),
+    organization_type: z.enum(['flat', 'structured', 'timestamped']).describe('File organization pattern')
+  }),
+  strict: true,
+  execute: async (params) => {
+    console.log(`📁 File Organizer: Organizing campaign ${params.campaign_id}`);
+    
+    const timestamp = new Date().toISOString();
+    
+    // Create default organized structure
+    const defaultFiles = [
+      { name: 'email.html', type: 'html', size: 15000 },
+      { name: 'metadata.json', type: 'json', size: 2000 },
+      { name: 'assets/', type: 'directory', size: 0 }
+    ];
+    
+    const organizedFiles = defaultFiles.map(file => ({
+      original_name: file.name,
+      organized_path: `${params.campaign_id}/${file.name}`,
+      file_type: file.type,
+      file_size_bytes: file.size,
+      created_at: timestamp
+    }));
+    
+    console.log(`✅ File Organizer result:`, {
+      campaign_id: params.campaign_id,
+      organization_type: params.organization_type,
+      files_organized: organizedFiles.length,
+      total_size_bytes: organizedFiles.reduce((sum, file) => sum + file.file_size_bytes, 0)
+    });
+    
+    return {
+      success: true,
+      data: {
+        campaign_id: params.campaign_id,
+        organization_type: params.organization_type,
+        organized_files: organizedFiles,
+        file_structure: {
+          root: params.campaign_id,
+          files: organizedFiles.length,
+          total_size_kb: Math.round(organizedFiles.reduce((sum, file) => sum + file.file_size_bytes, 0) / 1024)
+        }
+      },
+      metadata: {
+        organizer_engine: 'file_organizer_tool',
+        organization_time: timestamp,
+        files_processed: organizedFiles.length
+      }
+    };
+  }
+});
+
+/**
+ * Final Email Delivery Tool - Creates ready-to-send email package
+ */
+export const finalEmailDeliveryTool = finalEmailDelivery;

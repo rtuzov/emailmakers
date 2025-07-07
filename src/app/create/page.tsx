@@ -477,18 +477,23 @@ export default function Create() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000);
       
-      const response = await fetch('/api/agent/run', {
+      const response = await fetch('/api/agent/run-improved', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          briefText: formData.briefText,
-          destination: formData.destination,
-          origin: formData.origin,
-          tone: formData.tone,
-          language: formData.language,
-          traceId: traceId // Pass trace ID for progress tracking
+          task_type: 'generate_content',
+          input: formData.briefText,
+          context: {
+            destination: formData.destination,
+            origin: formData.origin,
+            tone: formData.tone,
+            language: formData.language
+          },
+          metadata: {
+            traceId: traceId // Pass trace ID for progress tracking
+          }
         }),
         signal: controller.signal
       });

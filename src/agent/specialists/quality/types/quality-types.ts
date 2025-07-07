@@ -15,7 +15,8 @@ export type QualityTaskType =
   | 'validate_compliance' 
   | 'optimize_performance' 
   | 'comprehensive_audit' 
-  | 'ai_consultation';
+  | 'ai_consultation'
+  | 'validate_multi_destination_content';
 
 // Quality focus areas
 export type QualityFocusArea = 
@@ -99,6 +100,8 @@ export interface QualitySpecialistInput {
   testing_criteria?: TestingCriteria;
   compliance_standards?: ComplianceStandards;
   optimization_goals?: OptimizationGoals;
+  multi_destination_validation_criteria?: MultiDestinationValidationCriteria;
+  multi_destination_context?: any; // Multi-destination campaign data
   handoff_data?: any; // Data from DesignSpecialist
 }
 
@@ -145,6 +148,62 @@ export interface QualityAnalytics {
   agent_efficiency: number;
 }
 
+// Multi-destination validation configuration
+export interface MultiDestinationValidationCriteria {
+  max_email_size_kb?: number;
+  required_image_formats?: string[];
+  min_image_resolution?: { width: number; height: number };
+  seasonal_date_validation?: boolean;
+  destination_consistency_check?: boolean;
+  layout_responsive_validation?: boolean;
+}
+
+// Multi-destination validation results
+export interface MultiDestinationValidationResults {
+  email_size_validation: {
+    passed: boolean;
+    current_size_kb: number;
+    max_allowed_kb: number;
+    optimization_suggestions?: string[];
+  };
+  image_validation: {
+    passed: boolean;
+    total_images: number;
+    invalid_formats: string[];
+    low_resolution_images: string[];
+    oversized_images: string[];
+    suggestions?: string[];
+  };
+  date_validation: {
+    passed: boolean;
+    seasonal_consistency: boolean;
+    optimal_timing: boolean;
+    date_conflicts: string[];
+    recommendations?: string[];
+  };
+  destination_validation: {
+    passed: boolean;
+    geographic_consistency: boolean;
+    pricing_consistency: boolean;
+    content_relevance_score: number;
+    inconsistencies?: string[];
+  };
+  layout_validation: {
+    passed: boolean;
+    responsive_compatibility: boolean;
+    template_suitability: boolean;
+    layout_issues?: string[];
+    mobile_optimization_score: number;
+  };
+  overall_validation: {
+    passed: boolean;
+    confidence_score: number;
+    critical_issues: string[];
+    warnings: string[];
+    recommendations: string[];
+  };
+}
+
 // Task results structure
 export interface TaskResults {
   quality_data?: any;
@@ -154,6 +213,7 @@ export interface TaskResults {
   audit_data?: any;
   consultation_data?: any;
   detailed_check?: any;
+  multi_destination_validation?: MultiDestinationValidationResults;
 }
 
 // Recommendations structure

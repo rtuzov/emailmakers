@@ -6,8 +6,8 @@ export const pricingIntelligenceSchema = z.object({
   origin: z.string().default('Москва'),
   travel_dates: z.object({
     departure: z.string(),
-    return: z.string().nullable().default(null)
-  }).nullable().default(null),
+    return: z.string().optional()
+  }).optional(),
   passenger_count: z.number().default(1)
 });
 

@@ -100,7 +100,7 @@ export const emailRendererSchema = z.object({
   render_metadata: z.boolean().default(true).describe('Include rendering metadata in output'),
   
   // Email folder for saving files
-  emailFolder: z.string().nullable().default(null).describe('Email folder path or identifier')
+  emailFolder: z.string().describe('Email folder path or identifier')
 });
 
 export type EmailRendererParams = z.infer<typeof emailRendererSchema>;

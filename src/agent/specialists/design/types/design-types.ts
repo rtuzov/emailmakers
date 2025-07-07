@@ -22,7 +22,9 @@ export type DesignTaskType =
   | 'render_email' 
   | 'optimize_design' 
   | 'responsive_design' 
-  | 'accessibility_check';
+  | 'accessibility_check'
+  | 'select_multi_destination_template'
+  | 'plan_multi_destination_images';
 
 // =============================================================================
 // INPUT INTERFACES
@@ -34,6 +36,7 @@ export interface DesignSpecialistInputV2 {
   rendering_requirements?: RenderingRequirements;
   asset_requirements?: AssetRequirements;
   campaign_context?: CampaignContext;
+  multi_destination_requirements?: MultiDestinationRequirements;
 }
 
 export interface RenderingRequirements {
@@ -66,6 +69,22 @@ export interface CampaignContext {
   performance_session?: string;
 }
 
+export interface MultiDestinationRequirements {
+  multi_destination_plan?: any; // MultiDestinationPlan from multi-destination-types
+  template_selection_criteria?: {
+    destination_count: number;
+    layout_preference?: 'compact' | 'grid' | 'carousel' | 'list' | 'featured';
+    device_targets: ('mobile' | 'tablet' | 'desktop')[];
+    content_complexity: 'simple' | 'detailed' | 'rich';
+    performance_priority: 'speed' | 'visual_quality' | 'balanced';
+  };
+  image_planning_requirements?: {
+    performance_priority: 'speed' | 'visual_quality' | 'balanced';
+    max_total_size_kb?: number;
+    compression_strategy?: 'aggressive' | 'balanced' | 'quality_first';
+  };
+}
+
 // =============================================================================
 // OUTPUT INTERFACES
 // =============================================================================
@@ -89,6 +108,8 @@ export interface DesignResults {
   template_design?: TemplateDesign;
   image_plan?: ImagePlan;
   external_images?: ExternalImageResult;
+  multi_destination_template?: MultiDestinationTemplateResult;
+  multi_destination_images?: MultiDestinationImageResult;
 }
 
 export interface DesignArtifacts {
@@ -432,6 +453,63 @@ export interface AccessibilityFix {
 // =============================================================================
 // ERROR HANDLING TYPES
 // =============================================================================
+
+// =============================================================================
+// MULTI-DESTINATION RESULT TYPES
+// =============================================================================
+
+export interface MultiDestinationTemplateResult {
+  selected_template: {
+    template_name: string;
+    template_path: string;
+    layout_type: 'compact' | 'grid' | 'carousel' | 'list' | 'featured';
+    estimated_file_size: number;
+    optimized_for: ('mobile' | 'tablet' | 'desktop')[];
+    compatibility_score: number;
+  };
+  template_analysis: {
+    destination_count: number;
+    layout_suitability: number;
+    performance_score: number;
+    responsive_compatibility: number;
+  };
+  recommendations: string[];
+}
+
+export interface MultiDestinationImageResult {
+  image_plans: Array<{
+    destination_id: string;
+    images: {
+      primary: {
+        figma_url?: string;
+        dimensions: { width: number; height: number };
+        format: 'jpg' | 'png' | 'webp';
+        quality: number;
+        alt: string;
+        loading: 'eager' | 'lazy';
+      };
+      thumbnails?: {
+        small: { width: number; height: number };
+        medium: { width: number; height: number };
+      };
+    };
+    total_estimated_size: number;
+    compression_strategy: 'aggressive' | 'balanced' | 'quality_first';
+  }>;
+  layout_optimization: {
+    responsive_breakpoints: {
+      mobile: number;
+      tablet: number;
+      desktop: number;
+    };
+    performance_metrics: {
+      total_file_size: number;
+      estimated_load_time: number;
+      optimization_savings: number;
+    };
+  };
+  recommendations: string[];
+}
 
 export interface DesignError {
   code: string;

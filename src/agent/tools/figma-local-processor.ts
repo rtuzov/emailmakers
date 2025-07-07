@@ -50,7 +50,7 @@ interface LocalFigmaSearchResult {
  */
 export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promise<LocalFigmaSearchResult> {
   try {
-    const basePath = path.resolve(process.cwd(), 'src/agent/figma-all-pages-1750993353363');
+    const basePath = path.resolve(process.cwd(), 'figma-all-pages-1750993353363');
     
     // Проверяем существование базовой папки
     try {

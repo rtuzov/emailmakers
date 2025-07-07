@@ -38,8 +38,6 @@ export class EmailFolderManager {
     campaignType: string = 'promotional',
     traceId?: string
   ): Promise<EmailFolder> {
-    const timestamp = Date.now();
-    
     // Используем trace_id если предоставлен, иначе генерируем короткий ID
     let campaignId: string;
     if (traceId) {
@@ -47,10 +45,17 @@ export class EmailFolderManager {
       // trace_id имеет формат trace_<32_alphanumeric>, поэтому берем символы после "trace_"
       const traceIdWithoutPrefix = traceId.startsWith('trace_') ? traceId.substring(6) : traceId;
       const shortTraceId = traceIdWithoutPrefix.substring(0, 8);
-      campaignId = `email_${timestamp}_${shortTraceId}`;
+      campaignId = `campaign_${shortTraceId}`;
     } else {
-      const shortId = Math.random().toString(36).substring(2, 10);
-      campaignId = `email_${timestamp}_${shortId}`;
+      const shortId = Math.random().toString(36).substring(2, 8);
+      campaignId = `campaign_${shortId}`;
+    }
+    
+    // Проверяем, существует ли уже папка с таким ID
+    const existingFolder = await EmailFolderManager.loadEmailFolder(campaignId);
+    if (existingFolder) {
+      console.log(`📁 Using existing email folder: ${campaignId}`);
+      return existingFolder;
     }
     
     const basePath = path.resolve(process.cwd(), 'mails', campaignId);

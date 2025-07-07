@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function runCustomDemo(config: any) {
-  const { createOptimizationService } = await import('../../../../agent/optimization');
+  const { createOptimizationService } = await import('../../../../agent/optimization-stub');
   
   try {
     const service = createOptimizationService(config);
@@ -220,7 +220,7 @@ async function runCustomDemo(config: any) {
 }
 
 async function performSystemAnalysis() {
-  const { createOptimizationService } = await import('../../../../agent/optimization');
+  const { createOptimizationService } = await import('../../../../agent/optimization-stub');
   
   try {
     const service = createOptimizationService({ enabled: true });
@@ -262,7 +262,7 @@ async function performSystemAnalysis() {
 }
 
 async function getOptimizationRecommendations() {
-  const { createOptimizationService } = await import('../../../../agent/optimization');
+  const { createOptimizationService } = await import('../../../../agent/optimization-stub');
   
   try {
     const service = createOptimizationService({ enabled: true });

@@ -179,8 +179,8 @@ export async function getPrices(params: FlightPricesParams): Promise<ToolResult>
       result: { corrected_origin: origin, corrected_destination: destination, metadata: routeMetadata }
     });
     
-    // Генерация умного диапазона дат если не указан
-    const dateRange = params.date_range || generateSmartDateRange();
+    // Генерация умного диапазона дат если не указан или пустой
+    const dateRange = (params.date_range && params.date_range.trim() !== '') ? params.date_range : generateSmartDateRange();
     const [fromDate, toDate] = dateRange.split(',');
 
     // Подготовка запроса к API

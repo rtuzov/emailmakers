@@ -196,7 +196,7 @@ export class FeedbackLoop {
     }
 
     // Check for brand colors
-    if (!result.mjml || !result.mjml.includes('#FF6B35')) {
+    if (!result.mjml || !result.mjml.includes('#4BFF7E')) {
       score -= 15; // Missing brand colors
     }
 
@@ -336,13 +336,13 @@ export class FeedbackLoop {
       });
     }
 
-    if (!result.mjml || !result.mjml.includes('#FF6B35')) {
+    if (!result.mjml || !result.mjml.includes('#4BFF7E')) {
       issues.push({
         category: 'design',
         severity: 'medium',
-        description: 'Missing Kupibilet brand colors',
-        suggestion: 'Include the primary brand color #FF6B35 in buttons and accents',
-        examples: ['<mj-button background-color="#FF6B35">', '<mj-section background-color="#FF6B35">']
+        description: 'Missing brand colors',
+        suggestion: 'Include the primary brand color #4BFF7E in buttons and accents',
+        examples: ['<mj-button background-color="#4BFF7E">', '<mj-section background-color="#4BFF7E">']
       });
     }
 
@@ -492,7 +492,7 @@ export class FeedbackLoop {
       prompt += `- Ensure proper content length and structure\n`;
     } else if (targetAgent === 'design') {
       prompt += `- Fix MJML structure and validation\n`;
-      prompt += `- Apply Kupibilet brand colors (#FF6B35)\n`;
+      prompt += `- Apply brand colors (#4BFF7E, #1DA857, #2C3959)\n`;
       prompt += `- Ensure responsive mobile design\n`;
       prompt += `- Add appropriate visual elements\n`;
     }

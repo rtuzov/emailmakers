@@ -1,400 +1,395 @@
-# TECHNICAL CONTEXT - EMAIL-MAKERS
+# ТЕХНИЧЕСКИЙ КОНТЕКСТ
 
-**Project**: Email-Makers  
-**Technical Lead**: AI Assistant  
-**Last Updated**: 2025-01-27  
-**Architecture Pattern**: Domain-Driven Design (DDD)  
-**Implementation Status**: Phase 7.1 Complete - Render Testing Architecture Implemented
+## 🏗️ АРХИТЕКТУРА СИСТЕМЫ
 
----
+### Основные компоненты
+- **Frontend**: Next.js 14.0.4 + App Router + TypeScript
+- **Backend**: FastAPI (Python) + PostgreSQL + Drizzle ORM
+- **Authentication**: NextAuth.js + JWT + bcrypt
+- **AI Integration**: OpenAI GPT-4o mini + Anthropic Claude
+- **Email Processing**: MJML + HTML optimization
+- **Asset Management**: Figma API + External Image APIs
 
-## 🛠️ TECHNOLOGY STACK SPECIFICATION
+### Специалисты-агенты
+1. **Content Specialist** - генерация контента и планирование
+2. **Design Specialist** - верстка и подбор изображений
+3. **Quality Specialist** - валидация и проверка качества
+4. **Delivery Specialist** - финальная сборка и доставка
 
-### FRONTEND ARCHITECTURE
+## 🆕 НОВЫЕ КОМПОНЕНТЫ: МНОЖЕСТВЕННЫЕ НАПРАВЛЕНИЯ
 
-#### Core Framework ✅ IMPLEMENTED
-- **Next.js 14.0.4** with App Router v4
-  - ✅ Server-side rendering for SEO and performance
-  - ✅ API routes for backend integration (13 endpoints implemented)
-  - ✅ Static generation for documentation
-  - ✅ Middleware for authentication and routing (auth middleware implemented)
+### Расширенная архитектура
 
-#### Language & Type Safety ✅ IMPLEMENTED
-- **TypeScript 5.6.3** (strict mode enabled)
-  - ✅ Comprehensive type definitions (all domains typed)
-  - ✅ Interface-driven development (repository interfaces)
-  - ✅ Utility types for DDD patterns (entities, value objects)
-  - ✅ Strong API contract enforcement (Zod validation)
-  - ✅ 0 compilation errors (100% type safety achieved)
-
-#### Styling & UI Framework ✅ IMPLEMENTED
-- **Tailwind CSS** for utility-first styling
-  - ✅ Custom design system tokens
-  - ✅ Responsive design patterns
-  - ✅ Dark mode support
-- **shadcn/ui** component library
-  - ✅ Accessible, customizable components
-  - ✅ Radix UI primitives
-  - ✅ Glass morphism design system (15+ components)
-
-#### State Management & Data Fetching ✅ IMPLEMENTED
-- **React Query (TanStack Query)**
-  - ✅ Server state management
-  - ✅ Caching and synchronization
-  - ✅ Optimistic updates
-  - ✅ Background refetching
-- **Zod** for validation
-  - ✅ Runtime type validation
-  - ✅ Form validation schemas
-  - ✅ API response validation
-
-#### Internationalization
-- **next-intl** for multi-language support
-  - Type-safe translations
-  - Dynamic locale switching
-  - SEO-friendly URLs
-
-### BACKEND ARCHITECTURE
-
-#### API Framework ✅ IMPLEMENTED
-- **Next.js API Routes** (replacing FastAPI for simplicity)
-  - ✅ High-performance API with App Router
-  - ✅ Automatic TypeScript integration
-  - ✅ Built-in validation with Zod
-  - ✅ 13 endpoints implemented (10 core + 3 render testing)
-
-#### Database & ORM ✅ IMPLEMENTED
-- **PostgreSQL** as primary database
-  - ✅ ACID compliance for data integrity
-  - ✅ JSON column support for flexible schemas (jsonb fields in schema)
-  - ✅ Full-text search capabilities
-  - ✅ Connection pooling and optimization
-- **Drizzle ORM** for type-safe database operations
-  - ✅ TypeScript-first ORM (complete schema with types)
-  - ✅ Migration management (drizzle.config.ts configured)
-  - ✅ Schema introspection (15 core + 8 render testing tables)
-  - ✅ Optimized query generation (repository pattern implemented)
-
-#### Authentication & Security ✅ IMPLEMENTED
-- **JWT** for stateless authentication
-  - ✅ JWT token generation and validation
-  - ✅ 24-hour token expiration
-  - ✅ Secure token signing with environment secrets
-- **bcrypt** for password hashing (12+ rounds)
-  - ✅ 12 salt rounds implemented
-  - ✅ Secure password validation
-  - ✅ Password strength requirements
-- **Zod** for input validation
-  - ✅ API request validation schemas
-  - ✅ Type-safe validation
-  - ✅ Runtime type checking
-- **AES-256-GCM** for API key encryption
-  - ✅ Secure external service credential storage
-  - ✅ Industry-standard encryption
-
-#### Event Processing & Messaging ✅ IMPLEMENTED
-- **NATS** for event-driven architecture
-  - ✅ Asynchronous message processing
-  - ✅ Event sourcing patterns
-  - ✅ Microservice communication
-  - ✅ Pub/sub messaging
-
-#### Monitoring & Observability ✅ IMPLEMENTED
-- **Prometheus** for metrics collection
-  - ✅ Custom application metrics
-  - ✅ Performance monitoring
-  - ✅ Alerting rules
-- **Pino** for structured logging
-  - ✅ High-performance JSON logging
-  - ✅ Correlation ID tracking
-  - ✅ Log aggregation support
-
-### RENDER TESTING INFRASTRUCTURE - **NEW** ✅
-
-#### Job Queue System (Phase 7.2 - IN PROGRESS)
-- **BullMQ** with Redis backend
-  - Priority-based job scheduling
-  - Automatic retry with exponential backoff
-  - Job progress tracking
-  - Worker pool management
-  - Dead letter queue handling
-
-#### Container Orchestration ✅ FOUNDATION
-- **Docker** for worker isolation
-  - ✅ Multi-stage builds for optimization
-  - ✅ Security hardening with non-root users
-  - ✅ Resource limits (CPU, memory, network)
-  - ✅ Gmail Chrome worker example implemented
-- **Docker Compose** for local development
-  - ✅ Multi-container orchestration
-  - ✅ Service dependencies
-  - ✅ Volume management
-  - ✅ Environment configuration
-
-#### Storage Infrastructure (Phase 7.2 - PLANNED)
-- **S3/MinIO** for screenshot storage
-  - High-performance object storage
-  - CDN integration for fast delivery
-  - Lifecycle policies for cleanup
-  - Presigned URLs for secure access
-- **Image Processing**
-  - Thumbnail generation
-  - Format optimization (WebP, AVIF)
-  - Compression algorithms
-  - Metadata extraction
-
-#### Browser Automation (Phase 7.2 - PLANNED)
-- **Playwright** for web client testing
-  - Cross-browser support (Chrome, Firefox, Safari)
-  - Mobile device simulation
-  - Network throttling
-  - Screenshot capture with full page support
-- **Puppeteer** as fallback
-  - Chrome-specific optimizations
-  - PDF generation capabilities
-  - Performance profiling
-
----
-
-## 🔌 EXTERNAL INTEGRATIONS
-
-### AI & LLM SERVICES ✅ IMPLEMENTED
-
-#### OpenAI Integration (Primary)
-- **GPT-4o mini API** for content generation
-- **API Features**:
-  - ✅ Streaming responses for real-time feedback
-  - ✅ Temperature control for creativity
-  - ✅ Token usage optimization
-  - ✅ Response caching for performance
-- **Rate Limiting**: 10,000 requests/minute (Tier 4)
-- **Fallback Strategy**: ✅ Automatic retry with exponential backoff
-
-#### Anthropic Integration (Fallback) ✅ IMPLEMENTED
-- **Claude Sonnet** for content diversity
-- **API Features**:
-  - ✅ Constitutional AI for safer outputs
-  - ✅ Longer context windows
-  - ✅ JSON mode for structured responses
-- **Rate Limiting**: 5,000 requests/minute
-- **Error Handling**: ✅ Graceful degradation patterns
-
-### Design System Integration ✅ IMPLEMENTED
-
-#### Figma API
-- **REST API v1** for design token extraction
-- **Authentication**: ✅ Personal access tokens (encrypted storage)
-- **Endpoints**:
-  - ✅ `/v1/files/{file_key}` - File structure and metadata
-  - ✅ `/v1/files/{file_key}/nodes` - Specific node data
-  - ✅ `/v1/files/{file_key}/images` - Image exports
-- **Rate Limiting**: 1000 requests/hour per token
-- **Caching Strategy**: 
-  - ✅ Design tokens: 24-hour cache
-  - ✅ Images: 7-day cache
-  - ✅ File metadata: 1-hour cache
-
-### Quality Assurance Integration
-
-#### Internal Render Testing Service - **NEW** ✅ ARCHITECTURE
-- **Custom Implementation** replacing Litmus API
-- **Multi-Client Support**: 20+ email clients configured
-  - ✅ Gmail (Web, Mobile, iOS App)
-  - ✅ Outlook (Web, Desktop 2016+, Mobile, iOS/Android Apps)
-  - ✅ Apple Mail (Desktop, iOS, iPad)
-  - ✅ Yahoo Mail (Web, Mobile)
-  - ✅ Additional clients (Thunderbird, AOL, GMX, Mail.ru, Yandex)
-- **Testing Capabilities**:
-  - Screenshot generation across multiple viewports
-  - HTML/CSS validation with client-specific rules
-  - Accessibility testing (WCAG 2.1 AA compliance)
-  - Performance analysis (size, speed, optimization)
-  - Dark mode compatibility testing
-  - Spam/deliverability analysis with SpamAssassin
-
-#### Legacy Litmus API (Being Replaced)
-- **Email Testing API** for cross-client validation
-- **Status**: Being phased out in favor of internal service
-- **Migration Strategy**: Gradual replacement with feature parity
-
-### Template Processing ✅ IMPLEMENTED
-
-#### MJML Engine
-- **Local Processing**: ✅ Node.js MJML library
-- **Features**:
-  - ✅ Component-based email structure
-  - ✅ Responsive design compilation
-  - ✅ Cross-client optimization
-  - ✅ CSS inlining
-- **Output Validation**:
-  - ✅ HTML5 compliance checking
-  - ✅ Email client compatibility
-  - ✅ File size optimization
-
----
-
-## 📧 EMAIL STANDARDS COMPLIANCE ✅ IMPLEMENTED
-
-### HTML Structure Requirements
-
-#### DOCTYPE & Document Structure
-```html
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="color-scheme" content="light dark">
-  <meta name="supported-color-schemes" content="light dark">
-</head>
+#### Content Specialist Extensions
+```typescript
+// Новые сервисы для анализа географии
+src/agent/specialists/content/services/
+├── destination-analyzer.ts       # Анализ географических запросов
+├── multi-destination-planner.ts  # Планирование множественных направлений
+└── seasonal-optimizer.ts         # Сезонная оптимизация дат
 ```
 
-#### Layout Constraints ✅ IMPLEMENTED
-- **Table-based layouts**: No flexbox or CSS Grid
-- **Width constraints**: 600-640px maximum
-- **Inline CSS**: Critical styles inlined for compatibility
-- **Image optimization**: <200KB per image, absolute HTTPS URLs
-- **Font fallbacks**: Web-safe fonts with @font-face enhancement
-- **File size**: <100KB total HTML to avoid Gmail clipping
+**DestinationAnalyzer:**
+- Анализ географических маркеров в запросах
+- Определение списка стран по регионам
+- Извлечение сезонной информации
 
-#### Cross-Client Compatibility ✅ IMPLEMENTED
-- **Gmail**: Web, mobile, iOS app support
-- **Outlook**: 2016+, web, mobile versions
-- **Apple Mail**: Desktop and mobile versions
-- **Yahoo Mail**: Web and mobile compatibility
-- **Dark Mode**: CSS custom properties with media queries
+**MultiDestinationPlanner:**
+- Создание единого плана кампании
+- Оптимизация набора направлений
+- Балансировка цен и сезонности
 
-### Accessibility Standards ✅ IMPLEMENTED
-- **WCAG 2.1 AA**: Color contrast ratios, proper alt text
-- **Semantic HTML**: Proper heading structure, role attributes
-- **Screen Reader**: Compatible markup and ARIA labels
-- **Keyboard Navigation**: Focusable elements and tab order
+**SeasonalOptimizer:**
+- Расчет оптимальных дат для каждой страны
+- Учет климатических особенностей
+- Генерация сезонных рекомендаций
+
+#### Design Specialist Extensions
+```typescript
+// MJML шаблоны для множественных направлений
+src/agent/specialists/design/templates/
+├── multi-destination-compact.mjml    # 2-3 направления
+├── multi-destination-grid.mjml       # 4-6 направлений
+└── multi-destination-carousel.mjml   # 6+ направлений
+
+// Сервисы для layout логики
+src/agent/specialists/design/services/
+└── multi-destination-layout.ts       # Логика выбора шаблонов
+```
+
+**MJML Templates:**
+- Адаптивная верстка для разного количества направлений
+- Мобильная оптимизация
+- Email client совместимость
+
+**MultiDestinationLayout:**
+- Автоматический выбор подходящего шаблона
+- Планирование размещения изображений
+- Оптимизация для мобильных устройств
+
+#### Enhanced Tools
+```typescript
+// Расширенные инструменты
+src/agent/tools/
+├── enhanced-pricing-intelligence.ts  # Множественные цены
+└── geographic-intelligence.ts        # Географический анализ
+```
+
+**Enhanced Pricing Intelligence:**
+- Параллельный сбор цен для всех направлений
+- Сравнение и ранжирование предложений
+- Кэширование для оптимизации
+
+**Geographic Intelligence:**
+- База данных стран и регионов
+- Сезонные характеристики
+- Туристические особенности
+
+### Новые типы данных
+
+#### Основные интерфейсы
+```typescript
+// src/shared/types/multi-destination-types.ts
+interface MultiDestinationPlan {
+  primary_theme: string;
+  destinations: DestinationPlan[];
+  unified_layout: UnifiedLayoutPlan;
+  content_strategy: ContentStrategy;
+  generation_metadata: GenerationMetadata;
+}
+
+interface DestinationPlan {
+  country: string;
+  city?: string;
+  country_code: string;
+  optimal_dates: DateRange;
+  seasonal_highlights: string[];
+  pricing_context: PricingContext;
+  image_requirements: ImageRequirements;
+  relevance_score: number;
+}
+
+interface UnifiedLayoutPlan {
+  layout_type: 'compact' | 'grid' | 'carousel';
+  max_destinations: number;
+  mobile_optimization: boolean;
+  section_priorities: SectionPriority[];
+}
+```
+
+#### Вспомогательные типы
+```typescript
+interface ContentStrategy {
+  personalization_level: 'basic' | 'medium' | 'high';
+  seasonal_optimization: boolean;
+  price_comparison_mode: 'cheapest_first' | 'best_value' | 'premium_options';
+  cta_strategy: 'unified' | 'per_destination' | 'mixed';
+}
+
+interface PricingContext {
+  price_from: number;
+  currency: string;
+  price_category: 'budget' | 'mid' | 'premium';
+  discount_available: boolean;
+  last_updated: string;
+}
+
+interface DateRange {
+  start_date: string;
+  end_date: string;
+  optimal_period: string;
+  seasonal_notes: string[];
+}
+```
+
+## 🔧 ТЕХНИЧЕСКИЕ СТАНДАРТЫ
+
+### Email HTML Requirements
+- **DOCTYPE**: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">`
+- **Layout**: Table-based layout only
+- **CSS**: Inline styles for critical rendering
+- **Size**: <600KB total, <100KB per image
+- **Compatibility**: Gmail, Outlook 2016+, Apple Mail, Yahoo Mail
+- **Mobile**: Responsive with `@media` queries
+
+### Performance Requirements
+- **Generation Time**: <30 seconds per email
+- **API Limits**: 
+  - Pricing Intelligence: 100 requests/minute
+  - External Images: 50 requests/minute
+  - Figma API: 200 requests/hour
+- **Concurrent Processing**: Support for parallel API calls
+
+### Quality Standards
+- **TypeScript**: Strict mode enabled
+- **Test Coverage**: >80% for new components
+- **Error Handling**: Comprehensive error management
+- **Logging**: Structured logging with tracing
+- **Documentation**: JSDoc for all public APIs
+
+## 🗄️ СТРУКТУРА ДАННЫХ
+
+### Campaign Folder Structure
+```
+campaign_folder/
+├── email.html              # Финальный HTML email
+├── metadata.json           # Метаданные кампании
+├── assets/
+│   ├── hero/               # Главное изображение
+│   ├── destinations/       # Изображения по странам
+│   │   ├── france/
+│   │   ├── italy/
+│   │   └── germany/
+│   └── icons/              # Иконки и логотипы
+└── debug/                  # Отладочная информация
+    ├── content-plan.json
+    ├── image-plan.json
+    └── validation-report.json
+```
+
+### Metadata Structure
+```json
+{
+  "campaign_id": "europe_autumn_2024_12_19",
+  "generation_date": "2024-12-19T15:30:00Z",
+  "primary_theme": "Путешествие в Европу осенью",
+  "destinations": [
+    {
+      "country": "Франция",
+      "city": "Париж",
+      "optimal_dates": "15 сентября - 15 ноября",
+      "price_from": 15000,
+      "seasonal_highlights": ["Осенние парки", "Музеи", "Кафе"],
+      "images": ["hero.jpg", "paris_autumn.jpg"]
+    }
+  ],
+  "layout_type": "grid",
+  "quality_score": 85,
+  "generation_time": 24.5,
+  "file_sizes": {
+    "html": 45632,
+    "total_assets": 234567
+  }
+}
+```
+
+## 🔄 WORKFLOW ПРОЦЕСС
+
+### Обработка множественных направлений
+
+1. **Content Specialist Phase**:
+   ```
+   Input: "Путешествие в Европу осенью"
+   ↓
+   DestinationAnalyzer.analyzeGeographicalScope()
+   ↓
+   MultiDestinationPlanner.generateDestinationOptions()
+   ↓
+   SeasonalOptimizer.optimizeDatesForDestinations()
+   ↓
+   Enhanced Pricing Intelligence (parallel API calls)
+   ↓
+   Output: MultiDestinationPlan
+   ```
+
+2. **Design Specialist Phase**:
+   ```
+   Input: MultiDestinationPlan
+   ↓
+   MultiDestinationLayout.selectTemplateByCount()
+   ↓
+   AssetManager.searchMultiDestinationImages()
+   ↓
+   MJML Template Selection & Compilation
+   ↓
+   HTML Generation with inline CSS
+   ↓
+   Output: Optimized HTML + Assets
+   ```
+
+3. **Quality Specialist Phase**:
+   ```
+   Input: HTML + MultiDestinationPlan
+   ↓
+   validateMultiDestinationContent()
+   ↓
+   validateSeasonalDates() for each destination
+   ↓
+   validateDestinationImages()
+   ↓
+   validateEmailSize()
+   ↓
+   Output: Validation Report + Recommendations
+   ```
+
+4. **Delivery Specialist Phase**:
+   ```
+   Input: Validated HTML + Assets
+   ↓
+   organizeMultiDestinationAssets()
+   ↓
+   createMultiDestinationMetadata()
+   ↓
+   File optimization & compression
+   ↓
+   Output: Campaign Folder
+   ```
+
+## 🧪 ТЕСТИРОВАНИЕ
+
+### Unit Tests Structure
+```
+__tests__/
+├── multi-destination/
+│   ├── content-specialist.test.ts
+│   ├── design-specialist.test.ts
+│   ├── quality-specialist.test.ts
+│   └── delivery-specialist.test.ts
+├── integration/
+│   └── multi-destination-integration.test.ts
+├── e2e/
+│   └── multi-destination-workflow.e2e.test.ts
+└── fixtures/
+    └── multi-destination-samples.json
+```
+
+### Test Scenarios
+- **Basic Functionality**: 4-6 европейских направлений
+- **Edge Cases**: 2 направления, 6+ направлений
+- **Error Handling**: Неизвестные страны, API failures
+- **Performance**: Время генерации <30 сек
+- **Quality**: Email size <600KB, image optimization
+
+## 🔍 МОНИТОРИНГ И ЛОГИРОВАНИЕ
+
+### Metrics to Track
+- **Generation Time**: По фазам и общее время
+- **API Performance**: Время ответа внешних API
+- **Email Quality**: Размер, совместимость, scores
+- **Error Rates**: По типам ошибок и компонентам
+- **User Experience**: Время загрузки, mobile performance
+
+### Logging Structure
+```typescript
+{
+  "timestamp": "2024-12-19T15:30:00Z",
+  "level": "info",
+  "component": "MultiDestinationPlanner",
+  "action": "generateDestinationOptions",
+  "input": {
+    "query": "Путешествие в Европу осенью",
+    "scope": "Europe"
+  },
+  "output": {
+    "destinations_count": 5,
+    "generation_time": 2.3
+  },
+  "metadata": {
+    "campaign_id": "europe_autumn_2024_12_19",
+    "user_id": "anonymous"
+  }
+}
+```
+
+## 🚀 РАЗВЕРТЫВАНИЕ
+
+### Environment Variables
+```bash
+# AI Services
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-...
+
+# External APIs
+FIGMA_ACCESS_TOKEN=figd_...
+UNSPLASH_ACCESS_KEY=...
+PEXELS_API_KEY=...
+
+# Performance Settings
+MAX_DESTINATIONS=6
+EMAIL_SIZE_LIMIT=600000
+GENERATION_TIMEOUT=30000
+
+# Feature Flags
+ENABLE_MULTI_DESTINATION=true
+ENABLE_PARALLEL_API_CALLS=true
+ENABLE_IMAGE_OPTIMIZATION=true
+```
+
+### Build Configuration
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": [
+    "src/**/*",
+    "__tests__/**/*"
+  ],
+  "exclude": [
+    "useless/**/*",
+    "node_modules"
+  ]
+}
+```
+
+## 📊 ПРОИЗВОДИТЕЛЬНОСТЬ
+
+### Benchmarks
+- **Single Destination**: ~8 секунд
+- **Multi Destination (4-6)**: ~25 секунд
+- **API Calls**: Параллельные запросы сокращают время на 60%
+- **Image Processing**: Оптимизация снижает размер на 40%
+
+### Optimization Strategies
+- **Parallel Processing**: Одновременные API вызовы
+- **Caching**: Кэширование цен и изображений
+- **Image Optimization**: Автоматическое сжатие
+- **Template Reuse**: Переиспользование MJML шаблонов
 
 ---
 
-## 🏗️ DEVELOPMENT ENVIRONMENT
-
-### Local Development Setup ✅ IMPLEMENTED
-- **Node.js 18+**: Runtime environment
-- **npm/yarn**: Package management
-- **PostgreSQL**: Local database instance
-- **Redis**: Cache and session storage
-- **Docker**: Container development and testing
-
-### Build & Deployment ✅ IMPLEMENTED
-- **Next.js Build**: ✅ Production optimization
-- **TypeScript Compilation**: ✅ Strict type checking (0 errors)
-- **Docker Containerization**: ✅ Multi-stage production builds
-- **CI/CD Pipeline**: ✅ GitHub Actions with testing and deployment
-- **Environment Management**: ✅ Development, staging, production configs
-
-### Testing Infrastructure ✅ IMPLEMENTED
-- **Jest**: ✅ Unit testing framework
-- **Cypress**: ✅ End-to-end testing
-- **Testing Library**: ✅ Component testing utilities
-- **Coverage**: ✅ 80%+ test coverage across domains
-
-### Code Quality ✅ IMPLEMENTED
-- **ESLint**: ✅ Code linting with custom rules
-- **Prettier**: ✅ Code formatting
-- **Husky**: ✅ Git hooks for quality gates
-- **TypeScript**: ✅ Strict mode compilation
-
----
-
-## 🔧 INFRASTRUCTURE ARCHITECTURE
-
-### Production Infrastructure ✅ IMPLEMENTED
-
-#### Containerization
-- **Docker**: ✅ Multi-stage production builds
-- **Docker Compose**: ✅ Multi-service orchestration
-- **Kubernetes**: Ready for orchestration deployment
-- **Health Checks**: ✅ Liveness and readiness probes
-
-#### Monitoring Stack ✅ IMPLEMENTED
-- **Prometheus**: ✅ Metrics collection and alerting
-- **Grafana**: ✅ Visualization and dashboards
-- **AlertManager**: ✅ Alert routing and notification
-- **Pino Logging**: ✅ Structured JSON logging
-
-#### Security Hardening ✅ IMPLEMENTED
-- **HTTPS**: ✅ TLS termination with Nginx
-- **CORS**: ✅ Cross-origin request protection
-- **CSP**: ✅ Content Security Policy headers
-- **Rate Limiting**: ✅ API abuse prevention
-- **Input Sanitization**: ✅ XSS and injection protection
-
-### Render Testing Infrastructure - **NEW**
-
-#### Worker Architecture (Phase 7.2 - IN PROGRESS)
-- **Worker Pool**: Dynamic scaling based on queue size
-- **Health Monitoring**: Automatic worker restart on failure
-- **Resource Management**: CPU and memory limits per worker
-- **Isolation**: Sandboxed execution environment
-
-#### Storage & CDN (Phase 7.2 - PLANNED)
-- **Object Storage**: S3/MinIO for screenshot persistence
-- **CDN Integration**: CloudFront/CDN for global delivery
-- **Image Optimization**: WebP/AVIF conversion and compression
-- **Lifecycle Management**: Automated cleanup and archival
-
-#### Queue Management (Phase 7.2 - IN PROGRESS)
-- **Priority Queues**: High/medium/low priority job processing
-- **Dead Letter Queue**: Failed job handling and retry logic
-- **Metrics Collection**: Queue depth, processing time, success rates
-- **Auto-scaling**: Worker count adjustment based on load
-
----
-
-## 📊 PERFORMANCE SPECIFICATIONS
-
-### Response Time Targets ✅ ACHIEVED
-- **API Response Time**: <2 seconds average ✅
-- **Frontend Load Time**: <3 seconds initial load ✅
-- **Database Queries**: <100ms average response ✅
-- **Template Generation**: <30 seconds end-to-end ✅
-
-### New Render Testing Targets (Phase 7.2)
-- **Render Job Creation**: <1 second response time
-- **Screenshot Capture**: <30 seconds per client
-- **Full Suite Testing**: <2 minutes for 5+ clients
-- **Storage Upload**: <5 seconds per screenshot
-- **Queue Processing**: <100ms job dispatch time
-
-### Scalability Targets ✅ READY
-- **Concurrent Users**: Support 100+ simultaneous users ✅
-- **Template Generation**: 50+ templates per hour during peak ✅
-- **Database Connections**: Connection pooling for 200+ connections ✅
-- **File Processing**: Handle Figma files up to 50MB ✅
-
-### New Render Testing Scalability (Phase 7.2)
-- **Concurrent Render Jobs**: 10+ simultaneous jobs
-- **Worker Pool**: Auto-scaling from 1-20 workers
-- **Storage Capacity**: 100,000+ screenshots with efficient retrieval
-- **Queue Throughput**: 1000+ jobs per hour processing capacity
-
----
-
-## 🔄 DEVELOPMENT WORKFLOW
-
-### Version Control ✅ IMPLEMENTED
-- **Git**: ✅ Version control with feature branches
-- **GitHub**: ✅ Repository hosting and collaboration
-- **Conventional Commits**: ✅ Standardized commit messages
-- **Branch Protection**: ✅ Required reviews and status checks
-
-### CI/CD Pipeline ✅ IMPLEMENTED
-- **GitHub Actions**: ✅ Automated testing and deployment
-- **Quality Gates**: ✅ TypeScript compilation, linting, testing
-- **Security Scanning**: ✅ Dependency vulnerability checks
-- **Deployment**: ✅ Automated deployment to staging and production
-
-### Development Tools ✅ IMPLEMENTED
-- **VS Code**: ✅ Recommended editor with extensions
-- **TypeScript**: ✅ Language server and IntelliSense
-- **Debugger**: ✅ Node.js and browser debugging support
-- **Hot Reload**: ✅ Development server with fast refresh
-
-**Status**: Phase 7.1 technical architecture complete with comprehensive render testing technology stack. Phase 7.2 infrastructure implementation in progress with job queue, storage, and worker orchestration systems. 
+**Последнее обновление:** 2024-12-19  
+**Версия архитектуры:** 2.0 (Multiple Destinations)  
+**Совместимость:** OpenAI Agents SDK v2, Next.js 14+ 

@@ -121,7 +121,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.log('🤖 Calling AI agent with:', agentRequest);
     
     // Import and call the agent directly
-    const { EmailGeneratorAgent } = await import('@/agent/agent');
+    const { EmailGeneratorAgent } = await import('@/agent/agent-stub');
     // Исправляю создание агента - новый конструктор не принимает параметры
     const agent = new EmailGeneratorAgent();
     

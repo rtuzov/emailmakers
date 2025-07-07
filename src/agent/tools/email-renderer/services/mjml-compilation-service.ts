@@ -86,10 +86,10 @@ export class MjmlCompilationService {
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif" />
       <mj-text font-size="16px" color="#333333" line-height="1.6" />
-      <mj-button background-color="#FF6B35" color="#ffffff" font-weight="bold" />
+      <mj-button background-color="#4BFF7E" color="#ffffff" font-weight="bold" />
     </mj-attributes>
     <mj-style>
-      .kupibilet-header { background-color: #FF6B35; }
+      .brand-header { background-color: #4BFF7E; }
       .kupibilet-content { background-color: #ffffff; }
       .kupibilet-footer { background-color: #f8f9fa; }
       @media only screen and (max-width: 600px) {
@@ -100,13 +100,13 @@ export class MjmlCompilationService {
   </mj-head>
   <mj-body background-color="#f8f9fa">
     <!-- Header -->
-    <mj-section css-class="kupibilet-header" padding="20px 0">
+    <mj-section css-class="brand-header" padding="20px 0">
       <mj-column>
         <mj-text align="center" color="#ffffff" font-size="24px" font-weight="bold">
-          Kupibilet
+          Brand Name
         </mj-text>
         <mj-text align="center" color="#ffffff" font-size="14px">
-          Ваш надежный партнер в путешествиях
+          Ваш надежный партнер
         </mj-text>
       </mj-column>
     </mj-section>
@@ -120,7 +120,7 @@ export class MjmlCompilationService {
         <mj-text font-size="16px" color="#666666" line-height="1.6" padding="20px 0">
           ${mainContent}
         </mj-text>
-        <mj-button href="#" background-color="#FF6B35" color="#ffffff" font-size="16px" font-weight="bold" padding="20px 0">
+        <mj-button href="#" background-color="#4BFF7E" color="#ffffff" font-size="16px" font-weight="bold" padding="20px 0">
           Найти билеты
         </mj-button>
       </mj-column>
@@ -130,10 +130,10 @@ export class MjmlCompilationService {
     <mj-section css-class="kupibilet-footer" padding="20px">
       <mj-column>
         <mj-text align="center" font-size="12px" color="#999999">
-          © 2025 Kupibilet. Все права защищены.
+          © 2025 Brand. Все права защищены.
         </mj-text>
         <mj-text align="center" font-size="12px" color="#999999">
-          Если вы не хотите получать наши письма, <a href="#" style="color: #FF6B35;">отписаться</a>
+          Если вы не хотите получать наши письма, <a href="#" style="color: #4BFF7E;">отписаться</a>
         </mj-text>
       </mj-column>
     </mj-section>
@@ -151,7 +151,7 @@ export class MjmlCompilationService {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Kupibilet - Специальные предложения</title>
+  <title>Brand - Специальные предложения</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -195,13 +195,13 @@ export class MjmlCompilationService {
           
           <!-- Header -->
           <tr>
-            <td style="background-color: #FF6B35; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-                Kupibilet
-              </h1>
-              <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; font-family: Arial, sans-serif;">
-                Ваш надежный партнер в путешествиях
-              </p>
+            <td style="background-color: #4BFF7E; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                  Brand Name
+                </h1>
+                <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; font-family: Arial, sans-serif;">
+                  Ваш надежный партнер
+                </p>
             </td>
           </tr>
           
@@ -218,7 +218,7 @@ export class MjmlCompilationService {
               <!-- CTA Button -->
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
                 <tr>
-                  <td style="border-radius: 6px; background-color: #FF6B35;">
+                  <td style="border-radius: 6px; background-color: #4BFF7E;">
                     <a href="#" style="display: inline-block; padding: 15px 30px; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; border-radius: 6px;" class="mobile-button">
                       Найти билеты в Норвегию
                     </a>
@@ -257,11 +257,11 @@ export class MjmlCompilationService {
           <!-- Footer -->
           <tr>
             <td style="background-color: #f8f9fa; padding: 30px 20px; text-align: center; border-radius: 0 0 8px 8px;">
-              <p style="margin: 0 0 10px 0; color: #999999; font-size: 12px; font-family: Arial, sans-serif;">
-                © 2025 Kupibilet. Все права защищены.
-              </p>
+                              <p style="margin: 0 0 10px 0; color: #999999; font-size: 12px; font-family: Arial, sans-serif;">
+                  © 2025 Brand. Все права защищены.
+                </p>
               <p style="margin: 0; color: #999999; font-size: 12px; font-family: Arial, sans-serif;">
-                Если вы не хотите получать наши письма, <a href="#" style="color: #FF6B35; text-decoration: underline;">отписаться</a>
+                Если вы не хотите получать наши письма, <a href="#" style="color: #4BFF7E; text-decoration: underline;">отписаться</a>
               </p>
             </td>
           </tr>
