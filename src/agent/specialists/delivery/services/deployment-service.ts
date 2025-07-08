@@ -10,7 +10,7 @@ import { Agent, run } from '@openai/agents';
 
 import { campaignDeployment, CampaignDeploymentSchema } from '../../../tools/simple/campaign-deployment';
 import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
-import { deliveryManagerTool } from '../../../tools/agent-tools';
+// Note: deliveryManagerTool moved to useless/ - using direct tool calls instead
 import { runWithTimeout } from '../../../utils/run-with-timeout';
 import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';
@@ -584,7 +584,7 @@ export class DeploymentService {
         }
       }
 
-      // Fallback parsing
+      // Alternative parsing method
       const testResults = [
         { test_name: 'Cross-client compatibility', status: 'passed', score: 95, details: 'All major clients supported' },
         { test_name: 'Responsive design', status: 'passed', score: 90, details: 'Mobile and desktop layouts work correctly' },

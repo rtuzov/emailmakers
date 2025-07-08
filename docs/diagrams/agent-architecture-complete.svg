@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1600" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient definitions -->
+    <linearGradient id="entryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e1f5fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b3e5fc;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orchestrationGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e1bee7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="specialistGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="toolGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffe0b2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="validationGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffebee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffcdd2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="externalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f1f8e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dcedc8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1600" height="1200" fill="#fafafa"/>
+  
+  <!-- Title -->
+  <text x="800" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1565c0">
+    Email-Makers Agent System Architecture
+  </text>
+  <text x="800" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">
+    Complete System with All Components from src/agent
+  </text>
+  
+  <!-- Main Entry Points -->
+  <rect x="50" y="80" width="160" height="80" rx="10" fill="url(#entryGradient)" stroke="#01579b" stroke-width="2"/>
+  <text x="130" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#01579b">API Routes</text>
+  <text x="130" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#01579b">run-improved/route.ts</text>
+  
+  <rect x="50" y="180" width="160" height="80" rx="10" fill="url(#entryGradient)" stroke="#01579b" stroke-width="2"/>
+  <text x="130" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#01579b">EmailGeneratorAgent</text>
+  <text x="130" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#01579b">agent.ts</text>
+  
+  <rect x="50" y="280" width="160" height="80" rx="10" fill="url(#entryGradient)" stroke="#01579b" stroke-width="2"/>
+  <text x="130" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#01579b">Multi-Handoff Agent</text>
+  <text x="130" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#01579b">multi-handoff-agent.ts</text>
+  
+  <!-- Core Orchestration -->
+  <rect x="280" y="180" width="200" height="100" rx="10" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="2"/>
+  <text x="380" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4a148c">Email Campaign Orchestrator</text>
+  <text x="380" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a148c">core/orchestrator.ts</text>
+  <text x="380" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a148c">OpenAI SDK Integration</text>
+  
+  <!-- Core Infrastructure -->
+  <rect x="280" y="300" width="90" height="60" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="325" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a148c">Tool Registry</text>
+  <text x="325" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a148c">50+ Tools</text>
+  
+  <rect x="390" y="300" width="90" height="60" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="435" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a148c">State Manager</text>
+  <text x="435" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a148c">Campaign State</text>
+  
+  <rect x="280" y="380" width="90" height="60" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="325" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a148c">Prompt Manager</text>
+  <text x="325" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a148c">Dynamic Prompts</text>
+  
+  <rect x="390" y="380" width="90" height="60" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="435" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a148c">Agent Handoffs</text>
+  <text x="435" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a148c">SDK Integration</text>
+  
+  <!-- Specialist Agents -->
+  <rect x="520" y="120" width="160" height="80" rx="10" fill="url(#specialistGradient)" stroke="#1b5e20" stroke-width="2"/>
+  <text x="600" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1b5e20">Content Specialist</text>
+  <text x="600" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">AI Content Generation</text>
+  <text x="600" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">6 Tools</text>
+  
+  <rect x="520" y="220" width="160" height="80" rx="10" fill="url(#specialistGradient)" stroke="#1b5e20" stroke-width="2"/>
+  <text x="600" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1b5e20">Design Specialist V2</text>
+  <text x="600" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">Modular Design System</text>
+  <text x="600" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">4 Services</text>
+  
+  <rect x="520" y="320" width="160" height="80" rx="10" fill="url(#specialistGradient)" stroke="#1b5e20" stroke-width="2"/>
+  <text x="600" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1b5e20">Quality Specialist V2</text>
+  <text x="600" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">ML Quality Analysis</text>
+  <text x="600" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">15+ Tools</text>
+  
+  <rect x="520" y="420" width="160" height="80" rx="10" fill="url(#specialistGradient)" stroke="#1b5e20" stroke-width="2"/>
+  <text x="600" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1b5e20">Delivery Specialist</text>
+  <text x="600" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">Final Packaging</text>
+  <text x="600" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1b5e20">Deployment</text>
+  
+  <!-- Content Services -->
+  <rect x="720" y="80" width="120" height="150" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="780" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Content Services</text>
+  <text x="780" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Generation Service</text>
+  <text x="780" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Destination Analyzer</text>
+  <text x="780" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Multi-Destination Planner</text>
+  <text x="780" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Pricing Service</text>
+  <text x="780" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Seasonal Optimizer</text>
+  <text x="780" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Content Types & Utils</text>
+  
+  <!-- Design Services -->
+  <rect x="720" y="240" width="120" height="120" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="780" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Design Services</text>
+  <text x="780" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Asset Management</text>
+  <text x="780" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Design Optimization</text>
+  <text x="780" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Email Rendering</text>
+  <text x="780" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Multi-Dest Layout</text>
+  <text x="780" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Design Types</text>
+  
+  <!-- Quality Services -->
+  <rect x="720" y="380" width="120" height="130" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="780" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Quality Services</text>
+  <text x="780" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Quality Analysis</text>
+  <text x="780" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Compliance Service</text>
+  <text x="780" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Email Validation</text>
+  <text x="780" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Testing Service</text>
+  <text x="780" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Multi-Dest Validation</text>
+  <text x="780" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Quality Types</text>
+  
+  <!-- Tool Categories -->
+  <rect x="880" y="80" width="140" height="100" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="950" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Consolidated Tools</text>
+  <text x="950" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Content Generator</text>
+  <text x="950" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Context Provider</text>
+  <text x="950" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Delivery Manager</text>
+  <text x="950" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Figma Asset Manager</text>
+  
+  <rect x="880" y="200" width="140" height="120" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="950" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Simple Tools</text>
+  <text x="950" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Accessibility</text>
+  <text x="950" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Campaign Deployment</text>
+  <text x="950" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Content Create</text>
+  <text x="950" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Figma Integration</text>
+  <text x="950" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">S3 Upload</text>
+  <text x="950" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Screenshots</text>
+  
+  <rect x="880" y="340" width="140" height="120" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="950" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">AI Consultant</text>
+  <text x="950" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">AI Consultant</text>
+  <text x="950" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Action Executor</text>
+  <text x="950" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Smart Analyzer</text>
+  <text x="950" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Workflow Quality</text>
+  <text x="950" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">ML Scoring</text>
+  
+  <rect x="880" y="480" width="140" height="80" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="950" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Email Renderer</text>
+  <text x="950" y="515" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">MJML Compilation</text>
+  <text x="950" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Component Rendering</text>
+  <text x="950" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Optimization</text>
+  
+  <!-- Validation Pipeline -->
+  <rect x="1080" y="200" width="120" height="200" rx="5" fill="url(#validationGradient)" stroke="#b71c1c" stroke-width="1"/>
+  <text x="1140" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#b71c1c">Validation Pipeline</text>
+  <text x="1140" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Request Validator</text>
+  <text x="1140" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Handoff Validator</text>
+  <text x="1140" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Response Validator</text>
+  <text x="1140" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Content Validator</text>
+  <text x="1140" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Design Validator</text>
+  <text x="1140" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Quality Validator</text>
+  <text x="1140" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Delivery Validator</text>
+  <text x="1140" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">AI Corrector</text>
+  <text x="1140" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Validation Monitor</text>
+  
+  <!-- Error Handling -->
+  <rect x="1080" y="420" width="120" height="100" rx="5" fill="url(#validationGradient)" stroke="#b71c1c" stroke-width="1"/>
+  <text x="1140" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#b71c1c">Error Handling</text>
+  <text x="1140" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Error Handler</text>
+  <text x="1140" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Retry Logic</text>
+  <text x="1140" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Performance Metrics</text>
+  <text x="1140" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b71c1c">Tracing Utils</text>
+  
+  <!-- Advanced Features -->
+  <rect x="1240" y="80" width="120" height="150" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="1300" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a148c">Advanced Features</text>
+  <text x="1300" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Parallel Processor</text>
+  <text x="1300" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Asset Hash Manager</text>
+  <text x="1300" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Cache Manager</text>
+  <text x="1300" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Content Extractor</text>
+  <text x="1300" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Logger</text>
+  <text x="1300" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Base Agent Classes</text>
+  <text x="1300" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Optimization Engine</text>
+  
+  <!-- External Integrations -->
+  <rect x="1240" y="250" width="120" height="120" rx="5" fill="url(#externalGradient)" stroke="#33691e" stroke-width="1"/>
+  <text x="1300" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#33691e">External APIs</text>
+  <text x="1300" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#33691e">OpenAI SDK</text>
+  <text x="1300" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#33691e">Figma API</text>
+  <text x="1300" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#33691e">MJML Engine</text>
+  <text x="1300" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#33691e">AWS S3</text>
+  <text x="1300" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#33691e">ML Scoring</text>
+  
+  <!-- Prompts & Templates -->
+  <rect x="1240" y="390" width="120" height="100" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="1300" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Prompts System</text>
+  <text x="1300" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Specialist Prompts</text>
+  <text x="1300" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Orchestrator Prompts</text>
+  <text x="1300" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Tool Prompts</text>
+  <text x="1300" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Templates</text>
+  
+  <!-- Specialized Tools -->
+  <rect x="1080" y="80" width="120" height="100" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="1140" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Specialized Tools</text>
+  <text x="1140" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">AI Tag Mapper</text>
+  <text x="1140" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Asset Tag Planner</text>
+  <text x="1140" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Image Planning</text>
+  <text x="1140" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Enhanced Selector</text>
+  
+  <!-- Module Organization -->
+  <rect x="50" y="520" width="140" height="80" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="120" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a148c">Module Organization</text>
+  <text x="120" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Agent Tools Module</text>
+  <text x="120" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Specialist Modules</text>
+  <text x="120" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Image Planning</text>
+  
+  <!-- Type System -->
+  <rect x="220" y="520" width="140" height="80" rx="5" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="290" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a148c">Type System</text>
+  <text x="290" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Base Agent Types</text>
+  <text x="290" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Handoff Schemas</text>
+  <text x="290" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">Type Exports</text>
+  
+  <!-- Utilities -->
+  <rect x="390" y="520" width="140" height="80" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="460" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Utilities</text>
+  <text x="460" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">File System</text>
+  <text x="460" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Timeout Utils</text>
+  <text x="460" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Feedback Package</text>
+  
+  <!-- Delivery Services -->
+  <rect x="720" y="520" width="120" height="80" rx="5" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="780" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">Delivery Services</text>
+  <text x="780" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Deployment Service</text>
+  <text x="780" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Upload Service</text>
+  <text x="780" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Screenshot Service</text>
+  
+  <!-- Arrows showing flow -->
+  <!-- Entry flow -->
+  <path d="M 130 160 L 130 180" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 130 260 L 130 280" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 210 320 L 280 230" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To specialists -->
+  <path d="M 480 230 L 520 160" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 480 230 L 520 260" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 480 230 L 520 360" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 480 230 L 520 460" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To tools -->
+  <path d="M 680 160 L 720 155" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 680 260 L 720 300" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 680 360 L 720 445" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 680 460 L 720 560" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To tool categories -->
+  <path d="M 840 155 L 880 130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 840 300 L 880 260" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 840 445 L 880 400" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 840 560 L 880 520" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To validation -->
+  <path d="M 1020 300 L 1080 300" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 1020 400 L 1080 470" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To external -->
+  <path d="M 1020 130 L 1240 310" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 1020 520 L 1240 440" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Feedback arrows (dashed) -->
+  <path d="M 680 460 L 680 360" stroke="#ff5722" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#feedbackArrow)"/>
+  <path d="M 680 360 L 680 260" stroke="#ff5722" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#feedbackArrow)"/>
+  <path d="M 680 260 L 680 160" stroke="#ff5722" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#feedbackArrow)"/>
+  <path d="M 1140 470 L 380 350" stroke="#ff5722" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#feedbackArrow)"/>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="feedbackArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff5722"/>
+    </marker>
+  </defs>
+  
+  <!-- Legend -->
+  <rect x="50" y="650" width="1500" height="120" rx="10" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
+  <text x="80" y="675" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Legend</text>
+  
+  <rect x="80" y="690" width="30" height="20" fill="url(#entryGradient)" stroke="#01579b" stroke-width="1"/>
+  <text x="120" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Entry Points</text>
+  
+  <rect x="230" y="690" width="30" height="20" fill="url(#orchestrationGradient)" stroke="#4a148c" stroke-width="1"/>
+  <text x="270" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Orchestration</text>
+  
+  <rect x="380" y="690" width="30" height="20" fill="url(#specialistGradient)" stroke="#1b5e20" stroke-width="1"/>
+  <text x="420" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Specialists</text>
+  
+  <rect x="530" y="690" width="30" height="20" fill="url(#toolGradient)" stroke="#e65100" stroke-width="1"/>
+  <text x="570" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Tools & Services</text>
+  
+  <rect x="680" y="690" width="30" height="20" fill="url(#validationGradient)" stroke="#b71c1c" stroke-width="1"/>
+  <text x="720" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Validation</text>
+  
+  <rect x="830" y="690" width="30" height="20" fill="url(#externalGradient)" stroke="#33691e" stroke-width="1"/>
+  <text x="870" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">External APIs</text>
+  
+  <path d="M 1000 700 L 1040 700" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="1050" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Data Flow</text>
+  
+  <path d="M 1150 700 L 1190 700" stroke="#ff5722" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#feedbackArrow)"/>
+  <text x="1200" y="705" font-family="Arial, sans-serif" font-size="12" fill="#333">Feedback Loop</text>
+  
+  <!-- Statistics -->
+  <text x="80" y="730" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">System Statistics:</text>
+  <text x="80" y="750" font-family="Arial, sans-serif" font-size="11" fill="#333">• 50+ Tools across 5 categories • 4 Specialist Agents • 3-tier Validation • OpenAI Agents SDK • TypeScript Strict Mode</text>
+  
+  <text x="900" y="730" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Performance Targets:</text>
+  <text x="900" y="750" font-family="Arial, sans-serif" font-size="11" fill="#333">• <2s API Response • <30s Email Generation • 95%+ Compatibility • <100KB Output • 80%+ Test Coverage</text>
+  
+</svg>

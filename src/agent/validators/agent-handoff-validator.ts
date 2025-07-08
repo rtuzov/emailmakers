@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ValidationMonitor } from '../utils/validation-monitor-stub';
+import { validationMonitor } from '../utils/validation-monitor-stub';
 import { generateTraceId } from '../utils/tracing-utils';
 import {
   HandoffDataUnion,
@@ -35,11 +35,11 @@ export interface AICorrector {
 export class HandoffValidator {
   private static instance: HandoffValidator;
   private aiCorrector?: AICorrector;
-  private monitor: ValidationMonitor;
+  private monitor: typeof validationMonitor;
 
   private constructor(aiCorrector?: AICorrector) {
     this.aiCorrector = aiCorrector;
-    this.monitor = ValidationMonitor.getInstance();
+    this.monitor = validationMonitor;
   }
 
   /**

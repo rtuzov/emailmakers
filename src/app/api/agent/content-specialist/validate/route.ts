@@ -54,8 +54,7 @@ export async function POST(request: NextRequest) {
                 preheader: "Исправленный preheader",
                 body: "Исправленное содержимое письма с достаточной длиной для валидации",
                 cta: "Исправленный CTA",
-                language: "ru",
-                tone: "friendly"
+                language: "ru"
               }
             }
           },
@@ -70,19 +69,16 @@ export async function POST(request: NextRequest) {
                   preheader: "Исправленный preheader", 
                   body: "Исправленное содержимое письма с достаточной длиной для валидации",
                   cta: "Исправленный CTA",
-                  language: "ru",
-                  tone: "friendly"
+                  language: "ru"
                 }
               },
               design_requirements: {
-                tone: "friendly",
                 style: "modern",
                 color_scheme: "warm",
                 imagery_focus: "travel",
                 layout_priority: "mobile_first"
               },
               brand_guidelines: {
-                brand_voice: "friendly",
                 visual_style: "modern",
                 color_palette: ["#2B5CE6", "#FF6B6B"],
                 typography: "readable"
@@ -154,19 +150,16 @@ export async function POST(request: NextRequest) {
             preheader: output.results?.content_data?.complete_content?.preheader || 'Mock Preheader',
             body: output.results?.content_data?.complete_content?.body || 'Mock Body Content',
             cta: output.results?.content_data?.complete_content?.cta || 'Mock CTA',
-            language: 'ru',
-            tone: 'friendly'
+            language: 'ru'
           }
         },
         design_requirements: {
-          tone: 'friendly',
           style: 'modern',
           color_scheme: 'warm',
           imagery_focus: 'travel',
           layout_priority: 'mobile_first'
         },
         brand_guidelines: {
-          brand_voice: 'friendly',
           visual_style: 'modern',
           color_palette: ['#2B5CE6', '#FF6B6B'],
           typography: 'readable'

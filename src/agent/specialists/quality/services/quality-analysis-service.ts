@@ -12,7 +12,7 @@
 import { QualitySpecialistInput, TaskResults, QualityRecommendations, QualityAnalytics } from '../types/quality-types';
 import { EmailValidationService } from './email-validation-service';
 import { getLogger } from '../../../../shared/utils/logger';
-import { MLQualityScorer } from '../../../tools/ml/quality-scoring';
+import { MLQualityScorer } from '../../../ml/quality-scoring';
 
 const logger = getLogger({ component: 'quality-analysis' });
 

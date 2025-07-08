@@ -7,7 +7,7 @@
  * АРХИТЕКТУРА:
  * ├── Обработка плана ассетов от Content Specialist
  * ├── Интеллектуальный поиск в Figma по тегам
- * ├── Fallback на внешние источники изображений
+ * ├── Try external image sources if Figma assets not found
  * ├── Оптимизация и валидация выбранных ассетов
  * └── Формирование структурированного результата
  */
@@ -58,49 +58,25 @@ export const AssetPlanSchema = z.object({
 export const AssetSelectionResultSchema = z.object({
   success: z.boolean().describe('Успешность выбора ассетов'),
   selected_assets: z.object({
-    hero_assets: z.array(z.object({
-      asset_id: z.string().describe('ID ассета'),
-      filename: z.string().describe('Имя файла'),
-      url: z.string().describe('URL изображения'),
-      source: z.enum(['figma', 'external']).describe('Источник'),
-      tags: z.array(z.string()).describe('Теги ассета'),
-      metadata: z.any().describe('Метаданные ассета')
-    })).describe('Hero ассеты'),
-    content_assets: z.array(z.object({
-      asset_id: z.string().describe('ID ассета'),
-      filename: z.string().describe('Имя файла'),
-      url: z.string().describe('URL изображения'),
-      source: z.enum(['figma', 'external']).describe('Источник'),
-      placement: z.string().describe('Размещение'),
-      tags: z.array(z.string()).describe('Теги ассета'),
-      metadata: z.any().describe('Метаданные ассета')
-    })).describe('Контентные ассеты'),
-    footer_assets: z.array(z.object({
-      asset_id: z.string().describe('ID ассета'),
-      filename: z.string().describe('Имя файла'),
-      url: z.string().describe('URL изображения'),
-      source: z.enum(['figma', 'external']).describe('Источник'),
-      type: z.enum(['icon', 'logo', 'decoration']).describe('Тип'),
-      tags: z.array(z.string()).describe('Теги ассета'),
-      metadata: z.any().describe('Метаданные ассета')
-    })).describe('Footer ассеты')
+    hero_assets: z.array(z.any()).describe('Выбранные hero ассеты'),
+    content_assets: z.array(z.any()).describe('Выбранные контентные ассеты'),
+    footer_assets: z.array(z.any()).describe('Выбранные footer ассеты')
   }).describe('Выбранные ассеты'),
   distribution_achieved: z.object({
-    figma_count: z.number().describe('Фактическое количество из Figma'),
-    external_count: z.number().describe('Фактическое количество внешних'),
-    total_count: z.number().describe('Общее количество')
+    figma_count: z.number().describe('Количество ассетов из Figma'),
+    external_count: z.number().describe('Количество внешних ассетов'),
+    total_count: z.number().describe('Общее количество ассетов')
   }).describe('Достигнутое распределение'),
   search_metadata: z.object({
-    figma_search_results: z.number().describe('Результатов поиска в Figma'),
-    external_search_results: z.number().describe('Результатов внешнего поиска'),
+    figma_search_results: z.number().describe('Результаты поиска в Figma'),
+    external_search_results: z.number().describe('Результаты внешнего поиска'),
     selection_strategy: z.string().describe('Стратегия выбора'),
-    processing_time_ms: z.number().describe('Время обработки в мс')
+    processing_time_ms: z.number().describe('Время обработки в миллисекундах')
   }).describe('Метаданные поиска'),
   reasoning: z.string().describe('Обоснование выбора ассетов')
 });
 
-export type AssetPlan = z.infer<typeof AssetPlanSchema>;
-export type AssetSelectionResult = z.infer<typeof AssetSelectionResultSchema>;
+// Типы будут экспортированы в конце файла
 
 // ============================================================================
 // OPENAI AGENTS SDK TOOL DEFINITION
@@ -166,7 +142,7 @@ export const enhancedAssetSelectorTool = tool({
       
     } catch (error) {
       console.error('❌ Enhanced Asset Selector error:', error);
-      return createFallbackResult(assetPlan, error, Date.now() - startTime);
+      throw new Error(`Enhanced Asset Selector failed: ${error.message}`);
     }
   }
 });
@@ -184,65 +160,70 @@ async function selectHeroAssets(assetManager: AssetManager, plan: AssetPlan): Pr
   
   try {
     // Поиск в Figma
-    const figmaResults = await assetManager.searchFigmaAssets(heroReq.tags, {
-      limit: 3,
-      priority: 'mascot', // Приоритет персонажам для hero
-      campaignType: 'promotional'
+    const figmaSearchResult = await assetManager.searchAssets({
+      tags: heroReq.tags,
+      emotional_tone: 'positive',
+      campaign_type: 'promotional',
+      target_count: 3,
+      preferred_emotion: 'happy'
     });
     
-    if (figmaResults.length > 0) {
-      return figmaResults.slice(0, 1).map(asset => ({
-        asset_id: asset.id || `hero_${Date.now()}`,
-        filename: asset.filename || 'hero_image.png',
-        url: asset.url || asset.local_path || '',
+    if (figmaSearchResult.success && figmaSearchResult.assets.length > 0) {
+      return figmaSearchResult.assets.slice(0, 1).map(asset => ({
+        asset_id: `hero_${Date.now()}`,
+        filename: asset.fileName || 'hero_image.png',
+        url: asset.filePath || '',
         source: 'figma' as const,
         tags: heroReq.tags,
         metadata: {
           description: heroReq.description,
           priority: heroReq.priority,
-          folder: asset.folder || 'unknown',
+          folder: 'unknown',
           figma_tags: asset.tags || []
         }
       }));
     }
     
-    // Fallback на внешние источники
-    const externalResults = await assetManager.searchExternalImages(
-      plan.external_search_tags.filter(tag => 
+    // Try external sources if no Figma assets found
+    const externalSearchResult = await assetManager.searchAssets({
+      tags: plan.external_search_tags.filter(tag => 
         ['hero', 'main', 'primary', 'character', 'mascot'].some(heroTag => 
           tag.toLowerCase().includes(heroTag)
         )
       ).slice(0, 3),
-      { limit: 1, type: 'hero' }
-    );
+      emotional_tone: 'positive',
+      campaign_type: 'promotional',
+      target_count: 1,
+      preferred_emotion: 'happy'
+    });
     
-    return externalResults.map(asset => ({
-      asset_id: `hero_ext_${Date.now()}`,
-      filename: asset.filename || 'hero_external.jpg',
-      url: asset.url || '',
-      source: 'external' as const,
-      tags: heroReq.tags,
-      metadata: {
-        description: heroReq.description,
-        priority: heroReq.priority,
-        external_source: asset.source || 'unsplash'
-      }
-    }));
+    if (externalSearchResult.success && externalSearchResult.assets.length > 0) {
+      return externalSearchResult.assets.map(asset => ({
+        asset_id: `hero_ext_${Date.now()}`,
+        filename: asset.fileName || 'hero_external.jpg',
+        url: asset.filePath || '',
+        source: 'external' as const,
+        tags: heroReq.tags,
+        metadata: {
+          description: heroReq.description,
+          priority: heroReq.priority,
+          external_source: asset.source || 'internet'
+        }
+      }));
+    }
+    
+    // Если ничего не найдено, возвращаем пустой массив
+    return [];
     
   } catch (error) {
-    console.warn('⚠️ Hero asset selection failed, using fallback:', error);
-    return [{
-      asset_id: `hero_fallback_${Date.now()}`,
-      filename: 'hero_fallback.png',
-      url: '/assets/fallback/hero.png',
-      source: 'figma' as const,
-      tags: ['заяц', 'персонаж'],
-      metadata: {
-        description: 'Fallback hero image',
-        priority: 'high',
-        fallback: true
-      }
-    }];
+    console.error('❌ Hero asset selection failed:', error);
+    
+    // Fail fast - no fallback allowed
+    if (error instanceof Error) {
+      throw error;
+    }
+    
+    throw new Error(`Hero asset selection failed: ${error}`);
   }
 }
 
@@ -261,66 +242,66 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
     
     try {
       // Поиск в Figma
-      const figmaResults = await assetManager.searchFigmaAssets(req.tags, {
-        limit: 2,
-        campaignType: 'promotional'
+      const figmaSearchResult = await assetManager.searchAssets({
+        tags: req.tags,
+        emotional_tone: 'positive',
+        campaign_type: 'promotional',
+        target_count: 2,
+        preferred_emotion: 'happy'
       });
       
-      if (figmaResults.length > 0) {
-        const asset = figmaResults[0];
+      if (figmaSearchResult.success && figmaSearchResult.assets.length > 0) {
+        const asset = figmaSearchResult.assets[0];
         allContentAssets.push({
-          asset_id: asset.id || `content_${i}_${Date.now()}`,
-          filename: asset.filename || `content_${i + 1}.png`,
-          url: asset.url || asset.local_path || '',
+          asset_id: `content_${i}_${Date.now()}`,
+          filename: asset.fileName || `content_${i + 1}.png`,
+          url: asset.filePath || '',
           source: 'figma' as const,
           placement: req.placement,
           tags: req.tags,
           metadata: {
             description: req.description,
-            folder: asset.folder || 'unknown',
+            folder: 'unknown',
             figma_tags: asset.tags || []
           }
         });
         continue;
       }
       
-      // Fallback на внешние источники
-      const externalResults = await assetManager.searchExternalImages(
-        plan.external_search_tags.slice(0, 3),
-        { limit: 1, type: 'content' }
-      );
+      // Try external sources if no Figma assets found
+      const externalSearchResult = await assetManager.searchAssets({
+        tags: plan.external_search_tags.slice(0, 3),
+        emotional_tone: 'positive',
+        campaign_type: 'promotional',
+        target_count: 1,
+        preferred_emotion: 'happy'
+      });
       
-      if (externalResults.length > 0) {
-        const asset = externalResults[0];
+      if (externalSearchResult.success && externalSearchResult.assets.length > 0) {
+        const asset = externalSearchResult.assets[0];
         allContentAssets.push({
           asset_id: `content_ext_${i}_${Date.now()}`,
-          filename: asset.filename || `content_external_${i + 1}.jpg`,
-          url: asset.url || '',
+          filename: asset.fileName || `content_external_${i + 1}.jpg`,
+          url: asset.filePath || '',
           source: 'external' as const,
           placement: req.placement,
           tags: req.tags,
           metadata: {
             description: req.description,
-            external_source: asset.source || 'unsplash'
+            external_source: asset.source || 'internet'
           }
         });
       }
       
     } catch (error) {
-      console.warn(`⚠️ Content asset ${i + 1} selection failed:`, error);
-      // Добавляем fallback ассет
-      allContentAssets.push({
-        asset_id: `content_fallback_${i}_${Date.now()}`,
-        filename: `content_fallback_${i + 1}.png`,
-        url: `/assets/fallback/content_${i + 1}.png`,
-        source: 'figma' as const,
-        placement: req.placement,
-        tags: ['путешествия', 'отдых'],
-        metadata: {
-          description: `Fallback content image ${i + 1}`,
-          fallback: true
-        }
-      });
+      console.error(`❌ Content asset ${i + 1} selection failed:`, error);
+      
+      // Fail fast - no fallback allowed
+      if (error instanceof Error) {
+        throw error;
+      }
+      
+      throw new Error(`Content asset selection failed for asset ${i + 1}: ${error}`);
     }
   }
   
@@ -342,46 +323,44 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
     
     try {
       // Поиск в Figma (приоритет иконкам и логотипам)
-      const figmaResults = await assetManager.searchFigmaAssets(req.tags, {
-        limit: 2,
-        priority: 'icon',
-        campaignType: 'promotional'
+      const figmaSearchResult = await assetManager.searchAssets({
+        tags: req.tags,
+        emotional_tone: 'positive',
+        campaign_type: 'promotional',
+        target_count: 2,
+        preferred_emotion: 'happy'
       });
       
-      if (figmaResults.length > 0) {
-        const asset = figmaResults[0];
+      if (figmaSearchResult.success && figmaSearchResult.assets.length > 0) {
+        const asset = figmaSearchResult.assets[0];
         allFooterAssets.push({
-          asset_id: asset.id || `footer_${i}_${Date.now()}`,
-          filename: asset.filename || `footer_${i + 1}.png`,
-          url: asset.url || asset.local_path || '',
+          asset_id: `footer_${i}_${Date.now()}`,
+          filename: asset.fileName || `footer_${i + 1}.png`,
+          url: asset.filePath || '',
           source: 'figma' as const,
           type: req.type,
           tags: req.tags,
           metadata: {
             description: req.description,
-            folder: asset.folder || 'unknown',
+            folder: 'unknown',
             figma_tags: asset.tags || []
           }
         });
         continue;
       }
       
-      // Fallback - используем стандартные иконки
-      allFooterAssets.push({
-        asset_id: `footer_fallback_${i}_${Date.now()}`,
-        filename: `footer_${req.type}_${i + 1}.png`,
-        url: `/assets/fallback/footer_${req.type}.png`,
-        source: 'figma' as const,
-        type: req.type,
-        tags: req.tags,
-        metadata: {
-          description: `Fallback ${req.type} element`,
-          fallback: true
-        }
-      });
+      // If no assets found, fail fast
+      throw new Error(`No footer assets found for ${req.type} with tags: ${req.tags.join(', ')}`);
       
     } catch (error) {
-      console.warn(`⚠️ Footer asset ${i + 1} selection failed:`, error);
+      console.error(`❌ Footer asset ${i + 1} selection failed:`, error);
+      
+      // Fail fast - no fallback allowed
+      if (error instanceof Error) {
+        throw error;
+      }
+      
+      throw new Error(`Footer asset selection failed for asset ${i + 1}: ${error}`);
     }
   }
   
@@ -412,68 +391,78 @@ function calculateDistribution(heroAssets: any[], contentAssets: any[], footerAs
   };
 }
 
-/**
- * Создание fallback результата при ошибке
- */
-function createFallbackResult(
-  plan: AssetPlan, 
-  error: any, 
-  processingTime: number
-): AssetSelectionResult {
-  console.warn('🔄 Creating fallback asset selection result due to error:', error);
-  
-  return {
-    success: false,
-    selected_assets: {
-      hero_assets: [{
-        asset_id: `hero_fallback_${Date.now()}`,
-        filename: 'hero_fallback.png',
-        url: '/assets/fallback/hero.png',
-        source: 'figma',
-        tags: ['заяц', 'персонаж'],
-        metadata: { fallback: true, error: true }
-      }],
-      content_assets: [{
-        asset_id: `content_fallback_${Date.now()}`,
-        filename: 'content_fallback.png',
-        url: '/assets/fallback/content.png',
-        source: 'figma',
-        placement: 'main_content',
-        tags: ['путешествия', 'отдых'],
-        metadata: { fallback: true, error: true }
-      }],
-      footer_assets: [{
-        asset_id: `footer_fallback_${Date.now()}`,
-        filename: 'footer_fallback.png',
-        url: '/assets/fallback/footer.png',
-        source: 'figma',
-        type: 'icon',
-        tags: ['иконка'],
-        metadata: { fallback: true, error: true }
-      }]
-    },
-    distribution_achieved: {
-      figma_count: 3,
-      external_count: 0,
-      total_count: 3
-    },
-    search_metadata: {
-      figma_search_results: 0,
-      external_search_results: 0,
-      selection_strategy: 'fallback_error_recovery',
-      processing_time_ms: processingTime
-    },
-    reasoning: `Fallback результат создан из-за ошибки: ${error instanceof Error ? error.message : 'Unknown error'}. Использованы стандартные ассеты.`
-  };
-}
+// No fallback results - all errors must be handled properly by throwing
 
 // ============================================================================
 // EXPORTS
 // ============================================================================
 
-export { enhancedAssetSelectorTool };
-export type { AssetPlan, AssetSelectionResult };
+// enhancedAssetSelectorTool уже экспортирован на строке 111 как export const
+export type AssetPlan = z.infer<typeof AssetPlanSchema>;
+export type AssetSelectionResult = z.infer<typeof AssetSelectionResultSchema>;
 
-// Для обратной совместимости
-export const executeEnhancedAssetSelector = enhancedAssetSelectorTool.execute;
+// Для обратной совместимости - прямая функция-обертка
+export const executeEnhancedAssetSelector = async (assetPlan: AssetPlan): Promise<AssetSelectionResult> => {
+  // Копируем логику execute из tool definition
+  console.log('🎨 Enhanced Asset Selector: Starting asset selection...');
+  console.log('📋 Asset Plan:', JSON.stringify(assetPlan, null, 2));
+  
+  const startTime = Date.now();
+  
+  try {
+    // Инициализируем Asset Manager
+    const assetManager = new AssetManager();
+    
+    // Выбираем hero ассеты
+    const heroAssets = await selectHeroAssets(assetManager, assetPlan);
+    console.log(`🎯 Selected ${heroAssets.length} hero assets`);
+    
+    // Выбираем контентные ассеты
+    const contentAssets = await selectContentAssets(assetManager, assetPlan);
+    console.log(`📄 Selected ${contentAssets.length} content assets`);
+    
+    // Выбираем footer ассеты
+    const footerAssets = await selectFooterAssets(assetManager, assetPlan);
+    console.log(`🔗 Selected ${footerAssets.length} footer assets`);
+    
+    // Подсчитываем распределение
+    const distributionAchieved = calculateDistribution(heroAssets, contentAssets, footerAssets);
+    
+    // Создаем метаданные поиска
+    const searchMetadata = {
+      figma_search_results: distributionAchieved.figma_count,
+      external_search_results: distributionAchieved.external_count,
+      selection_strategy: 'intelligent_priority_based',
+      processing_time_ms: Date.now() - startTime
+    };
+    
+    // Формируем результат
+    const result: AssetSelectionResult = {
+      success: true,
+      selected_assets: {
+        hero_assets: heroAssets,
+        content_assets: contentAssets,
+        footer_assets: footerAssets
+      },
+      distribution_achieved: distributionAchieved,
+      search_metadata: searchMetadata,
+      reasoning: `Выбрано ${distributionAchieved.total_count} ассетов: ${distributionAchieved.figma_count} из Figma и ${distributionAchieved.external_count} внешних. ` +
+                `Hero: ${heroAssets.length}, Content: ${contentAssets.length}, Footer: ${footerAssets.length}. ` +
+                `Время обработки: ${searchMetadata.processing_time_ms}мс.`
+    };
+    
+    console.log('✅ Enhanced Asset Selector: Selection completed successfully');
+    return result;
+    
+  } catch (error) {
+    console.error('❌ Enhanced Asset Selector error:', error);
+    
+    // Fail fast - no fallback allowed
+    if (error instanceof Error) {
+      throw error;
+    }
+    
+    throw new Error(`Enhanced asset selector failed: ${error}`);
+  }
+};
 export default enhancedAssetSelectorTool; 

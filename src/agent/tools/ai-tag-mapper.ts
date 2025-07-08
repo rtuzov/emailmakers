@@ -69,7 +69,7 @@ export class AITagMapper {
         name: 'AI Tag Mapper',
         model: getUsageModel(),
         tools: [],
-        systemPrompt: `Ты эксперт по маппингу тегов для поиска изображений в Figma ассетах.
+        instructions: `Ты эксперт по маппингу тегов для поиска изображений в Figma ассетах.
 
 Твоя задача - анализировать входящие теги (часто на английском) и находить наиболее подходящие русские теги из доступных в Figma коллекции.
 
@@ -210,7 +210,7 @@ export class AITagMapper {
   }
 
   /**
-   * Try AI-enhanced mapping (fallback to empty if fails)
+   * Try AI-enhanced mapping (return empty if fails)
    */
   private async tryAIMapping(request: TagMappingRequest): Promise<string[]> {
     if (!this.agent) return [];
@@ -294,7 +294,7 @@ ${Object.entries(searchRecommendations).map(([type, rec]) =>
       console.warn('Failed to parse AI response as JSON:', error);
     }
 
-    // Fallback: extract tags from text
+    // Alternative: extract tags from text
     const tags = this.extractTagsFromText(aiText);
     return { tags };
   }

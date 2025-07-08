@@ -211,7 +211,7 @@ export class PricingService implements BaseContentService {
    */
   private analyzePsychologicalFactors(pricingData: PricingData, params: ContentGeneratorParams): any {
     const positioning = this.determinePricePositioning(pricingData);
-    const audience = params.target_audience?.primary || 'general';
+    const audience = typeof params.target_audience === 'string' ? params.target_audience : 'general';
     
     const factors: any = {
       price_anchoring: this.createPriceAnchoring(pricingData),
@@ -226,7 +226,7 @@ export class PricingService implements BaseContentService {
         factors.emphasis = 'savings';
         factors.comparison_focus = 'price_difference';
         break;
-      case 'luxury_seekers':
+      case 'young_adults':
         factors.emphasis = 'value';
         factors.comparison_focus = 'quality_benefits';
         break;
@@ -301,7 +301,7 @@ export class PricingService implements BaseContentService {
    */
   private generatePricingIntelligence(enhancedPricing: any, params: ContentGeneratorParams): any {
     const positioning = enhancedPricing.price_positioning;
-    const audience = params.target_audience?.primary || 'general';
+    const audience = typeof params.target_audience === 'string' ? params.target_audience : 'general';
 
     // Психологическое ценообразование
     const psychologicalPricing = this.determinePsychologicalPricing(enhancedPricing, audience);
@@ -366,17 +366,10 @@ export class PricingService implements BaseContentService {
     const triggers: string[] = [];
     const positioning = enhancedPricing.price_positioning;
 
-    if (positioning === 'budget') {
-      triggers.push('Лучшая цена');
-      triggers.push('Не упустите возможность');
-    }
-
-    if (enhancedPricing.savings_potential > 15) {
-      triggers.push('Ограниченное время');
-      triggers.push('Пока есть места');
-    }
-
-    return triggers;
+    // Удален предустановленный контент - все триггеры должны генерироваться через OpenAI SDK
+    // в зависимости от конкретного контекста и ценовых данных
+    
+    return triggers; // Возвращаем пустой массив - контент будет генерироваться агентом
   }
 
   private createPriceAnchoring(pricingData: PricingData): any {
@@ -464,7 +457,8 @@ export class PricingService implements BaseContentService {
       opportunities.push('Дополнительные услуги по специальной цене');
     }
 
-    if (params.target_audience?.primary === 'families') {
+    const audienceType = typeof params.target_audience === 'string' ? params.target_audience : undefined;
+    if (audienceType === 'families') {
       opportunities.push('Детские тарифы');
       opportunities.push('Семейные пакеты');
     }

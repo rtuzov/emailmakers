@@ -1,0 +1,27 @@
+{
+  "campaign_id": "campaign_1751974081638_5f0fnd97d",
+  "name": "Зимние каникулы в Японии для семей с детьми",
+  "brand": "Купибилет",
+  "type": "promotional",
+  "audience": "Семьи с детьми, которые интересуются зимними видами отдыха, фестивалями, активными и расслабляющими путешествиями.",
+  "goals": [
+    "Продвижение авиабилетов в Японию на зимние праздники",
+    "Повышение узнаваемости семейных направлений",
+    "Увеличение конверсии среди семейной аудитории"
+  ],
+  "folders": {
+    "content": "campaigns/campaign_1751974081638_5f0fnd97d/content/",
+    "assets": "campaigns/campaign_1751974081638_5f0fnd97d/assets/",
+    "templates": "campaigns/campaign_1751974081638_5f0fnd97d/templates/",
+    "exports": "campaigns/campaign_1751974081638_5f0fnd97d/exports/",
+    "documentation": "campaigns/campaign_1751974081638_5f0fnd97d/docs/"
+  },
+  "metadata": {
+    "created_at": "2025-07-08T11:28:01.638Z",
+    "created_by": "content_specialist",
+    "status": "content_phase",
+    "workflow_stage": "initialization"
+  },
+  "created_at": "2025-07-08T11:28:01.640Z",
+  "last_updated": "2025-07-08T11:28:01.640Z"
+}

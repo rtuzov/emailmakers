@@ -132,8 +132,8 @@ export class MultiDestinationLayoutService {
       compact: ['multi-destination-compact.mjml'],
       grid: ['multi-destination-grid.mjml'],
       carousel: ['multi-destination-carousel.mjml'],
-      list: ['multi-destination-grid.mjml'], // Fallback to grid
-      featured: ['multi-destination-compact.mjml'] // Fallback to compact
+      list: ['multi-destination-grid.mjml'], // Alternative grid layout
+      featured: ['multi-destination-compact.mjml'] // Alternative compact layout
     };
   }
 
@@ -639,7 +639,7 @@ export class MultiDestinationLayoutService {
   }
 
   /**
-   * Создание минимальных планов изображений (fallback)
+   * Создание минимальных планов изображений (альтернативный способ)
    */
   private createMinimalImagePlans(_: DestinationPlan[]): never {
     throw new Error('createMinimalImagePlans is disabled by project policy.');

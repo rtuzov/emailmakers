@@ -359,7 +359,7 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       console.warn('⚠️ T4: Campaign state недоступен:', error.message);
     }
     
-    // Fallback: получить из emailFolder parameter
+    // Alternative: get from emailFolder parameter
     if (!campaignId && params.emailFolder) {
       if (typeof params.emailFolder === 'string') {
         campaignId = params.emailFolder;

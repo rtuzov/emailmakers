@@ -1,0 +1,27 @@
+{
+  "campaign_id": "campaign_1751976227099_3a0z2zno6",
+  "name": "Осенний отдых в Таиланде 2024",
+  "brand": "Купибилет",
+  "type": "promotional",
+  "audience": "Россияне, планирующие бюджетный отпуск осенью, в том числе семьи и группы друзей, ищущие вдохновение и выгодные предложения.",
+  "goals": [
+    "Повысить продажи авиабилетов в Таиланд на осенний период",
+    "Показать выгоды раннего бронирования билетов",
+    "Продвигать бренд Купибилет как источник лучших авиапредложений"
+  ],
+  "folders": {
+    "content": "campaigns/campaign_1751976227099_3a0z2zno6/content/",
+    "assets": "campaigns/campaign_1751976227099_3a0z2zno6/assets/",
+    "templates": "campaigns/campaign_1751976227099_3a0z2zno6/templates/",
+    "exports": "campaigns/campaign_1751976227099_3a0z2zno6/exports/",
+    "documentation": "campaigns/campaign_1751976227099_3a0z2zno6/docs/"
+  },
+  "metadata": {
+    "created_at": "2025-07-08T12:03:47.099Z",
+    "created_by": "content_specialist",
+    "status": "content_phase",
+    "workflow_stage": "initialization"
+  },
+  "created_at": "2025-07-08T12:03:47.100Z",
+  "last_updated": "2025-07-08T12:03:47.100Z"
+}

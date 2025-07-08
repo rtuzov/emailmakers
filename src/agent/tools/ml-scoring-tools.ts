@@ -1,6 +1,6 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
-import { MLQualityScorer } from './ml/quality-scoring';
+import { MLQualityScorer } from '../ml/quality-scoring';
 
 // Zod schemas for ML-scoring tools (OpenAI Agents SDK compatible)
 const EmailDataSchema = z.object({

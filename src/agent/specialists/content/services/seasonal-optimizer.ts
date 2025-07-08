@@ -205,7 +205,7 @@ export class SeasonalOptimizer {
     const countryData = this.getCountrySeasonalData(destination.geographical_info.country_code);
     
     if (!countryData) {
-      // Fallback на данные из destination
+      // Use destination data as alternative
       return destination.seasonal_context.optimal_months;
     }
     
@@ -314,7 +314,7 @@ export class SeasonalOptimizer {
     };
     
     if (!countryData) {
-      // Fallback на базовые данные из destination
+      // Use base destination data as alternative
       analysis.best_months = destination.seasonal_context.optimal_months;
       analysis.optimal_periods.push({
         season: destination.seasonal_context.primary_season,

@@ -1,0 +1,27 @@
+{
+  "campaign_id": "campaign_1751978581461_wp382tds0",
+  "name": "Зимний отдых в Таиланде",
+  "brand": "Купибилет",
+  "type": "promotional",
+  "audience": "Россияне, планирющие зимний отпуск и ищущие лучшие предложения на авиабилеты. 25-44 года: активные пары, семьи, любители приключений.",
+  "goals": [
+    "Продвижение зимних авиабилетов в Таиланд",
+    "Демонстрация выгодной цены и сезонности",
+    "Увеличение бронирований через Купибилет"
+  ],
+  "folders": {
+    "content": "campaigns/campaign_1751978581461_wp382tds0/content/",
+    "assets": "campaigns/campaign_1751978581461_wp382tds0/assets/",
+    "templates": "campaigns/campaign_1751978581461_wp382tds0/templates/",
+    "exports": "campaigns/campaign_1751978581461_wp382tds0/exports/",
+    "documentation": "campaigns/campaign_1751978581461_wp382tds0/docs/"
+  },
+  "metadata": {
+    "created_at": "2025-07-08T12:43:01.461Z",
+    "created_by": "content_specialist",
+    "status": "content_phase",
+    "workflow_stage": "initialization"
+  },
+  "created_at": "2025-07-08T12:43:01.463Z",
+  "last_updated": "2025-07-08T12:43:01.463Z"
+}

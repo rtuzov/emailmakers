@@ -440,7 +440,7 @@ class SegmentClassifier {
         }
       }
     } catch (error: any) {
-      // Fallback parsing failed
+      // Parsing failed - use default classification
     }
     
     return { type: 'color', confidence: 0.1 };
@@ -526,7 +526,7 @@ class ExportManager {
         await EmailFolderManager.saveSpriteSlices(this.emailFolder, sliceBuffers, manifest);
         console.log(`💾 T10: Saved ${slices.length} sprite slices to email folder`);
       } else {
-        // Fallback - сохраняем в обычную папку
+        // Save to standard directory (not email folder)
         for (const slice of sliceBuffers) {
           const filepath = path.join(finalOutputDir, slice.filename);
           await fs.writeFile(filepath, slice.buffer);
@@ -669,7 +669,7 @@ class FigmaSpriteProcessor {
       
     } catch (error: any) {
       if (error instanceof ProcessingError && error.recoverable) {
-              // Throw error instead of fallback
+              // Throw error when filtering fails
       console.error(`Error in processing: ${error.message}`);
       throw error;
       } else {

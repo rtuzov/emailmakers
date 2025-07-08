@@ -34,7 +34,7 @@ export class ContentUtils {
         errors.push('Currency is required when pricing data is provided');
       }
 
-      if (typeof params.pricing_data.cheapest !== 'number') {
+      if (params.pricing_data.cheapest !== undefined && typeof params.pricing_data.cheapest !== 'number') {
         errors.push('Cheapest price must be a valid number');
       }
     }
@@ -64,8 +64,8 @@ export class ContentUtils {
       warnings.push('Maximum content length is very short, may limit content quality');
     }
 
-    if (params.target_audience && !params.target_audience.primary) {
-      warnings.push('Primary audience is not specified, using generic targeting');
+    if (params.target_audience && typeof params.target_audience !== 'string') {
+      warnings.push('Target audience should be a string literal, not an object');
     }
 
     return {
@@ -145,8 +145,10 @@ export class ContentUtils {
   /**
    * Получение приоритетов сообщений для аудитории
    */
-  static getMessagingPriorities(audience: any): string[] {
-    if (!audience?.primary) {
+  static getMessagingPriorities(audience: string | any): string[] {
+    const audienceType = typeof audience === 'string' ? audience : audience?.primary;
+    
+    if (!audienceType) {
       return ['value', 'convenience', 'quality'];
     }
 
@@ -159,14 +161,16 @@ export class ContentUtils {
       'luxury_seekers': ['premium', 'exclusivity', 'service', 'status']
     };
 
-    return priorities[audience.primary] || ['value', 'quality', 'convenience'];
+    return priorities[audienceType] || ['value', 'quality', 'convenience'];
   }
 
   /**
    * Получение предпочтений контента для аудитории
    */
-  static getContentPreferences(audience: any): Record<string, any> {
-    if (!audience?.primary) {
+  static getContentPreferences(audience: string | any): Record<string, any> {
+    const audienceType = typeof audience === 'string' ? audience : audience?.primary;
+    
+    if (!audienceType) {
       return {
         length: 'medium',
         complexity: 'simple',
@@ -220,7 +224,7 @@ export class ContentUtils {
       }
     };
 
-    return preferences[audience.primary] || preferences['families'];
+    return preferences[audienceType] || preferences['families'];
   }
 
   /**
@@ -269,19 +273,20 @@ export class ContentUtils {
   /**
    * Создание контекста для персонализации
    */
-  static createPersonalizationContext(audience: any, params: ContentGeneratorParams): Record<string, any> {
+  static createPersonalizationContext(audience: string | any, params: ContentGeneratorParams): Record<string, any> {
+    const audienceType = typeof audience === 'string' ? audience : audience?.primary;
     const preferences = this.getContentPreferences(audience);
-    const triggers = this.mapAudienceToTriggers(audience?.primary || 'families');
+    const triggers = this.mapAudienceToTriggers(audienceType || 'families');
     const priorities = this.getMessagingPriorities(audience);
 
     return {
-      audience_type: audience?.primary || 'general',
-      tone_preference: this.mapAudienceToTone(audience?.primary || 'families'),
+      audience_type: audienceType || 'general',
+      tone_preference: this.mapAudienceToTone(audienceType || 'families'),
       content_preferences: preferences,
       psychological_triggers: triggers,
       messaging_priorities: priorities,
-      demographics: audience?.demographics || {},
-      psychographics: audience?.psychographics || {}
+      demographics: typeof audience === 'object' ? audience?.demographics || {} : {},
+      psychographics: typeof audience === 'object' ? audience?.psychographics || {} : {}
     };
   }
 

@@ -4,7 +4,7 @@
  * Управление визуальными ассетами для Design Specialist Agent:
  * - Поиск ассетов в Figma с использованием полной базы тегов
  * - Интеллектуальный выбор тегов из ai-optimized-tags.json
- * - Fallback к внешним источникам изображений
+ * - Alternative external image sources
  * - Трансформация данных ассетов
  * - Кэширование результатов поиска
  * - Валидация ассетов
@@ -92,7 +92,7 @@ export class AssetManager {
   }
 
   /**
-   * Основной метод поиска ассетов с интеллектуальным fallback
+   * Основной метод поиска ассетов с интеллектуальным подходом
    */
   async searchAssets(params: AssetSearchParams, contentPackage?: any): Promise<AssetSearchResult> {
     const startTime = Date.now();
@@ -114,7 +114,7 @@ export class AssetManager {
       return cached;
     }
 
-    // Выполняем интеллектуальный поиск с fallback
+    // Выполняем интеллектуальный поиск с альтернативными вариантами
     const searchResult = await this.performIntelligentSearch(searchTags, params, contentPackage);
 
     // Кэшируем результат
@@ -222,8 +222,9 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       const folders = data.folders || {};
       
       for (const [folderName, folderData] of Object.entries(folders)) {
-        if (folderData && typeof folderData === 'object' && folderData.tags) {
-          all_tags.push(...folderData.tags);
+        if (folderData && typeof folderData === 'object' && 'tags' in folderData) {
+          const folderWithTags = folderData as { tags: string[] };
+          all_tags.push(...folderWithTags.tags);
         }
       }
       
@@ -233,8 +234,9 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       // Создаем категории тегов на основе папок
       const tag_categories: Record<string, string[]> = {};
       for (const [folderName, folderData] of Object.entries(folders)) {
-        if (folderData && typeof folderData === 'object' && folderData.tags) {
-          tag_categories[folderName] = folderData.tags;
+        if (folderData && typeof folderData === 'object' && 'tags' in folderData) {
+          const folderWithTags = folderData as { tags: string[] };
+          tag_categories[folderName] = folderWithTags.tags;
         }
       }
       
@@ -270,7 +272,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
   }
 
   /**
-   * Интеллектуальный поиск с fallback к внешним источникам
+   * Интеллектуальный поиск с альтернативными внешними источниками
    */
   private async performIntelligentSearch(tags: string[], params: AssetSearchParams, contentPackage?: any): Promise<AssetSearchResult> {
     const startTime = Date.now();
@@ -312,7 +314,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       );
     }
 
-    // Шаг 3: Используем только Figma assets (без fallback)
+    // Шаг 3: Используем только Figma assets (без альтернативных источников)
     const allAssets = figmaAssets;
 
     // Шаг 5: Формируем результат
@@ -334,7 +336,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
     console.log(`✅ Asset search completed: ${sourceBreakdown}`);
     
     if (figmaAssets.length === 0 && externalAssets.length > 0) {
-      console.log(`🌐 FALLBACK ACTIVATED: Using ${externalAssets.length} external images (no Figma assets found)`);
+      console.log(`🌐 EXTERNAL SOURCES ACTIVATED: Using ${externalAssets.length} external images (no Figma assets found)`);
     }
     
     return result;

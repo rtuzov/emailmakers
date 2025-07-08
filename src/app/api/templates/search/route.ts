@@ -98,123 +98,7 @@ interface SearchResponse {
   };
 }
 
-// Enhanced mock templates for fallback search
-const mockTemplates: Template[] = [
-  {
-    id: 'tpl_1709567890123',
-    name: 'Парижский Уик-энд: Скидка 30%',
-    category: 'promotional',
-    description: 'Эксклюзивное предложение на романтические выходные в Париже с билетами от Купибилет',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/paris-weekend-preview.png',
-    createdAt: '2024-03-04T14:30:00Z',
-    updatedAt: '2024-03-04T15:45:00Z',
-    tags: ['париж', 'скидка', 'выходные', 'романтика'],
-    status: 'published',
-    openRate: 89.5,
-    clickRate: 24.8,
-    qualityScore: 92,
-    agentGenerated: true,
-    subjectLine: '🇫🇷 Париж ждет вас! Скидка 30% на романтические выходные',
-    previewText: 'Откройте для себя магию Парижа с эксклюзивными предложениями от Купибилет',
-    userId: 'user_123'
-  },
-  {
-    id: 'tpl_1709567890124',
-    name: 'Подтверждение Бронирования Москва-СПб',
-    category: 'transactional',
-    description: 'Автоматическое подтверждение бронирования билетов по маршруту Москва-Санкт-Петербург',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/booking-confirmation-preview.png',
-    createdAt: '2024-03-03T10:15:00Z',
-    updatedAt: '2024-03-03T10:15:00Z',
-    tags: ['подтверждение', 'бронирование', 'москва', 'спб'],
-    status: 'published',
-    openRate: 98.2,
-    clickRate: 45.6,
-    qualityScore: 96,
-    agentGenerated: true,
-    subjectLine: '✅ Ваши билеты Москва-СПб забронированы',
-    previewText: 'Подтверждение бронирования №BR-2024-03-001234',
-    userId: 'user_123'
-  },
-  {
-    id: 'tpl_1709567890125',
-    name: 'Добро пожаловать в Купибилет',
-    category: 'welcome',
-    description: 'Приветственное письмо для новых пользователей с инструкциями и бонусами',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/welcome-series-preview.png',
-    createdAt: '2024-03-02T16:20:00Z',
-    updatedAt: '2024-03-02T16:20:00Z',
-    tags: ['добро пожаловать', 'онбординг', 'новый пользователь'],
-    status: 'published',
-    openRate: 85.3,
-    clickRate: 32.1,
-    qualityScore: 88,
-    agentGenerated: true,
-    subjectLine: '🎉 Добро пожаловать в Купибилет! Ваш бонус внутри',
-    previewText: 'Спасибо за регистрацию! Получите 500 баллов на первое путешествие',
-    userId: 'user_123'
-  },
-  {
-    id: 'tpl_1709567890126',
-    name: 'Еженедельная Рассылка Горящих Предложений',
-    category: 'newsletter',
-    description: 'Подборка лучших предложений недели с актуальными скидками на популярные направления',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/hot-deals-newsletter-preview.png',
-    createdAt: '2024-03-01T09:00:00Z',
-    updatedAt: '2024-03-01T09:00:00Z',
-    tags: ['рассылка', 'горящие', 'предложения', 'скидки'],
-    status: 'published',
-    openRate: 76.8,
-    clickRate: 18.9,
-    qualityScore: 84,
-    agentGenerated: true,
-    subjectLine: '🔥 Горящие предложения недели от Купибилет',
-    previewText: 'Турция от 12,900₽, Италия от 18,500₽, Испания от 15,200₽',
-    userId: 'user_123'
-  },
-  {
-    id: 'tpl_1709567890127',
-    name: 'Анонс Новых Маршрутов',
-    category: 'announcement',
-    description: 'Объявление о запуске новых направлений и маршрутов в летнем сезоне',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/new-routes-announcement-preview.png',
-    createdAt: '2024-02-28T13:45:00Z',
-    updatedAt: '2024-02-28T14:00:00Z',
-    tags: ['анонс', 'новые маршруты', 'лето', 'направления'],
-    status: 'draft',
-    openRate: 82.1,
-    clickRate: 28.4,
-    qualityScore: 90,
-    agentGenerated: true,
-    subjectLine: '✈️ Новые направления лета 2024 уже доступны',
-    previewText: 'Баку, Астана, Алматы и еще 15 городов ждут вас',
-    userId: 'user_123'
-  },
-  {
-    id: 'tpl_1709567890128',
-    name: 'Напоминание о Неиспользованных Билетах',
-    category: 'transactional',
-    description: 'Уведомление пользователям о неиспользованных билетах с возможностью возврата',
-    thumbnail: '/api/placeholder/400/300',
-    preview: '/templates/unused-tickets-reminder-preview.png',
-    createdAt: '2024-02-27T11:30:00Z',
-    updatedAt: '2024-02-27T11:30:00Z',
-    tags: ['напоминание', 'билеты', 'возврат', 'неиспользованные'],
-    status: 'published',
-    openRate: 91.7,
-    clickRate: 38.2,
-    qualityScore: 94,
-    agentGenerated: false,
-    subjectLine: '⏰ У вас есть неиспользованные билеты',
-    previewText: 'Не забудьте воспользоваться билетами или оформить возврат',
-    userId: 'user_123'
-  }
-];
+// No mock templates - all templates must be generated by agents or retrieved from database
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
@@ -481,7 +365,7 @@ async function searchInDatabase(
 }
 
 /**
- * Search in mock data with enhanced scoring
+ * Mock data search is disabled - all templates must come from database or agents
  */
 async function searchInMockData(
   parsedQuery: SearchQuery,
@@ -491,85 +375,6 @@ async function searchInMockData(
   sortBy: string,
   sortOrder: string
 ): Promise<{ templates: Template[]; total: number }> {
-  let filteredTemplates = [...mockTemplates];
-
-  // Calculate relevance scores for all templates
-  filteredTemplates = filteredTemplates.map(template => {
-    let relevanceScore = 0;
-    relevanceScore += calculateRelevanceScore(template.name, parsedQuery, defaultSearchWeights.name);
-    relevanceScore += calculateRelevanceScore(template.description, parsedQuery, defaultSearchWeights.description);
-    relevanceScore += calculateRelevanceScore((template.tags || []).join(' '), parsedQuery, defaultSearchWeights.tags);
-    
-    return { ...template, relevanceScore };
-  });
-
-  // Filter by search relevance (only include results with score > 0)
-  if (parsedQuery.terms.length > 0 || parsedQuery.exactPhrases.length > 0 || parsedQuery.orQueries.length > 0) {
-    filteredTemplates = filteredTemplates.filter(template => (template.relevanceScore || 0) > 0);
-  }
-
-  // Apply additional filters
-  if (filters.status) {
-    filteredTemplates = filteredTemplates.filter(t => t.status === filters.status);
-  }
-  if (filters.qualityMin) {
-    filteredTemplates = filteredTemplates.filter(t => (t.qualityScore || 0) >= filters.qualityMin!);
-  }
-  if (filters.qualityMax) {
-    filteredTemplates = filteredTemplates.filter(t => (t.qualityScore || 0) <= filters.qualityMax!);
-  }
-  if (filters.agentGenerated !== undefined) {
-    filteredTemplates = filteredTemplates.filter(t => t.agentGenerated === filters.agentGenerated);
-  }
-  if (filters.dateStart) {
-    const startDate = new Date(filters.dateStart);
-    filteredTemplates = filteredTemplates.filter(t => new Date(t.createdAt) >= startDate);
-  }
-  if (filters.dateEnd) {
-    const endDate = new Date(filters.dateEnd);
-    filteredTemplates = filteredTemplates.filter(t => new Date(t.createdAt) <= endDate);
-  }
-  if (filters.tags && filters.tags.length > 0) {
-    filteredTemplates = filteredTemplates.filter(t => 
-      filters.tags!.some(tag => t.tags?.includes(tag))
-    );
-  }
-
-  // Apply sorting
-  filteredTemplates.sort((a, b) => {
-    let aVal, bVal;
-    switch (sortBy) {
-      case 'relevance':
-        aVal = a.relevanceScore || 0;
-        bVal = b.relevanceScore || 0;
-        break;
-      case 'name':
-        aVal = a.name;
-        bVal = b.name;
-        break;
-      case 'qualityScore':
-        aVal = a.qualityScore || 0;
-        bVal = b.qualityScore || 0;
-        break;
-      case 'updatedAt':
-        aVal = new Date(a.updatedAt || a.createdAt).getTime();
-        bVal = new Date(b.updatedAt || b.createdAt).getTime();
-        break;
-      default:
-        aVal = new Date(a.createdAt).getTime();
-        bVal = new Date(b.createdAt).getTime();
-    }
-    
-    if (typeof aVal === 'string') {
-      return sortOrder === 'desc' ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
-    } else {
-      return sortOrder === 'desc' ? bVal - aVal : aVal - bVal;
-    }
-  });
-
-  const total = filteredTemplates.length;
-  const offset = (page - 1) * limit;
-  const paginatedTemplates = filteredTemplates.slice(offset, offset + limit);
-
-  return { templates: paginatedTemplates, total };
+  console.error('❌ Mock data search attempted but is disabled');
+  throw new Error('Database unavailable and mock data is disabled. All templates must be generated by agents or stored in database.');
 }

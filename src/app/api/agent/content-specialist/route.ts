@@ -1,42 +1,106 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ContentSpecialistAgent, ContentSpecialistInput } from '@/agent/specialists/content-specialist-stub';
+import { z } from 'zod';
+import { executeContentSpecialistTask } from '@/agent/specialists/content-specialist-agent';
 
-// @ts-nocheck
+/**
+ * Zod schema for Content Specialist API request validation
+ * Following OpenAI Agents SDK best practices for parameter validation
+ */
+const ContentSpecialistRequestSchema = z.object({
+  task_type: z.enum([
+    'analyze_context',
+    'get_pricing', 
+    'generate_content',
+    'manage_campaign',
+    'generate_copy',
+    'create_variants',
+    'analyze_multi_destination'
+  ]).default('generate_content').describe('Type of content task to perform'),
+  
+  topic: z.string().min(1).max(500).optional().describe('Main topic or theme for content generation'),
+  
+  content_type: z.enum([
+    'email',
+    'subject_line', 
+    'preheader',
+    'call_to_action',
+    'body_text',
+    'complete_campaign',
+    'subject_only'
+  ]).default('complete_campaign').describe('Type of content to generate'),
+  
+  tone: z.enum([
+    'professional',
+    'friendly', 
+    'urgent',
+    'casual',
+    'luxury',
+    'family'
+      ]).describe('Tone of voice for content'),
+  
+  language: z.enum(['ru', 'en']).default('ru').describe('Language for content generation'),
+  
+  target_audience: z.string().default('general').describe('Target audience description'),
+  
+  origin: z.string().optional().describe('Origin location for travel content'),
+  destination: z.string().optional().describe('Destination location for travel content'),
+  
+  campaign_context: z.record(z.any()).optional().describe('Additional campaign context and metadata')
+});
+
+export type ContentSpecialistRequest = z.infer<typeof ContentSpecialistRequestSchema>;
 
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
-    const body = await request.json();
+    // Enhanced request validation following OpenAI Agents SDK best practices
+    const contentType = request.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      throw new Error('Content-Type must be application/json');
+    }
+    
+    // Parse and validate request body using Zod schema with size check
+    const rawBody = await request.text();
+    if (!rawBody || rawBody.trim() === '') {
+      throw new Error('Request body cannot be empty');
+    }
+    
+    if (rawBody.length > 10000) { // 10KB limit for request body
+      throw new Error('Request body too large (max 10KB)');
+    }
+    
+    const body = JSON.parse(rawBody);
+    const validatedRequest = ContentSpecialistRequestSchema.parse(body);
     
     const {
-      task_type = 'generate_content',
+      task_type,
       topic,
-      content_type = 'complete_campaign',
-      tone = 'friendly',
-      language = 'ru',
-      target_audience = 'general',
+      content_type,
+      tone,
+      language,
+      target_audience,
       origin,
       destination,
       campaign_context
-    } = body;
+    } = validatedRequest;
 
-    console.log('🧠 ContentSpecialist API called (OpenAI Agent SDK):', { 
+    console.log('🧠 ContentSpecialist API called (OpenAI Agents SDK v2):', { 
       task_type, 
-      topic, 
+      topic: topic || 'Travel Campaign', 
       content_type, 
       tone, 
       language,
-      hasOriginDestination: !!(origin && destination)
+      target_audience,
+      hasOriginDestination: !!(origin && destination),
+      timestamp: new Date().toISOString()
     });
 
-    // Prepare input for the content specialist agent
-    const agentInput: ContentSpecialistInput = {
+    // Prepare input for the content specialist agent following OpenAI Agents SDK patterns
+    const agentInput = {
       task_type,
       campaign_brief: {
-        topic: topic || 'Travel Campaign',
-        campaign_type: content_type,
-        target_audience,
-        origin,
-        destination
+        topic: topic || 'Travel Campaign'
       },
       context_requirements: {
         include_seasonal: true,
@@ -45,62 +109,196 @@ export async function POST(request: NextRequest) {
         include_travel: !!(origin || destination)
       },
       pricing_requirements: (origin && destination) ? {
-        origin: origin,
-        destination: destination,
+        origin,
+        destination,
         analysis_depth: 'basic' as const
       } : undefined,
       content_requirements: {
-        content_type: content_type === 'subject_only' ? 'subject_line' : 'email',
+        content_type: content_type === 'subject_only' ? 'subject_line' : 
+                     content_type === 'complete_campaign' ? 'email' : content_type,
         tone,
         language,
         generate_variants: false
       }
     };
 
-    // Create and run the content specialist agent with OpenAI Agent SDK
-    const agent = new ContentSpecialistAgent();
-    const result = await agent.executeTask(agentInput);
+    // Execute the content specialist task with OpenAI Agents SDK
+    const result = await executeContentSpecialistTask(agentInput);
+    const executionTime = Date.now() - startTime;
 
-    console.log('✅ ContentSpecialist agent completed:', {
+    console.log('✅ ContentSpecialist agent completed (OpenAI Agents SDK v2):', {
       success: result.success,
       task_type: result.task_type,
-      hasResults: !!result.results
+      execution_time: executionTime,
+      confidence_score: result.analytics?.confidence_score || 0,
+      hasResults: !!result.results,
+      next_agent: result.recommendations?.next_agent || 'none'
     });
 
+    // Return modern structured response following OpenAI Agents SDK patterns
     return NextResponse.json({
-      status: 'success',
-      data: result,
-      execution_time: result.analytics?.execution_time || 0,
+      success: result.success,
+      task_type: result.task_type,
+      results: result.results,
+      recommendations: result.recommendations,
+      analytics: {
+        ...result.analytics,
+        execution_time: executionTime,
+        sdk_version: 'openai-agents-v2'
+      },
       _meta: {
         agent: 'content-specialist',
         task_type: result.task_type,
+        execution_time: executionTime,
         success: result.success,
-        sdk: 'openai-agents'
+        sdk: 'openai-agents-v2',
+        timestamp: new Date().toISOString()
       }
     });
 
   } catch (error) {
+    const executionTime = Date.now() - startTime;
     console.error('❌ ContentSpecialist API error:', error);
+    
+    // Enhanced error handling with proper categorization following OpenAI Agents SDK patterns
+    if (error instanceof z.ZodError) {
+      // Input validation errors - return 400 with detailed field errors
+      const fieldErrors = error.errors.map(err => ({
+        field: err.path.join('.'),
+        message: err.message,
+        received: 'received' in err ? err.received : undefined,
+        expected: 'expected' in err ? err.expected : undefined
+      }));
+      
+      return NextResponse.json({
+        success: false,
+        task_type: 'generate_content',
+        results: {},
+        recommendations: {
+          next_actions: [
+            'Fix validation errors in request body',
+            'Check field types and constraints',
+            'Refer to API documentation for correct format'
+          ]
+        },
+        analytics: {
+          execution_time: executionTime,
+          operations_performed: 0,
+          confidence_score: 0,
+          agent_efficiency: 0
+        },
+        error: 'Input validation failed',
+        validation_errors: fieldErrors,
+        _meta: {
+          agent: 'content-specialist',
+          task_type: 'generate_content',
+          execution_time: executionTime,
+          success: false,
+          error_type: 'validation_error',
+          sdk: 'openai-agents-v2',
+          timestamp: new Date().toISOString()
+        }
+      }, { status: 400 });
+    }
+    
+    if (error instanceof SyntaxError || error.message?.includes('JSON')) {
+      // JSON parsing errors - return 400
+      return NextResponse.json({
+        success: false,
+        task_type: 'generate_content',
+        results: {},
+        recommendations: {
+          next_actions: [
+            'Check request body JSON syntax',
+            'Ensure Content-Type is application/json',
+            'Validate JSON structure'
+          ]
+        },
+        analytics: {
+          execution_time: executionTime,
+          operations_performed: 0,
+          confidence_score: 0,
+          agent_efficiency: 0
+        },
+        error: 'Invalid JSON in request body',
+        _meta: {
+          agent: 'content-specialist',
+          task_type: 'generate_content',
+          execution_time: executionTime,
+          success: false,
+          error_type: 'json_parse_error',
+          sdk: 'openai-agents-v2',
+          timestamp: new Date().toISOString()
+        }
+      }, { status: 400 });
+    }
+    
+    if (error.message?.includes('Content-Type') || 
+        error.message?.includes('empty') || 
+        error.message?.includes('too large')) {
+      // Request validation errors - return 400
+      return NextResponse.json({
+        success: false,
+        task_type: 'generate_content',
+        results: {},
+        recommendations: {
+          next_actions: [
+            'Ensure Content-Type header is application/json',
+            'Provide non-empty request body',
+            'Keep request body under 10KB limit'
+          ]
+        },
+        analytics: {
+          execution_time: executionTime,
+          operations_performed: 0,
+          confidence_score: 0,
+          agent_efficiency: 0
+        },
+        error: error.message,
+        _meta: {
+          agent: 'content-specialist',
+          task_type: 'generate_content',
+          execution_time: executionTime,
+          success: false,
+          error_type: 'request_validation_error',
+          sdk: 'openai-agents-v2',
+          timestamp: new Date().toISOString()
+        }
+      }, { status: 400 });
+    }
+    
+    // Agent execution errors - return 500 with diagnostic info
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
     
     return NextResponse.json({
       success: false,
       task_type: 'generate_content',
       results: {},
       recommendations: {
-        next_actions: ['Check error logs', 'Verify input parameters', 'Retry with different parameters']
+        next_actions: [
+          'Check OpenAI API key configuration',
+          'Verify agent initialization',
+          'Check system logs for detailed error information',
+          'Retry request with different parameters'
+        ]
       },
       analytics: {
-        execution_time: 0,
+        execution_time: executionTime,
         operations_performed: 0,
         confidence_score: 0,
         agent_efficiency: 0
       },
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: errorMessage,
       _meta: {
         agent: 'content-specialist',
-        execution_time: 0,
-        error_stack: error instanceof Error ? error.stack : undefined,
-        sdk: 'openai-agents'
+        task_type: 'generate_content',
+        execution_time: executionTime,
+        success: false,
+        error_type: 'agent_execution_error',
+        error_stack: process.env.NODE_ENV === 'development' ? errorStack : undefined,
+        sdk: 'openai-agents-v2',
+        timestamp: new Date().toISOString()
       }
     }, { status: 500 });
   }

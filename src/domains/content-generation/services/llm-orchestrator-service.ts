@@ -442,37 +442,8 @@ export class LLMOrchestratorService {
 
   // Helper methods for prompt optimization
   private getBasePromptTemplate(contentType: string): string {
-    const templates = {
-      subject: `Create a compelling email subject line that:
-- Captures attention immediately
-- Creates curiosity or urgency
-- Aligns with brand voice
-- Optimizes for mobile preview (30-50 characters)
-- Avoids spam trigger words`,
-
-      body: `Create engaging email body content that:
-- Opens with a strong hook
-- Delivers clear value proposition
-- Maintains consistent brand voice
-- Includes compelling call-to-action
-- Optimizes for scannable reading`,
-
-      cta: `Create persuasive call-to-action text that:
-- Uses action-oriented language
-- Creates sense of urgency or value
-- Aligns with campaign objectives
-- Optimizes for click-through rates
-- Maintains brand voice consistency`,
-
-      preheader: `Create a preheader that:
-- Complements the subject line
-- Provides additional context
-- Encourages email opening
-- Uses available character space effectively (90-130 characters)
-- Avoids redundancy with subject line`,
-    };
-
-    return templates[contentType as keyof typeof templates] || templates.body;
+    // No hardcoded templates - generate dynamic prompts based on content type
+    return `Generate high-quality ${contentType} content optimized for email marketing conversion and engagement.`;
   }
 
   private injectBrandContext(prompt: string, brandVoice: BrandVoice): string {

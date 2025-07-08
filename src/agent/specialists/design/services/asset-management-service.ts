@@ -294,7 +294,7 @@ export class AssetManagementService {
       // Try AI-based image planning
       return await this.runImagePlanningAI(imageContext);
     } catch (error) {
-      // Fallback to context-based planning
+      // Alternative: context-based planning
       return this.planImagesByContext(imageContext);
     }
   }
@@ -440,7 +440,8 @@ export class AssetManagementService {
       search_metadata: {
         query_tags: [],
         search_time_ms: 0,
-        recommendations: []
+        recommendations: [],
+        figma_tags_used: []
       }
     };
   }

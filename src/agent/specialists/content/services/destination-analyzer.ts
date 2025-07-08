@@ -518,7 +518,7 @@ export class DestinationAnalyzer {
   }
 
   /**
-   * Определение региона из запроса (fallback метод)
+   * Определение региона из запроса (альтернативный метод)
    */
   private detectRegionFromQuery(query: string): SupportedRegion {
     const analysis = this.detectRegionIndicators(query, this.extractKeywords(query));

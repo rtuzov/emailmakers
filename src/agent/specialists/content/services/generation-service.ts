@@ -46,7 +46,7 @@ export class GenerationService implements BaseContentService {
         throw new Error(`Generation validation failed: ${validation.errors.join(', ')}`);
       }
 
-      console.log(`🎯 Generating ${params.content_type} content with ${params.generation_strategy} strategy`);
+      console.log(`🎯 Generating ${params.content_type || 'email'} content with ${params.generation_strategy || 'default'} strategy`);
 
       // Получение ценового контекста через PricingService
       let pricingContext;
@@ -69,7 +69,7 @@ export class GenerationService implements BaseContentService {
       this.metricsData.content_length = enhancedContent.body.length;
       this.metricsData.tokens_used = baseContent.tokens_used || 0;
 
-      console.log(`✅ Generated ${params.content_type} content (${enhancedContent.body.length} chars)`);
+      console.log(`✅ Generated ${params.content_type || 'email'} content (${enhancedContent.body.length} chars)`);
 
       return {
         success: true,
@@ -235,7 +235,7 @@ export class GenerationService implements BaseContentService {
         throw new Error('Target audience is required for personalization');
       }
 
-      console.log(`👥 Personalizing content for ${params.target_audience.primary} audience`);
+      console.log(`👥 Personalizing content for ${typeof params.target_audience === 'string' ? params.target_audience : params.target_audience} audience`);
 
       // Создание контекста персонализации
       const personalizationContext = ContentUtils.createPersonalizationContext(params.target_audience, params);
@@ -249,7 +249,7 @@ export class GenerationService implements BaseContentService {
       // Применение слоев персонализации
       const personalizedContent = this.applyPersonalizationLayers(baseResult.content, personalizationContext, params);
 
-      console.log(`✅ Content personalized for ${params.target_audience.primary}`);
+      console.log(`✅ Content personalized for ${typeof params.target_audience === 'string' ? params.target_audience : params.target_audience}`);
 
       return {
         success: true,
@@ -307,7 +307,7 @@ export class GenerationService implements BaseContentService {
     const audienceInsights = {
       messaging_priorities: ContentUtils.getMessagingPriorities(params.target_audience),
       content_preferences: ContentUtils.getContentPreferences(params.target_audience),
-      psychological_triggers: ContentUtils.mapAudienceToTriggers(params.target_audience?.primary || 'families')
+      psychological_triggers: ContentUtils.mapAudienceToTriggers(typeof params.target_audience === 'string' ? params.target_audience : 'families')
     };
 
     const campaignIntelligence = {
@@ -342,7 +342,8 @@ export class GenerationService implements BaseContentService {
     let enhanced = subject;
 
     // Добавляем эмодзи для молодой аудитории
-    if (params.target_audience?.primary === 'young_adults') {
+    const audienceType = typeof params.target_audience === 'string' ? params.target_audience : undefined;
+    if (audienceType === 'young_adults') {
       enhanced = `✈️ ${enhanced}`;
     }
 
@@ -370,7 +371,8 @@ export class GenerationService implements BaseContentService {
 
     // Добавляем психологические триггеры
     const triggers = context.audience_insights.psychological_triggers;
-    if (triggers.includes('safety') && params.target_audience?.primary === 'families') {
+    const audienceType = typeof params.target_audience === 'string' ? params.target_audience : undefined;
+    if (triggers.includes('safety') && audienceType === 'families') {
       enhanced += ' Безопасность и комфорт вашей семьи - наш приоритет.';
     }
 
@@ -412,14 +414,16 @@ export class GenerationService implements BaseContentService {
   }
 
   private async generateOptimizedContent(existingContent: string, analysis: any, params: ContentGeneratorParams): Promise<ContentResult> {
-    // Применяем оптимизации на основе анализа
+    // Content optimization is now handled by OpenAI Agents SDK
+    // This method returns a simple structure for compatibility
+    
     const optimizedBody = this.applyOptimizations(existingContent, analysis.improvement_opportunities);
     
     return {
-      subject: `Оптимизированная версия - ${params.topic}`,
-      preheader: 'Улучшенное предложение специально для вас',
+      subject: `Optimized: ${params.topic}`,
+      preheader: 'Ready for Agent optimization',
       body: optimizedBody,
-      cta: 'Воспользоваться предложением',
+      cta: 'Learn More',
       language: params.language || 'ru',
       tone: params.tone || 'friendly'
     };

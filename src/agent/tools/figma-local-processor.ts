@@ -81,8 +81,8 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       console.log(`✅ AI Tag Mapping: [${params.tags.join(', ')}] → [${searchTags.join(', ')}]`);
       console.log(`📝 Mapping reasoning: ${tagMappingResult.mappingReasoning}`);
     } else {
-      searchTags = tagMappingResult.fallbackTags || params.tags;
-      console.log(`⚠️ AI Tag Mapping failed, using fallback tags: [${searchTags.join(', ')}]`);
+      searchTags = params.tags;
+      console.log(`⚠️ AI Tag Mapping failed, using original tags: [${searchTags.join(', ')}]`);
     }
 
     // Получаем список всех PNG файлов

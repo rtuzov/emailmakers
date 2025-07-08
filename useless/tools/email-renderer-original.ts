@@ -1492,14 +1492,9 @@ async function generateDynamicMjml(params: EmailRendererParams): Promise<string>
     const escapes: Record<string, string> = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' };
     return escapes[match] || match;
   });
-  // TEMPORARY FIX: Provide fallback content if body is empty
+  // NO FALLBACK POLICY - validate body content
   if (!contentData.body || contentData.body === 'undefined' || typeof contentData.body !== 'string' || contentData.body.trim().length === 0) {
-    console.warn('⚠️ Body content is missing, using fallback content');
-    contentData.body = `Добро пожаловать в увлекательное путешествие! 
-    
-Мы рады предложить вам лучшие варианты для вашей поездки. Наша команда подготовила специальные предложения, которые сделают ваше путешествие незабываемым.
-
-Не упустите возможность открыть для себя новые горизонты и создать яркие воспоминания.`;
+    throw new Error(`❌ EmailRenderer: Body content is missing or invalid. Got: ${JSON.stringify(contentData.body)} (type: ${typeof contentData.body})`);
   }
   
   const body = contentData.body.replace(/[<>&"]/g, (match) => {

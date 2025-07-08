@@ -338,7 +338,9 @@ function convertToWorkflowFormat(
     },
     issues_found: [], // Issues will be determined based on low scores if needed
     passed_checks: ['Agent Quality Analysis', 'OpenAI Agents SDK Integration'],
-    recommendations: analysisResult.recommendations || []
+    recommendations: (analysisResult.recommendations || []).map((rec: any) => 
+      typeof rec === 'string' ? rec : rec.title || rec.description || 'Quality improvement needed'
+    )
   };
 
   // Determine handoff recommendations
@@ -351,7 +353,9 @@ function convertToWorkflowFormat(
                 (analysisResult.overall_score < 50 ? 'content_specialist' as const : 'design_specialist' as const),
     next_actions: qualityGatePassed ? 
       ['Proceed to final delivery preparation'] :
-      ['Address quality issues before proceeding', ...(analysisResult.recommendations || []).slice(0, 3)],
+      ['Address quality issues before proceeding', ...(analysisResult.recommendations || []).slice(0, 3).map((rec: any) => 
+        typeof rec === 'string' ? rec : rec.title || rec.description || 'Quality improvement needed'
+      )],
     critical_fixes: criticalIssues.map(issue => issue.fix_suggestion),
     requires_manual_review: requiresManualReview
   };

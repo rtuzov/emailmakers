@@ -28,9 +28,9 @@ export const AssetTagPlannerParamsSchema = z.object({
   campaign_type: z.enum(['promotional', 'seasonal', 'informational']).describe('Тип кампании'),
   target_audience: z.string().describe('Целевая аудитория'),
   emotional_tone: z.enum(['positive', 'neutral', 'urgent', 'friendly']).describe('Эмоциональный тон'),
-  content_context: z.string().nullable().optional().describe('Дополнительный контекст контента'),
-  destinations: z.array(z.string()).nullable().optional().describe('Направления путешествий'),
-  themes: z.array(z.string()).nullable().optional().describe('Основные темы кампании')
+  content_context: z.string().optional().nullable().describe('Дополнительный контекст контента'),
+  destinations: z.array(z.string()).optional().nullable().describe('Направления путешествий'),
+  themes: z.array(z.string()).optional().nullable().describe('Основные темы кампании')
 });
 
 /**
@@ -65,8 +65,8 @@ export const AssetTagPlanSchema = z.object({
   reasoning: z.string().describe('Обоснование выбранной стратегии')
 });
 
-export type AssetTagPlannerParams = z.infer<typeof AssetTagPlannerParamsSchema>;
-export type AssetTagPlan = z.infer<typeof AssetTagPlanSchema>;
+type AssetTagPlannerParams = z.infer<typeof AssetTagPlannerParamsSchema>;
+type AssetTagPlan = z.infer<typeof AssetTagPlanSchema>;
 
 // ============================================================================
 // OPENAI AGENTS SDK TOOL DEFINITION
@@ -86,7 +86,6 @@ export const assetTagPlannerTool = tool({
     try {
       // Инициализируем AI Tag Mapper
       const aiTagMapper = new AITagMapper();
-      await aiTagMapper.initialize();
       
       // Извлекаем ключевые слова из брифа
       const keywords = extractKeywordsFromBrief(params.campaign_brief);
@@ -100,11 +99,14 @@ export const assetTagPlannerTool = tool({
       const allTags = [...keywords, ...baseTags];
       
       // Маппим теги на русские Figma теги
-      const figmaTags = await aiTagMapper.mapToFigmaTags(allTags, {
+      const mappingResult = await aiTagMapper.mapTags({
+        inputTags: allTags,
         campaignType: params.campaign_type,
-        targetAudience: params.target_audience,
-        emotionalTone: params.emotional_tone
+        emotionalTone: params.emotional_tone,
+        contentContext: params.content_context || undefined
       });
+      
+      const figmaTags = mappingResult.success ? mappingResult.mappedTags : [];
       
       console.log('🎯 Mapped Figma tags:', figmaTags);
       
@@ -135,7 +137,7 @@ export const assetTagPlannerTool = tool({
       
     } catch (error) {
       console.error('❌ Asset Tag Planner error:', error);
-      return createFallbackPlan(params, error);
+      throw new Error(`Asset Tag Planner failed: ${error.message}`);
     }
   }
 });
@@ -343,49 +345,75 @@ function createExternalSearchTags(inputTags: string[], params: AssetTagPlannerPa
   return [...new Set(externalTags)]; // Убираем дубликаты
 }
 
-/**
- * Создание fallback плана при ошибке
- */
-function createFallbackPlan(params: AssetTagPlannerParams, error: any): AssetTagPlan {
-  console.warn('🔄 Creating fallback asset plan due to error:', error);
-  
-  return {
-    success: false,
-    asset_requirements: {
-      hero_image: {
-        tags: ['заяц', 'персонаж', 'путешествия'],
-        description: 'Fallback hero изображение с брендированным персонажем',
-        priority: 'high'
-      },
-      content_images: [{
-        tags: ['путешествия', 'отдых', 'авиация'],
-        description: 'Fallback контентное изображение',
-        placement: 'main_content'
-      }],
-      footer_elements: [{
-        tags: ['иконка', 'логотип'],
-        description: 'Fallback footer элементы',
-        type: 'icon'
-      }]
-    },
-    figma_search_tags: ['заяц', 'путешествия', 'отдых'],
-    external_search_tags: ['travel', 'vacation', 'airplane'],
-    image_distribution: {
-      figma_images_count: 2,
-      external_images_count: 1,
-      total_images_needed: 3
-    },
-    reasoning: `Fallback план создан из-за ошибки: ${error instanceof Error ? error.message : 'Unknown error'}`
-  };
-}
+// No fallback plans - all errors must be handled properly by throwing
 
 // ============================================================================
 // EXPORTS
 // ============================================================================
 
-export { assetTagPlannerTool };
-export type { AssetTagPlannerParams, AssetTagPlan };
+// Для обратной совместимости - определяем отдельную функцию
+export const executeAssetTagPlanner = async (params: AssetTagPlannerParams): Promise<AssetTagPlan> => {
+  // Эта функция содержит ту же логику, что и в tool.execute
+  console.log('🏷️ Asset Tag Planner: Starting planning process...');
+  console.log('📋 Campaign Brief:', params.campaign_brief);
+  
+  try {
+    // Инициализируем AI Tag Mapper
+    const aiTagMapper = new AITagMapper();
+    
+    // Извлекаем ключевые слова из брифа
+    const keywords = extractKeywordsFromBrief(params.campaign_brief);
+    console.log('🔍 Extracted keywords:', keywords);
+    
+    // Генерируем базовые теги
+    const baseTags = generateBaseTags(params);
+    console.log('🏷️ Base tags:', baseTags);
+    
+    // Комбинируем все теги
+    const allTags = [...keywords, ...baseTags];
+    
+    // Маппим теги на русские Figma теги
+    const mappingResult = await aiTagMapper.mapTags({
+      inputTags: allTags,
+      campaignType: params.campaign_type,
+      emotionalTone: params.emotional_tone,
+      contentContext: params.content_context || undefined
+    });
+    
+    const figmaTags = mappingResult.success ? mappingResult.mappedTags : [];
+    
+    console.log('🎯 Mapped Figma tags:', figmaTags);
+    
+    // Планируем распределение изображений
+    const distribution = planImageDistribution(params);
+    console.log('📊 Image distribution:', distribution);
+    
+    // Создаем требования к ассетам
+    const assetRequirements = createAssetRequirements(figmaTags, params, distribution);
+    
+    // Создаем теги для внешнего поиска
+    const externalTags = createExternalSearchTags(allTags, params);
+    
+    // Формируем финальный план
+    const plan: AssetTagPlan = {
+      success: true,
+      asset_requirements: assetRequirements,
+      figma_search_tags: figmaTags,
+      external_search_tags: externalTags,
+      image_distribution: distribution,
+      reasoning: `Создан план для ${params.campaign_type} кампании с ${distribution.total_images_needed} изображениями. ` +
+                `${distribution.figma_images_count} из Figma (брендированные) и ${distribution.external_images_count} внешних. ` +
+                `Использованы теги: ${figmaTags.slice(0, 3).join(', ')} и другие.`
+    };
+    
+    console.log('✅ Asset Tag Planner: Plan created successfully');
+    return plan;
+    
+  } catch (error) {
+    console.error('❌ Asset Tag Planner error:', error);
+    throw new Error(`Asset Tag Planner failed: ${error.message}`);
+  }
+};
 
-// Для обратной совместимости
-export const executeAssetTagPlanner = assetTagPlannerTool.execute;
+export type { AssetTagPlannerParams, AssetTagPlan };
 export default assetTagPlannerTool; 

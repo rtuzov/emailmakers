@@ -10,7 +10,7 @@
  * - Handoffs: Automatic delegation between agents via OpenAI Agent SDK
  */
 
-import { EmailCampaignOrchestrator } from './core/orchestrator';
+import { EmailCampaignOrchestrator } from './specialists/specialist-agents';
 import { generateKupibiletEmail } from './multi-handoff-agent';
 
 // Export types for API compatibility

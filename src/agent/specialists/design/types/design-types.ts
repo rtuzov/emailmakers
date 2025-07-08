@@ -7,7 +7,7 @@
 
 import { AssetSearchResult, StandardAsset } from '../../../core/asset-manager';
 import { ExtractedContentPackage } from '../../../core/content-extractor';
-import { RenderingResult } from '../../../core/email-rendering-service';
+import { RenderingResult } from '../services/email-rendering-service';
 import { DesignToQualityHandoffData } from '../../../types/base-agent-types';
 
 // Re-export types that are used by other modules

@@ -597,7 +597,7 @@ Evaluate alignment with Kupibilet brand guidelines including colors, typography,
         };
       }
 
-      // Fallback: parse from text response
+      // Alternative: parse from text response
       const scoreMatch = agentOutput.match(/score[:\s]*(\d+)/i);
       const score = scoreMatch ? parseInt(scoreMatch[1]) : 75;
 

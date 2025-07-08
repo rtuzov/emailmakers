@@ -14,7 +14,7 @@
 ### Требования:
 - Заголовок до 50 символов
 - Preheader до 90 символов  
-- Основной текст 200-300 слов
+- Основной текст меньше 500 слов
 - Призыв к действию до 20 символов
 - Тон: дружелюбный, мотивирующий
 - Фокус на выгоде и эмоциях
@@ -35,69 +35,29 @@ Kupibilet — это удобный способ найти и забронир�
 - Техническая корректность
 - Четкий призыв к действию
 
----
+### 📋 ОБЯЗАТЕЛЬНЫЙ ФОРМАТ ОТВЕТА:
+Верни ТОЛЬКО валидный JSON в следующем формате (без дополнительного текста):
 
-## English Content (Claude)
+```json
+{
+  "subject": "Заголовок письма (до 50 символов)",
+  "preheader": "Превью текст (до 90 символов)",
+  "body": "Основной текст письма (до 500 слов)",
+  "cta": "Призыв к действию (до 20 символов)",
+  "language": "ru",
+  "tone": "friendly",
+  "image_requirements": {
+    "total_images_needed": 3,
+    "figma_images_count": 2,
+    "internet_images_count": 1,
+    "require_logo": true,
+    "image_categories": ["hero", "illustration", "icon"],
+    "placement_instructions": {
+      "figma_assets": ["Заяц Kupibilet для брендинга", "Иконки услуг"],
+      "external_images": ["Фото направления для hero секции"]
+    }
+  }
+}
+```
 
-Create compelling email content for Kupibilet travel company about "{topic}" 
-using price data {prices}.
-
-### 🎯 WORKFLOW POSITION:
-This is step 5 of 8 in the mandatory sequence: generate_copy → render_mjml → **ai_quality_consultant** → upload_s3
-
-### Requirements:
-- Subject line under 50 characters
-- Preheader under 90 characters
-- Body content 200-300 words
-- CTA under 20 characters
-- Tone: friendly, motivating
-- Focus on benefits and emotions
-
-### Brand Context:
-Kupibilet is a convenient way to find and book flights online. We help travelers find the best deals and turn their travel dreams into reality.
-
-### Email Structure:
-1. **Subject**: Attention-grabbing with price
-2. **Preheader**: Complementing the subject
-3. **Body**: Emotional story + benefit + call to action
-4. **CTA**: Clear call to action
-
----
-
-## Content Guidelines
-
-### Emotional Triggers:
-- Wanderlust and adventure
-- FOMO (limited time offers)
-- Value and savings
-- Dreams and aspirations
-- Convenience and ease
-
-### Price Integration:
-- Always include the starting price prominently
-- Use "от" (from) in Russian, "from" in English
-- Highlight savings or special offers
-- Create urgency with limited-time messaging
-
-### Call-to-Action Examples:
-
-**Russian:**
-- Найти билеты
-- Забронировать
-- Посмотреть цены
-- Купить билет
-- Улететь сейчас
-
-**English:**
-- Find Flights
-- Book Now
-- Check Prices
-- Buy Ticket
-- Fly Now
-
-### Tone Guidelines:
-- Enthusiastic but not pushy
-- Personal and relatable
-- Confident in value proposition
-- Inspiring and motivational
-- Clear and direct 
+**КРИТИЧНО**: Ответ должен содержать ТОЛЬКО JSON без markdown блоков, комментариев или дополнительного текста!

@@ -82,7 +82,6 @@ export const emailRendererV2 = tool({
             console.log(`📂 Base path: ${emailFolder.basePath}`);
             
             // Update campaign state with the new folder
-            const { campaignState } = await import('../core/campaign-state');
             campaignState.setCampaign({
               campaignId: emailFolder.campaignId,
               emailFolder: emailFolder,
@@ -385,10 +384,12 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
     console.log(`🔍 DEBUG: EmailRenderer (compat) - params.emailFolder:`, params.emailFolder);
     console.log(`🔍 DEBUG: EmailRenderer (compat) - typeof params.emailFolder:`, typeof params.emailFolder);
     
-    if (params.emailFolder) {
+    // Check if emailFolder is provided and not empty
+    if (params.emailFolder && params.emailFolder.trim() !== '') {
       console.log(`🔍 DEBUG: Attempting to load email folder: ${params.emailFolder}`);
       emailFolder = await EmailFolderManager.loadEmailFolder(params.emailFolder);
-      console.log(`🔍 DEBUG: LoadEmailFolder result:`, emailFolder);
+      console.log(`🔍 DEBUG: LoadEmailFolder result:`, emailFolder ? 'Found' : 'Not found');
+      
       if (!emailFolder) {
         console.warn(`⚠️ Email folder not found: ${params.emailFolder}`);
         
@@ -407,7 +408,6 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
           console.log(`📂 Base path: ${emailFolder.basePath}`);
           
           // Update campaign state with the new folder
-          const { campaignState } = await import('../core/campaign-state');
           campaignState.setCampaign({
             campaignId: emailFolder.campaignId,
             emailFolder: emailFolder,
@@ -431,6 +431,9 @@ export async function emailRenderer(params: EmailRendererParams): Promise<EmailR
         console.log(`📁 Using email folder from campaign state: ${emailFolder.campaignId}`);
       } else {
         console.log(`⚠️ No email folder found in campaign state either`);
+        
+        // NO FALLBACK POLICY - email folder is required
+        throw new Error('❌ EmailRenderer: Email folder is required but not available. Cannot save files without proper campaign context.');
       }
     }
 

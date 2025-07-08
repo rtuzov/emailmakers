@@ -133,7 +133,7 @@ export default class EmailFolderManager {
       ];
 
       // Удаляем дубликаты
-      const uniqueNames = [...new Set(possibleNames)];
+      const uniqueNames = Array.from(new Set(possibleNames));
       
       for (const name of uniqueNames) {
         try {

@@ -392,7 +392,7 @@ export const ErrorOrchestrator = SmartErrorHandler;
  */
 export function handleToolErrorUnified(toolName: string, error: any) {
   logger.error(`Tool ${toolName} failed`, { error: error?.message || error });
-  ErrorOrchestrator.handleError(error, toolName, 0).catch(() => {});
+  ErrorOrchestrator.handleError(error);
   return {
     success: false,
     error: error instanceof Error ? error.message : String(error),

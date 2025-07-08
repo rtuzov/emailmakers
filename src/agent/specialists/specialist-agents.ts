@@ -1,106 +1,242 @@
 /**
- * Specialist Agents Module for Email Campaign Workflow
- * Defines all specialized agents for the multi-handoff email generation system
+ * Specialist Agents Module - Updated for OpenAI Agents SDK
  * 
- * Features:
- * - Dynamic prompt loading from markdown files
- * - Feedback loop integration
- * - Enhanced specialist instructions
- * - Handoff coordination
+ * Updated to use the new specialized agents from tool-registry.ts
+ * Provides unified access to all specialist agents and orchestration
+ * Includes orchestrator functionality for complete workflow management
  */
 
-import { Agent } from '@openai/agents';
-import { PromptManager } from '../core/prompt-manager';
-import { toolRegistry } from '../core/tool-registry';
+import { run, Agent } from '@openai/agents';
+import { 
+  contentSpecialistAgent,
+  designSpecialistAgent,
+  qualitySpecialistAgent,
+  deliverySpecialistAgent,
+  getWorkflowSequence,
+  getAgentBySpecialist,
+  getRegistryStatistics
+} from '../core/tool-registry';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-export async function createSpecialistAgents() {
-  const promptManager = PromptManager.getInstance();
-  
-  // Загружаем промпты
-  const contentPrompt = promptManager.getSpecialistPrompt('content');
-  const designPrompt = promptManager.getSpecialistPrompt('design');
-  const qualityPrompt = promptManager.getSpecialistPrompt('quality');
-  const deliveryPrompt = promptManager.getSpecialistPrompt('delivery');
+// ============================================================================
+// SPECIALIST AGENTS ACCESS
+// ============================================================================
 
-  // Получаем инструменты из Tool Registry для каждого типа агента
-  const deliveryTools = toolRegistry.getToolsForAgent('delivery');
-  const qualityTools = toolRegistry.getToolsForAgent('quality');
-  const designTools = toolRegistry.getToolsForAgent('design');
-  const contentTools = toolRegistry.getToolsForAgent('content');
-
-  console.log('🔧 Loading tools from Tool Registry:', {
-    delivery_tools: deliveryTools.length,
-    quality_tools: qualityTools.length,
-    design_tools: designTools.length,
-    content_tools: contentTools.length
-  });
-
-  // Создаем агентов в правильном порядке (от конца к началу цепочки)
-  const deliverySpecialist = new Agent({
-    name: 'Delivery Specialist',
-    instructions: deliveryPrompt,
-    handoffDescription: 'Финализирует email кампанию, сохраняет файлы и создает итоговую отчетность',
-    tools: deliveryTools,
-    handoffs: [] // Последний в цепочке
-  });
-
-  const qualitySpecialist = new Agent({
-    name: 'Quality Specialist', 
-    instructions: qualityPrompt,
-    handoffDescription: 'Проверяет качество email шаблонов, совместимость с клиентами и отправляет на доработку при необходимости',
-    tools: qualityTools,
-    handoffs: [deliverySpecialist] // Может передавать только Delivery Specialist
-  });
-
-  const designSpecialist = new Agent({
-    name: 'Design Specialist',
-    instructions: designPrompt,
-    handoffDescription: 'Создает красивые, адаптивные HTML email шаблоны с логотипом Kupibilet и фирменными цветами',
-    tools: designTools,
-    handoffs: [qualitySpecialist] // Может передавать только Quality Specialist
-  });
-
-  const contentSpecialist = new Agent({
-    name: 'Content Specialist',
-    instructions: contentPrompt,
-    handoffDescription: 'Создает качественный email контент на русском языке с реальными ценами и актуальной информацией',
-    tools: contentTools,
-    handoffs: [designSpecialist] // Может передавать только Design Specialist
-  });
-
-  // Добавляем возможность возврата для Quality Specialist
-  qualitySpecialist.handoffs.push(contentSpecialist, designSpecialist);
-
+/**
+ * Get all specialist agents
+ */
+export function getSpecialistAgents() {
   return {
-    contentSpecialist,
-    designSpecialist,
-    qualitySpecialist,
-    deliverySpecialist
+    contentSpecialist: contentSpecialistAgent,
+    designSpecialist: designSpecialistAgent,
+    qualitySpecialist: qualitySpecialistAgent,
+    deliverySpecialist: deliverySpecialistAgent
   };
 }
 
+/**
+ * Get specialist agent by type
+ */
+export function getSpecialistAgent(specialist: 'content' | 'design' | 'quality' | 'delivery'): Agent {
+  return getAgentBySpecialist(specialist);
+}
+
+/**
+ * Get workflow sequence for orchestration
+ */
+export function getEmailWorkflowSequence() {
+  return getWorkflowSequence();
+}
+
+// ============================================================================
+// ORCHESTRATOR SETUP
+// ============================================================================
+
+/**
+ * Load orchestrator instructions from file
+ */
+async function loadOrchestratorInstructions(): Promise<string> {
+  try {
+    const instructionsPath = path.join(process.cwd(), 'src', 'agent', 'prompts', 'orchestrator', 'main-orchestrator.md');
+    const instructions = await fs.readFile(instructionsPath, 'utf-8');
+    console.log('📖 Loaded orchestrator instructions from:', instructionsPath);
+    return instructions;
+  } catch (error) {
+    console.error('❌ Failed to load orchestrator instructions:', error);
+    // Fallback to basic instructions
+    return `You are the Email Campaign Orchestrator for Email-Makers. You coordinate the workflow between specialized agents to create high-quality email campaigns.
+
+**Workflow Process:**
+1. **Content Phase**: Start with Content Specialist for campaign creation and content generation
+2. **Design Phase**: Hand off to Design Specialist for visual assets and MJML templates
+3. **Quality Phase**: Transfer to Quality Specialist for validation and testing
+4. **Delivery Phase**: Complete with Delivery Specialist for final packaging and delivery
+
+**Orchestration Rules:**
+- Always start with Content Specialist unless explicitly requested otherwise
+- Follow the linear workflow: Content → Design → Quality → Delivery
+- Monitor each phase for completion before moving to next
+- Handle errors by providing clear feedback and retry instructions
+- Maintain campaign context throughout the workflow
+
+**Communication Style:**
+- Professional and coordinating
+- Provide clear status updates on workflow progress
+- Explain which specialist is handling each phase
+- Give estimated timelines when possible
+- Celebrate successful completions
+
+**Error Handling:**
+- If a specialist reports issues, provide clear next steps
+- Don't retry automatically - explain the problem and suggested solutions
+- Maintain campaign integrity throughout error recovery
+- Escalate complex issues with detailed context`;
+  }
+}
+
+/**
+ * Create email campaign orchestrator with all specialists
+ */
 export async function createEmailCampaignOrchestrator() {
-  const specialists = await createSpecialistAgents();
+  console.log('📖 Loading orchestrator instructions...');
+  const instructions = await loadOrchestratorInstructions();
   
-  // Главный оркестратор начинает с Content Specialist
   const orchestrator = new Agent({
     name: 'Email Campaign Orchestrator',
-    instructions: `Ты - главный оркестратор email кампаний для авиакомпании Kupibilet. 
-Твоя задача - анализировать запросы пользователей и передавать их соответствующему специалисту.
-
-Всегда начинай с Content Specialist для создания новых email кампаний.
-Используй transfer_to_content_specialist для начала работы над кампанией.`,
-    handoffDescription: 'Управляет процессом создания email кампаний, координирует работу всех специалистов',
+    instructions: instructions,
     handoffs: [
-      specialists.contentSpecialist,
-      specialists.designSpecialist,
-      specialists.qualitySpecialist,
-      specialists.deliverySpecialist
+      contentSpecialistAgent,
+      designSpecialistAgent,
+      qualitySpecialistAgent,
+      deliverySpecialistAgent
     ]
   });
 
+  console.log('✅ Email Campaign Orchestrator created with file-based instructions');
+
   return {
     orchestrator,
-    ...specialists
+    contentSpecialist: contentSpecialistAgent,
+    designSpecialist: designSpecialistAgent,
+    qualitySpecialist: qualitySpecialistAgent,
+    deliverySpecialist: deliverySpecialistAgent
   };
+}
+
+// ============================================================================
+// ORCHESTRATION INTERFACES AND CLASSES
+// ============================================================================
+
+export interface OrchestrationConfig {
+  workflowName?: string;
+  traceId?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface OrchestrationResult {
+  success: boolean;
+  result?: any;
+  error?: string;
+  traceId?: string;
+  metadata?: Record<string, any>;
+}
+
+export class EmailCampaignOrchestrator {
+  private orchestrator: Agent | null = null;
+
+  async initialize(): Promise<void> {
+    if (!this.orchestrator) {
+      // Log Tool Registry status before initializing orchestrator
+      console.log('🔧 Tool Registry Statistics:', getRegistryStatistics());
+      console.log('📋 Workflow Sequence:', getWorkflowSequence().map(s => s.specialist));
+      
+      const { orchestrator } = await createEmailCampaignOrchestrator();
+      this.orchestrator = orchestrator;
+      
+      console.log('✅ Email Campaign Orchestrator initialized with new specialist structure');
+    }
+  }
+
+  async processRequest(
+    request: string,
+    config: OrchestrationConfig = {}
+  ): Promise<OrchestrationResult> {
+    try {
+      await this.initialize();
+      
+      if (!this.orchestrator) {
+        throw new Error('Orchestrator not initialized');
+      }
+
+      console.log('🚀 Starting orchestration with request:', request.slice(0, 100) + '...');
+      
+      const result = await run(this.orchestrator, request);
+
+      console.log('✅ Orchestration completed successfully');
+
+      return {
+        success: true,
+        result: result.finalOutput,
+        traceId: config.traceId,
+        metadata: {
+          ...config.metadata,
+          workflow_completed: true,
+          timestamp: new Date().toISOString()
+        }
+      };
+    } catch (error) {
+      console.error('❌ Orchestration error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        traceId: config.traceId,
+        metadata: {
+          ...config.metadata,
+          workflow_failed: true,
+          timestamp: new Date().toISOString()
+        }
+      };
+    }
+  }
+
+  /**
+   * Get orchestrator capabilities and workflow information
+   */
+  getCapabilities() {
+    const workflowSequence = getWorkflowSequence();
+    const stats = getRegistryStatistics();
+    
+    return {
+      workflow_phases: workflowSequence.map(phase => ({
+        specialist: phase.specialist,
+        description: phase.description,
+        tools_count: phase.tools.length
+      })),
+      total_tools: stats.total_tools,
+      total_agents: stats.total_agents,
+      workflow_phases_count: stats.workflow_phases,
+      initialized: this.orchestrator !== null
+    };
+  }
+}
+
+// ============================================================================
+// SINGLETON INSTANCES
+// ============================================================================
+
+/**
+ * Singleton orchestrator instance
+ */
+export const emailCampaignOrchestrator = new EmailCampaignOrchestrator();
+
+// ============================================================================
+// LEGACY COMPATIBILITY
+// ============================================================================
+
+/**
+ * Legacy function for backward compatibility
+ */
+export async function createSpecialistAgents() {
+  return getSpecialistAgents();
 } 

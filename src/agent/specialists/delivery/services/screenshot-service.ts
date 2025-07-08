@@ -10,7 +10,7 @@ import { Agent, run } from '@openai/agents';
 
 import { screenshots, ScreenshotsSchema } from '../../../tools/simple/screenshots';
 import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
-import { htmlValidatorTool } from '../../../tools/agent-tools';
+// Note: htmlValidatorTool moved to useless/ - using direct validation instead
 import { runWithTimeout } from '../../../utils/run-with-timeout';
 import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';
@@ -298,7 +298,7 @@ export class ScreenshotService {
         }
       }
 
-      // Fallback: создаем примерные результаты
+      // Create mock results for demonstration purposes
       return [
         {
           baseline_url: 'baseline/gmail-desktop.png',
