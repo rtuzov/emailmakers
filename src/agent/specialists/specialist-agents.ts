@@ -18,6 +18,12 @@ import {
 } from '../core/tool-registry';
 import { promises as fs } from 'fs';
 import path from 'path';
+import {
+  transferToContentSpecialist,
+  transferToDesignSpecialist,
+  transferToQualitySpecialist,
+  transferToDeliverySpecialist
+} from '../core/transfer-tools';
 
 // ============================================================================
 // SPECIALIST AGENTS ACCESS
@@ -102,9 +108,17 @@ export async function createEmailCampaignOrchestrator() {
   console.log('📖 Loading orchestrator instructions...');
   const instructions = await loadOrchestratorInstructions();
   
+  const transferTools = [
+    transferToContentSpecialist,
+    transferToDesignSpecialist,
+    transferToQualitySpecialist,
+    transferToDeliverySpecialist
+  ];
+  
   const orchestrator = new Agent({
     name: 'Email Campaign Orchestrator',
     instructions: instructions,
+    tools: transferTools,
     handoffs: [
       contentSpecialistAgent,
       designSpecialistAgent,
@@ -113,7 +127,7 @@ export async function createEmailCampaignOrchestrator() {
     ]
   });
 
-  console.log('✅ Email Campaign Orchestrator created with file-based instructions');
+  console.log('✅ Email Campaign Orchestrator created with transfer functions and handoffs');
 
   return {
     orchestrator,

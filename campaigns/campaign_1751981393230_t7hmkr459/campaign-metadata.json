@@ -1,0 +1,27 @@
+{
+  "campaign_id": "campaign_1751981393230_t7hmkr459",
+  "name": "Thailand Autumn Travel Campaign",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "audience": "Russian travelers",
+  "goals": [
+    "Increase bookings to Thailand for autumn",
+    "Promote seasonal offers",
+    "Inspire travel to Thailand in autumn"
+  ],
+  "folders": {
+    "content": "campaigns/campaign_1751981393230_t7hmkr459/content/",
+    "assets": "campaigns/campaign_1751981393230_t7hmkr459/assets/",
+    "templates": "campaigns/campaign_1751981393230_t7hmkr459/templates/",
+    "exports": "campaigns/campaign_1751981393230_t7hmkr459/exports/",
+    "documentation": "campaigns/campaign_1751981393230_t7hmkr459/docs/"
+  },
+  "metadata": {
+    "created_at": "2025-07-08T13:29:53.230Z",
+    "created_by": "content_specialist",
+    "status": "content_phase",
+    "workflow_stage": "initialization"
+  },
+  "created_at": "2025-07-08T13:29:53.231Z",
+  "last_updated": "2025-07-08T13:29:53.231Z"
+}

@@ -1,0 +1,27 @@
+{
+  "campaign_id": "campaign_1751980884585_l7lum10ny",
+  "name": "Japan Travel Email Campaign",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "audience": "Russian travelers",
+  "goals": [
+    "Promote travel to Japan",
+    "Inform about seasonal advantages",
+    "Showcase competitive ticket pricing"
+  ],
+  "folders": {
+    "content": "campaigns/campaign_1751980884585_l7lum10ny/content/",
+    "assets": "campaigns/campaign_1751980884585_l7lum10ny/assets/",
+    "templates": "campaigns/campaign_1751980884585_l7lum10ny/templates/",
+    "exports": "campaigns/campaign_1751980884585_l7lum10ny/exports/",
+    "documentation": "campaigns/campaign_1751980884585_l7lum10ny/docs/"
+  },
+  "metadata": {
+    "created_at": "2025-07-08T13:21:24.585Z",
+    "created_by": "content_specialist",
+    "status": "content_phase",
+    "workflow_stage": "initialization"
+  },
+  "created_at": "2025-07-08T13:21:24.586Z",
+  "last_updated": "2025-07-08T13:21:24.586Z"
+}

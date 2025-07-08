@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-07-08T13:54:24.708Z",
+  "from_specialist": "Content Specialist",
+  "to_specialist": "Design Specialist",
+  "campaign_id": "campaign_1751982849879_vw5bprtbsxf",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1751982849879_vw5bprtbsxf",
+  "transfer_message": "Кампания для Таиланда готова: актуальные даты (осень 2025: 01.09, 15.09, 30.09, 01.10, 15.10, 31.10), реальные цены от Kupibilet (от 23424 RUB, средняя цена 25452 RUB), продумана визуальная стратегия (современный стиль, стильные фотографии направления, корпоративные цвета, иерархия: заголовок, изображение, текст, CTA), подробный подробный email-контент сохранён в структуре кампании. Эмоциональный триггер для получателя — excitement.",
+  "priority_level": "high",
+  "completed_work": {
+    "campaign_folder": true,
+    "context_analysis": true,
+    "date_intelligence": true,
+    "pricing_data": true,
+    "asset_strategy": true,
+    "content_generation": true
+  },
+  "available_data": {
+    "pricing": {
+      "best_price": 23424,
+      "min_price": 23424,
+      "max_price": 36850,
+      "average_price": 25452,
+      "currency": "RUB",
+      "offers_count": 61,
+      "recommended_dates": [
+        "2025-09-01",
+        "2025-09-02",
+        "2025-09-03"
+      ],
+      "route": "MOW → BKK",
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "BKK",
+            "finalCode": "BKK",
+            "countryCode": "TH",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "dates": {
+      "destination": "Thailand",
+      "season": "autumn",
+      "optimal_dates": [
+        "2025-09-01",
+        "2025-09-15",
+        "2025-09-30",
+        "2025-10-01",
+        "2025-10-15",
+        "2025-10-31"
+      ],
+      "pricing_windows": [
+        "2025-09-01: Средний сезон",
+        "2025-09-15: Средний сезон",
+        "2025-09-30: Средний сезон",
+        "2025-10-01: Средний сезон",
+        "2025-10-15: Средний сезон",
+        "2025-10-31: Средний сезон"
+      ],
+      "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до 2025-09-01 для лучших цен",
+      "seasonal_factors": "autumn - оптимальное время для Thailand с учетом погодных условий и туристического потока",
+      "current_date": "2025-07-08"
+    },
+    "context": {
+      "destination": "Thailand",
+      "seasonal_trends": "Умеренный сезон",
+      "emotional_triggers": "Путешествия, открытия, отдых, новые впечатления",
+      "market_positioning": "Популярное туристическое направление",
+      "competitive_landscape": "Высокая конкуренция среди туроператоров, сезонные колебания цен, акции и специальные предложения",
+      "price_sensitivity": "Средняя ценовая чувствительность",
+      "booking_patterns": "Пик бронирований за 2-3 месяца до поездки, горящие туры за 1-2 недели, сезонные всплески активности"
+    },
+    "assets": {
+      "theme": "Thailand",
+      "visual_style": "modern",
+      "color_palette": "Корпоративные цвета бренда",
+      "typography": "Современный, читаемый шрифт",
+      "image_concepts": [
+        "Главное изображение дестинации",
+        "Lifestyle фотографии",
+        "Иконки услуг"
+      ],
+      "layout_hierarchy": "Заголовок → Изображение → Текст → CTA",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Соответствие фирменному стилю"
+    }
+  }
+}

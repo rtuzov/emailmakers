@@ -87,23 +87,23 @@ export const pricingIntelligenceSchema = z.object({
 });
 
 export const contextProviderSchema = z.object({
-  context_type: z.string().describe('Type of context to provide - can be seasonal, cultural, marketing, travel, or comprehensive'),
+  context_type: z.enum(['seasonal', 'cultural', 'marketing', 'travel', 'comprehensive']).default('comprehensive').describe('Type of context to provide'),
   destination: z.string().nullable().optional().describe('Target destination for context'),
   travel_purpose: z.string().nullable().optional().describe('Purpose of travel (vacation, business, etc.)')
 });
 
 export const dateIntelligenceSchema = z.object({
-  target_date: z.string().describe('Target date for analysis (YYYY-MM-DD)'),
-  analysis_type: z.enum(['seasonal', 'holiday', 'event', 'comprehensive']).describe('Type of date analysis to perform'),
-  region: z.string().nullable().optional().describe('Geographic region for context'),
-  industry: z.string().nullable().optional().describe('Industry context for analysis')
+  target_date: z.string().default(new Date().toISOString().split('T')[0]).describe('Target date for analysis (YYYY-MM-DD)'),
+  analysis_type: z.enum(['seasonal', 'holiday', 'event', 'comprehensive']).default('comprehensive').describe('Type of date analysis to perform'),
+  region: z.string().default('Russia').nullable().optional().describe('Geographic region for context'),
+  industry: z.string().default('travel').nullable().optional().describe('Industry context for analysis')
 });
 
 export const assetStrategySchema = z.object({
-  campaign_type: z.string().describe('Type of email campaign'),
-  brand_guidelines: z.string().nullable().optional().describe('Brand visual guidelines'),
-  target_audience: z.string().nullable().optional().describe('Target audience demographics'),
-  message_tone: z.string().nullable().optional().describe('Desired message tone and mood'),
+  campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'announcement']).default('promotional').describe('Type of email campaign'),
+  brand_guidelines: z.string().default('Kupibilet brand standards').nullable().optional().describe('Brand visual guidelines'),
+  target_audience: z.string().default('Russian travelers').nullable().optional().describe('Target audience demographics'),
+  message_tone: z.string().default('exciting and affordable').nullable().optional().describe('Desired message tone and mood'),
   visual_requirements: z.array(z.string()).nullable().optional().describe('Specific visual requirements')
 });
 

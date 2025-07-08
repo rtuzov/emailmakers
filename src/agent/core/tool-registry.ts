@@ -11,10 +11,10 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Import specialist tool collections  
-import { contentSpecialistTools } from './specialists/content-specialist-tools';
-import { designSpecialistTools } from './specialists/design-specialist-tools';
-import { qualitySpecialistTools } from './specialists/quality-specialist-tools';
-import { deliverySpecialistTools } from './specialists/delivery-specialist-tools';
+import { contentSpecialistTools } from '../specialists/content-specialist-tools';
+import { designSpecialistTools } from '../specialists/design-specialist-tools';
+import { qualitySpecialistTools } from '../specialists/quality-specialist-tools';
+import { deliverySpecialistTools } from '../specialists/delivery-specialist-tools';
 
 // ============================================================================
 // PROMPT LOADING UTILITY

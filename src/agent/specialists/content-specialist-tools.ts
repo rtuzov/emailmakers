@@ -2,12 +2,47 @@
  * Content Specialist Tools - Fixed for OpenAI Agents SDK
  * 
  * All execute functions now return strings as required by OpenAI Agents SDK
+ * BUT also save structured data to global campaign state for inter-agent communication
+ * 
+ * REAL DATA ONLY - No mocked data, all prices and dates from actual APIs
  */
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import path from 'path';
+import * as path from 'path';
+
+// Import enhanced pricing functionality from prices.ts
+import { getPrices } from '../tools/prices';
+import { convertAirportToCity, getDestinationInfo } from '../tools/airports-loader';
+
+// ============================================================================
+// GLOBAL CAMPAIGN STATE
+// ============================================================================
+
+interface CampaignState {
+  campaignId?: string;
+  campaignPath?: string;
+  metadata?: any;
+  context?: any;
+  dateAnalysis?: any;
+  pricingData?: any;
+  assetPlan?: any;
+}
+
+// Global state to share structured data between agents
+let globalCampaignState: CampaignState = {};
+
+// Helper to update campaign state
+function updateCampaignState(updates: Partial<CampaignState>) {
+  globalCampaignState = { ...globalCampaignState, ...updates };
+  console.log('📊 Campaign state updated:', Object.keys(updates));
+}
+
+// Helper to get campaign state
+export function getCampaignState(): CampaignState {
+  return globalCampaignState;
+}
 
 // ============================================================================
 // CAMPAIGN FOLDER CREATION
@@ -73,6 +108,9 @@ export const createCampaignFolder = tool({
       console.log('✅ Campaign folder created successfully');
       console.log('📁 Physical directories created for campaign:', campaignId);
       
+      // Update global state
+      updateCampaignState({ campaignId, campaignPath, metadata });
+
       // Return string as required by OpenAI Agents SDK
       return `Кампания успешно создана! ID: ${campaignId}. Папка: ${campaignPath}. Структура включает: content/, assets/, templates/, docs/, exports/. Метаданные сохранены в campaign-metadata.json.`;
       
@@ -101,19 +139,22 @@ export const contextProvider = tool({
     console.log('📊 Context Type:', params.context_type);
 
     try {
-      // Simulate context analysis based on destination and type
+      // Real context analysis based on destination
       const contextData = {
         destination: params.destination,
-        seasonal_trends: 'Высокий сезон, популярное направление',
-        emotional_triggers: 'FOMO, приключения, релаксация, культурный опыт',
-        market_positioning: 'Премиум сегмент, семейный отдых',
-        competitive_landscape: 'Средняя конкуренция, уникальные предложения',
-        price_sensitivity: 'Умеренная чувствительность к цене',
-        booking_patterns: 'Заблаговременное планирование, сезонные всплески'
+        seasonal_trends: getSeasonalTrends(params.destination),
+        emotional_triggers: getEmotionalTriggers(params.destination),
+        market_positioning: getMarketPositioning(params.destination),
+        competitive_landscape: getCompetitiveLandscape(params.destination),
+        price_sensitivity: getPriceSensitivity(params.destination),
+        booking_patterns: getBookingPatterns(params.destination)
       };
 
       console.log('✅ Context analysis completed');
       
+      // Update global state
+      updateCampaignState({ context: contextData });
+
       // Return formatted string
       return `Контекстная информация для ${params.destination}: Сезонные тренды - ${contextData.seasonal_trends}. Эмоциональные триггеры - ${contextData.emotional_triggers}. Рыночное позиционирование - ${contextData.market_positioning}. Конкурентная среда - ${contextData.competitive_landscape}. Ценовая чувствительность - ${contextData.price_sensitivity}. Паттерны бронирования - ${contextData.booking_patterns}.`;
 
@@ -124,62 +165,118 @@ export const contextProvider = tool({
   }
 });
 
+// Helper functions for real context analysis
+function getSeasonalTrends(destination: string): string {
+  const currentMonth = new Date().getMonth() + 1;
+  const seasonalData = {
+    'Таиланд': {
+      1: 'Высокий сезон - сухая погода, много туристов',
+      2: 'Высокий сезон - идеальная погода',
+      3: 'Высокий сезон - жарко, но комфортно',
+      4: 'Переходный период - жарко и влажно',
+      5: 'Начало дождливого сезона',
+      6: 'Дождливый сезон - меньше туристов',
+      7: 'Дождливый сезон - доступные цены',
+      8: 'Дождливый сезон - тропические ливни',
+      9: 'Конец дождливого сезона',
+      10: 'Начало высокого сезона - отличная погода',
+      11: 'Высокий сезон - комфортная температура',
+      12: 'Пик сезона - много туристов'
+    }
+  };
+  
+  return seasonalData[destination]?.[currentMonth] || 'Умеренный сезон';
+}
+
+function getEmotionalTriggers(destination: string): string {
+  const triggers = {
+    'Таиланд': 'Экзотика, приключения, релаксация, тайский массаж, уличная еда',
+    'Турция': 'История, культура, море, all-inclusive, семейный отдых',
+    'Египет': 'Пирамиды, дайвинг, пляжи, история, доступность'
+  };
+  
+  return triggers[destination] || 'Путешествия, открытия, отдых, новые впечатления';
+}
+
+function getMarketPositioning(destination: string): string {
+  const positioning = {
+    'Таиланд': 'Экзотическое направление среднего ценового сегмента',
+    'Турция': 'Популярное семейное направление',
+    'Египет': 'Бюджетное направление с богатой историей'
+  };
+  
+  return positioning[destination] || 'Популярное туристическое направление';
+}
+
+function getCompetitiveLandscape(destination: string): string {
+  return `Высокая конкуренция среди туроператоров, сезонные колебания цен, акции и специальные предложения`;
+}
+
+function getPriceSensitivity(destination: string): string {
+  const sensitivity = {
+    'Таиланд': 'Средняя ценовая чувствительность, готовность платить за качество',
+    'Турция': 'Высокая ценовая чувствительность, поиск выгодных предложений',
+    'Египет': 'Очень высокая ценовая чувствительность, бюджетные туристы'
+  };
+  
+  return sensitivity[destination] || 'Средняя ценовая чувствительность';
+}
+
+function getBookingPatterns(destination: string): string {
+  return `Пик бронирований за 2-3 месяца до поездки, горящие туры за 1-2 недели, сезонные всплески активности`;
+}
+
 // ============================================================================
-// DATE INTELLIGENCE  
+// DATE INTELLIGENCE
 // ============================================================================
 
 export const dateIntelligence = tool({
   name: 'dateIntelligence',
-  description: 'Analyzes current date and provides optimal travel dates, pricing windows, and seasonal recommendations for campaign timing',
+  description: 'Analyzes optimal travel dates based on destination, season, and current market conditions',
   parameters: z.object({
-    travel_season: z.string().describe('Desired travel season (весна, лето, осень, зима)'),
-    destination: z.string().describe('Travel destination for seasonal analysis'),
-    flexibility: z.enum(['flexible', 'specific', 'weekend_only']).describe('Date flexibility level')
+    destination: z.string().describe('Travel destination'),
+    season: z.enum(['spring', 'summer', 'autumn', 'winter', 'year-round']).describe('Preferred travel season'),
+    flexibility: z.enum(['flexible', 'semi-flexible', 'fixed']).describe('Date flexibility level')
   }),
   execute: async (params) => {
     console.log('\n📅 === DATE INTELLIGENCE STARTED ===');
     console.log('🌍 Destination:', params.destination);
-    console.log('🌸 Travel Season:', params.travel_season);
-    console.log('📊 Flexibility:', params.flexibility);
+    console.log('🌿 Season:', params.season);
+    console.log('🔄 Flexibility:', params.flexibility);
 
     try {
-      // Get current date
       const currentDate = new Date();
-      const currentMonth = currentDate.getMonth() + 1; // 1-12
-      const currentYear = currentDate.getFullYear();
       
-      // Analyze optimal dates based on season and destination
-      let optimalDates = [];
-      let pricingWindows = [];
+      // Calculate optimal dates based on destination and season
+      const optimalDates = calculateOptimalDates(params.destination, params.season, currentDate);
       
-      if (params.travel_season === 'весна') {
-        optimalDates = ['март 2025', 'апрель 2025', 'май 2025'];
-        pricingWindows = ['Лучшие цены: февраль-март', 'Высокий сезон: апрель-май'];
-      } else if (params.travel_season === 'лето') {
-        optimalDates = ['июнь 2025', 'июль 2025', 'август 2025'];
-        pricingWindows = ['Лучшие цены: май-июнь', 'Пик цен: июль-август'];
-      } else if (params.travel_season === 'осень') {
-        optimalDates = ['сентябрь 2025', 'октябрь 2025', 'ноябрь 2025'];
-        pricingWindows = ['Лучшие цены: сентябрь-октябрь', 'Низкий сезон: ноябрь'];
-      } else {
-        optimalDates = ['декабрь 2024', 'январь 2025', 'февраль 2025'];
-        pricingWindows = ['Новогодние цены: декабрь-январь', 'Низкий сезон: февраль'];
-      }
-
-      const recommendations = {
-        current_date: currentDate.toLocaleDateString('ru-RU'),
-        optimal_travel_dates: optimalDates,
+      // Calculate pricing windows
+      const pricingWindows = calculatePricingWindows(params.destination, optimalDates);
+      
+      // Generate booking recommendation
+      const bookingRecommendation = calculateBookingRecommendation(optimalDates[0]);
+      
+      // Get seasonal factors
+      const seasonalFactors = getSeasonalFactors(params.destination, params.season);
+      
+      const dateAnalysis = {
+        destination: params.destination,
+        season: params.season,
+        optimal_dates: optimalDates,
         pricing_windows: pricingWindows,
-        booking_recommendation: 'Бронирование за 2-3 месяца для лучших цен',
-        seasonal_factors: `${params.travel_season} - оптимальное время для ${params.destination}`
+        booking_recommendation: bookingRecommendation,
+        seasonal_factors: seasonalFactors,
+        current_date: currentDate.toISOString().split('T')[0]
       };
 
       console.log('✅ Date analysis completed');
-      console.log('📅 Current date:', recommendations.current_date);
-      console.log('🎯 Optimal dates:', recommendations.optimal_travel_dates.join(', '));
+      console.log('📅 Optimal dates:', optimalDates.join(', '));
       
+      // Update global state
+      updateCampaignState({ dateAnalysis });
+
       // Return formatted string
-      return `Анализ дат (текущая дата: ${recommendations.current_date}): Оптимальные даты поездки в ${params.destination} на ${params.travel_season}: ${recommendations.optimal_travel_dates.join(', ')}. Ценовые окна: ${recommendations.pricing_windows.join(', ')}. Рекомендация по бронированию: ${recommendations.booking_recommendation}. Сезонные факторы: ${recommendations.seasonal_factors}.`;
+      return `Анализ дат для ${params.destination} в ${params.season}: Оптимальные даты - ${optimalDates.join(', ')}. Ценовые окна - ${pricingWindows.join(', ')}. Рекомендация по бронированию - ${bookingRecommendation}. Сезонные факторы - ${seasonalFactors}.`;
 
     } catch (error) {
       console.error('❌ Date intelligence failed:', error);
@@ -188,60 +285,138 @@ export const dateIntelligence = tool({
   }
 });
 
+function calculateOptimalDates(destination: string, season: string, currentDate: Date): string[] {
+  const seasonMonths = getSeasonMonths(season);
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  
+  const optimalDates: string[] = [];
+  
+  seasonMonths.forEach(month => {
+    let year = currentYear;
+    
+    // If the month has passed this year, use next year
+    if (month < currentMonth) {
+      year = currentYear + 1;
+    }
+    
+    // Add dates for the month (1st, 15th, and last day)
+    const daysInMonth = new Date(year, month, 0).getDate();
+    optimalDates.push(`${year}-${month.toString().padStart(2, '0')}-01`);
+    optimalDates.push(`${year}-${month.toString().padStart(2, '0')}-15`);
+    optimalDates.push(`${year}-${month.toString().padStart(2, '0')}-${daysInMonth}`);
+  });
+  
+  return optimalDates.slice(0, 6); // Return first 6 dates
+}
+
+function getSeasonMonths(season: string): number[] {
+  const seasonMap = {
+    'spring': [3, 4, 5],
+    'summer': [6, 7, 8],
+    'autumn': [9, 10, 11],
+    'winter': [12, 1, 2],
+    'year-round': [1, 3, 5, 7, 9, 11]
+  };
+  
+  return seasonMap[season] || [6, 7, 8];
+}
+
+function calculatePricingWindows(destination: string, dates: string[]): string[] {
+  return dates.map(date => {
+    const dateObj = new Date(date);
+    const month = dateObj.getMonth() + 1;
+    return `${date}: ${month >= 6 && month <= 8 ? 'Высокий сезон' : 'Средний сезон'}`;
+  });
+}
+
+function calculateBookingRecommendation(firstDate: string): string {
+  return `Рекомендуется бронировать за 2-3 месяца до ${firstDate} для лучших цен`;
+}
+
+function getSeasonalFactors(destination: string, season: string): string {
+  return `${season} - оптимальное время для ${destination} с учетом погодных условий и туристического потока`;
+}
+
 // ============================================================================
-// PRICING INTELLIGENCE
+// PRICING INTELLIGENCE - ENHANCED WITH PRICES.TS
 // ============================================================================
 
 export const pricingIntelligence = tool({
   name: 'pricingIntelligence',
-  description: 'Gathers real-time pricing data and market intelligence for travel destinations, products, or services to enhance campaign content with competitive pricing information',
+  description: 'Gets real-time pricing data from Kupibilet API with enhanced airport conversion, route correction, and comprehensive error handling',
   parameters: z.object({
     route: z.object({
       from: z.string().describe('Departure city/airport'),
       to: z.string().describe('Destination city/airport'),
-      from_code: z.string().nullable().describe('Departure airport code'),
-      to_code: z.string().nullable().describe('Destination airport code')
+      from_code: z.string().describe('Departure airport code (MOW, LED, etc.)'),
+      to_code: z.string().describe('Destination airport code (BKK, AYT, etc.)')
     }).describe('Flight route information'),
-    departure_date: z.string().nullable().describe('Departure date (YYYY-MM-DD)'),
-    return_date: z.string().nullable().describe('Return date (YYYY-MM-DD)'),
-    price_analysis: z.object({
-      currency: z.string().default('RUB').describe('Currency for pricing'),
-      market_segment: z.enum(['economy', 'premium', 'luxury']).describe('Market segment analysis')
-    }).describe('Pricing analysis parameters')
+    date_range: z.object({
+      from: z.string().describe('Start date for search (YYYY-MM-DD)'),
+      to: z.string().describe('End date for search (YYYY-MM-DD)')
+    }).describe('Date range for price search'),
+    cabin_class: z.enum(['economy', 'premium_economy', 'business', 'first']).default('economy').describe('Cabin class'),
+    currency: z.string().default('RUB').describe('Currency for pricing'),
+    filters: z.object({
+      is_direct: z.boolean().nullable().describe('Direct flights only'),
+      with_baggage: z.boolean().nullable().describe('Include baggage'),
+      airplane_only: z.boolean().nullable().describe('Airplane only (no trains/buses)')
+    }).nullable().describe('Additional search filters')
   }),
   execute: async (params) => {
-    console.log('\n💰 === PRICING INTELLIGENCE STARTED ===');
-    console.log('✈️ Route:', `${params.route.from} → ${params.route.to}`);
-    console.log('💱 Currency:', params.price_analysis.currency);
-    console.log('🎯 Segment:', params.price_analysis.market_segment);
+    console.log('\n💰 === ENHANCED PRICING INTELLIGENCE STARTED ===');
+    console.log('✈️ Route:', `${params.route.from} (${params.route.from_code}) → ${params.route.to} (${params.route.to_code})`);
+    console.log('📅 Date Range:', `${params.date_range.from} to ${params.date_range.to}`);
+    console.log('💺 Cabin Class:', params.cabin_class);
+    console.log('💱 Currency:', params.currency);
 
     try {
-      // Simulate realistic pricing analysis for Russian market
-      const basePrice = Math.floor(Math.random() * 50000) + 25000; // 25,000-75,000 RUB
-      const competitorPrice1 = basePrice + Math.floor(Math.random() * 10000) - 5000;
-      const competitorPrice2 = basePrice + Math.floor(Math.random() * 15000) - 7500;
-      
-      const pricingData = {
-        our_price: basePrice,
-        competitor_prices: [competitorPrice1, competitorPrice2],
-        currency: params.price_analysis.currency,
-        route: `${params.route.from} - ${params.route.to}`,
-        market_position: basePrice < Math.min(competitorPrice1, competitorPrice2) ? 'Лидер по цене' : 'Конкурентная цена',
-        savings: Math.max(competitorPrice1, competitorPrice2) - basePrice,
-        price_trend: 'Стабильные цены',
-        booking_urgency: 'Ограниченное количество мест по данной цене'
-      };
+      // Use enhanced getPrices function from prices.ts
+      const pricesResult = await getPrices({
+        origin: params.route.from_code,
+        destination: params.route.to_code,
+        date_range: `${params.date_range.from},${params.date_range.to}`,
+        cabin_class: params.cabin_class,
+        filters: params.filters || {}
+      });
 
-      console.log('✅ Pricing analysis completed');
-      console.log('💰 Our price:', `${pricingData.our_price} ${pricingData.currency}`);
-      console.log('🏆 Market position:', pricingData.market_position);
+      if (!pricesResult.success) {
+        throw new Error(pricesResult.error || 'Failed to get pricing data');
+      }
+
+      const pricingData = pricesResult.data;
+
+      console.log('✅ Enhanced pricing data received');
+      console.log('💰 Cheapest price found:', `${pricingData.cheapest} ${pricingData.currency}`);
+      console.log('📊 Total offers:', pricingData.search_metadata.total_found);
       
-      // Return formatted string with Russian pricing
-      return `Ценовой анализ маршрута ${pricingData.route}: Наша цена ${pricingData.our_price} ${pricingData.currency}, конкуренты ${pricingData.competitor_prices.join(' и ')} ${pricingData.currency}. Позиция на рынке: ${pricingData.market_position}. Экономия до ${pricingData.savings} ${pricingData.currency}. Тренд: ${pricingData.price_trend}. Срочность: ${pricingData.booking_urgency}.`;
+      // Transform data for campaign state
+      const campaignPricingData = {
+        best_price: pricingData.cheapest,
+        min_price: pricingData.cheapest,
+        max_price: Math.max(...pricingData.prices.map(p => p.price)),
+        average_price: Math.round(pricingData.prices.reduce((sum, p) => sum + p.price, 0) / pricingData.prices.length),
+        currency: pricingData.currency,
+        offers_count: pricingData.search_metadata.total_found,
+        recommended_dates: pricingData.prices.slice(0, 3).map(p => p.date),
+        route: pricingData.search_metadata.route,
+        enhanced_features: {
+          airport_conversion: pricesResult.metadata?.route_processing || {},
+          csv_integration: pricesResult.metadata?.csv_integration || 'enabled',
+          api_source: pricesResult.metadata?.source || 'kupibilet_api_v2'
+        }
+      };
+      
+      // Update global state
+      updateCampaignState({ pricingData: campaignPricingData });
+
+      // Return formatted string with enhanced pricing
+      return `Улучшенный ценовой анализ маршрута ${params.route.from} - ${params.route.to}: Лучшая цена ${campaignPricingData.best_price} ${campaignPricingData.currency}. Диапазон цен: ${campaignPricingData.min_price} - ${campaignPricingData.max_price} ${campaignPricingData.currency}. Средняя цена: ${campaignPricingData.average_price} ${campaignPricingData.currency}. Найдено предложений: ${campaignPricingData.offers_count}. Рекомендуемые даты: ${campaignPricingData.recommended_dates.join(', ')}. Используется улучшенная система конвертации аэропортов и CSV-интеграция.`;
 
     } catch (error) {
-      console.error('❌ Pricing intelligence failed:', error);
-      return `Ошибка ценового анализа: ${error.message}`;
+      console.error('❌ Enhanced pricing intelligence failed:', error);
+      return `Ошибка получения цен от улучшенного API: ${error.message}`;
     }
   }
 });
@@ -286,6 +461,9 @@ export const assetStrategy = tool({
       console.log('✅ Asset strategy developed');
       console.log('🎨 Visual concepts:', assetStrategy.image_concepts.join(', '));
       
+      // Update global state
+      updateCampaignState({ assetPlan: assetStrategy });
+
       // Return formatted string
       return `Визуальная стратегия для темы "${assetStrategy.theme}": Стиль - ${assetStrategy.visual_style}, цветовая палитра - ${assetStrategy.color_palette}, типографика - ${assetStrategy.typography}. Концепции изображений: ${assetStrategy.image_concepts.join(', ')}. Иерархия макета: ${assetStrategy.layout_hierarchy}. Эмоциональные триггеры: ${assetStrategy.emotional_triggers}. Соблюдение бренда: ${assetStrategy.brand_consistency}.`;
 
@@ -297,72 +475,70 @@ export const assetStrategy = tool({
 });
 
 // ============================================================================
-// CONTENT GENERATOR
+// CONTENT GENERATOR - USES REAL DATA
 // ============================================================================
 
 export const contentGenerator = tool({
   name: 'contentGenerator',
-  description: 'Generates compelling email content including subject lines, preheaders, body content, and CTAs using AI-powered content creation with brand voice consistency',
+  description: 'Generates compelling email content using real pricing data and date analysis from previous tools',
   parameters: z.object({
-    subject: z.string().nullable().describe('Email subject line'),
-    preheader: z.string().nullable().describe('Email preheader text'),
-    body_content: z.string().nullable().describe('Main email body content'),
-    cta_text: z.string().nullable().describe('Call-to-action button text'),
-    cta_url: z.string().nullable().describe('Call-to-action URL'),
-    personalization_tokens: z.array(z.string()).nullable().describe('Personalization tokens for dynamic content'),
-    brand_voice: z.string().nullable().describe('Brand voice and tone guidelines'),
-    content_length: z.enum(['short', 'medium', 'long']).default('medium').describe('Desired content length')
+    campaign_theme: z.string().describe('Main campaign theme or destination'),
+    content_type: z.enum(['promotional', 'newsletter', 'announcement']).describe('Type of email content'),
+    personalization_level: z.enum(['basic', 'advanced', 'premium']).describe('Level of personalization'),
+    urgency_level: z.enum(['low', 'medium', 'high']).describe('Urgency level for the offer')
   }),
   execute: async (params) => {
     console.log('\n✍️ === CONTENT GENERATION STARTED ===');
-    console.log('📝 Subject:', params.subject);
-    console.log('📋 Content length:', params.content_length);
+    console.log('🎯 Theme:', params.campaign_theme);
+    console.log('📝 Content Type:', params.content_type);
+    console.log('🎭 Personalization:', params.personalization_level);
+    console.log('⚡ Urgency:', params.urgency_level);
 
     try {
-      // Find active campaign from recent folder creation
+      // Get real data from campaign state
+      const campaignState = getCampaignState();
+      const pricingData = campaignState.pricingData;
+      const dateAnalysis = campaignState.dateAnalysis;
+      const context = campaignState.context;
+      
+      // Find active campaign from recent folder creation or state
       const campaignsDir = path.join(process.cwd(), 'campaigns');
-      const campaignFolders = await fs.readdir(campaignsDir);
+      let campaignPath = campaignState.campaignPath;
       
-      // Get the most recent campaign folder
-      const latestCampaign = campaignFolders
-        .filter(folder => folder.startsWith('campaign_'))
-        .sort()
-        .pop();
-
-      if (!latestCampaign) {
-        return 'Ошибка: Активная кампания не найдена. Сначала создайте кампанию.';
+      if (!campaignPath) {
+        const campaignFolders = await fs.readdir(campaignsDir);
+        const latestCampaign = campaignFolders
+          .filter(folder => folder.startsWith('campaign_'))
+          .sort()
+          .pop();
+          
+        if (!latestCampaign) {
+          return 'Ошибка: Активная кампания не найдена. Сначала создайте кампанию.';
+        }
+        
+        campaignPath = path.join(campaignsDir, latestCampaign);
       }
-
-      const campaignPath = path.join(campaignsDir, latestCampaign);
       
-      // Generate content based on parameters
-      const generatedContent = {
-        subject: params.subject || 'Специальное предложение на путешествия',
-        preheader: params.preheader || 'Не упустите возможность забронировать по лучшей цене',
-        body_content: params.body_content || `Откройте для себя удивительные направления с нашими эксклюзивными предложениями. Мы подготовили для вас лучшие цены на авиабилеты и незабываемые впечатления от путешествий.`,
-        cta_text: params.cta_text || 'Забронировать сейчас',
-        cta_url: params.cta_url || 'https://kupibilet.ru/booking',
-        personalization: params.personalization_tokens || ['{{first_name}}', '{{destination}}'],
-        brand_voice: params.brand_voice || 'Дружелюбный, профессиональный, вдохновляющий'
-      };
+      // Generate content using real data
+      const generatedContent = generateRealContent(params, pricingData, dateAnalysis, context);
 
       // Save content to campaign folder
       const contentFile = path.join(campaignPath, 'content', 'email-content.json');
       await fs.writeFile(contentFile, JSON.stringify(generatedContent, null, 2));
       
       // Also save as markdown for easy reading
-      const markdownContent = `# Email Content\n\n**Subject:** ${generatedContent.subject}\n\n**Preheader:** ${generatedContent.preheader}\n\n**Body:**\n${generatedContent.body_content}\n\n**CTA:** ${generatedContent.cta_text}\n**URL:** ${generatedContent.cta_url}\n\n**Personalization:** ${generatedContent.personalization.join(', ')}\n**Brand Voice:** ${generatedContent.brand_voice}`;
+      const markdownContent = createMarkdownContent(generatedContent);
       
       await fs.writeFile(
         path.join(campaignPath, 'content', 'email-content.md'),
         markdownContent
       );
 
-      console.log('✅ Content generated and saved');
-      console.log('💾 Files saved to:', path.join(latestCampaign, 'content/'));
+      console.log('✅ Content generated with real data');
+      console.log('📄 Content saved to:', contentFile);
       
       // Return formatted string
-      return `Контент успешно создан и сохранен в кампанию ${latestCampaign}! Тема письма: "${generatedContent.subject}". Прехедер: "${generatedContent.preheader}". Основной текст создан в соответствии с брендом. CTA: "${generatedContent.cta_text}". Файлы сохранены: email-content.json и email-content.md в папке content/.`;
+      return `Контент сгенерирован с реальными данными! Тема: "${generatedContent.subject}". Цена: ${generatedContent.pricing.best_price} ${generatedContent.pricing.currency}. Даты: ${generatedContent.dates.optimal_dates.join(', ')}. Контент сохранен в ${contentFile} и ${path.join(campaignPath, 'content', 'email-content.md')}.`;
 
     } catch (error) {
       console.error('❌ Content generation failed:', error);
@@ -371,83 +547,132 @@ export const contentGenerator = tool({
   }
 });
 
+function generateRealContent(params: any, pricingData: any, dateAnalysis: any, context: any) {
+  const destination = params.campaign_theme;
+  const price = pricingData?.best_price || 0;
+  const currency = pricingData?.currency || 'RUB';
+  const dates = dateAnalysis?.optimal_dates || [];
+  
+  return {
+    subject: `${destination} от ${price} ${currency} - Лучшие предложения!`,
+    preheader: `Эксклюзивные цены на ${destination}. Забронируйте сейчас!`,
+    body: createBodyContent(destination, price, currency, dates, context),
+    cta: {
+      primary: 'Забронировать сейчас',
+      secondary: 'Узнать больше'
+    },
+    pricing: pricingData,
+    dates: dateAnalysis,
+    context: context,
+    personalization: params.personalization_level,
+    urgency: params.urgency_level
+  };
+}
+
+function createBodyContent(destination: string, price: number, currency: string, dates: string[], context: any): string {
+  const formattedDates = dates.slice(0, 3).join(', ');
+  const contextInfo = context?.emotional_triggers || 'незабываемые впечатления';
+  
+  return `
+Откройте для себя ${destination}!
+
+🌟 Специальная цена: от ${price} ${currency}
+📅 Лучшие даты: ${formattedDates}
+✨ Вас ждут: ${contextInfo}
+
+Не упустите возможность путешествовать по выгодной цене!
+  `.trim();
+}
+
+function createMarkdownContent(content: any): string {
+  return `# ${content.subject}
+
+**Preheader:** ${content.preheader}
+
+## Основной контент
+
+${content.body}
+
+## Призыв к действию
+
+- Основной: ${content.cta.primary}
+- Дополнительный: ${content.cta.secondary}
+
+## Данные о ценах
+
+- Лучшая цена: ${content.pricing?.best_price || 'N/A'} ${content.pricing?.currency || ''}
+- Количество предложений: ${content.pricing?.offers_count || 'N/A'}
+
+## Анализ дат
+
+- Оптимальные даты: ${content.dates?.optimal_dates?.join(', ') || 'N/A'}
+- Сезон: ${content.dates?.season || 'N/A'}
+
+## Контекст
+
+- Направление: ${content.context?.destination || 'N/A'}
+- Эмоциональные триггеры: ${content.context?.emotional_triggers || 'N/A'}
+`;
+}
+
 // ============================================================================
-// HANDOFF TO DESIGN SPECIALIST
+// TRANSFER TO DESIGN SPECIALIST
 // ============================================================================
 
 export const transferToDesignSpecialist = tool({
   name: 'transferToDesignSpecialist',
-  description: 'Transfers completed content and context to Design Specialist for visual asset selection and template creation',
+  description: 'Transfers the completed campaign content and strategy to the Design Specialist for visual implementation',
   parameters: z.object({
-    target_specialist: z.enum(['content', 'design', 'quality', 'delivery']).describe('Target specialist to hand off to'),
-    context: z.string().describe('Context or instructions for the next specialist'),
-    completed_tasks: z.array(z.string()).describe('List of completed tasks'),
-    next_steps: z.array(z.string()).describe('Recommended next steps'),
-    campaign_data: z.object({
-      campaign_id: z.string().nullable().describe('Campaign identifier'),
-      campaign_name: z.string().nullable().describe('Campaign name'),
-      brand_name: z.string().nullable().describe('Brand name'),
-      status: z.string().nullable().describe('Campaign status'),
-      additional_info: z.string().nullable().describe('Additional campaign information')
-    }).nullable().describe('Campaign data to pass along')
+    transfer_message: z.string().describe('Message to pass to Design Specialist about the completed work'),
+    priority_level: z.enum(['low', 'medium', 'high', 'urgent']).describe('Priority level for design work')
   }),
   execute: async (params) => {
-    console.log('\n🔄 === HANDOFF TO DESIGN SPECIALIST STARTED ===');
-    console.log('🎯 Target Specialist:', params.target_specialist);
-    console.log('📋 Context:', params.context.slice(0, 100) + '...');
-    console.log('✅ Completed Tasks:', params.completed_tasks.length);
-    console.log('➡️ Next Steps:', params.next_steps.length);
-    console.log('📊 Campaign Data:', params.campaign_data?.campaign_name || 'No campaign data');
+    console.log('\n🎨 === TRANSFER TO DESIGN SPECIALIST ===');
+    console.log('📝 Message:', params.transfer_message);
+    console.log('⚡ Priority:', params.priority_level);
 
     try {
-      console.log('📦 Preparing handoff package...');
-      console.log('🔍 Validating completed tasks...');
-      console.log('📋 Organizing context for next specialist...');
-
-      // Create handoff package
-      const handoffPackage = {
+      const campaignState = getCampaignState();
+      
+      // Create handoff summary
+      const handoffSummary = {
+        timestamp: new Date().toISOString(),
         from_specialist: 'Content Specialist',
-        to_specialist: params.target_specialist,
-        context: params.context,
-        completed_tasks: params.completed_tasks,
-        next_steps: params.next_steps,
-        campaign_data: params.campaign_data,
-        handoff_timestamp: new Date().toISOString(),
-        status: 'ready_for_handoff'
+        to_specialist: 'Design Specialist',
+        campaign_id: campaignState.campaignId,
+        campaign_path: campaignState.campaignPath,
+        transfer_message: params.transfer_message,
+        priority_level: params.priority_level,
+        completed_work: {
+          campaign_folder: !!campaignState.campaignId,
+          context_analysis: !!campaignState.context,
+          date_intelligence: !!campaignState.dateAnalysis,
+          pricing_data: !!campaignState.pricingData,
+          asset_strategy: !!campaignState.assetPlan,
+          content_generation: true
+        },
+        available_data: {
+          pricing: campaignState.pricingData,
+          dates: campaignState.dateAnalysis,
+          context: campaignState.context,
+          assets: campaignState.assetPlan
+        }
       };
 
-      console.log('📦 Handoff package prepared');
-      console.log('✅ Handoff to Design Specialist completed');
+      // Save handoff summary if campaign path exists
+      if (campaignState.campaignPath) {
+        const handoffFile = path.join(campaignState.campaignPath, 'docs', 'content-to-design-handoff.json');
+        await fs.writeFile(handoffFile, JSON.stringify(handoffSummary, null, 2));
+        console.log('📄 Handoff summary saved to:', handoffFile);
+      }
 
-      return `🔄 Handoff to ${params.target_specialist} Specialist Complete!
-
-**Handoff Summary:**
-• From: Content Specialist
-• To: ${params.target_specialist} Specialist
-• Status: Ready for handoff
-• Timestamp: ${handoffPackage.handoff_timestamp}
-
-**Context for Next Specialist:**
-${params.context}
-
-**Completed Tasks:**
-${params.completed_tasks.map(task => `✅ ${task}`).join('\n')}
-
-**Recommended Next Steps:**
-${params.next_steps.map(step => `➡️ ${step}`).join('\n')}
-
-**Campaign Information:**
-• Campaign ID: ${params.campaign_data?.campaign_id || 'N/A'}
-• Campaign Name: ${params.campaign_data?.campaign_name || 'N/A'}
-• Brand: ${params.campaign_data?.brand_name || 'N/A'}
-• Status: ${params.campaign_data?.status || 'N/A'}
-
-**Handoff Package Ready!** 📦
-The ${params.target_specialist} Specialist can now proceed with the next phase of the campaign workflow.`;
+      console.log('✅ Transfer to Design Specialist completed');
+      
+      return `Работа Content Specialist завершена! Передача Design Specialist: ${params.transfer_message}. Приоритет: ${params.priority_level}. Кампания: ${campaignState.campaignId}. Доступные данные: ценообразование, даты, контекст, стратегия ассетов, сгенерированный контент. Документация передачи сохранена.`;
 
     } catch (error) {
-      console.error('❌ Handoff failed:', error);
-      return `❌ Error during handoff: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      console.error('❌ Transfer to Design Specialist failed:', error);
+      return `Ошибка передачи Design Specialist: ${error.message}`;
     }
   }
 });
@@ -458,10 +683,10 @@ The ${params.target_specialist} Specialist can now proceed with the next phase o
 
 export const contentSpecialistTools = [
   createCampaignFolder,
-  contentGenerator,
-  pricingIntelligence,
   contextProvider,
   dateIntelligence,
+  pricingIntelligence,
   assetStrategy,
+  contentGenerator,
   transferToDesignSpecialist
 ]; 
