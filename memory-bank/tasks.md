@@ -1,254 +1,408 @@
-# Email-Makers Agent Folder Optimization Project - Tasks
+# Email-Makers Agent Optimization Project - Tasks
 
-## PROJECT STATUS: 🚧 LEVEL 3 INTERMEDIATE FEATURE - ARCHITECTURAL OPTIMIZATION
+## PROJECT STATUS: 🚧 LEVEL 3 INTERMEDIATE FEATURE - AGENT LOGIC OPTIMIZATION
 
-**Task ID**: FOLDER-OPT-001  
+**Task ID**: AGENT-LOGIC-OPT-001  
 **Started**: 2025-01-07  
 **Complexity**: Level 3 (Intermediate Feature)  
-**Type**: Architectural Optimization & Code Consolidation
+**Type**: Agent Logic & Data Flow Optimization + OpenAI SDK Integration
 
 ---
 
 ## 🎯 PROJECT OVERVIEW
 
-**Objective**: Analyze and optimize `/src/agent/tools/` and `/src/agent/core/` directories for function duplication, remove architectural anti-patterns, consolidate duplicate files, and move unused files to useless folder.
+**Objective**: Доработать логику работы агента в соответствии с OpenAI Agents SDK, добавить подготовку ассетов в Content Specialist, создать детальное ТЗ в JSON и исправить логирование output.
 
-**Scope**: 
-- Function duplication analysis between folders
-- Architectural dependency cleanup
-- File usage verification against main agent
-- Code optimization and consolidation
-- System integrity verification
-
----
-
-## 📊 ANALYSIS RESULTS
-
-### **MAJOR DUPLICATIONS IDENTIFIED**
-
-#### 1. **Email Rendering (3-Layer Duplication)**
-- **Issue**: Architectural anti-pattern with core service wrapping tool
-- **Files**:
-  - `/src/agent/core/email-rendering-service.ts` (557 lines) - ❌ REMOVE
-  - `/src/agent/tools/email-renderer-v2.ts` (532 lines) - ✅ KEEP (used by registry)
-  - `/src/agent/tools/email-renderer/services/` - ❓ VERIFY USAGE
-- **Problem**: Core service imports tool, creating wrong dependency direction
-
-#### 2. **Delivery Management (Version Duplication)**
-- **Issue**: Two versions of delivery manager exist
-- **Files**:
-  - `/src/agent/tools/consolidated/delivery-manager.ts` (886 lines) - ❌ REMOVE
-  - `/src/agent/tools/consolidated/delivery-manager-fixed.ts` (170 lines) - ✅ KEEP (used by registry)
-- **Problem**: Registry uses "fixed" version, original is unused
-
-#### 3. **Asset Management (Dependency Issue)**
-- **Issue**: Enhanced selector depends on core asset manager
-- **Files**:
-  - `/src/agent/core/asset-manager.ts` (519 lines) - ✅ KEEP (used by enhanced selector)
-  - `/src/agent/tools/enhanced-asset-selector.ts` (313 lines) - ✅ KEEP (used by registry)
-- **Problem**: Architecture is correct but could be optimized
-
-### **CONFIRMED ACTIVE TOOL IMPORTS**
-✅ **Used by Tool Registry (12 files)**:
-1. `../tools/asset-tag-planner.ts`
-2. `../tools/consolidated/content-generator.ts`
-3. `../tools/email-folder-manager.ts`
-4. `../tools/simple-pricing.ts`
-5. `../tools/date.ts`
-6. `../tools/email-renderer-v2.ts`
-7. `../tools/enhanced-asset-selector.ts`
-8. `../tools/image-planning.ts`
-9. `../tools/ml-scoring-tools.ts`
-10. `../tools/ai-consultant/workflow-quality-analyzer.ts`
-11. `../tools/consolidated/quality-controller.ts`
-12. `../tools/consolidated/delivery-manager-fixed.ts`
-
-### **POTENTIALLY UNUSED FILES**
-❓ **Files requiring verification**:
-- `/tools/simple/` directory (22 files) - Many might be unused
-- `/tools/email-renderer/services/` directory - Might be unused if v2 is used
-- `/tools/consolidated/delivery-manager.ts` - Confirmed unused (fixed version exists)
-- `/core/email-rendering-service.ts` - Confirmed unused (architectural anti-pattern)
+**Updated Scope**: 
+- Использование context parameter для передачи данных между специалистами
+- Добавление подготовки ассетов/креативов в Content Specialist
+- Создание детального ТЗ в JSON для Design Specialist
+- **КРИТИЧНО: Передача полных результатов работы, а не request'ов**
+- Исправление логирования output функций
+- Доработка функций каждого специалиста
+- Замена замоканных данных на реальные
 
 ---
 
-## 🚀 IMPLEMENTATION PLAN
+## 🚨 КРИТИЧЕСКАЯ ПРОБЛЕМА ОБНАРУЖЕНА
 
-### **Phase 1: Immediate Duplications Cleanup**
+### **TRANSFER TOOLS ПЕРЕДАЮТ ТОЛЬКО REQUEST**
+- **Файл**: `src/agent/core/transfer-tools.ts`
+- **Проблема**: `baseSchema = z.object({ request: z.string() })`
+- **Последствие**: Специалисты получают user request, а не результаты работы предыдущего специалиста
+- **Требуется**: Полное переписывание transfer logic
+
+### **КАЖДЫЙ СПЕЦИАЛИСТ ДОЛЖЕН ПЕРЕДАВАТЬ РЕЗУЛЬТАТЫ РАБОТЫ**
+- **Content → Design**: Comprehensive Technical Specification + Assets
+- **Design → Quality**: Готовый дизайн + MJML/HTML + Assets
+- **Quality → Delivery**: Проверенные материалы + Quality Report
+- **Delivery**: Final Package + Delivery Report
+
+---
+
+## 📊 ANALYSIS RESULTS - OPENAI SDK INTEGRATION
+
+### **SDK DOCUMENTATION REVIEWED**
+- **Library**: `/openai/openai-agents-js` (Trust Score: 9.1, 212 code snippets)
+- **Key Features**: Context parameter, handoffs, tools, logging, streaming
+- **Best Practices**: String returns, Zod validation, structured logging
+
+### **CRITICAL ARCHITECTURAL DISCOVERIES**
+
+#### **1. Context Parameter Support - РЕШЕНИЕ НАЙДЕНО**
+- **OpenAI SDK**: Поддерживает context parameter для передачи данных между tools
+- **Implementation**: `execute: async (args, context) => { ... }`
+- **Transfer**: Context передается автоматически в handoff'ах
+- **Solution**: Заменить globalCampaignState на context parameter
+
+#### **2. Transfer Tools Неправильно Реализованы**
+- **Status**: ❌ Передают только request string вместо результатов работы
+- **Files**: `src/agent/core/transfer-tools.ts` - baseSchema только с request
+- **Problem**: Специалисты не получают данные от предыдущих специалистов
+- **Fix**: Полное переписывание transfer tools с context и results
+
+#### **3. Output Logging Missing**
+- **Problem**: Функции не логируют свой output
+- **SDK Features**: Встроенное логирование, environment variables
+- **Solution**: Структурированное логирование для каждой функции
+- **Variables**: `DEBUG=openai-agents:*`, `OPENAI_AGENTS_DONT_LOG_TOOL_DATA`
+
+---
+
+## 🚀 CRITICAL UPDATED IMPLEMENTATION PLAN
+
+### **Phase 0: КРИТИЧНАЯ ФАЗА - Transfer Tools Redesign**
+**Priority**: CRITICAL  
+**Estimated Time**: 3 hours
+
+#### **Task 0.1: Создать Comprehensive Handoff Tools**
+- [ ] **Создать**: `finalizeContentAndTransferToDesign` в Content Specialist
+- [ ] **Создать**: `finalizeDesignAndTransferToQuality` в Design Specialist  
+- [ ] **Создать**: `finalizeQualityAndTransferToDelivery` в Quality Specialist
+- [ ] **Функции**: Собирают все результаты работы специалиста + передают полные данные
+
+#### **Task 0.2: Content Specialist Final Handoff**
+- [ ] **Создать**: `finalizeContentAndTransferToDesign` tool
+- [ ] **Собирать**: 
+  ```json
+  {
+    "campaign_metadata": { "id": "...", "theme": "..." },
+    "content_specification": { "subject": "...", "body": "...", "cta": "..." },
+    "pricing_analysis": { "best_price": 123, "currency": "RUB" },
+    "date_analysis": { "optimal_dates": [...], "season": "..." },
+    "context_analysis": { "emotional_triggers": "...", "positioning": "..." },
+    "asset_strategy": { "visual_style": "...", "concepts": [...] },
+    "assets_manifest": { "hero_image": "/path", "icons": [...] },
+    "technical_constraints": { "max_width": "600px", "clients": [...] },
+    "generated_content": { "subject": "...", "preheader": "..." }
+  }
+  ```
+- [ ] **Сохранить**: Complete Technical Specification в `docs/technical-spec.json`
+- [ ] **Передать**: В Design Specialist через context
+
+#### **Task 0.3: Design Specialist Final Handoff**
+- [ ] **Создать**: `finalizeDesignAndTransferToQuality` tool
+- [ ] **Получать**: Technical Specification от Content Specialist
+- [ ] **Создавать**: Design Output Package
+- [ ] **Собирать**: 
+  ```json
+  {
+    "technical_spec_received": { ... },
+    "processed_assets": { "optimized_images": [...], "generated_graphics": [...] },
+    "mjml_template": "MJML code here",
+    "html_output": "Compiled HTML",
+    "css_styles": "Inline CSS",
+    "design_decisions": { "layout": "...", "typography": "..." },
+    "asset_usage": { "hero_image": "where used", "icons": "where used" },
+    "responsive_design": { "mobile_breakpoints": [...] },
+    "dark_mode_support": true/false
+  }
+  ```
+- [ ] **Сохранить**: Design Package в `templates/design-package.json`
+- [ ] **Передать**: В Quality Specialist через context
+
+#### **Task 0.4: Quality Specialist Final Handoff**
+- [ ] **Создать**: `finalizeQualityAndTransferToDelivery` tool
+- [ ] **Получать**: Design Package от Design Specialist
+- [ ] **Валидировать**: HTML, CSS, MJML, Assets, Accessibility
+- [ ] **Собирать**: 
+  ```json
+  {
+    "design_package_received": { ... },
+    "html_validation": { "valid": true, "errors": [] },
+    "css_validation": { "valid": true, "warnings": [] },
+    "mjml_validation": { "compiled": true, "output_size": "45KB" },
+    "accessibility_check": { "wcag_aa": true, "contrast_ratio": "4.5:1" },
+    "email_client_compatibility": { "gmail": "✅", "outlook": "✅" },
+    "performance_metrics": { "load_time": "1.2s", "image_size": "150KB" },
+    "quality_score": 95,
+    "approved_for_delivery": true
+  }
+  ```
+- [ ] **Сохранить**: Quality Report в `docs/quality-report.json`
+- [ ] **Передать**: В Delivery Specialist через context
+
+#### **Task 0.5: Delivery Specialist Final Package**
+- [ ] **Создать**: `createFinalDeliveryPackage` tool
+- [ ] **Получать**: Quality Report + все материалы
+- [ ] **Создавать**: Final Delivery Package
+- [ ] **Собирать**: 
+  ```json
+  {
+    "quality_report_received": { ... },
+    "final_files": {
+      "mjml_template": "/exports/template.mjml",
+      "html_email": "/exports/email.html", 
+      "assets": ["/exports/assets/..."],
+      "preview_images": ["/exports/previews/..."]
+    },
+    "zip_package": "/exports/campaign_final.zip",
+    "delivery_metadata": {
+      "created_at": "2025-01-07T22:00:00Z",
+      "total_size": "580KB",
+      "file_count": 15
+    },
+    "deployment_ready": true
+  }
+  ```
+- [ ] **Создать**: ZIP package со всеми материалами
+- [ ] **Сохранить**: Delivery Report в `docs/delivery-report.json`
+
+### **Phase 1: Context Parameter Integration**
 **Priority**: HIGH  
 **Estimated Time**: 2 hours
 
-#### **Task 1.1: Remove Email Rendering Service Wrapper**
-- [ ] **Remove**: `/src/agent/core/email-rendering-service.ts`
-- [ ] **Reason**: Architectural anti-pattern (core importing tools)
-- [ ] **Verify**: No other files import this service
-- [ ] **Test**: Ensure main agent still works
+#### **Task 1.1: Создать Context Schema**
+- [ ] **Создать**: `src/agent/core/context-schema.ts`
+- [ ] **Определить**: Zod схемы для каждого этапа workflow
+- [ ] **Типы**: 
+  ```typescript
+  interface ContentContext {
+    technicalSpec: TechnicalSpecification;
+    assets: AssetManifest;
+    content: GeneratedContent;
+  }
+  
+  interface DesignContext {
+    contentContext: ContentContext;
+    designPackage: DesignPackage;
+  }
+  
+  interface QualityContext {
+    designContext: DesignContext;
+    qualityReport: QualityReport;
+  }
+  ```
 
-#### **Task 1.2: Remove Unused Delivery Manager**
-- [ ] **Remove**: `/src/agent/tools/consolidated/delivery-manager.ts`
-- [ ] **Reason**: Registry uses delivery-manager-fixed.ts instead
-- [ ] **Verify**: No imports of original delivery manager
-- [ ] **Test**: Ensure delivery functionality works
+#### **Task 1.2: Обновить Transfer Tools**
+- [ ] **Изменить**: `src/agent/core/transfer-tools.ts`
+- [ ] **Удалить**: baseSchema с request string
+- [ ] **Добавить**: context parameter в каждый transfer tool
+- [ ] **Обеспечить**: Передачу полных результатов работы
 
-#### **Task 1.3: Verify Email Renderer Services**
-- [ ] **Check**: If `/tools/email-renderer/services/` are used by email-renderer-v2.ts
-- [ ] **Action**: Remove if unused, keep if used
-- [ ] **Document**: Usage patterns for future maintenance
+#### **Task 1.3: Обновить Content Specialist Tools**
+- [ ] **Изменить**: Все tools принимают context parameter
+- [ ] **Заменить**: globalCampaignState на context
+- [ ] **Добавить**: Structured output logging в каждую функцию
+- [ ] **Интегрировать**: С новым finalizeContentAndTransferToDesign
 
-### **Phase 2: Comprehensive File Usage Analysis**
+### **Phase 2: Content Specialist Asset Preparation**
+**Priority**: HIGH  
+**Estimated Time**: 4 hours
+
+#### **Task 2.1: Добавить Asset Preparation Tools**
+- [ ] **Создать**: `assetCollector` - сбор всех необходимых ассетов
+- [ ] **Создать**: `assetOptimizer` - оптимизация изображений
+- [ ] **Создать**: `assetValidator` - проверка качества ассетов
+- [ ] **Создать**: `assetPathGenerator` - создание JSON с путями
+
+#### **Task 2.2: Интеграция с Figma API**
+- [ ] **Расширить**: assetStrategy для загрузки ассетов из Figma
+- [ ] **Добавить**: Автоматическую загрузку и сохранение
+- [ ] **Создать**: Mapping между Figma assets и campaign assets
+- [ ] **Сохранить**: Ассеты в `campaigns/{id}/assets/`
+
+#### **Task 2.3: Asset JSON Generation**
+- [ ] **Создать**: `generateAssetManifest` функцию
+- [ ] **Формат**: JSON с путями к ассетам и их описанием
+- [ ] **Структура**: 
+  ```json
+  {
+    "hero_image": {
+      "path": "/assets/hero-thailand.jpg",
+      "size": "1200x600",
+      "optimized": true,
+      "alt_text": "Beautiful Thailand beach"
+    },
+    "icons": [
+      {
+        "path": "/assets/plane.svg", 
+        "usage": "transportation",
+        "size": "24x24"
+      }
+    ],
+    "backgrounds": [
+      {
+        "path": "/assets/bg-pattern.png",
+        "usage": "email_background",
+        "size": "600x400"
+      }
+    ]
+  }
+  ```
+- [ ] **Интеграция**: С finalizeContentAndTransferToDesign
+
+### **Phase 3: Technical Specification Creation**
+**Priority**: HIGH  
+**Estimated Time**: 3 hours
+
+#### **Task 3.1: Создать Technical Specification Generator**
+- [ ] **Создать**: `generateTechnicalSpec` tool в Content Specialist
+- [ ] **Формат**: Comprehensive JSON specification
+- [ ] **Объединить**: Данные из всех Content Specialist tools
+- [ ] **Валидировать**: Структуру через Zod схемы
+
+#### **Task 3.2: Comprehensive ТЗ Structure**
+- [ ] **Создать**: Детальную структуру ТЗ
+- [ ] **Включить**: Campaign info, content, design requirements, assets, constraints
+- [ ] **Добавить**: Quality criteria, performance requirements
+- [ ] **Интегрировать**: С finalizeContentAndTransferToDesign
+
+### **Phase 4: Output Logging Implementation**
+**Priority**: HIGH  
+**Estimated Time**: 2 hours
+
+#### **Task 4.1: Создать Logging System**
+- [ ] **Создать**: `src/agent/core/output-logger.ts`
+- [ ] **Функции**: logToolOutput, logHandoff, logError
+- [ ] **Формат**: Structured JSON logging
+- [ ] **Интеграция**: С каждым specialist tool
+
+#### **Task 4.2: Handoff Logging**
+- [ ] **Логировать**: Все handoff'ы между специалистами
+- [ ] **Отслеживать**: Размер передаваемых данных
+- [ ] **Мониторить**: Время выполнения каждого этапа
+- [ ] **Сохранять**: Логи в `campaigns/{id}/logs/`
+
+### **Phase 5: Design Specialist Enhancement**
+**Priority**: HIGH  
+**Estimated Time**: 4 hours
+
+#### **Task 5.1: Context-Aware Design Tools**
+- [ ] **Обновить**: processAssets для работы с Technical Specification
+- [ ] **Обновить**: generateTemplate для использования Asset Manifest
+- [ ] **Создать**: processContextData функцию
+- [ ] **Интегрировать**: С finalizeDesignAndTransferToQuality
+
+#### **Task 5.2: MJML Generation from ТЗ**
+- [ ] **Создать**: MJML templates на основе Technical Specification
+- [ ] **Использовать**: Реальные пути к ассетам из manifest
+- [ ] **Валидировать**: Генерируемый MJML
+- [ ] **Оптимизировать**: Для различных email clients
+
+### **Phase 6: Quality & Delivery Specialist Updates**
 **Priority**: MEDIUM  
 **Estimated Time**: 3 hours
 
-#### **Task 2.1: Scan All Tool Files**
-- [ ] **Analyze**: All files in `/src/agent/tools/` and subdirectories
-- [ ] **Cross-reference**: With tool-registry.ts imports
-- [ ] **Check**: Direct imports in core files
-- [ ] **Identify**: Unused files for removal
+#### **Task 6.1: Context-Aware Quality Tools**
+- [ ] **Обновить**: validateTemplate для работы с Design Package
+- [ ] **Обновить**: testCompatibility для real email client testing
+- [ ] **Создать**: Real validation tools
+- [ ] **Интегрировать**: С finalizeQualityAndTransferToDelivery
 
-#### **Task 2.2: Verify Main Agent Integration**
-- [ ] **Test**: `/src/app/api/agent/run-improved/route.ts` functionality
-- [ ] **Check**: Specialist agents file imports
-- [ ] **Ensure**: All tool categories work correctly
-- [ ] **Document**: Integration points
+#### **Task 6.2: Context-Aware Delivery Tools**
+- [ ] **Обновить**: packageCampaign для создания final packages
+- [ ] **Обновить**: deliverCampaign для real delivery
+- [ ] **Создать**: ZIP generation с всеми материалами
+- [ ] **Интегрировать**: С createFinalDeliveryPackage
 
-#### **Task 2.3: Create Unused Files List**
-- [ ] **Generate**: Complete list of unused files
-- [ ] **Categorize**: By reason for non-usage
-- [ ] **Verify**: Each file is truly unused (no indirect imports)
-- [ ] **Prepare**: For move to useless folder
-
-### **Phase 3: File Organization & Optimization**
-**Priority**: MEDIUM  
-**Estimated Time**: 2 hours
-
-#### **Task 3.1: Move Unused Files**
-- [ ] **Create**: `/src/agent/useless/` directory
-- [ ] **Move**: All confirmed unused files
-- [ ] **Maintain**: Directory structure in useless folder
-- [ ] **Document**: Reason for each moved file
-
-#### **Task 3.2: Optimize File Structure**
-- [ ] **Review**: `/tools/simple/` vs `/tools/consolidated/` organization
-- [ ] **Consolidate**: Similar functionality if beneficial
-- [ ] **Standardize**: Naming conventions
-- [ ] **Clean**: Empty directories
-
-#### **Task 3.3: Fix Architectural Dependencies**
-- [ ] **Ensure**: Core files don't import tool files
-- [ ] **Fix**: Any remaining dependency direction issues
-- [ ] **Optimize**: Import paths for better organization
-- [ ] **Document**: New architectural patterns
-
-### **Phase 4: System Verification & Testing**
+### **Phase 7: End-to-End Testing**
 **Priority**: HIGH  
 **Estimated Time**: 2 hours
 
-#### **Task 4.1: Functionality Testing**
-- [ ] **Test**: Main agent API endpoint
-- [ ] **Verify**: All tool categories work
-- [ ] **Check**: Specialist agent handoffs
-- [ ] **Ensure**: No broken imports or missing files
-
-#### **Task 4.2: Performance Verification**
-- [ ] **Measure**: Tool loading times
-- [ ] **Check**: Registry initialization
-- [ ] **Verify**: No performance degradation
-- [ ] **Document**: Performance improvements
-
-#### **Task 4.3: Integration Testing**
-- [ ] **Test**: Complete email generation workflow
-- [ ] **Verify**: All tools accessible through registry
-- [ ] **Check**: Error handling for missing tools
-- [ ] **Ensure**: System stability
-
-### **Phase 5: Documentation & Cleanup**
-**Priority**: MEDIUM  
-**Estimated Time**: 1 hour
-
-#### **Task 5.1: Update Memory Bank**
-- [ ] **Update**: activeContext.md with optimization results
-- [ ] **Document**: Files removed and reasons
-- [ ] **Record**: Performance improvements
-- [ ] **Note**: Architectural improvements made
-
-#### **Task 5.2: Update Project Documentation**
-- [ ] **Document**: New file organization
-- [ ] **Update**: Import patterns and dependencies
-- [ ] **Record**: Optimization metrics
-- [ ] **Create**: File usage guide
+#### **Task 7.1: Workflow Validation**
+- [ ] **Тестировать**: Полный workflow с real data transfer
+- [ ] **Проверить**: Content → Design → Quality → Delivery
+- [ ] **Валидировать**: Каждый handoff передает полные данные
+- [ ] **Исправить**: Обнаруженные проблемы в data flow
 
 ---
 
-## 📋 DETAILED TASK CHECKLIST
+## 🎯 EXPECTED DELIVERABLES
 
-### **CRITICAL ACTIONS (Cannot be skipped)**
-- [ ] Remove email-rendering-service.ts (architectural anti-pattern)
-- [ ] Remove delivery-manager.ts (unused duplicate)
-- [ ] Verify main agent functionality after changes
-- [ ] Create useless/ directory for unused files
-- [ ] Update memory bank with results
+### **Phase 0 - КРИТИЧНЫЕ DELIVERABLES:**
+1. ✅ Comprehensive handoff tools для каждого специалиста
+2. ✅ Technical Specification creation и передача
+3. ✅ Design Package creation и передача  
+4. ✅ Quality Report creation и передача
+5. ✅ Final Delivery Package creation
 
-### **VERIFICATION STEPS**
-- [ ] All tool registry imports still work
-- [ ] Main agent API responds correctly
-- [ ] Specialist agents load properly
-- [ ] No broken imports remain
-- [ ] System performance maintained or improved
+### **Phase 1-2 Deliverables:**
+1. ✅ Context parameter integration
+2. ✅ Asset preparation tools in Content Specialist
+3. ✅ Asset JSON manifest generation
+4. ✅ Figma API integration
 
-### **OPTIMIZATION TARGETS**
-- [ ] Reduce duplicate code by 50%+
-- [ ] Fix architectural anti-patterns
-- [ ] Improve file organization
-- [ ] Maintain 100% system functionality
-- [ ] Document all changes clearly
+### **Phase 3-4 Deliverables:**
+1. ✅ Comprehensive JSON ТЗ generation
+2. ✅ Structured output logging system
+3. ✅ Handoff monitoring и tracking
 
----
+### **Phase 5-6 Deliverables:**
+1. ✅ Context-aware Design Specialist
+2. ✅ Context-aware Quality Specialist  
+3. ✅ Context-aware Delivery Specialist
+4. ✅ Real tools вместо placeholder'ов
 
-## 🏗️ ARCHITECTURAL IMPROVEMENTS
-
-### **DEPENDENCY DIRECTION FIXES**
-- **Before**: Core → Tools (wrong direction)
-- **After**: Tools → Core (correct direction)
-- **Impact**: Better maintainability and cleaner architecture
-
-### **FILE ORGANIZATION**
-- **Before**: Mixed usage patterns, duplicates
-- **After**: Clear separation, no duplicates
-- **Impact**: Easier maintenance and development
-
-### **PERFORMANCE OPTIMIZATION**
-- **Before**: Multiple service layers for same functionality
-- **After**: Single optimized implementation
-- **Impact**: Better performance and less complexity
+### **Phase 7 Deliverables:**
+1. ✅ End-to-end workflow validation
+2. ✅ Complete data flow между всеми специалистами
+3. ✅ Production-ready system
 
 ---
 
-## 🎯 SUCCESS METRICS
+## 🔧 TECHNICAL IMPLEMENTATION NOTES
 
-### **QUANTITATIVE TARGETS**
-- **Files Removed**: 2+ duplicate files
-- **Unused Files Moved**: 10+ files to useless folder
-- **Architecture Issues Fixed**: 1+ dependency direction issues
-- **System Functionality**: 100% maintained
+### **OpenAI Agents SDK Best Practices:**
+1. **Context Parameter**: Используется для передачи данных между tools
+2. **String Return**: Все functions должны возвращать string
+3. **Zod Validation**: Для всех параметров и схем данных
+4. **Structured Logging**: Для мониторинга и отладки
+5. **Error Handling**: Proper error handling в каждой функции
 
-### **QUALITATIVE IMPROVEMENTS**
-- **Code Quality**: Cleaner, more maintainable
-- **Architecture**: Proper dependency directions
-- **Organization**: Better file structure
-- **Documentation**: Clear usage patterns
+### **Critical Architecture Changes:**
+1. **Transfer Tools полностью переписаны** - передача результатов работы
+2. **Handoff Logic изменен** - comprehensive data transfer
+3. **Context Schema создана** - валидация всех передаваемых данных
+4. **Specialist Integration** - каждый специалист получает полные данные
+
+### **Data Flow Architecture (Fixed):**
+```
+Content Specialist 
+    ↓ [Technical Specification + Assets]
+Design Specialist
+    ↓ [Design Package + MJML + HTML]  
+Quality Specialist
+    ↓ [Quality Report + Validated Materials]
+Delivery Specialist
+    ↓ [Final Package + ZIP + Reports]
+```
 
 ---
 
-## 🔄 NEXT STEPS AFTER COMPLETION
+## 📝 COMPLETION CRITERIA
 
-1. **Monitor**: System performance for any issues
-2. **Document**: New architectural patterns
-3. **Review**: Periodically check for new duplications
-4. **Optimize**: Continue improving file organization
+- [ ] Content Specialist создает comprehensive Technical Specification
+- [ ] Design Specialist получает полное ТЗ и создает Design Package
+- [ ] Quality Specialist получает готовый дизайн и создает Quality Report  
+- [ ] Delivery Specialist получает проверенные материалы и создает Final Package
+- [ ] Все handoff'ы передают полные результаты работы, не request'ы
+- [ ] Каждый этап логируется структурированно
+- [ ] End-to-end workflow работает с real data transfer
+- [ ] Система готова к production
 
----
+**Estimated Total Time**: 25 hours  
+**Priority**: CRITICAL  
+**Complexity**: Level 3 (Intermediate Feature)
 
-**CURRENT STATUS**: Ready for implementation  
-**COMPLEXITY LEVEL**: Level 3 (Intermediate Feature)  
-**ESTIMATED TOTAL TIME**: 10 hours  
-**RISK LEVEL**: Medium (system integration changes)
+**КРИТИЧНО**: Без Phase 0 система не будет работать правильно!

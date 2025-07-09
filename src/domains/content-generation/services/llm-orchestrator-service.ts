@@ -142,7 +142,7 @@ interface PromptOptimizationStrategy {
 
 // Provider configuration (simplified for Agent SDK)
 interface ProviderConfig {
-  model: 'gpt-4' | 'gpt-4-turbo' | 'gpt-3.5-turbo' | 'gpt-4o-mini';
+  model: 'gpt-4o-mini';
   maxTokens: number;
   temperature: number;
 }

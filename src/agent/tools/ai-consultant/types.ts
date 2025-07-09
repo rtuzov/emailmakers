@@ -292,7 +292,7 @@ export interface AIConsultantConfig {
   max_total_execution_time: number; // Default: 300 seconds
   
   // AI model configuration
-  ai_model: 'gpt-4o-mini' | 'gpt-4' | 'gpt-4o' | 'gpt-3.5-turbo' | 'claude-3-5-sonnet-20241022';
+  ai_model: 'gpt-4o-mini';
   analysis_temperature: number; // Default: 0.3 (more deterministic)
   max_recommendations: number; // Default: 10
   

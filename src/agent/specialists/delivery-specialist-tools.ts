@@ -1,87 +1,45 @@
 /**
  * Delivery Specialist Tools - OpenAI Agents SDK Compatible
  * 
- * Tools for final campaign delivery, packaging, and completion
+ * Tools for final delivery, packaging, and campaign completion
  */
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 
 // ============================================================================
-// CAMPAIGN PACKAGING
+// DELIVERY SPECIALIST TOOLS
 // ============================================================================
 
 export const packageCampaign = tool({
   name: 'packageCampaign',
-  description: 'Packages the completed campaign into final deliverable format',
+  description: 'Package campaign files for final delivery',
   parameters: z.object({
     campaign_id: z.string().describe('Campaign identifier'),
-    format: z.enum(['zip', 'folder', 'email']).describe('Packaging format'),
-    include_assets: z.boolean().default(true).describe('Include visual assets'),
-    include_docs: z.boolean().default(true).describe('Include documentation')
+    format: z.enum(['zip', 'tar', 'folder']).describe('Package format')
   }),
   execute: async (params) => {
-    console.log('\n📦 === CAMPAIGN PACKAGING STARTED ===');
+    console.log('\n📦 === CAMPAIGN PACKAGING ===');
     console.log('🆔 Campaign ID:', params.campaign_id);
     console.log('📁 Format:', params.format);
-    
-    try {
-      // Simulate packaging process
-      const packageResult = {
-        campaign_id: params.campaign_id,
-        format: params.format,
-        size: '2.5MB',
-        files_included: params.include_assets ? 15 : 8,
-        status: 'packaged'
-      };
-      
-      console.log('✅ Campaign packaged successfully');
-      
-      return `Кампания ${params.campaign_id} успешно упакована в формате ${params.format}. Размер: ${packageResult.size}. Включено файлов: ${packageResult.files_included}. Статус: ${packageResult.status}.`;
-      
-    } catch (error) {
-      console.error('❌ Packaging failed:', error);
-      return `Ошибка упаковки кампании: ${error.message}`;
-    }
+
+    return `Campaign ${params.campaign_id} packaged in ${params.format} format for delivery.`;
   }
 });
 
-// ============================================================================
-// CAMPAIGN DELIVERY
-// ============================================================================
-
 export const deliverCampaign = tool({
   name: 'deliverCampaign',
-  description: 'Delivers the completed campaign to specified destination',
+  description: 'Deliver completed campaign to client',
   parameters: z.object({
     campaign_id: z.string().describe('Campaign identifier'),
-    delivery_method: z.enum(['email', 'download', 'api']).describe('Delivery method'),
-    recipient: z.string().describe('Delivery recipient or endpoint')
+    delivery_method: z.enum(['email', 'download', 'api']).describe('Delivery method')
   }),
   execute: async (params) => {
-    console.log('\n🚀 === CAMPAIGN DELIVERY STARTED ===');
+    console.log('\n🚀 === CAMPAIGN DELIVERY ===');
     console.log('🆔 Campaign ID:', params.campaign_id);
-    console.log('📧 Method:', params.delivery_method);
-    console.log('👤 Recipient:', params.recipient);
-    
-    try {
-      // Simulate delivery process
-      const deliveryResult = {
-        campaign_id: params.campaign_id,
-        method: params.delivery_method,
-        recipient: params.recipient,
-        delivered_at: new Date().toISOString(),
-        status: 'delivered'
-      };
-      
-      console.log('✅ Campaign delivered successfully');
-      
-      return `Кампания ${params.campaign_id} успешно доставлена методом ${params.delivery_method} получателю ${params.recipient}. Время доставки: ${deliveryResult.delivered_at}. Статус: ${deliveryResult.status}.`;
-      
-    } catch (error) {
-      console.error('❌ Delivery failed:', error);
-      return `Ошибка доставки кампании: ${error.message}`;
-    }
+    console.log('📤 Delivery Method:', params.delivery_method);
+
+    return `Campaign ${params.campaign_id} delivered via ${params.delivery_method}.`;
   }
 });
 

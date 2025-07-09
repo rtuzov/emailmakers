@@ -248,31 +248,4 @@ Handoff считается успешным когда:
 4. Метаданные полны и корректны
 5. Quality Specialist подтвердил получение данных
 
-## 💡 ПРИМЕРЫ BEST PRACTICES
-
-### MJML Template структура:
-```mjml
-<mjml>
-  <mj-head>
-    <mj-title>{{subject}}</mj-title>
-    <mj-preview>{{preheader}}</mj-preview>
-    <mj-style>
-      .brand-header { background: linear-gradient(135deg, #4BFF7E 0%, #1DA857 100%); }
-      @media (max-width: 600px) { .mobile-center { text-align: center !important; } }
-    </mj-style>
-  </mj-head>
-  <mj-body>
-    <mj-section css-class="brand-header">
-      <mj-column><mj-image src="logo.png" width="200px"/></mj-column>
-    </mj-section>
-    <!-- Hero, Content, CTA, Footer sections -->
-  </mj-body>
-</mjml>
-```
-
-### Asset integration:
-```html
-<img src="{{FIGMA_ASSET_URL:hero-image.png}}" alt="Путешествие в [destination]" width="600" style="max-width:100%;" />
-```
-
 **Помни: твоя задача - создать красивый, профессиональный email дизайн и передать его Quality Specialist. Больше ничего не делай!**

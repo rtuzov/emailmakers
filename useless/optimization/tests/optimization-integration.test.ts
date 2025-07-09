@@ -95,7 +95,7 @@ describe('OptimizationIntegration', () => {
     counters: [
       { name: 'http_requests_total', value: 245, labels: { method: 'POST' } },
       { name: 'template_generation_total', value: 89, labels: { status: 'success' } },
-      { name: 'llm_calls_total', value: 156, labels: { model: 'gpt-4' } }
+      { name: 'llm_calls_total', value: 156, labels: { model: 'gpt-4o-mini' } }
     ],
     histograms: [
       { 

@@ -288,8 +288,8 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
     }
 
     try {
-      // Используем GPT-4 Vision только если есть скриншоты, иначе GPT-4o mini для скорости
-      const model = (context.screenshots?.desktop || context.screenshots?.mobile) ? 'gpt-4o' : this.config.ai_model;
+      // Используем GPT-4o mini для всех операций
+      const model = 'gpt-4o-mini';
       
       const response = await this.openai.chat.completions.create({
         model,

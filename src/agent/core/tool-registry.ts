@@ -31,45 +31,14 @@ function loadPrompt(promptPath: string): string {
     console.warn(`Failed to load prompt from ${promptPath}:`, error);
     return `You are a specialist agent. Please follow the workflow instructions.`;
   }
-  }
+}
 
-  // ============================================================================
-// SPECIALIST AGENTS
-  // ============================================================================
-
-/**
- * Content Specialist Agent
- * Loads instructions from specialists/content-specialist.md
- */
-export const contentSpecialistAgent = new Agent({
-  name: 'Content Specialist',
-  instructions: loadPrompt('specialists/content-specialist.md'),
-  tools: contentSpecialistTools
-});
+// ============================================================================
+// SPECIALIST AGENTS WITH HANDOFFS
+// ============================================================================
 
 /**
- * Design Specialist Agent
- * Loads instructions from specialists/design-specialist.md
- */
-export const designSpecialistAgent = new Agent({
-  name: 'Design Specialist',
-  instructions: loadPrompt('specialists/design-specialist.md'),
-  tools: designSpecialistTools
-});
-
-/**
- * Quality Specialist Agent
- * Loads instructions from specialists/quality-specialist.md
- */
-export const qualitySpecialistAgent = new Agent({
-  name: 'Quality Specialist',
-  instructions: loadPrompt('specialists/quality-specialist.md'),
-  tools: qualitySpecialistTools
-});
-
-/**
- * Delivery Specialist Agent
- * Loads instructions from specialists/delivery-specialist.md
+ * Delivery Specialist Agent (Final destination - no handoffs)
  */
 export const deliverySpecialistAgent = new Agent({
   name: 'Delivery Specialist',
@@ -77,9 +46,39 @@ export const deliverySpecialistAgent = new Agent({
   tools: deliverySpecialistTools
 });
 
-  // ============================================================================
+/**
+ * Quality Specialist Agent (Handoffs to Delivery)
+ */
+export const qualitySpecialistAgent = Agent.create({
+  name: 'Quality Specialist',
+  instructions: loadPrompt('specialists/quality-specialist.md'),
+  tools: qualitySpecialistTools,
+  handoffs: [deliverySpecialistAgent]
+});
+
+/**
+ * Design Specialist Agent (Handoffs to Quality)
+ */
+export const designSpecialistAgent = Agent.create({
+  name: 'Design Specialist',
+  instructions: loadPrompt('specialists/design-specialist.md'),
+  tools: designSpecialistTools,
+  handoffs: [qualitySpecialistAgent]
+});
+
+/**
+ * Content Specialist Agent (Handoffs to Design)
+ */
+export const contentSpecialistAgent = Agent.create({
+  name: 'Content Specialist',
+  instructions: loadPrompt('specialists/content-specialist.md'),
+  tools: contentSpecialistTools,
+  handoffs: [designSpecialistAgent]
+});
+
+// ============================================================================
 // TOOL COLLECTIONS BY SPECIALIST
-  // ============================================================================
+// ============================================================================
 
 /**
  * All Content Specialist tools
@@ -111,9 +110,9 @@ export const allSpecialistTools = [
   ...deliverySpecialistTools
 ];
 
-  // ============================================================================
+// ============================================================================
 // SPECIALIST AGENTS COLLECTION
-  // ============================================================================
+// ============================================================================
 
 /**
  * All specialist agents for multi-agent workflows
@@ -125,11 +124,11 @@ export const specialistAgents = [
   deliverySpecialistAgent
 ];
 
-  // ============================================================================
+// ============================================================================
 // UTILITY FUNCTIONS
-  // ============================================================================
+// ============================================================================
 
-  /**
+/**
  * Get tools by specialist type
  */
 export function getToolsBySpecialist(specialist: 'content' | 'design' | 'quality' | 'delivery') {
@@ -206,7 +205,7 @@ export function getWorkflowSequence(): Array<{
  * Tool registry statistics
  */
 export function getRegistryStatistics() {
-    return {
+  return {
     total_tools: allSpecialistTools.length,
     content_tools: contentSpecialistTools.length,
     design_tools: designSpecialistTools.length,
@@ -237,30 +236,12 @@ export function loadAdditionalPrompts() {
 // ============================================================================
 
 /**
- * Legacy tool registry for backward compatibility
- * @deprecated Use specialist-specific tools instead
+ * Legacy export for backward compatibility
  */
 export const toolRegistry = {
-  content: contentSpecialistTools,
-  design: designSpecialistTools,
-  quality: qualitySpecialistTools,
-  delivery: deliverySpecialistTools,
-  all: allSpecialistTools
-};
-
-/**
- * Default export for the main registry
- */
-export default {
   agents: specialistAgents,
   tools: allSpecialistTools,
-  specialists: {
-    content: { agent: contentSpecialistAgent, tools: contentSpecialistTools },
-    design: { agent: designSpecialistAgent, tools: designSpecialistTools },
-    quality: { agent: qualitySpecialistAgent, tools: qualitySpecialistTools },
-    delivery: { agent: deliverySpecialistAgent, tools: deliverySpecialistTools }
-  },
-  workflow: getWorkflowSequence(),
-  statistics: getRegistryStatistics(),
-  prompts: loadAdditionalPrompts()
+  getAgent: getAgentBySpecialist,
+  getTools: getToolsBySpecialist,
+  statistics: getRegistryStatistics
 };

@@ -365,7 +365,7 @@ export class QualityValidationService {
   static createConfig(): ValidatorConfig {
     return {
       openai_api_key: process.env.OPENAI_API_KEY || '',
-      vision_model: 'gpt-4-vision-preview',
+      vision_model: 'gpt-4o-mini',
       max_image_size: 20 * 1024 * 1024, // 20MB
       cache_ttl: 3600, // 1 hour
       parallel_execution: true,

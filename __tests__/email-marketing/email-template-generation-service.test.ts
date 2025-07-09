@@ -677,7 +677,7 @@ describe('ContentGenerationPipeline', () => {
           preheader: 'Limited time summer savings',
           bodyContent: { sections: [], cta: { primary: { text: '' } } },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
@@ -687,7 +687,7 @@ describe('ContentGenerationPipeline', () => {
             cta: { primary: { text: 'Shop Now', confidence: 0.9 } }
           },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
@@ -697,14 +697,14 @@ describe('ContentGenerationPipeline', () => {
             cta: { primary: { text: 'Shop Now', confidence: 0.9 } }
           },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
           preheader: 'Limited time summer savings',
           bodyContent: { sections: [], cta: { primary: { text: '' } } },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 150, generationTime: 1500, retryCount: 0, qualityChecks: [] }
         } as any);
 
       // Act
@@ -736,7 +736,7 @@ describe('ContentGenerationPipeline', () => {
           preheader: '',
           bodyContent: { sections: [], cta: { primary: { text: '' } } },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
@@ -746,7 +746,7 @@ describe('ContentGenerationPipeline', () => {
             cta: { primary: { text: 'Get Started', confidence: 0.9 } }
           },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
@@ -756,14 +756,14 @@ describe('ContentGenerationPipeline', () => {
             cta: { primary: { text: 'Get Started', confidence: 0.9 } }
           },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
         } as any)
         .mockResolvedValueOnce({
           subjectLine: '',
           preheader: 'Your journey begins here',
           bodyContent: { sections: [], cta: { primary: { text: '' } } },
           qualityScore: 0.9,
-          metadata: { provider: 'openai', model: 'gpt-4', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
+          metadata: { provider: 'openai', model: 'gpt-4o-mini', tokensUsed: 120, generationTime: 1200, retryCount: 0, qualityChecks: [] }
         } as any);
 
       // Act

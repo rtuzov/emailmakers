@@ -1,23 +1,27 @@
 /**
- * Content Specialist Tools - Fixed for OpenAI Agents SDK
+ * 🎯 CONTENT SPECIALIST TOOLS - Enhanced Pricing Integration
  * 
- * All execute functions now return strings as required by OpenAI Agents SDK
- * BUT also save structured data to global campaign state for inter-agent communication
+ * Real-time Kupibilet API integration with enhanced error handling,
+ * airport conversion, and CSV data processing capabilities.
  * 
- * REAL DATA ONLY - No mocked data, all prices and dates from actual APIs
+ * OpenAI Agents SDK compatible tools for Content Specialist
  */
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import * as path from 'path';
+import { join } from 'path';
+import path from 'path';
 
-// Import enhanced pricing functionality from prices.ts
+// Enhanced pricing integration
 import { getPrices } from '../tools/prices';
 import { convertAirportToCity, getDestinationInfo } from '../tools/airports-loader';
 
+// Import transfer tool for handoff
+import { transferToDesignSpecialist } from '../core/transfer-tools';
+
 // ============================================================================
-// GLOBAL CAMPAIGN STATE
+// GLOBAL CAMPAIGN STATE MANAGEMENT
 // ============================================================================
 
 interface CampaignState {
@@ -30,16 +34,14 @@ interface CampaignState {
   assetPlan?: any;
 }
 
-// Global state to share structured data between agents
+// Global state for sharing data between specialist functions
 let globalCampaignState: CampaignState = {};
 
-// Helper to update campaign state
 function updateCampaignState(updates: Partial<CampaignState>) {
   globalCampaignState = { ...globalCampaignState, ...updates };
   console.log('📊 Campaign state updated:', Object.keys(updates));
 }
 
-// Helper to get campaign state
 export function getCampaignState(): CampaignState {
   return globalCampaignState;
 }
@@ -614,68 +616,6 @@ ${content.body}
 - Эмоциональные триггеры: ${content.context?.emotional_triggers || 'N/A'}
 `;
 }
-
-// ============================================================================
-// TRANSFER TO DESIGN SPECIALIST
-// ============================================================================
-
-export const transferToDesignSpecialist = tool({
-  name: 'transferToDesignSpecialist',
-  description: 'Transfers the completed campaign content and strategy to the Design Specialist for visual implementation',
-  parameters: z.object({
-    transfer_message: z.string().describe('Message to pass to Design Specialist about the completed work'),
-    priority_level: z.enum(['low', 'medium', 'high', 'urgent']).describe('Priority level for design work')
-  }),
-  execute: async (params) => {
-    console.log('\n🎨 === TRANSFER TO DESIGN SPECIALIST ===');
-    console.log('📝 Message:', params.transfer_message);
-    console.log('⚡ Priority:', params.priority_level);
-
-    try {
-      const campaignState = getCampaignState();
-      
-      // Create handoff summary
-      const handoffSummary = {
-        timestamp: new Date().toISOString(),
-        from_specialist: 'Content Specialist',
-        to_specialist: 'Design Specialist',
-        campaign_id: campaignState.campaignId,
-        campaign_path: campaignState.campaignPath,
-        transfer_message: params.transfer_message,
-        priority_level: params.priority_level,
-        completed_work: {
-          campaign_folder: !!campaignState.campaignId,
-          context_analysis: !!campaignState.context,
-          date_intelligence: !!campaignState.dateAnalysis,
-          pricing_data: !!campaignState.pricingData,
-          asset_strategy: !!campaignState.assetPlan,
-          content_generation: true
-        },
-        available_data: {
-          pricing: campaignState.pricingData,
-          dates: campaignState.dateAnalysis,
-          context: campaignState.context,
-          assets: campaignState.assetPlan
-        }
-      };
-
-      // Save handoff summary if campaign path exists
-      if (campaignState.campaignPath) {
-        const handoffFile = path.join(campaignState.campaignPath, 'docs', 'content-to-design-handoff.json');
-        await fs.writeFile(handoffFile, JSON.stringify(handoffSummary, null, 2));
-        console.log('📄 Handoff summary saved to:', handoffFile);
-      }
-
-      console.log('✅ Transfer to Design Specialist completed');
-      
-      return `Работа Content Specialist завершена! Передача Design Specialist: ${params.transfer_message}. Приоритет: ${params.priority_level}. Кампания: ${campaignState.campaignId}. Доступные данные: ценообразование, даты, контекст, стратегия ассетов, сгенерированный контент. Документация передачи сохранена.`;
-
-    } catch (error) {
-      console.error('❌ Transfer to Design Specialist failed:', error);
-      return `Ошибка передачи Design Specialist: ${error.message}`;
-    }
-  }
-});
 
 // ============================================================================
 // EXPORTS

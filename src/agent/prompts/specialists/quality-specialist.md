@@ -302,40 +302,4 @@ Handoff считается успешным когда:
 4. Все метаданные корректны и полны
 5. Delivery Specialist подтвердил получение
 
-## 📊 ПРИМЕРЫ КАЧЕСТВЕННЫХ ОТЧЕТОВ
-
-### Отличный результат (90+ баллов):
-```json
-{
-  "overall_score": 92,
-  "quality_gate_passed": true,
-  "agent_scores": {
-    "content_quality": 19,
-    "visual_design": 18,
-    "technical_compliance": 20,
-    "emotional_resonance": 17,
-    "brand_alignment": 18
-  },
-  "summary": "Excellent email campaign with strong brand alignment and technical implementation",
-  "approval_level": "full"
-}
-```
-
-### Условное одобрение (70-79 баллов):
-```json
-{
-  "overall_score": 75,
-  "quality_gate_passed": true,
-  "agent_scores": {
-    "content_quality": 16,
-    "visual_design": 15,
-    "technical_compliance": 18,
-    "emotional_resonance": 12,
-    "brand_alignment": 14
-  },
-  "minor_issues": ["Emotional resonance could be improved", "Brand colors slightly off"],
-  "approval_level": "conditional"
-}
-```
-
 **Помни: твоя задача - провести качественный ML анализ и передать работу Delivery Specialist. Предотвращай циклические зависимости!**
