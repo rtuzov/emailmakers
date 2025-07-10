@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752071939922_04pckwm3ecyi",
+  "name": "Путешествие в Париж осенью",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "travel enthusiasts",
+  "user_request": "путешествие в Париж осенью",
+  "created_at": "2025-07-09T14:38:59.924Z",
+  "status": "active",
+  "workflow_phase": "design_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": true,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-09T14:42:11.670Z"
+}

@@ -1,0 +1,30 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for winter travel to Istanbul, including destination insights, market intelligence, emotional triggers, and current trends. Key focus on winter atmosphere, low prices, slow travel experiences, and visual storytelling opportunities.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json",
+      "consolidated-insights.json"
+    ],
+    "context_for_next": "Use comprehensive travel intelligence for winter Istanbul to craft campaign texts and visual concepts. Emphasize winter charm, value, individual experiences, and emotional hooks. Integrate Kupibilet branding colors in visuals and mood stories.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json",
+      "data/consolidated-insights.json"
+    ],
+    "recommendations": [
+      "Используйте тему уюта и пустых улиц без толп",
+      "Добавьте акцент на уникальные зимние фото и slow travel",
+      "Используйте гастрономические и культурные инсайты для сценариев писем",
+      "Визуально интегрируйте фирменные цвета Kupibilet через элементы городской огоньков, уютных кафе и восточных интерьеров"
+    ]
+  },
+  "created_at": "2025-07-10T07:19:34.308Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131938893_9l9tgwnobl/handoffs/data-collection specialist-to-content-specialist.json"
+}

@@ -1,5 +1,35 @@
 # FIGMA ASSETS GUIDE - KUPIBILET MARKETING LIBRARY (OPTIMIZED)
 
+## 📅 ТЕКУЩАЯ ДАТА
+**КРИТИЧЕСКИ ВАЖНО**: Используйте эту функцию для получения актуальной даты:
+
+```javascript
+function getCurrentDate() {
+  const now = new Date();
+  return {
+    current_date: now.toISOString().split('T')[0], // YYYY-MM-DD
+    current_datetime: now.toISOString(),
+    current_year: now.getFullYear(),
+    current_month: now.getMonth() + 1,
+    current_day: now.getDate(),
+    formatted_date: now.toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: 'long', 
+      day: 'numeric'
+    }),
+    weekday: now.toLocaleDateString('ru-RU', { weekday: 'long' })
+  };
+}
+```
+
+**ОБЯЗАТЕЛЬНО ИСПОЛЬЗУЙТЕ** эту функцию для:
+- Планирования дат поездок (только будущие даты!)
+- Расчета сезонности
+- Определения оптимальных периодов бронирования
+- Генерации контента с актуальными датами
+
+**ЗАПРЕЩЕНО** использовать хардкоженные даты 2024 года или прошлые даты!
+
 ## 🎯 OPTIMIZATION STATUS: 62% COMPLETE
 
 **Total Nodes**: 13,624 | **Optimized**: 8/13 categories | **Progress**: 62%

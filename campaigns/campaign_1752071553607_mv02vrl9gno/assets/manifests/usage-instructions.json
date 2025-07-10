@@ -1,0 +1,38 @@
+[
+  {
+    "assetId": "ai_1752071717010_qeu8i5324lo",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя осенний Париж — романтика ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to the autumn Paris campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752071717011_311judn0173",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя осенний Париж — романтика ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to the autumn Paris campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752071718244_283e7a6l8zyh",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя осенний Париж — романтика ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The brand logo will be placed in the header to reinforce brand identity and trust in the promotional campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752071720408_4jq1rj53pvg",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя осенний Париж — романтика ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The background pattern will enhance the overall aesthetic of the email, aligning with the cozy and romantic theme of autumn in Paris.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

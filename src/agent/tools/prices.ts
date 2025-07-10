@@ -343,13 +343,13 @@ function correctRoute(origin: string, destination: string): {
 function generateSmartDateRange(): string {
   const now = new Date();
   
-  // Начинаем поиск завтра (API не любит далекие даты)
+  // Начинаем поиск через месяц (более реалистично для планирования поездок)
   const startDate = new Date(now);
-  startDate.setDate(now.getDate() + 1);
+  startDate.setMonth(now.getMonth() + 1);
   
-  // Заканчиваем через 2 недели (короткое окно для надежности API)
+  // Заканчиваем через ГОД (широкое окно как в рабочем curl примере)
   const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 14);
+  endDate.setFullYear(startDate.getFullYear() + 1);
   
   console.log(`📅 Generated smart date range: ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
   
@@ -389,11 +389,20 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
     method: 'POST',
     headers: {
       'accept': '*/*',
-      'accept-language': 'ru-RU,ru;q=0.9,en;q=0.8',
+      'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+      'cache-control': 'no-cache',
       'content-type': 'application/json',
-      'origin': 'https://kupibilet.ru',
-      'referer': 'https://kupibilet.ru/',
-      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      'origin': 'https://www.kupibilet.ru',
+      'pragma': 'no-cache',
+      'priority': 'u=1, i',
+      'referer': 'https://www.kupibilet.ru/',
+      'sec-ch-ua': '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"macOS"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-site',
+      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
     },
     body: JSON.stringify(request)
   });

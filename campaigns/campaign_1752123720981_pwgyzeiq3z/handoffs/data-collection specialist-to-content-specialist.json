@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination analysis, market intelligence, and emotional profiling for compelling content creation. Опирайтесь на инсайты про отсутствие толп, уют, зимние скидки и фотолокации.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Сделайте акцент на атмосферности зимнего Стамбула",
+      "Используйте темы гастротуров и уникальных фото-впечатлений",
+      "Включайте советы по выгодным покупкам и спа-отдыху",
+      "Расскажите о романтике Босфора и уединенных прогулках",
+      "Продвигайте тематические авторские туры и маршруты"
+    ]
+  },
+  "created_at": "2025-07-10T05:02:21.259Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752123720981_pwgyzeiq3z/handoffs/data-collection specialist-to-content-specialist.json"
+}

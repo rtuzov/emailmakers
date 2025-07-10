@@ -1,0 +1,69 @@
+[
+  {
+    "assetId": "ai_1752125621264_g5z4alybgdj",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Barcelona in summer, showcasing its vibrant beaches and iconic Gaudi architecture.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125624552_e0m4mmbka4e",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users through the booking process and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125624554_yqvnfbik7ek",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users through the booking process and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125624555_kowqv0hthj",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users through the booking process and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125624556_funj5n3xq4b",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users through the booking process and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125625823_kzx78um0xl",
+    "placement": "Place in header area, typically top-left or center",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and trust, reinforcing the campaign's promotional message.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125627768_94c4o2cpxku",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Барселоне: забронируйте сейчас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will create a vibrant and sunny atmosphere for the email, enhancing the overall visual appeal and aligning with the summer theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

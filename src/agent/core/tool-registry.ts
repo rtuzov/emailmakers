@@ -4,6 +4,8 @@
  * Centralized registry for all specialist tools using pure OpenAI Agents SDK approach
  * Organized by specialist domains with clean separation of concerns
  * All prompts loaded dynamically from /prompts directory
+ * 
+ * ✅ FIXED: Using proper SDK handoffs without transfer tools
  */
 
 import { Agent } from '@openai/agents';
@@ -11,6 +13,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Import specialist tool collections  
+import { dataCollectionSpecialistTools } from '../specialists/data-collection-specialist-tools';
 import { contentSpecialistTools } from '../specialists/content-specialist-tools';
 import { designSpecialistTools } from '../specialists/design-specialist-tools';
 import { qualitySpecialistTools } from '../specialists/quality-specialist-tools';
@@ -26,7 +29,16 @@ import { deliverySpecialistTools } from '../specialists/delivery-specialist-tool
 function loadPrompt(promptPath: string): string {
   try {
     const fullPath = join(process.cwd(), 'src/agent/prompts', promptPath);
-    return readFileSync(fullPath, 'utf-8');
+    const content = readFileSync(fullPath, 'utf-8');
+    console.log(`📄 Loaded prompt: ${promptPath} (${content.length} chars)`);
+    
+    // Debug for content-specialist specifically
+    if (promptPath.includes('content-specialist')) {
+      console.log(`🔍 Content Specialist prompt preview: ${content.substring(0, 200)}...`);
+      console.log(`🔍 Contains generateAssetManifest: ${content.includes('generateAssetManifest')}`);
+    }
+    
+    return content;
   } catch (error) {
     console.warn(`Failed to load prompt from ${promptPath}:`, error);
     return `You are a specialist agent. Please follow the workflow instructions.`;
@@ -34,11 +46,11 @@ function loadPrompt(promptPath: string): string {
 }
 
 // ============================================================================
-// SPECIALIST AGENTS WITH HANDOFFS
+// SPECIALIST AGENTS WITH PROPER SDK HANDOFFS
 // ============================================================================
 
 /**
- * Delivery Specialist Agent (Final destination - no handoffs)
+ * Delivery Specialist Agent (Final destination - no handoffs needed)
  */
 export const deliverySpecialistAgent = new Agent({
   name: 'Delivery Specialist',
@@ -47,7 +59,7 @@ export const deliverySpecialistAgent = new Agent({
 });
 
 /**
- * Quality Specialist Agent (Handoffs to Delivery)
+ * Quality Specialist Agent with handoff to Delivery
  */
 export const qualitySpecialistAgent = Agent.create({
   name: 'Quality Specialist',
@@ -57,7 +69,7 @@ export const qualitySpecialistAgent = Agent.create({
 });
 
 /**
- * Design Specialist Agent (Handoffs to Quality)
+ * Design Specialist Agent with handoff to Quality
  */
 export const designSpecialistAgent = Agent.create({
   name: 'Design Specialist',
@@ -67,7 +79,7 @@ export const designSpecialistAgent = Agent.create({
 });
 
 /**
- * Content Specialist Agent (Handoffs to Design)
+ * Content Specialist Agent with handoff to Design
  */
 export const contentSpecialistAgent = Agent.create({
   name: 'Content Specialist',
@@ -76,9 +88,24 @@ export const contentSpecialistAgent = Agent.create({
   handoffs: [designSpecialistAgent]
 });
 
+/**
+ * Data Collection Specialist Agent with handoff to Content (Entry point)
+ */
+export const dataCollectionSpecialistAgent = Agent.create({
+  name: 'Data Collection Specialist',
+  instructions: loadPrompt('specialists/data-collection-specialist.md'),
+  tools: dataCollectionSpecialistTools,
+  handoffs: [contentSpecialistAgent]
+});
+
 // ============================================================================
 // TOOL COLLECTIONS BY SPECIALIST
 // ============================================================================
+
+/**
+ * All Data Collection Specialist tools
+ */
+export const dataCollectionTools = dataCollectionSpecialistTools;
 
 /**
  * All Content Specialist tools
@@ -104,6 +131,7 @@ export const deliveryTools = deliverySpecialistTools;
  * Combined tool registry for all specialists
  */
 export const allSpecialistTools = [
+  ...dataCollectionSpecialistTools,
   ...contentSpecialistTools,
   ...designSpecialistTools,
   ...qualitySpecialistTools,
@@ -115,9 +143,10 @@ export const allSpecialistTools = [
 // ============================================================================
 
 /**
- * All specialist agents for multi-agent workflows
+ * All specialist agents for multi-agent workflows (in execution order)
  */
 export const specialistAgents = [
+  dataCollectionSpecialistAgent,
   contentSpecialistAgent,
   designSpecialistAgent,
   qualitySpecialistAgent,
@@ -131,8 +160,10 @@ export const specialistAgents = [
 /**
  * Get tools by specialist type
  */
-export function getToolsBySpecialist(specialist: 'content' | 'design' | 'quality' | 'delivery') {
+export function getToolsBySpecialist(specialist: 'data-collection' | 'content' | 'design' | 'quality' | 'delivery') {
   switch (specialist) {
+    case 'data-collection':
+      return dataCollectionSpecialistTools;
     case 'content':
       return contentSpecialistTools;
     case 'design':
@@ -149,8 +180,10 @@ export function getToolsBySpecialist(specialist: 'content' | 'design' | 'quality
 /**
  * Get agent by specialist type
  */
-export function getAgentBySpecialist(specialist: 'content' | 'design' | 'quality' | 'delivery') {
+export function getAgentBySpecialist(specialist: 'data-collection' | 'content' | 'design' | 'quality' | 'delivery') {
   switch (specialist) {
+    case 'data-collection':
+      return dataCollectionSpecialistAgent;
     case 'content':
       return contentSpecialistAgent;
     case 'design':
@@ -165,7 +198,7 @@ export function getAgentBySpecialist(specialist: 'content' | 'design' | 'quality
 }
 
 /**
- * Get workflow sequence for campaign processing
+ * Get the workflow execution sequence for reference
  */
 export function getWorkflowSequence(): Array<{
   specialist: string;
@@ -175,73 +208,70 @@ export function getWorkflowSequence(): Array<{
 }> {
   return [
     {
-      specialist: 'content',
+      specialist: 'Data Collection',
+      agent: dataCollectionSpecialistAgent,
+      tools: dataCollectionSpecialistTools,
+      description: 'Gathers pricing, dates and contextual data'
+    },
+    {
+      specialist: 'Content',
       agent: contentSpecialistAgent,
       tools: contentSpecialistTools,
-      description: 'Campaign creation, content generation, and asset planning'
+      description: 'Generates email content and specifications'
     },
     {
-      specialist: 'design',
+      specialist: 'Design',
       agent: designSpecialistAgent,
       tools: designSpecialistTools,
-      description: 'Visual asset selection, optimization, and template generation'
+      description: 'Creates MJML templates and processes assets'
     },
     {
-      specialist: 'quality',
+      specialist: 'Quality',
       agent: qualitySpecialistAgent,
       tools: qualitySpecialistTools,
-      description: 'Quality validation, compatibility testing, and performance analysis'
+      description: 'Validates and tests email templates'
     },
     {
-      specialist: 'delivery',
+      specialist: 'Delivery',
       agent: deliverySpecialistAgent,
       tools: deliverySpecialistTools,
-      description: 'Final packaging, delivery, and campaign completion'
+      description: 'Packages and delivers final campaign'
     }
   ];
 }
 
 /**
- * Tool registry statistics
+ * Get statistics about the tool registry
  */
 export function getRegistryStatistics() {
   return {
-    total_tools: allSpecialistTools.length,
-    content_tools: contentSpecialistTools.length,
-    design_tools: designSpecialistTools.length,
-    quality_tools: qualitySpecialistTools.length,
-    delivery_tools: deliverySpecialistTools.length,
-    total_agents: specialistAgents.length,
-    workflow_phases: 4,
-    handoff_connections: 4 // Content->Design->Quality->Delivery workflow
+    totalAgents: specialistAgents.length,
+    totalTools: allSpecialistTools.length,
+    toolsBySpecialist: {
+      dataCollection: dataCollectionSpecialistTools.length,
+      content: contentSpecialistTools.length,
+      design: designSpecialistTools.length,
+      quality: qualitySpecialistTools.length,
+      delivery: deliverySpecialistTools.length
+    },
+    hasHandoffs: true,
+    sdkCompliant: true
   };
 }
 
 /**
- * Load additional prompts for specific use cases
+ * Load additional prompts for debugging
  */
 export function loadAdditionalPrompts() {
   return {
-    universalWorkflow: loadPrompt('universal-workflow-instructions.md'),
-    contentGeneration: loadPrompt('content.md'),
-    figmaAssets: loadPrompt('figma-assets-guide.md'),
-    figmaOptimized: loadPrompt('figma-assets-guide-optimized.md'),
-    figmaLocal: loadPrompt('figma-local-instructions.md'),
-    orchestrator: loadPrompt('orchestrator/main-orchestrator.md')
+    orchestrator: loadPrompt('orchestrator/main-orchestrator.md'),
+    dataCollection: loadPrompt('specialists/data-collection-specialist.md'),
+    content: loadPrompt('specialists/content-specialist.md'),
+    design: loadPrompt('specialists/design-specialist.md'),
+    quality: loadPrompt('specialists/quality-specialist.md'),
+    delivery: loadPrompt('specialists/delivery-specialist.md')
   };
 }
 
-// ============================================================================
-// LEGACY COMPATIBILITY (if needed)
-// ============================================================================
-
-/**
- * Legacy export for backward compatibility
- */
-export const toolRegistry = {
-  agents: specialistAgents,
-  tools: allSpecialistTools,
-  getAgent: getAgentBySpecialist,
-  getTools: getToolsBySpecialist,
-  statistics: getRegistryStatistics
-};
+console.log('🔧 Tool Registry loaded with OpenAI Agents SDK handoffs');
+console.log('📊 Statistics:', getRegistryStatistics());

@@ -1,0 +1,49 @@
+[
+  {
+    "assetId": "ai_1752125994857_13yey8tvst89",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will highlight Milan's unique aspects during autumn, showcasing fashion week, art districts, and culinary delights.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125996138_udvo421s0lh",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125996140_qvve8pd1mb",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125997430_pi6doucv0p",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and recognition in the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752125998873_so7kd1bo7j",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will create a warm and inviting atmosphere for the email, enhancing the overall aesthetic.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

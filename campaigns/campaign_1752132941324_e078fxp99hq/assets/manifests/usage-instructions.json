@@ -1,0 +1,78 @@
+[
+  {
+    "assetId": "ai_1752133076759_tz27lji50c",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual for the email campaign, capturing the essence of Thailand's beaches and cultural landmarks during autumn, appealing to families looking for a relaxing getaway.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133078573_eibth0k24cb",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will showcase key cultural sites in Thailand, such as the Royal Palace and local markets, emphasizing the adventurous and cultural aspects of the trip.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133078574_zy37v8qb17n",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will showcase key cultural sites in Thailand, such as the Royal Palace and local markets, emphasizing the adventurous and cultural aspects of the trip.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133080365_my65hf7gvek",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Promotional icons will highlight special offers and deals related to the campaign, encouraging engagement and bookings.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133080366_rh8o4jmkdgk",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Promotional icons will highlight special offers and deals related to the campaign, encouraging engagement and bookings.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133080366_qwtycd9qxs",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Promotional icons will highlight special offers and deals related to the campaign, encouraging engagement and bookings.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133081167_38cwrngra5",
+    "placement": "Place in header area, typically top-left or center",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header of the email, reinforcing brand identity and trustworthiness for potential travelers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752133082067_vz89fyhgcb",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тайланд ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Decorative illustrations will enhance the overall aesthetic of the email, creating an inviting atmosphere that aligns with the campaign's exotic and relaxing tone.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

@@ -1,0 +1,228 @@
+{
+  "from_specialist": "Content Specialist",
+  "to_specialist": "Design Specialist",
+  "handoff_data": {
+    "summary": "Completed email content generation with real pricing, dates, and technical specification",
+    "key_outputs": [
+      "email-content.json",
+      "email-content.md",
+      "technical-specification.json",
+      "asset-manifest.json"
+    ],
+    "context_for_next": "Use the generated content, technical specification, and asset manifest for email template creation",
+    "data_files": [
+      "content/email-content.json",
+      "content/email-content.md",
+      "docs/specifications/technical-specification.json",
+      "assets/manifests/asset-manifest.json"
+    ],
+    "recommendations": [
+      "Use real pricing data in design",
+      "Follow technical specification constraints",
+      "Use asset manifest for optimal asset selection",
+      "Ensure mobile responsiveness"
+    ],
+    "content_context": {
+      "campaign": {
+        "id": "campaign_1752131591503_1h9olvu8ip9h",
+        "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h",
+        "theme": "Летний Париж: романтика и эстетика мечты"
+      },
+      "generated_content": {
+        "subject": "Летний Париж ждет вас!",
+        "preheader": "Лучшие цены на перелеты в Париж этим летом — от 19 779 ₽!",
+        "body": "Погрузитесь в атмосферу летнего Парижа: романтика, праздники под открытым небом, уличные концерты, незабываемые прогулки по Сене и гастрономические открытия. В этом сезоне рекомендуем даты для путешествия: 15 июля, 1 и 15 августа, 1 и 10 сентября 2025 года. Планируйте поездку заранее — летом особенно высокий спрос! Лучшие предложения от 19 779 ₽ туда-обратно. Купите авиабилеты в пару кликов — и в путь навстречу мечте!",
+        "cta": {
+          "primary": "Выбрать билеты",
+          "secondary": "Планировать путешествие"
+        },
+        "pricing": {
+          "best_price": "19779",
+          "currency": "RUB",
+          "offers_count": 63
+        },
+        "dates": {
+          "optimal_dates": [
+            "2025-07-15",
+            "2025-08-01",
+            "2025-08-15",
+            "2025-09-01",
+            "2025-09-10"
+          ],
+          "season": "summer"
+        },
+        "context": {
+          "destination": "Париж",
+          "emotional_triggers": "романтика, эстетика, гастрономия, яркие эмоции, путешествие мечты"
+        }
+      },
+      "technical_requirements": {
+        "email_clients": [
+          "gmail",
+          "outlook",
+          "apple-mail",
+          "yahoo-mail"
+        ],
+        "design_constraints": null
+      },
+      "design_brief": {
+        "destination_context": {
+          "name": "Париж",
+          "seasonal_advantages": "Сезонные тренды из анализа направления",
+          "emotional_appeal": "Круассаны на рассвете, закаты у Сены, французский шик, ощущение праздника",
+          "market_position": "Рыночное позиционирование из анализа"
+        },
+        "design_requirements": {
+          "visual_style": "vibrant",
+          "color_palette": {
+            "primary_color": "#4BFF7E",
+            "accent_color": "#FF6240",
+            "background_color": "#EDEFFF"
+          },
+          "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+          "typography_mood": "Современные шрифты без засечек, такие как Montserrat или Open Sans, для лучшей читабельности и современного вида.",
+          "primary_color": "#4BFF7E",
+          "accent_color": "#FF6240",
+          "background_color": "#EDEFFF",
+          "text_color": "#2C3959"
+        },
+        "content_priorities": {
+          "key_messages": [],
+          "emotional_triggers": [],
+          "actionable_insights": []
+        },
+        "competitive_differentiation": {
+          "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+          "market_advantages": "Конкурентная среда из анализа"
+        },
+        "brand_colors": {
+          "primary": "#4BFF7E",
+          "accent": "#FF6240",
+          "background": "#EDEFFF",
+          "text": "#2C3959"
+        },
+        "image_concepts": [
+          "Hero изображение - романтический вид на Эйфелеву башню на закате",
+          "Lifestyle фото - пара, гуляющая по набережной Сены",
+          "Архитектура/достопримечательности - Лувр с цветущими деревьями вокруг",
+          "Кулинария/культура - традиционные французские круассаны на столе с кофе",
+          "Природа/пейзажи - сад Тюильри с цветами и людьми на пикнике",
+          "Активности/развлечения - велосипедная прогулка по улицам Парижа",
+          "Шоппинг/сувениры - местные лавки с сувенирами и модной одеждой",
+          "Транспорт/логистика - уютные уличные кафе с видом на трамваи"
+        ],
+        "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, где каждый элемент поддерживает общую тему и эмоцию.",
+        "emotional_triggers": "Использование ярких и насыщенных цветов для создания чувства радости и ожидания, а также изображений, вызывающих ностальгию и романтику.",
+        "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов, современного дизайна и эмоционального контента, что создает единое восприятие и узнаваемость."
+      },
+      "asset_manifest": {
+        "manifestId": "manifest_1752131705886_lup9pmtepeo",
+        "images_count": 6,
+        "icons_count": 0,
+        "total_size": 123806
+      }
+    }
+  },
+  "created_at": "2025-07-10T07:16:14.102Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/handoffs/content-specialist-to-design-specialist.json",
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752131591503_1h9olvu8ip9h",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h",
+      "theme": "Летний Париж: романтика и эстетика мечты"
+    },
+    "generated_content": {
+      "subject": "Летний Париж ждет вас!",
+      "preheader": "Лучшие цены на перелеты в Париж этим летом — от 19 779 ₽!",
+      "body": "Погрузитесь в атмосферу летнего Парижа: романтика, праздники под открытым небом, уличные концерты, незабываемые прогулки по Сене и гастрономические открытия. В этом сезоне рекомендуем даты для путешествия: 15 июля, 1 и 15 августа, 1 и 10 сентября 2025 года. Планируйте поездку заранее — летом особенно высокий спрос! Лучшие предложения от 19 779 ₽ туда-обратно. Купите авиабилеты в пару кликов — и в путь навстречу мечте!",
+      "cta": {
+        "primary": "Выбрать билеты",
+        "secondary": "Планировать путешествие"
+      },
+      "pricing": {
+        "best_price": "19779",
+        "currency": "RUB",
+        "offers_count": 63
+      },
+      "dates": {
+        "optimal_dates": [
+          "2025-07-15",
+          "2025-08-01",
+          "2025-08-15",
+          "2025-09-01",
+          "2025-09-10"
+        ],
+        "season": "summer"
+      },
+      "context": {
+        "destination": "Париж",
+        "emotional_triggers": "романтика, эстетика, гастрономия, яркие эмоции, путешествие мечты"
+      }
+    },
+    "technical_requirements": {
+      "email_clients": [
+        "gmail",
+        "outlook",
+        "apple-mail",
+        "yahoo-mail"
+      ],
+      "design_constraints": null
+    },
+    "design_brief": {
+      "destination_context": {
+        "name": "Париж",
+        "seasonal_advantages": "Сезонные тренды из анализа направления",
+        "emotional_appeal": "Круассаны на рассвете, закаты у Сены, французский шик, ощущение праздника",
+        "market_position": "Рыночное позиционирование из анализа"
+      },
+      "design_requirements": {
+        "visual_style": "vibrant",
+        "color_palette": {
+          "primary_color": "#4BFF7E",
+          "accent_color": "#FF6240",
+          "background_color": "#EDEFFF"
+        },
+        "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+        "typography_mood": "Современные шрифты без засечек, такие как Montserrat или Open Sans, для лучшей читабельности и современного вида.",
+        "primary_color": "#4BFF7E",
+        "accent_color": "#FF6240",
+        "background_color": "#EDEFFF",
+        "text_color": "#2C3959"
+      },
+      "content_priorities": {
+        "key_messages": [],
+        "emotional_triggers": [],
+        "actionable_insights": []
+      },
+      "competitive_differentiation": {
+        "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+        "market_advantages": "Конкурентная среда из анализа"
+      },
+      "brand_colors": {
+        "primary": "#4BFF7E",
+        "accent": "#FF6240",
+        "background": "#EDEFFF",
+        "text": "#2C3959"
+      },
+      "image_concepts": [
+        "Hero изображение - романтический вид на Эйфелеву башню на закате",
+        "Lifestyle фото - пара, гуляющая по набережной Сены",
+        "Архитектура/достопримечательности - Лувр с цветущими деревьями вокруг",
+        "Кулинария/культура - традиционные французские круассаны на столе с кофе",
+        "Природа/пейзажи - сад Тюильри с цветами и людьми на пикнике",
+        "Активности/развлечения - велосипедная прогулка по улицам Парижа",
+        "Шоппинг/сувениры - местные лавки с сувенирами и модной одеждой",
+        "Транспорт/логистика - уютные уличные кафе с видом на трамваи"
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, где каждый элемент поддерживает общую тему и эмоцию.",
+      "emotional_triggers": "Использование ярких и насыщенных цветов для создания чувства радости и ожидания, а также изображений, вызывающих ностальгию и романтику.",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов, современного дизайна и эмоционального контента, что создает единое восприятие и узнаваемость."
+    },
+    "asset_manifest": {
+      "manifestId": "manifest_1752131705886_lup9pmtepeo",
+      "images_count": 6,
+      "icons_count": 0,
+      "total_size": 123806
+    }
+  }
+}

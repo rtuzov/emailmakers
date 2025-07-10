@@ -27,7 +27,7 @@ module.exports = {
 
   // Transform ES modules from node_modules
   transformIgnorePatterns: [
-    'node_modules/(?!(@openai/agents.*|zod|uuid)/)'
+    'node_modules/(?!(@openai/agents.*|@openai/agents-core.*|zod|uuid)/)'
   ],
 
   // Test file patterns

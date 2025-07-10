@@ -1,0 +1,75 @@
+<mjml>
+  <mj-head>
+    <mj-title>Откройте для себя Милан этой осенью!</mj-title>
+    <mj-preview>Успейте купить билет в Милан от 21 322 ₽ на лучшие даты осеннего сезона</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" color="#2C3959" line-height="1.6" />
+      <mj-section background-color="#FFEDE9" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#FFEDE9">
+    <mj-section padding="0">
+      <mj-column width="100%">
+        <mj-image 
+          src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_иллюстрация-супергероя-в-ярких-цветах-символизирующего-креативность-и-динамичность.png" 
+          alt="AI-selected This image will highlight Milan's unique aspects during autumn, showcasing fashion week, art districts, and culinary delights."
+          width="600px"
+          padding="0" />
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#FFEDE9" padding="20px">
+      <mj-column>
+        <mj-text 
+          font-size="28px" 
+          font-weight="600" 
+          color="#2C3959"
+          font-family="Arial, sans-serif"
+          align="center">
+          Откройте для себя Милан этой осенью!
+        </mj-text>
+        
+        <mj-text 
+          font-size="16px" 
+          color="#666666"
+          align="center"
+          padding-top="10px">
+          🌇 Новый сезон приключений – привет, Милан!
+Яркий стиль, уютные кафе, золото листьев и атмосфера вдохновения ждут вас этой осенью.
+Самые выгодные даты вылета: 15.09, 22.09, 01.10, 15.10, 22.10 – цены на авиабилеты от 21 322 ₽!
+Неделя моды, арт-кварталы, гастрономические открытия и лучшие фото-локации города – встречайте золотую осень в стиле Milano.
+Бронируйте раннее, пока цены низкие!
+        </mj-text>
+        
+        <mj-text 
+          font-size="24px" 
+          font-weight="600" 
+          color="#4BFF7E"
+          align="center"
+          padding-top="20px">
+          21322 RUB
+        </mj-text>
+        
+        <mj-button 
+          background-color="#FF6240" 
+          color="#ffffff"
+          font-size="16px"
+          font-weight="600"
+          border-radius="4px"
+          padding-top="20px"
+          href="#">
+          Подобрать билет
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="14px" color="#999999" align="center">
+          Спасибо за выбор наших услуг
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for spring travel to Bangkok including climate, culture, market, emotional triggers, and trends.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination and market analysis to highlight benefits of spring. Emphasize emotional and seasonal triggers, use brand color associations for Kupibilet.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Рассказывайте о Сонгкран как о главном событии весны в Бангкоке",
+      "Акцентируйте гастрономию и фрукты",
+      "Используйте свежие и праздничные цвета бренда",
+      "Продвигайте раннее бронирование для экономии",
+      "Включайте сторителлинг и лайфхаки"
+    ]
+  },
+  "created_at": "2025-07-10T07:12:05.821Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131472752_xu7ylo9ge/handoffs/data-collection specialist-to-content-specialist.json"
+}

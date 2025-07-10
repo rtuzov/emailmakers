@@ -1,0 +1,79 @@
+<mjml>
+  <mj-head>
+    <mj-title>Весенний Париж: Ваше идеальное путешествие ждет!</mj-title>
+    <mj-preview>Не упустите билеты от 15 477₽ на весну: Париж цветет для вас!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" color="#333333" line-height="1.6" />
+      <mj-section background-color="#ffffff" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-section padding="0">
+      <mj-column width="100%">
+        <mj-image 
+          src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752124117372_pdx0a1zlny/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png" 
+          alt="AI-selected This image will showcase the beauty of Paris during spring, featuring parks and streets filled with flowers and people enjoying the season."
+          width="600px"
+          padding="0" />
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text 
+          font-size="28px" 
+          font-weight="600" 
+          color="#333333"
+          font-family="Arial, sans-serif"
+          align="center">
+          Весенний Париж: Ваше идеальное путешествие ждет!
+        </mj-text>
+        
+        <mj-text 
+          font-size="16px" 
+          color="#666666"
+          align="center"
+          padding-top="10px">
+          Заголовок: Вдохновляющий весенний Париж ждет вас!
+
+Основная секция: Планируйте романтическое путешествие в Париж весной 2025 года. Только сейчас — лучшие даты и направления, ожившие парки, уличные фестивали и стильные фотосеты.
+
+Информация о выгодных датах: Оптимальные даты для перелетов — 15 марта, 22 марта, 5, 12 и 19 апреля. Самые красочные и свежие фото, когда Париж в цвету.
+
+Ценовой блок: Билеты на прямые рейсы из Москвы от 15 477₽ — бронируйте заранее и ловите сезон выгодных предложений.
+
+Вдохновляющий раздел: Прогуляйтесь по бульварам, откройте для себя лучшие кафе, вдохновляйтесь атмосферой французской весны. Купите билет в город ваших мечт и делайте лучшие кадры для instagram!
+        </mj-text>
+        
+        <mj-text 
+          font-size="24px" 
+          font-weight="600" 
+          color="#007bff"
+          align="center"
+          padding-top="20px">
+          15477 RUB
+        </mj-text>
+        
+        <mj-button 
+          background-color="#007bff" 
+          color="#ffffff"
+          font-size="16px"
+          font-weight="600"
+          border-radius="4px"
+          padding-top="20px"
+          href="#">
+          Посмотреть билеты
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="14px" color="#999999" align="center">
+          Спасибо за выбор наших услуг
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

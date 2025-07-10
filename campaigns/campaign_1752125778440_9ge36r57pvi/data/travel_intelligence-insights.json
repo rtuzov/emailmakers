@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Милан осенью - идеальное время для стиля и городских прогулок",
+    "Сентябрь популярен из-за Недели моды",
+    "Осенью меньше людей и выгодные цены",
+    "Тренд на гастротуры и вдохновляющие города",
+    "Аудитория - молодые взрослые, ценящие эстетику"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-10T05:36:58.803Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/data/travel_intelligence-insights.json"
+}

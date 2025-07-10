@@ -1,11 +1,11 @@
 /**
- * IMPROVED Agent Run API Endpoint
- * Uses OpenAI Agents SDK v2 with official tracing
+ * IMPROVED Agent Run API Endpoint - OpenAI SDK Compatible
+ * Uses proper OpenAI Agents SDK handoffs without orchestrator
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Agent, Runner } from '@openai/agents';
-import { createEmailCampaignOrchestrator } from '../../../../agent/specialists/specialist-agents';
+import { EmailMakersAgent } from '../../../../agent/main-agent';
+import { getSystemInfo } from '../../../../agent/main-agent';
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,60 +23,47 @@ export async function POST(request: NextRequest) {
 
     const { task_type, input, context = {}, threadId } = body;
 
-    console.log('\n🚀 === AGENT EXECUTION STARTED ===');
+    console.log('\n🚀 === AGENT EXECUTION STARTED (SDK HANDOFFS) ===');
     console.log(`📋 Task Type: ${task_type}`);
-    console.log(`📝 Input: ${input}`);
+    console.log(`📝 Input: ${typeof input === 'object' ? JSON.stringify(input) : input}`);
     console.log(`🔧 Context:`, context);
     console.log(`⏰ Started at: ${new Date().toISOString()}`);
 
-    // Create orchestrator with all specialist agents
-    console.log('🏗️ Creating orchestrator system...');
-    const { orchestrator, contentSpecialist, designSpecialist, qualitySpecialist, deliverySpecialist } = await createEmailCampaignOrchestrator();
-    console.log('✅ Orchestrator system created successfully');
+    // Create EmailMakersAgent with OpenAI SDK handoffs
+    console.log('🏗️ Creating EmailMakersAgent with SDK handoffs...');
+    const agent = new EmailMakersAgent();
+    await agent.initialize();
+    console.log('✅ EmailMakersAgent initialized successfully');
     
-    // Use orchestrator for all tasks - it will route to appropriate specialists
-    const selectedAgent = orchestrator;
-    const agentName = 'Email Campaign Orchestrator';
+    // Prepare request string
+    const requestString = typeof input === 'string' ? input : 
+                         typeof input === 'object' && input.topic ? input.topic :
+                         JSON.stringify(input);
 
-    console.log(`\n🎯 Selected agent: ${agentName} for task: ${task_type}`);
+    console.log(`\n🎯 Processing request: "${requestString}"`);
+    console.log('🔄 Using OpenAI SDK handoffs: Data Collection → Content → Design → Quality → Delivery');
 
-    // Create Runner with official OpenAI SDK tracing
-    console.log('\n🔄 Creating Runner with tracing...');
-    const runner = new Runner({
-      workflowName: 'Email Campaign Generation',
-      traceIncludeSensitiveData: false,
-      tracingDisabled: false,
-      traceMetadata: {
-        taskType: task_type,
-        agentName,
-        endpoint: '/api/agent/run-improved',
-        timestamp: new Date().toISOString()
-      }
-    });
-    console.log('✅ Runner created with tracing enabled');
-
-    // Execute agent with proper input format using Runner
+    // Execute with proper context and tracing
     console.log('\n🤖 Starting agent execution...');
-    console.log(`📊 Max turns: 25`);
-    console.log(`📨 Input string: ${typeof input === 'string' ? input : JSON.stringify(input)}`);
-    
-    const inputString = typeof input === 'string' ? input : JSON.stringify(input);
-    
-    // Add execution monitoring
     const startTime = Date.now();
     console.log(`⏱️  Execution started at: ${new Date().toISOString()}`);
     
-    const result = await runner.run(selectedAgent, inputString, {
-      maxTurns: 25, // Увеличиваем лимит для сложных email кампаний
-      context: {
+    const result = await agent.processRequest(requestString, {
+      traceId: `api-${Date.now()}`,
+      metadata: {
         taskType: task_type,
+        endpoint: '/api/agent/run-improved',
+        inputType: typeof input
+      },
+      context: {
+        apiRequest: true,
         ...context
       }
     });
     
     const executionTime = Date.now() - startTime;
     console.log(`\n✅ Agent execution completed successfully in ${executionTime}ms`);
-    console.log(`🎯 Agent: ${agentName}`);
+    console.log(`🎯 System: EmailMakersAgent with SDK handoffs`);
     console.log(`📋 Task Type: ${task_type}`);
     console.log(`📊 Result type: ${typeof result}`);
     
@@ -86,6 +73,9 @@ export async function POST(request: NextRequest) {
       if (result.finalOutput) {
         console.log(`📤 Final output: ${typeof result.finalOutput === 'string' ? result.finalOutput.slice(0, 100) + '...' : 'Complex output'}`);
       }
+      if (result.state) {
+        console.log(`🔧 State available: ${typeof result.state}`);
+      }
       console.log(`🔧 Available properties: ${Object.keys(result).join(', ')}`);
     }
     
@@ -94,7 +84,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       result: result,
-      agent: agentName,
+      system: 'EmailMakersAgent',
+      architecture: 'OpenAI SDK Handoffs',
       taskType: task_type,
       executionTime,
       timestamp: new Date().toISOString()
@@ -125,48 +116,59 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    console.log('\n🔍 === HEALTH CHECK STARTED ===');
+    console.log('\n🔍 === HEALTH CHECK STARTED (SDK SYSTEM) ===');
     
-    // Test orchestrator creation
-    console.log('🏗️  Testing orchestrator creation...');
-    const orchestratorSystem = await createEmailCampaignOrchestrator();
-    console.log('✅ Orchestrator system created');
+    // Get system info from new architecture
+    console.log('🏗️  Testing EmailMakersAgent system...');
+    const systemInfo = getSystemInfo();
+    console.log('✅ System info retrieved');
     
-    // Verify all agents are properly configured
-    const agentStatus = {
-      orchestrator: orchestratorSystem.orchestrator ? 'available' : 'unavailable',
-      contentSpecialist: orchestratorSystem.contentSpecialist ? 'available' : 'unavailable',
-      designSpecialist: orchestratorSystem.designSpecialist ? 'available' : 'unavailable',
-      qualitySpecialist: orchestratorSystem.qualitySpecialist ? 'available' : 'unavailable',
-      deliverySpecialist: orchestratorSystem.deliverySpecialist ? 'available' : 'unavailable'
-    };
+    console.log('🤖 System Status:');
+    console.log(`   ✅ System: ${systemInfo.system}`);
+    console.log(`   ✅ Version: ${systemInfo.version}`);
+    console.log(`   ✅ Architecture: ${systemInfo.architecture}`);
+    console.log(`   ✅ Entry Point: ${systemInfo.entryPoint}`);
+    console.log(`   ✅ Handoff Chain: ${systemInfo.handoffChain}`);
+    console.log(`   ✅ Total Tools: ${systemInfo.totalTools}`);
+    console.log(`   ✅ Total Agents: ${systemInfo.totalAgents}`);
+    console.log(`   ✅ SDK Compliant: ${systemInfo.sdkCompliant}`);
 
-    console.log('🤖 Agent Status:');
-    Object.entries(agentStatus).forEach(([agent, status]) => {
-      const icon = status === 'available' ? '✅' : '❌';
-      console.log(`   ${icon} ${agent}: ${status}`);
+    // Test agent creation
+    console.log('\n🧪 Testing agent creation...');
+    const agent = new EmailMakersAgent();
+    await agent.initialize();
+    console.log('✅ EmailMakersAgent created and initialized');
+
+    // Verify specialists are available
+    const specialists = ['data-collection', 'content', 'design', 'quality', 'delivery'];
+    const specialistStatus = {};
+    
+    specialists.forEach(type => {
+      try {
+        const specialist = agent.getSpecialist(type as 'data-collection' | 'content' | 'design' | 'quality' | 'delivery');
+        specialistStatus[type] = specialist ? 'available' : 'unavailable';
+      } catch (error) {
+        specialistStatus[type] = 'error';
+      }
     });
 
-    // Test handoff configuration
-    const handoffTests = {
-      orchestratorToContent: orchestratorSystem.orchestrator && orchestratorSystem.contentSpecialist,
-      contentToDesign: orchestratorSystem.contentSpecialist && orchestratorSystem.designSpecialist,
-      designToQuality: orchestratorSystem.designSpecialist && orchestratorSystem.qualitySpecialist,
-      qualityToDelivery: orchestratorSystem.qualitySpecialist && orchestratorSystem.deliverySpecialist
-    };
-
-    console.log('🔄 Handoff Tests:');
-    Object.entries(handoffTests).forEach(([handoff, working]) => {
-      const icon = working ? '✅' : '❌';
-      console.log(`   ${icon} ${handoff}: ${working ? 'working' : 'failed'}`);
+    console.log('🎯 Specialist Status:');
+    Object.entries(specialistStatus).forEach(([specialist, status]) => {
+      const icon = status === 'available' ? '✅' : '❌';
+      console.log(`   ${icon} ${specialist}: ${status}`);
     });
 
     console.log('✅ === HEALTH CHECK COMPLETED ===\n');
 
     return NextResponse.json({
       status: 'healthy',
-      agents: agentStatus,
-      handoffs: handoffTests,
+      system: systemInfo.system,
+      version: systemInfo.version,
+      architecture: systemInfo.architecture,
+      entryPoint: systemInfo.entryPoint,
+      handoffChain: systemInfo.handoffChain,
+      agents: specialistStatus,
+      capabilities: systemInfo,
       timestamp: new Date().toISOString()
     });
 

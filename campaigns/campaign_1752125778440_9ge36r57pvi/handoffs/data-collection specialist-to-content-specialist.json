@@ -1,0 +1,28 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Milan in autumn. All insights, trends, and data prepared for emotional and content work.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте анализ атмосферы Милана, сезонные тенденции, эмоциональные инсайты и market-интелиженс для создания контента, ориентированного на молодежную и модную аудиторию.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Фокус на эмоциях стиля, гастрономии, вдохновения",
+      "Больше фото- и кафе-образов",
+      "Использовать советы по выгодному бронированию",
+      "Визуально опираться на фирменные цвета Kupibilet, особенно теплые осенние и зеленые акценты"
+    ]
+  },
+  "created_at": "2025-07-10T05:37:09.395Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/handoffs/data-collection specialist-to-content-specialist.json"
+}

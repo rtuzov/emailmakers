@@ -1,0 +1,665 @@
+{
+  "manifestId": "manifest_1752131180858_ecopt9hy5qt",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752131209062_4zp8v0q01ze",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-отдыхающего-под-пальмой-и-читающего-книгу.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-отдыхающего-под-пальмой-и-читающего-книгу.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual for the email campaign, capturing the essence of winter in Istanbul with warm tones, showcasing a snowy cityscape, local culture, and winter elements like coffee and Turkish sweets.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 155470,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 155,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131210261_636jo4w9il8",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-отдыхающего-под-пальмой-и-читающего-книгу.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-отдыхающего-под-пальмой-и-читающего-книгу.png",
+        "alt_text": "AI-selected These destination images will highlight unique attractions of Istanbul during winter, featuring cozy cafes and winter activities, enhancing the inviting atmosphere of the campaign.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 155470,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 155,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131210262_0e5upkpjxb0d",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-наслаждающегося-кофе-за-столом.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-кролика-наслаждающегося-кофе-за-столом.png",
+        "alt_text": "AI-selected These destination images will highlight unique attractions of Istanbul during winter, featuring cozy cafes and winter activities, enhancing the inviting atmosphere of the campaign.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 96301,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 96,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131215927_xhpm6mefqu",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131215927_0kwz4ozicdjf",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131215928_go6nfggihje",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_информация-об-отмене-рейса-и-возможные-действия-для-пассажиров.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_информация-об-отмене-рейса-и-возможные-действия-для-пассажиров.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 5663,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131215929_qm573xmku7l",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4485,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131218724_4rhwgr4ys3v",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-кролика-обнимающего-чемодан-символизирующая-радость-путешествий.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-кролика-обнимающего-чемодан-символизирующая-радость-путешествий.png",
+        "alt_text": "AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.",
+        "usage": "navigation",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131218725_mrsoyv6lpf",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "alt_text": "AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.",
+        "usage": "navigation",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131218726_oo907tzsr1",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.",
+        "usage": "navigation",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131218727_49ye95juduq",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-персонажа-указывающего-на-карту-что-может-символизировать-навигацию-или-руководство.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-персонажа-указывающего-на-карту-что-может-символизировать-навигацию-или-руководство.png",
+        "alt_text": "AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.",
+        "usage": "navigation",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 93732,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 94,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131221546_4cup7otilko",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-зеленого-кролика-с-чемоданом-символизирующего-отпуск-и-путешествия.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-зеленого-кролика-с-чемоданом-символизирующего-отпуск-и-путешествия.png",
+        "alt_text": "AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.",
+        "usage": "social",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131221547_kmz4qr94ee",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-кролика-обнимающего-чемодан-символизирующая-радость-путешествий.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-кролика-обнимающего-чемодан-символизирующая-радость-путешествий.png",
+        "alt_text": "AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.",
+        "usage": "social",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131221547_ogys5rdy3nn",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "alt_text": "AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.",
+        "usage": "social",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131221548_fg13tupiwz",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.",
+        "usage": "social",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of winter in Istanbul",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "cozy, adventurous",
+      "visual_style": "warm tones with winter elements, showcasing snow and local culture",
+      "content_context": "a snowy cityscape of Istanbul with eastern lights, coffee, and Turkish sweets"
+    },
+    {
+      "type": "destination",
+      "purpose": "highlight the unique winter experience in Istanbul",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting, unique",
+      "visual_style": "cultural and atmospheric, focusing on cozy cafes and local delicacies",
+      "content_context": "images of cozy cafes and winter activities in Istanbul"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752131209062_4zp8v0q01ze",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual for the email campaign, capturing the essence of winter in Istanbul with warm tones, showcasing a snowy cityscape, local culture, and winter elements like coffee and Turkish sweets.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131210261_636jo4w9il8",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight unique attractions of Istanbul during winter, featuring cozy cafes and winter activities, enhancing the inviting atmosphere of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131210262_0e5upkpjxb0d",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight unique attractions of Istanbul during winter, featuring cozy cafes and winter activities, enhancing the inviting atmosphere of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131215927_xhpm6mefqu",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131215927_0kwz4ozicdjf",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131215928_go6nfggihje",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131215929_qm573xmku7l",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and encouraging engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131218724_4rhwgr4ys3v",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131218725_mrsoyv6lpf",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131218726_oo907tzsr1",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131218727_49ye95juduq",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These navigation icons will help guide users through the email content, making it easier for them to find information and take action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131221546_4cup7otilko",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131221547_kmz4qr94ee",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131221547_ogys5rdy3nn",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131221548_fg13tupiwz",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимний Стамбул ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These social icons will encourage sharing on social media, helping to spread the word about the winter campaign in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 16,
+    "totalSize": 1341294,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Consider optimizing images to reduce total size below 500KB",
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T07:07:20.137Z",
+    "processingTime": 59279,
+    "sourcesProcessed": 2,
+    "assetsCollected": 15,
+    "assetsValidated": 15,
+    "assetsOptimized": 15,
+    "errors": [
+      "3 assets failed basic validation"
+    ]
+  }
+}

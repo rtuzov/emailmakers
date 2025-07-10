@@ -1,0 +1,230 @@
+{
+  "from_specialist": "Content Specialist",
+  "to_specialist": "Design Specialist",
+  "handoff_data": {
+    "summary": "Completed email content generation with real pricing, dates, and technical specification",
+    "key_outputs": [
+      "email-content.json",
+      "email-content.md",
+      "technical-specification.json",
+      "asset-manifest.json"
+    ],
+    "context_for_next": "Use the generated content, technical specification, and asset manifest for email template creation",
+    "data_files": [
+      "content/email-content.json",
+      "content/email-content.md",
+      "docs/specifications/technical-specification.json",
+      "assets/manifests/asset-manifest.json"
+    ],
+    "recommendations": [
+      "Use real pricing data in design",
+      "Follow technical specification constraints",
+      "Use asset manifest for optimal asset selection",
+      "Ensure mobile responsiveness"
+    ],
+    "content_context": {
+      "campaign": {
+        "id": "campaign_1752131059248_cx1lud9sfq",
+        "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq",
+        "theme": "Путешествие в Стамбул зимой"
+      },
+      "generated_content": {
+        "subject": "Зимний Стамбул ждет вас!",
+        "preheader": "Самые выгодные билеты в декабре и феврале от 9114₽. Уютные кофейни и уникальный зимний город уже ждут!",
+        "body": "Hero-изображение: снежный город, восточные огни, кофе и турецкие сладости. Блоки: преимущества, лучшие даты и цена (9114 RUB), уют, атмосфера и уникальность зимнего отдыха.",
+        "cta": {
+          "primary": "Спланировать зимний уикенд",
+          "secondary": "Узнать больше о зимнем Стамбуле"
+        },
+        "pricing": {
+          "best_price": "9114",
+          "currency": "RUB",
+          "offers_count": 20
+        },
+        "dates": {
+          "optimal_dates": [
+            "2025-12-01",
+            "2025-12-15",
+            "2026-01-10",
+            "2026-02-05",
+            "2026-02-20"
+          ],
+          "season": "winter"
+        },
+        "context": {
+          "destination": "Стамбул",
+          "emotional_triggers": "Чувство приключения, уют, новые впечатления, фото для соцсетей"
+        }
+      },
+      "technical_requirements": {
+        "email_clients": [
+          "gmail",
+          "outlook",
+          "apple-mail",
+          "yahoo-mail"
+        ],
+        "design_constraints": null
+      },
+      "design_brief": {
+        "destination_context": {
+          "name": "Стамбул",
+          "seasonal_advantages": "Сезонные тренды из анализа направления",
+          "emotional_appeal": "Аромат кофе, турецкие сладости, вид на заснеженный Босфор, огни города",
+          "market_position": "Рыночное позиционирование из анализа"
+        },
+        "design_requirements": {
+          "visual_style": "Яркий и современный",
+          "color_palette": {
+            "primary_color": "#4BFF7E",
+            "accent_color": "#FF6240",
+            "background_color": "#EDEFFF",
+            "text_color": "#2C3959"
+          },
+          "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+          "typography_mood": "Современные шрифты без засечек для легкости восприятия, такие как Open Sans или Montserrat.",
+          "primary_color": "#4BFF7E",
+          "accent_color": "#FF6240",
+          "background_color": "#EDEFFF",
+          "text_color": "#2C3959"
+        },
+        "content_priorities": {
+          "key_messages": [],
+          "emotional_triggers": [],
+          "actionable_insights": []
+        },
+        "competitive_differentiation": {
+          "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+          "market_advantages": "Конкурентная среда из анализа"
+        },
+        "brand_colors": {
+          "primary": "#4BFF7E",
+          "accent": "#FF6240",
+          "background": "#EDEFFF",
+          "text": "#2C3959"
+        },
+        "image_concepts": [
+          "Hero изображение - зимний Стамбул с заснеженными улицами и яркими огнями.",
+          "Lifestyle фото - люди, наслаждающиеся горячим чаем на фоне Босфора.",
+          "Архитектура/достопримечательности - Собор Святой Софии и Голубая мечеть в зимнем свете.",
+          "Кулинария/культура - традиционные блюда, такие как кебаб и сладости, на фоне зимнего рынка.",
+          "Природа/пейзажи - зимние пейзажи с зелеными парками и снежными деревьями.",
+          "Активности/развлечения - люди, катающиеся на коньках на зимнем катке.",
+          "Шоппинг/сувениры - местные товары и сувениры на ярмарке.",
+          "Транспорт/логистика - виды на паромы и зимние улицы Стамбула."
+        ],
+        "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+        "emotional_triggers": "Яркие цвета и живописные изображения вызывают чувство приключения и вдохновения.",
+        "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и современного дизайна, создавая уникальный и запоминающийся визуальный опыт."
+      },
+      "asset_manifest": {
+        "manifestId": "manifest_1752131180858_ecopt9hy5qt",
+        "images_count": 15,
+        "icons_count": 0,
+        "total_size": 1341294
+      }
+    }
+  },
+  "created_at": "2025-07-10T07:07:32.646Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq/handoffs/content-specialist-to-design-specialist.json",
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752131059248_cx1lud9sfq",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131059248_cx1lud9sfq",
+      "theme": "Путешествие в Стамбул зимой"
+    },
+    "generated_content": {
+      "subject": "Зимний Стамбул ждет вас!",
+      "preheader": "Самые выгодные билеты в декабре и феврале от 9114₽. Уютные кофейни и уникальный зимний город уже ждут!",
+      "body": "Hero-изображение: снежный город, восточные огни, кофе и турецкие сладости. Блоки: преимущества, лучшие даты и цена (9114 RUB), уют, атмосфера и уникальность зимнего отдыха.",
+      "cta": {
+        "primary": "Спланировать зимний уикенд",
+        "secondary": "Узнать больше о зимнем Стамбуле"
+      },
+      "pricing": {
+        "best_price": "9114",
+        "currency": "RUB",
+        "offers_count": 20
+      },
+      "dates": {
+        "optimal_dates": [
+          "2025-12-01",
+          "2025-12-15",
+          "2026-01-10",
+          "2026-02-05",
+          "2026-02-20"
+        ],
+        "season": "winter"
+      },
+      "context": {
+        "destination": "Стамбул",
+        "emotional_triggers": "Чувство приключения, уют, новые впечатления, фото для соцсетей"
+      }
+    },
+    "technical_requirements": {
+      "email_clients": [
+        "gmail",
+        "outlook",
+        "apple-mail",
+        "yahoo-mail"
+      ],
+      "design_constraints": null
+    },
+    "design_brief": {
+      "destination_context": {
+        "name": "Стамбул",
+        "seasonal_advantages": "Сезонные тренды из анализа направления",
+        "emotional_appeal": "Аромат кофе, турецкие сладости, вид на заснеженный Босфор, огни города",
+        "market_position": "Рыночное позиционирование из анализа"
+      },
+      "design_requirements": {
+        "visual_style": "Яркий и современный",
+        "color_palette": {
+          "primary_color": "#4BFF7E",
+          "accent_color": "#FF6240",
+          "background_color": "#EDEFFF",
+          "text_color": "#2C3959"
+        },
+        "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+        "typography_mood": "Современные шрифты без засечек для легкости восприятия, такие как Open Sans или Montserrat.",
+        "primary_color": "#4BFF7E",
+        "accent_color": "#FF6240",
+        "background_color": "#EDEFFF",
+        "text_color": "#2C3959"
+      },
+      "content_priorities": {
+        "key_messages": [],
+        "emotional_triggers": [],
+        "actionable_insights": []
+      },
+      "competitive_differentiation": {
+        "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+        "market_advantages": "Конкурентная среда из анализа"
+      },
+      "brand_colors": {
+        "primary": "#4BFF7E",
+        "accent": "#FF6240",
+        "background": "#EDEFFF",
+        "text": "#2C3959"
+      },
+      "image_concepts": [
+        "Hero изображение - зимний Стамбул с заснеженными улицами и яркими огнями.",
+        "Lifestyle фото - люди, наслаждающиеся горячим чаем на фоне Босфора.",
+        "Архитектура/достопримечательности - Собор Святой Софии и Голубая мечеть в зимнем свете.",
+        "Кулинария/культура - традиционные блюда, такие как кебаб и сладости, на фоне зимнего рынка.",
+        "Природа/пейзажи - зимние пейзажи с зелеными парками и снежными деревьями.",
+        "Активности/развлечения - люди, катающиеся на коньках на зимнем катке.",
+        "Шоппинг/сувениры - местные товары и сувениры на ярмарке.",
+        "Транспорт/логистика - виды на паромы и зимние улицы Стамбула."
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+      "emotional_triggers": "Яркие цвета и живописные изображения вызывают чувство приключения и вдохновения.",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и современного дизайна, создавая уникальный и запоминающийся визуальный опыт."
+    },
+    "asset_manifest": {
+      "manifestId": "manifest_1752131180858_ecopt9hy5qt",
+      "images_count": 15,
+      "icons_count": 0,
+      "total_size": 1341294
+    }
+  }
+}

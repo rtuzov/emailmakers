@@ -1,0 +1,69 @@
+[
+  {
+    "assetId": "ai_1752123623572_abkaf0p8a6l",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the cozy and romantic essence of winter in Istanbul, showcasing its architecture and atmosphere.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123624766_1zj8qmq5tax",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This seasonal image will highlight winter activities and experiences in Istanbul, showcasing tourists enjoying winter walks, local cuisine, and festive decorations.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123626586_bf0u0s7yas",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to winter travel in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123626587_7t0i8xcvej4",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to winter travel in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123626588_7vb7sdb8m95",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to winter travel in Istanbul.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123627938_yeb7v74z0mg",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and trustworthiness in the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752123630456_x7clbanui5k",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимний Стамбул: уют и волшебство ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will enhance the overall aesthetic of the email, creating a warm and inviting atmosphere.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

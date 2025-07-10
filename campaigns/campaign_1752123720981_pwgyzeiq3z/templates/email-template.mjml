@@ -1,0 +1,74 @@
+<mjml>
+  <mj-head>
+    <mj-title>Зимний Стамбул: волшебство Востока ждет вас!</mj-title>
+    <mj-preview>Мягкая зима, уютные прогулки и билеты в Стамбул от 9105₽. Поймайте магию Востока прямо сейчас!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" color="#333333" line-height="1.6" />
+      <mj-section background-color="#ffffff" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-section padding="0">
+      <mj-column width="100%">
+        <mj-image 
+          src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752123720981_pwgyzeiq3z/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png" 
+          alt="AI-selected These icons will be used to highlight special offers and discounts within the email, making it easier for users to identify promotional content."
+          width="600px"
+          padding="0" />
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text 
+          font-size="28px" 
+          font-weight="600" 
+          color="#333333"
+          font-family="Arial, sans-serif"
+          align="center">
+          Зимний Стамбул: волшебство Востока ждет вас!
+        </mj-text>
+        
+        <mj-text 
+          font-size="16px" 
+          color="#666666"
+          align="center"
+          padding-top="10px">
+          Зима — лучшее время для неспешных прогулок по Стамбулу без толп туристов.
+Уютные кафе, ароматный чай и традиционные сладости ждут вас на улицах города.
+Только зимой: уникальные скидки на перелеты и проживание в отелях, специальные гастрономические туры, фотомаршруты по зимнему Босфору и закрытым базарам.
+Выгодные билеты в Стамбул из Москвы — от 9105₽ на даты: 1-15 декабря и после новогодних праздников. Забронируйте заранее — и откройте магию Востока в комфортной обстановке!
+        </mj-text>
+        
+        <mj-text 
+          font-size="24px" 
+          font-weight="600" 
+          color="#007bff"
+          align="center"
+          padding-top="20px">
+          9105 RUB
+        </mj-text>
+        
+        <mj-button 
+          background-color="#007bff" 
+          color="#ffffff"
+          font-size="16px"
+          font-weight="600"
+          border-radius="4px"
+          padding-top="20px"
+          href="#">
+          Посмотреть билеты
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="14px" color="#999999" align="center">
+          Спасибо за выбор наших услуг
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,5 +1,35 @@
 # Content Generation Prompts
 
+## 📅 ТЕКУЩАЯ ДАТА
+**КРИТИЧЕСКИ ВАЖНО**: Используйте эту функцию для получения актуальной даты:
+
+```javascript
+function getCurrentDate() {
+  const now = new Date();
+  return {
+    current_date: now.toISOString().split('T')[0], // YYYY-MM-DD
+    current_datetime: now.toISOString(),
+    current_year: now.getFullYear(),
+    current_month: now.getMonth() + 1,
+    current_day: now.getDate(),
+    formatted_date: now.toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: 'long', 
+      day: 'numeric'
+    }),
+    weekday: now.toLocaleDateString('ru-RU', { weekday: 'long' })
+  };
+}
+```
+
+**ОБЯЗАТЕЛЬНО ИСПОЛЬЗУЙТЕ** эту функцию для:
+- Планирования дат поездок (только будущие даты!)
+- Расчета сезонности
+- Определения оптимальных периодов бронирования
+- Генерации контента с актуальными датами
+
+**ЗАПРЕЩЕНО** использовать хардкоженные даты 2024 года или прошлые даты!
+
 ## 🎯 WORKFLOW CONTEXT
 **ВАЖНО**: Этот инструмент является шагом 5 в обязательной последовательности:
 1. initialize_email_folder → 2. get_current_date → 3. get_figma_assets → 4. get_prices → **5. generate_copy** → 6. render_mjml → **7. ai_quality_consultant** → 8. upload_s3

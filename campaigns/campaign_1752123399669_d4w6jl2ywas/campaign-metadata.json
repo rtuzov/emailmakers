@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752123399669_d4w6jl2ywas",
+  "name": "Путешествие в Стамбул зимой",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители зимних путешествий",
+  "user_request": "путешествие в Стамбул зимой",
+  "created_at": "2025-07-10T04:56:39.670Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-10T04:57:15.027Z"
+}

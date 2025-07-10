@@ -1,0 +1,270 @@
+{
+  "manifestId": "manifest_1752072514416_j62z2yr907",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752072571232_63mds6953yr",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected This seasonal image will highlight autumn festivals and activities in London, enhancing the excitement and inviting nature of the campaign.",
+        "usage": "seasonal",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752072574618_ko5ijhuszj",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "alt_text": "AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.",
+        "usage": "booking",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752072574619_xgk607ijvge",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_иконка-символизирующая-выбор-места-для-комфортного-отдыха.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_иконка-символизирующая-выбор-места-для-комфортного-отдыха.png",
+        "alt_text": "AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.",
+        "usage": "booking",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 3703,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752072574620_d68r1hz3z2v",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.",
+        "usage": "booking",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752072576731_9q8lvrxjeg7",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072378936_epr6w84gbfo/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and recognition throughout the email.",
+        "usage": "logo",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of Лондон in autumn",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "romantic and adventurous",
+      "visual_style": "warm tones with cozy elements reflecting British culture",
+      "content_context": "A picturesque view of London in autumn showcasing parks, pubs, and cultural landmarks"
+    },
+    {
+      "type": "seasonal",
+      "purpose": "to highlight autumn activities and festivals in London",
+      "dimensions": {
+        "width": 600,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting and inspiring",
+      "visual_style": "vibrant autumn colors with festival elements",
+      "content_context": "Images of autumn festivals, coffee with a view of Big Ben, and cozy pub scenes"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752072571232_63mds6953yr",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Лондон!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This seasonal image will highlight autumn festivals and activities in London, enhancing the excitement and inviting nature of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752072574618_ko5ijhuszj",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Лондон!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752072574619_xgk607ijvge",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Лондон!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752072574620_d68r1hz3z2v",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Лондон!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will facilitate the booking process, guiding users to explore more options and enhancing the promotional aspect of the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752072576731_9q8lvrxjeg7",
+      "placement": "Place in header area, typically top-left or center",
+      "context": "Use in context of: Откройте для себя осенний Лондон!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and recognition throughout the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 143114,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-09T14:49:57.745Z",
+    "processingTime": 83329,
+    "sourcesProcessed": 2,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 5,
+    "errors": [
+      "4 assets failed basic validation"
+    ]
+  }
+}

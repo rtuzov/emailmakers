@@ -1,0 +1,71 @@
+<mjml>
+  <mj-head>
+    <mj-title>Весна в Токио: Поймайте сакуру по лучшей цене!</mj-title>
+    <mj-preview>Не упусти цветение сакуры в 2025 году — от 28 463 ₽!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" color="#333333" line-height="1.6" />
+      <mj-section background-color="#ffffff" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-section padding="0">
+      <mj-column width="100%">
+        <mj-image 
+          src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752072700699_whbvsiwsqng/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png" 
+          alt="AI-selected This hero image will serve as the main visual to capture attention and convey the essence of spring in Tokyo, showcasing cherry blossoms and the vibrant atmosphere of street festivals."
+          width="600px"
+          padding="0" />
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text 
+          font-size="28px" 
+          font-weight="600" 
+          color="#333333"
+          font-family="Arial, sans-serif"
+          align="center">
+          Весна в Токио: Поймайте сакуру по лучшей цене!
+        </mj-text>
+        
+        <mj-text 
+          font-size="16px" 
+          color="#666666"
+          align="center"
+          padding-top="10px">
+          Знакомьтесь с весенним Токио и таинством ханами: всего от 28 463 ₽! Лучшие даты вылета — 20, 25 марта, 1-10 апреля. Мечтайте, планируйте, бронируйте! Зачем ехать весной: цветение сакуры, уличные фестивали, фотомоменты и японская гастрономия. Совет: бронируй заранее — весенний Токио популярен во всем мире, лучшие цены быстро исчезают!
+        </mj-text>
+        
+        <mj-text 
+          font-size="24px" 
+          font-weight="600" 
+          color="#007bff"
+          align="center"
+          padding-top="20px">
+          28463 RUB
+        </mj-text>
+        
+        <mj-button 
+          background-color="#007bff" 
+          color="#ffffff"
+          font-size="16px"
+          font-weight="600"
+          border-radius="4px"
+          padding-top="20px"
+          href="#">
+          Перейти к бронированию
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section background-color="#f8f9fa" padding="20px">
+      <mj-column>
+        <mj-text font-size="14px" color="#999999" align="center">
+          Спасибо за выбор наших услуг
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

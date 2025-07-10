@@ -1,0 +1,272 @@
+{
+  "manifestId": "manifest_1752125960863_34lmlhx8ooh",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752125994857_13yey8tvst89",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_иллюстрация-супергероя-в-ярких-цветах-символизирующего-креативность-и-динамичность.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_иллюстрация-супергероя-в-ярких-цветах-символизирующего-креативность-и-динамичность.png",
+        "alt_text": "AI-selected This image will highlight Milan's unique aspects during autumn, showcasing fashion week, art districts, and culinary delights.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 89764,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 90,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752125996138_udvo421s0lh",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752125996140_qvve8pd1mb",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752125997430_pi6doucv0p",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and recognition in the email.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752125998873_so7kd1bo7j",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752125778440_9ge36r57pvi/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "alt_text": "AI-selected This background pattern will create a warm and inviting atmosphere for the email, enhancing the overall aesthetic.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 159632,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 160,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of Milan in autumn",
+      "dimensions": {
+        "width": 600,
+        "height": 400
+      },
+      "priority": "required",
+      "emotional_tone": "inspirational and adventurous",
+      "visual_style": "vibrant and warm, reflecting autumn colors and urban chic",
+      "content_context": "A scenic view of Milan showcasing autumn foliage, cozy cafes, and fashion elements."
+    },
+    {
+      "type": "seasonal",
+      "purpose": "to highlight the autumn experience in Milan",
+      "dimensions": {
+        "width": 300,
+        "height": 200
+      },
+      "priority": "recommended",
+      "emotional_tone": "cozy and inviting",
+      "visual_style": "soft and warm tones, featuring autumn leaves and local cuisine",
+      "content_context": "Images of autumn leaves, local dishes, and stylish city scenes."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752125994857_13yey8tvst89",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will highlight Milan's unique aspects during autumn, showcasing fashion week, art districts, and culinary delights.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752125996138_udvo421s0lh",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752125996140_qvve8pd1mb",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the promotional aspects of the email, guiding users through the content and emphasizing special offers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752125997430_pi6doucv0p",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and recognition in the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752125998873_so7kd1bo7j",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Милан этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will create a warm and inviting atmosphere for the email, enhancing the overall aesthetic.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 289561,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T05:40:17.314Z",
+    "processingTime": 56451,
+    "sourcesProcessed": 2,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 5,
+    "errors": [
+      "4 assets failed basic validation"
+    ]
+  }
+}

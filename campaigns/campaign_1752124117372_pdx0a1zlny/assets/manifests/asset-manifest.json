@@ -1,0 +1,160 @@
+{
+  "manifestId": "manifest_1752124279420_l1bc4dccggl",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752124315468_zafg9y48f0f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752124117372_pdx0a1zlny/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752124117372_pdx0a1zlny/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected This image will showcase the beauty of Paris during spring, featuring parks and streets filled with flowers and people enjoying the season.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752124316407_cqxovqj9hg7",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752124117372_pdx0a1zlny/assets/optimized/optimized_иллюстрация-зеленого-кролика-держащего-бабочек-символизирующая-радость-и-креативность.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752124117372_pdx0a1zlny/assets/optimized/optimized_иллюстрация-зеленого-кролика-держащего-бабочек-символизирующая-радость-и-креативность.png",
+        "alt_text": "AI-selected This image will highlight spring activities in Paris, featuring street festivals, outdoor cafes, and people taking photos in blooming areas.",
+        "usage": "seasonal",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 101277,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 101,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of весенний Париж",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "romantic and inspiring",
+      "visual_style": "vibrant and colorful, showcasing spring in Paris",
+      "content_context": "depicting blooming parks, street festivals, and stylish photo opportunities in Paris during spring"
+    },
+    {
+      "type": "destination",
+      "purpose": "highlight the beauty of Paris in spring",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting and warm",
+      "visual_style": "soft pastel colors with floral elements",
+      "content_context": "showcasing iconic Parisian landmarks surrounded by spring flowers"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752124315468_zafg9y48f0f",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний Париж: Ваше идеальное путешествие ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will showcase the beauty of Paris during spring, featuring parks and streets filled with flowers and people enjoying the season.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752124316407_cqxovqj9hg7",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний Париж: Ваше идеальное путешествие ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will highlight spring activities in Paris, featuring street festivals, outdoor cafes, and people taking photos in blooming areas.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 3,
+    "totalSize": 218691,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T05:12:14.908Z",
+    "processingTime": 55488,
+    "sourcesProcessed": 2,
+    "assetsCollected": 2,
+    "assetsValidated": 2,
+    "assetsOptimized": 2,
+    "errors": [
+      "3 assets failed basic validation"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Осенью в Париже нет толп и цены ниже",
+    "Романтика и искусство главные мотиваторы",
+    "Осенний Париж вдохновляет новыми эмоциями и фото",
+    "Самые выгодные поездки — вне праздников и модных недель",
+    "Париж удерживает лидерство среди европейских городов осенью"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-09T14:32:54.040Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752071553607_mv02vrl9gno/data/travel_intelligence-insights.json"
+}

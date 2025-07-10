@@ -1,0 +1,69 @@
+[
+  {
+    "assetId": "ai_1752132562639_uuljqw0vmg",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will showcase the beauty of Thailand's beaches and cultural sites, inviting families to explore and relax.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132562640_s2zs9xtfus",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will showcase the beauty of Thailand's beaches and cultural sites, inviting families to explore and relax.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132565584_luz81yvhdbo",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging users to take action and book their family vacation.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132565585_225d1stagxw",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging users to take action and book their family vacation.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132565586_4wsts02fzd3",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging users to take action and book their family vacation.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132569999_kx5u293xca8",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and trustworthiness in the email campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752132571216_mdfzkm8gge",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Семейный отдых в Тайланде: выгода и приключения осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This decorative element will enhance the overall cheerful and inviting tone of the email, appealing to families looking for adventure.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

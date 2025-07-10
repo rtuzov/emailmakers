@@ -1,0 +1,308 @@
+{
+  "manifestId": "manifest_1752131705886_lup9pmtepeo",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752131738919_8ybtpl3xlsn",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_авиабилет-путешествие.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_авиабилет-путешествие.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of summer in Paris, showcasing outdoor concerts, romantic walks along the Seine, and culinary experiences.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 28198,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 28,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131740472_wnzku2iford",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_авиабилет-путешествие.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_авиабилет-путешествие.png",
+        "alt_text": "AI-selected This destination image will visually represent Paris during summer, highlighting the beauty of the city with a focus on culture and festivities.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 28198,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 28,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131741721_bj1ez9i53w",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and deals related to the campaign, enhancing user engagement and ease of booking.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131741722_13edqn8yds09",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and deals related to the campaign, enhancing user engagement and ease of booking.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131742858_l7r3jsj5rk9",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and trustworthiness for the campaign.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752131743823_drxa3f6efab",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_иконка-геолокации-в-виде-маркера-на-карте.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752131591503_1h9olvu8ip9h/assets/optimized/optimized_иконка-геолокации-в-виде-маркера-на-карте.png",
+        "alt_text": "AI-selected The background pattern will create a cohesive and inviting atmosphere for the email layout, enhancing the overall aesthetic.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 27245,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 27,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of summer in Paris",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "romantic and vibrant",
+      "visual_style": "elegant and artistic, showcasing Parisian landmarks and summer activities",
+      "content_context": "depicting the romantic atmosphere of summer in Paris with outdoor concerts, Seine river walks, and gastronomic experiences"
+    },
+    {
+      "type": "destination",
+      "purpose": "highlight the beauty and attractions of Paris during summer",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting and joyful",
+      "visual_style": "colorful and lively, featuring summer events and cultural experiences",
+      "content_context": "showcasing the festive atmosphere of Paris in summer with street festivals and outdoor dining"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752131738919_8ybtpl3xlsn",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of summer in Paris, showcasing outdoor concerts, romantic walks along the Seine, and culinary experiences.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131740472_wnzku2iford",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This destination image will visually represent Paris during summer, highlighting the beauty of the city with a focus on culture and festivities.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131741721_bj1ez9i53w",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and deals related to the campaign, enhancing user engagement and ease of booking.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131741722_13edqn8yds09",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and deals related to the campaign, enhancing user engagement and ease of booking.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131742858_l7r3jsj5rk9",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and trustworthiness for the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752131743823_drxa3f6efab",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний Париж ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The background pattern will create a cohesive and inviting atmosphere for the email layout, enhancing the overall aesthetic.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 7,
+    "totalSize": 123806,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T07:15:59.973Z",
+    "processingTime": 54087,
+    "sourcesProcessed": 2,
+    "assetsCollected": 6,
+    "assetsValidated": 6,
+    "assetsOptimized": 6,
+    "errors": [
+      "3 assets failed basic validation"
+    ]
+  }
+}

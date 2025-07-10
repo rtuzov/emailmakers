@@ -1,0 +1,29 @@
+[
+  {
+    "assetId": "ai_1752072091140_feybacr8izq",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Париж осенью: ваше незабываемое путешествие!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the call-to-action buttons, making them visually appealing and encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752072091141_z0fi6va3b6j",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Париж осенью: ваше незабываемое путешествие!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will enhance the call-to-action buttons, making them visually appealing and encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752072092662_4pbng1und0n",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Париж осенью: ваше незабываемое путешествие!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and trustworthiness in the promotional email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]
