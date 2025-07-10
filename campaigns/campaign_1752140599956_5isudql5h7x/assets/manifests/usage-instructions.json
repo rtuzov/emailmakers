@@ -1,0 +1,20 @@
+[
+  {
+    "assetId": "ai_1752140771993_ya70tkzc2s",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Весна в Греции ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and early booking tips, facilitating customer engagement and encouraging action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752140771994_3zhcmhyycau",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Весна в Греции ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and early booking tips, facilitating customer engagement and encouraging action.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

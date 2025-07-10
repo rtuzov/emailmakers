@@ -36,6 +36,76 @@ export const CampaignMetadataSchema = z.object({
 });
 
 // ============================================================================
+// DATA COLLECTION CONTEXT SCHEMAS
+// ============================================================================
+
+export const DataCollectionContextSchema = z.object({
+  destination_analysis: z.object({
+    analysis_type: z.string().describe('Type of destination analysis'),
+    data: z.object({
+      climate_factors: z.string().describe('Climate and weather factors'),
+      cultural_highlights: z.string().describe('Cultural attractions and highlights'),
+      key_attractions: z.string().describe('Key tourist attractions'),
+      seasonal_advantages: z.string().describe('Seasonal travel advantages'),
+      travel_experience_quality: z.string().describe('Overall travel experience quality')
+    }).describe('Destination analysis data'),
+    saved_at: z.string().describe('Analysis timestamp')
+  }).nullable().describe('Destination analysis from data collection'),
+  
+  market_intelligence: z.object({
+    analysis_type: z.string().describe('Type of market analysis'),
+    data: z.object({
+      pricing_insights: z.string().describe('Market pricing insights'),
+      competitive_position: z.string().describe('Competitive market position'),
+      demand_patterns: z.string().describe('Market demand patterns'),
+      booking_recommendations: z.string().describe('Booking timing recommendations')
+    }).describe('Market intelligence data'),
+    saved_at: z.string().describe('Analysis timestamp')
+  }).nullable().describe('Market intelligence from data collection'),
+  
+  emotional_profile: z.object({
+    analysis_type: z.string().describe('Type of emotional analysis'),
+    data: z.object({
+      core_motivations: z.string().describe('Core traveler motivations'),
+      emotional_triggers: z.string().describe('Key emotional triggers'),
+      key_desires: z.string().describe('Primary traveler desires'),
+      psychological_benefits: z.string().describe('Psychological benefits sought')
+    }).describe('Emotional profile data'),
+    saved_at: z.string().describe('Analysis timestamp')
+  }).nullable().describe('Emotional profile from data collection'),
+  
+  consolidated_insights: z.object({
+    actionable_insights: z.array(z.string()).describe('Actionable marketing insights'),
+    key_insights: z.array(z.string()).describe('Key strategic insights'),
+    confidence_score: z.number().min(0).max(1).describe('Confidence in analysis'),
+    analysis_timestamp: z.string().describe('Analysis timestamp'),
+    saved_at: z.string().describe('Save timestamp')
+  }).nullable().describe('Consolidated insights from all data'),
+  
+  travel_intelligence: z.object({
+    route_analysis: z.any().nullable().describe('Flight route analysis'),
+    pricing_trends: z.any().nullable().describe('Historical pricing trends'),
+    seasonal_patterns: z.any().nullable().describe('Seasonal travel patterns'),
+    booking_windows: z.any().nullable().describe('Optimal booking windows')
+  }).nullable().describe('Travel intelligence data'),
+  
+  trend_analysis: z.object({
+    market_trends: z.any().nullable().describe('Current market trends'),
+    consumer_behavior: z.any().nullable().describe('Consumer behavior patterns'),
+    competitive_landscape: z.any().nullable().describe('Competitive analysis'),
+    seasonal_factors: z.any().nullable().describe('Seasonal influence factors')
+  }).nullable().describe('Trend analysis data'),
+  
+  collection_metadata: z.object({
+    campaign_id: z.string().describe('Campaign identifier'),
+    collection_timestamp: z.string().describe('Data collection timestamp'),
+    data_sources: z.array(z.string()).describe('Sources of collected data'),
+    collection_status: z.enum(['complete', 'partial', 'failed']).describe('Collection status'),
+    data_quality_score: z.number().min(0).max(100).describe('Quality score of collected data')
+  }).describe('Data collection metadata')
+});
+
+// ============================================================================
 // CONTENT SPECIALIST SCHEMAS
 // ============================================================================
 
@@ -105,6 +175,7 @@ export const GeneratedContentSchema = z.object({
 
 export const ContentContextSchema = z.object({
   campaign: CampaignMetadataSchema.describe('Campaign metadata'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
   context_analysis: ContextAnalysisSchema.describe('Destination and market context'),
   date_analysis: DateAnalysisSchema.describe('Date optimization analysis'),
   pricing_analysis: PricingAnalysisSchema.describe('Pricing intelligence data'),
@@ -190,6 +261,7 @@ export const DesignDecisionsSchema = z.object({
 
 export const DesignContextSchema = z.object({
   content_context: ContentContextSchema.describe('Content specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
   asset_manifest: AssetManifestSchema.describe('Prepared assets for design'),
   mjml_template: MJMLTemplateSchema.describe('Generated MJML template'),
   design_decisions: DesignDecisionsSchema.describe('Design implementation decisions'),
@@ -286,6 +358,7 @@ export const QualityReportSchema = z.object({
 
 export const QualityContextSchema = z.object({
   design_context: DesignContextSchema.describe('Design specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
   quality_report: QualityReportSchema.describe('Comprehensive quality analysis'),
   test_artifacts: z.object({
     screenshots: z.array(z.object({
@@ -391,6 +464,7 @@ export const DeliveryReportSchema = z.object({
 
 export const DeliveryContextSchema = z.object({
   quality_context: QualityContextSchema.describe('Quality specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
   delivery_manifest: DeliveryManifestSchema.describe('Package manifest'),
   export_format: ExportFormatSchema.describe('Export configuration'),
   delivery_report: DeliveryReportSchema.describe('Final delivery report'),
@@ -414,25 +488,29 @@ export const BaseHandoffDataSchema = z.object({
 });
 
 export const ContentToDesignHandoffSchema = BaseHandoffDataSchema.extend({
-  content_context: ContentContextSchema.describe('Complete content specialist outputs')
+  content_context: ContentContextSchema.describe('Complete content specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
 });
 
 export const DesignToQualityHandoffSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Content specialist outputs'),
-  design_context: DesignContextSchema.describe('Complete design specialist outputs')
+  design_context: DesignContextSchema.describe('Complete design specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
 });
 
 export const QualityToDeliveryHandoffSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Content specialist outputs'),
   design_context: DesignContextSchema.describe('Design specialist outputs'),
-  quality_context: QualityContextSchema.describe('Complete quality specialist outputs')
+  quality_context: QualityContextSchema.describe('Complete quality specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
 });
 
 export const CompleteWorkflowContextSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Content specialist outputs'),
   design_context: DesignContextSchema.describe('Design specialist outputs'),
   quality_context: QualityContextSchema.describe('Quality specialist outputs'),
-  delivery_context: DeliveryContextSchema.describe('Complete delivery specialist outputs')
+  delivery_context: DeliveryContextSchema.describe('Complete delivery specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
 });
 
 // ============================================================================
@@ -441,6 +519,7 @@ export const CompleteWorkflowContextSchema = BaseHandoffDataSchema.extend({
 
 export type HandoffMetadata = z.infer<typeof HandoffMetadataSchema>;
 export type CampaignMetadata = z.infer<typeof CampaignMetadataSchema>;
+export type DataCollectionContext = z.infer<typeof DataCollectionContextSchema>;
 export type ContentContext = z.infer<typeof ContentContextSchema>;
 export type DesignContext = z.infer<typeof DesignContextSchema>;
 export type QualityContext = z.infer<typeof QualityContextSchema>;
@@ -469,8 +548,8 @@ export function createHandoffMetadata(
     fromAgent,
     toAgent,
     dataVersion: '1.0',
-    traceId,
-    executionTime: undefined
+    traceId: traceId || null,
+    executionTime: null
   };
 }
 

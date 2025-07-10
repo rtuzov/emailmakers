@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Thailand autumn travel.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination, market, and emotional analyses to craft creative appealing to Thai autumn travel, spa, wellness and bright visuals.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Focus on tropical beach and wellness themes",
+      "Leverage bright and emotional Kupibilet branding",
+      "Highlight festival traditions and foodie experiences",
+      "Emphasize simplicity: no visa for Russians, convenient packages",
+      "Use social media trends and photo-worthy spots"
+    ]
+  },
+  "created_at": "2025-07-10T10:52:02.926Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752144683522_mkyi0bh16p/handoffs/data-collection specialist-to-content-specialist.json"
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "assetId": "ai_1752142617799_gprrg1u8mfj",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Путешествие во Францию — от 18 636 ₽ этим летом!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This destination image will visually represent French cuisine and culture, featuring an elegant table setting with French delicacies and wine, emphasizing gastronomy.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752142618909_n9nn0z1ipgn",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Путешествие во Францию — от 18 636 ₽ этим летом!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to the campaign, enhancing the call-to-action for potential travelers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752142618910_ba5gl3rtn78",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Путешествие во Францию — от 18 636 ₽ этим летом!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and discounts related to the campaign, enhancing the call-to-action for potential travelers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752142620765_k5r0cfblf9",
+    "placement": "Place in header area, typically top-left or center",
+    "context": "Use in context of: Путешествие во Францию — от 18 636 ₽ этим летом!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header of the email to reinforce brand identity and recognition.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752142621679_i47dmd65iyi",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Путешествие во Францию — от 18 636 ₽ этим летом!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will enhance the overall aesthetic of the email, creating a vibrant and elegant atmosphere that aligns with the summer theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

@@ -1,0 +1,1 @@
+{"success":false,"error":"400 Invalid schema for function 'finalizeContentAndTransferToDesign': In context=('properties', 'context_analysis', 'additionalProperties'), schema must have a 'type' key.","timestamp":"2025-07-10T08:37:10.154Z"}

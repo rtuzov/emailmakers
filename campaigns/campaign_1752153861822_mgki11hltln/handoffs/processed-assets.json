@@ -1,0 +1,338 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752154046545_g7eat4jv0qh",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing a stunning beach scene with sunsets and inviting waters.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 161028,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 161,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.321Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752154049850_mrrricyab4f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.321Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154049851_eid5wcz6qwl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.321Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154049852_qnhbzwxikn",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.321Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154051229_b956499sz2o",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and recognition throughout the campaign.",
+        "usage": "logo",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.322Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154052627_16ju6eb2x39",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "alt_text": "AI-selected This background pattern will enhance the overall aesthetic of the email, providing a cohesive and inviting visual experience.",
+        "usage": "background",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 2028,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 2,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:28:15.322Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752154046545_g7eat4jv0qh",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing a stunning beach scene with sunsets and inviting waters.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 161028,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154049850_mrrricyab4f",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154049851_eid5wcz6qwl",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154049852_qnhbzwxikn",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4011,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154051229_b956499sz2o",
+      "asset_type": "image",
+      "usage_context": "logo",
+      "placement_instructions": "Place in header area, typically center-aligned",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and recognition throughout the campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154052627_16ju6eb2x39",
+      "asset_type": "image",
+      "usage_context": "background",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This background pattern will enhance the overall aesthetic of the email, providing a cohesive and inviting visual experience.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 2028,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "high",
+    "processed_at": "2025-07-10T13:28:15.322Z"
+  }
+}

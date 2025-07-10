@@ -1,0 +1,27 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for autumn travel to Thailand with focus on exotic, relaxation and culture. All key insights, emotional triggers, and market trends identified.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте детальную аналитику по Тайланду для создания email-кампании с эмоциональным акцентом, подборкой лучших дат, цен и мест.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Использовать цвета снабжения Kupibilet - зеленый, оранжевый для визуального стиля письма",
+      "Включать акционное окно бронирования и триггеры спокойствия СПА, свежих фруктов, уютных пляжей",
+      "Добавить ссылки на впечатления блогеров и уникальные культурные события осенью"
+    ]
+  },
+  "created_at": "2025-07-10T12:32:57.581Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/handoffs/data-collection specialist-to-content-specialist.json"
+}

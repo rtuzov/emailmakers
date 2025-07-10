@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Greece spring season",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use destination, market, emotional and trend analysis for content creation and USP storytelling",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Используйте образы цветущей Греции и мягкую весеннюю палитру бренда",
+      "Сделайте упор на уюте и эмоциональном обновлении",
+      "Добавьте гастро-сторис и советы по бронированию сейлов",
+      "Обязательно сравните с Турцией и Кипром",
+      "Покажите актуальные тренды и Instagram активность"
+    ]
+  },
+  "created_at": "2025-07-10T09:43:52.242Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752140599956_5isudql5h7x/handoffs/data-collection specialist-to-content-specialist.json"
+}

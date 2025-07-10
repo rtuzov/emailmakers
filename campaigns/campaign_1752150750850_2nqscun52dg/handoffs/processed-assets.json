@@ -1,0 +1,442 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752150937438_4ujilrgvtb8",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, featuring a tropical beach at sunset with palm trees, complemented by a bright CTA overlay with pricing.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 161028,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 161,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.250Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752150940885_9ssn6vmphs5",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 100659,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 101,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.250Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752150940887_98j63of1ccw",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.250Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752150940888_mrw9zuij7w",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-кролика-держащего-зеленую-карточку-символизирующую-акцию-или-подарок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_иллюстрация-кролика-держащего-зеленую-карточку-символизирующую-акцию-или-подарок.png",
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 83536,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 84,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.250Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752150943008_0rszmf3qeclq",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.250Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752150943009_7ufqk7ng2ts",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.251Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752150943010_1jlnpv5ib6wh",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.251Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752150944466_rgdwy8ok7h",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752150750850_2nqscun52dg/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and trust with the audience.",
+        "usage": "branding",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:36:28.251Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752150937438_4ujilrgvtb8",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, featuring a tropical beach at sunset with palm trees, complemented by a bright CTA overlay with pricing.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 161028,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150940885_9ssn6vmphs5",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 100659,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150940887_98j63of1ccw",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 125629,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150940888_mrw9zuij7w",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These images will highlight top destinations in Thailand, showcasing unique attractions in Phuket, Samui, Bangkok, and Krabi, appealing to the adventurous and cultural aspects of the campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 83536,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150943008_0rszmf3qeclq",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4011,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150943009_7ufqk7ng2ts",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150943010_1jlnpv5ib6wh",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the email, guiding users towards booking actions and special offers.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752150944466_rgdwy8ok7h",
+      "asset_type": "image",
+      "usage_context": "branding",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and trust with the audience.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 29562,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 8,
+    "total_icons": 0,
+    "optimization_level": "high",
+    "processed_at": "2025-07-10T12:36:28.252Z"
+  }
+}

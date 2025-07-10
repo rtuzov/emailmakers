@@ -321,7 +321,7 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
   
   // Process collected assets
   for (const asset of assets) {
-    const assetItem = {
+    const assetItem: any = {
       id: asset.hash || `asset_${Date.now()}_${Math.random().toString(36).substring(2)}`,
       path: asset.path,
       url: asset.path,
@@ -331,6 +331,8 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
       file_size: asset.size || 0,
       format: asset.format || 'unknown',
       optimized: false,
+      // 🌐 EXTERNAL IMAGES HANDLING
+      isExternal: asset.isExternal || false,
       email_client_support: {
         gmail: true,
         outlook: asset.format !== 'svg',
@@ -348,11 +350,39 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
       }
     };
     
-    // Categorize asset
-    if (asset.format === 'svg' && (asset.size || 0) < 5000) {
+    // 🌐 SPECIAL HANDLING FOR EXTERNAL IMAGES
+    if (asset.isExternal) {
+      // External images use URL as both path and url
+      assetItem.url = asset.path; // External URL
+      assetItem.path = asset.path; // Keep URL for consistency
+      assetItem.file_size = asset.size || 0; // External images may not have size
+      assetItem.optimized = false; // External images are not optimized by us
+      
+      // Add external image metadata
+      assetItem.external_metadata = {
+        source: 'ai_selected',
+        reasoning: asset.aiReasoning || 'AI selected for campaign relevance',
+        emotional_match: asset.emotionalMatch || 'contextually appropriate',
+        tags: asset.tags || []
+      };
+      
+      console.log(`🌐 Added external image: ${asset.filename} (${asset.path})`);
+    }
+    
+    // 🎯 IMPROVED ASSET CATEGORIZATION LOGIC
+    const isIcon = determineIfIcon(asset, assetItem);
+    const isImage = determineIfImage(asset, assetItem);
+    
+    if (isIcon) {
       manifest.icons.push(assetItem);
-    } else if (['jpg', 'jpeg', 'png', 'webp'].includes(asset.format || '')) {
+      console.log(`🎯 Categorized as ICON: ${asset.filename} (${asset.format}, ${asset.size} bytes)`);
+    } else if (isImage) {
       manifest.images.push(assetItem);
+      console.log(`📸 Categorized as IMAGE: ${asset.filename} (${asset.format}, ${asset.size} bytes)`);
+    } else {
+      // Fallback: если не можем определить, добавляем как изображение
+      manifest.images.push(assetItem);
+      console.log(`❓ Fallback categorization as IMAGE: ${asset.filename}`);
     }
   }
   
@@ -373,7 +403,59 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
     });
   }
   
+  console.log(`📋 Generated manifest: ${manifest.images.length} images (${manifest.images.filter(img => img.isExternal).length} external), ${manifest.icons.length} icons`);
+  
   return manifest;
+}
+
+/**
+ * 🎯 Improved icon detection logic
+ */
+function determineIfIcon(asset: any, assetItem: any): boolean {
+  const filename = asset.filename?.toLowerCase() || '';
+  const format = asset.format?.toLowerCase() || '';
+  const size = asset.size || 0;
+  
+  // 1. Filename contains icon indicators
+  if (filename.includes('icon') || filename.includes('иконка') || 
+      filename.includes('logo') || filename.includes('логотип') ||
+      filename.includes('symbol') || filename.includes('badge')) {
+    return true;
+  }
+  
+  // 2. SVG format (commonly used for icons)
+  if (format === 'svg') {
+    return true;
+  }
+  
+  // 3. Small square images (likely icons)
+  if (assetItem.dimensions?.width && assetItem.dimensions?.height) {
+    const { width, height } = assetItem.dimensions;
+    const isSquare = Math.abs(width - height) <= Math.min(width, height) * 0.1; // 10% tolerance
+    const isSmall = width <= 128 && height <= 128;
+    
+    if (isSquare && isSmall) {
+      return true;
+    }
+  }
+  
+  // 4. Very small file size (under 10KB, likely an icon)
+  if (size > 0 && size <= 10000) { // 10KB
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * 📸 Improved image detection logic
+ */
+function determineIfImage(asset: any, assetItem: any): boolean {
+  const format = asset.format?.toLowerCase() || '';
+  
+  // Standard image formats
+  const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  return imageFormats.includes(format);
 }
 
 /**

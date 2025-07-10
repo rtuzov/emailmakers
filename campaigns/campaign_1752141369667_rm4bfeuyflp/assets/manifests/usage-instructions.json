@@ -1,0 +1,111 @@
+[
+  {
+    "assetId": "ai_1752141566725_9059ukj6u6i",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Italy in summer, showcasing sunny landscapes and outdoor dining experiences.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141569215_38qhn6yssub",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight key attractions in Italy, showcasing picturesque views of landmarks like Rome, Venice, and the Amalfi Coast.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141569217_ui8q1ljua2",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight key attractions in Italy, showcasing picturesque views of landmarks like Rome, Venice, and the Amalfi Coast.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141569218_zign061cae",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight key attractions in Italy, showcasing picturesque views of landmarks like Rome, Venice, and the Amalfi Coast.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141570693_fa1podeyai5",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These seasonal images will illustrate summer activities and experiences, featuring wine tours, beach scenes, and family gatherings.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141570696_7qblk82xix",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These seasonal images will illustrate summer activities and experiences, featuring wine tours, beach scenes, and family gatherings.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141573890_9ygilauyojm",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts related to the campaign, encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141573891_qa5sl71z7ka",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts related to the campaign, encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141573891_59n6s0ay1y6",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts related to the campaign, encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141573892_ps54q2i3p6m",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts related to the campaign, encouraging user engagement.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752141575191_btx5j9wqmlj",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летние мечты в Италии. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and trust throughout the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

@@ -824,15 +824,17 @@ async function processAssetManifest(
   }
   
   // Process fonts
-  if (assetManifest?.fonts) {
+  if (assetManifest?.fonts && assetManifest.fonts.length > 0) {
     specifications.manifest.fonts = assetManifest.fonts.map((font: any) => ({
       family: font.family,
       weights: font.weights || ['normal', 'bold'],
       fallbacks: font.fallbacks || ['Arial', 'sans-serif'],
       usage: font.usage || 'body'
     }));
+    
+    console.log(`✅ Using ${assetManifest.fonts.length} fonts from asset manifest`);
   } else {
-    // Add default fonts
+    // Add default fonts only if no fonts in asset manifest
     specifications.manifest.fonts = [
       {
         family: 'Arial',
@@ -841,6 +843,8 @@ async function processAssetManifest(
         usage: 'primary'
       }
     ];
+    
+    console.log('⚠️ No fonts in asset manifest, using default Arial font');
   }
   
   // Generate asset requirements based on content

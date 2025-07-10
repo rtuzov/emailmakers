@@ -1,0 +1,342 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752151855950_o8xy8kvil",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "alt_text": "AI-selected This image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing warm beaches and sunsets.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 161028,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 161,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752151857155_7e3v8jjfh0b",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "alt_text": "AI-selected This image will highlight the beauty of Thailand's beaches and cultural elements, enhancing the campaign's focus on relaxation and adventure.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 173094,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 173,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752151858516_3lyanmvtt7p",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These icons will be used to highlight special offers and discounts, making the promotional aspect of the campaign clear and engaging.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752151858517_2y47k4v1hi7",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These icons will be used to highlight special offers and discounts, making the promotional aspect of the campaign clear and engaging.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752151859805_2yzd7529jyp",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and trustworthiness in the promotional campaign.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752151861852_n0n9drq9rdj",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752151703417_1lkh7uybkcw/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected This pattern will serve as a background element, enhancing the overall aesthetic of the email while maintaining a tropical and vibrant feel.",
+        "usage": "background",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T12:51:39.460Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752151855950_o8xy8kvil",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing warm beaches and sunsets.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 161028,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752151857155_7e3v8jjfh0b",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This image will highlight the beauty of Thailand's beaches and cultural elements, enhancing the campaign's focus on relaxation and adventure.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 173094,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752151858516_3lyanmvtt7p",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These icons will be used to highlight special offers and discounts, making the promotional aspect of the campaign clear and engaging.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752151858517_2y47k4v1hi7",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These icons will be used to highlight special offers and discounts, making the promotional aspect of the campaign clear and engaging.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752151859805_2yzd7529jyp",
+      "asset_type": "image",
+      "usage_context": "decoration",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and trustworthiness in the promotional campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 29562,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752151861852_n0n9drq9rdj",
+      "asset_type": "image",
+      "usage_context": "background",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This pattern will serve as a background element, enhancing the overall aesthetic of the email while maintaining a tropical and vibrant feel.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 117414,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "high",
+    "processed_at": "2025-07-10T12:51:39.460Z"
+  }
+}

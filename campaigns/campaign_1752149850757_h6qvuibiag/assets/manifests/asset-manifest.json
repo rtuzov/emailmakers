@@ -1,0 +1,438 @@
+{
+  "manifestId": "manifest_1752150004966_t66f10wqgyn",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752150042687_t63tfu22g3n",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "alt_text": "AI-selected This image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing its vibrant beaches and cultural landmarks.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 161028,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 161,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150045173_agaiht9onik",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_заяц-читающий-книгу-в-самолете-символизирует-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_заяц-читающий-книгу-в-самолете-символизирует-путешествия-и-отдых.png",
+        "alt_text": "AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 154006,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 154,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150045174_10nkoikz172",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150045176_ih5o8nylbf",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 100659,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 101,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150048157_99f44g4ybxd",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150048158_tm0gu0zjn5n",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150048159_0596lg5dzm3u",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_изображение-с-улыбающимся-смайлом-символизирующее-положительные-эмоции-от-покупки-билетов.png",
+        "alt_text": "AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150048160_gvn14zbzbbf",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752150049566_1485we6cj9zm",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_промо-кампания-авиакомпании-аэрофлот-с-предложениями-на-авиабилеты.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752149850757_h6qvuibiag/assets/optimized/optimized_промо-кампания-авиакомпании-аэрофлот-с-предложениями-на-авиабилеты.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and trust in the promotional campaign.",
+        "usage": "branding",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 30457,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of Thailand in autumn",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "inspiring and relaxing",
+      "visual_style": "vibrant and exotic, showcasing beaches and cultural landmarks",
+      "content_context": "A stunning beach scene in Thailand during autumn, highlighting the warm weather and lush landscapes."
+    },
+    {
+      "type": "destination",
+      "purpose": "showcase the beauty of Thailand's cultural sites",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "cultural and adventurous",
+      "visual_style": "rich colors and intricate details of temples",
+      "content_context": "Images of famous temples in Thailand, capturing the essence of culture and history."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752150042687_t63tfu22g3n",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing its vibrant beaches and cultural landmarks.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150045173_agaiht9onik",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150045174_10nkoikz172",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150045176_ih5o8nylbf",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will represent Thailand's attractions, focusing on local markets, temples, and scenic views that evoke the exotic and adventurous spirit of Thailand.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150048157_99f44g4ybxd",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150048158_tm0gu0zjn5n",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150048159_0596lg5dzm3u",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150048160_gvn14zbzbbf",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts, making it easier for users to engage with promotional content.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752150049566_1485we6cj9zm",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний Тайланд: экзотика ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and trust in the promotional campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 10,
+    "totalSize": 564595,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Consider optimizing images to reduce total size below 500KB",
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T12:21:13.450Z",
+    "processingTime": 68484,
+    "sourcesProcessed": 2,
+    "assetsCollected": 9,
+    "assetsValidated": 9,
+    "assetsOptimized": 9,
+    "errors": [
+      "4 assets failed basic validation"
+    ]
+  }
+}

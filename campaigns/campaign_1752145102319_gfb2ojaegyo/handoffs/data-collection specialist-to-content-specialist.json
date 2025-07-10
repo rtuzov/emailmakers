@@ -1,0 +1,30 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Thailand autumn campaign. Destination, market, emotional, and trend analytics prepared for content creation.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use insights about Thai autumn season, pricing, and branding color matches for high-impact content",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Подчеркнуть яркую осеннюю природу Таиланда в брендовом стиле",
+      "Акцентировать внимание на преимуществах осеннего сезона и выгоде",
+      "Использовать визуальный стиль Kupibilet в фото и видео",
+      "Рассказать про Лой Кратонг и местные события",
+      "Интегрировать рекомендации по раннему бронированию и скидкам",
+      "Использовать тренды TikTok и Instagram"
+    ]
+  },
+  "created_at": "2025-07-10T10:58:47.940Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752145102319_gfb2ojaegyo/handoffs/data-collection specialist-to-content-specialist.json"
+}

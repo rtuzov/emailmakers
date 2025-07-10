@@ -1,11 +1,10 @@
 /**
  * IMPROVED Agent Run API Endpoint - OpenAI SDK Compatible
- * Uses proper OpenAI Agents SDK handoffs without orchestrator
+ * Uses EmailMakersAgent with Orchestrator + SDK handoffs
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { EmailMakersAgent } from '../../../../agent/main-agent';
-import { getSystemInfo } from '../../../../agent/main-agent';
+import { EmailMakersAgent, getSystemInfo } from '../../../../agent/main-agent';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,8 +28,8 @@ export async function POST(request: NextRequest) {
     console.log(`🔧 Context:`, context);
     console.log(`⏰ Started at: ${new Date().toISOString()}`);
 
-    // Create EmailMakersAgent with OpenAI SDK handoffs
-    console.log('🏗️ Creating EmailMakersAgent with SDK handoffs...');
+    // Create EmailMakersAgent with Orchestrator (REQUIRED)
+    console.log('🏗️ Creating EmailMakersAgent with Orchestrator...');
     const agent = new EmailMakersAgent();
     await agent.initialize();
     console.log('✅ EmailMakersAgent initialized successfully');
@@ -41,10 +40,10 @@ export async function POST(request: NextRequest) {
                          JSON.stringify(input);
 
     console.log(`\n🎯 Processing request: "${requestString}"`);
-    console.log('🔄 Using OpenAI SDK handoffs: Data Collection → Content → Design → Quality → Delivery');
+    console.log('🔄 Using Orchestrator → Data Collection → Content → Design → Quality → Delivery');
 
     // Execute with proper context and tracing
-    console.log('\n🤖 Starting agent execution...');
+    console.log('\n🤖 Starting agent execution with Orchestrator...');
     const startTime = Date.now();
     console.log(`⏱️  Execution started at: ${new Date().toISOString()}`);
     

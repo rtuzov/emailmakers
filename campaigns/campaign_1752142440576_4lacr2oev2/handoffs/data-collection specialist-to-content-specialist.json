@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for summer travel to France with actionable and emotional insights.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте анализ направления и рыночные инсайты для создания engaging travel контента и триггерных имейлов.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Фокусируйтесь на эмоциональной мечте о Франции и летней романтике",
+      "Акцентируйте внимание на гастрономии и фотогеничных локациях",
+      "Включайте подсказки по бюджету и альтернативным маршрутам",
+      "Используйте яркие брендовые цвета для легкой атмосферы",
+      "Вдохновляйте на раннее бронирование и самостоятельные маршруты"
+    ]
+  },
+  "created_at": "2025-07-10T10:14:42.395Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142440576_4lacr2oev2/handoffs/data-collection specialist-to-content-specialist.json"
+}

@@ -1,0 +1,232 @@
+{
+  "manifestId": "manifest_1752142316193_mhn8lxfr81c",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752142345968_x3lvax21rm",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_авиабилет-путешествие.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_авиабилет-путешествие.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Spain in autumn, featuring warm colors, inviting landscapes, and cultural elements like autumn leaves and food festivals.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 28198,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 28,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142349264_k645dokwyre",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the campaign, making it easier for users to navigate and understand the offers related to autumn travel in Spain.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142349265_hxfuoh5z9hu",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will enhance the promotional aspect of the campaign, making it easier for users to navigate and understand the offers related to autumn travel in Spain.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142350503_d5dp37p691",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752142183481_1qk3g6qgko5/assets/optimized/optimized_логотип-в-виде-метки-с-буквой-r-внутри-современный-минималистичный-с-четкими-линиями.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and trust, aligning with the overall campaign theme.",
+        "usage": "brand elements",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 29562,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 30,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of Spain in autumn",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "cozy and romantic",
+      "visual_style": "vibrant and warm, reflecting autumn colors",
+      "content_context": "depicting golden sunsets, cultural festivals, and a relaxed atmosphere in Spain"
+    },
+    {
+      "type": "destination",
+      "purpose": "showcase the beauty of Spain during autumn",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting and adventurous",
+      "visual_style": "picturesque landscapes featuring autumn foliage",
+      "content_context": "highlighting cultural landmarks and local gastronomy"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752142345968_x3lvax21rm",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Испания ждет вас осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Spain in autumn, featuring warm colors, inviting landscapes, and cultural elements like autumn leaves and food festivals.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142349264_k645dokwyre",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Испания ждет вас осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the campaign, making it easier for users to navigate and understand the offers related to autumn travel in Spain.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142349265_hxfuoh5z9hu",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Испания ждет вас осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will enhance the promotional aspect of the campaign, making it easier for users to navigate and understand the offers related to autumn travel in Spain.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142350503_d5dp37p691",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Испания ждет вас осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and trust, aligning with the overall campaign theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 5,
+    "totalSize": 68363,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T10:12:47.766Z",
+    "processingTime": 51573,
+    "sourcesProcessed": 2,
+    "assetsCollected": 4,
+    "assetsValidated": 4,
+    "assetsOptimized": 4,
+    "errors": [
+      "4 assets failed basic validation"
+    ]
+  }
+}

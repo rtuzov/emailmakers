@@ -1,0 +1,76 @@
+[
+  {
+    "assetId": "ai_1752151331978_081kezeh1ylq",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing beautiful beaches and a relaxing atmosphere.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151334110_42kgbyaz7fn",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will showcase top places in Thailand, including cultural landmarks and vibrant beach scenes, appealing to the adventurous and inviting tone of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151334110_uhgoy4yzg9",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will showcase top places in Thailand, including cultural landmarks and vibrant beach scenes, appealing to the adventurous and inviting tone of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151334112_5bdsq62eu9p",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These images will showcase top places in Thailand, including cultural landmarks and vibrant beach scenes, appealing to the adventurous and inviting tone of the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151337292_i73yhn0q8mi",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts related to the campaign, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151337293_3ztz6sjx1l3",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts related to the campaign, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151337294_6lgsg9p06s8",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These icons will highlight special offers and discounts related to the campaign, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752151338695_shx4eru6bs",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осенний рай Таиланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This decorative element will enhance the overall aesthetic of the email, providing a warm and inviting background that complements the autumn theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

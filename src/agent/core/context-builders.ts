@@ -12,6 +12,7 @@ import {
   DesignContext, 
   QualityContext,
   DeliveryContext,
+  DataCollectionContext,
   CampaignMetadata,
   ContentToDesignHandoff,
   DesignToQualityHandoff,
@@ -19,6 +20,76 @@ import {
   createHandoffMetadata,
   type HandoffMetadata
 } from './handoff-schemas';
+
+// ============================================================================
+// DATA COLLECTION CONTEXT LOADER
+// ============================================================================
+
+/**
+ * Loads data collection context from campaign files
+ */
+export async function loadDataCollectionContext(
+  campaignPath: string
+): Promise<DataCollectionContext> {
+  const dataDir = path.join(campaignPath, 'data');
+  
+  // Helper function to read JSON files safely
+  async function readJsonSafely(fileName: string): Promise<any> {
+    try {
+      const content = await fs.readFile(path.join(dataDir, fileName), 'utf-8');
+      return JSON.parse(content);
+    } catch (error) {
+      console.warn(`Failed to read ${fileName}:`, error.message);
+      return null;
+    }
+  }
+  
+  // Load all data collection files
+  const [
+    destinationAnalysis,
+    marketIntelligence,
+    emotionalProfile,
+    consolidatedInsights,
+    travelIntelligence,
+    trendAnalysis
+  ] = await Promise.all([
+    readJsonSafely('destination-analysis.json'),
+    readJsonSafely('market-intelligence.json'),
+    readJsonSafely('emotional-profile.json'),
+    readJsonSafely('consolidated-insights.json'),
+    readJsonSafely('travel_intelligence-insights.json'),
+    readJsonSafely('trend-analysis.json')
+  ]);
+  
+  // Count available sources
+  const availableSources = [
+    destinationAnalysis && 'destination-analysis',
+    marketIntelligence && 'market-intelligence',
+    emotionalProfile && 'emotional-profile',
+    consolidatedInsights && 'consolidated-insights',
+    travelIntelligence && 'travel-intelligence',
+    trendAnalysis && 'trend-analysis'
+  ].filter(Boolean);
+  
+  const dataQualityScore = Math.round((availableSources.length / 6) * 100);
+  
+  return {
+    destination_analysis: destinationAnalysis,
+    market_intelligence: marketIntelligence,
+    emotional_profile: emotionalProfile,
+    consolidated_insights: consolidatedInsights,
+    travel_intelligence: travelIntelligence,
+    trend_analysis: trendAnalysis,
+    collection_metadata: {
+      campaign_id: path.basename(campaignPath),
+      collection_timestamp: new Date().toISOString(),
+      data_sources: availableSources,
+      collection_status: availableSources.length >= 4 ? 'complete' : 
+                        availableSources.length >= 2 ? 'partial' : 'failed',
+      data_quality_score: dataQualityScore
+    }
+  };
+}
 
 // ============================================================================
 // CONTENT CONTEXT BUILDER  
@@ -36,7 +107,8 @@ export async function buildContentContextFromOutputs(
   pricingAnalysisData: any,
   assetStrategyData: any,
   generatedContentData: any,
-  technicalRequirements?: any
+  technicalRequirements?: any,
+  dataCollectionContext?: DataCollectionContext
 ): Promise<ContentContext> {
   
   // ============ HELPER FUNCTIONS ============
@@ -172,6 +244,9 @@ export async function buildContentContextFromOutputs(
     };
   }
 
+  // Load data collection context if not provided
+  const loadedDataContext = dataCollectionContext || await loadDataCollectionContext(campaignPath);
+  
   const detectedDestination = detectDestination();
   const detectedRoute = detectRoute();
   const currentDates = generateCurrentDates();
@@ -189,6 +264,7 @@ export async function buildContentContextFromOutputs(
       created_at: new Date().toISOString(),
       status: 'active'
     },
+    data_collection_context: loadedDataContext,
     context_analysis: {
       destination: detectedDestination,
       seasonal_trends: ensureString(contextAnalysisData?.seasonal_trends, `Current season trends for ${detectedDestination}`),
@@ -289,11 +365,13 @@ export async function buildDesignContextFromOutputs(
   mjmlTemplateData: any,
   designDecisionsData: any,
   previewFilesData: any,
-  performanceMetricsData: any
+  performanceMetricsData: any,
+  dataCollectionContext?: DataCollectionContext
 ): Promise<DesignContext> {
   
   const designContext: DesignContext = {
     content_context: contentContext,
+    data_collection_context: dataCollectionContext || contentContext.data_collection_context,
     asset_manifest: {
       images: assetManifestData.images || [],
       icons: assetManifestData.icons || [],
@@ -356,11 +434,13 @@ export async function buildQualityContextFromOutputs(
   designContext: DesignContext,
   qualityReportData: any,
   testArtifactsData: any,
-  complianceStatusData: any
+  complianceStatusData: any,
+  dataCollectionContext?: DataCollectionContext
 ): Promise<QualityContext> {
   
   const qualityContext: QualityContext = {
     design_context: designContext,
+    data_collection_context: dataCollectionContext || designContext.data_collection_context,
     quality_report: {
       overall_score: qualityReportData.overall_score,
       html_validation: qualityReportData.html_validation,
@@ -416,11 +496,13 @@ export async function buildDeliveryContextFromOutputs(
   deliveryManifestData: any,
   exportFormatData: any,
   deliveryReportData: any,
-  deploymentArtifactsData: any
+  deploymentArtifactsData: any,
+  dataCollectionContext?: DataCollectionContext
 ): Promise<DeliveryContext> {
   
   const deliveryContext: DeliveryContext = {
     quality_context: qualityContext,
+    data_collection_context: dataCollectionContext || qualityContext.data_collection_context,
     delivery_manifest: {
       campaign_id: deliveryManifestData.campaign_id,
       package_version: deliveryManifestData.package_version,
@@ -499,7 +581,8 @@ export async function prepareContentToDesignHandoff(
   return {
     request,
     metadata,
-    content_context: contentContext
+    content_context: contentContext,
+    data_collection_context: contentContext.data_collection_context
   };
 }
 
@@ -519,7 +602,8 @@ export async function prepareDesignToQualityHandoff(
     request,
     metadata,
     content_context: contentContext,
-    design_context: designContext
+    design_context: designContext,
+    data_collection_context: designContext.data_collection_context
   };
 }
 
@@ -541,7 +625,316 @@ export async function prepareQualityToDeliveryHandoff(
     metadata,
     content_context: contentContext,
     design_context: designContext,
-    quality_context: qualityContext
+    quality_context: qualityContext,
+    data_collection_context: qualityContext.data_collection_context
+  };
+}
+
+// ============================================================================
+// WORKFLOW CONTEXT ACCUMULATION
+// ============================================================================
+
+/**
+ * Workflow state that accumulates context from all specialists
+ */
+interface WorkflowState {
+  campaign_id: string;
+  current_stage: 'data_collection' | 'content' | 'design' | 'quality' | 'delivery';
+  completed_stages: string[];
+  data_collection_context?: DataCollectionContext;
+  content_context?: ContentContext;
+  design_context?: DesignContext;
+  quality_context?: QualityContext;
+  delivery_context?: DeliveryContext;
+  workflow_metadata: {
+    started_at: string;
+    current_stage_started_at: string;
+    total_processing_time: number;
+    stage_transitions: Array<{
+      from_stage: string;
+      to_stage: string;
+      timestamp: string;
+      duration: number;
+    }>;
+  };
+}
+
+/**
+ * Creates initial workflow state for context accumulation
+ */
+export function createWorkflowState(campaignId: string, dataCollectionContext: DataCollectionContext): WorkflowState {
+  const now = new Date().toISOString();
+  
+  return {
+    campaign_id: campaignId,
+    current_stage: 'data_collection',
+    completed_stages: ['data_collection'],
+    data_collection_context: dataCollectionContext,
+    workflow_metadata: {
+      started_at: now,
+      current_stage_started_at: now,
+      total_processing_time: 0,
+      stage_transitions: []
+    }
+  };
+}
+
+/**
+ * Advances workflow state to next stage with full context accumulation
+ */
+export function advanceWorkflowState(
+  workflowState: WorkflowState,
+  nextStage: 'content' | 'design' | 'quality' | 'delivery',
+  stageContext: ContentContext | DesignContext | QualityContext | DeliveryContext
+): WorkflowState {
+  const now = new Date().toISOString();
+  const currentStageStart = new Date(workflowState.workflow_metadata.current_stage_started_at);
+  const stageDuration = Date.now() - currentStageStart.getTime();
+  
+  const updatedState: WorkflowState = {
+    ...workflowState,
+    current_stage: nextStage,
+    completed_stages: [...workflowState.completed_stages, nextStage],
+    workflow_metadata: {
+      ...workflowState.workflow_metadata,
+      current_stage_started_at: now,
+      total_processing_time: workflowState.workflow_metadata.total_processing_time + stageDuration,
+      stage_transitions: [
+        ...workflowState.workflow_metadata.stage_transitions,
+        {
+          from_stage: workflowState.current_stage,
+          to_stage: nextStage,
+          timestamp: now,
+          duration: stageDuration
+        }
+      ]
+    }
+  };
+  
+  // Add stage-specific context while preserving all previous contexts
+  switch (nextStage) {
+    case 'content':
+      updatedState.content_context = stageContext as ContentContext;
+      break;
+    case 'design':
+      updatedState.design_context = stageContext as DesignContext;
+      break;
+    case 'quality':
+      updatedState.quality_context = stageContext as QualityContext;
+      break;
+    case 'delivery':
+      updatedState.delivery_context = stageContext as DeliveryContext;
+      break;
+  }
+  
+  return updatedState;
+}
+
+/**
+ * Saves workflow state to campaign folder for persistence
+ */
+export async function saveWorkflowState(
+  workflowState: WorkflowState,
+  campaignPath: string
+): Promise<string> {
+  const statePath = path.join(campaignPath, 'docs', 'workflow-state.json');
+  await fs.mkdir(path.dirname(statePath), { recursive: true });
+  await fs.writeFile(statePath, JSON.stringify(workflowState, null, 2));
+  console.log(`📊 Workflow state saved to: ${statePath}`);
+  return statePath;
+}
+
+/**
+ * Recovers workflow state from campaign folder
+ */
+export async function recoverWorkflowState(
+  campaignPath: string
+): Promise<WorkflowState | null> {
+  const statePath = path.join(campaignPath, 'docs', 'workflow-state.json');
+  
+  try {
+    const stateContent = await fs.readFile(statePath, 'utf-8');
+    const workflowState = JSON.parse(stateContent) as WorkflowState;
+    console.log(`🔄 Recovered workflow state from: ${statePath}`);
+    return workflowState;
+  } catch (error) {
+    console.warn(`⚠️ Could not recover workflow state from ${statePath}:`, error.message);
+    return null;
+  }
+}
+
+/**
+ * Validates that context accumulation is working correctly
+ */
+export function validateContextAccumulation(workflowState: WorkflowState): {
+  isValid: boolean;
+  issues: string[];
+  recommendations: string[];
+} {
+  const issues: string[] = [];
+  const recommendations: string[] = [];
+  
+  // Check that data collection context is preserved throughout
+  if (!workflowState.data_collection_context) {
+    issues.push('Data collection context is missing from workflow state');
+  }
+  
+  // Check context consistency across stages
+  if (workflowState.content_context && workflowState.design_context) {
+    if (workflowState.content_context.campaign.id !== workflowState.design_context.content_context.campaign.id) {
+      issues.push('Campaign ID mismatch between content and design contexts');
+    }
+    
+    if (!workflowState.design_context.data_collection_context) {
+      issues.push('Design context missing data collection context');
+      recommendations.push('Ensure data collection context flows to design specialist');
+    }
+  }
+  
+  // Check stage progression logic
+  const expectedProgression = ['data_collection', 'content', 'design', 'quality', 'delivery'];
+  for (let i = 0; i < workflowState.completed_stages.length - 1; i++) {
+    const currentStage = workflowState.completed_stages[i];
+    const nextStage = workflowState.completed_stages[i + 1];
+    const currentIndex = expectedProgression.indexOf(currentStage);
+    const nextIndex = expectedProgression.indexOf(nextStage);
+    
+    if (nextIndex !== currentIndex + 1) {
+      issues.push(`Invalid stage progression: ${currentStage} -> ${nextStage}`);
+    }
+  }
+  
+  // Check context availability for current stage
+  switch (workflowState.current_stage) {
+    case 'design':
+      if (!workflowState.content_context) {
+        issues.push('Design stage requires content context');
+      }
+      break;
+    case 'quality':
+      if (!workflowState.design_context) {
+        issues.push('Quality stage requires design context');
+      }
+      break;
+    case 'delivery':
+      if (!workflowState.quality_context) {
+        issues.push('Delivery stage requires quality context');
+      }
+      break;
+  }
+  
+  return {
+    isValid: issues.length === 0,
+    issues,
+    recommendations
+  };
+}
+
+/**
+ * Enhanced context builder that ensures full context accumulation
+ */
+export async function buildAccumulatedContext(
+  campaignPath: string,
+  targetStage: 'content' | 'design' | 'quality' | 'delivery',
+  stageSpecificData: any
+): Promise<{
+  workflowState: WorkflowState;
+  accumulatedContext: ContentContext | DesignContext | QualityContext | DeliveryContext;
+}> {
+  // Try to recover existing workflow state
+  let workflowState = await recoverWorkflowState(campaignPath);
+  
+  // If no workflow state exists, create initial state
+  if (!workflowState) {
+    const dataCollectionContext = await loadDataCollectionContext(campaignPath);
+    workflowState = createWorkflowState(path.basename(campaignPath), dataCollectionContext);
+  }
+  
+  let accumulatedContext: ContentContext | DesignContext | QualityContext | DeliveryContext;
+  
+  switch (targetStage) {
+    case 'content':
+      // Build content context with accumulated data
+      accumulatedContext = await buildContentContextFromOutputs(
+        workflowState.campaign_id,
+        campaignPath,
+        stageSpecificData.contextAnalysis,
+        stageSpecificData.dateAnalysis,
+        stageSpecificData.pricingAnalysis,
+        stageSpecificData.assetStrategy,
+        stageSpecificData.generatedContent,
+        stageSpecificData.technicalRequirements,
+        workflowState.data_collection_context
+      );
+      break;
+      
+    case 'design':
+      // Build design context with all previous contexts
+      if (!workflowState.content_context) {
+        throw new Error('Design stage requires content context');
+      }
+      accumulatedContext = await buildDesignContextFromOutputs(
+        workflowState.content_context,
+        stageSpecificData.assetManifest,
+        stageSpecificData.mjmlTemplate,
+        stageSpecificData.designDecisions,
+        stageSpecificData.previewFiles,
+        stageSpecificData.performanceMetrics,
+        workflowState.data_collection_context
+      );
+      break;
+      
+    case 'quality':
+      // Build quality context with all previous contexts
+      if (!workflowState.design_context) {
+        throw new Error('Quality stage requires design context');
+      }
+      accumulatedContext = await buildQualityContextFromOutputs(
+        workflowState.design_context,
+        stageSpecificData.qualityReport,
+        stageSpecificData.testArtifacts,
+        stageSpecificData.complianceStatus,
+        workflowState.data_collection_context
+      );
+      break;
+      
+    case 'delivery':
+      // Build delivery context with all previous contexts
+      if (!workflowState.quality_context) {
+        throw new Error('Delivery stage requires quality context');
+      }
+      accumulatedContext = await buildDeliveryContextFromOutputs(
+        workflowState.quality_context,
+        stageSpecificData.deliveryManifest,
+        stageSpecificData.exportFormat,
+        stageSpecificData.deliveryReport,
+        stageSpecificData.deploymentArtifacts,
+        workflowState.data_collection_context
+      );
+      break;
+      
+    default:
+      throw new Error(`Unknown target stage: ${targetStage}`);
+  }
+  
+  // Advance workflow state with new context
+  workflowState = advanceWorkflowState(workflowState, targetStage, accumulatedContext);
+  
+  // Validate context accumulation
+  const validation = validateContextAccumulation(workflowState);
+  if (!validation.isValid) {
+    console.warn('⚠️ Context accumulation validation issues:', validation.issues);
+    if (validation.recommendations.length > 0) {
+      console.warn('💡 Recommendations:', validation.recommendations);
+    }
+  }
+  
+  // Save updated workflow state
+  await saveWorkflowState(workflowState, campaignPath);
+  
+  return {
+    workflowState,
+    accumulatedContext
   };
 }
 
@@ -550,24 +943,222 @@ export async function prepareQualityToDeliveryHandoff(
 // ============================================================================
 
 /**
- * Validates context completeness
+ * Enhanced validation for context completeness, content quality, and data integrity
  */
 export function validateContextCompleteness(context: any, contextType: string): {
   isComplete: boolean;
   missingFields: string[];
   warnings: string[];
+  hardcodeViolations: string[];
+  contentQualityScore: number;
+  dataConsistencyIssues: string[];
 } {
   const missingFields: string[] = [];
   const warnings: string[] = [];
+  const hardcodeViolations: string[] = [];
+  const dataConsistencyIssues: string[] = [];
+  let contentQualityScore = 100; // Start with perfect score
   
+  // HARDCODE DETECTION PATTERNS
+  const HARDCODE_PATTERNS = {
+    destinations: ['Turkey', 'Istanbul', 'Стамбул', 'Турция'],
+    seasons: ['summer', 'winter'], // Only if context shows data points to different season
+    routes: ['Moscow -> Istanbul', 'MOW -> IST', 'SVO -> IST'],
+    currencies: [], // RUB is actually valid
+    pricing: ['0', 0, '0.00'], // Zero prices are suspicious
+    emotional_triggers: ['adventure', 'excitement'] // Only if they're clearly default values
+  };
+
+  // Helper function to check for hardcoded values
+  function checkHardcodes(value: any, path: string, patterns: string[]): void {
+    if (typeof value === 'string') {
+      for (const pattern of patterns) {
+        if (value.includes(pattern)) {
+          hardcodeViolations.push(`${path}: contains hardcoded value '${pattern}'`);
+        }
+      }
+    } else if (typeof value === 'number') {
+      if (patterns.includes(value)) {
+        hardcodeViolations.push(`${path}: suspicious hardcoded number '${value}'`);
+      }
+    }
+  }
+
+  // Helper function to check for generic/template values
+  function checkGenericValues(value: any, path: string): void {
+    if (typeof value === 'string') {
+      const genericPatterns = [
+        'Travel industry',
+        'Travel market competition', 
+        'Autumn travel trends',
+        'Advanced booking recommended',
+        'Unknown Destination',
+        'Unknown'
+      ];
+      
+      for (const pattern of genericPatterns) {
+        if (value.includes(pattern)) {
+          hardcodeViolations.push(`${path}: contains generic template value '${pattern}'`);
+          contentQualityScore -= 15; // Penalize generic content
+        }
+      }
+    }
+  }
+
+  // Enhanced content quality assessment
+  function assessContentQuality(content: any, path: string): void {
+    if (typeof content === 'string') {
+      // Check for meaningful content length
+      if (content.length < 10) {
+        warnings.push(`${path}: content too short (${content.length} chars)`);
+        contentQualityScore -= 10;
+      }
+      
+      // Check for placeholder text
+      const placeholderPatterns = [
+        'Lorem ipsum', 'placeholder', 'TODO', 'TBD', 'PLACEHOLDER',
+        'example text', 'sample content', 'default value'
+      ];
+      
+      for (const pattern of placeholderPatterns) {
+        if (content.toLowerCase().includes(pattern.toLowerCase())) {
+          hardcodeViolations.push(`${path}: contains placeholder text '${pattern}'`);
+          contentQualityScore -= 20;
+        }
+      }
+      
+      // Check for repetitive or template-like content
+      if (content.includes('...') || content.includes('[INSERT]') || content.includes('{{')) {
+        warnings.push(`${path}: contains template markers or incomplete content`);
+        contentQualityScore -= 15;
+      }
+    }
+  }
+
+  // Data consistency validation
+  function validateDataConsistency(context: any): void {
+    if (contextType === 'content' && context.context_analysis && context.date_analysis && context.pricing_analysis) {
+      const destination1 = context.context_analysis.destination;
+      const destination2 = context.date_analysis.destination;
+      const routeDestination = context.pricing_analysis.route?.to;
+      
+      // Check destination consistency
+      if (destination1 !== destination2) {
+        dataConsistencyIssues.push(`Destination mismatch: context_analysis="${destination1}" vs date_analysis="${destination2}"`);
+        contentQualityScore -= 10;
+      }
+      
+      // Check route consistency with destination
+      if (routeDestination && destination1 === 'Thailand' && !['Bangkok', 'Phuket', 'Thailand'].includes(routeDestination)) {
+        dataConsistencyIssues.push(`Route destination "${routeDestination}" doesn't match campaign destination "${destination1}"`);
+        contentQualityScore -= 15;
+      }
+      
+      // Check pricing consistency (non-zero prices for real campaigns)
+      if (context.pricing_analysis.best_price === 0 && context.pricing_analysis.min_price === 0) {
+        dataConsistencyIssues.push('All pricing values are zero - indicates missing real pricing data');
+        contentQualityScore -= 20;
+      }
+      
+      // Check date consistency (should have future dates)
+      if (context.date_analysis.optimal_dates?.length > 0) {
+        const today = new Date();
+        const futureCount = context.date_analysis.optimal_dates.filter((date: string) => {
+          return new Date(date) > today;
+        }).length;
+        
+        if (futureCount === 0) {
+          dataConsistencyIssues.push('No future dates found in optimal_dates - all dates are in the past');
+          contentQualityScore -= 10;
+        }
+      }
+      
+      // Check content richness
+      const subject = context.generated_content?.subject || '';
+      const body = context.generated_content?.body || '';
+      
+      if (subject.length < 10) {
+        warnings.push('Email subject is too short or missing');
+        contentQualityScore -= 15;
+      }
+      
+      if (body.length < 50) {
+        warnings.push('Email body content is too short - may lack substance');
+        contentQualityScore -= 15;
+      }
+      
+      // Check for campaign-specific content integration
+      const hasDestinationMention = subject.includes(destination1) || body.includes(destination1);
+      if (!hasDestinationMention && destination1 !== 'Unknown') {
+        warnings.push(`Generated content doesn't mention the destination "${destination1}"`);
+        contentQualityScore -= 10;
+      }
+    }
+  }
+
   switch (contextType) {
     case 'content':
+      // Check field presence
       if (!context.campaign) missingFields.push('campaign');
       if (!context.context_analysis) missingFields.push('context_analysis');
       if (!context.date_analysis) missingFields.push('date_analysis');
       if (!context.pricing_analysis) missingFields.push('pricing_analysis');
       if (!context.asset_strategy) missingFields.push('asset_strategy');
       if (!context.generated_content) missingFields.push('generated_content');
+
+      // 🚨 CHECK FOR HARDCODES IN CONTENT CONTEXT
+      if (context.context_analysis) {
+        checkHardcodes(context.context_analysis.destination, 'context_analysis.destination', HARDCODE_PATTERNS.destinations);
+        checkGenericValues(context.context_analysis.market_positioning, 'context_analysis.market_positioning');
+        checkGenericValues(context.context_analysis.competitive_landscape, 'context_analysis.competitive_landscape');
+      }
+
+      if (context.date_analysis) {
+        checkHardcodes(context.date_analysis.destination, 'date_analysis.destination', HARDCODE_PATTERNS.destinations);
+        // Check if season makes sense with destination
+        if (context.date_analysis.season === 'summer' && 
+            context.context_analysis?.destination === 'Thailand') {
+          hardcodeViolations.push('date_analysis.season: "summer" conflicts with Thailand autumn campaign data');
+        }
+      }
+
+      if (context.pricing_analysis) {
+        checkHardcodes(context.pricing_analysis.best_price, 'pricing_analysis.best_price', HARDCODE_PATTERNS.pricing);
+        
+        // Check route consistency
+        if (context.pricing_analysis.route) {
+          const route = context.pricing_analysis.route;
+          if (route.to === 'Istanbul' && context.context_analysis?.destination === 'Thailand') {
+            hardcodeViolations.push('pricing_analysis.route: Istanbul route conflicts with Thailand destination');
+          }
+          if (route.from_code === 'MOW' && route.to_code === 'IST') {
+            hardcodeViolations.push('pricing_analysis.route: MOW->IST hardcoded route detected');
+          }
+        }
+      }
+
+      // Enhanced content quality assessment for content context
+      if (context.generated_content) {
+        assessContentQuality(context.generated_content.subject, 'generated_content.subject');
+        assessContentQuality(context.generated_content.body, 'generated_content.body');
+        assessContentQuality(context.generated_content.preheader, 'generated_content.preheader');
+      }
+      
+      if (context.asset_strategy) {
+        assessContentQuality(context.asset_strategy.theme, 'asset_strategy.theme');
+      }
+      
+      // Validate data consistency across all context fields
+      validateDataConsistency(context);
+      
+      // Log detected violations
+      if (hardcodeViolations.length > 0) {
+        console.error('🚨 HARDCODE VIOLATIONS DETECTED:', hardcodeViolations);
+      }
+      
+      if (dataConsistencyIssues.length > 0) {
+        console.warn('⚠️ DATA CONSISTENCY ISSUES:', dataConsistencyIssues);
+      }
       break;
       
     case 'design':
@@ -575,6 +1166,24 @@ export function validateContextCompleteness(context: any, contextType: string): 
       if (!context.asset_manifest) missingFields.push('asset_manifest');
       if (!context.mjml_template) missingFields.push('mjml_template');
       if (!context.design_decisions) missingFields.push('design_decisions');
+
+      // Check for hardcodes passed from content context
+      if (context.content_context) {
+        const contentValidation = validateContextCompleteness(context.content_context, 'content');
+        hardcodeViolations.push(...contentValidation.hardcodeViolations);
+        dataConsistencyIssues.push(...contentValidation.dataConsistencyIssues);
+        contentQualityScore = Math.min(contentQualityScore, contentValidation.contentQualityScore);
+      }
+      
+      // Validate MJML template quality
+      if (context.mjml_template) {
+        assessContentQuality(context.mjml_template.source, 'mjml_template.source');
+        
+        if (context.mjml_template.file_size && context.mjml_template.file_size > 100000) {
+          warnings.push(`MJML template size (${context.mjml_template.file_size} bytes) exceeds 100KB limit`);
+          contentQualityScore -= 10;
+        }
+      }
       break;
       
     case 'quality':
@@ -582,6 +1191,26 @@ export function validateContextCompleteness(context: any, contextType: string): 
       if (!context.quality_report) missingFields.push('quality_report');
       if (!context.test_artifacts) missingFields.push('test_artifacts');
       if (!context.compliance_status) missingFields.push('compliance_status');
+
+      // Check for hardcodes passed from design context
+      if (context.design_context?.content_context) {
+        const contentValidation = validateContextCompleteness(context.design_context.content_context, 'content');
+        hardcodeViolations.push(...contentValidation.hardcodeViolations);
+        dataConsistencyIssues.push(...contentValidation.dataConsistencyIssues);
+        contentQualityScore = Math.min(contentQualityScore, contentValidation.contentQualityScore);
+      }
+      
+      // Validate quality metrics
+      if (context.quality_report) {
+        if (context.quality_report.overall_score < 80) {
+          warnings.push(`Quality score (${context.quality_report.overall_score}) below acceptable threshold`);
+          contentQualityScore -= 15;
+        }
+        
+        if (context.quality_report.approval_status !== 'approved') {
+          dataConsistencyIssues.push(`Quality approval status: ${context.quality_report.approval_status}`);
+        }
+      }
       break;
       
     case 'delivery':
@@ -589,13 +1218,46 @@ export function validateContextCompleteness(context: any, contextType: string): 
       if (!context.delivery_manifest) missingFields.push('delivery_manifest');
       if (!context.export_format) missingFields.push('export_format');
       if (!context.delivery_report) missingFields.push('delivery_report');
+
+      // Check for hardcodes passed from quality context
+      if (context.quality_context?.design_context?.content_context) {
+        const contentValidation = validateContextCompleteness(context.quality_context.design_context.content_context, 'content');
+        hardcodeViolations.push(...contentValidation.hardcodeViolations);
+        dataConsistencyIssues.push(...contentValidation.dataConsistencyIssues);
+        contentQualityScore = Math.min(contentQualityScore, contentValidation.contentQualityScore);
+      }
+      
+      // Validate delivery readiness
+      if (context.delivery_report) {
+        if (!context.delivery_report.deployment_ready) {
+          dataConsistencyIssues.push('Campaign not marked as deployment ready');
+        }
+        
+        assessContentQuality(context.delivery_report.campaign_summary, 'delivery_report.campaign_summary');
+      }
       break;
   }
   
+  // Add hardcode violations to warnings
+  if (hardcodeViolations.length > 0) {
+    warnings.push(`Detected ${hardcodeViolations.length} hardcode violations`);
+  }
+  
+  // Final quality score normalization
+  contentQualityScore = Math.max(0, Math.min(100, contentQualityScore));
+  
+  // Log quality assessment
+  if (contentQualityScore < 70) {
+    warnings.push(`Content quality score (${contentQualityScore}) below recommended threshold`);
+  }
+  
   return {
-    isComplete: missingFields.length === 0,
+    isComplete: missingFields.length === 0 && hardcodeViolations.length === 0 && dataConsistencyIssues.length === 0,
     missingFields,
-    warnings
+    warnings,
+    hardcodeViolations,
+    contentQualityScore,
+    dataConsistencyIssues
   };
 }
 
@@ -616,6 +1278,205 @@ export async function recoverContextFromCampaign(
   } catch (error) {
     throw new Error(`Failed to recover ${contextType} context from ${contextPath}: ${error.message}`);
   }
+}
+
+// ============================================================================
+// DATA SOURCE LOGGING FOR MONITORING
+// ============================================================================
+
+/**
+ * Data source tracking interface for monitoring
+ */
+interface DataSource {
+  field_path: string;
+  source_type: 'campaign_file' | 'user_input' | 'generated' | 'fallback' | 'hardcoded';
+  source_location: string;
+  confidence_score: number; // 0-100
+  timestamp: string;
+  value_preview: string;
+  validation_status: 'valid' | 'warning' | 'error';
+}
+
+/**
+ * Global data source registry for monitoring
+ */
+const dataSourceRegistry: Map<string, DataSource[]> = new Map();
+
+/**
+ * Logs a data source for monitoring and debugging
+ */
+export function logDataSource(
+  campaignId: string,
+  fieldPath: string,
+  sourceType: DataSource['source_type'],
+  sourceLocation: string,
+  value: any,
+  confidenceScore: number = 100,
+  validationStatus: DataSource['validation_status'] = 'valid'
+): void {
+  const dataSource: DataSource = {
+    field_path: fieldPath,
+    source_type: sourceType,
+    source_location: sourceLocation,
+    confidence_score: confidenceScore,
+    timestamp: new Date().toISOString(),
+    value_preview: typeof value === 'string' ? value.substring(0, 100) : JSON.stringify(value).substring(0, 100),
+    validation_status: validationStatus
+  };
+  
+  if (!dataSourceRegistry.has(campaignId)) {
+    dataSourceRegistry.set(campaignId, []);
+  }
+  
+  dataSourceRegistry.get(campaignId)!.push(dataSource);
+  
+  // Console logging for immediate debugging
+  console.log(`📊 Data Source [${campaignId}]: ${fieldPath} <- ${sourceType}(${sourceLocation}) [${confidenceScore}%]`);
+}
+
+/**
+ * Gets all data sources for a campaign
+ */
+export function getDataSources(campaignId: string): DataSource[] {
+  return dataSourceRegistry.get(campaignId) || [];
+}
+
+/**
+ * Generates a comprehensive data source report
+ */
+export function generateDataSourceReport(campaignId: string): {
+  total_fields: number;
+  source_breakdown: Record<DataSource['source_type'], number>;
+  confidence_average: number;
+  validation_issues: DataSource[];
+  low_confidence_sources: DataSource[];
+  hardcoded_sources: DataSource[];
+  report_timestamp: string;
+} {
+  const sources = getDataSources(campaignId);
+  
+  const sourceBreakdown: Record<DataSource['source_type'], number> = {
+    campaign_file: 0,
+    user_input: 0,
+    generated: 0,
+    fallback: 0,
+    hardcoded: 0
+  };
+  
+  let totalConfidence = 0;
+  const validationIssues: DataSource[] = [];
+  const lowConfidenceSources: DataSource[] = [];
+  const hardcodedSources: DataSource[] = [];
+  
+  sources.forEach(source => {
+    sourceBreakdown[source.source_type]++;
+    totalConfidence += source.confidence_score;
+    
+    if (source.validation_status !== 'valid') {
+      validationIssues.push(source);
+    }
+    
+    if (source.confidence_score < 70) {
+      lowConfidenceSources.push(source);
+    }
+    
+    if (source.source_type === 'hardcoded') {
+      hardcodedSources.push(source);
+    }
+  });
+  
+  return {
+    total_fields: sources.length,
+    source_breakdown: sourceBreakdown,
+    confidence_average: sources.length > 0 ? Math.round(totalConfidence / sources.length) : 0,
+    validation_issues: validationIssues,
+    low_confidence_sources: lowConfidenceSources,
+    hardcoded_sources: hardcodedSources,
+    report_timestamp: new Date().toISOString()
+  };
+}
+
+/**
+ * Saves data source report to campaign folder for monitoring
+ */
+export async function saveDataSourceReport(
+  campaignId: string,
+  campaignPath: string
+): Promise<string> {
+  const report = generateDataSourceReport(campaignId);
+  const reportPath = path.join(campaignPath, 'docs', 'data-source-report.json');
+  
+  await fs.mkdir(path.dirname(reportPath), { recursive: true });
+  await fs.writeFile(reportPath, JSON.stringify(report, null, 2));
+  
+  console.log(`📈 Data source report saved to: ${reportPath}`);
+  
+  // Log summary to console
+  console.log(`📊 Data Source Summary [${campaignId}]:`);
+  console.log(`   📁 Campaign files: ${report.source_breakdown.campaign_file}`);
+  console.log(`   👤 User inputs: ${report.source_breakdown.user_input}`);
+  console.log(`   🤖 Generated: ${report.source_breakdown.generated}`);
+  console.log(`   🔄 Fallbacks: ${report.source_breakdown.fallback}`);
+  console.log(`   ⚠️  Hardcoded: ${report.source_breakdown.hardcoded}`);
+  console.log(`   📊 Avg confidence: ${report.confidence_average}%`);
+  
+  if (report.validation_issues.length > 0) {
+    console.warn(`   🚨 Validation issues: ${report.validation_issues.length}`);
+  }
+  
+  if (report.hardcoded_sources.length > 0) {
+    console.error(`   💥 HARDCODED SOURCES DETECTED: ${report.hardcoded_sources.length}`);
+    report.hardcoded_sources.forEach(source => {
+      console.error(`      - ${source.field_path}: ${source.value_preview}`);
+    });
+  }
+  
+  return reportPath;
+}
+
+/**
+ * Enhanced data extraction with source logging
+ */
+export function extractWithLogging(
+  campaignId: string,
+  fieldPath: string,
+  extractFunction: () => any,
+  sourceType: DataSource['source_type'],
+  sourceLocation: string,
+  fallbackValue?: any
+): any {
+  try {
+    const extracted = extractFunction();
+    
+    if (extracted !== undefined && extracted !== null && extracted !== '') {
+      logDataSource(campaignId, fieldPath, sourceType, sourceLocation, extracted, 95, 'valid');
+      return extracted;
+    } else if (fallbackValue !== undefined) {
+      logDataSource(campaignId, fieldPath, 'fallback', 'system_default', fallbackValue, 60, 'warning');
+      return fallbackValue;
+    } else {
+      logDataSource(campaignId, fieldPath, 'fallback', 'empty_value', null, 0, 'error');
+      return null;
+    }
+  } catch (error) {
+    console.warn(`⚠️ Extraction failed for ${fieldPath}:`, error.message);
+    
+    if (fallbackValue !== undefined) {
+      logDataSource(campaignId, fieldPath, 'fallback', 'extraction_error', fallbackValue, 30, 'error');
+      return fallbackValue;
+    } else {
+      logDataSource(campaignId, fieldPath, 'fallback', 'extraction_error', null, 0, 'error');
+      return null;
+    }
+  }
+}
+
+/**
+ * Clears data source registry for a campaign (useful for testing)
+ */
+export function clearDataSources(campaignId: string): void {
+  dataSourceRegistry.delete(campaignId);
+  console.log(`🗑️ Cleared data sources for campaign: ${campaignId}`);
 }
 
 // ============================================================================

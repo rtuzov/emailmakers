@@ -1,0 +1,577 @@
+{
+  "campaign": {
+    "id": "campaign_1752140958205_p7jcxoqdne",
+    "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752140958205_p7jcxoqdne",
+    "name": "Campaign campaign_1752140958205_p7jcxoqdne",
+    "brand": "Email Makers",
+    "type": "promotional",
+    "target_audience": "travel enthusiasts",
+    "language": "ru",
+    "created_at": "2025-07-10T09:52:10.179Z",
+    "status": "active"
+  },
+  "context_analysis": {
+    "destination": "Thailand",
+    "seasonal_trends": "Current season trends for Thailand",
+    "emotional_triggers": "Exotic adventure and relaxation",
+    "market_positioning": "Premium exotic destination",
+    "competitive_landscape": "Strong competition in Southeast Asia travel market",
+    "price_sensitivity": "Medium price sensitivity for exotic destinations",
+    "booking_patterns": "Advance planning with seasonal booking patterns"
+  },
+  "date_analysis": {
+    "destination": "Thailand",
+    "season": "summer",
+    "optimal_dates": [
+      "2025-07-15",
+      "2025-08-01",
+      "2025-08-15",
+      "2025-09-01",
+      "2025-09-10"
+    ],
+    "pricing_windows": [
+      "Период с 2025-07-15 по 2025-07-31: высокий сезон, цены на жилье и авиабилеты выше среднего.",
+      "Период с 2025-08-01 по 2025-08-31: пик туристического сезона, максимальные цены и большое количество туристов.",
+      "Период с 2025-09-01 по 2025-09-15: начало низкого сезона, цены начинают снижаться, меньше туристов."
+    ],
+    "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен и доступности.",
+    "seasonal_factors": "Летние месяцы в Италии характеризуются теплой и солнечной погодой, что делает их идеальными для пляжного отдыха и осмотра достопримечательностей. Однако, в августе в Италии традиционно много туристов, так как это время отпусков для местных жителей.",
+    "current_date": "2025-07-10"
+  },
+  "pricing_analysis": {
+    "best_price": 17393,
+    "min_price": 17393,
+    "max_price": 35625,
+    "average_price": 24661,
+    "currency": "RUB",
+    "offers_count": 58,
+    "recommended_dates": [
+      "2025-07-15",
+      "2025-07-16",
+      "2025-07-17"
+    ],
+    "route": {
+      "from": "Moscow",
+      "to": "Bangkok",
+      "from_code": "MOW",
+      "to_code": "BKK"
+    },
+    "enhanced_features": {
+      "airport_conversion": {
+        "originInfo": null,
+        "destinationInfo": {
+          "originalCode": "FCO",
+          "finalCode": "ROM",
+          "countryCode": "IT",
+          "isInternational": true,
+          "wasConverted": true
+        }
+      },
+      "csv_integration": "enabled",
+      "api_source": "kupibilet_api_v2"
+    }
+  },
+  "asset_strategy": {
+    "theme": "Thailand Travel Experience",
+    "visual_style": "modern",
+    "color_palette": "Tropical warm colors with brand accents",
+    "typography": "Modern clean typography",
+    "image_concepts": [
+      "Hero изображение - пляж на побережье Амальфи с ярким солнцем и голубым небом.",
+      "Lifestyle фото - группа друзей, наслаждающихся пиццей в уличном кафе в Риме.",
+      "Архитектура/достопримечательности - Колизей на фоне заката.",
+      "Кулинария/культура - традиционные итальянские блюда, красиво поданные на стол.",
+      "Природа/пейзажи - живописные виноградники Тосканы.",
+      "Активности/развлечения - люди, катающиеся на велосипедах по живописным улочкам Флоренции.",
+      "Шоппинг/сувениры - местные рынки с яркими товарами и сувенирами.",
+      "Транспорт/логистика - уютный поезд, курсирующий по итальянским пейзажам."
+    ],
+    "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, где каждое изображение поддерживает эмоциональный отклик.",
+    "emotional_triggers": "excitement",
+    "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и стильных визуальных элементов, создавая современный и привлекательный образ, который вызывает доверие и интерес."
+  },
+  "generated_content": {
+    "subject": "Лето в Италии ждет вас!",
+    "preheader": "Погрузитесь в атмосферу счастья",
+    "body": "Наслаждайтесь морским бризом\nОткройте для себя терракотовые улицы\nСоздайте незабываемые воспоминания",
+    "cta": {
+      "primary": "Забронировать",
+      "secondary": "Узнать больше"
+    },
+    "personalization_level": "advanced",
+    "urgency_level": "medium"
+  },
+  "technical_requirements": {
+    "specificationId": "spec_1752141056570_x4cw8q05qhs",
+    "specification": {
+      "version": "1.0",
+      "generatedAt": "2025-07-10T09:50:56.571Z",
+      "campaign": {
+        "id": "campaign_1752140958205_p7jcxoqdne",
+        "name": "Campaign campaign_1752140958205_p7jcxoqdne",
+        "type": "email-marketing",
+        "theme": "general",
+        "targetAudience": "general",
+        "priority": "medium"
+      },
+      "content": {
+        "subject": "Email Subject",
+        "preheader": "Email preheader",
+        "sections": [
+          {
+            "id": "header",
+            "type": "header",
+            "required": true
+          },
+          {
+            "id": "hero",
+            "type": "hero",
+            "required": true
+          },
+          {
+            "id": "content",
+            "type": "content",
+            "required": true
+          },
+          {
+            "id": "cta",
+            "type": "cta",
+            "required": true
+          },
+          {
+            "id": "footer",
+            "type": "footer",
+            "required": true
+          },
+          {
+            "id": "products",
+            "type": "product",
+            "required": true,
+            "metadata": {
+              "productCount": 1
+            }
+          }
+        ],
+        "callToAction": {
+          "primary": {
+            "text": "Click Here",
+            "url": "#",
+            "style": "button"
+          }
+        },
+        "personalization": {
+          "enabled": false,
+          "variables": [],
+          "dynamicContent": []
+        }
+      },
+      "design": {
+        "constraints": {
+          "layout": {
+            "type": "single-column",
+            "maxWidth": 600,
+            "minWidth": 320,
+            "padding": {
+              "top": 20,
+              "right": 20,
+              "bottom": 20,
+              "left": 20
+            },
+            "sections": []
+          },
+          "typography": {
+            "headingFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "sizes": {
+                "h1": 28,
+                "h2": 24,
+                "h3": 20
+              },
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            },
+            "bodyFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "size": 16,
+              "lineHeight": 1.5,
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            }
+          },
+          "colorScheme": {
+            "primary": "#007bff",
+            "secondary": "#6c757d",
+            "accent": "#28a745",
+            "text": {
+              "primary": "#333333",
+              "secondary": "#666666",
+              "muted": "#999999"
+            },
+            "background": {
+              "primary": "#ffffff",
+              "secondary": "#f8f9fa",
+              "accent": "#e9ecef"
+            }
+          },
+          "spacing": {
+            "base": 16,
+            "sections": 40,
+            "elements": 20,
+            "text": 12
+          }
+        },
+        "assets": {
+          "manifest": {
+            "images": [],
+            "icons": [],
+            "fonts": [
+              {
+                "family": "Arial",
+                "weights": [
+                  "normal",
+                  "bold"
+                ],
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "usage": "primary"
+              }
+            ]
+          },
+          "requirements": [
+            {
+              "id": "hero-image",
+              "type": "image",
+              "description": "Hero image for email header",
+              "specifications": {
+                "dimensions": {
+                  "width": 600,
+                  "height": 300
+                },
+                "formats": [
+                  "jpg",
+                  "webp"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Solid color background with text overlay"
+            },
+            {
+              "id": "logo",
+              "type": "image",
+              "description": "Brand logo",
+              "specifications": {
+                "dimensions": {
+                  "height": 60
+                },
+                "formats": [
+                  "png",
+                  "svg"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Text-based brand name"
+            }
+          ]
+        },
+        "responsive": {
+          "enabled": true,
+          "breakpoints": [
+            {
+              "name": "mobile",
+              "width": 480,
+              "constraints": {
+                "maxWidth": 320
+              }
+            },
+            {
+              "name": "tablet",
+              "width": 768,
+              "constraints": {
+                "maxWidth": 600
+              }
+            },
+            {
+              "name": "desktop",
+              "width": 1200,
+              "constraints": {
+                "maxWidth": 600
+              }
+            }
+          ],
+          "strategy": "mobile-first"
+        }
+      },
+      "quality": {
+        "criteria": {
+          "performance": {
+            "maxFileSize": 100000,
+            "maxImageSize": 50000,
+            "compressionQuality": 0.8,
+            "lazyLoading": false,
+            "cacheOptimization": true
+          },
+          "accessibility": {
+            "wcagLevel": "AA",
+            "contrastRatio": 4.5,
+            "altTextRequired": true,
+            "focusIndicators": true,
+            "screenReaderFriendly": true,
+            "keyboardNavigation": false
+          },
+          "emailDeliverability": {
+            "spamScore": 3,
+            "textToHtmlRatio": 0.3,
+            "linkLimit": 10,
+            "imageToTextRatio": 0.6,
+            "subjectLineLength": 50,
+            "preheaderLength": 100
+          },
+          "crossClientCompatibility": {
+            "targetClients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "fallbackStrategies": [
+              {
+                "feature": "WebP images",
+                "fallback": "JPEG images"
+              },
+              {
+                "feature": "SVG images",
+                "fallback": "PNG images"
+              },
+              {
+                "feature": "Custom fonts",
+                "fallback": "System fonts"
+              }
+            ],
+            "testing": {
+              "required": true,
+              "platforms": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "minCompatibility": 95
+            }
+          },
+          "email_clients": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "performance_thresholds": {
+            "max_file_size": 150000,
+            "load_time": 2
+          },
+          "accessibility_requirements": {
+            "wcag_level": "AA",
+            "color_contrast": 4.5
+          }
+        },
+        "testing": {
+          "required": true,
+          "types": [
+            "functional",
+            "visual",
+            "compatibility"
+          ],
+          "platforms": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "automation": {
+            "enabled": false,
+            "tools": [],
+            "coverage": 0
+          }
+        },
+        "validation": {
+          "htmlValidation": true,
+          "cssValidation": true,
+          "linkValidation": true,
+          "spamCheck": true,
+          "accessibilityCheck": true
+        }
+      },
+      "delivery": {
+        "emailClients": [
+          {
+            "client": "gmail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Clips emails over 102KB",
+              "Limited CSS support"
+            ]
+          },
+          {
+            "client": "outlook",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Uses Word rendering engine",
+              "Very limited CSS support"
+            ]
+          },
+          {
+            "client": "apple-mail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": true,
+            "supportsCSS": {
+              "flexbox": true,
+              "grid": false,
+              "transform": true,
+              "animation": true
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Good CSS support",
+              "Supports media queries"
+            ]
+          },
+          {
+            "client": "yahoo-mail",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Limited CSS support",
+              "Similar to Gmail"
+            ]
+          }
+        ],
+        "deployment": {
+          "environment": "production",
+          "approvalRequired": true,
+          "rollbackStrategy": "immediate",
+          "monitoring": {
+            "enabled": true,
+            "metrics": [
+              "open_rate",
+              "click_rate",
+              "bounce_rate"
+            ],
+            "alerts": [
+              "high_bounce_rate",
+              "low_open_rate"
+            ]
+          }
+        },
+        "tracking": {
+          "enabled": true,
+          "openTracking": true,
+          "clickTracking": true,
+          "customEvents": []
+        }
+      },
+      "metadata": {
+        "generatedBy": "technical-spec-generator",
+        "sourceContext": {
+          "campaignId": "campaign_1752140958205_p7jcxoqdne",
+          "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752140958205_p7jcxoqdne",
+          "taskType": "content_generation",
+          "language": "ru",
+          "campaign_type": "promotional",
+          "industry": "travel",
+          "urgency": "medium",
+          "target_audience": "travel enthusiasts"
+        },
+        "processingTime": 0,
+        "complexity": "low",
+        "estimatedImplementationTime": 4,
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "notes": []
+      }
+    },
+    "generationSummary": {
+      "timestamp": "2025-07-10T09:50:56.571Z",
+      "processingTime": 1,
+      "sourceContexts": 4,
+      "sectionsGenerated": 6,
+      "assetsProcessed": 0,
+      "constraintsApplied": 4,
+      "validationPassed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "implementationGuidance": {
+      "priority": "high",
+      "estimatedTime": 4,
+      "complexity": "low",
+      "dependencies": [
+        "mjml",
+        "image-optimization",
+        "html-validation"
+      ],
+      "risks": [
+        "Multiple email client compatibility challenges"
+      ],
+      "recommendations": [
+        "Use table-based layout for maximum compatibility",
+        "Inline all CSS for better email client support",
+        "Optimize images for web delivery",
+        "Test across all target email clients",
+        "Implement responsive design with media queries",
+        "Ensure WCAG AA compliance with proper alt text and contrast"
+      ]
+    },
+    "qualityScore": {
+      "completeness": 100,
+      "consistency": 90,
+      "clarity": 100,
+      "implementability": 100,
+      "overall": 98
+    }
+  }
+}

@@ -15,9 +15,12 @@ import { join } from 'path';
 // Import specialist tool collections  
 import { dataCollectionSpecialistTools } from '../specialists/data-collection-specialist-tools';
 import { contentSpecialistTools } from '../specialists/content-specialist-tools';
-import { designSpecialistTools } from '../specialists/design-specialist-tools';
+import { designSpecialistTools } from '../specialists/design-specialist';
 import { qualitySpecialistTools } from '../specialists/quality-specialist-tools';
 import { deliverySpecialistTools } from '../specialists/delivery-specialist-tools';
+
+// Import common tools
+import { commonTools } from './common-tools';
 
 // ============================================================================
 // PROMPT LOADING UTILITY
@@ -55,7 +58,7 @@ function loadPrompt(promptPath: string): string {
 export const deliverySpecialistAgent = new Agent({
   name: 'Delivery Specialist',
   instructions: loadPrompt('specialists/delivery-specialist.md'),
-  tools: deliverySpecialistTools
+  tools: [...deliverySpecialistTools, ...commonTools]
 });
 
 /**
@@ -64,7 +67,7 @@ export const deliverySpecialistAgent = new Agent({
 export const qualitySpecialistAgent = Agent.create({
   name: 'Quality Specialist',
   instructions: loadPrompt('specialists/quality-specialist.md'),
-  tools: qualitySpecialistTools,
+  tools: [...qualitySpecialistTools, ...commonTools],
   handoffs: [deliverySpecialistAgent]
 });
 
@@ -74,7 +77,7 @@ export const qualitySpecialistAgent = Agent.create({
 export const designSpecialistAgent = Agent.create({
   name: 'Design Specialist',
   instructions: loadPrompt('specialists/design-specialist.md'),
-  tools: designSpecialistTools,
+  tools: [...designSpecialistTools, ...commonTools],
   handoffs: [qualitySpecialistAgent]
 });
 
@@ -84,7 +87,7 @@ export const designSpecialistAgent = Agent.create({
 export const contentSpecialistAgent = Agent.create({
   name: 'Content Specialist',
   instructions: loadPrompt('specialists/content-specialist.md'),
-  tools: contentSpecialistTools,
+  tools: [...contentSpecialistTools, ...commonTools],
   handoffs: [designSpecialistAgent]
 });
 
@@ -94,7 +97,7 @@ export const contentSpecialistAgent = Agent.create({
 export const dataCollectionSpecialistAgent = Agent.create({
   name: 'Data Collection Specialist',
   instructions: loadPrompt('specialists/data-collection-specialist.md'),
-  tools: dataCollectionSpecialistTools,
+  tools: [...dataCollectionSpecialistTools, ...commonTools],
   handoffs: [contentSpecialistAgent]
 });
 

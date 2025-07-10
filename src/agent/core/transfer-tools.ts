@@ -56,6 +56,21 @@ export const transferToContentSpecialist = tool({
     // Pass context through OpenAI Agents SDK context parameter
     const result = await run(contentSpecialistAgent, request, { context });
     
+    // NEW: Persist generated content context into the shared workflow context
+    if (result?.finalOutput) {
+      // Heuristic: if finalOutput already contains a content_context field – use it; otherwise treat the
+      // whole finalOutput object as the context itself (legacy behaviour)
+      const extractedContext = (result.finalOutput as any).content_context ?? result.finalOutput;
+      if (extractedContext && typeof extractedContext === 'object') {
+        context.content_context = extractedContext;
+        console.log('💾 Saved content_context into shared context');
+      } else {
+        console.warn('⚠️ transfer_to_Content_Specialist: finalOutput did not include usable content context');
+      }
+    } else {
+      console.warn('⚠️ transfer_to_Content_Specialist: No finalOutput returned by Content Specialist');
+    }
+
     console.log('✅ Content Specialist completed');
     return result.finalOutput ?? result;
   }

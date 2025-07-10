@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752149850757_h6qvuibiag",
+  "name": "Путешествие в Тайланд осенью",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "Путешественники, интересующиеся отдыхом в Тайланде осенью",
+  "user_request": "Создай email кампанию для путешествия в Тайланд осенью. Включи информацию о лучших местах для посещения, погоде, ценах на туры и специальных предложениях на осенний период.",
+  "created_at": "2025-07-10T12:17:30.758Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-10T12:18:26.881Z"
+}

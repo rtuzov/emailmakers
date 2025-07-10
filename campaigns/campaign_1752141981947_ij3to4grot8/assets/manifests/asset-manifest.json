@@ -1,0 +1,390 @@
+{
+  "manifestId": "manifest_1752142154482_ld0vbo7f4ks",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752142191797_ga3ymx4rijg",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of spring in Turkey, showcasing blooming flowers and family-friendly activities.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142193813_cbnk4fka39f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142193814_769dq3rb693",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-зайца-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 100659,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 101,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142193815_98c77up4j8d",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_иллюстрация-дружелюбного-зайца-обнимающего-чемодан-символизирующая-радость-и-приключения.png",
+        "alt_text": "AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 125629,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 126,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142194974_etyyjj2j7p",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected Promotional icons will be used to highlight special offers and deals related to spring travel in Turkey.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142194975_cwmj1oh47q9",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected Promotional icons will be used to highlight special offers and deals related to spring travel in Turkey.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142196248_fly4osiwe55",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_логотип-turkish-airlines-символизирующий-авиаперевозки-и-путешествия-в-турцию.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_логотип-turkish-airlines-символизирующий-авиаперевозки-и-путешествия-в-турцию.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and connect with the Turkish travel theme.",
+        "usage": "logo",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 12489,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 12,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752142197271_vq30kzk4a8d",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752141981947_ij3to4grot8/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png",
+        "alt_text": "AI-selected The background pattern will create a warm and inviting atmosphere for the email, enhancing the overall spring theme.",
+        "usage": "background",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 24078,
+        "format": "png",
+        "optimized": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 24,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of spring in Turkey",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "refreshing and inviting",
+      "visual_style": "vibrant and colorful, showcasing natural beauty and cultural landmarks",
+      "content_context": "depicting the beauty of spring in Turkey with blooming flowers, coastal views, and family-friendly activities"
+    },
+    {
+      "type": "destination",
+      "purpose": "highlight popular tourist spots in Turkey during spring",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "exciting and adventurous",
+      "visual_style": "bright and cheerful, focusing on cultural sites and nature",
+      "content_context": "showcasing iconic locations in Turkey such as beaches, historical sites, and vibrant markets"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752142191797_ga3ymx4rijg",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of spring in Turkey, showcasing blooming flowers and family-friendly activities.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142193813_cbnk4fka39f",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142193814_769dq3rb693",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142193815_98c77up4j8d",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight specific attractions and experiences in Turkey for spring travelers, featuring iconic landmarks and scenic views.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142194974_etyyjj2j7p",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Promotional icons will be used to highlight special offers and deals related to spring travel in Turkey.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142194975_cwmj1oh47q9",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected Promotional icons will be used to highlight special offers and deals related to spring travel in Turkey.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142196248_fly4osiwe55",
+      "placement": "Place in header area, typically top-left or center",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to reinforce brand identity and connect with the Turkish travel theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752142197271_vq30kzk4a8d",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Весенний рай в Турции. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The background pattern will create a warm and inviting atmosphere for the email, enhancing the overall spring theme.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 9,
+    "totalSize": 490692,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T10:10:18.003Z",
+    "processingTime": 63521,
+    "sourcesProcessed": 2,
+    "assetsCollected": 8,
+    "assetsValidated": 8,
+    "assetsOptimized": 8,
+    "errors": [
+      "5 assets failed basic validation"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Italy summer travel campaign. Full intelligence and insights saved.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте анализ направления летом и рыночные выводы для креативов и email-контента. Важно учитывать цветовую палитру бренда Kupibilet в эмоциональных и визуальных решениях!",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Акцентируйте летние эмоции и атмосферу итальянских городов в тексте и визуале",
+      "Используйте яркие брендовые цвета из анализа для элементов интерфейса и КТА",
+      "Включите подборки по местным фестам и кухням",
+      "Вдохновляйте на бронирование заранее или быстрые спонтанные поездки"
+    ]
+  },
+  "created_at": "2025-07-10T09:49:56.491Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752140958205_p7jcxoqdne/handoffs/data-collection specialist-to-content-specialist.json"
+}

@@ -1,0 +1,316 @@
+{
+  "manifestId": "manifest_1752154006238_xt1spcamh9r",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752154046545_g7eat4jv0qh",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-персонажем-наслаждающимся-коктейлем.png",
+        "alt_text": "AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing a stunning beach scene with sunsets and inviting waters.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 161028,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 161,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752154049850_mrrricyab4f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752154049851_eid5wcz6qwl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752154049852_qnhbzwxikn",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752154051229_b956499sz2o",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected The logo will be placed in the header to establish brand identity and recognition throughout the campaign.",
+        "usage": "logo",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752154052627_16ju6eb2x39",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153861822_mgki11hltln/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "alt_text": "AI-selected This background pattern will enhance the overall aesthetic of the email, providing a cohesive and inviting visual experience.",
+        "usage": "background",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 2028,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 2,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "main visual to capture attention and convey the essence of Thailand in autumn",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "adventurous and relaxing",
+      "visual_style": "tropical and vibrant",
+      "content_context": "depicting serene beaches, sunsets, and cultural elements of Thailand during autumn"
+    },
+    {
+      "type": "destination",
+      "purpose": "showcase specific attractions in Thailand",
+      "dimensions": {
+        "width": 600,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting and warm",
+      "visual_style": "colorful and engaging",
+      "content_context": "highlighting Phuket, Krabi, and Bangkok with their unique features"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752154046545_g7eat4jv0qh",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing a stunning beach scene with sunsets and inviting waters.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752154049850_mrrricyab4f",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752154049851_eid5wcz6qwl",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752154049852_qnhbzwxikn",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will highlight special offers and discounts, encouraging engagement and action from the audience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752154051229_b956499sz2o",
+      "placement": "Place in header area, typically top-left or center",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header to establish brand identity and recognition throughout the campaign.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752154052627_16ju6eb2x39",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя осенний рай в Таиланде!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This background pattern will enhance the overall aesthetic of the email, providing a cohesive and inviting visual experience.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 7,
+    "totalSize": 212840,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-10T13:27:59.989Z",
+    "processingTime": 73751,
+    "sourcesProcessed": 2,
+    "assetsCollected": 6,
+    "assetsValidated": 6,
+    "assetsOptimized": 6,
+    "errors": [
+      "5 assets failed basic validation"
+    ]
+  }
+}

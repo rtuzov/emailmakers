@@ -28,6 +28,7 @@ import {
 } from '../core/transfer-tools';
 import { tool } from '@openai/agents';
 import { z } from 'zod';
+import { commonTools } from '../core/common-tools';
 
 // ============================================================================
 // SPECIALIST AGENTS ACCESS
@@ -252,7 +253,8 @@ export async function createEmailCampaignOrchestrator() {
     transferToContentSpecialist,
     transferToDesignSpecialist,
     transferToQualitySpecialist,
-    transferToDeliverySpecialist
+    transferToDeliverySpecialist,
+    ...commonTools
   ];
   
   const orchestrator = new Agent({

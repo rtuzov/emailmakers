@@ -1,0 +1,336 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752154330874_u2unmrlecle",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154330874_2s4b8dh55d2",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154330875_yue2f15uk8",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-возврате-процента-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_предложение-о-возврате-процента-от-покупок.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154330875_ah97s5o8zwf",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "usage": "promotional",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154333562_oouuok61j9r",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and recognition throughout the email campaign.",
+        "usage": "branding",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752154334588_37be5gsox41",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_иконка-геолокации-в-виде-маркера-на-карте.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752154162915_fycpah80xca/assets/optimized/optimized_иконка-геолокации-в-виде-маркера-на-карте.png",
+        "alt_text": "AI-selected This background pattern will enhance the overall aesthetic of the email, providing a vibrant and tropical feel that aligns with the campaign's theme.",
+        "usage": "background",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 27245,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 27,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-10T13:32:52.948Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752154330874_u2unmrlecle",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154330874_2s4b8dh55d2",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154330875_yue2f15uk8",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154330875_ah97s5o8zwf",
+      "asset_type": "image",
+      "usage_context": "promotional",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected These promotional icons will highlight special offers and discounts, guiding users through the booking process and encouraging social media sharing.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4011,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154333562_oouuok61j9r",
+      "asset_type": "image",
+      "usage_context": "branding",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected The logo will be placed in the header to reinforce brand identity and recognition throughout the email campaign.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752154334588_37be5gsox41",
+      "asset_type": "image",
+      "usage_context": "background",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected This background pattern will enhance the overall aesthetic of the email, providing a vibrant and tropical feel that aligns with the campaign's theme.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 27245,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "high",
+    "processed_at": "2025-07-10T13:32:52.948Z"
+  }
+}

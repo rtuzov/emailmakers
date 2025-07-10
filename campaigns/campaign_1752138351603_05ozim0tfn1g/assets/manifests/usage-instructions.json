@@ -1,0 +1,100 @@
+[
+  {
+    "assetId": "ai_1752138503172_mz88hxrhzer",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected This hero image will serve as the main visual to capture attention and convey the essence of Thailand in autumn, showcasing a stunning beach scene with clear blue waters, palm trees, and a sunset.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138505769_4v5tzill2dh",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight the beauty of Thailand's beaches, featuring tourists enjoying the sun and engaging in water activities, aligning with the campaign's relaxing and enticing tone.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138505769_047lgfapybjk",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight the beauty of Thailand's beaches, featuring tourists enjoying the sun and engaging in water activities, aligning with the campaign's relaxing and enticing tone.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138505770_yq7nmyaiphj",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These destination images will highlight the beauty of Thailand's beaches, featuring tourists enjoying the sun and engaging in water activities, aligning with the campaign's relaxing and enticing tone.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138507862_bbkfolonqqv",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and deals related to travel to Thailand, enhancing the campaign's promotional aspect.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138507862_gvp4nvnebh",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and deals related to travel to Thailand, enhancing the campaign's promotional aspect.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138507863_bq2vgnt8oeb",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These promotional icons will be used to highlight special offers and deals related to travel to Thailand, enhancing the campaign's promotional aspect.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138509878_vn5sp9wupb",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected The logo will be placed in the header of the email to reinforce brand identity and trustworthiness.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138510924_gmhpsb43d0u",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These decorative illustrations will be used in the background or as accents to enhance the overall visual appeal of the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752138510925_8qe93d9o525",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Тепло Таиланда этой осенью. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected These decorative illustrations will be used in the background or as accents to enhance the overall visual appeal of the email.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

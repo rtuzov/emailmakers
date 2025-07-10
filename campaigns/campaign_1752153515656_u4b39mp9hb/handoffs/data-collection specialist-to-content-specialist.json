@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for autumn travel to Thailand. All four intelligence dimensions included: climate, market, emotional triggers, trends.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Оптимизировать текст письма под тропическое лето осенью, выгодные цены и эмоции свободы.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Включить эмоцию лета в осенней рассылке",
+      "Встроить совет по раннему бронированию",
+      "Добавить секцию про новые трендовые места и острова",
+      "Использовать визуальные материалы с акцентом на цвета Kupibilet и море",
+      "Делать упор на эко-форматы и релакс"
+    ]
+  },
+  "created_at": "2025-07-10T13:19:14.111Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752153515656_u4b39mp9hb/handoffs/data-collection specialist-to-content-specialist.json"
+}
