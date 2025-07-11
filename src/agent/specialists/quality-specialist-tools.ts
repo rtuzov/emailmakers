@@ -646,8 +646,10 @@ export const validateEmailTemplate = tool({
       if (params.validation_options.asset_path_validation) {
         console.log('🖼️ Validating asset paths...');
         
-        // Check if all referenced assets exist in manifest
-        const allAssets = [...assetManifest.images, ...assetManifest.icons];
+        // Check if all referenced assets exist in manifest - fix: ensure arrays exist
+        const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];
+        const icons = Array.isArray(assetManifest.icons) ? assetManifest.icons : [];
+        const allAssets = [...images, ...icons];
         const missingAssets: string[] = [];
         
         allAssets.forEach(asset => {
@@ -746,6 +748,10 @@ export const testEmailClientCompatibility = tool({
       const assetManifest = designPackage.assetManifest;
       const campaignId = context?.qualityContext?.campaignId || 'unknown';
       
+      // Fix: Ensure arrays exist before accessing
+      const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];
+      const icons = Array.isArray(assetManifest.icons) ? assetManifest.icons : [];
+      
       // Get target clients from technical specification or parameters
       const clientTargets = params.client_targets || 
         technicalSpec?.delivery?.emailClients?.map((client: any) => client.client || client.name || client) || 
@@ -753,7 +759,7 @@ export const testEmailClientCompatibility = tool({
       
       console.log(`📄 Template Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
       console.log(`🎯 Target Clients: ${clientTargets.join(', ')}`);
-      console.log(`🖼️ Assets: ${assetManifest.images.length} images, ${assetManifest.icons.length} icons`);
+      console.log(`🖼️ Assets: ${images.length} images, ${icons.length} icons`);
       
       const clientTests = clientTargets.map(clientName => {
         const clientSpec = technicalSpec?.delivery?.emailClients?.find(
@@ -767,7 +773,7 @@ export const testEmailClientCompatibility = tool({
         
         // Test asset format compatibility
         if (params.test_options.test_asset_formats) {
-          [...assetManifest.images, ...assetManifest.icons].forEach(asset => {
+          [...images, ...icons].forEach(asset => {
             const clientSupport = asset.email_client_support?.[clientName];
             if (clientSupport === false) {
               issues.push(`Asset ${asset.id} format ${asset.format} not supported`);
@@ -784,13 +790,13 @@ export const testEmailClientCompatibility = tool({
         }
         
         // Test WebP support (common issue)
-        if (clientName === 'outlook' && assetManifest.images.some(img => img.format === 'webp')) {
+        if (clientName === 'outlook' && images.some(img => img.format === 'webp')) {
           issues.push('WebP images not supported in Outlook');
           compatibilityScore -= 15;
         }
         
         // Test SVG support
-        if (clientName === 'outlook' && assetManifest.icons.some(icon => icon.format === 'svg')) {
+        if (clientName === 'outlook' && icons.some(icon => icon.format === 'svg')) {
           issues.push('SVG icons not supported in Outlook');
           compatibilityScore -= 10;
         }
@@ -801,7 +807,7 @@ export const testEmailClientCompatibility = tool({
         else if (compatibilityScore < 90) testStatus = 'partial';
         
         // Calculate rendering time based on template and asset sizes
-        const totalAssetSize = [...assetManifest.images, ...assetManifest.icons]
+        const totalAssetSize = [...images, ...icons]
           .reduce((sum, asset) => sum + asset.file_size, 0);
         const renderingTime = Math.round(500 + (mjmlTemplate.fileSize + totalAssetSize) / 1000);
         
@@ -852,7 +858,7 @@ export const testEmailClientCompatibility = tool({
           }
         ],
         asset_compatibility_report: {
-          total_assets: assetManifest.images.length + assetManifest.icons.length,
+          total_assets: images.length + icons.length,
           problematic_assets: clientTests.reduce((sum, test) => sum + test.asset_issues.length, 0),
           format_issues: clientTests.reduce((acc, test) => {
             test.asset_issues.forEach(issue => {

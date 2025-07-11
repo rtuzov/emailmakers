@@ -1,0 +1,63 @@
+<mjml>
+  <mj-head>
+    <mj-title>Discover Turkey This Fall</mj-title>
+    <mj-preview>Насладитесь теплым песком и закатами на море по лучшей цене — 15205 RUB!</mj-preview>
+    <mj-attributes>
+      <mj-text font-family="Arial, sans-serif" color="#2C3959" font-size="14px" line-height="1.5"></mj-text>
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="10px 20px" font-weight="700" font-size="16px"></mj-button>
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image src="https://yourdomain.com/logo.png" alt="Travel Company Logo" width="200px" />
+        <mj-text align="center">
+          <a href="#" style="color: #2C3959; text-decoration: none; margin-right: 15px;">Главная</a>
+          <a href="#" style="color: #2C3959; text-decoration: none; margin-right: 15px;">Предложения</a>
+          <a href="#" style="color: #2C3959; text-decoration: none;">Контакты</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px" background-color="#FFFFFF">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700" color="#2C3959" align="center">Откройте для себя Турцию осенью — мечты сбываются!</mj-text>
+        <mj-text font-size="16px" color="#2C3959" align="center">Насладитесь теплым песком и закатами на море по лучшей цене — 15205 RUB!</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752216686456_as1q86oextm/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png" alt="Traveling Rabbit Illustration" width="600px" />
+        <mj-button href="#" align="center">Забронировать поездку</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px" background-color="#FFFFFF">
+      <mj-column>
+        <mj-text font-size="16px" color="#2C3959">
+          Представьте себе, как вы прогуливаетесь по берегу Эгейского моря, ощущая теплый песок под ногами и наслаждаясь закатом, который окрашивает небо в яркие оттенки оранжевого и розового. Осень в Турции — это время, когда природа раскрывает свои самые лучшие краски, а туристические потоки уменьшаются, позволяя вам насладиться атмосферой уюта и спокойствия. Здесь вы сможете попробовать свежую рыбу, выпить гранатовый сок и погрузиться в яркий мир местных базаров, наполненных ароматами специй и восточной экзотики.
+        </mj-text>
+        <mj-text font-size="16px" color="#2C3959">
+          Турция предлагает множество активностей для каждого: от расслабляющих дней на пляже до увлекательных экскурсий по историческим памятникам. Прогулки по древним руинам, посещение местных рынков и возможность попробовать настоящую турецкую кухню — все это ждет вас в осенние месяцы. Не упустите шанс насладиться культурным наследием и природными красотами, которые сделают ваше путешествие незабываемым.
+        </mj-text>
+        <mj-text font-size="16px" color="#2C3959">
+          Мы предлагаем вам уникальную возможность отправиться в это удивительное путешествие по цене всего 15205 RUB. Оптимальные даты для поездки — 15, 22 сентября, 1, 10 и 20 октября 2025 года. Эти осенние дни идеально подходят для того, чтобы насладиться мягким климатом и избежать летней жары.
+        </mj-text>
+        <mj-text font-size="16px" color="#2C3959">
+          Не упустите свой шанс! Забронируйте свое незабываемое путешествие в Турцию прямо сейчас и позвольте себе окунуться в атмосферу восточной сказки. Присоединяйтесь к нам и создайте воспоминания, которые останутся с вами на всю жизнь!
+        </mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752216686456_as1q86oextm/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png" alt="Green Heart Symbol" width="600px" />
+        <mj-text font-size="22px" font-weight="700" color="#2C3959">Цена: 15205 RUB</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px" background-color="#FFFFFF">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700" color="#2C3959" align="center">Не упустите свой шанс!</mj-text>
+        <mj-button href="#" align="center">Забронировать поездку</mj-button>
+        <mj-text font-size="16px" color="#2C3959" align="center">Забронируйте прямо сейчас и создайте воспоминания!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px" background-color="#FFFFFF">
+      <mj-column>
+        <mj-text align="center" color="#2C3959">Следите за нами в социальных сетях</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752216686456_as1q86oextm/assets/optimized/optimized_иллюстрация-символизирующая-приветствие-и-позитивное-взаимодействие.png" alt="Greeting Illustration" width="600px" />
+        <mj-text align="center" color="#2C3959">Контактная информация: info@travelcompany.com</mj-text>
+        <mj-text align="center" color="#2C3959"><a href="#" style="color: #2C3959; text-decoration: none;">Отписаться</a></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

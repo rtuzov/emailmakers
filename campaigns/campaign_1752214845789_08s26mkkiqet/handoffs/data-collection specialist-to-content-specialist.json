@@ -1,0 +1,31 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Turkey autumn 2025 campaign. Analysis saved by all four intelligence aspects. Actionable, concise recommendations prepared for email-content creation. Data files ready.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json",
+      "consolidated-insights.json"
+    ],
+    "context_for_next": "Use rich Turkey autumn 2025 insights to develop engaging, emotional, savings-oriented Kupibilet content. Focus on family, youth, gastro and visual experience. Leverage highlights about Turkish autumn events and Kupibilet color palette matching season.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json",
+      "data/consolidated-insights.json"
+    ],
+    "recommendations": [
+      "Используйте тему легкости и уюта осенью в письмах",
+      "Добавьте инфографику с температурой и погодой",
+      "Вовлекайте гастроконтент для email и соцсетей",
+      "Сделайте ставку на визуальный стиль Kupibilet в турецкой палитре",
+      "Промотируйте туристическую безопасность и сервис Турции"
+    ]
+  },
+  "created_at": "2025-07-11T06:21:27.017Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/handoffs/data-collection specialist-to-content-specialist.json"
+}

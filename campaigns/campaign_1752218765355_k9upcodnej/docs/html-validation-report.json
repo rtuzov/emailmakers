@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-11T07:31:53.166Z",
+  "isValid": false,
+  "errors": [
+    {
+      "type": "asset",
+      "severity": "critical",
+      "message": "Referenced asset not found in manifest: /Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/логотип.png",
+      "suggestion": "Add asset /Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/логотип.png to asset manifest or use correct path"
+    }
+  ],
+  "warnings": [
+    {
+      "type": "compatibility",
+      "message": "External stylesheets detected - may be blocked by email clients",
+      "suggestion": "Use inline styles instead of external stylesheets"
+    },
+    {
+      "type": "accessibility",
+      "message": "No H1 heading found",
+      "suggestion": "Add H1 heading for proper document structure"
+    }
+  ],
+  "correctionsMade": [
+    "Fixed technical: Missing or incorrect DOCTYPE",
+    "Fixed asset: Referenced asset not found in manifest: /path/to/logo.png"
+  ],
+  "summary": {
+    "totalErrors": 1,
+    "totalWarnings": 2,
+    "criticalErrors": 1,
+    "majorErrors": 0,
+    "minorErrors": 0
+  }
+}

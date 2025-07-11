@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Осенняя Турция идеальна для продления лета и восстановления сил",
+    "Выгодные цены и меньше туристов после сентября",
+    "All inclusive сервис и гастрокультура ключевые для российских туристов",
+    "Раннее бронирование позволяет экономить до 30 процентов",
+    "Эмоциональные триггеры - морской релакс, турецкая кухня, атмосферные закаты"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T06:42:35.057Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752216115414_00f93fl72l8b/data/travel_intelligence-insights.json"
+}

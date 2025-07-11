@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-07-11T08:05:37.387Z",
+  "isValid": true,
+  "errors": [],
+  "warnings": [
+    {
+      "type": "compatibility",
+      "message": "External stylesheets detected - may be blocked by email clients",
+      "suggestion": "Use inline styles instead of external stylesheets"
+    },
+    {
+      "type": "accessibility",
+      "message": "No H1 heading found",
+      "suggestion": "Add H1 heading for proper document structure"
+    }
+  ],
+  "correctionsMade": [
+    "Fixed technical: Missing or incorrect DOCTYPE",
+    "Fixed asset: Referenced asset not found in manifest: /Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220617333_jnk5x03gt1/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png"
+  ],
+  "files": {
+    "originalHtml": "templates/email-template.html",
+    "correctedHtml": "templates/email-template-corrected.html",
+    "validationReport": "docs/html-validation-report.json"
+  },
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 2,
+    "criticalErrors": 0,
+    "majorErrors": 0,
+    "minorErrors": 0,
+    "correctionsApplied": 2
+  }
+}

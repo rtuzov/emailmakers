@@ -149,7 +149,7 @@ export class MjmlCompilationService {
   }
 
   /**
-   * Копирует изображения из MJML в папку письма
+   * Копирует изображения из MJML в папку письма с поддержкой внешних изображений
    */
   private async copyMjmlImages(mjmlContent: string, emailFolder: any): Promise<string[]> {
     try {
@@ -163,6 +163,18 @@ export class MjmlCompilationService {
         try {
           let actualImagePath = imagePath;
           let fileName = '';
+          let isExternal = false;
+          
+          // 🌐 CHECK FOR EXTERNAL URLS FIRST
+          if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            console.log(`🌐 External image detected: ${imagePath}`);
+            isExternal = true;
+            fileName = imagePath.split('/').pop() || `external_${Date.now()}.jpg`;
+            // For external images, we keep the URL as-is (no copying needed)
+            copiedImages.push(imagePath);
+            console.log(`✅ External image processed: ${fileName} -> ${imagePath}`);
+            continue;
+          }
           
           // Обрабатываем токены FIGMA_ASSET_URL
           if (imagePath.includes('{{FIGMA_ASSET_URL:')) {
@@ -183,6 +195,7 @@ export class MjmlCompilationService {
           
           if (!fileName) continue;
           
+          // 📁 HANDLE LOCAL IMAGES
           // Преобразуем относительный путь в абсолютный
           const fs = await import('fs/promises');
           const path = await import('path');
@@ -195,7 +208,7 @@ export class MjmlCompilationService {
           await EmailFolderManager.addFigmaAsset(emailFolder, absolutePath, fileName);
           copiedImages.push(absolutePath);
           
-          console.log(`✅ Copied image: ${fileName}`);
+          console.log(`✅ Copied local image: ${fileName}`);
         } catch (error) {
           console.warn(`⚠️ Failed to copy image ${imagePath}:`, error);
         }
@@ -311,7 +324,7 @@ export class MjmlCompilationService {
   }
 
   /**
-   * Извлекает пути изображений из MJML контента
+   * Извлекает пути изображений из MJML контента (включая внешние URL)
    */
   private extractImagePaths(mjmlContent: string): string[] {
     const imagePaths: string[] = [];
@@ -322,8 +335,10 @@ export class MjmlCompilationService {
     
     while ((match = imageRegex.exec(mjmlContent)) !== null) {
       const imagePath = match[1];
-      if (imagePath && !imagePath.startsWith('http') && !imagePath.startsWith('data:')) {
+      if (imagePath && !imagePath.startsWith('data:')) {
+        // 🌐 INCLUDE EXTERNAL URLS - they need to be processed too
         imagePaths.push(imagePath);
+        console.log(`🔍 Found image path: ${imagePath} (${imagePath.startsWith('http') ? 'external' : 'local'})`);
       }
     }
     
@@ -331,7 +346,7 @@ export class MjmlCompilationService {
   }
 
   /**
-   * Обновляет пути изображений в HTML на локальные ассеты
+   * Обновляет пути изображений в HTML на локальные ассеты с поддержкой внешних изображений
    */
   private updateImagePathsInHtml(html: string, copiedImages: string[]): string {
     let updatedHtml = html;
@@ -343,11 +358,18 @@ export class MjmlCompilationService {
     while ((match = htmlImageRegex.exec(html)) !== null) {
       const originalPath = match[1];
       
-      // Пропускаем http и data: URLs
-      if (originalPath.startsWith('http') || originalPath.startsWith('data:')) {
+      // 🌐 KEEP EXTERNAL URLS AS-IS - they should work directly in email clients
+      if (originalPath.startsWith('http://') || originalPath.startsWith('https://')) {
+        console.log(`🌐 External image kept in HTML: ${originalPath}`);
         continue;
       }
       
+      // Пропускаем data: URLs
+      if (originalPath.startsWith('data:')) {
+        continue;
+      }
+      
+      // 📁 HANDLE LOCAL IMAGES - update paths to local assets
       // Получаем имя файла из оригинального пути
       const fileName = originalPath.split('/').pop();
       if (!fileName) continue;
@@ -358,7 +380,7 @@ export class MjmlCompilationService {
       // Заменяем путь в HTML
       updatedHtml = updatedHtml.replace(originalPath, newPath);
       
-      console.log(`🔄 Updated image path: ${originalPath} -> ${newPath}`);
+      console.log(`🔄 Updated local image path: ${originalPath} -> ${newPath}`);
     }
     
     return updatedHtml;

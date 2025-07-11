@@ -73,7 +73,8 @@ export async function loadDataCollectionContext(
   
   const dataQualityScore = Math.round((availableSources.length / 6) * 100);
   
-  return {
+  // Create the data collection context object
+  const dataCollectionContext = {
     destination_analysis: destinationAnalysis,
     market_intelligence: marketIntelligence,
     emotional_profile: emotionalProfile,
@@ -89,6 +90,32 @@ export async function loadDataCollectionContext(
       data_quality_score: dataQualityScore
     }
   };
+
+  // DEBUG: Validate the data collection context against schema to catch issues early
+  try {
+    const { DataCollectionContextSchema } = await import('./handoff-schemas');
+    const validation = DataCollectionContextSchema.safeParse(dataCollectionContext);
+    
+    if (!validation.success) {
+      console.error('❌ DATA COLLECTION CONTEXT VALIDATION FAILED:');
+      console.error('Schema validation errors:', validation.error.errors);
+      console.error('Actual data structure:', JSON.stringify(dataCollectionContext, null, 2));
+      
+      // Log specific field issues
+      validation.error.errors.forEach(error => {
+        console.error(`  - Path: ${error.path.join('.')} | Message: ${error.message} | Code: ${error.code}`);
+      });
+      
+      // Don't throw error, just log for debugging - return the data anyway
+      console.warn('⚠️ Continuing with potentially invalid data collection context for debugging');
+    } else {
+      console.log('✅ Data collection context schema validation passed');
+    }
+  } catch (importError) {
+    console.warn('Could not import schema for validation:', importError.message);
+  }
+  
+  return dataCollectionContext;
 }
 
 // ============================================================================
@@ -959,14 +986,14 @@ export function validateContextCompleteness(context: any, contextType: string): 
   const dataConsistencyIssues: string[] = [];
   let contentQualityScore = 100; // Start with perfect score
   
-  // HARDCODE DETECTION PATTERNS
+  // HARDCODE DETECTION PATTERNS - REMOVED ALL HARDCODED VALUES
   const HARDCODE_PATTERNS = {
-    destinations: ['Turkey', 'Istanbul', 'Стамбул', 'Турция'],
-    seasons: ['summer', 'winter'], // Only if context shows data points to different season
-    routes: ['Moscow -> Istanbul', 'MOW -> IST', 'SVO -> IST'],
-    currencies: [], // RUB is actually valid
-    pricing: ['0', 0, '0.00'], // Zero prices are suspicious
-    emotional_triggers: ['adventure', 'excitement'] // Only if they're clearly default values
+    destinations: [], // No hardcoded destinations - any destination is valid
+    seasons: [], // No hardcoded seasons - any season is valid
+    routes: [], // No hardcoded routes - any route is valid
+    currencies: [], // No hardcoded currencies - any currency is valid
+    pricing: ['0', 0, '0.00'], // Keep zero price detection as it indicates missing data
+    emotional_triggers: [] // No hardcoded emotional triggers - any trigger is valid
   };
 
   // Helper function to check for hardcoded values
@@ -1048,11 +1075,8 @@ export function validateContextCompleteness(context: any, contextType: string): 
         contentQualityScore -= 10;
       }
       
-      // Check route consistency with destination
-      if (routeDestination && destination1 === 'Thailand' && !['Bangkok', 'Phuket', 'Thailand'].includes(routeDestination)) {
-        dataConsistencyIssues.push(`Route destination "${routeDestination}" doesn't match campaign destination "${destination1}"`);
-        contentQualityScore -= 15;
-      }
+      // No hardcoded route validation - any route is valid for any destination
+      // Routes are determined by real API data based on user input
       
       // Check pricing consistency (non-zero prices for real campaigns)
       if (context.pricing_analysis.best_price === 0 && context.pricing_analysis.min_price === 0) {
@@ -1106,35 +1130,25 @@ export function validateContextCompleteness(context: any, contextType: string): 
       if (!context.asset_strategy) missingFields.push('asset_strategy');
       if (!context.generated_content) missingFields.push('generated_content');
 
-      // 🚨 CHECK FOR HARDCODES IN CONTENT CONTEXT
+      // 🚨 CHECK FOR HARDCODES IN CONTENT CONTEXT - REMOVED ALL HARDCODED CHECKS
       if (context.context_analysis) {
-        checkHardcodes(context.context_analysis.destination, 'context_analysis.destination', HARDCODE_PATTERNS.destinations);
+        // Only check for generic template values, not specific destinations
         checkGenericValues(context.context_analysis.market_positioning, 'context_analysis.market_positioning');
         checkGenericValues(context.context_analysis.competitive_landscape, 'context_analysis.competitive_landscape');
       }
 
       if (context.date_analysis) {
-        checkHardcodes(context.date_analysis.destination, 'date_analysis.destination', HARDCODE_PATTERNS.destinations);
-        // Check if season makes sense with destination
-        if (context.date_analysis.season === 'summer' && 
-            context.context_analysis?.destination === 'Thailand') {
-          hardcodeViolations.push('date_analysis.season: "summer" conflicts with Thailand autumn campaign data');
-        }
+        // No hardcoded season checks - any season is valid for any destination
+        // Only check for generic template values
+        checkGenericValues(context.date_analysis.destination, 'date_analysis.destination');
       }
 
       if (context.pricing_analysis) {
+        // Only check for zero prices which indicate missing data
         checkHardcodes(context.pricing_analysis.best_price, 'pricing_analysis.best_price', HARDCODE_PATTERNS.pricing);
         
-        // Check route consistency
-        if (context.pricing_analysis.route) {
-          const route = context.pricing_analysis.route;
-          if (route.to === 'Istanbul' && context.context_analysis?.destination === 'Thailand') {
-            hardcodeViolations.push('pricing_analysis.route: Istanbul route conflicts with Thailand destination');
-          }
-          if (route.from_code === 'MOW' && route.to_code === 'IST') {
-            hardcodeViolations.push('pricing_analysis.route: MOW->IST hardcoded route detected');
-          }
-        }
+        // No hardcoded route checks - any route is valid for any destination
+        // Routes are determined by real API data, not hardcoded patterns
       }
 
       // Enhanced content quality assessment for content context

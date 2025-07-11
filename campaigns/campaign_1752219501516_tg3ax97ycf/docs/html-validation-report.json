@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-07-11T07:43:59.451Z",
+  "isValid": true,
+  "errors": [],
+  "warnings": [
+    {
+      "type": "compatibility",
+      "message": "External stylesheets detected - may be blocked by email clients",
+      "suggestion": "Use inline styles instead of external stylesheets"
+    },
+    {
+      "type": "accessibility",
+      "message": "No H1 heading found",
+      "suggestion": "Add H1 heading for proper document structure"
+    }
+  ],
+  "correctionsMade": [
+    "Fixed technical: Missing or incorrect DOCTYPE",
+    "Fixed asset: Referenced asset not found in manifest: path/to/logo.png"
+  ],
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 2,
+    "criticalErrors": 0,
+    "majorErrors": 0,
+    "minorErrors": 0
+  }
+}

@@ -301,28 +301,10 @@ const transferToDesignSpecialist = tool({
   }
 });
 
-const handleToolErrorUnified = tool({
-  name: 'handleToolErrorUnified',
-  description: 'Обработка ошибок инструментов с единой логикой восстановления',
-  parameters: z.object({
-    toolName: z.string().describe('Имя инструмента, в котором произошла ошибка'),
-    error: z.string().describe('Сообщение об ошибке')
-  }),
-  execute: async (args) => {
-    console.log(`🚨 TOOL ERROR HANDLER: ${args.toolName} failed with error: ${args.error}`);
-    
-    // Логика восстановления в зависимости от типа ошибки
-    const recoveryAction = {
-      toolName: args.toolName,
-      error: args.error,
-      recovery_suggestion: 'Check tool parameters and try again',
-      fallback_available: false,
-      should_continue: true
-    };
-    
-    return recoveryAction;
-  }
-});
+// Import centralized error handler instead of duplicating
+import { createErrorHandlerTool } from '../core/error-handler';
+
+const handleToolErrorUnified = createErrorHandlerTool('quality-specialist');
 
 // ============================================================================
 // QUALITY SPECIALIST AGENT - OpenAI Agents SDK

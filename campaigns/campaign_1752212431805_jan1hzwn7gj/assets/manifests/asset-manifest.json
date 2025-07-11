@@ -1,0 +1,264 @@
+{
+  "manifestId": "manifest_1752212588940_iykpbnvp5r9",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_selected_1752212603543_0",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "alt_text": "This image captures a romantic dinner setup on the beach, perfectly aligning with the campaign's theme of intimate experiences for couples in Samui.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images were selected for their strong alignment with the campaign's romantic and luxurious theme, showcasing the unique experiences available in Samui for couples. Each image evokes emotions of love, intimacy, and adventure, making them ideal for attracting travel enthusiasts looking for a memorable getaway.",
+          "emotional_match": "The image evokes feelings of love and intimacy, supporting the campaign's goal of promoting a romantic getaway.",
+          "tags": [
+            "romance",
+            "beach",
+            "dinner",
+            "couples",
+            "vacation"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752212603543_1",
+        "path": "https://images.unsplash.com/photo-1560185127-6c2b2c0e5f8d",
+        "url": "https://images.unsplash.com/photo-1560185127-6c2b2c0e5f8d",
+        "alt_text": "A stunning villa with a private pool that represents the luxury and privacy offered in Samui, appealing to couples looking for a premium vacation.",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images were selected for their strong alignment with the campaign's romantic and luxurious theme, showcasing the unique experiences available in Samui for couples. Each image evokes emotions of love, intimacy, and adventure, making them ideal for attracting travel enthusiasts looking for a memorable getaway.",
+          "emotional_match": "This image conveys a sense of exclusivity and relaxation, aligning with the campaign's focus on premium experiences.",
+          "tags": [
+            "luxury",
+            "villa",
+            "pool",
+            "romantic",
+            "travel"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752212603543_2",
+        "path": "https://images.unsplash.com/photo-1584515930349-4b8c5f8b3f5b",
+        "url": "https://images.unsplash.com/photo-1584515930349-4b8c5f8b3f5b",
+        "alt_text": "This image shows a couple enjoying a spa treatment, which is a key offering in the campaign, emphasizing relaxation and togetherness.",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images were selected for their strong alignment with the campaign's romantic and luxurious theme, showcasing the unique experiences available in Samui for couples. Each image evokes emotions of love, intimacy, and adventure, making them ideal for attracting travel enthusiasts looking for a memorable getaway.",
+          "emotional_match": "The image reflects tranquility and connection, enhancing the campaign's emotional appeal for couples seeking rejuvenation.",
+          "tags": [
+            "spa",
+            "couples",
+            "relaxation",
+            "wellness",
+            "romance"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752212603543_3",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "alt_text": "A beautiful sunset at a secluded beach, highlighting the serene and private atmosphere that couples can enjoy in Samui.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images were selected for their strong alignment with the campaign's romantic and luxurious theme, showcasing the unique experiences available in Samui for couples. Each image evokes emotions of love, intimacy, and adventure, making them ideal for attracting travel enthusiasts looking for a memorable getaway.",
+          "emotional_match": "This image captures the essence of romance and tranquility, reinforcing the campaign's message of a peaceful retreat.",
+          "tags": [
+            "sunset",
+            "beach",
+            "secluded",
+            "romantic",
+            "nature"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752212603543_4",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
+        "alt_text": "A couple walking hand-in-hand on the beach, symbolizing love and adventure, which resonates with the target audience of travel enthusiasts.",
+        "usage": "branding",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images were selected for their strong alignment with the campaign's romantic and luxurious theme, showcasing the unique experiences available in Samui for couples. Each image evokes emotions of love, intimacy, and adventure, making them ideal for attracting travel enthusiasts looking for a memorable getaway.",
+          "emotional_match": "The image embodies the spirit of exploration and romance, appealing to couples looking for memorable experiences.",
+          "tags": [
+            "couple",
+            "beach",
+            "romance",
+            "travel",
+            "adventure"
+          ]
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [],
+  "usageInstructions": [],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 0,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T05:43:23.545Z",
+    "processingTime": 14605,
+    "sourcesProcessed": 1,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 0,
+    "errors": [
+      "Failed to collect from local: AI asset collection failed: (0 , _ai_analysis__WEBPACK_IMPORTED_MODULE_2__.analyzeContentWithAI) is not a function"
+    ]
+  }
+}

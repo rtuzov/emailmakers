@@ -1,0 +1,51 @@
+<mjml>
+  <mj-head>
+    <mj-title>Осень в Турции</mj-title>
+    <mj-preview>Незабываемый отдых в Турции по цене от 12077 RUB — не упустите шанс!</mj-preview>
+    <mj-attributes>
+      <mj-text font-size="14px" color="#2C3959" line-height="1.6" font-family="Arial, sans-serif" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="15px" font-weight="700" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="20px" font-weight="700">Логотип</mj-text>
+        <mj-text align="center">Навигация: Главная | О нас | Путешествия | Контакты</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Откройте для себя осень в Турции — уют и море!</mj-text>
+        <mj-text font-size="16px">Незабываемый отдых в Турции по цене от 12077 RUB — не упустите шанс!</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png" alt="Веселый кролик с чемоданом, символизирующий путешествия и отдых" width="600px" />
+        <mj-button href="#" font-weight="700">Забронировать отдых</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="16px">Осень в Турции — это волшебное время, когда мягкие волны Средиземного моря обнимают золотистый песок, а закаты окрашивают небо в нежные оттенки оранжевого и сливового.</mj-text>
+        <mj-text font-size="16px">Прогулки по узким улочкам старинных городов, наполненные ароматами специй и свежезаваренного кофе, создают атмосферу романтики и уюта. Это идеальное время для того, чтобы насладиться отдыхом вдали от суеты и погрузиться в атмосферу восточного гостеприимства.</mj-text>
+        <mj-text font-size="16px">В Турции вас ждут не только живописные пляжи, но и множество активностей: от расслабляющих спа-процедур до захватывающих экскурсий по историческим достопримечательностям. Прогулки на яхте, дегустация местной кухни и возможность посетить древние руины — это только часть того, что предлагает это удивительное направление.</mj-text>
+        <mj-text font-size="16px">Осень — это также время, когда туристов меньше, а цены ниже, что делает отдых еще более привлекательным.</mj-text>
+        <mj-text font-size="16px">Мы предлагаем вам уникальную возможность забронировать отдых в Турции по лучшей цене — всего 12077 RUB! Оптимальные даты для вашего путешествия: 15 и 30 сентября, 10 и 20 октября, а также 1 ноября 2025 года. Не упустите шанс насладиться великолепием осенней Турции по выгодной цене!</mj-text>
+        <mj-text font-size="16px">Забронируйте свой отдых прямо сейчас и подарите себе незабываемые моменты на берегу моря! Осень в Турции — это не просто отпуск, это возможность перезагрузиться и найти гармонию с собой. Не откладывайте на потом, количество мест ограничено!</mj-text>
+        <mj-text font-size="20px" font-weight="700">Цена: 12077 RUB</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Не упустите шанс!</mj-text>
+        <mj-button href="#" font-weight="700">Забронировать отдых</mj-button>
+        <mj-text font-size="16px">Не упустите эту уникальную возможность насладиться осенью в Турции!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text align="center">Подписывайтесь на нас в социальных сетях:</mj-text>
+        <mj-text align="center">Контакты: info@example.com | Телефон: +7 123 456 7890</mj-text>
+        <mj-text align="center"><a href="#">Отписаться</a></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

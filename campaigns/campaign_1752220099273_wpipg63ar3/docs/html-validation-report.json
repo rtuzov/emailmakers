@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-07-11T07:53:35.704Z",
+  "isValid": true,
+  "errors": [],
+  "warnings": [
+    {
+      "type": "compatibility",
+      "message": "External stylesheets detected - may be blocked by email clients",
+      "suggestion": "Use inline styles instead of external stylesheets"
+    }
+  ],
+  "correctionsMade": [
+    "Fixed technical: Missing or incorrect DOCTYPE"
+  ],
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 1,
+    "criticalErrors": 0,
+    "majorErrors": 0,
+    "minorErrors": 0
+  }
+}

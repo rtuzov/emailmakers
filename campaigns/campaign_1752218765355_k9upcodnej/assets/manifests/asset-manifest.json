@@ -1,0 +1,241 @@
+{
+  "manifestId": "manifest_1752218905759_bgsa79vzsgk",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752218931451_sjx5cq49r8f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "alt_text": "AI-selected hero",
+        "usage": "to capture the essence of autumn relaxation in Turkey",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 159632,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 160,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752218933600_5qocfz9o76y",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "alt_text": "AI-selected support",
+        "usage": "to highlight Turkey as the travel destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 104391,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 104,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752218935641_t0vfp23rnvl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to indicate special offers and facilitate the booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752218935641_t9wemw1ec1n",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752218765355_k9upcodnej/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to indicate special offers and facilitate the booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "To capture the essence of autumn in Turkey and attract travel enthusiasts with a warm, inviting visual.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "warm and inviting",
+      "visual_style": "vibrant and cozy, showcasing warm colors associated with autumn",
+      "content_context": "Highlighting the soft warm sea, comfortable temperatures, and the relaxing atmosphere of Turkey in autumn."
+    },
+    {
+      "type": "destination",
+      "purpose": "To provide a visual representation of Antalya, emphasizing its appeal during the autumn season.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "relaxing and rejuvenating",
+      "visual_style": "natural landscapes with warm hues, showcasing beaches and family-friendly activities",
+      "content_context": "Focusing on family and couple experiences, warm sand, and the sea air."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752218931451_sjx5cq49r8f",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Насладитесь осенним отдыхом в Турции по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752218933600_5qocfz9o76y",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Насладитесь осенним отдыхом в Турции по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752218935641_t0vfp23rnvl",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Насладитесь осенним отдыхом в Турции по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752218935641_t9wemw1ec1n",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Насладитесь осенним отдыхом в Турции по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 5,
+    "totalSize": 272619,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T07:29:12.762Z",
+    "processingTime": 47003,
+    "sourcesProcessed": 2,
+    "assetsCollected": 4,
+    "assetsValidated": 4,
+    "assetsOptimized": 4,
+    "errors": [
+      "4 assets failed basic validation"
+    ]
+  }
+}

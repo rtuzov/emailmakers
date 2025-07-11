@@ -1,0 +1,324 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752217764964_qf5y11b4xs",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty of autumn in Turkey with a focus on warmth and comfort.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752217767386_7dro7g81zxj",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and activities available in Turkey during autumn.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 3338,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 3,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752217767387_bzhwi3gzk09",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_симпатичное-и-дружелюбное-лицо-создающее-позитивное-впечатление.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_симпатичное-и-дружелюбное-лицо-создающее-позитивное-впечатление.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and activities available in Turkey during autumn.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 3322,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 3,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752217770665_cu5g6ny9ifi",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and early booking benefits.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752217770666_3t4g95is1oo",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and early booking benefits.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752217772624_4i1tqza62m",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_логотип-с-яркими-цветами-символизирующий-современный-подход-к-брендингу.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217555261_p051zohgqbf/assets/optimized/optimized_логотип-с-яркими-цветами-символизирующий-современный-подход-к-брендингу.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Provide a cohesive background that complements the overall email design.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 15525,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 16,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:13:01.887Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752217764964_qf5y11b4xs",
+      "asset_type": "image",
+      "usage_context": "Showcase the beauty of autumn in Turkey with a focus on warmth and comfort.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 117414,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752217767386_7dro7g81zxj",
+      "asset_type": "icon",
+      "usage_context": "Highlight specific attractions and activities available in Turkey during autumn.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 3338,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752217767387_bzhwi3gzk09",
+      "asset_type": "icon",
+      "usage_context": "Highlight specific attractions and activities available in Turkey during autumn.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 3322,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752217770665_cu5g6ny9ifi",
+      "asset_type": "icon",
+      "usage_context": "Indicate special offers and early booking benefits.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752217770666_3t4g95is1oo",
+      "asset_type": "icon",
+      "usage_context": "Indicate special offers and early booking benefits.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752217772624_4i1tqza62m",
+      "asset_type": "icon",
+      "usage_context": "Provide a cohesive background that complements the overall email design.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 15525,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 1,
+    "total_icons": 5,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T07:13:01.887Z"
+  }
+}

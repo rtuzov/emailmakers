@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Турция осень 2025. Включены климат, рынок, эмоции, тренды, инсайты.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте анализ направления и рыночные выводы для создания цепляющей промокампании. Особое внимание уделите ключевым инсайтам, сезонным эмоциональным триггерам и визуальным ассоциациям с осенью.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Фокусируйтесь на эмоциональном отдыхе и выгоде осени",
+      "Вставьте пользовательские отзывы и реальные фото",
+      "Используйте цвета Kupibilet для оформления и CTA в письме",
+      "Делайте акцент на раннем бронировании для экономии",
+      "Визуализируйте спокойствие и приватность курортов"
+    ]
+  },
+  "created_at": "2025-07-11T06:34:39.324Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215588482_p9e8qgzuaki/handoffs/data-collection specialist-to-content-specialist.json"
+}

@@ -340,12 +340,12 @@ export const finalizeDesignAndTransferToQuality = tool({
   description: 'Finalize all Design Specialist work and prepare comprehensive handoff to Quality Specialist with complete design package',
   parameters: z.object({
     request: z.string().describe('Original user request'),
-    content_context: z.object({}).passthrough().describe('Content context from previous specialist'),
-    asset_manifest: z.object({}).passthrough().describe('Asset manifest with all prepared assets'),
-    mjml_template: z.object({}).passthrough().describe('Generated MJML template'),
-    design_decisions: z.object({}).passthrough().describe('Design decisions and rationale'),
-    preview_files: z.array(z.object({}).passthrough()).describe('Generated preview files'),
-    performance_metrics: z.object({}).passthrough().describe('Performance metrics'),
+    content_context: z.object({}).strict().describe('Content context from previous specialist'),
+    asset_manifest: z.object({}).strict().describe('Asset manifest with all prepared assets'),
+    mjml_template: z.object({}).strict().describe('Generated MJML template'),
+    design_decisions: z.object({}).strict().describe('Design decisions and rationale'),
+    preview_files: z.array(z.object({}).strict()).describe('Generated preview files'),
+    performance_metrics: z.object({}).strict().describe('Performance metrics'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, context) => {

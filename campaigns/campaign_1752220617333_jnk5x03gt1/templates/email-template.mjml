@@ -1,0 +1,51 @@
+<mjml>
+  <mj-head>
+    <mj-title>Погрузитесь в осеннюю сказку Турции!</mj-title>
+    <mj-preview>Откройте для себя теплое море и яркие пейзажи по лучшей цене от 21209 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-text font-family="Arial, sans-serif" font-size="14px" color="#2C3959" line-height="20px" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="15px 25px" font-weight="700" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220617333_jnk5x03gt1/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png" alt="Логотип" />
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Погрузитесь в осеннюю сказку Турции!</mj-text>
+        <mj-text font-size="16px" font-weight="400">Откройте для себя теплое море и яркие пейзажи по лучшей цене от 21209 RUB.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop" alt="Пейзаж Турции осенью" />
+        <mj-button href="#" align="center">Забронировать тур сейчас</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="16px" font-weight="400">Осень в Турции — это волшебное время, когда природа расцветает яркими красками, а теплое море манит к себе. Представьте себе, как вы наслаждаетесь мягким солнцем, легким ветерком и запахом свежей выпечки, гуляя по живописным улочкам античных городов. Каждый закат здесь — это настоящее произведение искусства, а улыбки местных жителей делают ваш отдых поистине незабываемым.</mj-text>
+        <mj-text font-size="16px" font-weight="400">Турция предлагает множество активностей для любого путешественника: от расслабляющего отдыха на пляже до захватывающих экскурсионных программ. Вы можете посетить древние руины, насладиться SPA-процедурами и хамамом, попробовать свежие фрукты и восточные специи, которые подарят вам уникальные гастрономические впечатления. А для любителей активного отдыха доступны водные виды спорта и прогулки по живописным тропам.</mj-text>
+        <mj-text font-size="16px" font-weight="400">Сейчас самое время планировать свою осеннюю поездку! Мы предлагаем вам уникальные туры по цене от 21209 RUB с вылетами в даты: 15, 22 сентября и 1, 10, 20 октября 2025 года. Эти предложения ограничены, и каждый из них подарит вам незабываемые моменты на берегу теплого моря.</mj-text>
+        <mj-text font-size="16px" font-weight="400">Не упустите шанс испытать все прелести осенней Турции! Забронируйте свой тур сейчас и подарите себе и своим близким незабываемые впечатления. Путешествие ждет вас — не откладывайте на потом, ведь осень в Турции — это время, когда мечты становятся реальностью.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1589927986081-1c8c1e6c4c6f?w=800&h=400&fit=crop" alt="Кафе на улице" />
+        <mj-image src="https://images.unsplash.com/photo-1514516875644-5e9a5f5a2e8c?w=800&h=400&fit=crop" alt="Рынок в Турции" />
+        <mj-image src="https://images.unsplash.com/photo-1506748686214-0c2c2c2c2c2c?w=800&h=400&fit=crop" alt="Закат в Турции" />
+        <mj-image src="https://images.unsplash.com/photo-1575936123456-7c7c7c7c7c7c?w=800&h=400&fit=crop" alt="Традиционные турецкие блюда" />
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Забронируйте тур сейчас</mj-text>
+        <mj-button href="#" align="center">Забронировать тур сейчас</mj-button>
+        <mj-text font-size="16px" font-weight="400">Не упустите шанс испытать все прелести осенней Турции!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#2C3959">Следите за нами в социальных сетях:</mj-text>
+        <mj-text font-size="12px" color="#2C3959">Контактная информация: info@turkeytrips.com | Телефон: +7 123 456 7890</mj-text>
+        <mj-text font-size="12px" color="#2C3959"><a href="#">Отписаться</a></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Thailand summer vacation for couples. Full analysis includes weather, pricing, market trends, emotional factors and actionable insights. Premium focus on Samui and Phangan, romance, privacy, brand color guidance for Kupibilet.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Используйте всю базу анализа для романтической email-кампании (лето, пары, выгодные цены, приватность, цвета бренда Kupibilet). Конкретно акцент на Самуи и Панган с минимальными осадками, спа и ужинами на двоих.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Акцент на приватных островах и низких ценах лета",
+      "Используйте сторителлинг от лица пар",
+      "Добавьте call-to-action на spa или ужин вдвоем",
+      "Используйте тропическую палитру Kupibilet в креативах",
+      "Опишите сервисы для романтики и private experiences"
+    ]
+  },
+  "created_at": "2025-07-11T05:41:11.213Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752212431805_jan1hzwn7gj/handoffs/data-collection specialist-to-content-specialist.json"
+}

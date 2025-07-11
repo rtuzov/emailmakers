@@ -1,0 +1,769 @@
+{
+  "request": "Continue with email design using generated content, technical specification, and asset manifest",
+  "metadata": {
+    "handoffId": "handoff_1752220304608_d68l8pkc78",
+    "timestamp": "2025-07-11T07:51:44.608Z",
+    "fromAgent": "content",
+    "toAgent": "design",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752220099273_wpipg63ar3",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3",
+      "name": "Campaign campaign_1752220099273_wpipg63ar3",
+      "brand": "Email Makers",
+      "type": "promotional",
+      "target_audience": "travel enthusiasts",
+      "language": "ru",
+      "created_at": "2025-07-11T07:51:44.607Z",
+      "status": "active"
+    },
+    "data_collection_context": {
+      "destination_analysis": {
+        "analysis_type": "destination_analysis",
+        "data": {
+          "climate_factors": "Осень в Турции мягкая и солнечная. В сентябре днем 25-32C, море теплое. В октябре чуть прохладнее 21-28C. Мало осадков. Отлично для пляжа и экскурсий. Влажность невысокая. Ночи комфортные, иногда прохладные, особенно к октябрю.",
+          "cultural_highlights": "Турция осенью богата культурой. Национальные рынки специй и текстиля, турецкие бани, исторические памятники. Турки гостеприимны, ценят семейные традиции. Язык - турецкий, в туристических зонах много говорят по-русски и по-английски.",
+          "key_attractions": "Анталия с пляжами, водопадами и старым городом. Каппадокия для экскурсий на воздушных шарах. Памуккале с белыми террасами. Эфес и Стамбул для истории. Курорты Белек, Сиде, Кемер, Аланья популярны осенью.",
+          "seasonal_advantages": "Сентябрь и октябрь - бархатный сезон: мало туристов, доступные цены, комфортная погода. Туры дешевле высокого лета. Пляжи спокойны. Хорошее соотношение цена-качество.",
+          "travel_experience_quality": "Высокий уровень сервиса, большой выбор all inclusive. Отличный вариант для семейных, парных и самостоятельных путешественников. Много развлечений для детей."
+        },
+        "saved_at": "2025-07-11T07:49:03.338Z"
+      },
+      "market_intelligence": {
+        "analysis_type": "market_intelligence",
+        "data": {
+          "pricing_insights": "В сентябре-октябре цены на туры ниже, чем летом. Входные бюджеты от 15520 RUB на короткие поездки. Средний пакет 7 ночей в хороший отель - от 26000 RUB, роскошные варианты от 35000 RUB. Дополнительные скидки за раннее бронирование и групповые предложения. Авиабилеты обычно дешевеют в конце сентября.",
+          "competitive_position": "Главные альтернативы: Египет, Греция, Тунис. Турция выигрывает за счет безвизового режима, развитой инфраструктуры, доступности перелетов, сочетания пляжа и экскурсионного отдыха, большого выбора формата размещения.",
+          "demand_patterns": "Спрос устойчивый, высокий в сентябре у семей с детьми и у молодежи. В октябре больше пенсионеров и пар. Пик бронирований за 3-6 недель до вылета. Часты акции и горящие туры.",
+          "booking_recommendations": "Лучшее время бронировать - за 4-6 недель до поездки. Для топовых отелей и на даты школьных каникул сентябрь, лучше бронировать заранее. Последние недели сентября и первая октября - оптимальное соотношение цены и качества."
+        },
+        "saved_at": "2025-07-11T07:49:03.338Z"
+      },
+      "emotional_profile": {
+        "analysis_type": "emotional_profile",
+        "data": {
+          "core_motivations": "Побег от осенней сырости и холода, желание продлить лето, отдых у чистого моря. Новый опыт для детей, романтика для пар, свежие эмоции для всех.",
+          "emotional_triggers": "Солнце, теплое море, восточные рынки, яркая природа. Турецкая кухня и сладости, турецкая баня - хамам, теплый прием в отелях.",
+          "key_desires": "Фото у моря, красивый загар к осени, новый вкус еды, семейные развлечения, долгие прогулки на пляже.",
+          "psychological_benefits": "Снятие стресса, качественный семейный отдых, прилив энергии. Возможность почувствовать себя VIP-гостем за небольшие деньги."
+        },
+        "saved_at": "2025-07-11T07:49:03.338Z"
+      },
+      "consolidated_insights": {
+        "actionable_insights": [
+          "Выгодно позиционируйте цены 'от 15520 руб' для привлечения семей и самостоятельных путешественников",
+          "Используйте яркие образы: солнце, море, спокойные пляжи, турецкие базары и хамам",
+          "Акцентируйте дерзкое сочетание фирменного цвета Kupibilet с бирюзой и пастелью пляжей",
+          "Рекомендуйте раннее бронирование для топовых отелей и экономии",
+          "Делайте фокус на фото и видео контент о семейном отдыхе, самостоятельных турах, гастро-открытиях",
+          "Используйте хештеги #ТурцияОсень и #turkey2025, подборки лучших отелей, лайфхаки экономии"
+        ],
+        "key_insights": [
+          "Осень в Турции - идеальное время для семей и пар: мало туристов, теплое море, выгодные цены",
+          "Средняя цена на тур в сентябре-октябре от 15520 руб, все включено доступно",
+          "Главные конкуренты Египет и Греция, но Турция привлекает простотой поездки и разнообразием отдыха",
+          "Booking пик - 3-6 недель до вылета, раннее бронирование выгоднее",
+          "Осенние цвета бренда Kupibilet отлично сочетаются с теплыми видами Турции в коммуникации"
+        ],
+        "confidence_score": 0.95,
+        "analysis_timestamp": "2025-07-11T07:48:25.150Z",
+        "saved_at": "2025-07-11T07:49:03.339Z"
+      },
+      "travel_intelligence": {
+        "insight_type": "travel_intelligence",
+        "insights": [
+          "Осень в Турции - идеальное время для семей и пар: мало туристов, теплое море, выгодные цены",
+          "Средняя цена на тур в сентябре-октябре от 15520 руб, все включено доступно",
+          "Главные конкуренты Египет и Греция, но Турция привлекает простотой поездки и разнообразием отдыха",
+          "Booking пик - 3-6 недель до вылета, раннее бронирование выгоднее",
+          "Осенние цвета бренда Kupibilet отлично сочетаются с теплыми видами Турции в коммуникации"
+        ],
+        "insights_count": 5,
+        "saved_at": "2025-07-11T07:49:07.494Z",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/data/travel_intelligence-insights.json"
+      },
+      "trend_analysis": {
+        "analysis_type": "trend_analysis",
+        "data": {
+          "social_trends": "Фото пляжей и видов моря актуальны в Instagram и VK осенью. Популярны сторис об экскурсиях и гастрономии. Тренд на осенние путешествия с детьми и самостоятельное планирование. Хештеги #ТурцияОсень #turkey2025 #анталия",
+          "booking_behaviors": "Сравнение цен онлайн, оплата частями. Групповые выезды с друзьями и родственниками. Растет интерес к коротким уикенд турам и пакетам all inclusive. Отзывы играют главную роль при выборе.",
+          "emerging_opportunities": "Растет популярность новых курортов региона Эгейского моря. Предпочтение эко-туризму и спа программам. Больше нестандартных экскурсий: винные маршруты, гастротуры, мастер-классы.",
+          "content_opportunities": "Видео-подборки лучших отелей, лайфхаки про еду и экономию, стори о культурных находках и интересных событиях. Осенние колористики: сочетание брендов Kupibilet (зеленый, акцентный оранжевый) с бирюзой моря и оттенками пляжного песка. Эти цвета вызывают ощущение уюта и свежести."
+        },
+        "saved_at": "2025-07-11T07:49:03.338Z"
+      },
+      "collection_metadata": {
+        "campaign_id": "campaign_1752220099273_wpipg63ar3",
+        "collection_timestamp": "2025-07-11T07:51:44.607Z",
+        "data_sources": [
+          "destination-analysis",
+          "market-intelligence",
+          "emotional-profile",
+          "consolidated-insights",
+          "travel-intelligence",
+          "trend-analysis"
+        ],
+        "collection_status": "complete",
+        "data_quality_score": 100
+      }
+    },
+    "context_analysis": {
+      "destination": "Thailand",
+      "seasonal_trends": "Current season trends for Thailand",
+      "emotional_triggers": "Exotic adventure and relaxation",
+      "market_positioning": "Premium exotic destination",
+      "competitive_landscape": "Strong competition in Southeast Asia travel market",
+      "price_sensitivity": "Medium price sensitivity for exotic destinations",
+      "booking_patterns": "Advance planning with seasonal booking patterns"
+    },
+    "date_analysis": {
+      "destination": "Thailand",
+      "season": "autumn",
+      "optimal_dates": [
+        "2025-09-15",
+        "2025-09-22",
+        "2025-10-01",
+        "2025-10-10",
+        "2025-10-20"
+      ],
+      "pricing_windows": [
+        "С 15 сентября по 30 сентября - низкие цены на авиабилеты и отели, так как сезон отпусков заканчивается.",
+        "С 1 октября по 15 октября - средние цены, комфортная погода, меньше туристов.",
+        "С 16 октября по 31 октября - цены начинают расти, но все еще доступны, особенно в начале октября."
+      ],
+      "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен и выбора.",
+      "seasonal_factors": "Осень в Турции характеризуется мягким климатом, особенно в сентябре и октябре. Температуры остаются комфортными, а количество туристов снижается, что делает поездку более приятной. Однако, в конце октября возможны дожди.",
+      "current_date": "2025-07-11"
+    },
+    "pricing_analysis": {
+      "best_price": 15205,
+      "min_price": 15205,
+      "max_price": 23933,
+      "average_price": 18549,
+      "currency": "RUB",
+      "offers_count": 17,
+      "recommended_dates": [
+        "2025-09-15",
+        "2025-09-16",
+        "2025-09-17"
+      ],
+      "route": {
+        "from": "Moscow",
+        "to": "Bangkok",
+        "from_code": "MOW",
+        "to_code": "BKK"
+      },
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "AYT",
+            "finalCode": "AYT",
+            "countryCode": "TR",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "asset_strategy": {
+      "theme": "Thailand Travel Experience",
+      "visual_style": "modern",
+      "color_palette": "Tropical warm colors with brand accents",
+      "typography": "Modern clean typography",
+      "image_concepts": [
+        "Hero изображение - захватывающий вид на побережье Турции с яркими осенними оттенками.",
+        "Lifestyle фото - группы людей, наслаждающихся осенними прогулками по историческим местам.",
+        "Архитектура/достопримечательности - знаменитые достопримечательности, такие как Храм Артемиды или Каппадокия.",
+        "Кулинария/культура - традиционные турецкие блюда и уличная еда.",
+        "Природа/пейзажи - осенние пейзажи с оливковыми деревьями и горами.",
+        "Активности/развлечения - люди, занимающиеся водными видами спорта или экскурсиями.",
+        "Шоппинг/сувениры - местные рынки с яркими товарами и сувенирами.",
+        "Транспорт/логистика - визуализация удобных способов передвижения по стране."
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet, используя фирменные цвета и стиль, чтобы поддерживать узнаваемость и доверие."
+    },
+    "generated_content": {
+      "subject": "Погрузитесь в осеннее волшебство Турции!",
+      "preheader": "Насладитесь теплым морем и восточной атмосферой по цене от 15205 RUB.",
+      "body": "Представьте себе, как вы гуляете по живописным улочкам Турции, наслаждаясь мягким осенним солнцем и теплым морем. Осенние туры в Турцию – это идеальная возможность насладиться красотой природы, уникальной культурой и вкусной кухней. В это время года восточные рынки наполняются яркими красками, а аромат свежеприготовленных сладостей и традиционных блюд окутывает вас, создавая атмосферу настоящего праздника.\n\nТурция предлагает множество активностей для каждого: от расслабляющих дней на пляже до увлекательных экскурсий по историческим памятникам. Вы сможете посетить древние руины, насладиться турецким хамамом и попробовать местные деликатесы, такие как кебабы и баклаву. Осень – это также время, когда природа раскрывает свои самые яркие краски, и вы сможете насладиться живописными пейзажами, которые запомнятся на всю жизнь.\n\nСейчас самое время планировать свою осеннюю поездку! Мы предлагаем вам уникальные предложения по цене от 15205 RUB. Оптимальные даты для путешествия: 15, 22 сентября, 1, 10 и 20 октября 2025 года. Не упустите шанс насладиться всеми прелестями Турции в этот волшебный сезон.\n\nЗабронируйте свой тур уже сегодня и откройте для себя все очарование Турции! Путешествие, полное ярких впечатлений и незабываемых моментов, ждет вас. Не откладывайте на потом – осень в Турции уже близко!",
+      "cta": {
+        "primary": "Забронировать тур",
+        "secondary": "Узнать больше"
+      },
+      "personalization_level": "advanced",
+      "urgency_level": "medium"
+    },
+    "technical_requirements": {
+      "specificationId": "spec_1752220224843_l4v203rmff",
+      "specification": {
+        "version": "1.0",
+        "generatedAt": "2025-07-11T07:50:24.845Z",
+        "campaign": {
+          "id": "campaign_1752220099273_wpipg63ar3",
+          "name": "Campaign campaign_1752220099273_wpipg63ar3",
+          "type": "email-marketing",
+          "theme": "general",
+          "targetAudience": "general",
+          "priority": "medium"
+        },
+        "content": {
+          "subject": "Email Subject",
+          "preheader": "Email preheader",
+          "sections": [
+            {
+              "id": "header",
+              "type": "header",
+              "required": true
+            },
+            {
+              "id": "hero",
+              "type": "hero",
+              "required": true
+            },
+            {
+              "id": "content",
+              "type": "content",
+              "required": true
+            },
+            {
+              "id": "cta",
+              "type": "cta",
+              "required": true
+            },
+            {
+              "id": "footer",
+              "type": "footer",
+              "required": true
+            },
+            {
+              "id": "products",
+              "type": "product",
+              "required": true,
+              "metadata": {
+                "productCount": 2
+              }
+            }
+          ],
+          "callToAction": {
+            "primary": {
+              "text": "Click Here",
+              "url": "#",
+              "style": "button"
+            }
+          },
+          "personalization": {
+            "enabled": false,
+            "variables": [],
+            "dynamicContent": []
+          }
+        },
+        "design": {
+          "constraints": {
+            "layout": {
+              "type": "single-column",
+              "maxWidth": 600,
+              "minWidth": 320,
+              "padding": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "sections": []
+            },
+            "typography": {
+              "headingFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "sizes": {
+                  "h1": 28,
+                  "h2": 24,
+                  "h3": 20
+                },
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              },
+              "bodyFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "size": 16,
+                "lineHeight": 1.5,
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              }
+            },
+            "colorScheme": {
+              "primary": "#007bff",
+              "secondary": "#6c757d",
+              "accent": "#28a745",
+              "text": {
+                "primary": "#333333",
+                "secondary": "#666666",
+                "muted": "#999999"
+              },
+              "background": {
+                "primary": "#ffffff",
+                "secondary": "#f8f9fa",
+                "accent": "#e9ecef"
+              }
+            },
+            "spacing": {
+              "base": 16,
+              "sections": 40,
+              "elements": 20,
+              "text": 12
+            }
+          },
+          "assets": {
+            "manifest": {
+              "images": [],
+              "icons": [],
+              "fonts": [
+                {
+                  "family": "Arial",
+                  "weights": [
+                    "normal",
+                    "bold"
+                  ],
+                  "fallbacks": [
+                    "Helvetica",
+                    "sans-serif"
+                  ],
+                  "usage": "primary"
+                }
+              ]
+            },
+            "requirements": [
+              {
+                "id": "hero-image",
+                "type": "image",
+                "description": "Hero image for email header",
+                "specifications": {
+                  "dimensions": {
+                    "width": 600,
+                    "height": 300
+                  },
+                  "formats": [
+                    "jpg",
+                    "webp"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Solid color background with text overlay"
+              },
+              {
+                "id": "logo",
+                "type": "image",
+                "description": "Brand logo",
+                "specifications": {
+                  "dimensions": {
+                    "height": 60
+                  },
+                  "formats": [
+                    "png",
+                    "svg"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Text-based brand name"
+              }
+            ]
+          },
+          "responsive": {
+            "enabled": true,
+            "breakpoints": [
+              {
+                "name": "mobile",
+                "width": 480,
+                "constraints": {
+                  "maxWidth": 320
+                }
+              },
+              {
+                "name": "tablet",
+                "width": 768,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              },
+              {
+                "name": "desktop",
+                "width": 1200,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              }
+            ],
+            "strategy": "mobile-first"
+          }
+        },
+        "quality": {
+          "criteria": {
+            "performance": {
+              "maxFileSize": 100000,
+              "maxImageSize": 50000,
+              "compressionQuality": 0.8,
+              "lazyLoading": false,
+              "cacheOptimization": true
+            },
+            "accessibility": {
+              "wcagLevel": "AA",
+              "contrastRatio": 4.5,
+              "altTextRequired": true,
+              "focusIndicators": true,
+              "screenReaderFriendly": true,
+              "keyboardNavigation": false
+            },
+            "emailDeliverability": {
+              "spamScore": 3,
+              "textToHtmlRatio": 0.3,
+              "linkLimit": 10,
+              "imageToTextRatio": 0.6,
+              "subjectLineLength": 50,
+              "preheaderLength": 100
+            },
+            "crossClientCompatibility": {
+              "targetClients": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "fallbackStrategies": [
+                {
+                  "feature": "WebP images",
+                  "fallback": "JPEG images"
+                },
+                {
+                  "feature": "SVG images",
+                  "fallback": "PNG images"
+                },
+                {
+                  "feature": "Custom fonts",
+                  "fallback": "System fonts"
+                }
+              ],
+              "testing": {
+                "required": true,
+                "platforms": [
+                  "gmail",
+                  "outlook",
+                  "apple-mail",
+                  "yahoo-mail"
+                ],
+                "minCompatibility": 95
+              }
+            },
+            "email_clients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "performance_thresholds": {
+              "max_file_size": 150000,
+              "load_time": 2
+            },
+            "accessibility_requirements": {
+              "wcag_level": "AA",
+              "color_contrast": 4.5
+            }
+          },
+          "testing": {
+            "required": true,
+            "types": [
+              "functional",
+              "visual",
+              "compatibility"
+            ],
+            "platforms": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "automation": {
+              "enabled": false,
+              "tools": [],
+              "coverage": 0
+            }
+          },
+          "validation": {
+            "htmlValidation": true,
+            "cssValidation": true,
+            "linkValidation": true,
+            "spamCheck": true,
+            "accessibilityCheck": true
+          }
+        },
+        "delivery": {
+          "emailClients": [
+            {
+              "client": "gmail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Clips emails over 102KB",
+                "Limited CSS support"
+              ]
+            },
+            {
+              "client": "outlook",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Uses Word rendering engine",
+                "Very limited CSS support"
+              ]
+            },
+            {
+              "client": "apple-mail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": true,
+              "supportsCSS": {
+                "flexbox": true,
+                "grid": false,
+                "transform": true,
+                "animation": true
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Good CSS support",
+                "Supports media queries"
+              ]
+            },
+            {
+              "client": "yahoo-mail",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Limited CSS support",
+                "Similar to Gmail"
+              ]
+            }
+          ],
+          "deployment": {
+            "environment": "production",
+            "approvalRequired": true,
+            "rollbackStrategy": "immediate",
+            "monitoring": {
+              "enabled": true,
+              "metrics": [
+                "open_rate",
+                "click_rate",
+                "bounce_rate"
+              ],
+              "alerts": [
+                "high_bounce_rate",
+                "low_open_rate"
+              ]
+            }
+          },
+          "tracking": {
+            "enabled": true,
+            "openTracking": true,
+            "clickTracking": true,
+            "customEvents": []
+          }
+        },
+        "metadata": {
+          "generatedBy": "technical-spec-generator",
+          "sourceContext": {
+            "campaignId": "campaign_1752220099273_wpipg63ar3",
+            "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3",
+            "taskType": "email_content_with_design_brief",
+            "language": "ru",
+            "campaign_type": "promotional",
+            "industry": "travel",
+            "urgency": "medium",
+            "target_audience": "семьи, пары, самостоятельные путешественники"
+          },
+          "processingTime": 0,
+          "complexity": "low",
+          "estimatedImplementationTime": 4,
+          "dependencies": [
+            "mjml",
+            "image-optimization",
+            "html-validation"
+          ],
+          "notes": []
+        }
+      },
+      "generationSummary": {
+        "timestamp": "2025-07-11T07:50:24.846Z",
+        "processingTime": 3,
+        "sourceContexts": 4,
+        "sectionsGenerated": 6,
+        "assetsProcessed": 0,
+        "constraintsApplied": 4,
+        "validationPassed": true,
+        "errors": [],
+        "warnings": []
+      },
+      "implementationGuidance": {
+        "priority": "high",
+        "estimatedTime": 4,
+        "complexity": "low",
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "risks": [
+          "Multiple email client compatibility challenges"
+        ],
+        "recommendations": [
+          "Use table-based layout for maximum compatibility",
+          "Inline all CSS for better email client support",
+          "Optimize images for web delivery",
+          "Test across all target email clients",
+          "Implement responsive design with media queries",
+          "Ensure WCAG AA compliance with proper alt text and contrast"
+        ]
+      },
+      "qualityScore": {
+        "completeness": 100,
+        "consistency": 90,
+        "clarity": 100,
+        "implementability": 100,
+        "overall": 98
+      }
+    }
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Осень в Турции мягкая и солнечная. В сентябре днем 25-32C, море теплое. В октябре чуть прохладнее 21-28C. Мало осадков. Отлично для пляжа и экскурсий. Влажность невысокая. Ночи комфортные, иногда прохладные, особенно к октябрю.",
+        "cultural_highlights": "Турция осенью богата культурой. Национальные рынки специй и текстиля, турецкие бани, исторические памятники. Турки гостеприимны, ценят семейные традиции. Язык - турецкий, в туристических зонах много говорят по-русски и по-английски.",
+        "key_attractions": "Анталия с пляжами, водопадами и старым городом. Каппадокия для экскурсий на воздушных шарах. Памуккале с белыми террасами. Эфес и Стамбул для истории. Курорты Белек, Сиде, Кемер, Аланья популярны осенью.",
+        "seasonal_advantages": "Сентябрь и октябрь - бархатный сезон: мало туристов, доступные цены, комфортная погода. Туры дешевле высокого лета. Пляжи спокойны. Хорошее соотношение цена-качество.",
+        "travel_experience_quality": "Высокий уровень сервиса, большой выбор all inclusive. Отличный вариант для семейных, парных и самостоятельных путешественников. Много развлечений для детей."
+      },
+      "saved_at": "2025-07-11T07:49:03.338Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "В сентябре-октябре цены на туры ниже, чем летом. Входные бюджеты от 15520 RUB на короткие поездки. Средний пакет 7 ночей в хороший отель - от 26000 RUB, роскошные варианты от 35000 RUB. Дополнительные скидки за раннее бронирование и групповые предложения. Авиабилеты обычно дешевеют в конце сентября.",
+        "competitive_position": "Главные альтернативы: Египет, Греция, Тунис. Турция выигрывает за счет безвизового режима, развитой инфраструктуры, доступности перелетов, сочетания пляжа и экскурсионного отдыха, большого выбора формата размещения.",
+        "demand_patterns": "Спрос устойчивый, высокий в сентябре у семей с детьми и у молодежи. В октябре больше пенсионеров и пар. Пик бронирований за 3-6 недель до вылета. Часты акции и горящие туры.",
+        "booking_recommendations": "Лучшее время бронировать - за 4-6 недель до поездки. Для топовых отелей и на даты школьных каникул сентябрь, лучше бронировать заранее. Последние недели сентября и первая октября - оптимальное соотношение цены и качества."
+      },
+      "saved_at": "2025-07-11T07:49:03.338Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Побег от осенней сырости и холода, желание продлить лето, отдых у чистого моря. Новый опыт для детей, романтика для пар, свежие эмоции для всех.",
+        "emotional_triggers": "Солнце, теплое море, восточные рынки, яркая природа. Турецкая кухня и сладости, турецкая баня - хамам, теплый прием в отелях.",
+        "key_desires": "Фото у моря, красивый загар к осени, новый вкус еды, семейные развлечения, долгие прогулки на пляже.",
+        "psychological_benefits": "Снятие стресса, качественный семейный отдых, прилив энергии. Возможность почувствовать себя VIP-гостем за небольшие деньги."
+      },
+      "saved_at": "2025-07-11T07:49:03.338Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Выгодно позиционируйте цены 'от 15520 руб' для привлечения семей и самостоятельных путешественников",
+        "Используйте яркие образы: солнце, море, спокойные пляжи, турецкие базары и хамам",
+        "Акцентируйте дерзкое сочетание фирменного цвета Kupibilet с бирюзой и пастелью пляжей",
+        "Рекомендуйте раннее бронирование для топовых отелей и экономии",
+        "Делайте фокус на фото и видео контент о семейном отдыхе, самостоятельных турах, гастро-открытиях",
+        "Используйте хештеги #ТурцияОсень и #turkey2025, подборки лучших отелей, лайфхаки экономии"
+      ],
+      "key_insights": [
+        "Осень в Турции - идеальное время для семей и пар: мало туристов, теплое море, выгодные цены",
+        "Средняя цена на тур в сентябре-октябре от 15520 руб, все включено доступно",
+        "Главные конкуренты Египет и Греция, но Турция привлекает простотой поездки и разнообразием отдыха",
+        "Booking пик - 3-6 недель до вылета, раннее бронирование выгоднее",
+        "Осенние цвета бренда Kupibilet отлично сочетаются с теплыми видами Турции в коммуникации"
+      ],
+      "confidence_score": 0.95,
+      "analysis_timestamp": "2025-07-11T07:48:25.150Z",
+      "saved_at": "2025-07-11T07:49:03.339Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Осень в Турции - идеальное время для семей и пар: мало туристов, теплое море, выгодные цены",
+        "Средняя цена на тур в сентябре-октябре от 15520 руб, все включено доступно",
+        "Главные конкуренты Египет и Греция, но Турция привлекает простотой поездки и разнообразием отдыха",
+        "Booking пик - 3-6 недель до вылета, раннее бронирование выгоднее",
+        "Осенние цвета бренда Kupibilet отлично сочетаются с теплыми видами Турции в коммуникации"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T07:49:07.494Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "social_trends": "Фото пляжей и видов моря актуальны в Instagram и VK осенью. Популярны сторис об экскурсиях и гастрономии. Тренд на осенние путешествия с детьми и самостоятельное планирование. Хештеги #ТурцияОсень #turkey2025 #анталия",
+        "booking_behaviors": "Сравнение цен онлайн, оплата частями. Групповые выезды с друзьями и родственниками. Растет интерес к коротким уикенд турам и пакетам all inclusive. Отзывы играют главную роль при выборе.",
+        "emerging_opportunities": "Растет популярность новых курортов региона Эгейского моря. Предпочтение эко-туризму и спа программам. Больше нестандартных экскурсий: винные маршруты, гастротуры, мастер-классы.",
+        "content_opportunities": "Видео-подборки лучших отелей, лайфхаки про еду и экономию, стори о культурных находках и интересных событиях. Осенние колористики: сочетание брендов Kupibilet (зеленый, акцентный оранжевый) с бирюзой моря и оттенками пляжного песка. Эти цвета вызывают ощущение уюта и свежести."
+      },
+      "saved_at": "2025-07-11T07:49:03.338Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752220099273_wpipg63ar3",
+      "collection_timestamp": "2025-07-11T07:51:44.607Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  }
+}

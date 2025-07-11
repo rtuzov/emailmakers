@@ -153,19 +153,113 @@ export const generateAssetManifest = tool({
         );
         
         console.log(`✅ Collected ${collectionResult.assets.length} assets`);
+        
+        // 🌐 FORCE EXTERNAL IMAGES: Ensure we always have some external images
+        console.log('🔍 Checking for external images in collection result...');
+        const externalAssets = collectionResult.assets.filter(asset => asset.isExternal);
+        console.log(`📊 Found ${externalAssets.length} external assets out of ${collectionResult.assets.length} total assets`);
+        
+        if (externalAssets.length === 0) {
+          console.log('⚠️ No external images collected, forcing external image generation');
+          
+          // Add external fallback source if not present
+          const hasExternalSource = assetSources.some(source => 
+            source.type === 'url' && source.path === 'external_fallback'
+          );
+          
+          console.log(`🔍 Has external source configured: ${hasExternalSource}`);
+          
+          if (!hasExternalSource) {
+            console.log('🔄 Generating external images using AI analysis');
+            console.log('🤖 Calling generateAISelectedExternalImages...');
+            
+            try {
+              const { generateAISelectedExternalImages } = await import('./ai-analysis');
+              const externalImages = await generateAISelectedExternalImages(aiAnalysis, contentContext);
+              
+              console.log(`🎯 AI generated ${externalImages.length} external images`);
+              
+              if (externalImages.length > 0) {
+                // Log each external image being added
+                externalImages.forEach((img, index) => {
+                  console.log(`🌐 Adding external image ${index + 1}: ${img.filename}`);
+                  console.log(`   URL: ${img.path}`);
+                  console.log(`   isExternal: ${img.isExternal}`);
+                  console.log(`   Purpose: ${img.purpose}`);
+                  console.log(`   Description: ${img.description}`);
+                });
+                
+                collectionResult.assets.push(...externalImages);
+                console.log(`✅ Successfully added ${externalImages.length} external images to collection`);
+                console.log(`📊 Total assets after external addition: ${collectionResult.assets.length}`);
+                
+                // Verify external images were added
+                const verifyExternalAssets = collectionResult.assets.filter(asset => asset.isExternal);
+                console.log(`✅ Verification: ${verifyExternalAssets.length} external assets now in collection`);
+              } else {
+                console.log('⚠️ AI generated 0 external images - this is unexpected');
+              }
+            } catch (error) {
+              console.error('❌ Failed to generate external images:', error);
+              console.log('🔄 Attempting fallback external image generation...');
+              
+              try {
+                const { generateFallbackExternalImages } = await import('./ai-analysis');
+                const fallbackImages = generateFallbackExternalImages(contentContext);
+                
+                if (fallbackImages.length > 0) {
+                  collectionResult.assets.push(...fallbackImages);
+                  console.log(`✅ Added ${fallbackImages.length} fallback external images`);
+                }
+              } catch (fallbackError) {
+                console.error('❌ Fallback external image generation also failed:', fallbackError);
+              }
+            }
+          } else {
+            console.log('✅ External source already configured, should have been processed');
+          }
+        } else {
+          console.log(`✅ Found ${externalAssets.length} external assets, no need to force generation`);
+          externalAssets.forEach((asset, index) => {
+            console.log(`🌐 External asset ${index + 1}: ${asset.filename} (${asset.path})`);
+          });
+        }
       }
       
       // Step 3: Validate collected assets
       if (generationOptions.validateAssets && collectionResult?.assets) {
         console.log('✅ Validating collected assets...');
-        // Basic validation without external dependency for now
+        // Basic validation with proper external asset handling
         const validAssets = collectionResult.assets.filter(asset => {
-          // Basic validation rules
-          return asset.filename && asset.path && asset.size && asset.size > 0;
+          // Basic validation rules - different for external vs local assets
+          if (asset.isExternal) {
+            // External assets: must have filename and URL/path
+            const isValid = asset.filename && asset.path && asset.path.startsWith('http');
+            if (isValid) {
+              console.log(`🌐 External asset validated: ${asset.filename} (${asset.path})`);
+            } else {
+              console.log(`❌ External asset invalid: ${asset.filename} - missing URL or filename`);
+            }
+            return isValid;
+          } else {
+            // Local assets: must have filename, path, and size
+            const isValid = asset.filename && asset.path && asset.size && asset.size > 0;
+            if (isValid) {
+              console.log(`📁 Local asset validated: ${asset.filename} (${asset.size} bytes)`);
+            } else {
+              console.log(`❌ Local asset invalid: ${asset.filename} - missing path, filename, or size`);
+            }
+            return isValid;
+          }
         });
         
         const invalidCount = collectionResult.assets.length - validAssets.length;
         console.log(`✅ Validated assets: ${validAssets.length} valid, ${invalidCount} invalid`);
+        
+        // Log breakdown of valid assets
+        const validLocal = validAssets.filter(a => !a.isExternal);
+        const validExternal = validAssets.filter(a => a.isExternal);
+        console.log(`📊 Valid breakdown: ${validLocal.length} local, ${validExternal.length} external`);
         
         // Update collection result with validated assets
         collectionResult.assets = validAssets;
@@ -188,34 +282,42 @@ export const generateAssetManifest = tool({
         
         let optimizedCount = 0;
         
-        // Simple optimization: copy files and mark as optimized
+        // Process local and external assets differently
         for (const asset of collectionResult.assets) {
           try {
-            const optimizedFileName = `optimized_${asset.filename}`;
-            const optimizedFilePath = path.join(optimizedPath, optimizedFileName);
-            
-            // Copy file to optimized directory
-            await fs.copyFile(asset.path, optimizedFilePath);
-            
-            // Update asset with optimized path
-            asset.path = optimizedFilePath;
-            asset.optimized = true;
-            optimizedCount++;
-            
-            console.log(`✅ Optimized ${asset.filename} using balanced strategy`);
+            if (asset.isExternal) {
+              // External assets: just mark as optimized, don't copy
+              asset.optimized = true;
+              optimizedCount++;
+              console.log(`✅ External asset marked as optimized: ${asset.filename} (${asset.path})`);
+            } else {
+              // Local assets: copy to optimized directory
+              const optimizedFileName = `optimized_${asset.filename}`;
+              const optimizedFilePath = path.join(optimizedPath, optimizedFileName);
+              
+              // Copy file to optimized directory
+              await fs.copyFile(asset.path, optimizedFilePath);
+              
+              // Update asset with optimized path
+              asset.path = optimizedFilePath;
+              asset.optimized = true;
+              optimizedCount++;
+              
+              console.log(`✅ Optimized ${asset.filename} using balanced strategy`);
+            }
             
           } catch (error) {
-            console.warn(`❌ AI optimization strategy failed for ${asset.filename}, using default`);
+            console.warn(`❌ Optimization failed for ${asset.filename}: ${error}`);
             // Keep original asset path if optimization fails
           }
         }
         
-        console.log(`✅ Optimized ${optimizedCount} assets`);
+        console.log(`✅ Optimized ${optimizedCount} assets (${collectionResult.assets.filter(a => !a.isExternal).length} local, ${collectionResult.assets.filter(a => a.isExternal).length} external)`);
       }
       
       // Step 5: Generate comprehensive asset manifest
       console.log('📋 Generating comprehensive asset manifest...');
-      const assetManifest = generateAssetManifestFromAssets(
+      const assetManifest = await generateAssetManifestFromAssets(
         collectionResult?.assets || [],
         aiAnalysis
       );
@@ -312,19 +414,30 @@ export const generateAssetManifest = tool({
 /**
  * Generate asset manifest from collected assets
  */
-function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): any {
+async function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): Promise<any> {
+  console.log('📋 Starting asset manifest generation...');
+  console.log(`📊 Processing ${assets.length} total assets`);
+  
+  // Log asset breakdown
+  const localAssets = assets.filter(asset => !asset.isExternal);
+  const externalAssets = assets.filter(asset => asset.isExternal);
+  console.log(`📁 Local assets: ${localAssets.length}`);
+  console.log(`🌐 External assets: ${externalAssets.length}`);
+  
   const manifest = {
     images: [] as any[],
     icons: [] as any[],
     fonts: [] as any[]
   };
   
-  // Process collected assets
+  // Process each asset
   for (const asset of assets) {
+    console.log(`🔄 Processing asset: ${asset.filename} (isExternal: ${asset.isExternal})`);
+    
     const assetItem: any = {
-      id: asset.hash || `asset_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+      id: asset.hash,
       path: asset.path,
-      url: asset.path,
+      url: asset.path, // For external assets, URL is the same as path
       alt_text: asset.description || asset.filename,
       usage: asset.purpose || 'general',
       dimensions: { width: 0, height: 0 }, // Would be extracted from actual files
@@ -352,11 +465,13 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
     
     // 🌐 SPECIAL HANDLING FOR EXTERNAL IMAGES
     if (asset.isExternal) {
+      console.log(`🌐 Processing EXTERNAL asset: ${asset.filename}`);
       // External images use URL as both path and url
       assetItem.url = asset.path; // External URL
       assetItem.path = asset.path; // Keep URL for consistency
       assetItem.file_size = asset.size || 0; // External images may not have size
       assetItem.optimized = false; // External images are not optimized by us
+      assetItem.isExternal = true; // CRITICAL: Ensure isExternal flag is passed through
       
       // Add external image metadata
       assetItem.external_metadata = {
@@ -366,7 +481,14 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
         tags: asset.tags || []
       };
       
-      console.log(`🌐 Added external image: ${asset.filename} (${asset.path})`);
+      console.log(`🌐 Added external image: ${asset.filename} (${asset.path}) - isExternal: true`);
+      console.log(`   URL: ${assetItem.url}`);
+      console.log(`   Purpose: ${asset.purpose}`);
+      console.log(`   AI Reasoning: ${asset.aiReasoning}`);
+    } else {
+      // Ensure isExternal is explicitly false for local assets
+      assetItem.isExternal = false;
+      console.log(`📁 Added local asset: ${asset.filename} (${asset.path}) - isExternal: false`);
     }
     
     // 🎯 IMPROVED ASSET CATEGORIZATION LOGIC
@@ -385,6 +507,9 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
       console.log(`❓ Fallback categorization as IMAGE: ${asset.filename}`);
     }
   }
+  
+  // 🔤 EXTRACT FONTS FROM FIGMA DATA
+  await extractFontsFromFigmaData(manifest, assets, aiAnalysis);
   
   // Add default fonts if none specified
   if (manifest.fonts.length === 0) {
@@ -409,41 +534,84 @@ function generateAssetManifestFromAssets(assets: AssetItem[], aiAnalysis: any): 
 }
 
 /**
- * 🎯 Improved icon detection logic
+ * 🎯 Improved icon detection logic with better thresholds and pattern matching
  */
 function determineIfIcon(asset: any, assetItem: any): boolean {
   const filename = asset.filename?.toLowerCase() || '';
   const format = asset.format?.toLowerCase() || '';
   const size = asset.size || 0;
   
-  // 1. Filename contains icon indicators
-  if (filename.includes('icon') || filename.includes('иконка') || 
-      filename.includes('logo') || filename.includes('логотип') ||
-      filename.includes('symbol') || filename.includes('badge')) {
-    return true;
-  }
+  console.log(`🔍 Analyzing asset for icon detection: ${filename} (${format}, ${size} bytes)`);
   
-  // 2. SVG format (commonly used for icons)
+  // 1. Filename contains icon indicators - enhanced patterns
+  const iconPatterns = [
+    'icon', 'иконка', 'logo', 'логотип', 'symbol', 'badge', 
+    'btn', 'button', 'arrow', 'стрелка', 'check', 'галочка',
+    'star', 'звезда', 'heart', 'сердце', 'close', 'закрыть',
+    'menu', 'меню', 'search', 'поиск', 'settings', 'настройки',
+    'user', 'пользователь', 'home', 'дом', 'mail', 'почта'
+  ];
+  
+  const hasIconPattern = iconPatterns.some(pattern => filename.includes(pattern));
+  
+  // 2. SVG format (commonly used for icons) - improved size threshold
   if (format === 'svg') {
+    // SVG icons are usually small, but illustrations can be large
+    if (size <= 50000) { // 50KB threshold for SVG icons
+      console.log(`✅ ICON detected by SVG format and size: ${filename} (${size} bytes)`);
+      return true;
+    } else {
+      console.log(`📸 SVG too large for icon, treating as image: ${filename} (${size} bytes)`);
+      return false;
+    }
+  }
+  
+  // 3. ICO format (Windows icons)
+  if (format === 'ico') {
+    console.log(`✅ ICON detected by ICO format: ${filename}`);
     return true;
   }
   
-  // 3. Small square images (likely icons)
-  if (assetItem.dimensions?.width && assetItem.dimensions?.height) {
-    const { width, height } = assetItem.dimensions;
-    const isSquare = Math.abs(width - height) <= Math.min(width, height) * 0.1; // 10% tolerance
-    const isSmall = width <= 128 && height <= 128;
-    
-    if (isSquare && isSmall) {
+  // 4. Very small file size (under 15KB, likely an icon) - more conservative threshold
+  if (size > 0 && size <= 15000) { // 15KB threshold for small icons
+    // Additional check for common icon formats
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'ico'].includes(format)) {
+      console.log(`✅ ICON detected by small size and format: ${filename} (${size} bytes, ${format})`);
       return true;
     }
   }
   
-  // 4. Very small file size (under 10KB, likely an icon)
-  if (size > 0 && size <= 10000) { // 10KB
+  // 5. Small square images (likely icons) - improved logic
+  if (assetItem.dimensions?.width && assetItem.dimensions?.height) {
+    const { width, height } = assetItem.dimensions;
+    const isSquareish = Math.abs(width - height) <= Math.max(width, height) * 0.2; // 20% tolerance
+    const isSmall = width <= 128 && height <= 128;
+    const isTiny = width <= 64 && height <= 64;
+    
+    if (isTiny) {
+      console.log(`✅ ICON detected by tiny dimensions: ${filename} (${width}x${height})`);
+      return true;
+    }
+    
+    if (isSquareish && isSmall) {
+      console.log(`✅ ICON detected by small square dimensions: ${filename} (${width}x${height})`);
+      return true;
+    }
+  }
+  
+  // 6. Only classify as icon if filename pattern matches AND size is reasonable
+  if (hasIconPattern && size <= 50000) { // 50KB threshold for pattern-matched icons
+    console.log(`✅ ICON detected by filename pattern and size: ${filename} (${size} bytes)`);
     return true;
   }
   
+  // 7. Special case: Very large files (>50KB) are likely images, not icons
+  if (size > 50000) {
+    console.log(`📸 Large file classified as IMAGE: ${filename} (${size} bytes)`);
+    return false;
+  }
+  
+  console.log(`📸 Asset classified as IMAGE: ${filename}`);
   return false;
 }
 
@@ -573,4 +741,94 @@ function getAccessibilityInstructions(asset: any): string {
 
 function getFallbackStrategy(asset: any): string {
   return 'If image fails to load, display alt text with appropriate background color';
-} 
+}
+
+/**
+ * 🔤 Extract fonts from Figma data and add to manifest
+ */
+async function extractFontsFromFigmaData(manifest: any, assets: AssetItem[], aiAnalysis: any): Promise<void> {
+  console.log('🔤 Extracting fonts from Figma data...');
+  
+  try {
+    // Check if we have Figma data with typography information
+    if (aiAnalysis?.figma_data?.typography) {
+      const figmaTypography = aiAnalysis.figma_data.typography;
+      
+      for (const typoToken of figmaTypography) {
+        const fontManifestItem = {
+          id: `figma-font-${typoToken.name.toLowerCase().replace(/\s+/g, '-')}`,
+          family: typoToken.fontFamily || 'Arial',
+          weights: [typoToken.fontWeight?.toString() || '400', '700'],
+          fallbacks: typoToken.emailFallback ? typoToken.emailFallback.split(',').map(f => f.trim()) : ['Arial', 'sans-serif'],
+          usage: typoToken.category || 'body',
+          email_client_support: {
+            gmail: typoToken.emailCompatible !== false,
+            outlook: typoToken.emailCompatible !== false,
+            apple_mail: typoToken.emailCompatible !== false,
+            yahoo_mail: typoToken.emailCompatible !== false
+          },
+          figma_metadata: {
+            original_name: typoToken.name,
+            font_size: typoToken.fontSize,
+            line_height: typoToken.lineHeight,
+            letter_spacing: typoToken.letterSpacing
+          }
+        };
+        
+        manifest.fonts.push(fontManifestItem);
+        console.log(`✅ Added font from Figma: ${typoToken.fontFamily} (${typoToken.name})`);
+      }
+    }
+    
+    // Check AI analysis for font requirements
+    if (aiAnalysis?.typography_requirements) {
+      const typoReqs = aiAnalysis.typography_requirements;
+      
+      // Add heading font if specified
+      if (typoReqs.heading_font) {
+        const headingFont = {
+          id: 'ai-heading-font',
+          family: typoReqs.heading_font.family || 'Arial',
+          weights: typoReqs.heading_font.weights || ['400', '700'],
+          fallbacks: typoReqs.heading_font.fallbacks || ['Arial', 'sans-serif'],
+          usage: 'heading',
+          email_client_support: {
+            gmail: true,
+            outlook: true,
+            apple_mail: true,
+            yahoo_mail: true
+          }
+        };
+        
+        manifest.fonts.push(headingFont);
+        console.log(`✅ Added AI heading font: ${typoReqs.heading_font.family}`);
+      }
+      
+      // Add body font if specified
+      if (typoReqs.body_font) {
+        const bodyFont = {
+          id: 'ai-body-font',
+          family: typoReqs.body_font.family || 'Arial',
+          weights: typoReqs.body_font.weights || ['400', '700'],
+          fallbacks: typoReqs.body_font.fallbacks || ['Arial', 'sans-serif'],
+          usage: 'body',
+          email_client_support: {
+            gmail: true,
+            outlook: true,
+            apple_mail: true,
+            yahoo_mail: true
+          }
+        };
+        
+        manifest.fonts.push(bodyFont);
+        console.log(`✅ Added AI body font: ${typoReqs.body_font.family}`);
+      }
+    }
+    
+    console.log(`🔤 Font extraction completed: ${manifest.fonts.length} fonts in manifest`);
+    
+  } catch (error) {
+    console.warn(`⚠️ Font extraction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    // Don't throw error, just log warning and continue with default fonts
+  }
+}

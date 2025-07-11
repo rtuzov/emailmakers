@@ -1,0 +1,51 @@
+<mjml>
+  <mj-head>
+    <mj-title>Продлите лето в Турции</mj-title>
+    <mj-preview>Насладитесь теплым солнцем и морем по лучшей цене от 15520 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-text font-size="14px" color="#2C3959" font-family="Arial, sans-serif" line-height="1.5" padding="0" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="10px 25px" font-weight="700" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1543269865-5e1b4e3b3b4a" alt="Logo" width="200px" />
+        <mj-text padding="15px 0 0 0" align="center">Главная | О нас | Направления | Контакты</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700" color="#2C3959" align="center">Продлите лето в Турции осенью 2025 года!</mj-text>
+        <mj-text font-size="16px" color="#2C3959" align="center">Насладитесь теплым солнцем и морем по лучшей цене от 15520 RUB.</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219068473_kawpllmv76k/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png" alt="Hero Image" width="100%" />
+        <mj-button href="#" align="center">Забронировать отдых</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text>Представьте себе: теплое солнце осени, нежный морской бриз и идеальные закаты, которые будут сопровождать вас на протяжении всего отдыха в Турции. Осень 2025 года — это уникальная возможность продлить лето и погрузиться в атмосферу ярких эмоций и семейного счастья. Турция, с её красивыми пляжами и богатой культурой, ждет вас, чтобы подарить незабываемые моменты.</mj-text>
+        <mj-text>Отдых в Турции осенью — это не только великолепные пейзажи, но и широкий выбор активностей для всей семьи. Вы сможете насладиться свежими фруктами на местных рынках, попробовать традиционную кухню в уютных ресторанах и, конечно же, провести время на пляже, наслаждаясь солнцем и морем. Формат «всё включено» избавит вас от забот, позволяя сосредоточиться на отдыхе и наслаждении каждым мгновением.</mj-text>
+        <mj-text>Лучшие предложения на осень 2025 года начинаются от 15520 RUB! Мы предлагаем вам оптимальные даты для поездки: 15 и 22 сентября, 1, 10 и 20 октября, а также 1 ноября. Эти даты идеально подходят для того, чтобы насладиться теплой погодой и избежать осенней суеты. Не упустите шанс провести незабываемый отдых по выгодной цене!</mj-text>
+        <mj-text>Не ждите, пока лучшие предложения разлетятся! Забронируйте свой отдых в Турции прямо сейчас и подарите себе и своей семье незабываемые моменты. Осень — это время, когда можно насладиться спокойствием и красотой природы. Сделайте шаг к своему идеальному отдыху уже сегодня!</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0" alt="Autumn Landscape" width="100%" />
+        <mj-text font-size="20px" font-weight="700" padding="10px 0">Цена: 15520 RUB</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700" color="#2C3959" align="center">Забронируйте свой отдых прямо сейчас!</mj-text>
+        <mj-button href="#" align="center">Забронировать отдых</mj-button>
+        <mj-text align="center" padding="10px 0">Не упустите возможность насладиться осенью в Турции с семьей!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#2C3959">Следите за нами в социальных сетях:</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1543269865-5e1b4e3b3b4a" alt="Social Links" width="100px" />
+        <mj-text font-size="12px" color="#2C3959" align="center">Контакты: info@turkeytravel.com | +7 123 456 78 90</mj-text>
+        <mj-text font-size="12px" color="#2C3959" align="center">Отписаться от рассылки</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

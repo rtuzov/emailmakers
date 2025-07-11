@@ -211,28 +211,51 @@ function getEmailClientNotes(asset: AssetImage | AssetIcon): string[] {
  * Helper functions for design package generation
  */
 export function calculateTechnicalCompliance(params: any): number {
-  const compliance = params.mjml_template.technical_compliance;
+  // Fix: Add null/undefined checks
+  if (!params || !params.mjml_template) {
+    return 70; // Default score if no template data
+  }
+  
+  const compliance = params.mjml_template.technical_compliance || {};
   const checks = [
-    compliance?.max_width_respected,
-    compliance?.color_scheme_applied,
-    compliance?.typography_followed,
-    compliance?.email_client_optimized,
-    compliance?.real_asset_paths
+    compliance.max_width_respected,
+    compliance.color_scheme_applied,
+    compliance.typography_followed,
+    compliance.email_client_optimized,
+    compliance.real_asset_paths
   ];
   
   const passedChecks = checks.filter(check => check === true).length;
-  return Math.round((passedChecks / checks.length) * 100);
+  const totalChecks = checks.length;
+  
+  // If no checks defined, return default score
+  if (totalChecks === 0) return 70;
+  
+  return Math.round((passedChecks / totalChecks) * 100);
 }
 
 export function calculateAssetOptimization(assetManifest: AssetManifest): number {
-  const allAssets = [...assetManifest.images, ...assetManifest.icons];
+  // Fix: Add null/undefined checks
+  if (!assetManifest || (!assetManifest.images && !assetManifest.icons)) {
+    return 100; // Default score if no assets
+  }
+  
+  const images = assetManifest.images || [];
+  const icons = assetManifest.icons || [];
+  const allAssets = [...images, ...icons];
+  
   if (allAssets.length === 0) return 100;
   
-  const optimizedAssets = allAssets.filter(asset => asset.optimized === true).length;
+  const optimizedAssets = allAssets.filter(asset => asset && asset.optimized === true).length;
   return Math.round((optimizedAssets / allAssets.length) * 100);
 }
 
 export function calculateAccessibilityScore(designDecisions: any): number {
+  // Fix: Add null/undefined checks
+  if (!designDecisions) {
+    return 70; // Default score if no design decisions
+  }
+  
   const features = designDecisions.accessibility_features || [];
   const baseScore = 70;
   const featureBonus = features.length * 7.5; // Up to 30 points for 4 features
@@ -241,8 +264,15 @@ export function calculateAccessibilityScore(designDecisions: any): number {
 }
 
 export function calculateEmailClientCompatibility(assetManifest: AssetManifest, techSpec: any): number {
+  // Fix: Add null/undefined checks
+  if (!assetManifest || !techSpec) {
+    return 85; // Default score if no data
+  }
+  
   const emailClients = techSpec.specification?.delivery?.emailClients || [];
-  const allAssets = [...assetManifest.images, ...assetManifest.icons];
+  const images = assetManifest.images || [];
+  const icons = assetManifest.icons || [];
+  const allAssets = [...images, ...icons];
   
   if (allAssets.length === 0 || emailClients.length === 0) return 85;
   
@@ -250,7 +280,7 @@ export function calculateEmailClientCompatibility(assetManifest: AssetManifest, 
   let compatibilityCount = 0;
   
   allAssets.forEach(asset => {
-    if (asset.email_client_support) {
+    if (asset && asset.email_client_support) {
       emailClients.forEach(client => {
         const clientName = client.client || client.name || client;
         if (asset.email_client_support && asset.email_client_support[clientName] !== undefined) {

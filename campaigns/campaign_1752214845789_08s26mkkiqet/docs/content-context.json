@@ -1,0 +1,668 @@
+{
+  "campaign": {
+    "id": "campaign_1752214845789_08s26mkkiqet",
+    "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet",
+    "name": "Campaign campaign_1752214845789_08s26mkkiqet",
+    "brand": "Email Makers",
+    "type": "promotional",
+    "target_audience": "travel enthusiasts",
+    "language": "ru",
+    "created_at": "2025-07-11T06:24:14.578Z",
+    "status": "active"
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Осень в Турции мягкая, дневные температуры +20-27C, мало дождей, море теплое до середины октября",
+        "cultural_highlights": "Турецкие базары, уличная еда и кофе, праздники Курбан-байрам и День Республики в октябре, древние города",
+        "key_attractions": "Анталия и побережье, Стамбул, Каппадокия, Памуккале, Эфес, руины, СПА и пляжи Средиземного моря",
+        "seasonal_advantages": "Низкий и средний сезон, меньше туристов, скидки до 40 процентов, сервис высокого уровня, безвизово",
+        "travel_experience_quality": "Комфортная температура, морская вода прогрета до середины октября, много свежих фруктов, выгодные турпакеты"
+      },
+      "saved_at": "2025-07-11T06:21:15.433Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "В сентябре-октябре цены на туры на 30-40 процентов ниже чем летом, средний бюджет от 60000 до 130000 руб за 7-10 ночей на человека",
+        "competitive_position": "Турция конкурент Египту, Тунису и Греции, выигрывает по простоте виз, турпакетам, комфорту для семей и молодежи, высокая лояльность российских туристов",
+        "demand_patterns": "Основные потоки бронирований приходятся на сентябрь и первые две недели октября, поздняя осень подходит для экскурсионных и СПА туров",
+        "booking_recommendations": "Лучшие цены за 2-4 недели до вылета, на октябрь рекомендуется бронировать заранее для топовых отелей, конец октября минимальный спрос и максимальные скидки"
+      },
+      "saved_at": "2025-07-11T06:21:15.433Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Перезагрузка после лета, уютный климат, релакс у моря, доступность и комфорт",
+        "emotional_triggers": "Свежие фрукты, бирюзовое море, знаменитый хаммам, вечерние огни на побережье, лояльность и забота турков",
+        "key_desires": "Запоминающиеся фото, семейные и романтические вечера, угощения и уличная еда, простое оформление поездки",
+        "psychological_benefits": "Снятие усталости, новые яркие эмоции без сложной подготовки, чувство безопасности и заботы"
+      },
+      "saved_at": "2025-07-11T06:21:15.433Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Используйте тему перезагрузки осенью для привлечения уставших после лета",
+        "Подчеркивайте скидки и выгоду сезона для семей и молодежи",
+        "Просувайте фото и гастро туры через сторителлинг",
+        "Включайте инфографику с температурой моря и воздуха в каждом письме",
+        "Подчеркните легкость оформления поездки и безопасность",
+        "Создавайте контент с фирменными цветами Kupibilet под сезонные фото",
+        "Добавьте гид по важным событиям Турции осенью"
+      ],
+      "key_insights": [
+        "Осень - лучшее соотношение цены и комфорта для Турции",
+        "Отпуск в сентябре и октябре гарантирует теплоту моря и мало дождей",
+        "Легкость виз и пакетные туры - преимущество против Египта и Туниса",
+        "Большой спрос на рекомендации экскурсий и гастроопыта",
+        "Контент о турецких СПА с фото и видео максимально вовлекает"
+      ],
+      "confidence_score": 0.92,
+      "analysis_timestamp": "2025-07-11T06:20:51.180Z",
+      "saved_at": "2025-07-11T06:21:15.434Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Осень - лучшее соотношение цены и комфорта для Турции",
+        "Отпуск в сентябре и октябре гарантирует теплоту моря и мало дождей",
+        "Легкость виз и пакетные туры - преимущество против Египта и Туниса",
+        "Большой спрос на рекомендации экскурсий и гастроопыта",
+        "Контент о турецких СПА с фото и видео максимально вовлекает"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T06:21:18.835Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "social_trends": "Популярность семейных и друзей поездок, видео о турецкой кухне и СПА, сторис из хаммама и экскурсий",
+        "booking_behaviors": "Онлайн-бронирование и сравнение горящих туров, популярность отзывов о курортах",
+        "emerging_opportunities": "Востребованы авторские экскурсии и фототуры, растет тренд на проживание в виллах и эко-отелях, гастрономические путешествия",
+        "content_opportunities": "Видео рецептов и впечатлений, инфографика о погоде и экономии, подборки лучших туров по цветовым тематикам Kupibilet"
+      },
+      "saved_at": "2025-07-11T06:21:15.433Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752214845789_08s26mkkiqet",
+      "collection_timestamp": "2025-07-11T06:24:14.578Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  },
+  "context_analysis": {
+    "destination": "Thailand",
+    "seasonal_trends": "Current season trends for Thailand",
+    "emotional_triggers": "Exotic adventure and relaxation",
+    "market_positioning": "Premium exotic destination",
+    "competitive_landscape": "Strong competition in Southeast Asia travel market",
+    "price_sensitivity": "Medium price sensitivity for exotic destinations",
+    "booking_patterns": "Advance planning with seasonal booking patterns"
+  },
+  "date_analysis": {
+    "destination": "Thailand",
+    "season": "autumn",
+    "optimal_dates": [
+      "2025-09-15",
+      "2025-09-22",
+      "2025-10-01",
+      "2025-10-10",
+      "2025-10-20"
+    ],
+    "pricing_windows": [
+      "Период с 2025-09-01 по 2025-09-30: низкие цены на авиабилеты и отели, так как это начало осеннего сезона.",
+      "Период с 2025-10-01 по 2025-10-31: средние цены, но возможны распродажи и специальные предложения на отели.",
+      "Период с 2025-11-01 по 2025-11-30: цены могут подняться из-за увеличения туристического потока в начале зимнего сезона."
+    ],
+    "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен и выбора.",
+    "seasonal_factors": "Осень в Турции характеризуется мягким климатом, меньшим количеством туристов по сравнению с летом и возможностью насладиться природой и культурными мероприятиями. Температуры остаются комфортными, особенно в сентябре и октябре.",
+    "current_date": "2025-07-11"
+  },
+  "pricing_analysis": {
+    "best_price": 15205,
+    "min_price": 15205,
+    "max_price": 29558,
+    "average_price": 18394,
+    "currency": "RUB",
+    "offers_count": 36,
+    "recommended_dates": [
+      "2025-09-15",
+      "2025-09-16",
+      "2025-09-17"
+    ],
+    "route": {
+      "from": "Moscow",
+      "to": "Bangkok",
+      "from_code": "MOW",
+      "to_code": "BKK"
+    },
+    "enhanced_features": {
+      "airport_conversion": {
+        "originInfo": null,
+        "destinationInfo": {
+          "originalCode": "AYT",
+          "finalCode": "AYT",
+          "countryCode": "TR",
+          "isInternational": true,
+          "wasConverted": false
+        }
+      },
+      "csv_integration": "enabled",
+      "api_source": "kupibilet_api_v2"
+    }
+  },
+  "asset_strategy": {
+    "theme": "Thailand Travel Experience",
+    "visual_style": "modern",
+    "color_palette": "Tropical warm colors with brand accents",
+    "typography": "Modern clean typography",
+    "image_concepts": [
+      "Hero изображение - захватывающий вид на побережье Турции с ярким закатом.",
+      "Lifestyle фото - группа друзей, наслаждающихся кофе на террасе с видом на море.",
+      "Архитектура/достопримечательности - знаменитая мечеть или исторический памятник на фоне осеннего пейзажа.",
+      "Кулинария/культура - традиционные блюда на столе, окруженные осенними листьями.",
+      "Природа/пейзажи - живописные горы и леса с яркими осенними цветами.",
+      "Активности/развлечения - люди, занимающиеся виндсерфингом или прогулками на яхте.",
+      "Шоппинг/сувениры - местные рынки с яркими тканями и сувенирами.",
+      "Транспорт/логистика - удобные маршруты и транспортные средства для путешествий по Турции."
+    ],
+    "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+    "emotional_triggers": "excitement",
+    "brand_consistency": "Стратегия соответствует бренду Kupibilet за счет использования фирменных цветов и современного дизайна, что создает гармоничное восприятие и повышает доверие к бренду."
+  },
+  "generated_content": {
+    "subject": "Погрузитесь в осеннюю сказку Турции!",
+    "preheader": "Насладитесь бирюзовым морем и свежими фруктами по цене от 15205 RUB.",
+    "body": "Осень в Турции — это настоящая сказка, когда яркие краски природы сочетаются с теплом солнечных дней. Представьте себе, как вы прогуливаетесь по узким улочкам старинных городов, наслаждаясь свежими фруктами и ароматом специй, а вокруг вас — бирюзовое море, которое манит к себе. Вечером, когда солнце садится за горизонт, побережье наполняется огнями, создавая атмосферу волшебства и уюта. Это идеальное время для того, чтобы открыть для себя все прелести Турции, от древних руин до современных курортов.\n\nТурция предлагает множество уникальных возможностей для отдыха. Вы можете расслабиться на пляже, попробовать традиционные блюда в местных ресторанах, а также посетить знаменитый хаммам — место, где вы сможете насладиться настоящим турецким массажем и расслабляющими процедурами. Кроме того, осень — это время сбора урожая, и вы сможете попробовать самые свежие фрукты и овощи, которые только что собрали с местных плантаций. Не упустите шанс поучаствовать в осенних фестивалях, которые проходят в это время по всей стране.\n\nМы предлагаем вам уникальные осенние путешествия в Турцию по лучшей цене — всего 15205 RUB! Вы можете выбрать из нескольких оптимальных дат: 15, 22 сентября, 1, 10 и 20 октября 2025 года. Эти даты идеально подходят для того, чтобы насладиться всеми прелестями осеннего отдыха в Турции. У нас есть 23 уникальных предложения, которые ждут вас!\n\nНе упустите возможность отправиться в незабываемое путешествие! Забронируйте свое место прямо сейчас и подарите себе и своим близким невероятные эмоции и воспоминания. Осень в Турции — это не просто отдых, это возможность окунуться в атмосферу тепла и гостеприимства, которую дарят вам турки. Поспешите, количество мест ограничено!",
+    "cta": {
+      "primary": "Забронировать путешествие",
+      "secondary": "Узнать больше"
+    },
+    "personalization_level": "advanced",
+    "urgency_level": "medium"
+  },
+  "technical_requirements": {
+    "specificationId": "spec_1752214981848_rq90txtyrr",
+    "specification": {
+      "version": "1.0",
+      "generatedAt": "2025-07-11T06:23:01.849Z",
+      "campaign": {
+        "id": "campaign_1752214845789_08s26mkkiqet",
+        "name": "Campaign campaign_1752214845789_08s26mkkiqet",
+        "type": "email-marketing",
+        "theme": "general",
+        "targetAudience": "general",
+        "priority": "medium"
+      },
+      "content": {
+        "subject": "Email Subject",
+        "preheader": "Email preheader",
+        "sections": [
+          {
+            "id": "header",
+            "type": "header",
+            "required": true
+          },
+          {
+            "id": "hero",
+            "type": "hero",
+            "required": true
+          },
+          {
+            "id": "content",
+            "type": "content",
+            "required": true
+          },
+          {
+            "id": "cta",
+            "type": "cta",
+            "required": true
+          },
+          {
+            "id": "footer",
+            "type": "footer",
+            "required": true
+          },
+          {
+            "id": "products",
+            "type": "product",
+            "required": true,
+            "metadata": {
+              "productCount": 1
+            }
+          }
+        ],
+        "callToAction": {
+          "primary": {
+            "text": "Click Here",
+            "url": "#",
+            "style": "button"
+          }
+        },
+        "personalization": {
+          "enabled": false,
+          "variables": [],
+          "dynamicContent": []
+        }
+      },
+      "design": {
+        "constraints": {
+          "layout": {
+            "type": "single-column",
+            "maxWidth": 600,
+            "minWidth": 320,
+            "padding": {
+              "top": 20,
+              "right": 20,
+              "bottom": 20,
+              "left": 20
+            },
+            "sections": []
+          },
+          "typography": {
+            "headingFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "sizes": {
+                "h1": 28,
+                "h2": 24,
+                "h3": 20
+              },
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            },
+            "bodyFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "size": 16,
+              "lineHeight": 1.5,
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            }
+          },
+          "colorScheme": {
+            "primary": "#007bff",
+            "secondary": "#6c757d",
+            "accent": "#28a745",
+            "text": {
+              "primary": "#333333",
+              "secondary": "#666666",
+              "muted": "#999999"
+            },
+            "background": {
+              "primary": "#ffffff",
+              "secondary": "#f8f9fa",
+              "accent": "#e9ecef"
+            }
+          },
+          "spacing": {
+            "base": 16,
+            "sections": 40,
+            "elements": 20,
+            "text": 12
+          }
+        },
+        "assets": {
+          "manifest": {
+            "images": [],
+            "icons": [],
+            "fonts": [
+              {
+                "family": "Arial",
+                "weights": [
+                  "normal",
+                  "bold"
+                ],
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "usage": "primary"
+              }
+            ]
+          },
+          "requirements": [
+            {
+              "id": "hero-image",
+              "type": "image",
+              "description": "Hero image for email header",
+              "specifications": {
+                "dimensions": {
+                  "width": 600,
+                  "height": 300
+                },
+                "formats": [
+                  "jpg",
+                  "webp"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Solid color background with text overlay"
+            },
+            {
+              "id": "logo",
+              "type": "image",
+              "description": "Brand logo",
+              "specifications": {
+                "dimensions": {
+                  "height": 60
+                },
+                "formats": [
+                  "png",
+                  "svg"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Text-based brand name"
+            }
+          ]
+        },
+        "responsive": {
+          "enabled": true,
+          "breakpoints": [
+            {
+              "name": "mobile",
+              "width": 480,
+              "constraints": {
+                "maxWidth": 320
+              }
+            },
+            {
+              "name": "tablet",
+              "width": 768,
+              "constraints": {
+                "maxWidth": 600
+              }
+            },
+            {
+              "name": "desktop",
+              "width": 1200,
+              "constraints": {
+                "maxWidth": 600
+              }
+            }
+          ],
+          "strategy": "mobile-first"
+        }
+      },
+      "quality": {
+        "criteria": {
+          "performance": {
+            "maxFileSize": 100000,
+            "maxImageSize": 50000,
+            "compressionQuality": 0.8,
+            "lazyLoading": false,
+            "cacheOptimization": true
+          },
+          "accessibility": {
+            "wcagLevel": "AA",
+            "contrastRatio": 4.5,
+            "altTextRequired": true,
+            "focusIndicators": true,
+            "screenReaderFriendly": true,
+            "keyboardNavigation": false
+          },
+          "emailDeliverability": {
+            "spamScore": 3,
+            "textToHtmlRatio": 0.3,
+            "linkLimit": 10,
+            "imageToTextRatio": 0.6,
+            "subjectLineLength": 50,
+            "preheaderLength": 100
+          },
+          "crossClientCompatibility": {
+            "targetClients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "fallbackStrategies": [
+              {
+                "feature": "WebP images",
+                "fallback": "JPEG images"
+              },
+              {
+                "feature": "SVG images",
+                "fallback": "PNG images"
+              },
+              {
+                "feature": "Custom fonts",
+                "fallback": "System fonts"
+              }
+            ],
+            "testing": {
+              "required": true,
+              "platforms": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "minCompatibility": 95
+            }
+          },
+          "email_clients": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "performance_thresholds": {
+            "max_file_size": 120000,
+            "load_time": 1
+          },
+          "accessibility_requirements": {
+            "wcag_level": "AA",
+            "color_contrast": 4.5
+          }
+        },
+        "testing": {
+          "required": true,
+          "types": [
+            "functional",
+            "visual",
+            "compatibility"
+          ],
+          "platforms": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "automation": {
+            "enabled": false,
+            "tools": [],
+            "coverage": 0
+          }
+        },
+        "validation": {
+          "htmlValidation": true,
+          "cssValidation": true,
+          "linkValidation": true,
+          "spamCheck": true,
+          "accessibilityCheck": true
+        }
+      },
+      "delivery": {
+        "emailClients": [
+          {
+            "client": "gmail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Clips emails over 102KB",
+              "Limited CSS support"
+            ]
+          },
+          {
+            "client": "outlook",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Uses Word rendering engine",
+              "Very limited CSS support"
+            ]
+          },
+          {
+            "client": "apple-mail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": true,
+            "supportsCSS": {
+              "flexbox": true,
+              "grid": false,
+              "transform": true,
+              "animation": true
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Good CSS support",
+              "Supports media queries"
+            ]
+          },
+          {
+            "client": "yahoo-mail",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Limited CSS support",
+              "Similar to Gmail"
+            ]
+          }
+        ],
+        "deployment": {
+          "environment": "production",
+          "approvalRequired": true,
+          "rollbackStrategy": "immediate",
+          "monitoring": {
+            "enabled": true,
+            "metrics": [
+              "open_rate",
+              "click_rate",
+              "bounce_rate"
+            ],
+            "alerts": [
+              "high_bounce_rate",
+              "low_open_rate"
+            ]
+          }
+        },
+        "tracking": {
+          "enabled": true,
+          "openTracking": true,
+          "clickTracking": true,
+          "customEvents": []
+        }
+      },
+      "metadata": {
+        "generatedBy": "technical-spec-generator",
+        "sourceContext": {
+          "campaignId": "campaign_1752214845789_08s26mkkiqet",
+          "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet",
+          "taskType": "content_creation",
+          "language": "ru",
+          "campaign_type": "promotional",
+          "industry": "travel",
+          "urgency": "medium",
+          "target_audience": "любители путешествий"
+        },
+        "processingTime": 0,
+        "complexity": "low",
+        "estimatedImplementationTime": 4,
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "notes": []
+      }
+    },
+    "generationSummary": {
+      "timestamp": "2025-07-11T06:23:01.849Z",
+      "processingTime": 1,
+      "sourceContexts": 4,
+      "sectionsGenerated": 6,
+      "assetsProcessed": 0,
+      "constraintsApplied": 4,
+      "validationPassed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "implementationGuidance": {
+      "priority": "high",
+      "estimatedTime": 4,
+      "complexity": "low",
+      "dependencies": [
+        "mjml",
+        "image-optimization",
+        "html-validation"
+      ],
+      "risks": [
+        "Multiple email client compatibility challenges"
+      ],
+      "recommendations": [
+        "Use table-based layout for maximum compatibility",
+        "Inline all CSS for better email client support",
+        "Optimize images for web delivery",
+        "Test across all target email clients",
+        "Implement responsive design with media queries",
+        "Ensure WCAG AA compliance with proper alt text and contrast"
+      ]
+    },
+    "qualityScore": {
+      "completeness": 100,
+      "consistency": 90,
+      "clarity": 100,
+      "implementability": 100,
+      "overall": 98
+    }
+  }
+}

@@ -300,33 +300,10 @@ const performanceReporter = tool({
   }
 });
 
-const handleToolErrorUnified = tool({
-  name: 'handleToolErrorUnified',
-  description: 'Обработка ошибок инструментов с единой логикой восстановления',
-  parameters: z.object({
-    toolName: z.string().describe('Имя инструмента, в котором произошла ошибка'),
-    error: z.string().describe('Сообщение об ошибке')
-  }),
-  execute: async (args) => {
-    console.log(`🚨 TOOL ERROR HANDLER: ${args.toolName} failed with error: ${args.error}`);
-    
-    // Логика восстановления для delivery specialist
-    const recoveryAction = {
-      toolName: args.toolName,
-      error: args.error,
-      recovery_suggestion: 'Save partial results and notify user',
-      fallback_available: true,
-      should_continue: false, // Delivery specialist is final step
-      emergency_actions: [
-        'Save current progress',
-        'Create error report',
-        'Notify user of completion status'
-      ]
-    };
-    
-    return recoveryAction;
-  }
-});
+// Import centralized error handler instead of duplicating
+import { createErrorHandlerTool } from '../core/error-handler';
+
+const handleToolErrorUnified = createErrorHandlerTool('delivery-specialist');
 
 // ============================================================================
 // DELIVERY SPECIALIST AGENT - OpenAI Agents SDK

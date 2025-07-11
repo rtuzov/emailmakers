@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination analysis and market intelligence for content creation",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Focus on emotional triggers as Turkish summer extension",
+      "Leverage wellness and gastro tour opportunities",
+      "Use visuals of quiet beaches and market scenes",
+      "Recommend early booking and price savings",
+      "Highlight eco-friendly and family-safe hotels"
+    ]
+  },
+  "created_at": "2025-07-11T06:42:40.215Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752216115414_00f93fl72l8b/handoffs/data-collection specialist-to-content-specialist.json"
+}

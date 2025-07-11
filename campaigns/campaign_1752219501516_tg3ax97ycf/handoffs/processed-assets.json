@@ -1,0 +1,587 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752219654925_6nzjf41iywv",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight Antalya as a key destination for autumn travel.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 76378,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 76,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_selected_1752219681858_0",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "alt_text": "A stunning landscape showcasing the vibrant autumn colors in Turkey, with warm tones that evoke feelings of coziness and inspiration.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing vibrant landscapes, serene coastal views, cozy dining experiences, and the rich textures of the season. Each image serves a distinct purpose, from hero visuals to supporting details, creating a comprehensive visual narrative.",
+          "emotional_match": "warm and inviting",
+          "tags": [
+            "autumn",
+            "Turkey",
+            "landscape",
+            "colors",
+            "nature"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_selected_1752219681858_1",
+        "path": "https://images.unsplash.com/photo-1506748686214-2c8b2c2e6f5e?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-2c8b2c2e6f5e?w=800&h=400&fit=crop",
+        "alt_text": "A serene sunset over the coast of Antalya, capturing the tranquil beauty of the seaside and inviting atmosphere.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing vibrant landscapes, serene coastal views, cozy dining experiences, and the rich textures of the season. Each image serves a distinct purpose, from hero visuals to supporting details, creating a comprehensive visual narrative.",
+          "emotional_match": "serene and picturesque",
+          "tags": [
+            "Antalya",
+            "sunset",
+            "coast",
+            "serene",
+            "travel"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_selected_1752219681858_2",
+        "path": "https://images.unsplash.com/photo-1506748686214-8a0d2c5c2f8b?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-8a0d2c5c2f8b?w=800&h=400&fit=crop",
+        "alt_text": "A cozy café setting adorned with autumn decorations, perfect for highlighting culinary experiences in Turkey during the fall.",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing vibrant landscapes, serene coastal views, cozy dining experiences, and the rich textures of the season. Each image serves a distinct purpose, from hero visuals to supporting details, creating a comprehensive visual narrative.",
+          "emotional_match": "inviting and warm",
+          "tags": [
+            "café",
+            "autumn",
+            "cozy",
+            "food",
+            "Turkey"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_selected_1752219681858_4",
+        "path": "https://images.unsplash.com/photo-1506748686214-6f8b2c2e6f5e?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-6f8b2c2e6f5e?w=800&h=400&fit=crop",
+        "alt_text": "An inviting seaside restaurant in Antalya, perfect for showcasing the culinary delights and relaxed atmosphere of the region during autumn.",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing vibrant landscapes, serene coastal views, cozy dining experiences, and the rich textures of the season. Each image serves a distinct purpose, from hero visuals to supporting details, creating a comprehensive visual narrative.",
+          "emotional_match": "cozy and inviting",
+          "tags": [
+            "Antalya",
+            "restaurant",
+            "seaside",
+            "food",
+            "travel"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752219652303_n63lw6ne8pg",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty of autumn in Turkey, highlighting cozy atmospheres and vibrant colors.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 2028,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 2,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752219657233_5w8icwxdjfu",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and discounts for early bookings.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752219657234_ds0awrvwb6w",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and discounts for early bookings.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752219659426_gsu0jvp98q",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_логотип-с-яркими-цветами-символизирующий-современный-подход-к-брендингу.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/assets/optimized/optimized_логотип-с-яркими-цветами-символизирующий-современный-подход-к-брендингу.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Provide a cohesive background that aligns with the campaign's branding.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 15525,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 16,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_selected_1752219681858_3",
+        "path": "https://images.unsplash.com/photo-1506748686214-5c8b2c2e6f5e?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-5c8b2c2e6f5e?w=800&h=400&fit=crop",
+        "alt_text": "A close-up of autumn leaves, showcasing the rich textures and colors that embody the essence of the season in Turkey.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing vibrant landscapes, serene coastal views, cozy dining experiences, and the rich textures of the season. Each image serves a distinct purpose, from hero visuals to supporting details, creating a comprehensive visual narrative.",
+          "emotional_match": "fresh and inspiring",
+          "tags": [
+            "autumn",
+            "leaves",
+            "nature",
+            "close-up",
+            "colors"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T07:41:36.922Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752219654925_6nzjf41iywv",
+      "asset_type": "image",
+      "usage_context": "Highlight Antalya as a key destination for autumn travel.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 76378,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_selected_1752219681858_0",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "A stunning landscape showcasing the vibrant autumn colors in Turkey, with warm tones that evoke feelings of coziness and inspiration.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_selected_1752219681858_1",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "A serene sunset over the coast of Antalya, capturing the tranquil beauty of the seaside and inviting atmosphere.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_selected_1752219681858_2",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "A cozy café setting adorned with autumn decorations, perfect for highlighting culinary experiences in Turkey during the fall.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_selected_1752219681858_4",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "An inviting seaside restaurant in Antalya, perfect for showcasing the culinary delights and relaxed atmosphere of the region during autumn.",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752219652303_n63lw6ne8pg",
+      "asset_type": "icon",
+      "usage_context": "Showcase the beauty of autumn in Turkey, highlighting cozy atmospheres and vibrant colors.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 2028,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752219657233_5w8icwxdjfu",
+      "asset_type": "icon",
+      "usage_context": "Indicate special offers and discounts for early bookings.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752219657234_ds0awrvwb6w",
+      "asset_type": "icon",
+      "usage_context": "Indicate special offers and discounts for early bookings.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752219659426_gsu0jvp98q",
+      "asset_type": "icon",
+      "usage_context": "Provide a cohesive background that aligns with the campaign's branding.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 15525,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_selected_1752219681858_3",
+      "asset_type": "icon",
+      "usage_context": "decoration",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "A close-up of autumn leaves, showcasing the rich textures and colors that embody the essence of the season in Turkey.",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 5,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T07:41:36.923Z"
+  }
+}

@@ -1,0 +1,530 @@
+{
+  "manifestId": "manifest_1752220234857_tfatp591y2",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752220267682_jd6hz3liu3",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "alt_text": "AI-selected hero",
+        "usage": "To capture the essence of autumn in Turkey, showcasing warm seas and serene beaches.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 159632,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 160,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752220269734_im2ettpfxfm",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "alt_text": "AI-selected support",
+        "usage": "To provide a visual representation of Antalya's attractions during the autumn season.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 76378,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 76,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_selected_1752220299044_0",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "alt_text": "A serene view of a beach in Turkey during autumn, showcasing warm colors of the sea and sand, inviting relaxation.",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing its serene beaches, vibrant local markets, delicious cuisine, and stunning landscapes. Each image serves a distinct purpose, from inviting relaxation to evoking excitement and adventure.",
+          "emotional_match": "relaxing and inviting",
+          "tags": [
+            "autumn",
+            "beach",
+            "Turkey",
+            "relaxing",
+            "sea"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752220299044_1",
+        "path": "https://images.unsplash.com/photo-1541412365636-9a8e2b0e2f5e?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1541412365636-9a8e2b0e2f5e?w=800&h=400&fit=crop",
+        "alt_text": "A vibrant local market in Turkey filled with colorful produce and spices, capturing the excitement and cultural richness of autumn.",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing its serene beaches, vibrant local markets, delicious cuisine, and stunning landscapes. Each image serves a distinct purpose, from inviting relaxation to evoking excitement and adventure.",
+          "emotional_match": "exciting and adventurous",
+          "tags": [
+            "market",
+            "Turkey",
+            "autumn",
+            "cultural",
+            "vibrant"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752220299044_2",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=800&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=800&fit=crop",
+        "alt_text": "A picturesque autumn landscape in Turkey, showcasing the beautiful fall foliage and tranquil scenery, perfect for a background.",
+        "usage": "background",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing its serene beaches, vibrant local markets, delicious cuisine, and stunning landscapes. Each image serves a distinct purpose, from inviting relaxation to evoking excitement and adventure.",
+          "emotional_match": "calming and serene",
+          "tags": [
+            "landscape",
+            "autumn",
+            "Turkey",
+            "scenery",
+            "tranquil"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752220299044_3",
+        "path": "https://images.unsplash.com/photo-1574169208505-1f4c5e0b3c95?w=800&h=400&fit=crop",
+        "url": "https://images.unsplash.com/photo-1574169208505-1f4c5e0b3c95?w=800&h=400&fit=crop",
+        "alt_text": "A close-up of delicious Turkish cuisine, showcasing the rich colors and textures of autumn dishes, evoking a sense of warmth and comfort.",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing its serene beaches, vibrant local markets, delicious cuisine, and stunning landscapes. Each image serves a distinct purpose, from inviting relaxation to evoking excitement and adventure.",
+          "emotional_match": "warm and inviting",
+          "tags": [
+            "cuisine",
+            "Turkey",
+            "autumn",
+            "food",
+            "comfort"
+          ]
+        }
+      },
+      {
+        "id": "ai_selected_1752220299044_4",
+        "path": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "url": "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=600&fit=crop",
+        "alt_text": "A stunning sunset over a Turkish beach in autumn, capturing the vibrant colors of the sky and the calmness of the sea.",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "These images collectively capture the essence of autumn in Turkey, showcasing its serene beaches, vibrant local markets, delicious cuisine, and stunning landscapes. Each image serves a distinct purpose, from inviting relaxation to evoking excitement and adventure.",
+          "emotional_match": "peaceful and inspiring",
+          "tags": [
+            "sunset",
+            "beach",
+            "Turkey",
+            "autumn",
+            "vibrant"
+          ]
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752220272132_v10jjauqpe",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To enhance the promotional aspect of the email, highlighting special offers and discounts.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752220272133_d32jdqsvsx",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To enhance the promotional aspect of the email, highlighting special offers and discounts.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752220275786_kqir0x078d",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752220099273_wpipg63ar3/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To incorporate brand elements in the email header.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "to capture the essence of autumn in Turkey, showcasing warm seas and serene beaches",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "relaxing and inviting",
+      "visual_style": "vibrant and warm, reflecting the beauty of Turkish landscapes in autumn",
+      "content_context": "highlighting the appeal of a tranquil vacation in Turkey during the autumn season"
+    },
+    {
+      "type": "destination",
+      "purpose": "to provide a visual representation of Antalya, emphasizing its autumn charm",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "exciting and adventurous",
+      "visual_style": "colorful and lively, showcasing local markets and beach scenes",
+      "content_context": "focusing on the cultural and scenic experiences available in Turkey during autumn"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752220267682_jd6hz3liu3",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752220269734_im2ettpfxfm",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_selected_1752220299044_0",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A serene view of a beach in Turkey during autumn, showcasing warm colors of the sea and sand, inviting relaxation.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_selected_1752220299044_1",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A vibrant local market in Turkey filled with colorful produce and spices, capturing the excitement and cultural richness of autumn.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_selected_1752220299044_2",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A picturesque autumn landscape in Turkey, showcasing the beautiful fall foliage and tranquil scenery, perfect for a background.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_selected_1752220299044_3",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A close-up of delicious Turkish cuisine, showcasing the rich colors and textures of autumn dishes, evoking a sense of warmth and comfort.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_selected_1752220299044_4",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A stunning sunset over a Turkish beach in autumn, capturing the vibrant colors of the sky and the calmness of the sea.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752220272132_v10jjauqpe",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752220272133_d32jdqsvsx",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752220275786_kqir0x078d",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннее волшебство Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 11,
+    "totalSize": 281783,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T07:51:39.052Z",
+    "processingTime": 64195,
+    "sourcesProcessed": 2,
+    "assetsCollected": 10,
+    "assetsValidated": 10,
+    "assetsOptimized": 10,
+    "errors": []
+  }
+}

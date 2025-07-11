@@ -1,0 +1,236 @@
+{
+  "manifestId": "manifest_1752214992661_9zljsjii74w",
+  "assetManifest": {
+    "images": [],
+    "icons": [
+      {
+        "id": "ai_1752215025064_dups2nyrbxb",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "alt_text": "AI-selected support",
+        "usage": "to highlight Antalya as a key travel destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 76378,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 76,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752215028431_efr8sn7zew",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to highlight special offers and assist users in navigating the email content",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752215028432_gww9jdfv8p",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_услуга-поддержки-доступна-в-любое-время-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_услуга-поддержки-доступна-в-любое-время-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to highlight special offers and assist users in navigating the email content",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4941,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752215030768_6qnbbmw16yo",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752214845789_08s26mkkiqet/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "to reinforce brand identity in the email header",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "To capture the essence of autumn in Turkey and entice travelers with a warm, inviting atmosphere.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "cozy, warm",
+      "visual_style": "vibrant, inviting, showcasing Turkish landscapes and culture",
+      "content_context": "Highlighting the beautiful beaches, warm sea, and cultural experiences in Turkey during autumn."
+    },
+    {
+      "type": "destination",
+      "purpose": "To showcase specific attractions in Antalya, such as beaches and markets.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "exciting, adventurous",
+      "visual_style": "colorful, culturally rich imagery of Turkish markets and beaches",
+      "content_context": "Focusing on the unique experiences available in Antalya during the autumn season."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752215025064_dups2nyrbxb",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннюю сказку Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752215028431_efr8sn7zew",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннюю сказку Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752215028432_gww9jdfv8p",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннюю сказку Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752215030768_6qnbbmw16yo",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Погрузитесь в осеннюю сказку Турции!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 5,
+    "totalSize": 121074,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T06:24:07.805Z",
+    "processingTime": 55144,
+    "sourcesProcessed": 2,
+    "assetsCollected": 4,
+    "assetsValidated": 4,
+    "assetsOptimized": 4,
+    "errors": [
+      "3 assets failed basic validation"
+    ]
+  }
+}

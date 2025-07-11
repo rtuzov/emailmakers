@@ -397,4 +397,68 @@ export function handleToolErrorUnified(toolName: string, error: any) {
     success: false,
     error: error instanceof Error ? error.message : String(error),
   };
-} 
+}
+
+/**
+ * Create a specialized error handler tool for specific agents
+ * Prevents duplicate tool definitions across different agents
+ */
+export function createErrorHandlerTool(agentType: string) {
+  const { tool } = require('@openai/agents');
+  const { z } = require('zod');
+  
+  return tool({
+    name: `handleToolErrorUnified_${agentType}`,
+    description: `Handle tool errors for ${agentType} with unified recovery logic`,
+    parameters: z.object({
+      toolName: z.string().describe('Name of the tool that failed'),
+      error: z.string().describe('Error message')
+    }),
+    execute: async (args: { toolName: string; error: string }) => {
+      console.log(`🚨 TOOL ERROR HANDLER [${agentType}]: ${args.toolName} failed with error: ${args.error}`);
+      
+      // Agent-specific recovery logic
+      const recoveryStrategies: Record<string, any> = {
+        'quality-specialist': {
+          recovery_suggestion: 'Check tool parameters and try again',
+          fallback_available: false,
+          should_continue: true,
+          next_actions: ['Validate inputs', 'Retry with safe defaults']
+        },
+        'delivery-specialist': {
+          recovery_suggestion: 'Save partial results and notify user',
+          fallback_available: true,
+          should_continue: false,
+          emergency_actions: [
+            'Save current progress',
+            'Create error report',
+            'Notify user of completion status'
+          ]
+        },
+        'design-specialist': {
+          recovery_suggestion: 'Use fallback templates and continue',
+          fallback_available: true,
+          should_continue: true,
+          next_actions: ['Switch to basic template', 'Notify about design limitations']
+        },
+        'content-specialist': {
+          recovery_suggestion: 'Generate basic content and continue',
+          fallback_available: true,
+          should_continue: true,
+          next_actions: ['Use template content', 'Request manual review']
+        }
+      };
+      
+      const strategy = recoveryStrategies[agentType] || recoveryStrategies['quality-specialist'];
+      
+      // Log the error using unified handler
+      const errorResult = handleToolErrorUnified(args.toolName, args.error);
+      
+      return {
+        ...errorResult,
+        agent_type: agentType,
+        ...strategy
+      };
+    }
+  });
+}

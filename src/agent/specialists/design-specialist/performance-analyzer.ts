@@ -28,8 +28,10 @@ export const analyzePerformance = tool({
       const mjmlTemplate = params.mjml_template;
       const assetManifest = params.asset_manifest;
       
-      // Calculate performance metrics
-      const allAssets = [...assetManifest.images, ...assetManifest.icons];
+      // Calculate performance metrics - fix: ensure arrays exist before spreading
+      const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];
+      const icons = Array.isArray(assetManifest.icons) ? assetManifest.icons : [];
+      const allAssets = [...images, ...icons];
       const totalAssetSize = allAssets.reduce((sum, asset) => sum + (asset.file_size || 0), 0);
       const templateSize = mjmlTemplate.file_size || 0;
       const totalSize = totalAssetSize + templateSize;

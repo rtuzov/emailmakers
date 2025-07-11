@@ -49,30 +49,79 @@ async function generateAITemplateDesign(params: {
 }): Promise<TemplateDesign> {
   const { contentContext, designBrief, assetManifest, techSpec, designRequirements } = params;
   
-  // Extract content for AI analysis
-  const subject = contentContext.subject || contentContext.generated_content?.subject;
-  const body = contentContext.body || contentContext.generated_content?.body;
-  const pricing = contentContext.pricing || contentContext.generated_content?.pricing;
-  const cta = contentContext.cta || contentContext.generated_content?.cta;
+  // Extract content for AI analysis - use proper paths for all data
+  const subject = contentContext.generated_content?.subject || contentContext.subject;
+  const body = contentContext.generated_content?.body || contentContext.body;
+  const preheader = contentContext.generated_content?.preheader;
   
-  // Extract brand colors
-  const primaryColor = designBrief.design_requirements?.primary_color || designBrief.brand_colors?.primary;
-  const accentColor = designBrief.design_requirements?.accent_color || designBrief.brand_colors?.accent;
-  const backgroundColor = designBrief.design_requirements?.background_color || designBrief.brand_colors?.background;
+  // Extract pricing information from multiple possible sources
+  const pricingData = contentContext.pricing_analysis || contentContext.pricing || contentContext.generated_content?.pricing;
+  const bestPrice = pricingData?.best_price || pricingData?.min_price;
+  const currency = pricingData?.currency || 'RUB';
+  const formattedPrice = bestPrice ? `${bestPrice} ${currency}` : 'Цена по запросу';
   
-  // Extract assets information
-  const localImages = assetManifest.images.filter((img: any) => !img.isExternal);
-  const externalImages = assetManifest.images.filter((img: any) => img.isExternal);
-  const totalImages = assetManifest.images.length;
+  // Extract CTA from content
+  const ctaData = contentContext.generated_content?.cta;
+  const primaryCTA = ctaData?.primary || 'Забронировать';
+  const secondaryCTA = ctaData?.secondary || 'Узнать больше';
   
+  // Extract dates
+  const dateAnalysis = contentContext.date_analysis;
+  const optimalDates = dateAnalysis?.optimal_dates || [];
+  const formattedDates = optimalDates.slice(0, 3).join(', ');
+  
+  // Extract destination info
+  const destination = contentContext.context_analysis?.destination || dateAnalysis?.destination || 'место назначения';
+  
+  // Extract brand colors with fallbacks
+  const primaryColor = designBrief.design_requirements?.primary_color || 
+                      designBrief.brand_colors?.primary || 
+                      '#4BFF7E';
+  const accentColor = designBrief.design_requirements?.accent_color || 
+                     designBrief.brand_colors?.accent || 
+                     '#FF6240';
+  const backgroundColor = designBrief.design_requirements?.background_color || 
+                         designBrief.brand_colors?.background || 
+                         '#EDEFFF';
+  
+  // Extract assets information - handle both local and external assets properly
+  const images = Array.isArray(assetManifest?.images) ? assetManifest.images : [];
+  const icons = Array.isArray(assetManifest?.icons) ? assetManifest.icons : [];
+  const allAssets = [...images, ...icons];
+  
+  console.log(`🔍 Processing assets: ${images.length} images, ${icons.length} icons`);
+  
+  // Separate local and external images
+  const localImages = images.filter((img: any) => !img.isExternal);
+  const externalImages = images.filter((img: any) => img.isExternal);
+  const totalImages = images.length;
+  
+  console.log(`📊 Asset breakdown: ${localImages.length} local, ${externalImages.length} external images`);
+  
+  // Find specific assets for template - prioritize external images for hero
+  const heroAsset = externalImages[0] || localImages[0] || images[0];
+  
+  // Use remaining images for content sections
+  const contentAssets = [
+    ...externalImages.slice(1),  // Use external images first
+    ...localImages.slice(heroAsset === localImages[0] ? 1 : 0)  // Then local images
+  ].slice(0, 3);
+  
+  console.log(`🎯 Selected hero asset: ${heroAsset?.filename || 'none'} (external: ${heroAsset?.isExternal})`);
+  console.log(`📷 Content assets: ${contentAssets.length} selected`);
+
   const templateDesignPrompt = `
 Создай детальный дизайн email шаблона для профессиональной верстки в MJML.
 
 📧 КОНТЕКСТ КАМПАНИИ:
 Тема: ${subject}
-Контент: ${body}
-Цены: ${JSON.stringify(pricing)}
-Призыв к действию: ${cta}
+Preheader: ${preheader}
+Контент: ${body?.substring(0, 500)}...
+Цена: ${formattedPrice}
+Даты: ${formattedDates}
+Направление: ${destination}
+Основной CTA: ${primaryCTA}
+Дополнительный CTA: ${secondaryCTA}
 
 🎨 БРЕНДИНГ:
 Основной цвет: ${primaryColor}
@@ -84,28 +133,45 @@ async function generateAITemplateDesign(params: {
 Всего изображений: ${totalImages}
 Локальные изображения: ${localImages.length}
 Внешние изображения: ${externalImages.length}
-Иконки: ${assetManifest.icons.length}
+Иконки: ${icons.length}
+
+Hero изображение: ${heroAsset?.filename || 'не найдено'} 
+- Путь: ${heroAsset?.path || heroAsset?.url || 'placeholder.jpg'}
+- Описание: ${heroAsset?.alt_text || heroAsset?.description || 'Hero image'}
+- Внешнее: ${heroAsset?.isExternal ? 'да' : 'нет'}
+
+Контентные изображения (${contentAssets.length}):
+${contentAssets.map((asset, i) => 
+  `${i+1}. ${asset.filename} - ${asset.alt_text || asset.description} (внешнее: ${asset.isExternal ? 'да' : 'нет'})`
+).join('\n')}
 
 📱 ТЕХНИЧЕСКИЕ ТРЕБОВАНИЯ:
 Максимальная ширина: ${techSpec.specification?.design?.constraints?.layout?.maxWidth || 600}px
-Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: any) => c.client).join(', ')}
-Темная тема: ${techSpec.specification?.design?.constraints?.layout?.supportsDarkMode ? 'да' : 'нет'}
+Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: any) => c.client).join(', ') || 'gmail, outlook, apple-mail'}
 
 🎯 ЗАДАЧА:
-Создай профессиональный дизайн email шаблона в формате JSON со следующей структурой:
+Создай профессиональный дизайн email шаблона в формате JSON. ОБЯЗАТЕЛЬНО используй РЕАЛЬНЫЕ пути к ассетам из списка выше.
+
+ВАЖНЫЕ ТРЕБОВАНИЯ:
+1. Используй ТОЧНЫЕ пути к файлам из списка ассетов выше
+2. Для внешних изображений используй URL (поле path/url)
+3. Для локальных изображений используй локальный путь
+4. Используй РЕАЛЬНУЮ цену: ${formattedPrice}
+5. Используй РЕАЛЬНЫЕ CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
+6. Включи реальные даты: ${formattedDates}
 
 {
-  "template_id": "уникальный_идентификатор",
-  "template_name": "Название шаблона",
-  "description": "Описание концепции дизайна",
-  "target_audience": "Целевая аудитория",
-  "visual_concept": "Визуальная концепция и подход",
+  "template_id": "autumn_${destination.toLowerCase()}_campaign",
+  "template_name": "${subject}",
+  "description": "Email шаблон для ${destination} кампании с реальными ассетами и ценами",
+  "target_audience": "${contentContext.campaign?.target_audience || 'путешественники'}",
+  "visual_concept": "Современный дизайн с акцентом на ${destination} и осенний отдых",
   
   "layout": {
-    "type": "single-column | multi-column | hybrid",
+    "type": "single-column",
     "max_width": 600,
     "sections_count": 5,
-    "visual_hierarchy": "Описание визуальной иерархии",
+    "visual_hierarchy": "Hero изображение → контент → цены → CTA → footer",
     "spacing_system": {
       "section_padding": "20px",
       "content_padding": "15px",
@@ -121,37 +187,34 @@ Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: 
       "content": {
         "logo": {
           "required": true,
-          "position": "left | center | right",
-          "size": "small | medium | large"
-        },
-        "navigation": {
-          "required": false,
-          "items": []
+          "position": "center",
+          "size": "medium"
         }
       },
       "styling": {
         "background_color": "#ffffff",
-        "padding": "20px",
-        "border_bottom": "1px solid #e5e5e5"
+        "padding": "20px"
       }
     },
     {
       "id": "hero",
-      "type": "hero",
+      "type": "hero", 
       "position": 2,
       "content": {
-        "headline": "Основной заголовок",
-        "subheadline": "Подзаголовок",
+        "headline": "${subject}",
+        "subheadline": "${preheader}",
         "hero_image": {
           "required": true,
-          "source": "external | local",
-          "position": "background | inline",
-          "size": "full-width | contained"
+          "source": "${heroAsset?.isExternal ? 'external' : 'local'}",
+          "position": "background",
+          "size": "full-width",
+          "asset_file": "${heroAsset?.path || heroAsset?.url || 'placeholder.jpg'}",
+          "alt_text": "${heroAsset?.alt_text || heroAsset?.description || 'Hero image'}"
         },
         "cta_button": {
-          "text": "Призыв к действию",
-          "style": "primary | secondary",
-          "position": "center | left | right"
+          "text": "${primaryCTA}",
+          "style": "primary",
+          "position": "center"
         }
       },
       "styling": {
@@ -169,25 +232,36 @@ Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: 
         "text_blocks": [
           {
             "type": "paragraph",
-            "content": "Основной текст контента",
+            "content": "${body?.substring(0, 200)}...",
             "styling": "body-text"
           }
         ],
         "images": {
-          "count": ${Math.min(totalImages - 1, 3)},
-          "layout": "grid | carousel | inline",
-          "sources": ["external", "local"]
+          "count": ${contentAssets.length},
+          "layout": "grid",
+          "sources": [${contentAssets.map(a => `"${a.isExternal ? 'external' : 'local'}"`).join(', ')}],
+          "asset_files": [
+            ${contentAssets.map(asset => 
+              `{
+                "file": "${asset.path || asset.url}",
+                "alt_text": "${asset.alt_text || asset.description}",
+                "usage": "${asset.usage || 'content'}",
+                "isExternal": ${asset.isExternal || false}
+              }`
+            ).join(',\n            ')}
+          ]
         },
         "pricing": {
           "display": true,
-          "style": "card | inline | highlight",
+          "price": "${formattedPrice}",
+          "dates": "${formattedDates}",
+          "style": "highlight",
           "position": "center"
         }
       },
       "styling": {
         "background_color": "#ffffff",
-        "padding": "30px 20px",
-        "text_align": "left"
+        "padding": "30px 20px"
       }
     },
     {
@@ -195,14 +269,14 @@ Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: 
       "type": "call-to-action",
       "position": 4,
       "content": {
-        "headline": "Финальный призыв",
+        "headline": "Не упустите шанс!",
         "button": {
-          "text": "${cta}",
+          "text": "${primaryCTA} от ${formattedPrice}",
           "style": "large-primary",
           "background_color": "${accentColor}",
           "text_color": "#ffffff"
         },
-        "supporting_text": "Дополнительный текст"
+        "supporting_text": "Лучшие даты: ${formattedDates}"
       },
       "styling": {
         "background_color": "${primaryColor}",
@@ -233,8 +307,7 @@ Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: 
         "background_color": "#f8f9fa",
         "text_color": "#666666",
         "padding": "30px 20px",
-        "text_align": "center",
-        "font_size": "14px"
+        "text_align": "center"
       }
     }
   ],

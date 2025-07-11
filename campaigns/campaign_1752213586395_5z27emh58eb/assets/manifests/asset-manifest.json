@@ -1,0 +1,91 @@
+{
+  "manifestId": "manifest_1752213708733_v2dezf89uu",
+  "assetManifest": {
+    "images": [],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "Showcase the romantic atmosphere of Thailand in autumn with a focus on sunsets and beaches.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "romantic and inviting",
+      "visual_style": "tropical and exotic with warm colors",
+      "content_context": "Highlighting private sunsets and beach experiences for couples."
+    },
+    {
+      "type": "destination",
+      "purpose": "Visual representation of Thailand's beaches and romantic settings.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "serene and dreamy",
+      "visual_style": "vibrant and picturesque",
+      "content_context": "Focus on white sandy beaches and romantic dinners."
+    },
+    {
+      "type": "seasonal",
+      "purpose": "Illustrate autumn in Thailand with elements that suggest warmth and romance.",
+      "dimensions": {
+        "width": 600,
+        "height": 300
+      },
+      "priority": "optional",
+      "emotional_tone": "cozy and warm",
+      "visual_style": "soft and inviting",
+      "content_context": "Capture the essence of autumn in a tropical setting."
+    }
+  ],
+  "usageInstructions": [],
+  "performanceMetrics": {
+    "totalAssets": 1,
+    "totalSize": 0,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T06:02:39.429Z",
+    "processingTime": 50696,
+    "sourcesProcessed": 2,
+    "assetsCollected": 0,
+    "assetsValidated": 0,
+    "assetsOptimized": 0,
+    "errors": [
+      "Failed to collect from local: AI asset collection failed: (0 , _ai_analysis__WEBPACK_IMPORTED_MODULE_2__.selectFigmaAssetsWithAI) is not a function",
+      "4 assets failed basic validation"
+    ]
+  }
+}

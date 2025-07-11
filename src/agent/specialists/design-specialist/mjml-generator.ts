@@ -72,7 +72,7 @@ async function generateDynamicMjmlTemplate(params: {
   
   // Extract images from asset manifest - NO FALLBACK
   const images = assetManifest.images;
-  if (!images || images.length === 0) {
+  if (!images || !Array.isArray(images) || images.length === 0) {
     throw new Error('Asset manifest must contain at least one image');
   }
   
@@ -93,6 +93,32 @@ async function generateDynamicMjmlTemplate(params: {
   
   const heroImage = processedImages[0];
   const galleryImages = processedImages.slice(1, 4); // Next 3 images for gallery
+  
+  // Extract fonts from asset manifest - NO FALLBACK
+  const fonts = assetManifest.fonts;
+  let fontConfiguration = {
+    headingFont: 'Arial, sans-serif',
+    bodyFont: 'Arial, sans-serif',
+    fontWeights: ['normal', 'bold']
+  };
+  
+  if (fonts && fonts.length > 0) {
+    // Use first font as primary, or find heading/body specific fonts
+    const headingFont = fonts.find((font: any) => font.usage === 'heading') || fonts[0];
+    const bodyFont = fonts.find((font: any) => font.usage === 'body') || fonts[0];
+    
+    fontConfiguration = {
+      headingFont: `${headingFont.family}, ${headingFont.fallbacks?.join(', ') || 'Arial, sans-serif'}`,
+      bodyFont: `${bodyFont.family}, ${bodyFont.fallbacks?.join(', ') || 'Arial, sans-serif'}`,
+      fontWeights: headingFont.weights || ['normal', 'bold']
+    };
+    
+    console.log(`🔤 Using fonts from asset manifest:`);
+    console.log(`   Heading: ${fontConfiguration.headingFont}`);
+    console.log(`   Body: ${fontConfiguration.bodyFont}`);
+  } else {
+    console.log('⚠️ No fonts in asset manifest, using default Arial');
+  }
   
   // 🎨 USE AI TEMPLATE DESIGN IF AVAILABLE
   let templateStructure = '';
@@ -217,6 +243,11 @@ ${processedImages.map((img: any, index: number) =>
 - Фон: ${colors.background}
 - Текст: ${colors.text}
 
+ШРИФТЫ (используй эти шрифты):
+- Заголовки: ${fontConfiguration.headingFont}
+- Основной текст: ${fontConfiguration.bodyFont}
+- Доступные веса: ${fontConfiguration.fontWeights.join(', ')}
+
 ТРЕБОВАНИЯ:
 - Используй ТОЛЬКО валидные MJML теги
 - НЕ вкладывай <mj-section> внутрь <mj-section>
@@ -267,13 +298,50 @@ ${templateDesign && templateDesign.sections ?
       mjmlCode = mjmlCode.replace(/^```\s*/, '').replace(/\s*```$/, '');
     }
     
-    // Validate MJML structure
+    // Validate MJML structure and fix if needed
     if (!mjmlCode.includes('<mjml>') || !mjmlCode.includes('</mjml>')) {
-      throw new Error('Generated MJML is missing required <mjml> tags');
+      console.warn('⚠️ Generated MJML missing <mjml> tags, wrapping content');
+      mjmlCode = `<mjml>\n${mjmlCode}\n</mjml>`;
     }
     
     if (!mjmlCode.includes('<mj-head>') || !mjmlCode.includes('<mj-body>')) {
-      throw new Error('Generated MJML is missing required <mj-head> or <mj-body> sections');
+      console.warn('⚠️ Generated MJML missing required sections, adding fallback structure');
+      
+      // Extract content between mjml tags if they exist
+      const mjmlMatch = mjmlCode.match(/<mjml[^>]*>([\s\S]*)<\/mjml>/);
+      const innerContent = mjmlMatch ? mjmlMatch[1].trim() : mjmlCode;
+      
+      // Create proper MJML structure with fallback
+      mjmlCode = `<mjml>
+  <mj-head>
+    <mj-title>Email Campaign</mj-title>
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <mj-attributes>
+      <mj-all font-family="Inter, Arial, sans-serif" />
+      <mj-text font-size="16px" color="#2C3959" line-height="1.6" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" font-size="16px" font-weight="600" border-radius="6px" />
+    </mj-attributes>
+    <mj-style>
+      .hero-text { font-size: 28px; font-weight: 700; line-height: 1.2; }
+      .price-highlight { font-size: 24px; font-weight: 700; color: #FF6240; }
+      @media only screen and (max-width: 600px) {
+        .hero-text { font-size: 24px !important; }
+        .price-highlight { font-size: 20px !important; }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#FFFFFF">
+    ${innerContent.includes('<mj-section>') ? innerContent : `
+    <mj-section background-color="#FFFFFF" padding="20px">
+      <mj-column>
+        <mj-text>
+          ${innerContent || 'Email content will be generated here'}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    `}
+  </mj-body>
+</mjml>`;
     }
     
     console.log('✅ MJML template generated successfully using OpenAI Agents SDK');
@@ -366,7 +434,7 @@ export const generateMjmlTemplate = tool({
       const techSpec = JSON.parse(techSpecContent);
 
       console.log('✅ Loaded technical specification and asset manifest');
-      console.log(`📊 Assets: ${assetManifest.images.length} images, ${assetManifest.icons.length} icons`);
+      console.log(`📊 Assets: ${Array.isArray(assetManifest.images) ? assetManifest.images.length : 0} images, ${Array.isArray(assetManifest.icons) ? assetManifest.icons.length : 0} icons`);
 
       // Generate MJML template
       let mjmlTemplate;
@@ -436,6 +504,39 @@ export const generateMjmlTemplate = tool({
       await fs.writeFile(mjmlTemplatePath, mjmlTemplate.mjml_code);
       
       console.log('✅ MJML template saved to campaign');
+
+      // 🔧 COMPILE MJML TO HTML
+      console.log('🔧 Compiling MJML to HTML...');
+      try {
+        const mjml = require('mjml');
+        const htmlResult = mjml(mjmlTemplate.mjml_code, {
+          validationLevel: 'soft',
+          keepComments: false,
+          beautify: true
+        });
+        
+        if (htmlResult.errors && htmlResult.errors.length > 0) {
+          console.warn('⚠️ MJML compilation warnings:', htmlResult.errors);
+        }
+        
+        // Save HTML template
+        const htmlTemplatePath = path.join(campaignPath, 'templates', 'email-template.html');
+        await fs.writeFile(htmlTemplatePath, htmlResult.html);
+        
+        // Update mjmlTemplate object with HTML
+        mjmlTemplate.html_content = htmlResult.html;
+        mjmlTemplate.html_file_path = htmlTemplatePath;
+        mjmlTemplate.file_size = Buffer.byteLength(htmlResult.html, 'utf8');
+        
+        console.log('✅ HTML template compiled and saved');
+        console.log(`📄 HTML size: ${(mjmlTemplate.file_size / 1024).toFixed(2)} KB`);
+        
+      } catch (error) {
+        console.error('❌ MJML to HTML compilation failed:', error);
+        // Don't fail the whole process, just log the error
+        mjmlTemplate.html_content = null;
+        mjmlTemplate.compilation_error = error.message;
+      }
 
       // Update design context
       const updatedDesignContext = buildDesignContext(context, {

@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752213586395_5z27emh58eb",
+  "name": "Осенний отдых в Таиланде",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "молодые пары 25-35 лет из России, акцент на романтику и доступные цены",
+  "user_request": "Создай email-кампанию для осеннего отдыха в Таиланде. Целевая аудитория: молодые пары 25-35 лет из России. Акцент на романтику и доступные цены.",
+  "created_at": "2025-07-11T05:59:46.395Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-11T06:00:19.808Z"
+}

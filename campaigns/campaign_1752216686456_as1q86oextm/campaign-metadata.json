@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752216686456_as1q86oextm",
+  "name": "Путешествия в Турцию – осень 2025",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители путешествий",
+  "user_request": "Создай email кампанию для путешествий в Турцию на осень 2025",
+  "created_at": "2025-07-11T06:51:26.459Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-11T06:52:27.067Z"
+}

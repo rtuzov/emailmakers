@@ -1,0 +1,290 @@
+{
+  "manifestId": "manifest_1752217281129_i5mj13s7ys",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752217317638_bhku872rc26",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty of summer in Turkey, highlighting beach and family vacation themes.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 173094,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 173,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752217319551_88592giwelc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_симпатичное-и-дружелюбное-изображение-вызывающее-положительные-эмоции.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight Antalya as a prime travel destination for summer vacations.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 3338,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 3,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752217321786_vuoafmt3egr",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and discounts on tickets.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752217321787_6uw9vkojoqm",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate special offers and discounts on tickets.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752217324994_gl8xjn1kop",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752217128484_y1q7bqbo4f/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Provide background and branding elements for the email.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "Highlight the beauty of summer vacations in Turkey, showcasing beaches and family-friendly activities.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "joyful, excited",
+      "visual_style": "vibrant, sunny, tropical",
+      "content_context": "Capturing the essence of summer, family vacations, and the allure of Turkish beaches."
+    },
+    {
+      "type": "destination",
+      "purpose": "Showcase Antalya as a prime vacation spot with its beaches and cultural attractions.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "inviting, warm",
+      "visual_style": "picturesque, serene",
+      "content_context": "Highlighting the cultural richness and natural beauty of Antalya."
+    },
+    {
+      "type": "seasonal",
+      "purpose": "Illustrate the concept of the velvet season in August, emphasizing pleasant weather and affordability.",
+      "dimensions": {
+        "width": 600,
+        "height": 300
+      },
+      "priority": "optional",
+      "emotional_tone": "relaxed, content",
+      "visual_style": "soft, warm tones",
+      "content_context": "Conveying the comfort and enjoyment of traveling during the velvet season."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752217317638_bhku872rc26",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний отдых в Турции: рай для души и тела!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752217319551_88592giwelc",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний отдых в Турции: рай для души и тела!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752217321786_vuoafmt3egr",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний отдых в Турции: рай для души и тела!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752217321787_6uw9vkojoqm",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний отдых в Турции: рай для души и тела!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752217324994_gl8xjn1kop",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Летний отдых в Турции: рай для души и тела!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 220198,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T07:02:28.503Z",
+    "processingTime": 67374,
+    "sourcesProcessed": 2,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 5,
+    "errors": [
+      "3 assets failed basic validation"
+    ]
+  }
+}

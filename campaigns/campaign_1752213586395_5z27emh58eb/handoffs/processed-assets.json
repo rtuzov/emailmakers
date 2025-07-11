@@ -1,0 +1,34 @@
+{
+  "manifest": {
+    "images": [],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [],
+  "processing_summary": {
+    "total_images": 0,
+    "total_icons": 0,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T06:03:34.835Z"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-07-11T06:37:07.859Z",
+  "isValid": true,
+  "errors": [],
+  "warnings": [
+    {
+      "type": "accessibility",
+      "message": "No H1 heading found",
+      "suggestion": "Add H1 heading for proper document structure"
+    }
+  ],
+  "correctionsMade": [
+    "Fixed technical: Missing or incorrect DOCTYPE",
+    "Fixed technical: Missing required meta tag: <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">",
+    "Fixed technical: Missing required meta tag: <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+    "Fixed asset: Referenced asset not found in manifest: file:///Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215174791_y2sb4xo9vrl/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+    "Fixed asset: Referenced asset not found in manifest: file:///Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215174791_y2sb4xo9vrl/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+    "Fixed asset: Referenced asset not found in manifest: file:///Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215174791_y2sb4xo9vrl/assets/optimized/optimized_иллюстрация-зайца-с-пакетами-символизирующая-шопинг-и-покупки.png"
+  ],
+  "summary": {
+    "totalErrors": 0,
+    "totalWarnings": 1,
+    "criticalErrors": 0,
+    "majorErrors": 0,
+    "minorErrors": 0
+  }
+}

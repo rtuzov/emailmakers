@@ -24,12 +24,54 @@ export const generatePreviewFiles = tool({
     console.log('\n👁️ === PREVIEW GENERATION ===');
     
     try {
-      const contentContext = params.content_context;
-      const mjmlTemplate = params.mjml_template;
-      const campaignPath = contentContext.campaign?.campaignPath;
+      // Load content context from OpenAI SDK context parameter - prioritize loaded context
+      let contentContext;
+      let mjmlTemplate;
+      let campaignPath;
+      
+      // Try to get content context from design context first (loaded by loadDesignContext)
+      if (context?.designContext?.content_context) {
+        contentContext = context.designContext.content_context;
+        campaignPath = context.designContext.campaign_path;
+        console.log('✅ Using content context from design context (loaded by loadDesignContext)');
+      } else if (params.content_context && Object.keys(params.content_context).length > 0) {
+        contentContext = params.content_context;
+        campaignPath = contentContext.campaign?.campaignPath;
+        console.log('⚠️ Using content context from parameters (fallback)');
+      } else if (context?.content_context) {
+        contentContext = context.content_context;
+        campaignPath = contentContext.campaign?.campaignPath;
+        console.log('⚠️ Using content context from SDK context (fallback)');
+      } else {
+        throw new Error('Content context not found in parameters or context. loadDesignContext must be called first to load campaign context.');
+      }
+      
+      // Get MJML template from design context or parameters
+      if (context?.designContext?.mjml_template) {
+        mjmlTemplate = context.designContext.mjml_template;
+        console.log('✅ Using MJML template from design context');
+      } else if (params.mjml_template && Object.keys(params.mjml_template).length > 0) {
+        mjmlTemplate = params.mjml_template;
+        console.log('⚠️ Using MJML template from parameters (fallback)');
+      } else {
+        throw new Error('MJML template not found in design context. generateMjmlTemplate must be completed first.');
+      }
+      
+      // 🔧 LOAD HTML CONTENT FROM COMPILED FILE IF NOT AVAILABLE IN TEMPLATE
+      let htmlContent = mjmlTemplate.html_content;
+      if (!htmlContent) {
+        try {
+          const htmlTemplatePath = path.join(campaignPath, 'templates', 'email-template.html');
+          htmlContent = await fs.readFile(htmlTemplatePath, 'utf8');
+          console.log('✅ Loaded HTML content from compiled file');
+        } catch (error) {
+          console.warn('⚠️ Could not load HTML content from file:', error);
+          htmlContent = 'HTML content not available - template may not be compiled yet';
+        }
+      }
       
       if (!campaignPath) {
-        throw new Error('Campaign path is missing from content context');
+        throw new Error('Campaign path is missing from content context. loadDesignContext must provide valid campaign path.');
       }
       
       // Create preview directory
@@ -76,7 +118,7 @@ export const generatePreviewFiles = tool({
       📧 Email Preview - Desktop (${contentContext.subject})
     </div>
     <div class="email-content">
-      ${mjmlTemplate.html_content || 'HTML content not available'}
+      ${htmlContent}
     </div>
   </div>
 </body>
@@ -123,7 +165,7 @@ export const generatePreviewFiles = tool({
       📱 Email Preview - Mobile (${contentContext.subject})
     </div>
     <div class="email-content">
-      ${mjmlTemplate.html_content || 'HTML content not available'}
+      ${htmlContent}
     </div>
   </div>
 </body>

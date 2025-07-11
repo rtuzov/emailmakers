@@ -1,0 +1,65 @@
+[
+  {
+    "assetId": "ai_1752219246771_fopfbxzfkra",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_selected_1752219271505_0",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"This image captures the vibrant autumn colors of Turkey's landscapes, showcasing the inviting warmth of the season. The sunny atmosphere reflects the soft climate and beautiful scenery that travelers can expect.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_selected_1752219271505_1",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"This image features a family enjoying a meal outdoors, highlighting the gastronomy aspect of Turkey. The colorful presentation of food and the joyful expressions of the family evoke excitement and adventure.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_selected_1752219271505_2",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"This image showcases a beautiful beach in Turkey during autumn, emphasizing the warm sea and inviting atmosphere. It perfectly illustrates the relaxing and enjoyable experiences awaiting travelers.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752219249065_5rr14l0vmbr",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752219249066_ft91bzzo20f",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752219252171_ajfdmundtik",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Продлите лето в Турции осенью 2025 года!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

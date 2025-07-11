@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Осенние туры выгоднее и спокойнее, чем летом",
+    "Яркие брендовые цвета вызывают доверие и радость",
+    "Российские клиенты ждут простых визуальных решений в email",
+    "Раннее бронирование через Kupibilet экономит до 20 процентов",
+    "SPA и гастро-темы ключевые для осени 2025"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T07:38:46.679Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752219501516_tg3ax97ycf/data/travel_intelligence-insights.json"
+}

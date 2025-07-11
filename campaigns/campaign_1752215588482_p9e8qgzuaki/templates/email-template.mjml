@@ -1,0 +1,79 @@
+<mjml>
+  <mj-head>
+    <mj-title>Email Campaign</mj-title>
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <mj-attributes>
+      <mj-all font-family="Inter, Arial, sans-serif" />
+      <mj-text font-size="16px" color="#2C3959" line-height="1.6" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" font-size="16px" font-weight="600" border-radius="6px" />
+    </mj-attributes>
+    <mj-style>
+      .hero-text { font-size: 28px; font-weight: 700; line-height: 1.2; }
+      .price-highlight { font-size: 24px; font-weight: 700; color: #FF6240; }
+      @media only screen and (max-width: 600px) {
+        .hero-text { font-size: 24px !important; }
+        .price-highlight { font-size: 20px !important; }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#FFFFFF">
+    
+    <mj-section background-color="#FFFFFF" padding="20px">
+      <mj-column>
+        <mj-text>
+          <mj-head>
+    <mj-title>Осень в Турции с Kupibilet!</mj-title>
+    <mj-preview>Насладитесь теплым морем и восточными базарами по цене от 15205 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-text font-family="Arial, sans-serif" color="#2C3959" font-size="14px" line-height="1.5" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="15px" font-weight="700" font-size="16px"/>
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="600px">
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image src="logo_url" alt="Kupibilet Logo" width="150px" />
+        <mj-text padding="10px">× Бронирование × Отзывы × Контакты</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Ощутите волшебство осени в Турции с Kupibilet!</mj-text>
+        <mj-text font-size="16px">Насладитесь теплым морем и восточными базарами по цене от 15205 RUB.</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215588482_p9e8qgzuaki/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png" alt="Осенний отдых в Турции" />
+        <mj-button href="booking_url">Забронировать поездку</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text>Представьте себе, как вы прогуливаетесь по берегу бирюзового моря, ощущая теплый песок под ногами, а на горизонте медленно опускается солнце, окрашивая небо в нежные оттенки розового и оранжевого. Осень в Турции — это не просто отдых, это возможность погрузиться в атмосферу восточной сказки, где каждый момент наполнен волшебством.</mj-text>
+        <mj-text>Восточные базары, ароматный турецкий кофе и возможность насладиться традиционным хаммамом — все это ждет вас в этой удивительной стране. Отправляйтесь в незабываемое путешествие, где вы сможете попробовать лучшие местные вина на дегустациях, насладиться свежими морепродуктами и погрузиться в атмосферу традиционных турецких праздников.</mj-text>
+        <mj-text>Осень в Турции — это идеальное время для активного отдыха: от прогулок по живописным тропам до расслабляющих дней на пляже. Каждый день будет приносить новые впечатления и радость.</mj-text>
+        <mj-text>Мы предлагаем вам уникальные даты для путешествия: 15 и 22 сентября, 1, 10 и 20 октября 2025 года. Всего от 15205 RUB за незабываемый отдых. Не упустите возможность насладиться всеми прелестями этого сезона по лучшей цене!</mj-text>
+        <mj-text>Забронируйте свою поездку прямо сейчас и откройте для себя все прелести осенней Турции! Это ваш шанс создать незабываемые воспоминания, которые останутся с вами на всю жизнь. Не откладывайте на потом — осень в Турции ждет вас!</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752215588482_p9e8qgzuaki/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png" alt="Информация о путешествии" />
+        <mj-text font-size="20px" font-weight="700">Цена: 15205 RUB</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="700">Забронируйте свою поездку сегодня!</mj-text>
+        <mj-button href="booking_url">Забронировать поездку</mj-button>
+        <mj-text>Создайте незабываемые воспоминания, которые останутся с вами на всю жизнь.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text>Следите за нами в социальных сетях:</mj-text>
+        <mj-text>Телефон: +7 999 999 99 99</mj-text>
+        <mj-text>Мы всегда рады вашим отзывам!</mj-text>
+        <mj-button href="unsubscribe_url">Отписаться</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+  </mj-body>
+</mjml>
