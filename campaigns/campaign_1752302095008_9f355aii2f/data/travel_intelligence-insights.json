@@ -1,0 +1,11 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Тайланд - идеальное направление для осени",
+    "Наличие большого количества культурных событий",
+    "Доступные цены на авиабилеты и акции"
+  ],
+  "insights_count": 3,
+  "saved_at": "2025-07-12T06:35:22.330Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302095008_9f355aii2f/data/travel_intelligence-insights.json"
+}

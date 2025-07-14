@@ -1,0 +1,71 @@
+<mjml>
+  <mj-head>
+    <mj-title>Погрузитесь в летний рай: Сочи ждет вас!</mj-title>
+    <mj-preview>Семейный отдых на побережье Черного моря по цене от 7948 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+      }
+      .header {
+        color: #333333;
+        font-size: 30px;
+        text-align: center;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #888888;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236943586_x2wv000ocnl/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png" alt="Летний рай" />
+        <mj-text css-class="header">Погрузитесь в летний рай: Сочи ждет вас!</mj-text>
+        <mj-text>Семейный отдых на побережье Черного моря по цене от 7948 RUB.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Сочи — это не просто город, это настоящая находка для отдыха с семьей. Яркое солнце, теплое море и бесконечные пляжи создают атмосферу, где каждый момент наполнен радостью и счастьем. Прогулки по набережной, вечерние посиделки с любимыми и незабываемые фото на память — все это ждет вас в Сочи этим летом.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1693391403583-6e4aa1622be6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMGJlYWNoZXMlMjBmYW1pbHklMjBzdW1tZXJ8ZW58MHwwfHx8MTc1MjI0NjE0MHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Сочи на пляже" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Здесь вы сможете насладиться разнообразными активностями: от водных видов спорта до увлекательных экскурсий по живописным местам. Прогулки на катере, дайвинг, или просто расслабление на пляже — все это доступно для вас. Сочи предлагает отличные условия для семейного отдыха: детские площадки, аквапарки и развлекательные центры для детей всех возрастов.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Не упустите возможность забронировать билеты по выгодной цене — всего 7948 RUB! Оптимальные даты для вашего отпуска: 20 июля, 10 августа, 25 августа, 5 сентября и 15 сентября 2025 года. Эти даты идеально подходят для того, чтобы насладиться последними летними днями и зарядиться энергией на весь год.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Не ждите, пока лучшие предложения уйдут! Забронируйте свои билеты сейчас и подарите своей семье незабываемый летний отпуск в Сочи. Погрузитесь в атмосферу счастья и радости, которую может подарить только это удивительное место!</mj-text>
+        <mj-button css-class="button" href="#">Забронировать билеты</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1609361929784-e39b5323b811?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHRyYXZlbCUyMGRlc3RpbmF0aW9uJTIwY3VsdHVyZXxlbnwwfDB8fHwxNzUyMjQ2MTQxfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Прогулки по Сочи" />
+        <mj-image src="https://images.unsplash.com/photo-1748212556719-01f3a51c272e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMGJvYWxlJTIwb24lMjB0aGUgcGxhY2U&ixlib=rb-4.1.0&q=80&w=1080" alt="Отдых на пляже" />
+        <mj-image src="https://images.unsplash.com/photo-1660760967432-7274c26ae9fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHN1bW1lciUyMGFjdGl2aXRpZXN8ZW58MHwwfHx8MTc1MjI0NjE0Mnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Семейный отдых" />
+        <mj-image src="https://images.unsplash.com/flagged/photo-1564397217561-2294a2dc007a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxYdXZlcnNpdHklMjBhdHRyYXZhbGF6aW8lMjBsaXZl&ixlib=rb-4.1.0&q=80&w=1080" alt="Счастье на пляже" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="footer">Контактная информация: Kupibilet | info@kupibilet.com | +7 (800) 555-35-35</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

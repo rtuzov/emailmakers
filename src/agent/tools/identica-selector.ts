@@ -289,7 +289,7 @@ function calculateAssetScore(asset: IdenticaAsset, params: IdenticaSelectionPara
   
   // Бонус за специфические теги
   if (asset.tags.includes('авиация') || asset.tags.includes('путешествия')) {
-    score += 5; // Подходит для туристической тематики
+          score += 5; // Подходит для тематики путешествий
   }
   
   return score;

@@ -1,0 +1,95 @@
+{
+  "requestId": "req_1752239963178_i40iighd44",
+  "traceId": "api-1752239963178",
+  "timestamp": "2025-07-11T13:19:23.178Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752239963178",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752239963178",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+      "clientIp": "::1",
+      "destination": "Япония",
+      "origin": "Москва",
+      "tone": "professional",
+      "language": "ru"
+    },
+    "correlationId": "corr_1752239963178_jiw9zw4swx",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создай email для зимних путешествий в Японию. Подчеркни красоту зимних пейзажей, горячих источников онсэн, зимних фестивалей и традиционной японской кухни.",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Япония",
+    "origin": "Москва",
+    "tone": "professional",
+    "language": "ru",
+    "originalOptions": {
+      "traceId": "api-1752239963178",
+      "campaignId": "api_campaign_1752239963178",
+      "metadata": {
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Япония",
+        "origin": "Москва",
+        "tone": "professional",
+        "language": "ru"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+        "clientIp": "::1",
+        "destination": "Япония",
+        "origin": "Москва",
+        "tone": "professional",
+        "language": "ru"
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 // Import finalization tool for handoff
-import { finalizeQualityAndTransferToDelivery } from '../core/quality-finalization-tool';
+import { finalizeQualityAndTransferToDelivery } from '../core/specialist-finalization-tools';
 
 // Import structured logging system
 import { log } from '../core/agent-logger';
@@ -191,22 +191,51 @@ export const loadDesignPackage = tool({
       // Load MJML template
       console.log('📄 Loading MJML template...');
       const mjmlPath = path.join(designPackagePath, 'templates', 'email-template.mjml');
+      
+      // Check file existence before reading
+      try {
+        await fs.access(mjmlPath);
+      } catch {
+        throw new Error(`MJML template file not found: ${mjmlPath}`);
+      }
+      
       const mjmlSource = await fs.readFile(mjmlPath, 'utf8');
       const mjmlStats = await fs.stat(mjmlPath);
       
       // Load asset manifest
       console.log('📋 Loading asset manifest...');
       const assetManifestPath = path.join(designPackagePath, 'assets', 'asset-manifest.json');
+      
+      try {
+        await fs.access(assetManifestPath);
+      } catch {
+        throw new Error(`Asset manifest file not found: ${assetManifestPath}`);
+      }
+      
       const assetManifestData = JSON.parse(await fs.readFile(assetManifestPath, 'utf8'));
       
       // Load technical specification
       console.log('📐 Loading technical specification...');
       const techSpecPath = path.join(designPackagePath, 'specifications', 'technical-specification.json');
+      
+      try {
+        await fs.access(techSpecPath);
+      } catch {
+        throw new Error(`Technical specification file not found: ${techSpecPath}`);
+      }
+      
       const techSpecData = JSON.parse(await fs.readFile(techSpecPath, 'utf8'));
       
       // Load package metadata
       console.log('📊 Loading package metadata...');
       const metadataPath = path.join(designPackagePath, 'package-metadata.json');
+      
+      try {
+        await fs.access(metadataPath);
+      } catch {
+        throw new Error(`Package metadata file not found: ${metadataPath}`);
+      }
+      
       const metadataData = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
       
       // Build design package data
@@ -1703,6 +1732,9 @@ export const createHandoffFile = tool({
 // EXPORTS
 // ============================================================================
 
+// Import transfer function
+import { transferToDeliverySpecialist } from '../core/transfer-tools';
+
 export const qualitySpecialistTools = [
   loadDesignPackage,
   validateDesignPackageIntegrity,
@@ -1712,5 +1744,6 @@ export const qualitySpecialistTools = [
   analyzeEmailPerformance,
   generateQualityReport,
   createHandoffFile,
-  finalizeQualityAndTransferToDelivery
+  finalizeQualityAndTransferToDelivery,
+  transferToDeliverySpecialist
 ];

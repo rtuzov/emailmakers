@@ -1,0 +1,92 @@
+[
+  {
+    "assetId": "ai_1752241229017_r9cbrci4g7o",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752241231643_6th0johuc4s",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_eASclEnQZVo_1752241257376",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a couple of people standing on top of a sandy beach\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_D3bk706VEds_1752241257993",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"woman in white lace dress with yellow and red flower headdress\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_NXUGEjNMH88_1752241258685",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"plate of food on brown table\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_XeaVJo9cgVc_1752241258707",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a large group of yellow statues in a garden\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_OCFLHFIcT2U_1752241259228",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a group of women in costume performing a dance\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752241235816_x9il2dxwb5",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752241235817_sib2stiljud",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752241238910_c83h6u2q54d",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Погрузитесь в осеннее тепло Тайланда!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

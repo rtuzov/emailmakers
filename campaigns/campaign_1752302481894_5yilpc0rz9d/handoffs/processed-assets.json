@@ -1,0 +1,636 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752302590525_2yqdk5odx2u",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected hero",
+        "usage": "to capture attention and highlight the beauty of Thailand in autumn",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752302591946_3pkgtbfecm5",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_акция-новинка.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_акция-новинка.png",
+        "alt_text": "AI-selected support",
+        "usage": "to provide a visual representation of Thailand's attractions",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 30591,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 31,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_oPjQ_wBO_xE_1752302600817",
+        "path": "https://images.unsplash.com/photo-1637114756494-f17634baef0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHRyb3BpY2FsJTIwYmVhY2glMjBhdXR1bW58ZW58MHwwfHx8MTc1MjMxMTU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1637114756494-f17634baef0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHRyb3BpY2FsJTIwYmVhY2glMjBhdXR1bW58ZW58MHwwfHx8MTc1MjMxMTU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a shadow of a palm tree on a beach",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: An inviting and adventurous scene showcasing Thailand's warm seas and tropical beauty during the fall season.",
+          "emotional_match": "Inviting and adventurous, evoking feelings of warmth and excitement for travel.",
+          "tags": [
+            "Thailand",
+            "tropical",
+            "beach",
+            "autumn"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_i6JVcf_TsZI_1752302601312",
+        "path": "https://images.unsplash.com/photo-1658218615053-955e8af55947?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZSUyMGF1dHVtbiUyMGNvbG9yc3xlbnwwfDB8fHwxNzUyMzExNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1658218615053-955e8af55947?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZSUyMGF1dHVtbiUyMGNvbG9yc3xlbnwwfDB8fHwxNzUyMzExNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a group of bowls with food in it",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that depict exotic Thai dishes with warm autumnal colors to evoke a cozy atmosphere.",
+          "emotional_match": "Inviting and adventurous, evoking feelings of warmth and excitement for travel.",
+          "tags": [
+            "Thai",
+            "cuisine",
+            "autumn",
+            "colors"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_A5DF3YAk-Ok_1752302601819",
+        "path": "https://images.unsplash.com/photo-1707735509207-9d98cd1edae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMGFjdGl2aXRpZXMlMjBpbiUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIzMTE2MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1707735509207-9d98cd1edae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMGFjdGl2aXRpZXMlMjBpbiUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIzMTE2MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a group of people walking down a street",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals representing unforgettable adventures such as hiking, snorkeling, or cultural experiences in Thailand.",
+          "emotional_match": "Inviting and adventurous, evoking feelings of warmth and excitement for travel.",
+          "tags": [
+            "adventurous",
+            "activities",
+            "in",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_XeaVJo9cgVc_1752302601840",
+        "path": "https://images.unsplash.com/photo-1712335871955-2c349e54136e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMjMzOTI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1712335871955-2c349e54136e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMjMzOTI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a large group of yellow statues in a garden",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that reflect the comfortable and inviting atmosphere for travel during the fall season in Thailand.",
+          "emotional_match": "Inviting and adventurous, evoking feelings of warmth and excitement for travel.",
+          "tags": [
+            "autumn",
+            "travel",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_xY8q9HDLBn4_1752302602336",
+        "path": "https://images.unsplash.com/photo-1587714498387-7bec44b919aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHByb21vdGlvbmFsJTIwdHJhdmVsJTIwZGVhbHN8ZW58MHwwfHx8MTc1MjMxMTYwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1587714498387-7bec44b919aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHByb21vdGlvbmFsJTIwdHJhdmVsJTIwZGVhbHN8ZW58MHwwfHx8MTc1MjMxMTYwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "brown wooden boat on beach shore during daytime",
+        "usage": "branding",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals that highlight special offers and deals for traveling to Thailand, suitable for promotional content.",
+          "emotional_match": "Inviting and adventurous, evoking feelings of warmth and excitement for travel.",
+          "tags": [
+            "Thailand",
+            "promotional",
+            "travel",
+            "deals"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752302594206_k96pzwtjoqi",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_иконка-символизирующая-онлайн-регистрацию-через-мобильное-устройство.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_иконка-символизирующая-онлайн-регистрацию-через-мобильное-устройство.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to facilitate the booking process directly from the email",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 3769,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752302594206_xipxrxl9rde",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to facilitate the booking process directly from the email",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752302594207_a78v99f9yed",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_услуга-поддержки-доступна-в-любое-время-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_услуга-поддержки-доступна-в-любое-время-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to facilitate the booking process directly from the email",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4941,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752302596292_5g0qffvgcxg",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302481894_5yilpc0rz9d/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "to enhance brand recognition in the footer",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T06:43:53.414Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752302590525_2yqdk5odx2u",
+      "asset_type": "image",
+      "usage_context": "to capture attention and highlight the beauty of Thailand in autumn",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 117414,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752302591946_3pkgtbfecm5",
+      "asset_type": "image",
+      "usage_context": "to provide a visual representation of Thailand's attractions",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 30591,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "unsplash_oPjQ_wBO_xE_1752302600817",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a shadow of a palm tree on a beach",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_i6JVcf_TsZI_1752302601312",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a group of bowls with food in it",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_A5DF3YAk-Ok_1752302601819",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a group of people walking down a street",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_XeaVJo9cgVc_1752302601840",
+      "asset_type": "image",
+      "usage_context": "decoration",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a large group of yellow statues in a garden",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_xY8q9HDLBn4_1752302602336",
+      "asset_type": "image",
+      "usage_context": "branding",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "brown wooden boat on beach shore during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752302594206_k96pzwtjoqi",
+      "asset_type": "icon",
+      "usage_context": "to facilitate the booking process directly from the email",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 3769,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752302594206_xipxrxl9rde",
+      "asset_type": "icon",
+      "usage_context": "to facilitate the booking process directly from the email",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752302594207_a78v99f9yed",
+      "asset_type": "icon",
+      "usage_context": "to facilitate the booking process directly from the email",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4941,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752302596292_5g0qffvgcxg",
+      "asset_type": "icon",
+      "usage_context": "to enhance brand recognition in the footer",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 7,
+    "total_icons": 4,
+    "optimization_level": "high",
+    "processed_at": "2025-07-12T06:43:53.415Z"
+  }
+}

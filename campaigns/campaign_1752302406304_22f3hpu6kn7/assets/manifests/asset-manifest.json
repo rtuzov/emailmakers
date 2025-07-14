@@ -1,0 +1,520 @@
+{
+  "manifestId": "manifest_1752302483037_kf34bo631os",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752302505154_d7lepcjnfe",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_иллюстрация-веселого-зеленого-кролика-с-чемоданом-символизирующего-отпуск-и-путешествия.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_иллюстрация-веселого-зеленого-кролика-с-чемоданом-символизирующего-отпуск-и-путешествия.png",
+        "alt_text": "AI-selected hero",
+        "usage": "To capture the essence of Thailand in autumn and attract travelers with stunning visuals.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752302506671_c7sme0co62f",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_иллюстрация-связанная-с-авиацией-и-путешествиями.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_иллюстрация-связанная-с-авиацией-и-путешествиями.png",
+        "alt_text": "AI-selected support",
+        "usage": "To provide a visual representation of Thailand's attractions during the autumn season.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 40397,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 40,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "unsplash_J2I42pz6Abs_1752302514181",
+        "path": "https://images.unsplash.com/photo-1635338350079-3af17fd73f34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGF1dHVtbiUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0OTY0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1635338350079-3af17fd73f34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGF1dHVtbiUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0OTY0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a small pond surrounded by trees and grass",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the beauty of Thailand's landscapes during autumn, capturing vibrant colors and inviting scenery.",
+          "emotional_match": "adventurous, warm, exotic",
+          "tags": [
+            "Thailand",
+            "autumn",
+            "landscapes"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_ySOeSfeMzsc_1752302514204",
+        "path": "https://images.unsplash.com/photo-1585086814041-c5d629a6b8c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxleG90aWMlMjBUaGFpbGFuZCUyMHRyYXZlbHxlbnwwfDB8fHwxNzUyMjM1NDI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1585086814041-c5d629a6b8c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxleG90aWMlMjBUaGFpbGFuZCUyMHRyYXZlbHxlbnwwfDB8fHwxNzUyMjM1NDI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "green and brown mountain beside body of water during daytime",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals that highlight unique cultural experiences and exotic locations in Thailand, appealing to adventurous travelers.",
+          "emotional_match": "adventurous, warm, exotic",
+          "tags": [
+            "exotic",
+            "Thailand",
+            "travel"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_OCFLHFIcT2U_1752302514224",
+        "path": "https://images.unsplash.com/photo-1646489471134-f2a91aab85cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMFRoYWlsYW5kJTIwY3VsdHVyZXxlbnwwfDB8fHwxNzUyMjUwMjU3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1646489471134-f2a91aab85cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMFRoYWlsYW5kJTIwY3VsdHVyZXxlbnwwfDB8fHwxNzUyMjUwMjU3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a group of women in costume performing a dance",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images representing the rich culture and traditions of Thailand, emphasizing colorful festivals and local life.",
+          "emotional_match": "adventurous, warm, exotic",
+          "tags": [
+            "tropical",
+            "Thailand",
+            "culture"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_Bsxv_Nbs-VY_1752302514724",
+        "path": "https://images.unsplash.com/photo-1583031906814-b568721a98d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHdhcm0lMjB3ZWF0aGVyfGVufDB8MHx8fDE3NTIzMTE1MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1583031906814-b568721a98d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHdhcm0lMjB3ZWF0aGVyfGVufDB8MHx8fDE3NTIzMTE1MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "boy in white polo shirt holding green and yellow bird",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals that convey the warm and inviting climate of Thailand during autumn, suitable for promotional materials.",
+          "emotional_match": "adventurous, warm, exotic",
+          "tags": [
+            "Thailand",
+            "warm",
+            "weather"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_A5DF3YAk-Ok_1752302515289",
+        "path": "https://images.unsplash.com/photo-1707735509207-9d98cd1edae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMFRoYWlsYW5kJTIwYWN0aXZpdGllc3xlbnwwfDB8fHwxNzUyMzExNTEzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1707735509207-9d98cd1edae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMFRoYWlsYW5kJTIwYWN0aXZpdGllc3xlbnwwfDB8fHwxNzUyMzExNTEzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a group of people walking down a street",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images depicting various adventurous activities available in Thailand, such as trekking, water sports, and cultural explorations.",
+          "emotional_match": "adventurous, warm, exotic",
+          "tags": [
+            "adventurous",
+            "Thailand",
+            "activities"
+          ]
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752302508577_vd2am4v1o3r",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To highlight special offers and deals for travel to Thailand.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752302508578_zr7hubjag4d",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To highlight special offers and deals for travel to Thailand.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4485,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752302510395_9b3adq5phj8",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752302406304_22f3hpu6kn7/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To establish brand identity and recognition within the email.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "To capture the essence of Thailand in autumn, showcasing its beauty and inviting travelers to explore.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "adventurous, warm, exotic",
+      "visual_style": "tropical, vibrant, inviting",
+      "content_context": "Highlighting the ideal weather and fewer tourists in Thailand during autumn."
+    },
+    {
+      "type": "destination",
+      "purpose": "To provide a visual representation of Thailand's landscapes and culture.",
+      "dimensions": {
+        "width": 600,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "exotic, inviting",
+      "visual_style": "colorful, cultural",
+      "content_context": "Showcasing the unique experiences available in Thailand."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752302505154_d7lepcjnfe",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752302506671_c7sme0co62f",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_J2I42pz6Abs_1752302514181",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a small pond surrounded by trees and grass\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_ySOeSfeMzsc_1752302514204",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"green and brown mountain beside body of water during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_OCFLHFIcT2U_1752302514224",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a group of women in costume performing a dance\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_Bsxv_Nbs-VY_1752302514724",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"boy in white polo shirt holding green and yellow bird\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_A5DF3YAk-Ok_1752302515289",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a group of people walking down a street\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752302508577_vd2am4v1o3r",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752302508578_zr7hubjag4d",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752302510395_9b3adq5phj8",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Таиланд этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 11,
+    "totalSize": 202051,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-12T06:41:55.292Z",
+    "processingTime": 32255,
+    "sourcesProcessed": 1,
+    "assetsCollected": 10,
+    "assetsValidated": 10,
+    "assetsOptimized": 10,
+    "errors": []
+  }
+}

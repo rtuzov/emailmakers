@@ -1,0 +1,714 @@
+{
+  "campaign": {
+    "id": "campaign_1752236055366_9ha79r85gjm",
+    "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm",
+    "name": "Campaign campaign_1752236055366_9ha79r85gjm",
+    "brand": "Email Makers",
+    "type": "promotional",
+    "target_audience": "travel enthusiasts",
+    "language": "ru",
+    "created_at": "2025-07-11T12:17:32.815Z",
+    "status": "active"
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Зима в Японии - холодная, много снега в северных районах, мягкая погода в Токио и Осака. Температура в Токио 2-10C, на Хоккайдо до -10C, много солнечных дней. Лучший сезон для катания на лыжах, сноуборде, горячих источников онсэн. Типичны заснеженные пейзажи, чистый воздух, высокая прозрачность атмосферы.",
+        "cultural_highlights": "Японский Новый год Сёгацу, фестиваль снега в Саппоро в феврале, традиция кататься на лыжах и отдыхать в онсэн после холода. Теплые блюда: рамен, набэ. Особое внимание к мерцающим зимним фонарям, праздничной иллюминации в городах. Этикет и уважение, аккуратность в публичных местах.",
+        "key_attractions": "Горнолыжные курорты Хоккайдо, Нисеко, Хакуба, Гала Юдзава. Токио зимой с праздничной подсветкой. Киото - зимние храмы и сады. Саппоро Snow Festival, горячие источники онсэн, музей снега, снежные обезьяны в Наганo.",
+        "seasonal_advantages": "Высокое качество снега и длинный сезон катания. Меньше туристов в городах, акцент на аутентичный отдых. Возможность увидеть уникальные зимние фестивали.",
+        "travel_experience_quality": "Япония зимой - уникальный опыт: сочетание активного отдыха и уютных традиций. Чистота, высокий сервис, безопасно для семей и самостоятельных путешественников. Брендовые цвета Kupibilet подчёркивают чистоту снега и уют горячих источников: белый, бирюзовый, лавандовый отлично вписываются в атмосферу зимней Японии."
+      },
+      "saved_at": "2025-07-11T12:14:53.765Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "Зимой цены на авиабилеты из России в Японию ниже чем на Новый год, но выше в пиковые даты (конец декабря и начало января). Горнолыжные курорты в феврале-марте - максимальные цены на размещение. Скидки на авиабилеты в январе и феврале. Средний бюджет 80-180 тыс руб за перелёт и проживание. Лучшие цены при покупке осенью.",
+        "competitive_position": "Главные конкуренты Японии зимой - Швейцария, Австрия, Франция, Южная Корея. Япония побеждает по сочетанию уникальной культуры, сервиса, термальных источников и мягкого активного отдыха. Более экзотический и запоминающийся опыт для российских путешественников.",
+        "demand_patterns": "Наибольший спрос с конца декабря по февраль. Семьи и любители горнолыжного спорта выбирают Хоккайдо. Молодежь и пары тянутся к культурным мероприятиям и городам. Япония становится всё более популярной зимой из-за снежных фестивалей.",
+        "booking_recommendations": "Оптимальное окно бронирования 3-5 месяцев до поездки. Лучшие предложения по авиабилетам и проживанию — при раннем бронировании осенью. Горящие туры возможны только в январе после праздников."
+      },
+      "saved_at": "2025-07-11T12:14:53.765Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Сбежать от зимней серости в сказочные снежные пейзажи, ощутить восточную гармонию и японский уют. Почувствовать себя героем зимней сказки. Вдохновение через красоту природы, тишину и чистоту. Ощущение безопасности и заботы.",
+        "emotional_triggers": "Белый пушистый снег, парящие обезьяны в горячих источниках, вечерняя иллюминация, волшебство зимних фестивалей, ароматы согревающих супов. Фотогеничность для соцсетей.",
+        "key_desires": "Зимняя романтика, катание на лучшем снегу, полный релакс в онсэн, дегустация местных деликатесов, фото в традиционной одежде. Запомнить поездку как необычное приключение.",
+        "psychological_benefits": "Умиротворение, снятие стресса, воодушевление через новые впечатления, дата для семьи или влюбленных, чувство уникальности и статуса."
+      },
+      "saved_at": "2025-07-11T12:14:53.765Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Делайте упор на снежные фотографии и снежные виды",
+        "Акцент на сочетание активного и уютного отдыха",
+        "Продвигайте японские горячие источники и зимние фестивали",
+        "Используйте ассоциации с чистотой и гармонией через брендовые цвета Kupibilet",
+        "Выделяйте преимущества семейных поездок, эксклюзивность и безопасность"
+      ],
+      "key_insights": [
+        "Япония зимой - лучший вариант для лыжников и любителей культуры",
+        "Горнолыжные курорты Хоккайдо и Хакуба одни из лучших в Азии",
+        "Японская зима - это уютные онсэн и снежные пейзажи",
+        "Раннее бронирование гарантирует максимальную выгоду и выбор",
+        "Цвета Kupibilet идеально ассоциируются с чистотой и волшебством японской зимы"
+      ],
+      "confidence_score": 0.95,
+      "analysis_timestamp": "2025-07-11T12:14:19.891Z",
+      "saved_at": "2025-07-11T12:14:53.767Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Япония зимой - идеальное сочетание активного отдыха и восточного уюта",
+        "Горнолыжные и онсэн направления Японии становятся топ-трендом зимы среди россиян",
+        "Раннее бронирование обеспечивает максимальную экономию и лучший выбор отелей, особенно на Хоккайдо",
+        "Уют Kupibilet бренда перекликается с японской гармонией и чистотой снега",
+        "Фото и сторис из Японии зимой набирают популярность в Instagram и TikTok"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T12:14:53.765Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "seasonal_trends": "Япония зимой набирает популярность среди российских любителей активного и культурного отдыха. Тренд на индивидуальные поездки и сафари по снежной Японии.",
+        "social_media_trends": "Популярны хештеги #japanwinter #niseko #sapporosnowfestival. Видео с горнолыжных трасс, фото снегопадов и горячих источников. Фотоконкурсы на тему зимней Японии.",
+        "travel_preferences": "Семейные туры, комбинированные маршруты: Токио-Киото-Хакуба. Ориентир на умиротворенность и уют. Акцент на внутренней гармонии и новых открытиях.",
+        "market_dynamics": "Авиакомпании предлагают пакеты с билетами, ски-пасс и проживания вместе. Рост интереса к премиальным аутентичным эко-отелям. Возможности для контента о японской зиме с акцентом на чуткость к деталям и эмоциональную теплоту."
+      },
+      "saved_at": "2025-07-11T12:14:53.765Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752236055366_9ha79r85gjm",
+      "collection_timestamp": "2025-07-11T12:17:32.814Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  },
+  "context_analysis": {
+    "destination": "Thailand",
+    "seasonal_trends": "Current season trends for Thailand",
+    "emotional_triggers": "Exotic adventure and relaxation",
+    "market_positioning": "Premium exotic destination",
+    "competitive_landscape": "Strong competition in Southeast Asia travel market",
+    "price_sensitivity": "Medium price sensitivity for exotic destinations",
+    "booking_patterns": "Advance planning with seasonal booking patterns"
+  },
+  "date_analysis": {
+    "destination": "Thailand",
+    "season": "winter",
+    "optimal_dates": [
+      "2025-12-01",
+      "2025-12-15",
+      "2026-01-10",
+      "2026-01-20",
+      "2026-02-05",
+      "2026-02-15"
+    ],
+    "pricing_windows": [
+      "Период с 2025-12-01 по 2025-12-15: низкие цены на авиабилеты, так как это начало зимнего сезона и предновогодние распродажи.",
+      "Период с 2026-01-10 по 2026-01-20: средние цены, так как это время после новогодних праздников, когда туристический поток снижается.",
+      "Период с 2026-02-05 по 2026-02-15: низкие цены, так как это время, когда туристы возвращаются домой после новогодних праздников и до начала весеннего сезона."
+    ],
+    "booking_recommendation": "Рекомендуется бронировать билеты за 2-3 месяца до предполагаемой даты вылета для получения лучших цен.",
+    "seasonal_factors": "Зима в Японии характеризуется холодной погодой, особенно на севере страны, где возможны снегопады. Это также время для зимних фестивалей и лыжных курортов, что делает поездку особенно привлекательной для любителей зимних видов спорта.",
+    "current_date": "2025-07-11"
+  },
+  "pricing_analysis": {
+    "best_price": 38472,
+    "min_price": 38472,
+    "max_price": 43472,
+    "average_price": 40781,
+    "currency": "RUB",
+    "offers_count": 15,
+    "recommended_dates": [
+      "2025-12-01",
+      "2025-12-02",
+      "2025-12-03"
+    ],
+    "route": {
+      "from": "Moscow",
+      "to": "Bangkok",
+      "from_code": "MOW",
+      "to_code": "BKK"
+    },
+    "enhanced_features": {
+      "airport_conversion": {
+        "originInfo": null,
+        "destinationInfo": {
+          "originalCode": "NRT",
+          "finalCode": "TYO",
+          "countryCode": "JP",
+          "isInternational": true,
+          "wasConverted": true
+        }
+      },
+      "csv_integration": "enabled",
+      "api_source": "kupibilet_api_v2"
+    }
+  },
+  "asset_strategy": {
+    "theme": "Thailand Travel Experience",
+    "visual_style": "modern",
+    "color_palette": "Tropical warm colors with brand accents",
+    "typography": "Modern clean typography",
+    "image_concepts": [
+      "Hero изображение - заснеженные горы Японии на фоне заката",
+      "Lifestyle фото - люди, наслаждающиеся горячими источниками с видом на горы",
+      "Архитектура/достопримечательности - традиционные японские храмы в зимней обстановке",
+      "Кулинария/культура - местные блюда, такие как рамен или суши, на фоне зимнего пейзажа",
+      "Природа/пейзажи - зимние леса с сакурами и снежными пейзажами",
+      "Активности/развлечения - катание на лыжах или сноуборде в горах",
+      "Шоппинг/сувениры - традиционные японские товары, такие как кимоно или чайные наборы",
+      "Транспорт/логистика - современные поезда Shinkansen на фоне зимнего пейзажа"
+    ],
+    "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, чтобы привлечь внимание к ключевым элементам.",
+    "emotional_triggers": "excitement",
+    "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и современный дизайн, что создает единый стиль и улучшает узнаваемость."
+  },
+  "generated_content": {
+    "subject": "Зимняя сказка в Японии ждет вас!",
+    "preheader": "Погрузитесь в волшебство зимних фестивалей и горячих источников с уникальными предложениями.",
+    "body": "Представьте себе, как вы гуляете по заснеженным улочкам японских городов, наслаждаясь белоснежным покровом, который укрывает все вокруг. Япония зимой — это настоящая сказка: парящие обезьяны в горячих источниках, вечерние огни, которые освещают улицы, и волшебные зимние фестивали, которые подарят вам незабываемые эмоции. Погрузитесь в атмосферу уюта и тепла, наслаждаясь ароматами согревающих супов и традиционных японских сладостей.\n\nЗимний отдых в Японии предлагает вам множество уникальных возможностей. Вы сможете посетить знаменитые горячие источники, насладиться катанием на лыжах в живописных горах, а также стать свидетелем потрясающих зимних фестивалей, где яркие огни и фейерверки создают незабываемую атмосферу. Не упустите шанс сделать удивительные фотографии на фоне заснеженных пейзажей и традиционных храмов, которые идеально подойдут для ваших социальных сетей.\n\nМы предлагаем вам лучшие цены на авиабилеты, начиная всего от 38472 RUB! Оптимальные даты для путешествия: 1 и 15 декабря 2025 года, а также 10 и 20 января и 5 и 15 февраля 2026 года. Эти даты идеально подходят для того, чтобы насладиться всеми зимними прелестями Японии и создать незабываемые воспоминания.\n\nНе упустите возможность забронировать свой зимний отдых в Японии уже сегодня! Это ваше время для приключений и открытия новых горизонтов. Поспешите, количество мест ограничено, и такие предложения быстро исчезают!",
+    "cta": {
+      "primary": "Забронируйте свой билет!",
+      "secondary": "Узнайте больше о предложениях"
+    },
+    "personalization_level": "advanced",
+    "urgency_level": "medium"
+  },
+  "technical_requirements": {
+    "specificationId": "spec_1752236248106_kbvj96n97um",
+    "specification": {
+      "version": "1.0",
+      "generatedAt": "2025-07-11T12:17:28.107Z",
+      "campaign": {
+        "id": "campaign_1752236055366_9ha79r85gjm",
+        "name": "Campaign campaign_1752236055366_9ha79r85gjm",
+        "type": "email-marketing",
+        "theme": "general",
+        "targetAudience": "general",
+        "priority": "medium"
+      },
+      "content": {
+        "subject": "Email Subject",
+        "preheader": "Email preheader",
+        "sections": [
+          {
+            "id": "header",
+            "type": "header",
+            "required": true
+          },
+          {
+            "id": "hero",
+            "type": "hero",
+            "required": true
+          },
+          {
+            "id": "content",
+            "type": "content",
+            "required": true
+          },
+          {
+            "id": "cta",
+            "type": "cta",
+            "required": true
+          },
+          {
+            "id": "footer",
+            "type": "footer",
+            "required": true
+          },
+          {
+            "id": "products",
+            "type": "product",
+            "required": true,
+            "metadata": {
+              "productCount": 1
+            }
+          }
+        ],
+        "callToAction": {
+          "primary": {
+            "text": "Click Here",
+            "url": "#",
+            "style": "button"
+          }
+        },
+        "personalization": {
+          "enabled": false,
+          "variables": [],
+          "dynamicContent": []
+        }
+      },
+      "design": {
+        "constraints": {
+          "layout": {
+            "type": "single-column",
+            "maxWidth": 600,
+            "minWidth": 320,
+            "padding": {
+              "top": 20,
+              "right": 20,
+              "bottom": 20,
+              "left": 20
+            },
+            "sections": []
+          },
+          "typography": {
+            "headingFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "sizes": {
+                "h1": 28,
+                "h2": 24,
+                "h3": 20
+              },
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            },
+            "bodyFont": {
+              "family": "Arial, sans-serif",
+              "fallbacks": [
+                "Helvetica",
+                "sans-serif"
+              ],
+              "size": 16,
+              "lineHeight": 1.5,
+              "weights": [
+                "normal",
+                "bold"
+              ]
+            }
+          },
+          "colorScheme": {
+            "primary": "#007bff",
+            "secondary": "#6c757d",
+            "accent": "#28a745",
+            "text": {
+              "primary": "#333333",
+              "secondary": "#666666",
+              "muted": "#999999"
+            },
+            "background": {
+              "primary": "#ffffff",
+              "secondary": "#f8f9fa",
+              "accent": "#e9ecef"
+            }
+          },
+          "spacing": {
+            "base": 16,
+            "sections": 40,
+            "elements": 20,
+            "text": 12
+          }
+        },
+        "assets": {
+          "manifest": {
+            "images": [
+              {
+                "id": "hero-1",
+                "path": "assets/images/hero-japan-winter.jpg",
+                "alt": "Заснеженные горы Японии на закате",
+                "usage": "hero",
+                "dimensions": {
+                  "width": 600,
+                  "height": 400
+                },
+                "responsive": true,
+                "formats": [
+                  "jpg"
+                ],
+                "optimization": {
+                  "compressed": true,
+                  "quality": 0.8,
+                  "size": 90000
+                }
+              },
+              {
+                "id": "content-1",
+                "path": "assets/images/onsen-snow.jpg",
+                "alt": "Горячие источники онсэн с видом на снег",
+                "usage": "content",
+                "dimensions": {
+                  "width": 600,
+                  "height": 400
+                },
+                "responsive": true,
+                "formats": [
+                  "jpg"
+                ],
+                "optimization": {
+                  "compressed": true,
+                  "quality": 0.8,
+                  "size": 82000
+                }
+              }
+            ],
+            "icons": [
+              {
+                "id": "icon-ski",
+                "path": "assets/icons/ski.svg",
+                "usage": "активности",
+                "format": "svg",
+                "size": "32x32"
+              }
+            ],
+            "fonts": [
+              {
+                "family": "Open Sans",
+                "weights": [
+                  "400",
+                  "700"
+                ],
+                "fallbacks": [
+                  "Arial",
+                  "sans-serif"
+                ],
+                "usage": "body"
+              }
+            ]
+          },
+          "requirements": [
+            {
+              "id": "hero-image",
+              "type": "image",
+              "description": "Hero image for email header",
+              "specifications": {
+                "dimensions": {
+                  "width": 600,
+                  "height": 300
+                },
+                "formats": [
+                  "jpg",
+                  "webp"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Solid color background with text overlay"
+            },
+            {
+              "id": "logo",
+              "type": "image",
+              "description": "Brand logo",
+              "specifications": {
+                "dimensions": {
+                  "height": 60
+                },
+                "formats": [
+                  "png",
+                  "svg"
+                ],
+                "quality": "high"
+              },
+              "priority": "required",
+              "fallback": "Text-based brand name"
+            }
+          ]
+        },
+        "responsive": {
+          "enabled": true,
+          "breakpoints": [
+            {
+              "name": "mobile",
+              "width": 480,
+              "constraints": {
+                "maxWidth": 320
+              }
+            },
+            {
+              "name": "tablet",
+              "width": 768,
+              "constraints": {
+                "maxWidth": 600
+              }
+            },
+            {
+              "name": "desktop",
+              "width": 1200,
+              "constraints": {
+                "maxWidth": 600
+              }
+            }
+          ],
+          "strategy": "mobile-first"
+        }
+      },
+      "quality": {
+        "criteria": {
+          "performance": {
+            "maxFileSize": 100000,
+            "maxImageSize": 50000,
+            "compressionQuality": 0.8,
+            "lazyLoading": false,
+            "cacheOptimization": true
+          },
+          "accessibility": {
+            "wcagLevel": "AA",
+            "contrastRatio": 4.5,
+            "altTextRequired": true,
+            "focusIndicators": true,
+            "screenReaderFriendly": true,
+            "keyboardNavigation": false
+          },
+          "emailDeliverability": {
+            "spamScore": 3,
+            "textToHtmlRatio": 0.3,
+            "linkLimit": 10,
+            "imageToTextRatio": 0.6,
+            "subjectLineLength": 50,
+            "preheaderLength": 100
+          },
+          "crossClientCompatibility": {
+            "targetClients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "fallbackStrategies": [
+              {
+                "feature": "WebP images",
+                "fallback": "JPEG images"
+              },
+              {
+                "feature": "SVG images",
+                "fallback": "PNG images"
+              },
+              {
+                "feature": "Custom fonts",
+                "fallback": "System fonts"
+              }
+            ],
+            "testing": {
+              "required": true,
+              "platforms": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "minCompatibility": 95
+            }
+          },
+          "email_clients": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "performance_thresholds": {
+            "max_file_size": 100000,
+            "load_time": 2
+          },
+          "accessibility_requirements": {
+            "wcag_level": "AA",
+            "color_contrast": 4.5
+          }
+        },
+        "testing": {
+          "required": true,
+          "types": [
+            "functional",
+            "visual",
+            "compatibility"
+          ],
+          "platforms": [
+            "gmail",
+            "outlook",
+            "apple-mail",
+            "yahoo-mail"
+          ],
+          "automation": {
+            "enabled": false,
+            "tools": [],
+            "coverage": 0
+          }
+        },
+        "validation": {
+          "htmlValidation": true,
+          "cssValidation": true,
+          "linkValidation": true,
+          "spamCheck": true,
+          "accessibilityCheck": true
+        }
+      },
+      "delivery": {
+        "emailClients": [
+          {
+            "client": "gmail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Clips emails over 102KB",
+              "Limited CSS support"
+            ]
+          },
+          {
+            "client": "outlook",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Uses Word rendering engine",
+              "Very limited CSS support"
+            ]
+          },
+          {
+            "client": "apple-mail",
+            "maxWidth": 600,
+            "supportsWebP": true,
+            "supportsSVG": true,
+            "supportsCSS": {
+              "flexbox": true,
+              "grid": false,
+              "transform": true,
+              "animation": true
+            },
+            "darkModeSupport": true,
+            "notes": [
+              "Good CSS support",
+              "Supports media queries"
+            ]
+          },
+          {
+            "client": "yahoo-mail",
+            "maxWidth": 600,
+            "supportsWebP": false,
+            "supportsSVG": false,
+            "supportsCSS": {
+              "flexbox": false,
+              "grid": false,
+              "transform": false,
+              "animation": false
+            },
+            "darkModeSupport": false,
+            "notes": [
+              "Limited CSS support",
+              "Similar to Gmail"
+            ]
+          }
+        ],
+        "deployment": {
+          "environment": "production",
+          "approvalRequired": true,
+          "rollbackStrategy": "immediate",
+          "monitoring": {
+            "enabled": true,
+            "metrics": [
+              "open_rate",
+              "click_rate",
+              "bounce_rate"
+            ],
+            "alerts": [
+              "high_bounce_rate",
+              "low_open_rate"
+            ]
+          }
+        },
+        "tracking": {
+          "enabled": true,
+          "openTracking": true,
+          "clickTracking": true,
+          "customEvents": []
+        }
+      },
+      "metadata": {
+        "generatedBy": "technical-spec-generator",
+        "sourceContext": {
+          "campaignId": "campaign_1752236055366_9ha79r85gjm",
+          "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm",
+          "taskType": "content",
+          "language": "ru",
+          "campaign_type": "promotional",
+          "industry": "travel",
+          "urgency": "medium",
+          "target_audience": "travel_enthusiasts"
+        },
+        "processingTime": 0,
+        "complexity": "low",
+        "estimatedImplementationTime": 4,
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "notes": []
+      }
+    },
+    "generationSummary": {
+      "timestamp": "2025-07-11T12:17:28.107Z",
+      "processingTime": 1,
+      "sourceContexts": 4,
+      "sectionsGenerated": 6,
+      "assetsProcessed": 3,
+      "constraintsApplied": 4,
+      "validationPassed": true,
+      "errors": [],
+      "warnings": []
+    },
+    "implementationGuidance": {
+      "priority": "high",
+      "estimatedTime": 4,
+      "complexity": "low",
+      "dependencies": [
+        "mjml",
+        "image-optimization",
+        "html-validation"
+      ],
+      "risks": [
+        "Multiple email client compatibility challenges"
+      ],
+      "recommendations": [
+        "Use table-based layout for maximum compatibility",
+        "Inline all CSS for better email client support",
+        "Optimize images for web delivery",
+        "Test across all target email clients",
+        "Implement responsive design with media queries",
+        "Ensure WCAG AA compliance with proper alt text and contrast"
+      ]
+    },
+    "qualityScore": {
+      "completeness": 100,
+      "consistency": 90,
+      "clarity": 100,
+      "implementability": 100,
+      "overall": 98
+    }
+  }
+}

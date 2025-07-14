@@ -1,0 +1,28 @@
+{
+  "analysis_type": "trend_analysis",
+  "data": {
+    "raw_analysis": "{\"seasonal_trends\": \"По мере роста интереса к осенним поездкам в Таиланд большая часть россиян ищет пляжный отдых и экскурсии, комбинируя отныне дешевле билеты и менее загруженные курорты.\",\"social_media_trends\": \"Популярные хештеги #thailand #phuket #krabi растут по популярности, влияние блогеров на путешествия в Таиланд также колоссально. Среднего класса являются драйверами.",
+    "social_media": {
+      "trending_hashtags": [
+        "#ThailandAutumn",
+        "#PhuketRomance",
+        "#ThaiFood"
+      ],
+      "viral_content": [
+        "пляж"
+      ]
+    },
+    "booking_patterns": {
+      "advance_booking": "2-3 months",
+      "group_size": "couples",
+      "preferences": [
+        "курорт"
+      ]
+    },
+    "opportunities": [
+      "general_interest"
+    ],
+    "analysis_date": "2025-07-12T06:27:41.876Z"
+  },
+  "saved_at": "2025-07-12T06:27:41.876Z"
+}

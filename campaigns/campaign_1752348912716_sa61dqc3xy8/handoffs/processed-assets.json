@@ -1,0 +1,531 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752349012906_wvmzneg2z5a",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png",
+        "alt_text": "AI-selected hero",
+        "usage": "to capture the essence of summer adventures in Thailand",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 99820,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 100,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_zW7MjBFE9zk_1752349027683",
+        "path": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBiZWFjaGVzJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjM1ODAyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBiZWFjaGVzJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjM1ODAyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the vibrant and tropical beauty of Thailand's beaches during summer.",
+          "emotional_match": "exciting and adventurous, inviting and serene",
+          "tags": [
+            "summer",
+            "beaches",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_Z9pWf5NK4fY_1752349028224",
+        "path": "https://images.unsplash.com/photo-1596427982570-bed3b9798c57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjB0ZW1wbGVzfGVufDB8MHx8fDE3NTIzNTgwMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1596427982570-bed3b9798c57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjB0ZW1wbGVzfGVufDB8MHx8fDE3NTIzNTgwMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "gold concrete building during daytime",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Pictures of serene and picturesque temples in Phuket, highlighting cultural experiences.",
+          "emotional_match": "exciting and adventurous, inviting and serene",
+          "tags": [
+            "Phuket",
+            "temples"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_VW0bzb90oMA_1752349028849",
+        "path": "https://images.unsplash.com/photo-1675150277436-9c7348972c11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZXxlbnwwfDB8fHwxNzUyMzU4MDI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1675150277436-9c7348972c11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZXxlbnwwfDB8fHwxNzUyMzU4MDI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a wooden table topped with plates of food",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals of exotic and colorful Thai dishes to represent the culinary aspect of the campaign.",
+          "emotional_match": "exciting and adventurous, inviting and serene",
+          "tags": [
+            "Thai",
+            "cuisine"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_FvN3fn-Mmfw_1752349028869",
+        "path": "https://images.unsplash.com/photo-1597827152533-dfc704ec1780?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjB0cmF2ZWwlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMjQ0MjQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1597827152533-dfc704ec1780?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjB0cmF2ZWwlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMjQ0MjQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "people riding on boat on river during daytime",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images capturing the excitement and adventurous spirit of exploring Thailand's landscapes.",
+          "emotional_match": "exciting and adventurous, inviting and serene",
+          "tags": [
+            "adventure",
+            "travel",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_N2Sr40WlRHA_1752349029407",
+        "path": "https://images.unsplash.com/photo-1625449455303-a7611109e653?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGxhbmRzY2FwZXMlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMzU4MDI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1625449455303-a7611109e653?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGxhbmRzY2FwZXMlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMzU4MDI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "green palm tree under blue sky during daytime",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Vibrant and inviting landscapes that reflect the essence of summer in Thailand.",
+          "emotional_match": "exciting and adventurous, inviting and serene",
+          "tags": [
+            "tropical",
+            "landscapes",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752349015568_h76c422ide",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to enhance call-to-action elements",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752349015569_vvmg02vvgaa",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to enhance call-to-action elements",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4485,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752349016991_t6hcl5kbzbb",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752348912716_sa61dqc3xy8/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to establish brand identity in the header",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-12T19:37:37.496Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752349012906_wvmzneg2z5a",
+      "asset_type": "image",
+      "usage_context": "to capture the essence of summer adventures in Thailand",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 99820,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "unsplash_zW7MjBFE9zk_1752349027683",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_Z9pWf5NK4fY_1752349028224",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "gold concrete building during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_VW0bzb90oMA_1752349028849",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a wooden table topped with plates of food",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_FvN3fn-Mmfw_1752349028869",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "people riding on boat on river during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_N2Sr40WlRHA_1752349029407",
+      "asset_type": "image",
+      "usage_context": "decoration",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "green palm tree under blue sky during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752349015568_h76c422ide",
+      "asset_type": "icon",
+      "usage_context": "to enhance call-to-action elements",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752349015569_vvmg02vvgaa",
+      "asset_type": "icon",
+      "usage_context": "to enhance call-to-action elements",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4485,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752349016991_t6hcl5kbzbb",
+      "asset_type": "icon",
+      "usage_context": "to establish brand identity in the header",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 3,
+    "optimization_level": "high",
+    "processed_at": "2025-07-12T19:37:37.497Z"
+  }
+}

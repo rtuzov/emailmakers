@@ -1,0 +1,637 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752226513259_lz3vet925wc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty of Thailand's beaches and summer vacation vibes.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 173094,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 173,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.018Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752226516603_wcgc4ndz7z",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_акция-новинка.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_акция-новинка.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and promotional offers.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 30591,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 31,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752226516603_akbsrvq3gy4",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_изображение-символизирует-скидку-или-акцию-что-может-привлечь-внимание-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_изображение-символизирует-скидку-или-акцию-что-может-привлечь-внимание-клиентов.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and promotional offers.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 25269,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 25,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_XNyhLJ7-R0I_1752226538402",
+        "path": "https://images.unsplash.com/photo-1612864273267-f00f5ea5c086?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGJlYWNoZXMlMjBzdW1tZXIlMjB2YWNhdGlvbnxlbnwwfDB8fHwxNzUyMjM1NTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1612864273267-f00f5ea5c086?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGJlYWNoZXMlMjBzdW1tZXIlMjB2YWNhdGlvbnxlbnwwfDB8fHwxNzUyMjM1NTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "green trees on brown sand beach under blue and white sunny cloudy sky during daytime",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the beauty of Thailand's beaches, turquoise sea, and summer vacation vibe.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "Thailand",
+            "beaches",
+            "summer",
+            "vacation"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_NkiBg26VBeg_1752226538938",
+        "path": "https://images.unsplash.com/photo-1595001955623-16e37238d572?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwbWFya2V0cyUyMHRlbXBsZXMlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1595001955623-16e37238d572?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwbWFya2V0cyUyMHRlbXBsZXMlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "woman in white crew neck t-shirt holding brown wooden stick",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images highlighting specific attractions in Thailand such as vibrant markets and stunning temples.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "Thai",
+            "markets",
+            "temples",
+            "culture"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_VvMyfPkaeLQ_1752226538956",
+        "path": "https://images.unsplash.com/photo-1598710989943-9bcf9f3a95c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHBhcmFkaXNlJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNTQyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1598710989943-9bcf9f3a95c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHBhcmFkaXNlJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNTQyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "palm tree on beach during daytime",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that evoke a vibrant and tropical atmosphere, perfect for summer adventures.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "tropical",
+            "paradise",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_9OYKWaqEfDU_1752226539531",
+        "path": "https://images.unsplash.com/photo-1512428581314-9fccd4ea3064?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1512428581314-9fccd4ea3064?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "man sitting on vehicle",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that represent adventure and exploration in Thailand, including islands and cultural experiences.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "adventurous",
+            "travel",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_jWKk-0ZBUyg_1752226540066",
+        "path": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxkaXNjb3VudCUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxkaXNjb3VudCUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "five brown wooden boats",
+        "usage": "branding",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that convey the idea of travel savings and special offers for trips to Thailand.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "discount",
+            "travel",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752226521503_30cy4wqghjd",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate discounts and facilitate the online booking process.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752226521504_uo386klh4pp",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate discounts and facilitate the online booking process.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752226523540_ghyi6zopys",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Brand recognition and trust.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:36:22.019Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752226513259_lz3vet925wc",
+      "asset_type": "image",
+      "usage_context": "Showcase the beauty of Thailand's beaches and summer vacation vibes.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 173094,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752226516603_wcgc4ndz7z",
+      "asset_type": "image",
+      "usage_context": "Highlight specific attractions and promotional offers.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 30591,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752226516603_akbsrvq3gy4",
+      "asset_type": "image",
+      "usage_context": "Highlight specific attractions and promotional offers.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 25269,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "unsplash_XNyhLJ7-R0I_1752226538402",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "green trees on brown sand beach under blue and white sunny cloudy sky during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_NkiBg26VBeg_1752226538938",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "woman in white crew neck t-shirt holding brown wooden stick",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_VvMyfPkaeLQ_1752226538956",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "palm tree on beach during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_9OYKWaqEfDU_1752226539531",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "man sitting on vehicle",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_jWKk-0ZBUyg_1752226540066",
+      "asset_type": "image",
+      "usage_context": "branding",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "five brown wooden boats",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752226521503_30cy4wqghjd",
+      "asset_type": "icon",
+      "usage_context": "Indicate discounts and facilitate the online booking process.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752226521504_uo386klh4pp",
+      "asset_type": "icon",
+      "usage_context": "Indicate discounts and facilitate the online booking process.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752226523540_ghyi6zopys",
+      "asset_type": "icon",
+      "usage_context": "Brand recognition and trust.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 8,
+    "total_icons": 3,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T09:36:22.020Z"
+  }
+}

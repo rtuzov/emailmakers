@@ -9,6 +9,19 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+// Import enhanced file operations and error handling
+import {
+  readJSONOrThrow,
+  accessFileOrThrow,
+  CRITICAL_OPERATION_RETRY_OPTIONS
+} from './file-operations-retry';
+import {
+  FileNotFoundError,
+  DataExtractionError,
+  HandoffError,
+  createError
+} from './error-types';
+
 import {
   ContentContext,
   createHandoffMetadata,
@@ -28,6 +41,7 @@ import {
 import { getHandoffMonitor } from './handoff-monitoring';
 import { getGlobalLogger } from './agent-logger';
 import { debuggers } from './debug-output';
+import { CampaignPathResolver, CampaignPathError } from './campaign-path-resolver';
 
 // Initialize logging and monitoring
 const logger = getGlobalLogger();
@@ -75,20 +89,22 @@ async function readCampaignData(campaignPath: string) {
       campaignPath
     });
     
-    // Return null to indicate we should use fallback logic, not hardcoded values
-    return null;
+    throw new Error(`CAMPAIGN_DATA_READ_ERROR: Failed to load campaign data from ${campaignPath}. Error: ${error.message}. No fallback data allowed.`);
   }
 }
 
 /**
- * Helper function to read and parse JSON files safely
+ * Helper function to read and parse JSON files safely with retry logic
  */
 async function readJsonFile(filePath: string): Promise<any> {
   try {
-    const content = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(content);
+    await accessFileOrThrow(filePath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
+    return await readJSONOrThrow(filePath, CRITICAL_OPERATION_RETRY_OPTIONS);
   } catch (error) {
-    debug.warn('CampaignDataReader', `Failed to read ${filePath}`, { error: error.message });
+    debug.warn('CampaignDataReader', `Failed to read ${filePath} after retries`, { 
+      error: error.message,
+      retryContext: (error as any).retryContext
+    });
     return null;
   }
 }
@@ -103,18 +119,18 @@ function extractDestinationInfo(campaignData: any): {
   city: string;
 } {
   if (!campaignData) {
-    debug.warn('DestinationExtractor', 'No campaign data available, using intelligent fallback');
-    return {
-      destination: 'Unknown Destination',
-      season: 'year-round',
-      country: 'Unknown',
-      city: 'Unknown'
-    };
+    debug.error('DestinationExtractor', 'No campaign data available');
+    throw new Error('DESTINATION_EXTRACTION_ERROR: Campaign data is required for destination extraction. No fallback values allowed.');
   }
 
   // Extract destination from various sources
   const destData = campaignData.destination;
   const insights = campaignData.consolidated;
+
+  if (!destData || !insights) {
+    debug.error('DestinationExtractor', 'Missing required destination or consolidated data');
+    throw new Error('DESTINATION_EXTRACTION_ERROR: Campaign data missing destination or consolidated insights. Cannot extract destination information.');
+  }
 
   // Look for Thailand mentions in the data
   const isThailand = 
@@ -133,14 +149,29 @@ function extractDestinationInfo(campaignData: any): {
     };
   }
 
+  // Look for Turkey mentions in the data
+  const isTurkey = 
+    destData?.climate_factors?.includes('Турция') ||
+    destData?.cultural_highlights?.includes('турецк') ||
+    destData?.key_attractions?.includes('Стамбул') ||
+    insights?.key_insights?.some((insight: string) => insight.includes('Турц'));
+
+  if (isTurkey) {
+    debug.info('DestinationExtractor', 'Detected Turkey as destination from campaign data');
+    return {
+      destination: 'Turkey',
+      season: destData?.seasonal_advantages?.includes('осень') ? 'autumn' : 'year-round',
+      country: 'Turkey',
+      city: 'Istanbul'
+    };
+  }
+
   // Add more destination detection logic here as needed
-  debug.warn('DestinationExtractor', 'Could not determine destination from data');
-  return {
-    destination: 'Unknown Destination',
-    season: 'year-round',
-    country: 'Unknown',
-    city: 'Unknown'
-  };
+  debug.error('DestinationExtractor', 'Could not determine destination from campaign data', {
+    availableData: Object.keys(destData || {}),
+    hasInsights: !!insights?.key_insights
+  });
+  throw new Error('DESTINATION_EXTRACTION_ERROR: Unable to determine destination from campaign data. Supported destinations: Thailand, Turkey. Add more destination detection logic if needed.');
 }
 
 /**
@@ -153,16 +184,16 @@ function extractPricingInfo(campaignData: any): {
   route: { from: string; to: string; from_code: string; to_code: string };
 } {
   if (!campaignData) {
-    debug.warn('PricingExtractor', 'No campaign data available for pricing');
-    return {
-      minPrice: 0,
-      maxPrice: 0,
-      currency: 'RUB',
-      route: { from: 'Unknown', to: 'Unknown', from_code: 'UNK', to_code: 'UNK' }
-    };
+    debug.error('PricingExtractor', 'No campaign data available for pricing extraction');
+    throw new Error('PRICING_EXTRACTION_ERROR: Campaign data is required for pricing extraction. No fallback values allowed.');
   }
 
   const marketData = campaignData.market;
+  
+  if (!marketData) {
+    debug.error('PricingExtractor', 'Market data missing from campaign data');
+    throw new Error('PRICING_EXTRACTION_ERROR: Market data is missing from campaign. Cannot extract pricing information.');
+  }
   
   // Extract price range from pricing_insights
   const pricingText = marketData?.pricing_insights || '';
@@ -186,13 +217,20 @@ function extractPricingInfo(campaignData: any): {
     };
   }
 
-  debug.warn('PricingExtractor', 'Could not extract pricing from campaign data');
-  return {
-    minPrice: 0,
-    maxPrice: 0,
-    currency: 'RUB',
-    route: determineRoute(campaignData)
-  };
+  // Try alternative pricing extraction methods
+  if (marketData?.pricing_data || marketData?.price_range) {
+    debug.error('PricingExtractor', 'Alternative pricing data found but extraction not implemented', {
+      hasPricingData: !!marketData.pricing_data,
+      hasPriceRange: !!marketData.price_range
+    });
+    throw new Error('PRICING_EXTRACTION_ERROR: Alternative pricing data found but extraction logic not implemented. Update extractPricingInfo function.');
+  }
+
+  debug.error('PricingExtractor', 'Could not extract pricing from campaign data', {
+    pricingText: pricingText.substring(0, 100),
+    marketDataKeys: Object.keys(marketData)
+  });
+  throw new Error('PRICING_EXTRACTION_ERROR: Unable to extract pricing information from campaign market data. Check pricing_insights format or add alternative extraction logic.');
 }
 
 /**
@@ -210,13 +248,19 @@ function determineRoute(campaignData: any): { from: string; to: string; from_cod
     };
   }
 
-  // Add more route mappings as needed
-  return {
-    from: 'Moscow',
-    to: destInfo.city || 'Unknown',
-    from_code: 'SVO',
-    to_code: 'UNK'
-  };
+  if (destInfo.destination === 'Turkey') {
+    return {
+      from: 'Moscow',
+      to: 'Istanbul',
+      from_code: 'SVO',
+      to_code: 'IST'
+    };
+  }
+
+  debug.error('RouteMapper', 'Unsupported destination for route mapping', {
+    destination: destInfo.destination
+  });
+  throw new Error(`ROUTE_MAPPING_ERROR: No route mapping available for destination "${destInfo.destination}". Supported destinations: Thailand, Turkey.`);
 }
 
 /**
@@ -224,29 +268,37 @@ function determineRoute(campaignData: any): { from: string; to: string; from_cod
  */
 function extractEmotionalTriggers(campaignData: any): string {
   if (!campaignData?.emotional?.emotional_triggers) {
-    debug.warn('EmotionalExtractor', 'No emotional triggers found in campaign data');
-    return 'adventure';
+    debug.error('EmotionalExtractor', 'No emotional triggers found in campaign data');
+    throw new Error('EMOTIONAL_EXTRACTION_ERROR: Emotional data with triggers is required. No fallback values allowed.');
   }
 
   const triggers = campaignData.emotional.emotional_triggers;
   
+  if (!Array.isArray(triggers) || triggers.length === 0) {
+    debug.error('EmotionalExtractor', 'Emotional triggers is not a valid array');
+    throw new Error('EMOTIONAL_EXTRACTION_ERROR: Emotional triggers must be a non-empty array.');
+  }
+  
   // Map text to enum values
   if (triggers.includes('экзотика') || triggers.includes('приключение')) {
+    debug.info('EmotionalExtractor', 'Mapped emotional trigger to adventure', { triggers });
     return 'adventure';
   }
   if (triggers.includes('релакс') || triggers.includes('массаж')) {
+    debug.info('EmotionalExtractor', 'Mapped emotional trigger to relaxation', { triggers });
     return 'relaxation';
   }
   if (triggers.includes('романтика') || triggers.includes('закаты')) {
+    debug.info('EmotionalExtractor', 'Mapped emotional trigger to excitement', { triggers });
     return 'excitement';
   }
 
-  debug.info('EmotionalExtractor', 'Extracted emotional trigger from campaign data', {
+  debug.error('EmotionalExtractor', 'Unable to map emotional triggers to known categories', {
     triggers,
-    mapped: 'adventure'
+    supportedTriggers: ['экзотика', 'приключение', 'релакс', 'массаж', 'романтика', 'закаты']
   });
 
-  return 'adventure';
+  throw new Error(`EMOTIONAL_EXTRACTION_ERROR: Unable to map emotional triggers "${triggers.join(', ')}" to supported categories. Supported: adventure (экзотика, приключение), relaxation (релакс, массаж), excitement (романтика, закаты).`);
 }
 
 export const finalizeContentAndTransferToDesign = tool({
@@ -265,22 +317,42 @@ export const finalizeContentAndTransferToDesign = tool({
   }),
   execute: async (params, context) => {
     const startTime = Date.now();
-    const handoffMonitor = getHandoffMonitor(params.campaign_path, logger);
+    
+    // Resolve and validate campaign path using centralized resolver
+    let campaignPath: string;
+    try {
+      campaignPath = await CampaignPathResolver.resolveAndValidate({
+        campaign_path: params.campaign_path,
+        campaign: { campaignPath: params.campaign_path }
+      });
+      debug.info('ContentFinalization', 'Campaign path resolved successfully', {
+        campaignPath,
+        trace_id: params.trace_id
+      });
+    } catch (error) {
+      console.error('❌ CONTENT FINALIZATION: Campaign path resolution failed');
+      if (error instanceof CampaignPathError) {
+        throw new Error(`Campaign path resolution failed: ${error.message}. Orchestrator must provide valid campaign path.`);
+      }
+      throw new Error(`Unexpected error in campaign path resolution: ${error.message}`);
+    }
+    
+    const handoffMonitor = getHandoffMonitor(campaignPath, logger);
     
     debug.info('ContentFinalization', 'Content Specialist finalization started', {
       campaign_id: params.campaign_id,
-      campaign_path: params.campaign_path,
+      campaign_path: campaignPath,
       trace_id: params.trace_id
     });
 
     try {
       // 🚀 LOAD DATA COLLECTION CONTEXT AND CAMPAIGN DATA
       debug.info('ContentFinalization', 'Loading data collection context and campaign data', {
-        campaign_path: params.campaign_path
+        campaign_path: campaignPath
       });
       
       // Load data collection context first for complete reference
-      const dataCollectionContext = await loadDataCollectionContext(params.campaign_path);
+      const dataCollectionContext = await loadDataCollectionContext(campaignPath);
       
       debug.info('ContentFinalization', 'Data collection context loaded', {
         available_sources: dataCollectionContext.collection_metadata.data_sources.length,
@@ -289,14 +361,7 @@ export const finalizeContentAndTransferToDesign = tool({
       });
       
       // Also read campaign data for backward compatibility with existing extraction functions
-      const campaignData = await readCampaignData(params.campaign_path);
-      
-      if (!campaignData) {
-        debug.error('ContentFinalization', 'CRITICAL: Failed to read campaign data files', {
-          campaign_path: params.campaign_path
-        });
-        return `CRITICAL ERROR: Could not read campaign data from ${params.campaign_path}. Content finalization cannot proceed without real data.`;
-      }
+      const campaignData = await readCampaignData(campaignPath);
 
       // Extract real destination info from campaign data
       const destinationInfo = extractDestinationInfo(campaignData);

@@ -1,0 +1,29 @@
+{
+  "id": "campaign_1752240376330_qk8nkazf1e",
+  "name": "Тестирование исправления проблемы с ассетами",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "пользователи сервиса",
+  "user_request": "Создай email для тестирования исправления проблемы с ассетами",
+  "created_at": "2025-07-11T13:26:16.331Z",
+  "status": "active",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": false,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": ""
+}

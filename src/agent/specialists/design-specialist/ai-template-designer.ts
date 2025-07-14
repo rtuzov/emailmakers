@@ -111,7 +111,9 @@ async function generateAITemplateDesign(params: {
   console.log(`📷 Content assets: ${contentAssets.length} selected`);
 
   const templateDesignPrompt = `
-Создай детальный дизайн email шаблона для профессиональной верстки в MJML.
+Проанализируй контент и создай детальный дизайн email шаблона, адаптированный под специфику кампании.
+
+🧠 АНАЛИЗ КОНТЕНТА:
 
 📧 КОНТЕКСТ КАМПАНИИ:
 Тема: ${subject}
@@ -123,7 +125,7 @@ Preheader: ${preheader}
 Основной CTA: ${primaryCTA}
 Дополнительный CTA: ${secondaryCTA}
 
-🎨 БРЕНДИНГ:
+🎨 БАЗОВЫЕ ЦВЕТА БРЕНДА (можешь адаптировать):
 Основной цвет: ${primaryColor}
 Акцентный цвет: ${accentColor}
 Фон: ${backgroundColor}
@@ -149,8 +151,30 @@ ${contentAssets.map((asset, i) =>
 Максимальная ширина: ${techSpec.specification?.design?.constraints?.layout?.maxWidth || 600}px
 Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: any) => c.client).join(', ') || 'gmail, outlook, apple-mail'}
 
-🎯 ЗАДАЧА:
-Создай профессиональный дизайн email шаблона в формате JSON. ОБЯЗАТЕЛЬНО используй РЕАЛЬНЫЕ пути к ассетам из списка выше.
+🎯 ЗАДАЧА: СОЗДАЙ АДАПТИВНЫЙ ДИЗАЙН
+
+1. АНАЛИЗИРУЙ КОНТЕНТ:
+   - Определи тематику (путешествия, бизнес, акции, премиум)
+   - Оцени тон сообщения (формальный, дружелюбный, срочный)
+   - Выяви ключевые моменты для выделения
+   - Определи целевую аудиторию по стилю текста
+
+2. ПОДБЕРИ ЦВЕТОВУЮ СХЕМУ:
+   - Для путешествий: теплые тропические или холодные горные тона
+   - Для бизнеса: корпоративные синие, серые, белые
+   - Для акций: яркие контрастные цвета
+   - Для премиум: элегантные темные с золотыми акцентами
+   - Адаптируй базовые цвета бренда под контекст
+
+3. ОПРЕДЕЛИ СТРУКТУРУ:
+   - Для коротких сообщений: компактная структура (5-6 секций)
+   - Для детальных: расширенная структура (8-10 секций)
+   - Адаптируй под тип кампании (промо, информационная, сезонная)
+
+4. ВЫБЕРИ ТИПОГРАФИКУ:
+   - Заголовки: размер зависит от важности
+   - Основной текст: читаемость для аудитории
+   - Эмодзи: соответственно тематике и аудитории
 
 ВАЖНЫЕ ТРЕБОВАНИЯ:
 1. Используй ТОЧНЫЕ пути к файлам из списка ассетов выше
@@ -159,6 +183,7 @@ Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: 
 4. Используй РЕАЛЬНУЮ цену: ${formattedPrice}
 5. Используй РЕАЛЬНЫЕ CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
 6. Включи реальные даты: ${formattedDates}
+7. АДАПТИРУЙ дизайн под анализ контента
 
 {
   "template_id": "autumn_${destination.toLowerCase()}_campaign",
@@ -508,13 +533,91 @@ export const generateTemplateDesign = tool({
       const designBriefPath = path.join(campaignPath, 'content', 'design-brief-from-context.json');
       const techSpecPath = path.join(campaignPath, 'docs', 'specifications', 'technical-specification.json');
       
-      const designBriefContent = await fs.readFile(designBriefPath, 'utf8');
-      const techSpecContent = await fs.readFile(techSpecPath, 'utf8');
+      console.log(`🔍 Looking for design brief at: ${designBriefPath}`);
+      console.log(`🔍 Looking for tech spec at: ${techSpecPath}`);
       
-      const designBrief = JSON.parse(designBriefContent);
-      const techSpec = JSON.parse(techSpecContent);
+      // Check if design brief exists
+      let designBrief;
+      try {
+        const designBriefExists = await fs.access(designBriefPath).then(() => true).catch(() => false);
+        console.log(`📋 Design brief exists: ${designBriefExists}`);
+        
+        if (designBriefExists) {
+          const designBriefContent = await fs.readFile(designBriefPath, 'utf8');
+          designBrief = JSON.parse(designBriefContent);
+          console.log('✅ Loaded design brief from file');
+        } else {
+          console.log('⚠️ Design brief not found, creating fallback design brief');
+          // Create fallback design brief
+          designBrief = {
+            destination_context: {
+              name: contentContext.campaign?.destination || 'Thailand',
+              seasonal_advantages: 'Осенний сезон с комфортной погодой',
+              emotional_appeal: 'Приключения и отдых',
+              market_position: 'Популярное туристическое направление'
+            },
+            design_requirements: {
+              visual_style: 'Современный, привлекательный стиль',
+              color_palette: 'Яркие цвета Kupibilet',
+              primary_color: '#4BFF7E',
+              accent_color: '#1DA857', 
+              background_color: '#FFFFFF',
+              text_color: '#2C3959',
+              imagery_direction: 'Тропические пейзажи и культура',
+              typography_mood: 'Дружелюбный и современный'
+            },
+            content_priorities: {
+              key_messages: ['Отличные цены', 'Удобное бронирование'],
+              emotional_triggers: ['Приключения', 'Отдых'],
+              actionable_insights: ['Бронируйте сейчас', 'Ограниченное предложение']
+            }
+          };
+        }
+      } catch (error) {
+        console.error('❌ Error loading design brief:', error.message);
+        throw new Error(`Failed to load design brief: ${error.message}`);
+      }
       
-      console.log('✅ Loaded design brief and technical specification');
+      // Check if technical specification exists
+      let techSpec;
+      try {
+        const techSpecExists = await fs.access(techSpecPath).then(() => true).catch(() => false);
+        console.log(`📋 Tech spec exists: ${techSpecExists}`);
+        
+        if (techSpecExists) {
+          const techSpecContent = await fs.readFile(techSpecPath, 'utf8');
+          techSpec = JSON.parse(techSpecContent);
+          console.log('✅ Loaded technical specification from file');
+        } else {
+          console.log('⚠️ Technical specification not found, creating fallback tech spec');
+          // Create fallback technical specification
+          techSpec = {
+            email_specifications: {
+              max_width: '600px',
+              responsive_breakpoints: ['600px', '480px'],
+              supported_clients: ['Gmail', 'Outlook', 'Apple Mail'],
+              dark_mode_support: true
+            },
+            content_structure: {
+              header: 'Логотип и навигация',
+              hero_section: 'Главное предложение',
+              content_blocks: 'Детали предложения',
+              cta_section: 'Призыв к действию',
+              footer: 'Контакты и отписка'
+            },
+            performance_requirements: {
+              load_time: '<3 seconds',
+              file_size: '<100KB',
+              image_optimization: 'WebP with JPEG fallback'
+            }
+          };
+        }
+      } catch (error) {
+        console.error('❌ Error loading technical specification:', error.message);
+        throw new Error(`Failed to load technical specification: ${error.message}`);
+      }
+      
+      console.log('✅ Design brief and technical specification loaded (with fallbacks if needed)');
 
       // 🤖 GENERATE TEMPLATE DESIGN WITH AI using OpenAI Agents SDK
       const templateDesign = await generateAITemplateDesign({

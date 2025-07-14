@@ -83,7 +83,7 @@ async function testCombinedIntelligence() {
     const combinedInput = {
       task: 'content_generation',
       content_type: 'complete_campaign',
-      topic: 'Горящие туры в Турцию',
+      topic: 'Горящие авиабилеты в Турцию',
       tone: 'urgent',
       target_audience: 'budget travelers',
       // Агент должен использовать и pricing, и date intelligence tools

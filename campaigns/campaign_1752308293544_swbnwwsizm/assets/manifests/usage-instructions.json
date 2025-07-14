@@ -1,0 +1,47 @@
+[
+  {
+    "assetId": "unsplash_Rd1l90rXhqU_1752308398157",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Летний отдых в Турции: Ваш идеальный отпуск ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a view of a beach with umbrellas and people in the water\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_7IdXwdvYNf8_1752308398660",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Турции: Ваш идеальный отпуск ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"A group of people standing around a stone building\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_8Ve0KYpTceA_1752308399170",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Турции: Ваш идеальный отпуск ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a colorful picture of a field with trees\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_C2N2jNHvKRw_1752308399759",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Турции: Ваш идеальный отпуск ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"pizza on white ceramic plate\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_wlkFoaFbqNk_1752308400267",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Летний отдых в Турции: Ваш идеальный отпуск ждет!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"green leaf plant close-up photography\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

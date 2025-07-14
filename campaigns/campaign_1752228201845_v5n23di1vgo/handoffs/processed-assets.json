@@ -1,0 +1,636 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752228353859_9pbn8cecn1w",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_милый-кролик-читает-книгу-под-пальмой-создавая-атмосферу-отдыха-и-расслабления.png",
+        "alt_text": "AI-selected hero",
+        "usage": "to capture the essence of summer in Thailand and entice travel enthusiasts",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 159632,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 160,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752228356825_swhsv4egq2",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_информация-о-путешествии-из-владикавказа-в-санкт-петербург-с-указанием-цены.png",
+        "alt_text": "AI-selected support",
+        "usage": "to highlight special offers and discounts on flights",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 76378,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 76,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752228356826_eiqx3oxjiam",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "alt_text": "AI-selected support",
+        "usage": "to highlight special offers and discounts on flights",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 104391,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 104,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "unsplash_zW7MjBFE9zk_1752228377183",
+        "path": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNoJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNjkwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNoJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNjkwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Capturing the essence of a tropical summer vacation in Thailand with palm trees and vibrant beaches.",
+          "emotional_match": "exotic, carefree, joyful, adventurous",
+          "tags": [
+            "tropical",
+            "beach",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_1Cv5AAFTMhY_1752228377741",
+        "path": "https://images.unsplash.com/photo-1690535386401-681965d38578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwY2l0eXNjYXBlfGVufDB8MHx8fDE3NTIyMzczNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1690535386401-681965d38578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwY2l0eXNjYXBlfGVufDB8MHx8fDE3NTIyMzczNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a view of a large city with tall buildings",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Highlighting the adventurous and exciting atmosphere of Bangkok's local attractions and culture.",
+          "emotional_match": "exotic, carefree, joyful, adventurous",
+          "tags": [
+            "Bangkok",
+            "cityscape"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_kRzCw4UiHIU_1752228377761",
+        "path": "https://images.unsplash.com/photo-1729717949802-4fc5a0923f8e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBiZWFjaCUyMHN1bnNldHxlbnwwfDB8fHwxNzUyMjMzOTI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1729717949802-4fc5a0923f8e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBiZWFjaCUyMHN1bnNldHxlbnwwfDB8fHwxNzUyMjMzOTI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "A sunset over the ocean with a boat in the water",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Showcasing the colorful and dynamic landscape of Phuket during sunset.",
+          "emotional_match": "exotic, carefree, joyful, adventurous",
+          "tags": [
+            "Phuket",
+            "beach",
+            "sunset"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_zW7MjBFE9zk_1752228378437",
+        "path": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBpbiUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzczNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBpbiUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzczNzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "usage": "seasonal",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Illustrating the refreshing and lively characteristics of summer in Thailand with lush nature.",
+          "emotional_match": "exotic, carefree, joyful, adventurous",
+          "tags": [
+            "summer",
+            "in",
+            "Thailand"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_bIfZam5h9H4_1752228378989",
+        "path": "https://images.unsplash.com/photo-1628428800730-43b0f1246a0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwc3RyZWV0JTIwZm9vZHxlbnwwfDB8fHwxNzUyMjM3Mzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1628428800730-43b0f1246a0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwc3RyZWV0JTIwZm9vZHxlbnwwfDB8fHwxNzUyMjM3Mzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "people sitting on chair near food stall during daytime",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Depicting the culturally rich experience of trying local Thai food.",
+          "emotional_match": "exotic, carefree, joyful, adventurous",
+          "tags": [
+            "Thai",
+            "street",
+            "food"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752228358760_0fy28p8uq71r",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_иконка-символизирующая-email-рассылки-и-коммуникацию.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_иконка-символизирующая-email-рассылки-и-коммуникацию.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to facilitate the online booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 5434,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752228358761_0lu5lg94m7zl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "to facilitate the online booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752228361235_u34penzbw",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_иллюстрация-с-улыбающимся-лицом-на-экране-символизирующая-позитивный-пользовательский-опыт.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752228201845_v5n23di1vgo/assets/optimized/optimized_иллюстрация-с-улыбающимся-лицом-на-экране-символизирующая-позитивный-пользовательский-опыт.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "to add decorative elements that enhance the tropical theme",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 19131,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 19,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T10:07:16.050Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752228353859_9pbn8cecn1w",
+      "asset_type": "image",
+      "usage_context": "to capture the essence of summer in Thailand and entice travel enthusiasts",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 159632,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752228356825_swhsv4egq2",
+      "asset_type": "image",
+      "usage_context": "to highlight special offers and discounts on flights",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 76378,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752228356826_eiqx3oxjiam",
+      "asset_type": "image",
+      "usage_context": "to highlight special offers and discounts on flights",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 104391,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "unsplash_zW7MjBFE9zk_1752228377183",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_1Cv5AAFTMhY_1752228377741",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a view of a large city with tall buildings",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_kRzCw4UiHIU_1752228377761",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "A sunset over the ocean with a boat in the water",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_zW7MjBFE9zk_1752228378437",
+      "asset_type": "image",
+      "usage_context": "seasonal",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_bIfZam5h9H4_1752228378989",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "people sitting on chair near food stall during daytime",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752228358760_0fy28p8uq71r",
+      "asset_type": "icon",
+      "usage_context": "to facilitate the online booking process",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 5434,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752228358761_0lu5lg94m7zl",
+      "asset_type": "icon",
+      "usage_context": "to facilitate the online booking process",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752228361235_u34penzbw",
+      "asset_type": "icon",
+      "usage_context": "to add decorative elements that enhance the tropical theme",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 19131,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 8,
+    "total_icons": 3,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T10:07:16.051Z"
+  }
+}

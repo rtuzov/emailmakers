@@ -1,0 +1,27 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Thailand in autumn.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the insights for email campaign creation focusing on travel in Thailand during autumn.",
+    "data_files": [
+      "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752301643165_29ro1ngdm62/data/destination-analysis.json",
+      "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752301643165_29ro1ngdm62/data/market-intelligence.json",
+      "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752301643165_29ro1ngdm62/data/emotional-profile.json",
+      "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752301643165_29ro1ngdm62/data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Focus on emotional triggers",
+      "Use pricing insights",
+      "Leverage seasonal advantages"
+    ]
+  },
+  "created_at": "2025-07-12T06:27:41.876Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752301643165_29ro1ngdm62/handoffs/data-collection specialist-to-content-specialist.json"
+}

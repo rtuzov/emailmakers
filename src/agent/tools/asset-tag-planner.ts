@@ -153,7 +153,7 @@ function extractKeywordsFromBrief(brief: string): string[] {
   const keywords: string[] = [];
   
   // Ключевые слова для путешествий
-  const travelKeywords = ['путешеств', 'отдых', 'тур', 'авиа', 'самолет', 'полет', 'билет', 'маршрут'];
+  const travelKeywords = ['путешеств', 'отдых', 'перелет', 'авиа', 'самолет', 'полет', 'билет', 'маршрут'];
   const seasonKeywords = ['весна', 'лето', 'осень', 'зима', 'сезон'];
   const locationKeywords = ['япония', 'сочи', 'москва', 'европа', 'азия'];
   const actionKeywords = ['скидка', 'акция', 'предложение', 'горящий', 'специальный'];

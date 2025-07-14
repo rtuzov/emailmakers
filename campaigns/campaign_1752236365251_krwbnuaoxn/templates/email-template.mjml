@@ -1,0 +1,69 @@
+<mjml>
+  <mj-head>
+    <mj-title>Откройте для себя Таиланд: лучшие цены на авиабилеты!</mj-title>
+    <mj-preview>Путешествие в Таиланд с Kupibilet по цене от 24718 RUB. Успейте забронировать!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .header { background-color: #007bff; color: #ffffff; text-align: center; padding: 20px 0; }
+      .footer { background-color: #f1f1f1; text-align: center; padding: 10px 0; }
+      .cta-button { background-color: #28a745; color: #ffffff; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section css-class="header">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="bold">Откройте для себя Таиланд: лучшие цены на авиабилеты!</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text>Представьте себе, как вы наслаждаетесь теплым солнечным светом, гуляя по белоснежным пляжам Таиланда, где лазурные волны нежно омывают берега. Это место, где каждый день начинается с яркого восхода и заканчивается волшебными закатами, полными романтики и приключений. Таиланд — это не просто страна, это настоящее путешествие в мир красоты и гармонии, где каждая деталь создает уникальную атмосферу для отдыха.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1721209290993-deea0ffd1c1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHN1bW1lciUyMGJlYWNofGVufDB8MHx8fDE3NTIyNDU1MjV8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Beach Relaxation" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text>В Таиланде вас ждут бесконечные возможности для активного отдыха: от серфинга на волнах до погружения в подводный мир с его удивительными коралловыми рифами. Исследуйте древние храмы, наслаждайтесь местной кухней на уличных рынках и погружайтесь в культуру, которая сочетает в себе традиции и современность. Каждый уголок этой страны наполнен жизнью и энергией, а дружелюбие местных жителей сделает ваше пребывание еще более приятным.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1723467733568-eed42dcbf767?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCbGFjayUyMFNlYSUyMGNvYXN0JTIwYXR0cmFjdGlvbnN8ZW58MHwwfHx8MTc1MjI0NTUyNXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Scenic view" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text>Сейчас самое время планировать ваше путешествие! Купив билет на рейс в Таиланд, вы получите возможность отправиться в эту экзотическую страну по невероятной цене — всего 24718 RUB. Мы предлагаем оптимальные даты для вашего путешествия: 15 августа, 10 сентября, 5 октября, 20 ноября и 15 декабря 2025 года. Выберите удобное время и наслаждайтесь отдыхом в одной из самых красивых стран мира.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1568832359852-a738a9df630e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBmZXN0aXZhbHMlMjBTb2NoaXxlbnwwfDB8fHwxNzUyMjQ1NTI2fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Travel accommodation" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text>Не упустите шанс! Забронируйте свой билет на сайте Kupibilet прямо сейчас и откройте для себя мир, полный приключений и незабываемых впечатлений. Каждое мгновение в Таиланде — это возможность создать воспоминания, которые останутся с вами на всю жизнь. Путешествие начинается с первого шага — сделайте его уже сегодня!</mj-text>
+        <mj-button css-class="cta-button" href="https://www.kupibilet.ru">Забронировать билет</mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1581917306533-63166366910d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHN1bW1lciUyMHZpYmVzfGVufDB8MHx8fDE3NTIyNDU1Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Palms during daytime" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1692992257090-11ab872a6afa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMHN1bW1lciUyMGFjdGl2aXRpZXN8ZW58MHwwfHx8MTc1MjI0NTUyN3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="People on pier" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section css-class="footer">
+      <mj-column>
+        <mj-text>Контактная информация: support@kupibilet.ru | Телефон: +7 (495) 123-45-67</mj-text>
+        <mj-text>© 2023 Kupibilet. Все права защищены.</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -5,6 +5,8 @@
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import { buildDesignContext } from './design-context';
 import { PerformanceMetrics } from './types';
 
@@ -24,9 +26,57 @@ export const analyzePerformance = tool({
     console.log('\n⚡ === PERFORMANCE ANALYSIS ===');
     
     try {
-      const contentContext = params.content_context;
-      const mjmlTemplate = params.mjml_template;
-      const assetManifest = params.asset_manifest;
+      // Load data from design context if parameters are empty
+      const designContext = context?.designContext || {};
+      
+      let contentContext = params.content_context;
+      let mjmlTemplate = params.mjml_template;
+      let assetManifest = params.asset_manifest;
+      
+      // If parameters are empty, try to load from design context
+      if (Object.keys(contentContext).length === 0 && designContext.content_context) {
+        contentContext = designContext.content_context;
+        console.log('📋 Loaded content context from design context');
+      }
+      
+      if (Object.keys(mjmlTemplate).length === 0 && designContext.mjml_template) {
+        mjmlTemplate = designContext.mjml_template;
+        console.log('📋 Loaded MJML template from design context');
+      }
+      
+      if (Object.keys(assetManifest).length === 0 && designContext.asset_manifest) {
+        assetManifest = designContext.asset_manifest;
+        console.log('📋 Loaded asset manifest from design context');
+      }
+      
+      // If still empty, try to load from file system
+      if (Object.keys(assetManifest).length === 0 && designContext.campaign_path) {
+        try {
+          const manifestPath = path.join(designContext.campaign_path, 'assets', 'manifests', 'asset-manifest.json');
+          const manifestData = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+          assetManifest = manifestData.assetManifest || manifestData;
+          console.log('📋 Loaded asset manifest from file system');
+        } catch (error) {
+          console.warn('⚠️ Could not load asset manifest from file system:', error.message);
+        }
+      }
+      
+      if (Object.keys(mjmlTemplate).length === 0 && designContext.campaign_path) {
+        try {
+          const mjmlPath = path.join(designContext.campaign_path, 'templates', 'email-template.mjml');
+          const mjmlContent = await fs.readFile(mjmlPath, 'utf8');
+          const htmlPath = path.join(designContext.campaign_path, 'templates', 'email-template.html');
+          const htmlContent = await fs.readFile(htmlPath, 'utf8');
+          mjmlTemplate = {
+            mjml_content: mjmlContent,
+            html_content: htmlContent,
+            file_size: Buffer.byteLength(htmlContent, 'utf8')
+          };
+          console.log('📋 Loaded MJML template from file system');
+        } catch (error) {
+          console.warn('⚠️ Could not load MJML template from file system:', error.message);
+        }
+      }
       
       // Calculate performance metrics - fix: ensure arrays exist before spreading
       const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];

@@ -1,0 +1,57 @@
+<mjml>
+  <mj-head>
+    <mj-title>Летние каникулы в Таиланде</mj-title>
+    <mj-preview>Погрузитесь в атмосферу Таиланда с лучшими предложениями на авиабилеты от 46738 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .hero-section { background-color: #007bff; padding: 20px; }
+      .call-to-action { background-color: #28a745; color: #ffffff; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section css-class="hero-section">
+      <mj-column>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235695800_v4nhn4fi57/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png" alt="Relaxing beach" />
+        <mj-text font-size="24px" color="#ffffff" font-weight="bold">Летние каникулы в Таиланде: Солнце, море и незабываемые впечатления!</mj-text>
+        <mj-text font-size="16px" color="#ffffff">Погрузитесь в атмосферу Таиланда с лучшими предложениями на авиабилеты от 46738 RUB.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Представьте себе, как вы наслаждаетесь ярким солнцем, погружаетесь в кристально чистые воды и исследуете экзотическую природу Таиланда. Это место, где сочная зелень тропиков сочетается с уникальным азиатским колоритом, а уличная еда радует своим разнообразием. Не упустите шанс провести летние каникулы в этом райском уголке мира, где тропические закаты и кокосы станут частью вашего отдыха.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Таиланд предлагает множество активностей для любого путешественника: от расслабляющих пляжных дней до захватывающих экскурсионных туров по древним храмам и живописным островам. Вы сможете попробовать местные деликатесы, погрузиться в мир подводного плавания или просто насладиться безмятежностью на белоснежных пляжах. Каждое мгновение здесь наполнено жизнью и яркими эмоциями, которые останутся с вами навсегда.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1646489471134-f2a91aab85cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTIyNDQ4ODV8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Cultural dance" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Мы рады предложить вам уникальную возможность забронировать авиабилеты по лучшей цене — всего 46738 RUB! Оптимальные даты для вашего путешествия: 15 августа, 10 сентября, 5 октября, 20 ноября и 15 декабря 2025 года. Не упустите шанс отправиться в это удивительное путешествие в самый разгар летнего сезона!</mj-text>
+        <mj-button href="#" css-class="call-to-action">Забронировать билет сейчас</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1628324716243-0c9c29971a58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwc3RyZWV0JTIwZm9vZHxlbnwwfDB8fHwxNzUyMjQ0ODg1fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Market" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Не ждите, пока лучшие места разберут! Путешествие в Таиланд — это не просто отпуск, это возможность открыть для себя новый мир, наполненный яркими красками и удивительными открытиями.</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1532370184535-22cec5ca8480?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMFRoYWlsYW5kJTIwYWR2ZW50dXJlfGVufDB8MHx8fDE3NTIyNDQ4ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Passenger boat" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Контактная информация:</mj-text>
+        <mj-text>Kupibilet, info@kupibilet.ru, +7 (999) 999-99-99</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

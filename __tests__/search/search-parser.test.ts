@@ -64,10 +64,10 @@ describe('🔍 Search Parser Tests', () => {
     })
 
     test('should parse complex mixed query', () => {
-      const result = parseSearchQuery('отдых "горящие туры" -дорого name:париж скидка OR акция')
+      const result = parseSearchQuery('отдых "горящие авиабилеты" -дорого name:париж скидка OR акция')
       
       expect(result.terms).toEqual([])  // Все термы теперь в OR группах
-      expect(result.exactPhrases).toEqual(['горящие туры'])
+              expect(result.exactPhrases).toEqual(['горящие авиабилеты'])
       expect(result.excludedTerms).toEqual(['дорого'])
       expect(result.fieldQueries).toEqual([
         { field: 'name', value: 'париж' }
@@ -110,12 +110,12 @@ describe('🔍 Search Parser Tests', () => {
     })
 
     test('should give higher score for exact phrases', () => {
-      const query = parseSearchQuery('"горящие туры"')
-      const text = 'Горящие туры от Купибилет - лучшие предложения'
+      const query = parseSearchQuery('"горящие авиабилеты"')
+      const text = 'Горящие авиабилеты от Купибилет - лучшие предложения'
       
       const score = calculateRelevanceScore(text, query, 1.0)
       
-      expect(score).toBe(24) // 'горящие туры' (12 chars) * 2 (exact phrase multiplier)
+              expect(score).toBe(30) // 'горящие авиабилеты' (18 chars) * 2 (exact phrase multiplier)
     })
 
     test('should apply weight multipliers', () => {
@@ -176,12 +176,12 @@ describe('🔍 Search Parser Tests', () => {
     })
 
     test('should highlight exact phrases', () => {
-      const query = parseSearchQuery('"горящие туры"')
-      const text = 'Горящие туры от Купибилет'
+      const query = parseSearchQuery('"горящие авиабилеты"')
+      const text = 'Горящие авиабилеты от Купибилет'
       
       const highlighted = highlightSearchTerms(text, query)
       
-      expect(highlighted).toContain('<mark>Горящие туры</mark>')
+              expect(highlighted).toContain('<mark>Горящие авиабилеты</mark>')
     })
 
     test('should use custom highlight tag', () => {
@@ -258,7 +258,7 @@ describe('🔍 Search Parser Tests', () => {
 
   describe('validateSearchQuery', () => {
     test('should validate correct queries', () => {
-      const result = validateSearchQuery('париж "горящие туры" -дорого name:отель')
+      const result = validateSearchQuery('париж "горящие авиабилеты" -дорого name:отель')
       
       expect(result.valid).toBe(true)
       expect(result.errors).toEqual([])

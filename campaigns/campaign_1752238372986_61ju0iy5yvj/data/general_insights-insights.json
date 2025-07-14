@@ -1,0 +1,13 @@
+{
+  "insight_type": "general_insights",
+  "insights": [
+    "Test insight 1",
+    "Test insight 2",
+    "Test insight 3",
+    "Test insight 4",
+    "Test insight 5"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T12:53:09.058Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752238372986_61ju0iy5yvj/data/general_insights-insights.json"
+}

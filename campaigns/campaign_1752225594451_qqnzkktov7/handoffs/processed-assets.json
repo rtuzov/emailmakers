@@ -1,0 +1,742 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "ai_1752225754897_aw58l3mzxd6",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png",
+        "alt_text": "AI-selected hero",
+        "usage": "To capture the essence of autumn travel to Thailand, showcasing scenic views of beaches and cultural landmarks.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 117414,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 117,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.755Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752225757099_rzn911hh50h",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_акция-на-билеты-из-владиккавказа-в-питер-за-3000-рублей.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_акция-на-билеты-из-владиккавказа-в-питер-за-3000-рублей.png",
+        "alt_text": "AI-selected support",
+        "usage": "To highlight special offers and discounts in the campaign.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 189507,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 190,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.755Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752225757100_ko9tcealid",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png",
+        "alt_text": "AI-selected support",
+        "usage": "To highlight special offers and discounts in the campaign.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 104391,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 104,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.755Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": false
+        }
+      },
+      {
+        "id": "ai_1752225762777_98tht7m6ezc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_изображение-зеленого-сердца-символизирующего-любовь-и-позитивные-эмоции.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To convey the autumn theme and its unique offerings in Thailand.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 24078,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 24,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.755Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752225762779_tobq4qyfng",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_иллюстрация-символизирующая-приветствие-и-позитивное-взаимодействие.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_иллюстрация-символизирующая-приветствие-и-позитивное-взаимодействие.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To convey the autumn theme and its unique offerings in Thailand.",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 34916,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.755Z",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_aoRY_1qig1k_1752225782402",
+        "path": "https://images.unsplash.com/photo-1708885820142-f48f4c3fc1b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBUaGFpbGFuZCUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjIzNDc4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1708885820142-f48f4c3fc1b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBUaGFpbGFuZCUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjIzNDc4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a field of flowers with a statue in the background",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images capturing the essence of autumn travel in Thailand, showcasing beautiful landscapes and cultural experiences.",
+          "emotional_match": "Inviting, exotic, adventurous, and cozy",
+          "tags": [
+            "autumn",
+            "travel",
+            "Thailand",
+            "landscapes"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_3I3HXrmRoTQ_1752225783026",
+        "path": "https://images.unsplash.com/photo-1714930961392-ccee5fad1701?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwc3RyZWV0JTIwbWFya2V0c3xlbnwwfDB8fHwxNzUyMjM0NzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1714930961392-ccee5fad1701?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwc3RyZWV0JTIwbWFya2V0c3xlbnwwfDB8fHwxNzUyMjM0NzgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a woman standing in front of a table filled with vegetables",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Vibrant images of local attractions in Bangkok, focusing on street markets and cultural experiences.",
+          "emotional_match": "Inviting, exotic, adventurous, and cozy",
+          "tags": [
+            "Bangkok",
+            "street",
+            "markets"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_Uv1sfotfGu8_1752225783640",
+        "path": "https://images.unsplash.com/photo-1737515908817-2b7668aea1a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBiZWFjaGVzJTIwYXV0dW1ufGVufDB8MHx8fDE3NTIyMzQ3ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1737515908817-2b7668aea1a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBiZWFjaGVzJTIwYXV0dW1ufGVufDB8MHx8fDE3NTIyMzQ3ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "A group of people sitting on top of a sandy beach",
+        "usage": "destination",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Colorful images of Phuket's beaches during autumn, highlighting relaxation and adventure.",
+          "emotional_match": "Inviting, exotic, adventurous, and cozy",
+          "tags": [
+            "Phuket",
+            "beaches",
+            "autumn"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_LJxFxlteYpc_1752225784199",
+        "path": "https://images.unsplash.com/photo-1635193763590-4f0b96c0aab1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjBjb3p5JTIwd2FybSUyMHRvbmVzfGVufDB8MHx8fDE3NTIyMzQ3ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1635193763590-4f0b96c0aab1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjBjb3p5JTIwd2FybSUyMHRvbmVzfGVufDB8MHx8fDE3NTIyMzQ3ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a bunch of leaves that are hanging from a tree",
+        "usage": "seasonal",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that evoke feelings of comfort and warmth, emphasizing the autumn theme of the campaign.",
+          "emotional_match": "Inviting, exotic, adventurous, and cozy",
+          "tags": [
+            "autumn",
+            "cozy",
+            "warm",
+            "tones"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_NXUGEjNMH88_1752225784978",
+        "path": "https://images.unsplash.com/photo-1565700549719-8c02187f3f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZSUyMGRpbmluZyUyMGJlYWNofGVufDB8MHx8fDE3NTIyMzQ3ODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1565700549719-8c02187f3f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZSUyMGRpbmluZyUyMGJlYWNofGVufDB8MHx8fDE3NTIyMzQ3ODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "plate of food on brown table",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the experience of dining on the beach while enjoying authentic Thai cuisine.",
+          "emotional_match": "Inviting, exotic, adventurous, and cozy",
+          "tags": [
+            "Thai",
+            "cuisine",
+            "dining",
+            "beach"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752225759953_m8bs0of5ow",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_информация-о-новых-обновлениях-и-новостях.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_информация-о-новых-обновлениях-и-новостях.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To facilitate the booking process for flights and accommodations.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4152,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752225759955_xa29ma8el8g",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To facilitate the booking process for flights and accommodations.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752225759955_7dxms0x61gl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_информация-об-отмене-рейса-и-возможные-действия-для-пассажиров.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752225594451_qqnzkktov7/assets/optimized/optimized_информация-об-отмене-рейса-и-возможные-действия-для-пассажиров.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To facilitate the booking process for flights and accommodations.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 5663,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T09:23:37.756Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "ai_1752225754897_aw58l3mzxd6",
+      "asset_type": "image",
+      "usage_context": "To capture the essence of autumn travel to Thailand, showcasing scenic views of beaches and cultural landmarks.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected hero",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 117414,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225757099_rzn911hh50h",
+      "asset_type": "image",
+      "usage_context": "To highlight special offers and discounts in the campaign.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 189507,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225757100_ko9tcealid",
+      "asset_type": "image",
+      "usage_context": "To highlight special offers and discounts in the campaign.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected support",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [
+        "Large file size may cause loading issues in some email clients"
+      ],
+      "performance_considerations": {
+        "file_size": 104391,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225762777_98tht7m6ezc",
+      "asset_type": "image",
+      "usage_context": "To convey the autumn theme and its unique offerings in Thailand.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 24078,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225762779_tobq4qyfng",
+      "asset_type": "image",
+      "usage_context": "To convey the autumn theme and its unique offerings in Thailand.",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 34916,
+        "load_time_estimate": "N/A",
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "unsplash_aoRY_1qig1k_1752225782402",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a field of flowers with a statue in the background",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_3I3HXrmRoTQ_1752225783026",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a woman standing in front of a table filled with vegetables",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_Uv1sfotfGu8_1752225783640",
+      "asset_type": "image",
+      "usage_context": "destination",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "A group of people sitting on top of a sandy beach",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_LJxFxlteYpc_1752225784199",
+      "asset_type": "image",
+      "usage_context": "seasonal",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a bunch of leaves that are hanging from a tree",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_NXUGEjNMH88_1752225784978",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "plate of food on brown table",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752225759953_m8bs0of5ow",
+      "asset_type": "icon",
+      "usage_context": "To facilitate the booking process for flights and accommodations.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4152,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225759955_xa29ma8el8g",
+      "asset_type": "icon",
+      "usage_context": "To facilitate the booking process for flights and accommodations.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752225759955_7dxms0x61gl",
+      "asset_type": "icon",
+      "usage_context": "To facilitate the booking process for flights and accommodations.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 5663,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 10,
+    "total_icons": 3,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T09:23:37.756Z"
+  }
+}

@@ -12,6 +12,9 @@ import { Agent } from '@openai/agents';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+// Import agent model configuration
+import { getAgentModel, logAgentModelConfig } from './agent-model-config';
+
 // Import specialist tool collections  
 import { dataCollectionSpecialistTools } from '../specialists/data-collection-specialist-tools';
 import { contentSpecialistTools } from '../specialists/content-specialist-tools';
@@ -21,6 +24,9 @@ import { deliverySpecialistTools } from '../specialists/delivery-specialist-tool
 
 // Import common tools
 import { commonTools } from './common-tools';
+
+// Log model configuration on load
+logAgentModelConfig();
 
 // ============================================================================
 // PROMPT LOADING UTILITY
@@ -57,6 +63,7 @@ function loadPrompt(promptPath: string): string {
  */
 export const deliverySpecialistAgent = new Agent({
   name: 'Delivery Specialist',
+  model: getAgentModel(),
   instructions: loadPrompt('specialists/delivery-specialist.md'),
   tools: [...deliverySpecialistTools, ...commonTools]
 });
@@ -66,6 +73,7 @@ export const deliverySpecialistAgent = new Agent({
  */
 export const qualitySpecialistAgent = Agent.create({
   name: 'Quality Specialist',
+  model: getAgentModel(),
   instructions: loadPrompt('specialists/quality-specialist.md'),
   tools: [...qualitySpecialistTools, ...commonTools],
   handoffs: [deliverySpecialistAgent]
@@ -76,6 +84,7 @@ export const qualitySpecialistAgent = Agent.create({
  */
 export const designSpecialistAgent = Agent.create({
   name: 'Design Specialist',
+  model: getAgentModel(),
   instructions: loadPrompt('specialists/design-specialist.md'),
   tools: [...designSpecialistTools, ...commonTools],
   handoffs: [qualitySpecialistAgent]
@@ -86,6 +95,7 @@ export const designSpecialistAgent = Agent.create({
  */
 export const contentSpecialistAgent = Agent.create({
   name: 'Content Specialist',
+  model: getAgentModel(),
   instructions: loadPrompt('specialists/content-specialist.md'),
   tools: [...contentSpecialistTools, ...commonTools],
   handoffs: [designSpecialistAgent]
@@ -96,6 +106,7 @@ export const contentSpecialistAgent = Agent.create({
  */
 export const dataCollectionSpecialistAgent = Agent.create({
   name: 'Data Collection Specialist',
+  model: getAgentModel(),
   instructions: loadPrompt('specialists/data-collection-specialist.md'),
   tools: [...dataCollectionSpecialistTools, ...commonTools],
   handoffs: [contentSpecialistAgent]

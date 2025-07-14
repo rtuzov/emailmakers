@@ -72,14 +72,14 @@ Please use the createCampaignFolder tool to set up the campaign structure.`;
       return `Generate email content for a campaign with these requirements:
 Topic: ${input.topic || 'General promotion'}
 Tone: ${input.tone || 'professional'}
-Target Audience: ${input.target_audience || 'travel enthusiasts'}
+Target Audience: ${input.target_audience || 'frequent travelers'}
 Language: ${input.language || 'ru'}
 Content Type: ${input.content_type || 'email'}
 
 Please use the contentGenerator tool to create comprehensive email content.`;
 
     case 'pricing_analysis':
-      return `Analyze pricing for travel route:
+      return `Analyze pricing for flight route:
 Origin: ${input.origin}
 Destination: ${input.destination}
 Date Range: ${input.date_range}

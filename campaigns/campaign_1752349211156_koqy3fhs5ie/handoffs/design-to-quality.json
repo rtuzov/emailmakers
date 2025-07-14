@@ -1,0 +1,33 @@
+{
+  "request": "Финализировать дизайн для кампании в Таиланде",
+  "metadata": {
+    "handoffId": "handoff_1752349449655_jnthup9r3u",
+    "timestamp": "2025-07-12T19:44:09.655Z",
+    "fromAgent": "design",
+    "toAgent": "quality",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {},
+  "design_context": {
+    "content_context": {},
+    "asset_manifest": {
+      "images": [],
+      "icons": [],
+      "fonts": []
+    },
+    "mjml_template": {
+      "validation_status": "valid",
+      "validation_messages": [],
+      "responsive_breakpoints": []
+    },
+    "design_decisions": {
+      "asset_optimization": [],
+      "accessibility_features": [],
+      "email_client_adaptations": {}
+    },
+    "preview_files": [],
+    "performance_metrics": {}
+  }
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "assetId": "unsplash_ZwsJSfwUnAE_1752349921022",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Откройте для себя Тайланд: осенние приключения ждут!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a body of water surrounded by mountains and trees\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_hyyu_-PYEP8_1752349921587",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Тайланд: осенние приключения ждут!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a person kneeling next to a motorcycle\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_Uv1sfotfGu8_1752349922608",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Тайланд: осенние приключения ждут!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"A group of people sitting on top of a sandy beach\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_xY8q9HDLBn4_1752349922627",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Тайланд: осенние приключения ждут!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"brown wooden boat on beach shore during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_0f8J8HL6fR8_1752349923185",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Тайланд: осенние приключения ждут!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a group of young women dancing in front of a building\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

@@ -1,0 +1,64 @@
+<mjml>
+  <mj-head>
+    <mj-title>Летите в Таиланд: низкие цены и незабываемые приключения!</mj-title>
+    <mj-preview>Поймайте момент: лучшие авиабилеты в Таиланд по цене от 45270 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.6" color="#333333" />
+      <mj-section padding="20px 0" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-image src="https://kupibilet.com/logo.png" alt="Kupibilet Logo" width="200px" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752234347289_d61n3onxb85/assets/optimized/optimized_иллюстрация-веселого-кролика-с-картой-и-чемоданом-символизирующая-путешествия-и-приключения.png" alt="Hero Image" />
+        <mj-text font-size="20px" font-weight="bold">Летите в Таиланд: низкие цены и незабываемые приключения!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          Представьте себе, как вы наслаждаетесь бирюзовыми водами Тайланда, окруженными яркими джунглями и ароматами экзотических специй. Это не просто отпуск, это возможность погрузиться в атмосферу свободы и приключений. Лето в Таиланде — это время, когда природа расцветает, а ночные рынки наполняются яркими красками и звуками. Вы сможете исследовать уединенные пляжи, наслаждаться местной кухней и открывать для себя тайны древних храмов.
+          Путешествие в Таиланд — это не только возможность отдохнуть, но и уникальный опыт. Вы сможете заняться дайвингом в кристально чистых водах, покорить вершины тропических гор или просто расслабиться на пляже, наслаждаясь коктейлем с кокосом. Ночные рынки предложат вам множество местных деликатесов и сувениров, а дружелюбные местные жители сделают ваше пребывание незабываемым.
+          Мы предлагаем вам уникальную возможность забронировать авиабилеты по цене всего 45270 RUB. Оптимальные даты для путешествия: 15 июля, 1 и 15 августа, 10 сентября и 5 октября 2025 года. Не упустите шанс отправиться в это удивительное место и создать воспоминания на всю жизнь!
+          Не ждите, пока лучшие предложения разлетятся! Забронируйте свои билеты прямо сейчас и откройте для себя мир Таиланда. Это ваш шанс на незабываемое лето, полное приключений и новых открытий!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1533235225907-f8c9acd2bfe9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHN1bW1lciUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUyMjQzNTM0fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="People Riding on Boat" />
+        <mj-image src="https://images.unsplash.com/photo-1719859355337-e85ae66c999c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwY3VsdHVyYWwlMjBsYW5kbWFya3N8ZW58MHwwfHx8MTc1MjIzMzkyNnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Large White Building" />
+        <mj-image src="https://images.unsplash.com/flagged/photo-1575834678162-9fd77151f40b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNoZXMlMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMjQzNTM1fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Tropical Beaches" />
+        <mj-image src="https://images.unsplash.com/photo-1565700549719-8c02187f3f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwY3Vpc2luZSUyMHN1bW1lcnxlbnwwfDB8fHwxNzUyMjQzNTM2fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Plate of Food" />
+        <mj-image src="https://images.unsplash.com/photo-1587714498387-7bec44b919aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHRyYXZlbCUyMHByb21vdGlvbnN8ZW58MHwwfHx8MTc1MjIzMzkyOHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Brown Wooden Boat" />
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Цена: 45270 RUB</mj-text>
+        <mj-text>Специальное предложение на поездку в Таиланд!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-button background-color="#007bff" color="#ffffff" href="#">Забронировать билеты сейчас</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#f8f9fa">
+      <mj-column>
+        <mj-text>
+          Контактная информация: <br />
+          Email: support@kupibilet.com <br />
+          Телефон: +7 (800) 555-35-35 <br />
+          Адрес: пр. Мира, 5, Москва, Россия
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

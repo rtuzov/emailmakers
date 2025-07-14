@@ -148,7 +148,7 @@ async function testOpenAIAgentsSDK() {
         
         // Тестовые данные
         const testData = {
-          campaign_brief: 'Горящие туры в Японию на весну',
+          campaign_brief: 'Горящие авиабилеты в Японию на весну',
           campaign_type: 'promotional',
           target_audience: 'молодые семьи',
           emotional_tone: 'positive'

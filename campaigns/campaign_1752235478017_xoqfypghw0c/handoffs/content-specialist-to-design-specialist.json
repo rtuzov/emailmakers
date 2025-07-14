@@ -1,0 +1,829 @@
+{
+  "request": "Continue with email design using generated content, technical specification, and asset manifest",
+  "metadata": {
+    "handoffId": "handoff_1752235723966_fvz7vxjacbv",
+    "timestamp": "2025-07-11T12:08:43.966Z",
+    "fromAgent": "content",
+    "toAgent": "design",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752235478017_xoqfypghw0c",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c",
+      "name": "Campaign campaign_1752235478017_xoqfypghw0c",
+      "brand": "Email Makers",
+      "type": "promotional",
+      "target_audience": "travel enthusiasts",
+      "language": "ru",
+      "created_at": "2025-07-11T12:08:43.965Z",
+      "status": "active"
+    },
+    "data_collection_context": {
+      "destination_analysis": {
+        "analysis_type": "destination_analysis",
+        "data": {
+          "climate_factors": "Лето в Таиланде - сезон дождей с июня по сентябрь. Температура днем 29-33C, влажность высокая, частые но короткие ливни. Много солнца, теплая вода. Лучшие пляжи летом - Самуи, Пханган, Ко Тао. Умеренный климат в июле и августе, возможны тропические грозы.",
+          "cultural_highlights": "Летние рынки, фестивали еды, буддийские храмы и праздники. Тайская кухня - свежие фрукты, морепродукты, острые блюда. Яркая улица Walking Street, ночные базары. Обычаи приветствия вай, уважение к культуре и монастырям.",
+          "key_attractions": "Пляжи Самуи и Пхукета, водопады, экскурсии по островам, храмы Бангкока, спа-центры, сафари-парки, дайвинг у Ко Тао, магазины и рынки.",
+          "seasonal_advantages": "Летом нет крупных туристических толп, акции отелей и авиакомпаний, больше выбора экскурсий. Тропическая зелень и красивые закаты.",
+          "travel_experience_quality": "Летний отдых для любителей тропиков, хорошо для семей с детьми и молодежи. Яркие эмоции от природы, свежие морепродукты, релакс на пляже."
+        },
+        "saved_at": "2025-07-11T12:05:12.966Z"
+      },
+      "market_intelligence": {
+        "analysis_type": "market_intelligence",
+        "data": {
+          "pricing_insights": "В летние месяцы авиабилеты в Таиланд дешевле чем зимой, скидки 25-35 процентов. Билеты от 40000 до 85000 руб в обе стороны. Лучшие цены за 4-8 недель до вылета. Горящие туры возможны в июле и августе.",
+          "competitive_position": "Конкуренты Таиланда летом - Турция, Вьетнам, Греция. Таиланд выделяется экзотикой, стабильной погодой на Самуи, богатством экскурсий. Безвизовый режим - плюс для россиян.",
+          "demand_patterns": "Летом спрос ниже чем зимой, популярны семейные поездки на Самуи, молодые пары выбирают Пхукет и острова. Пик спроса на июль и август, особенно на спецпредложения.",
+          "booking_recommendations": "Оптимально бронировать билеты за 1-2 месяца, пакеты на Самуи выгоднее при раннем бронировании. Отслеживать акции Купибилет и авиакомпаний, использовать гибкие даты."
+        },
+        "saved_at": "2025-07-11T12:05:12.966Z"
+      },
+      "emotional_profile": {
+        "analysis_type": "emotional_profile",
+        "data": {
+          "core_motivations": "Побег от городской суеты, тропический пляж, новые эмоции. Заряд энергии от природы, романтика, совместный семейный опыт. Желание новых вкусов и экзотики.",
+          "emotional_triggers": "Лазурное море, белый песок, сочные фрукты, тайский массаж, утренние прогулки вдоль моря, теплый дождь.",
+          "key_desires": "Пляжные фото, вечерние прогулки, веселые экскурсии, безопасность, сервси для детей.",
+          "psychological_benefits": "Релаксация, воспоминания, единение с природой, новые впечатления, дружелюбие местных."
+        },
+        "saved_at": "2025-07-11T12:05:12.966Z"
+      },
+      "consolidated_insights": {
+        "actionable_insights": [
+          "Делайте акцент на стабильной погоде Самуи и многочисленных предложениях на лето",
+          "Используйте эмоции тропического отдыха и свежих фруктов",
+          "Включайте реальные истории семей и отзывы о безопасности",
+          "Напоминайте о гибкости безвизового направления для россиян",
+          "Подчеркивайте особые предложения и скидки на лето от Kupibilet",
+          "Визуализируйте брендовые цвета Kupibilet через тропические оттенки для Москвы и Петербурга",
+          "Адаптируйте контент под мобильные сценарии бронирования",
+          "Рекомендуйте летние семейные экскурсии и эко-опыты"
+        ],
+        "key_insights": [
+          "Лучшие пляжи летом - Самуи и близкие острова",
+          "Цены на билеты летом ниже зимних на 25-35 процентов",
+          "Таиланд летом идеален для семей и молодежи",
+          "Используйте эмоции тропического дождя и отдыха на фоне зелени",
+          "Раннее бронирование через Kupibilet экономит до 35 процентов"
+        ],
+        "confidence_score": 0.91,
+        "analysis_timestamp": "2025-07-11T12:04:44.093Z",
+        "saved_at": "2025-07-11T12:05:12.968Z"
+      },
+      "travel_intelligence": {
+        "insight_type": "travel_intelligence",
+        "insights": [
+          "Лучшие пляжи летом - Самуи и близкие острова",
+          "Цены на билеты летом ниже зимних на 25-35 процентов",
+          "Таиланд летом идеален для семей и молодежи",
+          "Используйте эмоции тропического дождя и отдыха на фоне зелени",
+          "Раннее бронирование через Kupibilet экономит до 35 процентов"
+        ],
+        "insights_count": 5,
+        "saved_at": "2025-07-11T12:05:15.729Z",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/data/travel_intelligence-insights.json"
+      },
+      "trend_analysis": {
+        "analysis_type": "trend_analysis",
+        "data": {
+          "social_trends": "Хештеги #thaibeach #kohsamui #thailandsummer популярны летом. Фото на пляжах Самуи и вечеринках. Возрастающая популярность летних эко-экскурсий и пакетных туров для семей.",
+          "booking_behaviors": "Популярны мобильные бронирования, сравнение цен, ранние покупки для летнего отдыха. Запросы на страховки от погодных рисков.",
+          "emerging_opportunities": "Рост спроса на эко-отели, семейные развлечения, спа для родителей и детей. Новые детские лагеря на Самуи.",
+          "content_opportunities": "Советы по выбору пляжа, рассказы семей с детьми, короткие видео о тропических дождях и жизни на островах, подборки лучших акций Купибилет."
+        },
+        "saved_at": "2025-07-11T12:05:12.966Z"
+      },
+      "collection_metadata": {
+        "campaign_id": "campaign_1752235478017_xoqfypghw0c",
+        "collection_timestamp": "2025-07-11T12:08:43.964Z",
+        "data_sources": [
+          "destination-analysis",
+          "market-intelligence",
+          "emotional-profile",
+          "consolidated-insights",
+          "travel-intelligence",
+          "trend-analysis"
+        ],
+        "collection_status": "complete",
+        "data_quality_score": 100
+      }
+    },
+    "context_analysis": {
+      "destination": "Thailand",
+      "seasonal_trends": "Current season trends for Thailand",
+      "emotional_triggers": "Exotic adventure and relaxation",
+      "market_positioning": "Premium exotic destination",
+      "competitive_landscape": "Strong competition in Southeast Asia travel market",
+      "price_sensitivity": "Medium price sensitivity for exotic destinations",
+      "booking_patterns": "Advance planning with seasonal booking patterns"
+    },
+    "date_analysis": {
+      "destination": "Thailand",
+      "season": "summer",
+      "optimal_dates": [
+        "2025-08-15",
+        "2025-09-10",
+        "2025-10-05",
+        "2025-11-01",
+        "2025-12-15"
+      ],
+      "pricing_windows": [
+        "Период с 2025-08-01 по 2025-08-31: низкие цены на авиабилеты, так как это конец сезона дождей.",
+        "Период с 2025-09-01 по 2025-09-30: умеренные цены, начало сезона, но еще возможны дожди.",
+        "Период с 2025-10-01 по 2025-11-30: цены начинают расти, так как начинается высокий сезон.",
+        "Период с 2025-12-01 по 2025-12-31: высокий сезон, цены на авиабилеты достигают пика."
+      ],
+      "booking_recommendation": "Рекомендуется бронировать билеты за 2-3 месяца до поездки для получения лучших цен.",
+      "seasonal_factors": "Летний сезон в Таиланде характеризуется высокой влажностью и возможными дождями, особенно в южных регионах. Тем не менее, это также время, когда можно найти более доступные цены на авиабилеты и отели.",
+      "current_date": "2025-07-11"
+    },
+    "pricing_analysis": {
+      "best_price": 40695,
+      "min_price": 40695,
+      "max_price": 45270,
+      "average_price": 43898,
+      "currency": "RUB",
+      "offers_count": 10,
+      "recommended_dates": [
+        "2025-08-16",
+        "2025-08-17",
+        "2025-08-18"
+      ],
+      "route": {
+        "from": "Moscow",
+        "to": "Bangkok",
+        "from_code": "MOW",
+        "to_code": "BKK"
+      },
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "BKK",
+            "finalCode": "BKK",
+            "countryCode": "TH",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "asset_strategy": {
+      "theme": "Thailand Travel Experience",
+      "visual_style": "modern",
+      "color_palette": "Tropical warm colors with brand accents",
+      "typography": "Modern clean typography",
+      "image_concepts": [
+        "Hero изображение - пляж с пальмами, яркое солнце и люди, наслаждающиеся отдыхом",
+        "Lifestyle фото - группа друзей, занимающихся серфингом на фоне красивого океана",
+        "Архитектура/достопримечательности - знаменитый храм или рынок с яркими цветами",
+        "Кулинария/культура - традиционные тайские блюда на фоне экзотических фруктов",
+        "Природа/пейзажи - тропические леса и водопады, создающие атмосферу приключения",
+        "Активности/развлечения - дайвинг, йога на пляже или экскурсия на слонах",
+        "Шоппинг/сувениры - местные рынки с яркими тканями и сувенирами",
+        "Транспорт/логистика - скутеры и такси на фоне живописных улиц"
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и современный дизайн, что подчеркивает динамичность и активный отдых"
+    },
+    "generated_content": {
+      "subject": "Летние каникулы в Таиланде: незабываемые моменты ждут вас!",
+      "preheader": "Отправьтесь в Таиланд за 40695 RUB и насладитесь райским отдыхом.",
+      "body": "Представьте себе утренние прогулки по белоснежным пляжам, когда ласковое лазурное море омывает ваши ноги, а теплый дождь приносит свежесть. Летние каникулы в Таиланде — это не просто отдых, это возможность погрузиться в мир экзотики, наслаждаясь тайским массажем, сочными тропическими фруктами и удивительной культурой. Каждый уголок этой страны наполнен магией и красотой, которая оставит незабываемые впечатления в вашем сердце.\n\nПланируйте свои приключения в Таиланде! Вы сможете насладиться водными видами спорта, исследовать живописные острова, а также попробовать местную кухню в уютных ресторанах. Не упустите шанс посетить знаменитые храмы и рынки, где можно найти уникальные сувениры. Каждый день будет наполнен новыми открытиями и яркими эмоциями, которые сделают ваш отдых поистине незабываемым.\n\nМы предлагаем вам лучшие цены на авиабилеты — всего 40695 RUB! Оптимальные даты для путешествия: 15 августа, 10 сентября, 5 октября, 1 ноября и 15 декабря 2025 года. Это отличная возможность спланировать свой отдых заранее и выбрать наиболее подходящее время для поездки.\n\nНе упустите шанс! Забронируйте свой билет прямо сейчас и откройте для себя мир, полный ярких впечатлений и незабываемых моментов. Ваш идеальный отпуск в Таиланде всего в одном клике от вас!",
+      "cta": {
+        "primary": "Забронировать билет",
+        "secondary": "Узнать больше"
+      },
+      "personalization_level": "advanced",
+      "urgency_level": "medium"
+    },
+    "technical_requirements": {
+      "specificationId": "spec_1752235718034_dw02csln57m",
+      "specification": {
+        "version": "1.0",
+        "generatedAt": "2025-07-11T12:08:38.035Z",
+        "campaign": {
+          "id": "campaign_1752235478017_xoqfypghw0c",
+          "name": "Campaign campaign_1752235478017_xoqfypghw0c",
+          "type": "email-marketing",
+          "theme": "general",
+          "targetAudience": "general",
+          "priority": "medium"
+        },
+        "content": {
+          "subject": "Email Subject",
+          "preheader": "Email preheader",
+          "sections": [
+            {
+              "id": "header",
+              "type": "header",
+              "required": true
+            },
+            {
+              "id": "hero",
+              "type": "hero",
+              "required": true
+            },
+            {
+              "id": "content",
+              "type": "content",
+              "required": true
+            },
+            {
+              "id": "cta",
+              "type": "cta",
+              "required": true
+            },
+            {
+              "id": "footer",
+              "type": "footer",
+              "required": true
+            },
+            {
+              "id": "products",
+              "type": "product",
+              "required": true,
+              "metadata": {
+                "productCount": 1
+              }
+            }
+          ],
+          "callToAction": {
+            "primary": {
+              "text": "Click Here",
+              "url": "#",
+              "style": "button"
+            }
+          },
+          "personalization": {
+            "enabled": false,
+            "variables": [],
+            "dynamicContent": []
+          }
+        },
+        "design": {
+          "constraints": {
+            "layout": {
+              "type": "single-column",
+              "maxWidth": 600,
+              "minWidth": 320,
+              "padding": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "sections": []
+            },
+            "typography": {
+              "headingFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "sizes": {
+                  "h1": 28,
+                  "h2": 24,
+                  "h3": 20
+                },
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              },
+              "bodyFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "size": 16,
+                "lineHeight": 1.5,
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              }
+            },
+            "colorScheme": {
+              "primary": "#007bff",
+              "secondary": "#6c757d",
+              "accent": "#28a745",
+              "text": {
+                "primary": "#333333",
+                "secondary": "#666666",
+                "muted": "#999999"
+              },
+              "background": {
+                "primary": "#ffffff",
+                "secondary": "#f8f9fa",
+                "accent": "#e9ecef"
+              }
+            },
+            "spacing": {
+              "base": 16,
+              "sections": 40,
+              "elements": 20,
+              "text": 12
+            }
+          },
+          "assets": {
+            "manifest": {
+              "images": [
+                {
+                  "id": "hero",
+                  "path": "assets/hero-image.jpg",
+                  "alt": "Пляж Самуи, друзья и солнце",
+                  "usage": "Hero section",
+                  "dimensions": {
+                    "width": 600,
+                    "height": 400
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 94567
+                  }
+                },
+                {
+                  "id": "samui-beach",
+                  "path": "assets/samui-beach.jpg",
+                  "alt": "Песчаный пляж Самуи, пальмы",
+                  "usage": "Content image",
+                  "dimensions": {
+                    "width": 600,
+                    "height": 400
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 72600
+                  }
+                }
+              ],
+              "icons": [
+                {
+                  "id": "plane",
+                  "path": "assets/icons/plane.svg",
+                  "usage": "Napkin pricing section",
+                  "format": "svg",
+                  "size": "24x24"
+                },
+                {
+                  "id": "calendar",
+                  "path": "assets/icons/calendar.svg",
+                  "usage": "Dates section",
+                  "format": "svg",
+                  "size": "24x24"
+                }
+              ],
+              "fonts": [
+                {
+                  "family": "Inter",
+                  "weights": [
+                    "400",
+                    "700"
+                  ],
+                  "fallbacks": [
+                    "Arial",
+                    "Helvetica",
+                    "sans-serif"
+                  ],
+                  "usage": "body"
+                }
+              ]
+            },
+            "requirements": [
+              {
+                "id": "hero-image",
+                "type": "image",
+                "description": "Hero image for email header",
+                "specifications": {
+                  "dimensions": {
+                    "width": 600,
+                    "height": 300
+                  },
+                  "formats": [
+                    "jpg",
+                    "webp"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Solid color background with text overlay"
+              },
+              {
+                "id": "logo",
+                "type": "image",
+                "description": "Brand logo",
+                "specifications": {
+                  "dimensions": {
+                    "height": 60
+                  },
+                  "formats": [
+                    "png",
+                    "svg"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Text-based brand name"
+              }
+            ]
+          },
+          "responsive": {
+            "enabled": true,
+            "breakpoints": [
+              {
+                "name": "mobile",
+                "width": 480,
+                "constraints": {
+                  "maxWidth": 320
+                }
+              },
+              {
+                "name": "tablet",
+                "width": 768,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              },
+              {
+                "name": "desktop",
+                "width": 1200,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              }
+            ],
+            "strategy": "mobile-first"
+          }
+        },
+        "quality": {
+          "criteria": {
+            "performance": {
+              "maxFileSize": 100000,
+              "maxImageSize": 50000,
+              "compressionQuality": 0.8,
+              "lazyLoading": false,
+              "cacheOptimization": true
+            },
+            "accessibility": {
+              "wcagLevel": "AA",
+              "contrastRatio": 4.5,
+              "altTextRequired": true,
+              "focusIndicators": true,
+              "screenReaderFriendly": true,
+              "keyboardNavigation": false
+            },
+            "emailDeliverability": {
+              "spamScore": 3,
+              "textToHtmlRatio": 0.3,
+              "linkLimit": 10,
+              "imageToTextRatio": 0.6,
+              "subjectLineLength": 50,
+              "preheaderLength": 100
+            },
+            "crossClientCompatibility": {
+              "targetClients": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "fallbackStrategies": [
+                {
+                  "feature": "WebP images",
+                  "fallback": "JPEG images"
+                },
+                {
+                  "feature": "SVG images",
+                  "fallback": "PNG images"
+                },
+                {
+                  "feature": "Custom fonts",
+                  "fallback": "System fonts"
+                }
+              ],
+              "testing": {
+                "required": true,
+                "platforms": [
+                  "gmail",
+                  "outlook",
+                  "apple-mail",
+                  "yahoo-mail"
+                ],
+                "minCompatibility": 95
+              }
+            },
+            "email_clients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "performance_thresholds": {
+              "max_file_size": 110000,
+              "load_time": 3
+            },
+            "accessibility_requirements": {
+              "wcag_level": "AA",
+              "color_contrast": 4.5
+            }
+          },
+          "testing": {
+            "required": true,
+            "types": [
+              "functional",
+              "visual",
+              "compatibility"
+            ],
+            "platforms": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "automation": {
+              "enabled": false,
+              "tools": [],
+              "coverage": 0
+            }
+          },
+          "validation": {
+            "htmlValidation": true,
+            "cssValidation": true,
+            "linkValidation": true,
+            "spamCheck": true,
+            "accessibilityCheck": true
+          }
+        },
+        "delivery": {
+          "emailClients": [
+            {
+              "client": "gmail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Clips emails over 102KB",
+                "Limited CSS support"
+              ]
+            },
+            {
+              "client": "outlook",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Uses Word rendering engine",
+                "Very limited CSS support"
+              ]
+            },
+            {
+              "client": "apple-mail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": true,
+              "supportsCSS": {
+                "flexbox": true,
+                "grid": false,
+                "transform": true,
+                "animation": true
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Good CSS support",
+                "Supports media queries"
+              ]
+            },
+            {
+              "client": "yahoo-mail",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Limited CSS support",
+                "Similar to Gmail"
+              ]
+            }
+          ],
+          "deployment": {
+            "environment": "production",
+            "approvalRequired": true,
+            "rollbackStrategy": "immediate",
+            "monitoring": {
+              "enabled": true,
+              "metrics": [
+                "open_rate",
+                "click_rate",
+                "bounce_rate"
+              ],
+              "alerts": [
+                "high_bounce_rate",
+                "low_open_rate"
+              ]
+            }
+          },
+          "tracking": {
+            "enabled": true,
+            "openTracking": true,
+            "clickTracking": true,
+            "customEvents": []
+          }
+        },
+        "metadata": {
+          "generatedBy": "technical-spec-generator",
+          "sourceContext": {
+            "campaignId": "campaign_1752235478017_xoqfypghw0c",
+            "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c",
+            "taskType": "technical_specification",
+            "language": "ru",
+            "campaign_type": "promotional",
+            "industry": "travel",
+            "urgency": "high",
+            "target_audience": "travel_enthusiasts"
+          },
+          "processingTime": 0,
+          "complexity": "low",
+          "estimatedImplementationTime": 4,
+          "dependencies": [
+            "mjml",
+            "image-optimization",
+            "html-validation"
+          ],
+          "notes": []
+        }
+      },
+      "generationSummary": {
+        "timestamp": "2025-07-11T12:08:38.035Z",
+        "processingTime": 1,
+        "sourceContexts": 4,
+        "sectionsGenerated": 6,
+        "assetsProcessed": 4,
+        "constraintsApplied": 4,
+        "validationPassed": true,
+        "errors": [],
+        "warnings": []
+      },
+      "implementationGuidance": {
+        "priority": "high",
+        "estimatedTime": 4,
+        "complexity": "low",
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "risks": [
+          "Multiple email client compatibility challenges"
+        ],
+        "recommendations": [
+          "Use table-based layout for maximum compatibility",
+          "Inline all CSS for better email client support",
+          "Optimize images for web delivery",
+          "Test across all target email clients",
+          "Implement responsive design with media queries",
+          "Ensure WCAG AA compliance with proper alt text and contrast"
+        ]
+      },
+      "qualityScore": {
+        "completeness": 100,
+        "consistency": 90,
+        "clarity": 100,
+        "implementability": 100,
+        "overall": 98
+      }
+    }
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Лето в Таиланде - сезон дождей с июня по сентябрь. Температура днем 29-33C, влажность высокая, частые но короткие ливни. Много солнца, теплая вода. Лучшие пляжи летом - Самуи, Пханган, Ко Тао. Умеренный климат в июле и августе, возможны тропические грозы.",
+        "cultural_highlights": "Летние рынки, фестивали еды, буддийские храмы и праздники. Тайская кухня - свежие фрукты, морепродукты, острые блюда. Яркая улица Walking Street, ночные базары. Обычаи приветствия вай, уважение к культуре и монастырям.",
+        "key_attractions": "Пляжи Самуи и Пхукета, водопады, экскурсии по островам, храмы Бангкока, спа-центры, сафари-парки, дайвинг у Ко Тао, магазины и рынки.",
+        "seasonal_advantages": "Летом нет крупных туристических толп, акции отелей и авиакомпаний, больше выбора экскурсий. Тропическая зелень и красивые закаты.",
+        "travel_experience_quality": "Летний отдых для любителей тропиков, хорошо для семей с детьми и молодежи. Яркие эмоции от природы, свежие морепродукты, релакс на пляже."
+      },
+      "saved_at": "2025-07-11T12:05:12.966Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "В летние месяцы авиабилеты в Таиланд дешевле чем зимой, скидки 25-35 процентов. Билеты от 40000 до 85000 руб в обе стороны. Лучшие цены за 4-8 недель до вылета. Горящие туры возможны в июле и августе.",
+        "competitive_position": "Конкуренты Таиланда летом - Турция, Вьетнам, Греция. Таиланд выделяется экзотикой, стабильной погодой на Самуи, богатством экскурсий. Безвизовый режим - плюс для россиян.",
+        "demand_patterns": "Летом спрос ниже чем зимой, популярны семейные поездки на Самуи, молодые пары выбирают Пхукет и острова. Пик спроса на июль и август, особенно на спецпредложения.",
+        "booking_recommendations": "Оптимально бронировать билеты за 1-2 месяца, пакеты на Самуи выгоднее при раннем бронировании. Отслеживать акции Купибилет и авиакомпаний, использовать гибкие даты."
+      },
+      "saved_at": "2025-07-11T12:05:12.966Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Побег от городской суеты, тропический пляж, новые эмоции. Заряд энергии от природы, романтика, совместный семейный опыт. Желание новых вкусов и экзотики.",
+        "emotional_triggers": "Лазурное море, белый песок, сочные фрукты, тайский массаж, утренние прогулки вдоль моря, теплый дождь.",
+        "key_desires": "Пляжные фото, вечерние прогулки, веселые экскурсии, безопасность, сервси для детей.",
+        "psychological_benefits": "Релаксация, воспоминания, единение с природой, новые впечатления, дружелюбие местных."
+      },
+      "saved_at": "2025-07-11T12:05:12.966Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Делайте акцент на стабильной погоде Самуи и многочисленных предложениях на лето",
+        "Используйте эмоции тропического отдыха и свежих фруктов",
+        "Включайте реальные истории семей и отзывы о безопасности",
+        "Напоминайте о гибкости безвизового направления для россиян",
+        "Подчеркивайте особые предложения и скидки на лето от Kupibilet",
+        "Визуализируйте брендовые цвета Kupibilet через тропические оттенки для Москвы и Петербурга",
+        "Адаптируйте контент под мобильные сценарии бронирования",
+        "Рекомендуйте летние семейные экскурсии и эко-опыты"
+      ],
+      "key_insights": [
+        "Лучшие пляжи летом - Самуи и близкие острова",
+        "Цены на билеты летом ниже зимних на 25-35 процентов",
+        "Таиланд летом идеален для семей и молодежи",
+        "Используйте эмоции тропического дождя и отдыха на фоне зелени",
+        "Раннее бронирование через Kupibilet экономит до 35 процентов"
+      ],
+      "confidence_score": 0.91,
+      "analysis_timestamp": "2025-07-11T12:04:44.093Z",
+      "saved_at": "2025-07-11T12:05:12.968Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Лучшие пляжи летом - Самуи и близкие острова",
+        "Цены на билеты летом ниже зимних на 25-35 процентов",
+        "Таиланд летом идеален для семей и молодежи",
+        "Используйте эмоции тропического дождя и отдыха на фоне зелени",
+        "Раннее бронирование через Kupibilet экономит до 35 процентов"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T12:05:15.729Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "social_trends": "Хештеги #thaibeach #kohsamui #thailandsummer популярны летом. Фото на пляжах Самуи и вечеринках. Возрастающая популярность летних эко-экскурсий и пакетных туров для семей.",
+        "booking_behaviors": "Популярны мобильные бронирования, сравнение цен, ранние покупки для летнего отдыха. Запросы на страховки от погодных рисков.",
+        "emerging_opportunities": "Рост спроса на эко-отели, семейные развлечения, спа для родителей и детей. Новые детские лагеря на Самуи.",
+        "content_opportunities": "Советы по выбору пляжа, рассказы семей с детьми, короткие видео о тропических дождях и жизни на островах, подборки лучших акций Купибилет."
+      },
+      "saved_at": "2025-07-11T12:05:12.966Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752235478017_xoqfypghw0c",
+      "collection_timestamp": "2025-07-11T12:08:43.964Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "requestId": "req_1752239142814_drn7u9oj6v",
+  "traceId": "api-1752239142814",
+  "timestamp": "2025-07-11T13:05:42.814Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752239142814",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752239142814",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+      "clientIp": "::1",
+      "destination": "Тайланд",
+      "origin": "Москва",
+      "tone": "friendly",
+      "language": "ru"
+    },
+    "correlationId": "corr_1752239142814_5wx7ig6qkrd",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создай email-кампанию для осенних путешествий в Тайланд. Подчеркни преимущества осеннего сезона: идеальная погода +28-30°C, меньше туристов, выгодные цены, фестивали и культурные события. Целевая аудитория: россияне 25-45 лет, ищущие качественный отдых. Тон: вдохновляющий, но практичный.",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Тайланд",
+    "origin": "Москва",
+    "tone": "friendly",
+    "language": "ru",
+    "originalOptions": {
+      "traceId": "api-1752239142814",
+      "campaignId": "api_campaign_1752239142814",
+      "metadata": {
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Тайланд",
+        "origin": "Москва",
+        "tone": "friendly",
+        "language": "ru"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+        "clientIp": "::1",
+        "destination": "Тайланд",
+        "origin": "Москва",
+        "tone": "friendly",
+        "language": "ru"
+      }
+    }
+  }
+}

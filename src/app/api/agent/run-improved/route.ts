@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { EmailMakersAgent, getSystemInfo } from '../../../../agent/main-agent';
+import { getContextManager } from '../../../../agent/core/context-manager';
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,29 +43,42 @@ export async function POST(request: NextRequest) {
     console.log(`\n🎯 Processing request: "${requestString}"`);
     console.log('🔄 Using Orchestrator → Data Collection → Content → Design → Quality → Delivery');
 
-    // Execute with proper context and tracing
-    console.log('\n🤖 Starting agent execution with Orchestrator...');
+    // Execute with enhanced context and tracing
+    console.log('\n🤖 Starting agent execution with enhanced context management...');
     const startTime = Date.now();
     console.log(`⏱️  Execution started at: ${new Date().toISOString()}`);
     
     const result = await agent.processRequest(requestString, {
       traceId: `api-${Date.now()}`,
+      campaignId: context.campaignId || `api_campaign_${Date.now()}`,
+      campaignPath: context.campaignPath,
       metadata: {
         taskType: task_type,
         endpoint: '/api/agent/run-improved',
-        inputType: typeof input
+        inputType: typeof input,
+        apiRequest: true,
+        validationLevel: context.validationLevel || 'standard',
+        qualityThreshold: context.qualityThreshold || 85,
+        ...context
       },
       context: {
-        apiRequest: true,
+        apiEndpoint: '/api/agent/run-improved',
+        httpMethod: 'POST',
+        userAgent: request.headers.get('user-agent') || 'Unknown',
+        clientIp: request.headers.get('x-forwarded-for') || 'Unknown',
         ...context
       }
     });
     
     const executionTime = Date.now() - startTime;
     console.log(`\n✅ Agent execution completed successfully in ${executionTime}ms`);
-    console.log(`🎯 System: EmailMakersAgent with SDK handoffs`);
+    console.log(`🎯 System: EmailMakersAgent with enhanced context management`);
     console.log(`📋 Task Type: ${task_type}`);
     console.log(`📊 Result type: ${typeof result}`);
+    
+    // Log context manager statistics
+    const contextManager = getContextManager();
+    console.log(`📊 Context Manager: ${contextManager ? 'Active' : 'Inactive'}`);
     
     // Log result summary
     if (result && typeof result === 'object') {

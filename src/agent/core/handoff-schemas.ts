@@ -43,34 +43,34 @@ export const DataCollectionContextSchema = z.object({
   destination_analysis: z.object({
     analysis_type: z.string().describe('Type of destination analysis'),
     data: z.object({
-      climate_factors: z.string().describe('Climate and weather factors'),
-      cultural_highlights: z.string().describe('Cultural attractions and highlights'),
-      key_attractions: z.string().describe('Key tourist attractions'),
-      seasonal_advantages: z.string().describe('Seasonal travel advantages'),
-      travel_experience_quality: z.string().describe('Overall travel experience quality')
-    }).describe('Destination analysis data'),
+      climate_factors: z.string().optional().describe('Climate and weather factors'),
+      cultural_highlights: z.string().optional().describe('Cultural attractions and highlights'),
+      key_attractions: z.string().optional().describe('Key tourist attractions'),
+      seasonal_advantages: z.string().optional().describe('Seasonal travel advantages'),
+      travel_experience_quality: z.string().optional().describe('Overall travel experience quality')
+    }).passthrough().describe('Destination analysis data'),
     saved_at: z.string().describe('Analysis timestamp')
   }).nullable().describe('Destination analysis from data collection'),
   
   market_intelligence: z.object({
     analysis_type: z.string().describe('Type of market analysis'),
     data: z.object({
-      pricing_insights: z.string().describe('Market pricing insights'),
-      competitive_position: z.string().describe('Competitive market position'),
-      demand_patterns: z.string().describe('Market demand patterns'),
-      booking_recommendations: z.string().describe('Booking timing recommendations')
-    }).describe('Market intelligence data'),
+      pricing_insights: z.string().optional().describe('Market pricing insights'),
+      competitive_position: z.string().optional().describe('Competitive market position'),
+      demand_patterns: z.string().optional().describe('Market demand patterns'),
+      booking_recommendations: z.string().optional().describe('Booking timing recommendations')
+    }).passthrough().describe('Market intelligence data'),
     saved_at: z.string().describe('Analysis timestamp')
   }).nullable().describe('Market intelligence from data collection'),
   
   emotional_profile: z.object({
     analysis_type: z.string().describe('Type of emotional analysis'),
     data: z.object({
-      core_motivations: z.string().describe('Core traveler motivations'),
-      emotional_triggers: z.string().describe('Key emotional triggers'),
-      key_desires: z.string().describe('Primary traveler desires'),
-      psychological_benefits: z.string().describe('Psychological benefits sought')
-    }).describe('Emotional profile data'),
+      core_motivations: z.string().optional().describe('Core traveler motivations'),
+      emotional_triggers: z.string().optional().describe('Key emotional triggers'),
+      key_desires: z.string().optional().describe('Primary traveler desires'),
+      psychological_benefits: z.string().optional().describe('Psychological benefits sought')
+    }).passthrough().describe('Emotional profile data'),
     saved_at: z.string().describe('Analysis timestamp')
   }).nullable().describe('Emotional profile from data collection'),
   
@@ -174,19 +174,19 @@ export const GeneratedContentSchema = z.object({
 });
 
 export const ContentContextSchema = z.object({
-  campaign: CampaignMetadataSchema.describe('Campaign metadata'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
-  context_analysis: ContextAnalysisSchema.describe('Destination and market context'),
-  date_analysis: DateAnalysisSchema.describe('Date optimization analysis'),
-  pricing_analysis: PricingAnalysisSchema.describe('Pricing intelligence data'),
-  asset_strategy: AssetStrategySchema.describe('Visual asset strategy'),
-  generated_content: GeneratedContentSchema.describe('Generated email content'),
+  campaign: CampaignMetadataSchema.optional().describe('Campaign metadata'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results'),
+  context_analysis: ContextAnalysisSchema.optional().describe('Destination and market context'),
+  date_analysis: DateAnalysisSchema.optional().describe('Date optimization analysis'),
+  pricing_analysis: PricingAnalysisSchema.optional().describe('Pricing intelligence data'),
+  asset_strategy: AssetStrategySchema.optional().describe('Visual asset strategy'),
+  generated_content: GeneratedContentSchema.optional().describe('Generated email content'),
   technical_requirements: z.object({
     max_width: z.string().default('600px').describe('Maximum email width'),
     email_clients: z.array(z.string()).default(['gmail', 'outlook', 'apple_mail']).describe('Target email clients'),
     dark_mode_support: z.boolean().default(true).describe('Dark mode compatibility requirement'),
     accessibility_level: z.enum(['AA', 'AAA']).default('AA').describe('WCAG accessibility level')
-  }).describe('Technical constraints and requirements')
+  }).optional().describe('Technical constraints and requirements')
 });
 
 // ============================================================================
@@ -260,22 +260,22 @@ export const DesignDecisionsSchema = z.object({
 });
 
 export const DesignContextSchema = z.object({
-  content_context: ContentContextSchema.describe('Content specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
-  asset_manifest: AssetManifestSchema.describe('Prepared assets for design'),
-  mjml_template: MJMLTemplateSchema.describe('Generated MJML template'),
-  design_decisions: DesignDecisionsSchema.describe('Design implementation decisions'),
+  content_context: ContentContextSchema.optional().describe('Content specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results'),
+  asset_manifest: AssetManifestSchema.optional().describe('Prepared assets for design'),
+  mjml_template: MJMLTemplateSchema.partial().describe('Generated MJML template'),
+  design_decisions: DesignDecisionsSchema.partial().describe('Design implementation decisions'),
   preview_files: z.array(z.object({
     type: z.enum(['desktop', 'mobile', 'dark_mode']).describe('Preview type'),
     path: z.string().describe('Preview image path'),
     format: z.enum(['png', 'jpg']).describe('Image format')
-  })).describe('Preview images generated'),
+  })).optional().describe('Preview images generated'),
   performance_metrics: z.object({
-    html_size: z.number().describe('HTML file size in bytes'),
-    total_assets_size: z.number().describe('Total assets size in bytes'),
-    estimated_load_time: z.number().describe('Estimated load time in milliseconds'),
-    optimization_score: z.number().min(0).max(100).describe('Optimization score out of 100')
-  }).describe('Performance metrics')
+    html_size: z.number().optional().describe('HTML file size in bytes'),
+    total_assets_size: z.number().optional().describe('Total assets size in bytes'),
+    estimated_load_time: z.number().optional().describe('Estimated load time in milliseconds'),
+    optimization_score: z.number().min(0).max(100).optional().describe('Optimization score out of 100')
+  }).partial().describe('Performance metrics')
 });
 
 // ============================================================================
@@ -493,9 +493,9 @@ export const ContentToDesignHandoffSchema = BaseHandoffDataSchema.extend({
 });
 
 export const DesignToQualityHandoffSchema = BaseHandoffDataSchema.extend({
-  content_context: ContentContextSchema.describe('Content specialist outputs'),
-  design_context: DesignContextSchema.describe('Complete design specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
+  content_context: ContentContextSchema.optional().describe('Content specialist outputs'),
+  design_context: DesignContextSchema.optional().describe('Complete design specialist outputs'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results')
 });
 
 export const QualityToDeliveryHandoffSchema = BaseHandoffDataSchema.extend({

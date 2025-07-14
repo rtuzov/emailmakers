@@ -1,0 +1,53 @@
+<mjml>
+  <mj-head>
+    <mj-title>Откройте для себя Тайланд: осенние приключения ждут!</mj-title>
+    <mj-preview>Путешествие в Тайланд осенью по ценам от 24786 RUB - не упустите шанс!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .header-section { background-color: #007bff; color: #ffffff; }
+      .cta-button { background-color: #28a745; color: #ffffff; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section css-class="header-section">
+      <mj-column>
+        <mj-text align="center" font-size="24px" font-weight="bold">Откройте для себя Тайланд: осенние приключения ждут!</mj-text>
+        <mj-text align="center" font-size="18px">Путешествие в Тайланд осенью по ценам от 24786 RUB - не упустите шанс!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1642320173815-f01e1ecd0415?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjBhZHZlbnR1cmVzJTIwaW4lMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMzU4OTE5fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Тайланд" />
+        <mj-text>Представьте себе, как вы погружаетесь в атмосферу экзотического Тайланда, где теплое солнце ласкает вашу кожу, а яркие краски природы и культуры наполняют ваше сердце радостью. Осень в Тайланде — это не только великолепные пляжи, но и уникальные возможности для новых знакомств, погружения в местную культуру и наслаждения экзотической кухней. Каждое мгновение здесь — это праздник для чувств, который вы не захотите пропустить.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Ваше путешествие в Тайланд осенью станет настоящим открытием! Вы сможете насладиться всеми прелестями этого удивительного направления — от безмятежного отдыха на белоснежных пляжах до активных приключений, таких как серфинг, дайвинг и экскурсии по историческим местам. Тайланд предлагает разнообразные развлечения для всех: от семейных поездок до романтических уикендов. Здесь вы сможете попробовать настоящие тайские блюда, такие как пад тай и том ям, и насладиться атмосферой местных рынков.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Сейчас самое время планировать ваше осеннее путешествие! Мы предлагаем вам специальные цены на авиабилеты — всего от 24786 RUB. Оптимальные даты для поездки: 15 и 22 сентября, 6 и 13 октября, а также 3 и 10 ноября 2025 года. Не упустите возможность отправиться в это экзотическое путешествие по доступной цене!</mj-text>
+        <mj-button css-class="cta-button" href="#">Забронировать билет сейчас</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1655981908063-33286d65d7bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCYW5na29rJTIwY2l0eXNjYXBlJTIwYXV0dW1ufGVufDB8MHx8fDE3NTIzNTg5MTl8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Приключения" />
+        <mj-image src="https://images.unsplash.com/photo-1737515908817-2b7668aea1a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxQaHVrZXQlMjBiZWFjaGVzJTIwYXV0dW1ufGVufDB8MHx8fDE3NTIzNTg5MjB8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Пляж" />
+        <mj-image src="https://images.unsplash.com/photo-1587714498387-7bec44b919aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMHRyYXZlbCUyMGRlYWxzfGVufDB8MHx8fDE3NTIzMTQ1ODh8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Досуг" />
+        <mj-image src="https://images.unsplash.com/photo-1677123626484-13f0c04ae5e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzJTIwaW4lMjBUaGFpbGFuZHxlbnwwfDB8fHwxNzUyMzU4OTIxfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Танцы" />
+        <mj-text>Не дайте этой возможности ускользнуть — создайте незабываемые воспоминания уже сегодня!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#aaaaaa">Контакты: info@kupibilet.com | Телефон: +7 (999) 999-9999</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

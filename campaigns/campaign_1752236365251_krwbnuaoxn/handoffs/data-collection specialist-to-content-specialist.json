@@ -1,0 +1,28 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination analysis and market intelligence for content creation",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Focus on summer emotions and family values",
+      "Include booking recommendations for July and August",
+      "Leverage social trends on photo and stories",
+      "Promote last minute deals for September"
+    ]
+  },
+  "created_at": "2025-07-11T12:19:55.976Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236365251_krwbnuaoxn/handoffs/data-collection specialist-to-content-specialist.json"
+}

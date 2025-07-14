@@ -1,0 +1,87 @@
+{
+  "requestId": "req_1752308290741_h4vxattazac",
+  "traceId": "api-1752308290741",
+  "timestamp": "2025-07-12T08:18:10.741Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "turkey_summer_2024",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/turkey_summer_2024",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaignId": "turkey_summer_2024",
+      "validationLevel": "relaxed",
+      "qualityThreshold": 75
+    },
+    "correlationId": "corr_1752308290741_dl89ibmnfj",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "relaxed",
+    "requiresApproval": true,
+    "qualityThreshold": 75,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Летний отдых в Турции",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "relaxed",
+    "qualityThreshold": 75,
+    "campaignId": "turkey_summer_2024",
+    "originalOptions": {
+      "traceId": "api-1752308290741",
+      "campaignId": "turkey_summer_2024",
+      "metadata": {
+        "taskType": "generate_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "relaxed",
+        "qualityThreshold": 75,
+        "campaignId": "turkey_summer_2024"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaignId": "turkey_summer_2024",
+        "validationLevel": "relaxed",
+        "qualityThreshold": 75
+      }
+    }
+  }
+}

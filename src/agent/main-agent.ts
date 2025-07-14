@@ -26,9 +26,16 @@ import {
 } from './core/tool-registry';
 import { createEmailCampaignOrchestrator } from './specialists/specialist-agents';
 import { cleanupLogger } from './core/agent-logger';
+import { 
+  createEnhancedContext, 
+  enhanceContextForHandoff,
+  validateAgentContext,
+  getContextManager,
+  type AgentRunContext 
+} from './core/context-manager';
 
 // ============================================================================
-// MAIN AGENT CLASS
+// MAIN EMAIL-MAKERS AGENT CLASS
 // ============================================================================
 
 export class EmailMakersAgent {
@@ -41,28 +48,33 @@ export class EmailMakersAgent {
   }
 
   /**
-   * Initialize the agent system with orchestrator
+   * Initialize the agent system with Orchestrator as MANDATORY entry point
    */
   async initialize(): Promise<void> {
-    console.log('📖 Loading orchestrator...');
+    console.log('📖 Setting up orchestrator-first workflow...');
+    
+    // ALWAYS use Orchestrator as entry point - это обязательно!
     const { orchestrator } = await createEmailCampaignOrchestrator();
     this.orchestrator = orchestrator;
-    this.entryAgent = orchestrator;
+    this.entryAgent = orchestrator; // Orchestrator is the ONLY entry point
     
-    console.log('✅ Email-Makers Agent initialized with Orchestrator entry point');
-    console.log('🎯 Entry Point: Email Campaign Orchestrator');
+    console.log('✅ Email-Makers Agent initialized with Orchestrator as MANDATORY entry point');
+    console.log('🎯 Entry Point: Email Campaign Orchestrator (ОБЯЗАТЕЛЬНО!)');
     console.log('🔗 Workflow: Orchestrator → Data Collection → Content → Design → Quality → Delivery');
     this.logSystemStatus();
   }
 
   /**
-   * Process an email campaign request
+   * Process an email campaign request with enhanced context management
    */
   async processRequest(request: string, options?: {
     specialist?: 'data-collection' | 'content' | 'design' | 'quality' | 'delivery';
     traceId?: string;
     metadata?: Record<string, any>;
     context?: Record<string, any>;
+    campaignId?: string;
+    campaignPath?: string;
+    // useOrchestrator removed - Orchestrator is now MANDATORY entry point
   }): Promise<any> {
     try {
       // Ensure system is initialized
@@ -70,45 +82,96 @@ export class EmailMakersAgent {
         await this.initialize();
       }
 
+      console.log('🔧 Creating enhanced context for agent run...');
+      
+      // Create enhanced context using the new context manager
+      const enhancedContext = await createEnhancedContext(request, {
+        traceId: options?.traceId,
+        workflowType: options?.specialist ? 'specialist-direct' : 'full-campaign',
+        currentPhase: options?.specialist || 'data-collection',
+        
+        campaign: {
+          id: options?.campaignId || `campaign_${Date.now()}`,
+          name: options?.metadata?.campaignName || 'Email Campaign',
+          path: options?.campaignPath || '',
+          brand: options?.metadata?.brand || 'Default Brand',
+          language: options?.metadata?.language || 'ru',
+          type: options?.metadata?.campaignType || 'promotional'
+        },
+        
+        execution: {
+          mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+          apiRequest: options?.metadata?.apiRequest || false,
+          directSpecialistRun: !!options?.specialist,
+          maxTurns: options?.specialist ? 20 : 50
+        },
+        
+        dataFlow: {
+          previousResults: {},
+          handoffData: null,
+          persistentState: options?.context || {},
+          correlationId: `corr_${Date.now()}`,
+          handoffChain: []
+        },
+        
+        quality: {
+          validationLevel: options?.metadata?.validationLevel || 'standard',
+          requiresApproval: options?.metadata?.requiresApproval ?? true,
+          qualityThreshold: options?.metadata?.qualityThreshold || 85,
+          errorHandling: 'fail-fast'
+        },
+        
+        monitoring: {
+          enableDebugOutput: process.env.NODE_ENV === 'development',
+          logLevel: 'info',
+          performanceTracking: true,
+          contextSnapshot: process.env.NODE_ENV === 'development'
+        },
+        
+        metadata: {
+          ...options?.metadata,
+          originalOptions: options
+        }
+      }, {
+        validateRequired: true,
+        enableSnapshot: process.env.NODE_ENV === 'development',
+        debugOutput: process.env.NODE_ENV === 'development'
+      });
+      
+      console.log('✅ Enhanced context created:', {
+        requestId: enhancedContext.requestId,
+        correlationId: enhancedContext.dataFlow.correlationId,
+        campaign: enhancedContext.campaign.id,
+        workflowType: enhancedContext.workflowType,
+        currentPhase: enhancedContext.currentPhase
+      });
+
       // If specific specialist requested, use that agent directly
       if (options?.specialist) {
         const agent = getAgentBySpecialist(options.specialist);
-        console.log(`🎯 Using ${options.specialist} specialist directly`);
+        console.log(`🎯 Using ${options.specialist} specialist directly with enhanced context`);
         
-        // Create context for direct specialist access
-        const specialistContext = {
-          specialistMode: true,
-          requestedSpecialist: options.specialist,
-          traceId: options?.traceId,
-          metadata: options?.metadata,
-          ...options?.context
-        };
-        
-        console.log('🔄 Passing context to specialist:', Object.keys(specialistContext));
-        return await run(agent, request, { 
-          context: specialistContext,
-          maxTurns: 20
+        const result = await run(agent, request, { 
+          context: enhancedContext,
+          maxTurns: enhancedContext.execution.maxTurns
         });
+        
+        console.log('✅ Direct specialist execution completed');
+        return result;
       }
 
-      // Use full workflow starting from Orchestrator
-      // Orchestrator creates campaign folder then hands off to specialists
-      console.log('🚀 Starting full workflow with Orchestrator coordination');
+      // ALWAYS use Orchestrator as entry point - это обязательно!
+      const agentToUse = this.entryAgent; // this.entryAgent is now always the orchestrator
+      const workflowType = 'Orchestrator coordination';
       
-      const workflowContext = {
-        workflowType: 'full-campaign',
-        startTime: new Date().toISOString(),
-        traceId: options?.traceId,
-        metadata: options?.metadata,
-        ...options?.context
-      };
-
-      const result = await run(this.entryAgent!, request, {
-        context: workflowContext,
-        maxTurns: 50 // Increased for complex multi-agent workflows
+      console.log(`🚀 Starting full workflow with ${workflowType} and enhanced context`);
+      
+      const result = await run(agentToUse!, request, {
+        context: enhancedContext,
+        maxTurns: enhancedContext.execution.maxTurns
       });
 
-      console.log('✅ Full workflow completed via Orchestrator coordination');
+      console.log(`✅ Full workflow completed via ${workflowType}`);
       return result;
       
     } catch (error) {
@@ -126,9 +189,9 @@ export class EmailMakersAgent {
     
     return {
       system: 'Email-Makers AI Agent',
-      version: '3.1.0',
+      version: '3.2.0',
       architecture: 'Orchestrator + OpenAI Agents SDK Handoffs',
-      entryPoint: 'Email Campaign Orchestrator',
+      entryPoint: 'Email Campaign Orchestrator (ОБЯЗАТЕЛЬНО!)',
       handoffChain: 'Orchestrator → Data Collection → Content → Design → Quality → Delivery',
       statistics: stats,
       workflow: workflow.map(phase => ({
@@ -138,10 +201,12 @@ export class EmailMakersAgent {
       })),
       available_specialists: ['data-collection', 'content', 'design', 'quality', 'delivery'],
       totalTools: stats.totalTools,
-      totalAgents: stats.totalAgents + 1, // +1 for orchestrator
+      totalAgents: stats.totalAgents,
       hasHandoffs: stats.hasHandoffs,
       sdkCompliant: stats.sdkCompliant,
-      hasOrchestrator: true
+      hasOrchestrator: true, // Available as fallback
+      directHandoffs: true,
+      handoffMode: 'automatic_sdk'
     };
   }
 
@@ -153,7 +218,7 @@ export class EmailMakersAgent {
   }
 
   /**
-   * Run specific specialist directly
+   * Run specific specialist directly with enhanced context
    */
   async runSpecialist(
     type: 'data-collection' | 'content' | 'design' | 'quality' | 'delivery',
@@ -161,20 +226,49 @@ export class EmailMakersAgent {
     context?: Record<string, any>
   ) {
     const agent = this.getSpecialist(type);
-    console.log(`🎯 Running ${type} specialist directly`);
+    console.log(`🎯 Running ${type} specialist directly with enhanced context`);
     
-    // Create context for direct specialist run
-    const specialistContext = {
-      directRun: true,
+    // Create enhanced context for direct specialist run
+    const enhancedContext = await createEnhancedContext(request, {
+      workflowType: 'specialist-direct',
+      currentPhase: type,
+      
+      execution: {
+        directSpecialistRun: true,
+        maxTurns: 20
+      },
+      
+      dataFlow: {
+        previousResults: {},
+        handoffData: null,
+        persistentState: context || {},
+        correlationId: `specialist_${Date.now()}`,
+        handoffChain: []
+      },
+      
+      monitoring: {
+        enableDebugOutput: process.env.NODE_ENV === 'development',
+        contextSnapshot: true
+      },
+      
+      metadata: {
+        directSpecialistType: type,
+        ...context
+      }
+    }, {
+      validateRequired: true,
+      debugOutput: true
+    });
+    
+    console.log('🔄 Enhanced context created for specialist:', {
+      requestId: enhancedContext.requestId,
       specialistType: type,
-      timestamp: new Date().toISOString(),
-      ...context
-    };
+      correlationId: enhancedContext.dataFlow.correlationId
+    });
     
-    console.log('🔄 Context passed to specialist:', Object.keys(specialistContext));
     return await run(agent, request, { 
-      context: specialistContext,
-      maxTurns: 20
+      context: enhancedContext,
+      maxTurns: enhancedContext.execution.maxTurns
     });
   }
 
@@ -187,6 +281,9 @@ export class EmailMakersAgent {
     try {
       // Cleanup logger to remove process listeners
       await cleanupLogger();
+      
+      // Cleanup context manager
+      getContextManager().cleanup();
       
       // Reset agent references
       this.entryAgent = null;

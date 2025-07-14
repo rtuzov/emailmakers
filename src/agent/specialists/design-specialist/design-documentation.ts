@@ -16,7 +16,7 @@ import { DesignDecisions } from './types';
  */
 export const readTechnicalSpecification = tool({
   name: 'readTechnicalSpecification',
-  description: 'Load technical specification from handoff files to understand design constraints and requirements',
+  description: 'Load technical specification from campaign directory to understand design constraints and requirements',
   parameters: z.object({
     handoff_directory: z.string().describe('Directory containing handoff files from Content Specialist'),
   }),
@@ -24,69 +24,90 @@ export const readTechnicalSpecification = tool({
     try {
       console.log(`📋 Reading technical specification from: ${params.handoff_directory}`);
       
-      // Load context from handoff files
+      // First try to load context from handoff files
       const context = await loadDesignContextFromHandoffDirectory(params.handoff_directory);
       
-      // Validate required technical specification
-      if (!context.technical_spec) {
-        throw new Error('Technical specification not found in handoff files');
+      let technicalSpec = context.technical_spec;
+      
+      // If not found in handoff files, try to load from docs/specifications
+      if (!technicalSpec) {
+        console.log(`📋 Technical specification not found in handoff files, trying docs/specifications...`);
+        
+        // Get campaign directory from handoff directory
+        const campaignDir = path.dirname(params.handoff_directory);
+        const specsPath = path.join(campaignDir, 'docs', 'specifications', 'technical-specification.json');
+        
+        try {
+          const specsContent = await fs.readFile(specsPath, 'utf-8');
+          technicalSpec = JSON.parse(specsContent);
+          console.log(`✅ Technical specification loaded from: ${specsPath}`);
+        } catch (specsError) {
+          throw new Error(`Technical specification not found in handoff files or docs/specifications directory`);
+        }
       }
       
-      const technicalSpec = context.technical_spec;
+      // Validate required technical specification
+      if (!technicalSpec) {
+        throw new Error('Technical specification not found');
+      }
+      
+      // Handle nested specification structure (specification.design.constraints vs direct design.constraints)
+      const spec = technicalSpec.specification || technicalSpec;
       
       // Validate required design constraints
-      if (!technicalSpec.design?.constraints) {
+      if (!spec.design?.constraints) {
         throw new Error('Design constraints not found in technical specification');
       }
       
       // Validate required layout configuration
-      if (!technicalSpec.design.constraints.layout?.type) {
+      if (!spec.design.constraints.layout?.type) {
         throw new Error('Layout type not specified in design constraints');
       }
       
       // Validate required color scheme
-      if (!technicalSpec.design.constraints.colorScheme) {
+      if (!spec.design.constraints.colorScheme) {
         throw new Error('Color scheme not defined in design constraints');
       }
       
       // Validate required typography
-      if (!technicalSpec.design.constraints.typography?.headingFont?.family) {
+      if (!spec.design.constraints.typography?.headingFont?.family) {
         throw new Error('Heading font family not specified in typography constraints');
       }
       
-      // Validate email clients configuration
-      if (!technicalSpec.delivery?.emailClients || technicalSpec.delivery.emailClients.length === 0) {
-        throw new Error('Email clients not specified in delivery configuration');
+      // Validate email clients configuration (handle both nested and direct structure)
+      const deliveryConfig = spec.delivery || technicalSpec.delivery;
+      if (!deliveryConfig?.emailClients || deliveryConfig.emailClients.length === 0) {
+        console.warn('⚠️ Email clients not specified in delivery configuration, using defaults');
       }
       
       // Validate required layout dimensions
-      if (!technicalSpec.design.constraints.layout.maxWidth) {
+      if (!spec.design.constraints.layout.maxWidth) {
         throw new Error('Maximum width not specified in layout constraints');
       }
       
       // Build design constraints object with validated values
       const designConstraints = {
         layout: {
-          type: technicalSpec.design.constraints.layout.type,
-          maxWidth: technicalSpec.design.constraints.layout.maxWidth,
-          structure: technicalSpec.design.constraints.layout.structure
+          type: spec.design.constraints.layout.type,
+          maxWidth: spec.design.constraints.layout.maxWidth,
+          structure: spec.design.constraints.layout.structure
         },
-        colorScheme: technicalSpec.design.constraints.colorScheme,
+        colorScheme: spec.design.constraints.colorScheme,
         typography: {
-          headingFont: technicalSpec.design.constraints.typography.headingFont,
-          bodyFont: technicalSpec.design.constraints.typography.bodyFont,
-          sizes: technicalSpec.design.constraints.typography.sizes
+          headingFont: spec.design.constraints.typography.headingFont,
+          bodyFont: spec.design.constraints.typography.bodyFont,
+          sizes: spec.design.constraints.typography.sizes
         },
-        spacing: technicalSpec.design.constraints.spacing,
-        components: technicalSpec.design.constraints.components
+        spacing: spec.design.constraints.spacing,
+        components: spec.design.constraints.components
       };
       
-      // Build delivery requirements with validated values
+      // Build delivery requirements with validated values (use defaults if missing)
       const deliveryRequirements = {
-        emailClients: technicalSpec.delivery.emailClients,
-        performance: technicalSpec.delivery.performance,
-        accessibility: technicalSpec.delivery.accessibility,
-        testing: technicalSpec.delivery.testing
+        emailClients: deliveryConfig?.emailClients || ['gmail', 'outlook', 'apple-mail'],
+        performance: deliveryConfig?.performance || { maxLoadTime: 3000, maxFileSize: 100000 },
+        accessibility: deliveryConfig?.accessibility || { wcagLevel: 'AA' },
+        testing: deliveryConfig?.testing || { crossClient: true, devices: ['desktop', 'mobile'] }
       };
       
       console.log(`✅ Technical specification loaded successfully!`);

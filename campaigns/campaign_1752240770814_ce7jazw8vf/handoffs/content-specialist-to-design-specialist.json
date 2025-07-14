@@ -1,0 +1,174 @@
+{
+  "from_specialist": "Content Specialist",
+  "to_specialist": "Design Specialist",
+  "handoff_data": {
+    "summary": "Created email campaign content for autumn travel to Thailand, including pricing and dates.",
+    "key_outputs": [
+      "email-content.json",
+      "email-content.md",
+      "technical-specification.json",
+      "asset-manifest.json"
+    ],
+    "context_for_next": "Use the generated content and visual strategy for design.",
+    "data_files": [
+      "content/email-content.json",
+      "content/email-content.md",
+      "docs/specifications/technical-specification.json",
+      "assets/manifests/asset-manifest.json"
+    ],
+    "recommendations": [
+      "Focus on unique offerings for travelers during autumn.",
+      "Highlight the benefits of visiting Thailand during this season."
+    ],
+    "content_context": {
+      "campaign": {
+        "id": "campaign_1752240770814_ce7jazw8vf",
+        "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752240770814_ce7jazw8vf",
+        "theme": "Осенние путешествия в Тайланд"
+      },
+      "generated_content": {
+        "subject": "Откройте для себя Тайланд этой осенью!",
+        "preheader": "Идеальная погода, фестивали и выгодные цены ждут вас!",
+        "body": "...",
+        "cta": {
+          "primary": "Забронировать сейчас",
+          "secondary": ""
+        },
+        "pricing": {
+          "best_price": "24554 RUB",
+          "currency": "RUB",
+          "offers_count": 62
+        },
+        "dates": {
+          "optimal_dates": [
+            "2025-09-15",
+            "2025-09-22",
+            "2025-10-05",
+            "2025-10-12",
+            "2025-11-01",
+            "2025-11-15"
+          ],
+          "season": "осень"
+        },
+        "context": {
+          "destination": "Тайланд",
+          "emotional_triggers": "Погода, культура, еда."
+        }
+      },
+      "technical_requirements": {
+        "email_clients": [
+          "gmail",
+          "outlook",
+          "apple-mail",
+          "yahoo-mail"
+        ],
+        "design_constraints": {}
+      },
+      "design_brief": {
+        "destination_context": {
+          "name": "Тайланд",
+          "seasonal_advantages": "Сезонные тренды из анализа направления",
+          "emotional_appeal": "Погода +28C, возможность насладиться солнцем, теплое море, уникальная тайская кухня и местные праздники, которые обеспечивают живую атмосферу.",
+          "market_position": "Рыночное позиционирование из анализа"
+        },
+        "design_requirements": {
+          "visual_style": "Современный, привлекательный стиль на основе анализа направления",
+          "color_palette": "Цветовая палитра, соответствующая эмоциональным триггерам направления",
+          "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+          "typography_mood": "Типографическое настроение, отражающее позиционирование на рынке"
+        },
+        "content_priorities": {
+          "key_messages": [],
+          "emotional_triggers": [],
+          "actionable_insights": []
+        },
+        "competitive_differentiation": {
+          "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+          "market_advantages": "Конкурентная среда из анализа"
+        }
+      },
+      "asset_manifest": {
+        "manifestId": "manifest_1752240868153_q29zgt3na",
+        "images_count": 5,
+        "icons_count": 0,
+        "total_size": 0
+      }
+    }
+  },
+  "created_at": "2025-07-11T13:36:22.965Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752240770814_ce7jazw8vf/handoffs/content-specialist-to-design-specialist.json",
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752240770814_ce7jazw8vf",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752240770814_ce7jazw8vf",
+      "theme": "Осенние путешествия в Тайланд"
+    },
+    "generated_content": {
+      "subject": "Откройте для себя Тайланд этой осенью!",
+      "preheader": "Идеальная погода, фестивали и выгодные цены ждут вас!",
+      "body": "...",
+      "cta": {
+        "primary": "Забронировать сейчас",
+        "secondary": ""
+      },
+      "pricing": {
+        "best_price": "24554 RUB",
+        "currency": "RUB",
+        "offers_count": 62
+      },
+      "dates": {
+        "optimal_dates": [
+          "2025-09-15",
+          "2025-09-22",
+          "2025-10-05",
+          "2025-10-12",
+          "2025-11-01",
+          "2025-11-15"
+        ],
+        "season": "осень"
+      },
+      "context": {
+        "destination": "Тайланд",
+        "emotional_triggers": "Погода, культура, еда."
+      }
+    },
+    "technical_requirements": {
+      "email_clients": [
+        "gmail",
+        "outlook",
+        "apple-mail",
+        "yahoo-mail"
+      ],
+      "design_constraints": {}
+    },
+    "design_brief": {
+      "destination_context": {
+        "name": "Тайланд",
+        "seasonal_advantages": "Сезонные тренды из анализа направления",
+        "emotional_appeal": "Погода +28C, возможность насладиться солнцем, теплое море, уникальная тайская кухня и местные праздники, которые обеспечивают живую атмосферу.",
+        "market_position": "Рыночное позиционирование из анализа"
+      },
+      "design_requirements": {
+        "visual_style": "Современный, привлекательный стиль на основе анализа направления",
+        "color_palette": "Цветовая палитра, соответствующая эмоциональным триггерам направления",
+        "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+        "typography_mood": "Типографическое настроение, отражающее позиционирование на рынке"
+      },
+      "content_priorities": {
+        "key_messages": [],
+        "emotional_triggers": [],
+        "actionable_insights": []
+      },
+      "competitive_differentiation": {
+        "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+        "market_advantages": "Конкурентная среда из анализа"
+      }
+    },
+    "asset_manifest": {
+      "manifestId": "manifest_1752240868153_q29zgt3na",
+      "images_count": 5,
+      "icons_count": 0,
+      "total_size": 0
+    }
+  }
+}

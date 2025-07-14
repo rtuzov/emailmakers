@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Летом билеты в Таиланд значительно дешевле чем зимой",
+    "Молодежь активнее летает летом ради разнообразия экскурсий и еды",
+    "Kupibilet помогает быстро забронировать экономно и без стресса",
+    "Тайские ночные рынки, массажи и тропические дожди – крутые эмоции для соцсетей",
+    "Лучшие предложения за 1-2 месяца до вылета"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T11:58:10.503Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235048460_28o6sg4re9s/data/travel_intelligence-insights.json"
+}

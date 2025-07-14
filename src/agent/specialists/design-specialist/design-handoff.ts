@@ -25,11 +25,52 @@ export const createDesignHandoff = tool({
     try {
       const contentContext = params.content_context;
       const designPackage = params.design_package;
-      const campaignPath = contentContext.campaign?.campaignPath;
+      
+      // Try to get campaign path from OpenAI SDK context first (set by loadDesignContext)
+      let campaignPath = context?.designContext?.campaign_path;
       
       if (!campaignPath) {
-        throw new Error('Campaign path is missing from content context');
+        // Try multiple ways to get campaign path from parameters
+        campaignPath = contentContext.campaign?.campaignPath || 
+                      contentContext.campaign?.path ||
+                      contentContext.campaignPath ||
+                      contentContext.campaign_path ||
+                      designPackage.campaign_path ||
+                      designPackage.campaignPath;
       }
+      
+      // If still no path, try to extract from any file paths in the context
+      if (!campaignPath) {
+        // Look for campaign path in design package deliverables
+        const mjmlPath = designPackage.deliverables?.mjml_template?.source_file;
+        const htmlPath = designPackage.deliverables?.mjml_template?.compiled_html;
+        const previewPath = designPackage.deliverables?.preview_files?.desktop_preview;
+        
+        for (const filePath of [mjmlPath, htmlPath, previewPath]) {
+          if (filePath && filePath.includes('/campaigns/')) {
+            const match = filePath.match(/^(.*\/campaigns\/[^\/]+)/);
+            if (match) {
+              campaignPath = match[1];
+              break;
+            }
+          }
+        }
+      }
+      
+      // If still no path, try to construct from campaign ID
+      if (!campaignPath && contentContext.campaign?.id) {
+        campaignPath = path.join(process.cwd(), 'campaigns', contentContext.campaign.id);
+      }
+      
+      if (!campaignPath) {
+        console.error('❌ Campaign path not found in context. Available keys:', Object.keys(contentContext));
+        console.error('❌ Design package keys:', Object.keys(designPackage));
+        console.error('❌ SDK context keys:', context ? Object.keys(context) : 'No context');
+        console.error('❌ SDK designContext keys:', context?.designContext ? Object.keys(context.designContext) : 'No designContext');
+        throw new Error(`Campaign path is missing from content context. Available context keys: ${Object.keys(contentContext).join(', ')}`);
+      }
+      
+      console.log(`📁 Using campaign path: ${campaignPath}`);
       
       // Create handoff directory
       const handoffDir = path.join(campaignPath, 'handoffs');

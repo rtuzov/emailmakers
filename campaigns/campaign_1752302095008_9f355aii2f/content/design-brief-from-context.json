@@ -1,0 +1,54 @@
+{
+  "destination_context": {
+    "name": "Таиланд",
+    "seasonal_advantages": "Сезонные тренды из анализа направления",
+    "emotional_appeal": "Эмоциональные триггеры из анализа",
+    "market_position": "Рыночное позиционирование из анализа"
+  },
+  "design_requirements": {
+    "visual_style": "Vibrant, эмоциональный и современный",
+    "color_palette": {
+      "primary_color": "#4BFF7E",
+      "accent_color": "#FF6240",
+      "background_color": [
+        "#FDE8FF",
+        "#EDEFFF"
+      ],
+      "text_color": "#2C3959"
+    },
+    "imagery_direction": "Направление изображений на основе сезонных трендов и особенностей направления",
+    "typography_mood": "Современный шрифт без засечек, крупный заголовок и читаемый текст",
+    "primary_color": "#4BFF7E",
+    "accent_color": "#FF6240",
+    "background_color": "#FDE8FF",
+    "text_color": "#2C3959"
+  },
+  "content_priorities": {
+    "key_messages": [],
+    "emotional_triggers": [],
+    "actionable_insights": []
+  },
+  "competitive_differentiation": {
+    "unique_selling_points": "Уникальные преимущества направления на основе анализа конкуренции",
+    "market_advantages": "Конкурентная среда из анализа"
+  },
+  "brand_colors": {
+    "primary": "#4BFF7E",
+    "accent": "#FF6240",
+    "background": "#FDE8FF",
+    "text": "#2C3959"
+  },
+  "image_concepts": [
+    "Hero изображение - пляж с пальмами и закатом",
+    "Lifestyle фото - туристы, наслаждающиеся тайской кухней",
+    "Архитектура/достопримечательности - храм Ват Арун",
+    "Кулинария/культура - тайские уличные рынки",
+    "Природа/пейзажи - тропические леса и водопады",
+    "Активности/развлечения - занятия йогой на пляже",
+    "Шоппинг/сувениры - рынок с местными товарами",
+    "Транспорт/логистика - лодки на реке Чао Прайя"
+  ],
+  "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
+  "emotional_triggers": "Яркие цвета вызывают радость и желание путешествовать",
+  "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов и современный дизайн"
+}

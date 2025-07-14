@@ -112,7 +112,7 @@ describe('🔍 Advanced Search API Tests', () => {
       const request = new NextRequest('http://localhost/api/templates/search', {
         method: 'POST',
         body: JSON.stringify({
-          query: '"горящие туры" -дорого name:париж',
+          query: '"горящие авиабилеты" -дорого name:париж',
           page: 1,
           limit: 12,
           sortBy: 'relevance'
@@ -124,7 +124,7 @@ describe('🔍 Advanced Search API Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      expect(data.data.searchInfo.parsedQuery.exactPhrases).toContain('горящие туры')
+              expect(data.data.searchInfo.parsedQuery.exactPhrases).toContain('горящие авиабилеты')
       expect(data.data.searchInfo.parsedQuery.excludedTerms).toContain('дорого')
       expect(data.data.searchInfo.parsedQuery.fieldQueries).toContainEqual({
         field: 'name',

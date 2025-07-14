@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "handoff_type": "design-to-qa",
+    "created_at": "2025-07-12T08:22:00.856Z",
+    "source_specialist": "Design Specialist",
+    "target_specialist": "Quality Assurance Specialist",
+    "trace_id": ""
+  },
+  "request": {
+    "action": "quality_assurance_review",
+    "priority": "high",
+    "requirements": [
+      "Email client compatibility verification",
+      "Accessibility compliance validation",
+      "Performance optimization review",
+      "Cross-client compatibility verification",
+      "Mobile responsiveness verification"
+    ]
+  },
+  "design_context": {
+    "design_package": {},
+    "template_files": {},
+    "quality_targets": {},
+    "technical_requirements": {},
+    "assets": {}
+  },
+  "validation_checklist": [
+    "Email renders correctly in Gmail",
+    "Email renders correctly in Outlook",
+    "Email renders correctly in Apple Mail",
+    "Email renders correctly in Yahoo Mail",
+    "Mobile responsiveness works properly",
+    "All images load correctly",
+    "All links are functional",
+    "Accessibility standards are met",
+    "Performance targets are achieved",
+    "Dark mode support works (if applicable)"
+  ],
+  "success_criteria": {
+    "email_client_compatibility": ">= 95%",
+    "accessibility_score": ">= 80%",
+    "performance_score": ">= 85%",
+    "technical_compliance": ">= 90%",
+    "load_time": "<= 3 seconds"
+  }
+}

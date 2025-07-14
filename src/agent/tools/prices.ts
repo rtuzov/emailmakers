@@ -374,10 +374,10 @@ function buildApiRequest(params: {
       to: params.toDate
     },
     filters: {
-      airplane_only: params.filters.airplane_only || null,
-      // Не требуем прямые рейсы по умолчанию для международных маршрутов
-      is_direct: params.filters.is_direct === true ? true : null,
-      with_baggage: params.filters.with_baggage || null
+      // Убираем ограничения для лучшей совместимости с API
+      airplane_only: null,
+      is_direct: null,
+      with_baggage: null
     }
   };
 }

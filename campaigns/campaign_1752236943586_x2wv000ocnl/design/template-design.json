@@ -1,0 +1,265 @@
+{
+  "template_id": "summer_sochi_campaign",
+  "template_name": "Погрузитесь в летний рай: Сочи ждет вас!",
+  "description": "Email шаблон для кампании по отдыху в Сочи с реальными ассетами и ценами.",
+  "target_audience": "семейные путешественники",
+  "visual_concept": "Современный и яркий дизайн, отражающий атмосферу летнего отдыха в Сочи.",
+  "layout": {
+    "type": "single-column",
+    "max_width": 600,
+    "sections_count": 5,
+    "visual_hierarchy": "Hero изображение → контент → цены → CTA → footer",
+    "spacing_system": {
+      "section_padding": "20px",
+      "content_padding": "15px",
+      "element_margin": "10px"
+    }
+  },
+  "sections": [
+    {
+      "id": "header",
+      "type": "header",
+      "position": 1,
+      "content": {
+        "logo": {
+          "required": true,
+          "position": "center",
+          "size": "medium"
+        }
+      },
+      "styling": {
+        "background_color": "#ffffff",
+        "padding": "20px"
+      }
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "position": 2,
+      "content": {
+        "headline": "Погрузитесь в летний рай: Сочи ждет вас!",
+        "subheadline": "Семейный отдых на побережье Черного моря по цене от 7948 RUB.",
+        "hero_image": {
+          "required": true,
+          "source": "external",
+          "position": "background",
+          "size": "full-width",
+          "asset_file": "https://images.unsplash.com/photo-1693391403583-6e4aa1622be6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMGJlYWNoZXMlMjBmYW1pbHklMjBzdW1tZXJ8ZW58MHwwfHx8MTc1MjI0NjE0MHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "alt_text": "a group of people in the water at the beach"
+        },
+        "cta_button": {
+          "text": "Забронировать билеты",
+          "style": "primary",
+          "position": "center"
+        }
+      },
+      "styling": {
+        "background_color": "#EDEFFF",
+        "text_color": "#333333",
+        "padding": "40px 20px",
+        "text_align": "center"
+      }
+    },
+    {
+      "id": "content",
+      "type": "content",
+      "position": 3,
+      "content": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "content": "Сочи — это не просто город, это настоящая находка для отдыха с семьей. Яркое солнце, теплое море и бесконечные пляжи создают атмосферу, где каждый момент наполнен радостью и счастьем. Прогулки по набережной, вечерние посиделки с любимыми и незабываемые фото на память — все это ждет вас в Сочи этим летом.",
+            "styling": "body-text"
+          }
+        ],
+        "images": {
+          "count": 3,
+          "layout": "grid",
+          "sources": [
+            "external",
+            "external",
+            "external"
+          ],
+          "asset_files": [
+            {
+              "file": "https://images.unsplash.com/photo-1609361929784-e39b5323b811?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHRyYXZlbCUyMGRlc3RpbmF0aW9uJTIwY3VsdHVyZXxlbnwwfDB8fHwxNzUyMjQ2MTQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "people walking on park during night time",
+              "usage": "support",
+              "isExternal": true
+            },
+            {
+              "file": "https://images.unsplash.com/photo-1748212556719-01f3a51c272e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxmYW1pbHklMjB2YWNhdGlvbiUyMHN1bW1lciUyMGZ1bnxlbnwwfDB8fHwxNzUyMjQ2MTQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "A person walks a dog on a beach.",
+              "usage": "decoration",
+              "isExternal": true
+            },
+            {
+              "file": "https://images.unsplash.com/photo-1660760967432-7274c26ae9fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHN1bW1lciUyMGFjdGl2aXRpZXN8ZW58MHwwfHx8MTc1MjI0NjE0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "a large tower with a bridge",
+              "usage": "support",
+              "isExternal": true
+            }
+          ]
+        },
+        "pricing": {
+          "display": true,
+          "price": "7948 RUB",
+          "dates": "2025-07-20, 2025-08-10, 2025-08-25",
+          "style": "highlight",
+          "position": "center"
+        }
+      },
+      "styling": {
+        "background_color": "#ffffff",
+        "padding": "30px 20px"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "call-to-action",
+      "position": 4,
+      "content": {
+        "headline": "Не упустите шанс!",
+        "button": {
+          "text": "Забронировать билеты от 7948 RUB",
+          "style": "large-primary",
+          "background_color": "#FF6240",
+          "text_color": "#ffffff"
+        },
+        "supporting_text": "Лучшие даты: 2025-07-20, 2025-08-10, 2025-08-25"
+      },
+      "styling": {
+        "background_color": "#4BFF7E",
+        "text_color": "#ffffff",
+        "padding": "40px 20px",
+        "text_align": "center"
+      }
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "position": 5,
+      "content": {
+        "social_links": {
+          "required": true,
+          "platforms": [
+            "facebook",
+            "instagram",
+            "twitter"
+          ]
+        },
+        "contact_info": {
+          "required": true,
+          "elements": [
+            "address",
+            "phone",
+            "email"
+          ]
+        },
+        "unsubscribe": {
+          "required": true,
+          "text": "Отписаться от рассылки"
+        }
+      },
+      "styling": {
+        "background_color": "#f8f9fa",
+        "text_color": "#666666",
+        "padding": "30px 20px",
+        "text_align": "center"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "primary_button",
+      "type": "button",
+      "styling": {
+        "background_color": "#FF6240",
+        "text_color": "#ffffff",
+        "border_radius": "6px",
+        "padding": "12px 24px",
+        "font_weight": "600",
+        "font_size": "16px"
+      },
+      "hover_effects": {
+        "background_color": "#FF6240dd"
+      }
+    },
+    {
+      "id": "price_card",
+      "type": "card",
+      "styling": {
+        "background_color": "#ffffff",
+        "border": "1px solid #e5e5e5",
+        "border_radius": "8px",
+        "padding": "20px",
+        "box_shadow": "0 2px 8px rgba(0,0,0,0.1)"
+      }
+    }
+  ],
+  "responsive": {
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "max_width": "480px",
+        "adjustments": {
+          "font_sizes": "уменьшить на 2px",
+          "padding": "уменьшить на 25%",
+          "images": "full-width",
+          "columns": "stack vertically"
+        }
+      },
+      {
+        "name": "tablet",
+        "max_width": "768px",
+        "adjustments": {
+          "font_sizes": "уменьшить на 1px",
+          "padding": "уменьшить на 15%"
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "alt_texts": "Все изображения должны иметь описательные alt-тексты",
+    "color_contrast": "Минимум 4.5:1 для основного текста",
+    "font_sizes": "Минимум 14px для основного текста",
+    "link_styling": "Подчеркивание для всех ссылок"
+  },
+  "email_client_optimizations": {
+    "outlook": {
+      "table_based_layout": true,
+      "conditional_comments": true,
+      "fallback_fonts": true
+    },
+    "gmail": {
+      "embedded_css": true,
+      "image_blocking": "учтено",
+      "clipping_prevention": true
+    },
+    "apple_mail": {
+      "dark_mode_support": true,
+      "retina_images": true
+    }
+  },
+  "performance": {
+    "total_size_target": "под 100KB",
+    "image_optimization": "WebP с JPEG fallback",
+    "css_inlining": "критичные стили инлайн",
+    "loading_strategy": "прогрессивная загрузка"
+  },
+  "metadata": {
+    "generated_at": "2025-07-11T12:33:57.624Z",
+    "generated_by": "AI Template Designer (OpenAI Agents SDK)",
+    "assets_used": {
+      "total_images": 7,
+      "local_images": 2,
+      "external_images": 5,
+      "icons": 3
+    },
+    "brand_colors": {
+      "primary": "#4BFF7E",
+      "accent": "#FF6240",
+      "background": "#EDEFFF"
+    }
+  }
+}

@@ -38,7 +38,7 @@ function getCurrentDate() {
 
 ## Russian Content (GPT-4o mini)
 
-Ты эксперт по email-маркетингу для туристической компании Kupibilet. 
+Ты эксперт по email-маркетингу для сервиса по продаже авиабилетов Kupibilet. 
 Создай привлекательное письмо на тему "{topic}" используя цены {prices}.
 
 ### Требования:

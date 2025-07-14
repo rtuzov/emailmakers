@@ -1,0 +1,822 @@
+{
+  "request": "Continue with email design using generated content, technical specification, and asset manifest",
+  "metadata": {
+    "handoffId": "handoff_1752227966301_v8fmhnw96pq",
+    "timestamp": "2025-07-11T09:59:26.302Z",
+    "fromAgent": "content",
+    "toAgent": "design",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752227779340_7go58wj9w9g",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752227779340_7go58wj9w9g",
+      "name": "Campaign campaign_1752227779340_7go58wj9w9g",
+      "brand": "Email Makers",
+      "type": "promotional",
+      "target_audience": "travel enthusiasts",
+      "language": "ru",
+      "created_at": "2025-07-11T09:59:26.300Z",
+      "status": "active"
+    },
+    "data_collection_context": {
+      "destination_analysis": {
+        "analysis_type": "destination_analysis",
+        "data": {
+          "climate_factors": "Лето в Таиланде - сезон дождей. Жарко и влажно, температура 28-34C. Возможны кратковременные ливни особенно в июле-сентябре. Пляжи на Пхукете и Краби доступны с перерывами дождей, море теплое все лето. Туристам важно брать легкую одежду и дождевик.",
+          "cultural_highlights": "Буддийские храмы, национальная кухня, фестивали. Летом проходят храмовые праздники и традиционные рынки. Язык тайский, в туристических районах говорят на английском. Вежливость и улыбка важны в общении.",
+          "key_attractions": "Бангкок Великий дворец, Пхи Пхи, Паттайя, пляжи Хуахина, торговые центры, слоновьи фермы. В сезон дождей популярны СПА, гастротуры и экскурсии.",
+          "seasonal_advantages": "Летом меньше туристов и гибкие цены. Больше скидок на отели и билеты. Доступны экскурсии без больших очередей.",
+          "travel_experience_quality": "Летний отдых подходит искателям уединения и ценителям выгодных цен. Природа яркая, атмосфера расслабленная."
+        },
+        "saved_at": "2025-07-11T09:56:50.061Z"
+      },
+      "market_intelligence": {
+        "analysis_type": "market_intelligence",
+        "data": {
+          "pricing_insights": "Летом средняя цена перелета составляет 35000-80000 руб туда-обратно на человека. Скидки до 30 процентов по раннему бронированию и горящим авиабилетам. На отели летом сильные акции. Основная экономия - в первой половине лета и в сентябре.",
+          "competitive_position": "Главные конкуренты Таиланда летом — Вьетнам, Шри-Ланка, Индонезия (Бали). Таиланд выделяется простотой оформления, широким выбором рейсов, большим количеством курортов и развлечений.",
+          "demand_patterns": "Летом спрос ниже чем зимой. Россияне летают чаще семьями и парами. Пик бронирований приходится на июль-август из-за отпусков, однако без большого ажиотажа. Увеличился спрос на самостоятельные маршруты.",
+          "booking_recommendations": "Лучшее окно бронирования — за 4-8 недель до даты вылета на июль-август. Охотникам за скидками стоит следить за flash-sale билетов ближе к дате. Семьям лучше бронировать заранее для лучших цен на отели и авиабилеты."
+        },
+        "saved_at": "2025-07-11T09:56:50.061Z"
+      },
+      "emotional_profile": {
+        "analysis_type": "emotional_profile",
+        "data": {
+          "core_motivations": "Желание солнца и пляжного отдыха, смена обстановки, экономия в сравнении с зимой. Тайланд летом — побег от городской суеты, уединение на природе, свежие экзотические фрукты.",
+          "emotional_triggers": "Теплая вода, тропические фрукты, экзотический рынок, спа, сочные фото пейзажей, скидки и спецпредложения.",
+          "key_desires": "Незабываемый пляж, хорошие фото для соцсетей, попробовать новое, снять стресс, радость от выгодной покупки.",
+          "psychological_benefits": "Ощущение свободы, обновления, радость выгодной поездки, воспоминания о приключениях и открытиях."
+        },
+        "saved_at": "2025-07-11T09:56:50.061Z"
+      },
+      "consolidated_insights": {
+        "actionable_insights": [
+          "Делайте упор на скидки летом",
+          "Покажите реальную атмосферу сезона дождей",
+          "Подчеркните экзотику тропиков и фруктов",
+          "Используйте популярные хештеги для соцсетей",
+          "Выгодно сегментируйте аудитории по интересам: wellness, eco, гастрономия"
+        ],
+        "key_insights": [
+          "Летом выгодные цены и меньше туристов в Таиланде",
+          "Сезон дождей — не помеха для отдыха с правильной подготовкой",
+          "В тренде eco и wellness туры",
+          "Контент о реальной погоде повышает доверие",
+          "Растет число коротких flash-промо"
+        ],
+        "confidence_score": 0.92,
+        "analysis_timestamp": "2025-07-11T09:56:25.427Z",
+        "saved_at": "2025-07-11T09:56:50.064Z"
+      },
+      "travel_intelligence": {
+        "insight_type": "travel_intelligence",
+        "insights": [
+          "Летом цены ниже чем зимой и больше акций на перелеты и отели",
+          "Правильная упаковка выгод для отдыха летом — главный драйвер кампании",
+          "Туристам важно знать реальные погодные особенности и как комфортно отдыхать в сезон дождей",
+          "В тренде предложения eco и relax формата, а также гастро и спа впечатления",
+          "Тематические хештеги и живой фотоконтент усиливают эффект продвижения"
+        ],
+        "insights_count": 5,
+        "saved_at": "2025-07-11T09:56:50.061Z",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752227779340_7go58wj9w9g/data/travel_intelligence-insights.json"
+      },
+      "trend_analysis": {
+        "analysis_type": "trend_analysis",
+        "data": {
+          "seasonal_trends": "В 2025 году отмечается новый рост популярности летнего Таиланда среди россиян. Много контента о дожде и атмосферных фото в Instagram, тренд на slow travel и индивидуальные экскурсии.",
+          "social_media_trends": "Трендовые хештеги #rainyThailand #thailand2025 #phuket #thaifood. Украшают ленту фото в ярких купальниках и на фоне сочной зелени. В TikTok популярны видео лайфхаки для путешествия в дождливый сезон.",
+          "travel_preferences": "Мода на eco-friendly туризм, индивидуальные программы, спонтанные поездки и домашние мини-группы. Растет спрос на спа и уникальные рынки.",
+          "market_dynamics": "Увеличилось число горящих акций и коротких промо на билеты и отели. Запрос на эксклюзивность путешествия, уникальные фото-контенты."
+        },
+        "saved_at": "2025-07-11T09:56:50.061Z"
+      },
+      "collection_metadata": {
+        "campaign_id": "campaign_1752227779340_7go58wj9w9g",
+        "collection_timestamp": "2025-07-11T09:59:26.300Z",
+        "data_sources": [
+          "destination-analysis",
+          "market-intelligence",
+          "emotional-profile",
+          "consolidated-insights",
+          "travel-intelligence",
+          "trend-analysis"
+        ],
+        "collection_status": "complete",
+        "data_quality_score": 100
+      }
+    },
+    "context_analysis": {
+      "destination": "Thailand",
+      "seasonal_trends": "Current season trends for Thailand",
+      "emotional_triggers": "Exotic adventure and relaxation",
+      "market_positioning": "Premium exotic destination",
+      "competitive_landscape": "Strong competition in Southeast Asia travel market",
+      "price_sensitivity": "Medium price sensitivity for exotic destinations",
+      "booking_patterns": "Advance planning with seasonal booking patterns"
+    },
+    "date_analysis": {
+      "destination": "Thailand",
+      "season": "summer",
+      "optimal_dates": [
+        "2025-08-15",
+        "2025-09-10",
+        "2025-10-05",
+        "2025-11-20",
+        "2025-12-15"
+      ],
+      "pricing_windows": [
+        "Период с 2025-08-10 по 2025-08-20: низкие цены на авиабилеты из-за окончания сезона отпусков в Европе.",
+        "Период с 2025-09-01 по 2025-09-15: умеренные цены, так как это время перехода к высокому сезону.",
+        "Период с 2025-10-01 по 2025-10-15: цены начинают расти, так как начинается высокий туристический сезон.",
+        "Период с 2025-11-15 по 2025-12-15: высокий сезон, цены на авиабилеты достигают пиковых значений."
+      ],
+      "booking_recommendation": "Рекомендуется бронировать билеты за 2-3 месяца до вылета для получения лучших цен.",
+      "seasonal_factors": "Летний сезон в Таиланде характеризуется высокой влажностью и возможными дождями, но это также время, когда меньше туристов. Сентябрь и октябрь могут быть дождливыми, но цены на авиабилеты и отели ниже. Ноябрь и декабрь – это начало высокого сезона, когда погода становится более сухой и комфортной.",
+      "current_date": "2025-07-11"
+    },
+    "pricing_analysis": {
+      "best_price": 23818,
+      "min_price": 23818,
+      "max_price": 26287,
+      "average_price": 24992,
+      "currency": "RUB",
+      "offers_count": 11,
+      "recommended_dates": [
+        "2025-08-10",
+        "2025-08-11",
+        "2025-08-12"
+      ],
+      "route": {
+        "from": "Moscow",
+        "to": "Bangkok",
+        "from_code": "MOW",
+        "to_code": "BKK"
+      },
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "BKK",
+            "finalCode": "BKK",
+            "countryCode": "TH",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "asset_strategy": {
+      "theme": "Thailand Travel Experience",
+      "visual_style": "modern",
+      "color_palette": "Tropical warm colors with brand accents",
+      "typography": "Modern clean typography",
+      "image_concepts": [
+        "Hero изображение - тропический пляж с пальмами и ярким солнцем",
+        "Lifestyle фото - счастливая семья на пляже, наслаждающаяся отдыхом",
+        "Архитектура/достопримечательности - храм Wat Arun на фоне заката",
+        "Кулинария/культура - традиционные тайские блюда и уличная еда",
+        "Природа/пейзажи - живописные горы и рисовые поля",
+        "Активности/развлечения - серфинг и йога на пляже",
+        "Шоппинг/сувениры - местные рынки с яркими товарами",
+        "Транспорт/логистика - удобные способы передвижения по Таиланду"
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, где главные визуалы занимают центральное место.",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet за счет использования фирменных цветов и современного визуального стиля, что создает ощущение доверия и профессионализма."
+    },
+    "generated_content": {
+      "subject": "Погрузитесь в экзотику Таиланда с летними скидками!",
+      "preheader": "Летние предложения на авиабилеты в Таиланд — от 23818 RUB. Откройте для себя wellness и экзотику.",
+      "body": "Представьте себе: теплые волны омывают ваши ноги, а вокруг тропические фрукты и экзотические рынки. Таиланд — это не просто страна, это волшебный мир, где каждый уголок наполнен яркими красками и уникальными впечатлениями. Летние скидки на авиабилеты делают это путешествие доступным, а wellness-центры с традиционными тайскими массажами помогут вам восстановить силы и гармонию.\n\nВ Таиланде вас ждут бесконечные возможности для активного отдыха: от дайвинга в кристально чистых водах до прогулок по живописным пляжам. Исследуйте удивительные храмы, наслаждайтесь местной кухней и погружайтесь в культуру, которая завораживает с первого взгляда. Каждый день в Таиланде — это новое приключение, которое стоит пережить.\n\nСейчас самое время забронировать свой билет! Мы предлагаем лучшие цены на авиабилеты — всего от 23818 RUB. Оптимальные даты для путешествия: 15 августа, 10 сентября, 5 октября, 20 ноября и 15 декабря 2025 года. Не упустите шанс насладиться летними скидками и экзотической атмосферой.\n\nЗабронируйте свой билет прямо сейчас и откройте для себя мир, полный солнечных дней и незабываемых впечатлений. Не ждите, пока лучшие предложения уйдут к другим — ваше идеальное лето в Таиланде ждет вас!",
+      "cta": {
+        "primary": "Забронировать билет",
+        "secondary": "Узнать больше"
+      },
+      "personalization_level": "advanced",
+      "urgency_level": "medium"
+    },
+    "technical_requirements": {
+      "specificationId": "spec_1752227961154_i6vfafxymh",
+      "specification": {
+        "version": "1.0",
+        "generatedAt": "2025-07-11T09:59:21.156Z",
+        "campaign": {
+          "id": "campaign_1752227779340_7go58wj9w9g",
+          "name": "Campaign campaign_1752227779340_7go58wj9w9g",
+          "type": "email-marketing",
+          "theme": "general",
+          "targetAudience": "general",
+          "priority": "medium"
+        },
+        "content": {
+          "subject": "Email Subject",
+          "preheader": "Email preheader",
+          "sections": [
+            {
+              "id": "header",
+              "type": "header",
+              "required": true
+            },
+            {
+              "id": "hero",
+              "type": "hero",
+              "required": true
+            },
+            {
+              "id": "content",
+              "type": "content",
+              "required": true
+            },
+            {
+              "id": "cta",
+              "type": "cta",
+              "required": true
+            },
+            {
+              "id": "footer",
+              "type": "footer",
+              "required": true
+            },
+            {
+              "id": "products",
+              "type": "product",
+              "required": true,
+              "metadata": {
+                "productCount": 1
+              }
+            }
+          ],
+          "callToAction": {
+            "primary": {
+              "text": "Click Here",
+              "url": "#",
+              "style": "button"
+            }
+          },
+          "personalization": {
+            "enabled": false,
+            "variables": [],
+            "dynamicContent": []
+          }
+        },
+        "design": {
+          "constraints": {
+            "layout": {
+              "type": "single-column",
+              "maxWidth": 600,
+              "minWidth": 320,
+              "padding": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "sections": []
+            },
+            "typography": {
+              "headingFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "sizes": {
+                  "h1": 28,
+                  "h2": 24,
+                  "h3": 20
+                },
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              },
+              "bodyFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "size": 16,
+                "lineHeight": 1.5,
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              }
+            },
+            "colorScheme": {
+              "primary": "#007bff",
+              "secondary": "#6c757d",
+              "accent": "#28a745",
+              "text": {
+                "primary": "#333333",
+                "secondary": "#666666",
+                "muted": "#999999"
+              },
+              "background": {
+                "primary": "#ffffff",
+                "secondary": "#f8f9fa",
+                "accent": "#e9ecef"
+              }
+            },
+            "spacing": {
+              "base": 16,
+              "sections": 40,
+              "elements": 20,
+              "text": 12
+            }
+          },
+          "assets": {
+            "manifest": {
+              "images": [
+                {
+                  "id": "img_7pj4",
+                  "path": "assets/images/beach-thailand.jpg",
+                  "alt": "Тропический пляж и пальмы на рассвете в Пхукете, Таиланд",
+                  "usage": "hero",
+                  "dimensions": {
+                    "width": 600,
+                    "height": 400
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 98312
+                  }
+                },
+                {
+                  "id": "img_aqw9",
+                  "path": "assets/images/thai-family-wellness.jpg",
+                  "alt": "Семья занимается йогой на берегу моря в Таиланде",
+                  "usage": "content",
+                  "dimensions": {
+                    "width": 600,
+                    "height": 400
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 91777
+                  }
+                }
+              ],
+              "icons": [
+                {
+                  "id": "ico_fru1",
+                  "path": "assets/icons/mango-fruit.svg",
+                  "usage": "icon",
+                  "format": "svg",
+                  "size": "32x32"
+                },
+                {
+                  "id": "ico_palm2",
+                  "path": "assets/icons/palm-tree.svg",
+                  "usage": "icon",
+                  "format": "svg",
+                  "size": "32x32"
+                }
+              ],
+              "fonts": [
+                {
+                  "family": "Montserrat",
+                  "weights": [
+                    "400",
+                    "700"
+                  ],
+                  "fallbacks": [
+                    "Arial",
+                    "sans-serif"
+                  ],
+                  "usage": "body"
+                }
+              ]
+            },
+            "requirements": [
+              {
+                "id": "hero-image",
+                "type": "image",
+                "description": "Hero image for email header",
+                "specifications": {
+                  "dimensions": {
+                    "width": 600,
+                    "height": 300
+                  },
+                  "formats": [
+                    "jpg",
+                    "webp"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Solid color background with text overlay"
+              },
+              {
+                "id": "logo",
+                "type": "image",
+                "description": "Brand logo",
+                "specifications": {
+                  "dimensions": {
+                    "height": 60
+                  },
+                  "formats": [
+                    "png",
+                    "svg"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Text-based brand name"
+              }
+            ]
+          },
+          "responsive": {
+            "enabled": true,
+            "breakpoints": [
+              {
+                "name": "mobile",
+                "width": 480,
+                "constraints": {
+                  "maxWidth": 320
+                }
+              },
+              {
+                "name": "tablet",
+                "width": 768,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              },
+              {
+                "name": "desktop",
+                "width": 1200,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              }
+            ],
+            "strategy": "mobile-first"
+          }
+        },
+        "quality": {
+          "criteria": {
+            "performance": {
+              "maxFileSize": 100000,
+              "maxImageSize": 50000,
+              "compressionQuality": 0.8,
+              "lazyLoading": false,
+              "cacheOptimization": true
+            },
+            "accessibility": {
+              "wcagLevel": "AA",
+              "contrastRatio": 4.5,
+              "altTextRequired": true,
+              "focusIndicators": true,
+              "screenReaderFriendly": true,
+              "keyboardNavigation": false
+            },
+            "emailDeliverability": {
+              "spamScore": 3,
+              "textToHtmlRatio": 0.3,
+              "linkLimit": 10,
+              "imageToTextRatio": 0.6,
+              "subjectLineLength": 50,
+              "preheaderLength": 100
+            },
+            "crossClientCompatibility": {
+              "targetClients": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "fallbackStrategies": [
+                {
+                  "feature": "WebP images",
+                  "fallback": "JPEG images"
+                },
+                {
+                  "feature": "SVG images",
+                  "fallback": "PNG images"
+                },
+                {
+                  "feature": "Custom fonts",
+                  "fallback": "System fonts"
+                }
+              ],
+              "testing": {
+                "required": true,
+                "platforms": [
+                  "gmail",
+                  "outlook",
+                  "apple-mail",
+                  "yahoo-mail"
+                ],
+                "minCompatibility": 95
+              }
+            },
+            "email_clients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "performance_thresholds": {
+              "max_file_size": 100000,
+              "load_time": 2
+            },
+            "accessibility_requirements": {
+              "wcag_level": "AA",
+              "color_contrast": 4.5
+            }
+          },
+          "testing": {
+            "required": true,
+            "types": [
+              "functional",
+              "visual",
+              "compatibility"
+            ],
+            "platforms": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "automation": {
+              "enabled": false,
+              "tools": [],
+              "coverage": 0
+            }
+          },
+          "validation": {
+            "htmlValidation": true,
+            "cssValidation": true,
+            "linkValidation": true,
+            "spamCheck": true,
+            "accessibilityCheck": true
+          }
+        },
+        "delivery": {
+          "emailClients": [
+            {
+              "client": "gmail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Clips emails over 102KB",
+                "Limited CSS support"
+              ]
+            },
+            {
+              "client": "outlook",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Uses Word rendering engine",
+                "Very limited CSS support"
+              ]
+            },
+            {
+              "client": "apple-mail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": true,
+              "supportsCSS": {
+                "flexbox": true,
+                "grid": false,
+                "transform": true,
+                "animation": true
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Good CSS support",
+                "Supports media queries"
+              ]
+            },
+            {
+              "client": "yahoo-mail",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Limited CSS support",
+                "Similar to Gmail"
+              ]
+            }
+          ],
+          "deployment": {
+            "environment": "production",
+            "approvalRequired": true,
+            "rollbackStrategy": "immediate",
+            "monitoring": {
+              "enabled": true,
+              "metrics": [
+                "open_rate",
+                "click_rate",
+                "bounce_rate"
+              ],
+              "alerts": [
+                "high_bounce_rate",
+                "low_open_rate"
+              ]
+            }
+          },
+          "tracking": {
+            "enabled": true,
+            "openTracking": true,
+            "clickTracking": true,
+            "customEvents": []
+          }
+        },
+        "metadata": {
+          "generatedBy": "technical-spec-generator",
+          "sourceContext": {
+            "campaignId": "campaign_1752227779340_7go58wj9w9g",
+            "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752227779340_7go58wj9w9g",
+            "taskType": "content_creation",
+            "language": "ru",
+            "campaign_type": "promotional",
+            "industry": "travel",
+            "urgency": "medium",
+            "target_audience": "travel_enthusiasts"
+          },
+          "processingTime": 0,
+          "complexity": "low",
+          "estimatedImplementationTime": 4,
+          "dependencies": [
+            "mjml",
+            "image-optimization",
+            "html-validation"
+          ],
+          "notes": []
+        }
+      },
+      "generationSummary": {
+        "timestamp": "2025-07-11T09:59:21.157Z",
+        "processingTime": 3,
+        "sourceContexts": 4,
+        "sectionsGenerated": 6,
+        "assetsProcessed": 4,
+        "constraintsApplied": 4,
+        "validationPassed": true,
+        "errors": [],
+        "warnings": []
+      },
+      "implementationGuidance": {
+        "priority": "high",
+        "estimatedTime": 4,
+        "complexity": "low",
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "risks": [
+          "Multiple email client compatibility challenges"
+        ],
+        "recommendations": [
+          "Use table-based layout for maximum compatibility",
+          "Inline all CSS for better email client support",
+          "Optimize images for web delivery",
+          "Test across all target email clients",
+          "Implement responsive design with media queries",
+          "Ensure WCAG AA compliance with proper alt text and contrast"
+        ]
+      },
+      "qualityScore": {
+        "completeness": 100,
+        "consistency": 90,
+        "clarity": 100,
+        "implementability": 100,
+        "overall": 98
+      }
+    }
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Лето в Таиланде - сезон дождей. Жарко и влажно, температура 28-34C. Возможны кратковременные ливни особенно в июле-сентябре. Пляжи на Пхукете и Краби доступны с перерывами дождей, море теплое все лето. Туристам важно брать легкую одежду и дождевик.",
+        "cultural_highlights": "Буддийские храмы, национальная кухня, фестивали. Летом проходят храмовые праздники и традиционные рынки. Язык тайский, в туристических районах говорят на английском. Вежливость и улыбка важны в общении.",
+        "key_attractions": "Бангкок Великий дворец, Пхи Пхи, Паттайя, пляжи Хуахина, торговые центры, слоновьи фермы. В сезон дождей популярны СПА, гастротуры и экскурсии.",
+        "seasonal_advantages": "Летом меньше туристов и гибкие цены. Больше скидок на отели и билеты. Доступны экскурсии без больших очередей.",
+        "travel_experience_quality": "Летний отдых подходит искателям уединения и ценителям выгодных цен. Природа яркая, атмосфера расслабленная."
+      },
+      "saved_at": "2025-07-11T09:56:50.061Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "Летом средняя цена перелета составляет 35000-80000 руб туда-обратно на человека. Скидки до 30 процентов по раннему бронированию и горящим авиабилетам. На отели летом сильные акции. Основная экономия - в первой половине лета и в сентябре.",
+        "competitive_position": "Главные конкуренты Таиланда летом — Вьетнам, Шри-Ланка, Индонезия (Бали). Таиланд выделяется простотой оформления, широким выбором рейсов, большим количеством курортов и развлечений.",
+        "demand_patterns": "Летом спрос ниже чем зимой. Россияне летают чаще семьями и парами. Пик бронирований приходится на июль-август из-за отпусков, однако без большого ажиотажа. Увеличился спрос на самостоятельные маршруты.",
+        "booking_recommendations": "Лучшее окно бронирования — за 4-8 недель до даты вылета на июль-август. Охотникам за скидками стоит следить за flash-sale билетов ближе к дате. Семьям лучше бронировать заранее для лучших цен на отели и авиабилеты."
+      },
+      "saved_at": "2025-07-11T09:56:50.061Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Желание солнца и пляжного отдыха, смена обстановки, экономия в сравнении с зимой. Тайланд летом — побег от городской суеты, уединение на природе, свежие экзотические фрукты.",
+        "emotional_triggers": "Теплая вода, тропические фрукты, экзотический рынок, спа, сочные фото пейзажей, скидки и спецпредложения.",
+        "key_desires": "Незабываемый пляж, хорошие фото для соцсетей, попробовать новое, снять стресс, радость от выгодной покупки.",
+        "psychological_benefits": "Ощущение свободы, обновления, радость выгодной поездки, воспоминания о приключениях и открытиях."
+      },
+      "saved_at": "2025-07-11T09:56:50.061Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Делайте упор на скидки летом",
+        "Покажите реальную атмосферу сезона дождей",
+        "Подчеркните экзотику тропиков и фруктов",
+        "Используйте популярные хештеги для соцсетей",
+        "Выгодно сегментируйте аудитории по интересам: wellness, eco, гастрономия"
+      ],
+      "key_insights": [
+        "Летом выгодные цены и меньше туристов в Таиланде",
+        "Сезон дождей — не помеха для отдыха с правильной подготовкой",
+        "В тренде eco и wellness туры",
+        "Контент о реальной погоде повышает доверие",
+        "Растет число коротких flash-промо"
+      ],
+      "confidence_score": 0.92,
+      "analysis_timestamp": "2025-07-11T09:56:25.427Z",
+      "saved_at": "2025-07-11T09:56:50.064Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Летом цены ниже чем зимой и больше акций на перелеты и отели",
+        "Правильная упаковка выгод для отдыха летом — главный драйвер кампании",
+        "Туристам важно знать реальные погодные особенности и как комфортно отдыхать в сезон дождей",
+        "В тренде предложения eco и relax формата, а также гастро и спа впечатления",
+        "Тематические хештеги и живой фотоконтент усиливают эффект продвижения"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T09:56:50.061Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752227779340_7go58wj9w9g/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "seasonal_trends": "В 2025 году отмечается новый рост популярности летнего Таиланда среди россиян. Много контента о дожде и атмосферных фото в Instagram, тренд на slow travel и индивидуальные экскурсии.",
+        "social_media_trends": "Трендовые хештеги #rainyThailand #thailand2025 #phuket #thaifood. Украшают ленту фото в ярких купальниках и на фоне сочной зелени. В TikTok популярны видео лайфхаки для путешествия в дождливый сезон.",
+        "travel_preferences": "Мода на eco-friendly туризм, индивидуальные программы, спонтанные поездки и домашние мини-группы. Растет спрос на спа и уникальные рынки.",
+        "market_dynamics": "Увеличилось число горящих акций и коротких промо на билеты и отели. Запрос на эксклюзивность путешествия, уникальные фото-контенты."
+      },
+      "saved_at": "2025-07-11T09:56:50.061Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752227779340_7go58wj9w9g",
+      "collection_timestamp": "2025-07-11T09:59:26.300Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  }
+}

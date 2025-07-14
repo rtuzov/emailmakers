@@ -823,16 +823,17 @@ async function processAssetManifest(
     }));
   }
   
-  // Process fonts
-  if (assetManifest?.fonts && assetManifest.fonts.length > 0) {
-    specifications.manifest.fonts = assetManifest.fonts.map((font: any) => ({
+  // Process fonts - check both direct fonts and nested assetManifest.fonts
+  const fonts = assetManifest?.fonts || assetManifest?.assetManifest?.fonts;
+  if (fonts && fonts.length > 0) {
+    specifications.manifest.fonts = fonts.map((font: any) => ({
       family: font.family,
       weights: font.weights || ['normal', 'bold'],
       fallbacks: font.fallbacks || ['Arial', 'sans-serif'],
       usage: font.usage || 'body'
     }));
     
-    console.log(`✅ Using ${assetManifest.fonts.length} fonts from asset manifest`);
+    console.log(`✅ Using ${fonts.length} fonts from asset manifest`);
   } else {
     // Add default fonts only if no fonts in asset manifest
     specifications.manifest.fonts = [

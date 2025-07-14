@@ -119,7 +119,7 @@ async function testCompleteWorkflow() {
     console.log('   Step 1: Content Specialist планирует теги...');
     const executeFunction = tagPlanner.invoke || tagPlanner.execute || tagPlanner;
     const assetPlan = await executeFunction({
-      campaign_brief: 'Горящие туры в Японию на весну с персонажем-зайцем',
+              campaign_brief: 'Горящие авиабилеты в Японию на весну с персонажем-зайцем',
       campaign_type: 'promotional',
       target_audience: 'молодые семьи',
       emotional_tone: 'positive'

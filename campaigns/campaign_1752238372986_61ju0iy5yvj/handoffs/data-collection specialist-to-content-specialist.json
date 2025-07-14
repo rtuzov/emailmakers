@@ -1,0 +1,20 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Testing file saving functionality",
+    "key_outputs": [
+      "test_output.json"
+    ],
+    "context_for_next": "Use the saved test data for reference",
+    "data_files": [
+      "data/test_output.json"
+    ],
+    "recommendations": [
+      "Follow up with test results",
+      "Make sure to validate output files"
+    ]
+  },
+  "created_at": "2025-07-11T12:53:09.058Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752238372986_61ju0iy5yvj/handoffs/data-collection specialist-to-content-specialist.json"
+}

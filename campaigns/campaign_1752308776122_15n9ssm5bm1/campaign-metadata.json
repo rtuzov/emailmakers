@@ -1,0 +1,29 @@
+{
+  "id": "campaign_1752308776122_15n9ssm5bm1",
+  "name": "Тест исправления Design Specialist",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "пользователи сервиса авиабилетов",
+  "user_request": "Тест исправления Design Specialist",
+  "created_at": "2025-07-12T08:26:16.123Z",
+  "status": "active",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": false,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": ""
+}

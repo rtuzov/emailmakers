@@ -1,0 +1,99 @@
+{
+  "requestId": "req_1752285322301_vziaj61sbsg",
+  "traceId": "api-1752285322301",
+  "timestamp": "2025-07-12T01:55:22.301Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752285322301",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752285322301",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "destination": "Thailand",
+      "origin": "Moscow",
+      "tone": "friendly",
+      "target_audience": "travelers",
+      "language": "ru"
+    },
+    "correlationId": "corr_1752285322301_6hya5qh23cl",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Простой тест для Таиланда",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Thailand",
+    "origin": "Moscow",
+    "tone": "friendly",
+    "target_audience": "travelers",
+    "language": "ru",
+    "originalOptions": {
+      "traceId": "api-1752285322301",
+      "campaignId": "api_campaign_1752285322301",
+      "metadata": {
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Thailand",
+        "origin": "Moscow",
+        "tone": "friendly",
+        "target_audience": "travelers",
+        "language": "ru"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "destination": "Thailand",
+        "origin": "Moscow",
+        "tone": "friendly",
+        "target_audience": "travelers",
+        "language": "ru"
+      }
+    }
+  }
+}

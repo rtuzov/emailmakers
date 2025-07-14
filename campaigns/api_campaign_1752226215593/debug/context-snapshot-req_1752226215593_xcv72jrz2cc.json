@@ -1,0 +1,87 @@
+{
+  "requestId": "req_1752226215593_xcv72jrz2cc",
+  "traceId": "api-1752226215593",
+  "timestamp": "2025-07-11T09:30:15.593Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752226215593",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752226215593",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "promotional",
+      "include_pricing": true
+    },
+    "correlationId": "corr_1752226215593_70qqqd4ly97",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email для туров в Таиланд со скидкой 40%",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "promotional",
+    "include_pricing": true,
+    "originalOptions": {
+      "traceId": "api-1752226215593",
+      "campaignId": "api_campaign_1752226215593",
+      "metadata": {
+        "taskType": "email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "promotional",
+        "include_pricing": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "promotional",
+        "include_pricing": true
+      }
+    }
+  }
+}

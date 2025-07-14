@@ -1,0 +1,29 @@
+{
+  "id": "campaign_1752308543729_mz2sjnnoyg",
+  "name": "Быстрый тест",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "travel enthusiasts",
+  "user_request": "Быстрый тест",
+  "created_at": "2025-07-12T08:22:23.731Z",
+  "status": "active",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": false,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": ""
+}

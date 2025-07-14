@@ -1,0 +1,94 @@
+[
+  {
+    "assetId": "ai_1752235218974_73v26h4ut4j",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [
+      "Large file size may affect loading in some email clients"
+    ],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752235221496_usswe0aas2",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_zW7MjBFE9zk_1752235244120",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"topless man sitting on cliff rock viewing Ko Nang Yuan isalnd, houses, and buildings under white and yellow sky\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_CIgvacdUkQw_1752235244785",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"grayscale photo of people near flowers\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_e9gVHGG6PVs_1752235245480",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"green palm tree under white sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_m5sRyx2dlvI_1752235246401",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a close up of a dragon head on a building\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_FvN3fn-Mmfw_1752235247038",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"people riding on boat on river during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752235226834_06hyhbva7sb8",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752235226835_ep9kkz3i7is",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "ai_1752235229344_tjp0zaersij",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте летний Таиланд: приключения ждут вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

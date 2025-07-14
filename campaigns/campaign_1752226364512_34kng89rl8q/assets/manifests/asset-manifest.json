@@ -1,0 +1,561 @@
+{
+  "manifestId": "manifest_1752226483341_f4yzk67m29p",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752226513259_lz3vet925wc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_иллюстрация-расслабляющего-отдыха-на-пляже-с-коктейлем-и-пальмой.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty of Thailand's beaches and summer vacation vibes.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 173094,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 173,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752226516603_wcgc4ndz7z",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_акция-новинка.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_акция-новинка.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and promotional offers.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 30591,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 31,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752226516603_akbsrvq3gy4",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_изображение-символизирует-скидку-или-акцию-что-может-привлечь-внимание-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_изображение-символизирует-скидку-или-акцию-что-может-привлечь-внимание-клиентов.png",
+        "alt_text": "AI-selected support",
+        "usage": "Highlight specific attractions and promotional offers.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 25269,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 25,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "unsplash_XNyhLJ7-R0I_1752226538402",
+        "path": "https://images.unsplash.com/photo-1612864273267-f00f5ea5c086?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGJlYWNoZXMlMjBzdW1tZXIlMjB2YWNhdGlvbnxlbnwwfDB8fHwxNzUyMjM1NTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1612864273267-f00f5ea5c086?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGJlYWNoZXMlMjBzdW1tZXIlMjB2YWNhdGlvbnxlbnwwfDB8fHwxNzUyMjM1NTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "green trees on brown sand beach under blue and white sunny cloudy sky during daytime",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the beauty of Thailand's beaches, turquoise sea, and summer vacation vibe.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "Thailand",
+            "beaches",
+            "summer",
+            "vacation"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_NkiBg26VBeg_1752226538938",
+        "path": "https://images.unsplash.com/photo-1595001955623-16e37238d572?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwbWFya2V0cyUyMHRlbXBsZXMlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1595001955623-16e37238d572?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUaGFpJTIwbWFya2V0cyUyMHRlbXBsZXMlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "woman in white crew neck t-shirt holding brown wooden stick",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images highlighting specific attractions in Thailand such as vibrant markets and stunning temples.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "Thai",
+            "markets",
+            "temples",
+            "culture"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_VvMyfPkaeLQ_1752226538956",
+        "path": "https://images.unsplash.com/photo-1598710989943-9bcf9f3a95c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHBhcmFkaXNlJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNTQyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1598710989943-9bcf9f3a95c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHBhcmFkaXNlJTIwVGhhaWxhbmR8ZW58MHwwfHx8MTc1MjIzNTQyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "palm tree on beach during daytime",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that evoke a vibrant and tropical atmosphere, perfect for summer adventures.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "tropical",
+            "paradise",
+            "Thailand"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_9OYKWaqEfDU_1752226539531",
+        "path": "https://images.unsplash.com/photo-1512428581314-9fccd4ea3064?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1512428581314-9fccd4ea3064?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cm91cyUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "man sitting on vehicle",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that represent adventure and exploration in Thailand, including islands and cultural experiences.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "adventurous",
+            "travel",
+            "Thailand"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_jWKk-0ZBUyg_1752226540066",
+        "path": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxkaXNjb3VudCUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxkaXNjb3VudCUyMHRyYXZlbCUyMFRoYWlsYW5kfGVufDB8MHx8fDE3NTIyMzU1Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "five brown wooden boats",
+        "usage": "branding",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that convey the idea of travel savings and special offers for trips to Thailand.",
+          "emotional_match": "Exciting and inviting, encouraging a sense of adventure and cultural exploration.",
+          "tags": [
+            "discount",
+            "travel",
+            "Thailand"
+          ]
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752226521503_30cy4wqghjd",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate discounts and facilitate the online booking process.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752226521504_uo386klh4pp",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Indicate discounts and facilitate the online booking process.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752226523540_ghyi6zopys",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Brand recognition and trust.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "Showcase the beauty of Thailand's beaches and summer vacation vibe",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "exciting and adventurous",
+      "visual_style": "vibrant and tropical",
+      "content_context": "Highlighting turquoise waters, white sandy beaches, and summer adventures in Thailand"
+    },
+    {
+      "type": "destination",
+      "purpose": "Highlight specific attractions in Thailand such as markets, temples, and islands",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "cultural and exotic",
+      "visual_style": "colorful and engaging",
+      "content_context": "Featuring Thai markets, temples, and the islands of Koh Samui and Phuket"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752226513259_lz3vet925wc",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752226516603_wcgc4ndz7z",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752226516603_akbsrvq3gy4",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_XNyhLJ7-R0I_1752226538402",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"green trees on brown sand beach under blue and white sunny cloudy sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_NkiBg26VBeg_1752226538938",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"woman in white crew neck t-shirt holding brown wooden stick\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_VvMyfPkaeLQ_1752226538956",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"palm tree on beach during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_9OYKWaqEfDU_1752226539531",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"man sitting on vehicle\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_jWKk-0ZBUyg_1752226540066",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"five brown wooden boats\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752226521503_30cy4wqghjd",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752226521504_uo386klh4pp",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752226523540_ghyi6zopys",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествуйте в Таиланд со скидкой 40%!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 12,
+    "totalSize": 274727,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T09:35:40.072Z",
+    "processingTime": 56731,
+    "sourcesProcessed": 2,
+    "assetsCollected": 11,
+    "assetsValidated": 11,
+    "assetsOptimized": 11,
+    "errors": []
+  }
+}

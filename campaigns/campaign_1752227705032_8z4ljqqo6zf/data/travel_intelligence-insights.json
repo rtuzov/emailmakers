@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Летний Таиланд дешевле и спокойнее пика",
+    "Молодежь и семьи покупают спонтанно или за 1-2 месяца",
+    "Цвета бренда соответствуют экзотике и яркости направления",
+    "Выгодные предложения мотивируют на ранние покупки",
+    "Дружелюбие и легкость отдыха важны для аудитории"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T09:55:45.617Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752227705032_8z4ljqqo6zf/data/travel_intelligence-insights.json"
+}

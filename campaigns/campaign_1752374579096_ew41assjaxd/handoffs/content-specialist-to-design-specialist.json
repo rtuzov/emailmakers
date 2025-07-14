@@ -1,0 +1,1060 @@
+{
+  "request": "Continue with email design using generated content, technical specification, and asset manifest",
+  "metadata": {
+    "handoffId": "handoff_1752374714155_o9iaqqiekz",
+    "timestamp": "2025-07-13T02:45:14.155Z",
+    "fromAgent": "content",
+    "toAgent": "design",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752374579096_ew41assjaxd",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752374579096_ew41assjaxd",
+      "name": "Campaign campaign_1752374579096_ew41assjaxd",
+      "brand": "Email Makers",
+      "type": "promotional",
+      "target_audience": "travel enthusiasts",
+      "language": "ru",
+      "created_at": "2025-07-13T02:45:14.154Z",
+      "status": "active"
+    },
+    "data_collection_context": {
+      "destination_analysis": {
+        "analysis_type": "destination_analysis",
+        "data": {
+          "raw_analysis": "{\"climate_factors\": \"Тайланд в июле: температура от 24C до 32C, сезон дождей, но дожди короткие и часто в вечернее время. Погодные условия радуют путешественников теплом и влажностью, ценность такой поездки Есть. Большая часть островов становится более зелеными и яркими.\", \"cultural_highlights\": \"Интересные мероприятия: фестиваль Рои Кратонг (ноябрь), Тет (китайский новый год), множество традиционных местных праздников. Социальные обычаи включают уважение к старшим, традиционную религиозность, и распространены уличные рынки с вкусной едой.\", \"key_attractions\": \"Пхукет, Бангкок, острова Пхи-Пхи, храм Ват Пхра Тхат Дой Сутеп в Чиангмае, андаманские пляжи.\", \"seasonal_advantages\": \"Еще можно найти хорошие предложения на авиабилеты, но нужно быстро поступать: летом скидки до 25% на отели, менее людно и отлично для купания.,\"travel_experience_quality\": \"Летний отдых в Тайланде: чистые пляжи, множество активностей, но стоит помнить, что короткие дожди возможны. Вода в море теплая и чистая.\"}",
+          "climate": {
+            "temperature": "warm",
+            "season": "seasonal",
+            "humidity": "high",
+            "rainfall": "moderate"
+          },
+          "culture": {
+            "highlights": [
+              "храм"
+            ],
+            "language": "Thai, English in tourist areas",
+            "customs": [
+              "традиц"
+            ]
+          },
+          "attractions": {
+            "must_see": [
+              "храм",
+              "остров"
+            ],
+            "beaches": [
+              "пляж"
+            ],
+            "activities": [
+              "general_interest"
+            ]
+          },
+          "analysis_date": "2025-07-13T02:43:16.842Z"
+        },
+        "saved_at": "2025-07-13T02:43:16.842Z"
+      },
+      "market_intelligence": {
+        "analysis_type": "market_intelligence",
+        "data": {
+          "raw_analysis": "{\"pricing_insights\": \"Летние месяцы являются высокими сезонами для Тайланда, но конкурентные предложения все еще присутствуют: авиабилеты весят от 30000 до 60000 рублей в обе стороны от Москвы. Добавление местных экскурсий значительно увеличит общий бюджет на поездку, ограниченный менее 90 дней для большинства посещений.\", \"competitive_position\": \"Тайланд сталкивается с конкуренцией на рынке от Вьетнама и других популярных направлений Юго-Восточной Азии. Однако он все еще остается наиболее доступным по ценам для россиян, предоставляя разнообразие предложений для всех типов путешествующих.,\"demand_patterns\": \"Июль - астендиотический период, и спрос на поездки может быть умеренным, однако увеличивается по мере приближения к августу. Наиболее заинтересованы молодые пары и воздушные путешественники в легком отдыхе.,\"booking_recommendations\": \"Рекомендуется бронировать ради скидок в 15-20% за 2-3 месяца до выезда, необходимо также оставить расстояние для мгновенных предложений за пределами трех недель.\"}",
+          "pricing": {
+            "range": "moderate",
+            "season": "autumn_discounts",
+            "booking_window": "2-3 months advance"
+          },
+          "competition": {
+            "alternatives": [
+              "вьетнам"
+            ],
+            "advantages": [
+              "цен",
+              "доступ"
+            ]
+          },
+          "demand": {
+            "level": "high",
+            "drivers": [
+              "цен"
+            ],
+            "peak_season": "november-march"
+          },
+          "analysis_date": "2025-07-13T02:43:16.842Z"
+        },
+        "saved_at": "2025-07-13T02:43:16.842Z"
+      },
+      "emotional_profile": {
+        "analysis_type": "emotional_profile",
+        "data": {
+          "raw_analysis": "{\"core_motivations\": \"Побег от рутинных будней и обыденности, подзарядка на солнышке, новые культурные впечатления. Тайланд мечта одновременно об отдыхе и духовной перезагрузке по другим своим причинам, включая выполнение личных мечт.\", \"emotional_triggers\": \"Тепло света и воды, ароматы экзотической еды, убаюкивающее движение волны, спокойствие тропических берегов.,\"key_desires\": \"Постоянные солнце и вещи, которые удовлетворят себя на уровне социальных потребностей, так как показывают себя как социализации, спокойствия. Яркие моменты на Instagram.\", \"psychological_benefits\": \"Получают силы, проходят изни зовуха,\"}",
+          "motivations": [
+            "отдых",
+            "экзот",
+            "впечатл",
+            "тепл"
+          ],
+          "triggers": [
+            "солнц"
+          ],
+          "desires": [
+            "general_interest"
+          ],
+          "analysis_date": "2025-07-13T02:43:16.842Z"
+        },
+        "saved_at": "2025-07-13T02:43:16.842Z"
+      },
+      "consolidated_insights": {
+        "actionable_insights": [
+          "Фокус на культурные испытания местных традиций и оптовый контент о еде.",
+          "Рекомендации молодым парам и семьям в отдыхе под солнцем.",
+          "Используйте информацию о скидках на бронирование отелей и авиабилетов."
+        ],
+        "key_insights": [
+          "Тайланд - доступное направление с хорошими предложениями, особенно для молодых людей и семей.",
+          "Июль - прекрасное время для отдыха, но нужно быть готовым к кратковременным дождям и активному общению в праздник.",
+          "Социальные сети и положительные отзывы играют ключевую роль в выборе направления."
+        ],
+        "confidence_score": 0.9,
+        "analysis_timestamp": "2025-07-13T02:43:02.296Z",
+        "saved_at": "2025-07-13T02:43:16.845Z"
+      },
+      "travel_intelligence": {
+        "insight_type": "travel_intelligence",
+        "insights": [
+          "Тайланд - доступное направление с хорошими предложениями, особенно для молодых людей и семей.",
+          "Июль - прекрасное время для отдыха, но нужно быть готовым к кратковременным дождям и активному общению в праздник.",
+          "Социальные сети и положительные отзывы играют ключевую роль в выборе направления."
+        ],
+        "insights_count": 3,
+        "saved_at": "2025-07-13T02:43:16.842Z",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752374579096_ew41assjaxd/data/travel_intelligence-insights.json"
+      },
+      "trend_analysis": {
+        "analysis_type": "trend_analysis",
+        "data": {
+          "raw_analysis": "{\"seasonal_trends\": \"Июль каждый год обретает популярность среди молодежи и семейных пар. Наблюдается определенный рост через онлайн-брон, хэштегов, объединение с щадящей культурами, социальной активностью на уровне и контентом гостей. Старые храмы и природа также дают себе шанс. Рекомендуется включать больше контентной окружающей информации.,\"social_media_trends\": \"Популярные хештеги включают #thailand, #phuket, #traveltips, #foodie. Гастрономические блоги растут; в данный момент три снова фокусируются на том, как быстро подготовить поездку, сделав усилия на продуктовый содержимое непосредственно их. Создание видео-контента о различных кулинарных приключениях и маленьких лапах.\", \"travel_preferences\": \"Путешественники выбирают удобные перелеты, отдых на пляже, включение местной культуры и приключения. Безопасные поездки и минимальные пересадки.\", \"market_dynamics\": \"Рынок авиации все еще активен согласно разнообразным перевозчикам. Многие компании предлагают уникальные пакеты и бонусы для привлечения гостей, как новые виртуальные указатели, чтобы событие стало более доступным для документов и культурных элементов.\"}",
+          "social_media": {
+            "trending_hashtags": [
+              "#ThailandAutumn",
+              "#PhuketRomance",
+              "#ThaiFood"
+            ],
+            "viral_content": [
+              "пляж",
+              "храм"
+            ]
+          },
+          "booking_patterns": {
+            "advance_booking": "2-3 months",
+            "group_size": "couples",
+            "preferences": [
+              "пакет"
+            ]
+          },
+          "opportunities": [
+            "кулинар",
+            "приключ"
+          ],
+          "analysis_date": "2025-07-13T02:43:16.842Z"
+        },
+        "saved_at": "2025-07-13T02:43:16.842Z"
+      },
+      "collection_metadata": {
+        "campaign_id": "campaign_1752374579096_ew41assjaxd",
+        "collection_timestamp": "2025-07-13T02:45:14.154Z",
+        "data_sources": [
+          "destination-analysis",
+          "market-intelligence",
+          "emotional-profile",
+          "consolidated-insights",
+          "travel-intelligence",
+          "trend-analysis"
+        ],
+        "collection_status": "complete",
+        "data_quality_score": 100
+      }
+    },
+    "context_analysis": {
+      "destination": "Thailand",
+      "seasonal_trends": "Current season trends for Thailand",
+      "emotional_triggers": "Exotic adventure and relaxation",
+      "market_positioning": "Premium exotic destination",
+      "competitive_landscape": "Strong competition in Southeast Asia travel market",
+      "price_sensitivity": "Medium price sensitivity for exotic destinations",
+      "booking_patterns": "Advance planning with seasonal booking patterns"
+    },
+    "date_analysis": {
+      "destination": "Thailand",
+      "season": "winter",
+      "optimal_dates": [
+        "2025-11-15",
+        "2025-11-22",
+        "2025-12-01",
+        "2025-12-15",
+        "2026-01-10",
+        "2026-02-05"
+      ],
+      "pricing_windows": [
+        "Период с 2025-11-01 по 2025-11-30: низкие цены на авиабилеты, так как это начало сезона.",
+        "Период с 2025-12-01 по 2025-12-20: средние цены, увеличивается пассажиропоток из-за праздников.",
+        "Период с 2026-01-05 по 2026-01-31: высокие цены из-за пикового сезона новогодних праздников и каникул.",
+        "Период с 2026-02-01 по 2026-02-28: цены начинают снижаться, так как основной поток туристов уходит."
+      ],
+      "booking_recommendation": "Рекомендуется бронировать авиабилеты за 2-3 месяца до поездки для получения лучших цен.",
+      "seasonal_factors": "Зима в Таиланде (ноябрь-февраль) - это высокий туристический сезон с комфортной температурой и минимальными осадками. Наиболее популярные направления - Бангкок, Пхукет и Чиангмай. В это время года ожидается высокий поток туристов, особенно в декабре и январе.",
+      "current_date": "2025-07-13"
+    },
+    "pricing_analysis": {
+      "best_price": 24786,
+      "min_price": 24786,
+      "max_price": 27742,
+      "average_price": 25765,
+      "currency": "RUB",
+      "offers_count": 30,
+      "recommended_dates": [
+        "2025-11-01",
+        "2025-11-02",
+        "2025-11-03"
+      ],
+      "route": {
+        "from": "Moscow",
+        "to": "Bangkok",
+        "from_code": "MOW",
+        "to_code": "BKK"
+      },
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "BKK",
+            "finalCode": "BKK",
+            "countryCode": "TH",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "asset_strategy": {
+      "theme": "Thailand Travel Experience",
+      "visual_style": "modern",
+      "color_palette": "Tropical warm colors with brand accents",
+      "typography": "Modern clean typography",
+      "image_concepts": [
+        "Hero изображение - захватывающий вид на пляж с пальмами и закатом",
+        "Lifestyle фото - счастливые туристы, наслаждающиеся тайской кухней",
+        "Архитектура/достопримечательности - храм Ват Пхо с его золотыми статуями",
+        "Кулинария/культура - красочные блюда тайской кухни, сервированные на столе",
+        "Природа/пейзажи - живописные горы и рисовые поля",
+        "Активности/развлечения - туристы, занимающиеся дайвингом или серфингом",
+        "Шоппинг/сувениры - рынок с местными товарами и сувенирами",
+        "Транспорт/логистика - тук-туки и лодки на реке"
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, чтобы привлечь внимание к ключевым моментам",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet, используя фирменные цвета и современный стиль, что создает узнаваемость и доверие к бренду."
+    },
+    "generated_content": {
+      "subject": "Откройте для себя рай в Таиланде по лучшей цене!",
+      "preheader": "Насладитесь тропическим раем с авиабилетами от 24786 RUB.",
+      "body": "Представьте себе белоснежные пляжи, лазурное море и экзотическую природу Таиланда. Это место, где каждый уголок наполнен магией и атмосферой праздника. От ярких рынков Бангкока до уединенных бухт на островах, Таиланд предлагает уникальные впечатления для каждого путешественника. Вы сможете насладиться не только великолепием природы, но и богатством культуры, которая оставит незабываемые впечатления.\n\nВаш отдых в Таиланде станет настоящим приключением! Пройдитесь по историческим храмам, попробуйте аутентичную тайскую кухню и насладитесь расслабляющими спа-процедурами. Для любителей активного отдыха доступны дайвинг, серфинг и треккинг по живописным тропам. Каждое мгновение, проведенное в этом тропическом раю, станет незабываемым.\n\nСейчас самое время планировать свою поездку! Мы предлагаем авиабилеты в Таиланд по невероятной цене всего 24786 RUB. Оптимальные даты для путешествия: 15 и 22 ноября, 1 и 15 декабря, а также 10 января и 5 февраля 2026 года. Не упустите шанс отправиться в страну, где мечты становятся реальностью!\n\nЗабронируйте свой билет прямо сейчас и начните готовиться к незабываемому путешествию! Не упустите возможность насладиться всеми прелестями Таиланда. Ваш идеальный отпуск ждет вас, и мы готовы помочь вам сделать его реальным!",
+      "cta": {
+        "primary": "Забронировать билет сейчас",
+        "secondary": "Узнать больше о предложении"
+      },
+      "personalization_level": "advanced",
+      "urgency_level": "medium"
+    },
+    "technical_requirements": {
+      "specificationId": "spec_1752374709312_uowgc4clovq",
+      "specification": {
+        "version": "1.0",
+        "generatedAt": "2025-07-13T02:45:09.313Z",
+        "campaign": {
+          "id": "campaign_1752374579096_ew41assjaxd",
+          "name": "Campaign campaign_1752374579096_ew41assjaxd",
+          "type": "email-marketing",
+          "theme": "general",
+          "targetAudience": "general",
+          "priority": "medium"
+        },
+        "content": {
+          "subject": "Email Subject",
+          "preheader": "Email preheader",
+          "sections": [
+            {
+              "id": "header",
+              "type": "header",
+              "required": true
+            },
+            {
+              "id": "hero",
+              "type": "hero",
+              "required": true
+            },
+            {
+              "id": "content",
+              "type": "content",
+              "required": true
+            },
+            {
+              "id": "cta",
+              "type": "cta",
+              "required": true
+            },
+            {
+              "id": "footer",
+              "type": "footer",
+              "required": true
+            },
+            {
+              "id": "products",
+              "type": "product",
+              "required": true,
+              "metadata": {
+                "productCount": 1
+              }
+            }
+          ],
+          "callToAction": {
+            "primary": {
+              "text": "Click Here",
+              "url": "#",
+              "style": "button"
+            }
+          },
+          "personalization": {
+            "enabled": false,
+            "variables": [],
+            "dynamicContent": []
+          }
+        },
+        "design": {
+          "constraints": {
+            "layout": {
+              "type": "single-column",
+              "maxWidth": 600,
+              "minWidth": 320,
+              "padding": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "sections": []
+            },
+            "typography": {
+              "headingFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "sizes": {
+                  "h1": 28,
+                  "h2": 24,
+                  "h3": 20
+                },
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              },
+              "bodyFont": {
+                "family": "Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "size": 16,
+                "lineHeight": 1.5,
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              }
+            },
+            "colorScheme": {
+              "primary": "#007bff",
+              "secondary": "#6c757d",
+              "accent": "#28a745",
+              "text": {
+                "primary": "#333333",
+                "secondary": "#666666",
+                "muted": "#999999"
+              },
+              "background": {
+                "primary": "#ffffff",
+                "secondary": "#f8f9fa",
+                "accent": "#e9ecef"
+              }
+            },
+            "spacing": {
+              "base": 16,
+              "sections": 40,
+              "elements": 20,
+              "text": 12
+            }
+          },
+          "assets": {
+            "manifest": {
+              "images": [
+                {
+                  "id": "1",
+                  "path": "assets/images/hero-image.jpg",
+                  "alt": "Пляжи Таиланда",
+                  "usage": "Hero image for the promotion",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "2",
+                  "path": "assets/images/lifestyle1.jpg",
+                  "alt": "Туристы на пляже",
+                  "usage": "Lifestyle image of happy travelers",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "3",
+                  "path": "assets/images/architecture.jpg",
+                  "alt": "Храм Ват Пхо",
+                  "usage": "Famous attractions image",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "4",
+                  "path": "assets/images/culinary.jpg",
+                  "alt": "Тайская кухня",
+                  "usage": "Culinary image of Thai dishes",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "5",
+                  "path": "assets/images/nature.jpg",
+                  "alt": "Природа Тайланда",
+                  "usage": "Nature image of scenic views",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "6",
+                  "path": "assets/images/activities.jpg",
+                  "alt": "Дайвинг",
+                  "usage": "Activities image of diving tourists",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                },
+                {
+                  "id": "7",
+                  "path": "assets/images/shopping.jpg",
+                  "alt": "Местный рынок",
+                  "usage": "Shopping image of local market",
+                  "dimensions": {
+                    "width": 1200,
+                    "height": 800
+                  },
+                  "responsive": true,
+                  "formats": [
+                    "jpg"
+                  ],
+                  "optimization": {
+                    "compressed": true,
+                    "quality": 0.8,
+                    "size": 250000
+                  }
+                }
+              ],
+              "icons": [
+                {
+                  "id": "icon1",
+                  "path": "assets/icons/cta-icon.png",
+                  "usage": "Icon for the call to action",
+                  "format": "png",
+                  "size": "32x32"
+                },
+                {
+                  "id": "icon2",
+                  "path": "assets/icons/social-media.png",
+                  "usage": "Social media share icon",
+                  "format": "png",
+                  "size": "32x32"
+                },
+                {
+                  "id": "icon3",
+                  "path": "assets/icons/location.png",
+                  "usage": "Location icon",
+                  "format": "png",
+                  "size": "32x32"
+                }
+              ],
+              "fonts": [
+                {
+                  "family": "Roboto",
+                  "weights": [
+                    "400",
+                    "700"
+                  ],
+                  "fallbacks": [
+                    "Arial",
+                    "sans-serif"
+                  ],
+                  "usage": "body"
+                }
+              ]
+            },
+            "requirements": [
+              {
+                "id": "hero-image",
+                "type": "image",
+                "description": "Hero image for email header",
+                "specifications": {
+                  "dimensions": {
+                    "width": 600,
+                    "height": 300
+                  },
+                  "formats": [
+                    "jpg",
+                    "webp"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Solid color background with text overlay"
+              },
+              {
+                "id": "logo",
+                "type": "image",
+                "description": "Brand logo",
+                "specifications": {
+                  "dimensions": {
+                    "height": 60
+                  },
+                  "formats": [
+                    "png",
+                    "svg"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Text-based brand name"
+              }
+            ]
+          },
+          "responsive": {
+            "enabled": true,
+            "breakpoints": [
+              {
+                "name": "mobile",
+                "width": 480,
+                "constraints": {
+                  "maxWidth": 320
+                }
+              },
+              {
+                "name": "tablet",
+                "width": 768,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              },
+              {
+                "name": "desktop",
+                "width": 1200,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              }
+            ],
+            "strategy": "mobile-first"
+          }
+        },
+        "quality": {
+          "criteria": {
+            "performance": {
+              "maxFileSize": 100000,
+              "maxImageSize": 50000,
+              "compressionQuality": 0.8,
+              "lazyLoading": false,
+              "cacheOptimization": true
+            },
+            "accessibility": {
+              "wcagLevel": "AA",
+              "contrastRatio": 4.5,
+              "altTextRequired": true,
+              "focusIndicators": true,
+              "screenReaderFriendly": true,
+              "keyboardNavigation": false
+            },
+            "emailDeliverability": {
+              "spamScore": 3,
+              "textToHtmlRatio": 0.3,
+              "linkLimit": 10,
+              "imageToTextRatio": 0.6,
+              "subjectLineLength": 50,
+              "preheaderLength": 100
+            },
+            "crossClientCompatibility": {
+              "targetClients": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "fallbackStrategies": [
+                {
+                  "feature": "WebP images",
+                  "fallback": "JPEG images"
+                },
+                {
+                  "feature": "SVG images",
+                  "fallback": "PNG images"
+                },
+                {
+                  "feature": "Custom fonts",
+                  "fallback": "System fonts"
+                }
+              ],
+              "testing": {
+                "required": true,
+                "platforms": [
+                  "gmail",
+                  "outlook",
+                  "apple-mail",
+                  "yahoo-mail"
+                ],
+                "minCompatibility": 95
+              }
+            },
+            "email_clients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "performance_thresholds": {
+              "max_file_size": 5000000,
+              "load_time": 3
+            },
+            "accessibility_requirements": {
+              "wcag_level": "AA",
+              "color_contrast": 4.5
+            }
+          },
+          "testing": {
+            "required": true,
+            "types": [
+              "functional",
+              "visual",
+              "compatibility"
+            ],
+            "platforms": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "automation": {
+              "enabled": false,
+              "tools": [],
+              "coverage": 0
+            }
+          },
+          "validation": {
+            "htmlValidation": true,
+            "cssValidation": true,
+            "linkValidation": true,
+            "spamCheck": true,
+            "accessibilityCheck": true
+          }
+        },
+        "delivery": {
+          "emailClients": [
+            {
+              "client": "gmail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Clips emails over 102KB",
+                "Limited CSS support"
+              ]
+            },
+            {
+              "client": "outlook",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Uses Word rendering engine",
+                "Very limited CSS support"
+              ]
+            },
+            {
+              "client": "apple-mail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": true,
+              "supportsCSS": {
+                "flexbox": true,
+                "grid": false,
+                "transform": true,
+                "animation": true
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Good CSS support",
+                "Supports media queries"
+              ]
+            },
+            {
+              "client": "yahoo-mail",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Limited CSS support",
+                "Similar to Gmail"
+              ]
+            }
+          ],
+          "deployment": {
+            "environment": "production",
+            "approvalRequired": true,
+            "rollbackStrategy": "immediate",
+            "monitoring": {
+              "enabled": true,
+              "metrics": [
+                "open_rate",
+                "click_rate",
+                "bounce_rate"
+              ],
+              "alerts": [
+                "high_bounce_rate",
+                "low_open_rate"
+              ]
+            }
+          },
+          "tracking": {
+            "enabled": true,
+            "openTracking": true,
+            "clickTracking": true,
+            "customEvents": []
+          }
+        },
+        "metadata": {
+          "generatedBy": "technical-spec-generator",
+          "sourceContext": {
+            "campaignId": "campaign_1752374579096_ew41assjaxd",
+            "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752374579096_ew41assjaxd",
+            "taskType": "email",
+            "language": "ru",
+            "campaign_type": "promotional",
+            "industry": "travel",
+            "urgency": "medium",
+            "target_audience": "travel_enthusiasts"
+          },
+          "processingTime": 0,
+          "complexity": "low",
+          "estimatedImplementationTime": 4,
+          "dependencies": [
+            "mjml",
+            "image-optimization",
+            "html-validation"
+          ],
+          "notes": []
+        }
+      },
+      "generationSummary": {
+        "timestamp": "2025-07-13T02:45:09.314Z",
+        "processingTime": 2,
+        "sourceContexts": 4,
+        "sectionsGenerated": 6,
+        "assetsProcessed": 10,
+        "constraintsApplied": 4,
+        "validationPassed": true,
+        "errors": [],
+        "warnings": []
+      },
+      "implementationGuidance": {
+        "priority": "high",
+        "estimatedTime": 4,
+        "complexity": "low",
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "risks": [
+          "Multiple email client compatibility challenges",
+          "High image count may impact performance"
+        ],
+        "recommendations": [
+          "Use table-based layout for maximum compatibility",
+          "Inline all CSS for better email client support",
+          "Optimize images for web delivery",
+          "Test across all target email clients",
+          "Implement responsive design with media queries",
+          "Ensure WCAG AA compliance with proper alt text and contrast"
+        ]
+      },
+      "qualityScore": {
+        "completeness": 100,
+        "consistency": 90,
+        "clarity": 100,
+        "implementability": 100,
+        "overall": 98
+      }
+    }
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "raw_analysis": "{\"climate_factors\": \"Тайланд в июле: температура от 24C до 32C, сезон дождей, но дожди короткие и часто в вечернее время. Погодные условия радуют путешественников теплом и влажностью, ценность такой поездки Есть. Большая часть островов становится более зелеными и яркими.\", \"cultural_highlights\": \"Интересные мероприятия: фестиваль Рои Кратонг (ноябрь), Тет (китайский новый год), множество традиционных местных праздников. Социальные обычаи включают уважение к старшим, традиционную религиозность, и распространены уличные рынки с вкусной едой.\", \"key_attractions\": \"Пхукет, Бангкок, острова Пхи-Пхи, храм Ват Пхра Тхат Дой Сутеп в Чиангмае, андаманские пляжи.\", \"seasonal_advantages\": \"Еще можно найти хорошие предложения на авиабилеты, но нужно быстро поступать: летом скидки до 25% на отели, менее людно и отлично для купания.,\"travel_experience_quality\": \"Летний отдых в Тайланде: чистые пляжи, множество активностей, но стоит помнить, что короткие дожди возможны. Вода в море теплая и чистая.\"}",
+        "climate": {
+          "temperature": "warm",
+          "season": "seasonal",
+          "humidity": "high",
+          "rainfall": "moderate"
+        },
+        "culture": {
+          "highlights": [
+            "храм"
+          ],
+          "language": "Thai, English in tourist areas",
+          "customs": [
+            "традиц"
+          ]
+        },
+        "attractions": {
+          "must_see": [
+            "храм",
+            "остров"
+          ],
+          "beaches": [
+            "пляж"
+          ],
+          "activities": [
+            "general_interest"
+          ]
+        },
+        "analysis_date": "2025-07-13T02:43:16.842Z"
+      },
+      "saved_at": "2025-07-13T02:43:16.842Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "raw_analysis": "{\"pricing_insights\": \"Летние месяцы являются высокими сезонами для Тайланда, но конкурентные предложения все еще присутствуют: авиабилеты весят от 30000 до 60000 рублей в обе стороны от Москвы. Добавление местных экскурсий значительно увеличит общий бюджет на поездку, ограниченный менее 90 дней для большинства посещений.\", \"competitive_position\": \"Тайланд сталкивается с конкуренцией на рынке от Вьетнама и других популярных направлений Юго-Восточной Азии. Однако он все еще остается наиболее доступным по ценам для россиян, предоставляя разнообразие предложений для всех типов путешествующих.,\"demand_patterns\": \"Июль - астендиотический период, и спрос на поездки может быть умеренным, однако увеличивается по мере приближения к августу. Наиболее заинтересованы молодые пары и воздушные путешественники в легком отдыхе.,\"booking_recommendations\": \"Рекомендуется бронировать ради скидок в 15-20% за 2-3 месяца до выезда, необходимо также оставить расстояние для мгновенных предложений за пределами трех недель.\"}",
+        "pricing": {
+          "range": "moderate",
+          "season": "autumn_discounts",
+          "booking_window": "2-3 months advance"
+        },
+        "competition": {
+          "alternatives": [
+            "вьетнам"
+          ],
+          "advantages": [
+            "цен",
+            "доступ"
+          ]
+        },
+        "demand": {
+          "level": "high",
+          "drivers": [
+            "цен"
+          ],
+          "peak_season": "november-march"
+        },
+        "analysis_date": "2025-07-13T02:43:16.842Z"
+      },
+      "saved_at": "2025-07-13T02:43:16.842Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "raw_analysis": "{\"core_motivations\": \"Побег от рутинных будней и обыденности, подзарядка на солнышке, новые культурные впечатления. Тайланд мечта одновременно об отдыхе и духовной перезагрузке по другим своим причинам, включая выполнение личных мечт.\", \"emotional_triggers\": \"Тепло света и воды, ароматы экзотической еды, убаюкивающее движение волны, спокойствие тропических берегов.,\"key_desires\": \"Постоянные солнце и вещи, которые удовлетворят себя на уровне социальных потребностей, так как показывают себя как социализации, спокойствия. Яркие моменты на Instagram.\", \"psychological_benefits\": \"Получают силы, проходят изни зовуха,\"}",
+        "motivations": [
+          "отдых",
+          "экзот",
+          "впечатл",
+          "тепл"
+        ],
+        "triggers": [
+          "солнц"
+        ],
+        "desires": [
+          "general_interest"
+        ],
+        "analysis_date": "2025-07-13T02:43:16.842Z"
+      },
+      "saved_at": "2025-07-13T02:43:16.842Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Фокус на культурные испытания местных традиций и оптовый контент о еде.",
+        "Рекомендации молодым парам и семьям в отдыхе под солнцем.",
+        "Используйте информацию о скидках на бронирование отелей и авиабилетов."
+      ],
+      "key_insights": [
+        "Тайланд - доступное направление с хорошими предложениями, особенно для молодых людей и семей.",
+        "Июль - прекрасное время для отдыха, но нужно быть готовым к кратковременным дождям и активному общению в праздник.",
+        "Социальные сети и положительные отзывы играют ключевую роль в выборе направления."
+      ],
+      "confidence_score": 0.9,
+      "analysis_timestamp": "2025-07-13T02:43:02.296Z",
+      "saved_at": "2025-07-13T02:43:16.845Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Тайланд - доступное направление с хорошими предложениями, особенно для молодых людей и семей.",
+        "Июль - прекрасное время для отдыха, но нужно быть готовым к кратковременным дождям и активному общению в праздник.",
+        "Социальные сети и положительные отзывы играют ключевую роль в выборе направления."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-13T02:43:16.842Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752374579096_ew41assjaxd/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "raw_analysis": "{\"seasonal_trends\": \"Июль каждый год обретает популярность среди молодежи и семейных пар. Наблюдается определенный рост через онлайн-брон, хэштегов, объединение с щадящей культурами, социальной активностью на уровне и контентом гостей. Старые храмы и природа также дают себе шанс. Рекомендуется включать больше контентной окружающей информации.,\"social_media_trends\": \"Популярные хештеги включают #thailand, #phuket, #traveltips, #foodie. Гастрономические блоги растут; в данный момент три снова фокусируются на том, как быстро подготовить поездку, сделав усилия на продуктовый содержимое непосредственно их. Создание видео-контента о различных кулинарных приключениях и маленьких лапах.\", \"travel_preferences\": \"Путешественники выбирают удобные перелеты, отдых на пляже, включение местной культуры и приключения. Безопасные поездки и минимальные пересадки.\", \"market_dynamics\": \"Рынок авиации все еще активен согласно разнообразным перевозчикам. Многие компании предлагают уникальные пакеты и бонусы для привлечения гостей, как новые виртуальные указатели, чтобы событие стало более доступным для документов и культурных элементов.\"}",
+        "social_media": {
+          "trending_hashtags": [
+            "#ThailandAutumn",
+            "#PhuketRomance",
+            "#ThaiFood"
+          ],
+          "viral_content": [
+            "пляж",
+            "храм"
+          ]
+        },
+        "booking_patterns": {
+          "advance_booking": "2-3 months",
+          "group_size": "couples",
+          "preferences": [
+            "пакет"
+          ]
+        },
+        "opportunities": [
+          "кулинар",
+          "приключ"
+        ],
+        "analysis_date": "2025-07-13T02:43:16.842Z"
+      },
+      "saved_at": "2025-07-13T02:43:16.842Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752374579096_ew41assjaxd",
+      "collection_timestamp": "2025-07-13T02:45:14.154Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "package_info": {
+    "generated_at": "2025-07-11T12:11:57.674Z",
+    "design_specialist_version": "2.0.0",
+    "package_type": "comprehensive_design_review"
+  },
+  "template_specifications": {
+    "layout": "single-column responsive",
+    "typography": "Inter, Arial, Helvetica, sans-serif, 16-32px",
+    "colors": "#4BFF7E, #FF6240, #FFEDE9, #B0C6FF, #2C3959",
+    "components": "header, hero, usp, cta, footer",
+    "validation_status": "INVALID",
+    "mjml_file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/templates/email-template.mjml"
+  },
+  "asset_summary": {
+    "total_images": 1,
+    "total_icons": 1,
+    "total_size_kb": 123,
+    "optimization_applied": "All images compressed, icons optimized SVG. Fallbacks for email safe.",
+    "images_with_alt_text": 1
+  },
+  "quality_metrics": {
+    "technical_compliance": 0,
+    "asset_optimization": 0,
+    "accessibility_score": 70,
+    "email_client_compatibility": 85,
+    "overall_quality_score": 39
+  },
+  "preview_files": {
+    "desktop_preview": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/previews/desktop-preview.html",
+    "mobile_preview": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/previews/mobile-preview.html"
+  },
+  "performance_analysis": {
+    "estimated_load_time_ms": 0,
+    "total_file_size_bytes": 0,
+    "image_optimization_percentage": 100,
+    "accessibility_score_percentage": 100
+  },
+  "qa_checklist": {
+    "template_validation": false,
+    "asset_optimization": true,
+    "accessibility_compliance": true,
+    "preview_generation": true,
+    "performance_analysis": true
+  },
+  "next_steps": [
+    "Quality Assurance Specialist review",
+    "Cross-client compatibility testing",
+    "Performance optimization validation",
+    "Accessibility compliance verification",
+    "Final template approval"
+  ]
+}

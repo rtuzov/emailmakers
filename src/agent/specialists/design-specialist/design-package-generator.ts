@@ -7,7 +7,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { buildDesignContext } from './design-context';
+import { loadDesignContextFromHandoffDirectory } from './design-context';
 import { calculateTechnicalCompliance, calculateAssetOptimization, calculateAccessibilityScore, calculateEmailClientCompatibility } from './design-helpers';
 
 /**
@@ -64,10 +64,15 @@ export const generateComprehensiveDesignPackage = tool({
       console.log(`📦 Generating comprehensive design package for: ${params.handoff_directory}`);
       
       // Load context to validate handoff directory
-      const context = await buildDesignContext(params.handoff_directory);
+      const context = await loadDesignContextFromHandoffDirectory(params.handoff_directory);
+      
+      // Validate that context was loaded successfully
+      if (!context) {
+        throw new Error('Failed to load design context - context is null or undefined');
+      }
       
       // Validate required context
-      if (!context.contentContext) {
+      if (!context.content_context) {
         throw new Error('Content context not found - cannot generate design package');
       }
       
@@ -76,21 +81,21 @@ export const generateComprehensiveDesignPackage = tool({
       }
       
       // Validate MJML template
-      if (!params.mjml_template.mjml_code) {
-        throw new Error('MJML code is required for design package generation');
+      if (!params.mjml_template || !params.mjml_template.mjml_code) {
+        throw new Error('MJML template and code are required for design package generation');
       }
       
-      if (!params.mjml_template.specifications_used.typography) {
+      if (!params.mjml_template.specifications_used || !params.mjml_template.specifications_used.typography) {
         throw new Error('Typography specification is required for design package');
       }
       
       // Validate asset manifest
-      if (!params.asset_manifest.images || params.asset_manifest.images.length === 0) {
+      if (!params.asset_manifest || !params.asset_manifest.images || params.asset_manifest.images.length === 0) {
         throw new Error('Asset manifest must contain at least one image');
       }
       
       // Validate preview files
-      if (!params.preview_files.desktop_preview || !params.preview_files.mobile_preview) {
+      if (!params.preview_files || !params.preview_files.desktop_preview || !params.preview_files.mobile_preview) {
         throw new Error('Both desktop and mobile preview files are required');
       }
       
@@ -104,7 +109,7 @@ export const generateComprehensiveDesignPackage = tool({
       const designPackage = {
         package_info: {
           generated_at: new Date().toISOString(),
-          campaign_id: context.contentContext.campaign_id || context.campaignId,
+          campaign_id: context.campaign?.id || context.content_context?.campaign_id,
           design_specialist_version: '2.0.0',
           package_type: 'comprehensive_design_review'
         },

@@ -508,7 +508,7 @@ export class GenerationService implements BaseContentService {
       'winter': ['зимние предложения', 'новогодние скидки'],
       'summer': ['летние путешествия', 'отпускные цены'],
       'spring': ['весенние предложения', 'майские праздники'],
-      'autumn': ['осенние туры', 'бархатный сезон']
+      'autumn': ['осенние рейсы', 'бархатный сезон']
     };
 
     return seasonal[campaignContext.seasonality] || [];
@@ -549,7 +549,7 @@ export class GenerationService implements BaseContentService {
     let score = 70;
     
     if (params.assets_context?.brand_elements) score += 15;
-    if (content.includes('путешествие') || content.includes('тур')) score += 15;
+          if (content.includes('путешествие') || content.includes('авиабилет')) score += 15;
     
     return Math.min(score, 100);
   }

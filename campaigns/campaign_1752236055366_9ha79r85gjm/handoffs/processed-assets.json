@@ -1,0 +1,530 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "id": "unsplash_JToi54yZqRs_1752236235868",
+        "path": "https://images.unsplash.com/photo-1639084546254-49863248a466?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbiUyMHdpbnRlciUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0NTIzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1639084546254-49863248a466?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbiUyMHdpbnRlciUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0NTIzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snow covered forest filled with lots of trees",
+        "usage": "hero",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Capturing the enchanting winter landscapes of Japan, showcasing snowy mountains and festive lights.",
+          "emotional_match": "cozy, inspiring, harmonious",
+          "tags": [
+            "Japan",
+            "winter",
+            "landscapes"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_uvSfgFlvrBg_1752236236962",
+        "path": "https://images.unsplash.com/photo-1641628980499-f0a164e16789?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxIb2trYWlkbyUyMHdpbnRlciUyMGFjdGl2aXRpZXN8ZW58MHwwfHx8MTc1MjI0NTIzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1641628980499-f0a164e16789?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxIb2trYWlkbyUyMHdpbnRlciUyMGFjdGl2aXRpZXN8ZW58MHwwfHx8MTc1MjI0NTIzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snow covered hill with a fence and trees",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Highlighting unique winter activities and attractions in Hokkaido, including snow festivals and local experiences.",
+          "emotional_match": "cozy, inspiring, harmonious",
+          "tags": [
+            "Hokkaido",
+            "winter",
+            "activities"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_2dDraqD-oyE_1752236237603",
+        "path": "https://images.unsplash.com/photo-1672594859916-ba758692702a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUb2t5byUyMHdpbnRlciUyMGlsbHVtaW5hdGlvbnN8ZW58MHwwfHx8MTc1MjI0NTIzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1672594859916-ba758692702a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxUb2t5byUyMHdpbnRlciUyMGlsbHVtaW5hdGlvbnN8ZW58MHwwfHx8MTc1MjI0NTIzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a city street is lit up with christmas lights",
+        "usage": "support",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Showcasing the magical winter illuminations in Tokyo, creating an inviting and warm atmosphere.",
+          "emotional_match": "cozy, inspiring, harmonious",
+          "tags": [
+            "Tokyo",
+            "winter",
+            "illuminations"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_8cdBPr8EXDA_1752236238188",
+        "path": "https://images.unsplash.com/photo-1708752316614-5454d905e654?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMG9uc2VuJTIwd2ludGVyfGVufDB8MHx8fDE3NTIyNDUyMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1708752316614-5454d905e654?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMG9uc2VuJTIwd2ludGVyfGVufDB8MHx8fDE3NTIyNDUyMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snow monkey sitting on a snowy surface",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Representing the cozy and relaxing experience of visiting onsen (hot springs) during winter in Japan.",
+          "emotional_match": "cozy, inspiring, harmonious",
+          "tags": [
+            "Japanese",
+            "onsen",
+            "winter"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "unsplash_XmP0m_S2sWo_1752236238762",
+        "path": "https://images.unsplash.com/photo-1708505090640-ebf981442a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMHdpbnRlciUyMGZlc3RpdmFsc3xlbnwwfDB8fHwxNzUyMjQ1MjM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1708505090640-ebf981442a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMHdpbnRlciUyMGZlc3RpdmFsc3xlbnwwfDB8fHwxNzUyMjQ1MjM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snowy night in a small asian town",
+        "usage": "branding",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Highlighting the cultural and festive aspects of winter festivals in Japan, such as Sapporo Snow Festival.",
+          "emotional_match": "cozy, inspiring, harmonious",
+          "tags": [
+            "Japanese",
+            "winter",
+            "festivals"
+          ]
+        },
+        "processed": true,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "external_validation": "url_accessible",
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": false,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752236216862_aizhvc2kpc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To highlight special pricing and offers related to winter travel in Japan.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T12:17:50.762Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752236216863_hxdqiodetv",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_предложение-о-кэшбэке-с-возможностью-вернуть-процент-от-покупок.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To highlight special pricing and offers related to winter travel in Japan.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 6018,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 6,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T12:17:50.763Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752236216863_zod9cqqs7rr",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_кампания-посвященная-бонусам-и-подаркам-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_кампания-посвященная-бонусам-и-подаркам-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To highlight special pricing and offers related to winter travel in Japan.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T12:17:50.763Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": true
+        }
+      },
+      {
+        "id": "ai_1752236219296_0bnnc85kxl1j",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752236055366_9ha79r85gjm/assets/optimized/optimized_логотип-онлайн-сервиса-по-покупке-авиабилетов-современный-минималистичный-стиль-с-акцентом-на-текст.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To incorporate brand elements that enhance the overall aesthetic of the email.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 35170,
+        "format": "png",
+        "optimized": true,
+        "isExternal": false,
+        "email_client_support": {},
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 35,
+          "optimization_score": 80
+        },
+        "processed": true,
+        "optimization_applied": "format_conversion_compression_and_resizing",
+        "processing_timestamp": "2025-07-11T12:17:50.764Z",
+        "technical_compliance": {
+          "format_supported": false,
+          "size_optimized": false
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "usage_instructions": [
+    {
+      "asset_id": "unsplash_JToi54yZqRs_1752236235868",
+      "asset_type": "image",
+      "usage_context": "hero",
+      "placement_instructions": "Place as full-width header image at top of email template",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a snow covered forest filled with lots of trees",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_uvSfgFlvrBg_1752236236962",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a snow covered hill with a fence and trees",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_2dDraqD-oyE_1752236237603",
+      "asset_type": "image",
+      "usage_context": "support",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a city street is lit up with christmas lights",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_8cdBPr8EXDA_1752236238188",
+      "asset_type": "image",
+      "usage_context": "decoration",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a snow monkey sitting on a snowy surface",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "unsplash_XmP0m_S2sWo_1752236238762",
+      "asset_type": "image",
+      "usage_context": "branding",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "a snowy night in a small asian town",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 0,
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_id": "ai_1752236216862_aizhvc2kpc",
+      "asset_type": "icon",
+      "usage_context": "To highlight special pricing and offers related to winter travel in Japan.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752236216863_hxdqiodetv",
+      "asset_type": "icon",
+      "usage_context": "To highlight special pricing and offers related to winter travel in Japan.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 6018,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752236216863_zod9cqqs7rr",
+      "asset_type": "icon",
+      "usage_context": "To highlight special pricing and offers related to winter travel in Japan.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected icon",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 4585,
+        "optimization_applied": true
+      }
+    },
+    {
+      "asset_id": "ai_1752236219296_0bnnc85kxl1j",
+      "asset_type": "icon",
+      "usage_context": "To incorporate brand elements that enhance the overall aesthetic of the email.",
+      "placement_instructions": "Place as decorative element according to design specifications",
+      "accessibility_requirements": {
+        "alt_text": "AI-selected decoration",
+        "wcag_compliant": false
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "file_size": 35170,
+        "optimization_applied": true
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 4,
+    "optimization_level": "high",
+    "processed_at": "2025-07-11T12:17:50.764Z"
+  }
+}

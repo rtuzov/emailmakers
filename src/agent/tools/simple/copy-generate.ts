@@ -210,7 +210,7 @@ function generateAlternatives(primaryCopy: string, params: CopyGenerateParams): 
     );
   } else if (params.copy_type === 'cta') {
     const urgentVariants = ['Забронировать сейчас', 'Купить билеты', 'Получить предложение'];
-    const friendlyVariants = ['Посмотреть варианты', 'Узнать подробности', 'Выбрать тур'];
+    const friendlyVariants = ['Посмотреть варианты', 'Узнать подробности', 'Выбрать билеты'];
     
     const variants = params.style_preferences.emotional_appeal === 'urgency' ? urgentVariants : friendlyVariants;
     alternatives.push(...variants.filter(v => v !== primaryCopy).slice(0, 2));

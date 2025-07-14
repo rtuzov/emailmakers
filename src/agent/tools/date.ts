@@ -124,7 +124,7 @@ function generateIntelligentDateSelection(
   if (context?.topic) {
     const topic = context.topic.toLowerCase();
     
-    // Горящие туры и срочные предложения
+    // Горящие билеты и срочные предложения
     if (topic.includes('горящ') || topic.includes('срочн') || topic.includes('скидк') || 
         topic.includes('акция') || topic.includes('последн') || topic.includes('успей')) {
       daysAheadStart = 1; // Вылет уже завтра
@@ -247,12 +247,12 @@ function generateContextualRanges(
   
   // Контекстуальные диапазоны на основе кампании
   if (context?.campaign_type === 'hot_deals') {
-    // Для горящих туров - ближайшие выходные и следующая неделя
+            // Для горящих билетов - ближайшие выходные и следующая неделя
     const weekendRange = getUpcomingWeekend(startDate);
     if (weekendRange) {
       ranges.push({
         ...weekendRange,
-        reasoning: 'Идеально для горящих туров на выходные'
+                  reasoning: 'Идеально для горящих билетов на выходные'
       });
     }
     

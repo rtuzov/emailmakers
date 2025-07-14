@@ -1,0 +1,327 @@
+{
+  "manifestId": "manifest_1752239529397_hc0c5qjbfmj",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "unsplash_JToi54yZqRs_1752239554819",
+        "path": "https://images.unsplash.com/photo-1639084546254-49863248a466?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbiUyMHdpbnRlciUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0NTIzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1639084546254-49863248a466?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbiUyMHdpbnRlciUyMGxhbmRzY2FwZXN8ZW58MHwwfHx8MTc1MjI0NTIzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snow covered forest filled with lots of trees",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Showcase enchanting winter scenery, including snow-capped mountains and serene hot springs.",
+          "emotional_match": "wonder and warmth, with excitement and cultural appreciation",
+          "tags": [
+            "Japan",
+            "winter",
+            "landscapes"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_XmP0m_S2sWo_1752239554840",
+        "path": "https://images.unsplash.com/photo-1708505090640-ebf981442a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMHdpbnRlciUyMGZlc3RpdmFsc3xlbnwwfDB8fHwxNzUyMjQ1MjM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1708505090640-ebf981442a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMHdpbnRlciUyMGZlc3RpdmFsc3xlbnwwfDB8fHwxNzUyMjQ1MjM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a snowy night in a small asian town",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Highlight vibrant and festive scenes from winter festivals in Japan, emphasizing cultural celebrations.",
+          "emotional_match": "wonder and warmth, with excitement and cultural appreciation",
+          "tags": [
+            "Japanese",
+            "winter",
+            "festivals"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_ytBwe7ZtYZU_1752239555520",
+        "path": "https://images.unsplash.com/photo-1719464453353-abffa00097ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMGN1aXNpbmUlMjB3aW50ZXIlMjBkaXNoZXN8ZW58MHwwfHx8MTc1MjI0ODU1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1719464453353-abffa00097ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxKYXBhbmVzZSUyMGN1aXNpbmUlMjB3aW50ZXIlMjBkaXNoZXN8ZW58MHwwfHx8MTc1MjI0ODU1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "A wooden table topped with bowls of food",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Focus on traditional Japanese winter cuisine, showcasing unique dishes available during the season.",
+          "emotional_match": "wonder and warmth, with excitement and cultural appreciation",
+          "tags": [
+            "Japanese",
+            "cuisine",
+            "winter",
+            "dishes"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_sAXC7uRGGuY_1752239556059",
+        "path": "https://images.unsplash.com/photo-1742374559734-59e3ddcaa560?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxIb2trYWlkbyUyMHdpbnRlciUyMHRyYXZlbHxlbnwwfDB8fHwxNzUyMjQ4NTU0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1742374559734-59e3ddcaa560?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxIb2trYWlkbyUyMHdpbnRlciUyMHRyYXZlbHxlbnwwfDB8fHwxNzUyMjQ4NTU0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "People prepare a tree in front of a snowy building.",
+        "usage": "hero|support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Capture the beauty of Hokkaido's winter landscapes and cultural experiences.",
+          "emotional_match": "wonder and warmth, with excitement and cultural appreciation",
+          "tags": [
+            "Hokkaido",
+            "winter",
+            "travel"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_km1MWhXEnxw_1752239556665",
+        "path": "https://images.unsplash.com/photo-1705322747499-e18e8a2e4938?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxob3QlMjBzcHJpbmdzJTIwSmFwYW4lMjB3aW50ZXJ8ZW58MHwwfHx8MTc1MjI0ODU1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1705322747499-e18e8a2e4938?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxob3QlMjBzcHJpbmdzJTIwSmFwYW4lMjB3aW50ZXJ8ZW58MHwwfHx8MTc1MjI0ODU1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a couple of monkeys in a body of water",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Illustrate the warmth and relaxation of hot springs in Japan during winter.",
+          "emotional_match": "wonder and warmth, with excitement and cultural appreciation",
+          "tags": [
+            "hot",
+            "springs",
+            "Japan",
+            "winter"
+          ]
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "Showcase the enchanting winter landscapes of Japan, highlighting snow-capped mountains and hot springs.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "wonder and warmth",
+      "visual_style": "serene and picturesque, reflecting winter beauty",
+      "content_context": "Focus on the magical winter scenery and cultural experiences in Japan."
+    },
+    {
+      "type": "destination",
+      "purpose": "Highlight specific winter festivals and traditional cuisine in Japan.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "excitement and cultural appreciation",
+      "visual_style": "vibrant and festive, showcasing cultural elements",
+      "content_context": "Emphasize the unique festivals and culinary delights available during winter."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "unsplash_JToi54yZqRs_1752239554819",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Зимняя сказка в Японии: уникальные предложения на авиабилеты!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a snow covered forest filled with lots of trees\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_XmP0m_S2sWo_1752239554840",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимняя сказка в Японии: уникальные предложения на авиабилеты!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a snowy night in a small asian town\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_ytBwe7ZtYZU_1752239555520",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимняя сказка в Японии: уникальные предложения на авиабилеты!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"A wooden table topped with bowls of food\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_sAXC7uRGGuY_1752239556059",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Зимняя сказка в Японии: уникальные предложения на авиабилеты!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"People prepare a tree in front of a snowy building.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_km1MWhXEnxw_1752239556665",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Зимняя сказка в Японии: уникальные предложения на авиабилеты!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a couple of monkeys in a body of water\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 0,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-11T13:12:36.666Z",
+    "processingTime": 27269,
+    "sourcesProcessed": 2,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 5,
+    "errors": [
+      "Failed to collect from local: AI asset collection failed: Failed to collect from local directory: ENOENT: no such file or directory, scandir 'assets/images/winter_japan'"
+    ]
+  }
+}

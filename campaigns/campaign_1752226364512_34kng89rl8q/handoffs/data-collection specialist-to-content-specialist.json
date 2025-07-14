@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Thailand summer 40 percent off campaign",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use destination analysis, pricing and emotional triggers to maximize campaign impact. Акцентируйте email на скидке 40%, визуалах моря, семейном и молодежном отдыхе.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Сделайте крупный акцент на 40% скидке и летних мотивах",
+      "Пользуйтесь визуальными триггерами для фото и сторис",
+      "Обеспечьте простую навигацию от купи до вылета через Kupibilet",
+      "Промотируйте выгодные условия и безопасные бронирования",
+      "Используйте сочетание бренд-цветов Kupibilet и теплых оттенков в макете"
+    ]
+  },
+  "created_at": "2025-07-11T09:33:26.885Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752226364512_34kng89rl8q/handoffs/data-collection specialist-to-content-specialist.json"
+}

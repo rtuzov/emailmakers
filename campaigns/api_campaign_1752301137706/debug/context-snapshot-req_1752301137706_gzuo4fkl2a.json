@@ -1,0 +1,103 @@
+{
+  "requestId": "req_1752301137706_gzuo4fkl2a",
+  "traceId": "api-1752301137706",
+  "timestamp": "2025-07-12T06:18:57.707Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752301137706",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752301137706",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "destination": "Thailand",
+      "origin": "Moscow",
+      "season": "autumn",
+      "tone": "friendly",
+      "target_audience": "travel enthusiasts",
+      "language": "ru"
+    },
+    "correlationId": "corr_1752301137706_eudt3g680js",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Протестируй handoffs для Таиланда осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Thailand",
+    "origin": "Moscow",
+    "season": "autumn",
+    "tone": "friendly",
+    "target_audience": "travel enthusiasts",
+    "language": "ru",
+    "originalOptions": {
+      "traceId": "api-1752301137706",
+      "campaignId": "api_campaign_1752301137706",
+      "metadata": {
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Thailand",
+        "origin": "Moscow",
+        "season": "autumn",
+        "tone": "friendly",
+        "target_audience": "travel enthusiasts",
+        "language": "ru"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "destination": "Thailand",
+        "origin": "Moscow",
+        "season": "autumn",
+        "tone": "friendly",
+        "target_audience": "travel enthusiasts",
+        "language": "ru"
+      }
+    }
+  }
+}

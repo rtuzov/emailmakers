@@ -1,0 +1,27 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed analysis of winter holidays in Japan",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use this analysis to create targeted content for winter campaigns in Japan.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Focus on cultural festivals and skiing opportunities.",
+      "Utilize social media trends for promotions.",
+      "Highlight family-friendly activities."
+    ]
+  },
+  "created_at": "2025-07-12T08:15:16.511Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752308089604_6qfbdvkrkx9/handoffs/data-collection specialist-to-content-specialist.json"
+}

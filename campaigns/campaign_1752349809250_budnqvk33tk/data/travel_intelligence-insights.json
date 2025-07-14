@@ -1,0 +1,11 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Тайланд осенью предлагает теплую погоду и доступные цены",
+    "Фестивали в ноябре создают уникальную атмосферу",
+    "Путешествие на Пхукет и культурные экскурсии являются популярными"
+  ],
+  "insights_count": 3,
+  "saved_at": "2025-07-12T19:50:23.713Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752349809250_budnqvk33tk/data/travel_intelligence-insights.json"
+}

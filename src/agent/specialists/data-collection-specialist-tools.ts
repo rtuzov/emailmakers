@@ -496,13 +496,17 @@ export const updateCampaignMetadata = tool({
 // TOOL REGISTRY
 // ============================================================================
 
+// Import transfer function
+import { transferToContentSpecialist } from '../core/transfer-tools';
+
 export const dataCollectionSpecialistTools = [
   saveAnalysisResult,
   fetchCachedData,
   updateContextInsights,
   logAnalysisMetrics,
   createHandoffFile,
-  updateCampaignMetadata
+  updateCampaignMetadata,
+  transferToContentSpecialist
 ];
 
 export default dataCollectionSpecialistTools; 

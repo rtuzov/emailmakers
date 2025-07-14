@@ -1,0 +1,52 @@
+<mjml>
+  <mj-head>
+    <mj-title>Погрузитесь в осеннюю сказку Тайланда!</mj-title>
+    <mj-preview>Насладитесь бирюзовой водой и тропическими фруктами по цене от 24844 RUB.</mj-preview>
+    <mj-attributes>
+      <mj-text font-size="14px" color="#2C3959" line-height="1.5" font-family="Arial, sans-serif" />
+      <mj-button background-color="#4BFF7E" color="#FFFFFF" border-radius="5px" padding="15px" font-weight="700" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Логотип компании" width="600px" />
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-weight="700" font-size="24px">Погрузитесь в осеннюю сказку Тайланда!</mj-text>
+        <mj-text font-weight="400" font-size="16px">Насладитесь бирюзовой водой и тропическими фруктами по цене от 24844 RUB.</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752221834622_ety7v7xd44/assets/optimized/optimized_иллюстрация-веселого-кролика-с-чемоданом-символизирующего-путешествия-и-отдых.png" alt="Иллюстрация с кроликом и чемоданом" width="600px" />
+        <mj-button>Забронируйте тур сейчас</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text>Осень в Тайланде – это время, когда природа раскрывает свои яркие краски, а пляжи наполняются мягким песком и теплом солнца. Представьте себе, как вы прогуливаетесь по берегу, ощущая легкий бриз и наслаждаясь видами бирюзовой воды, которая манит вас к себе. Тайланд – это не просто страна, это целый мир, полный экзотики, живых рынков и тропических фруктов, которые вы сможете попробовать прямо с рук местных жителей.</mj-text>
+        <mj-text>В этом сезоне вас ждут уникальные приключения: от расслабляющих спа-процедур до захватывающих экскурсий по живописным островам. Погрузитесь в атмосферу тайской культуры, посетив рынки, где можно найти всё – от свежих фруктов до уникальных сувениров. И, конечно же, не забудьте попробовать знаменитый тайский массаж, который подарит вам незабываемые ощущения.</mj-text>
+        <mj-text>Мы предлагаем вам осенние туры по невероятной цене от 24844 RUB с вылетами на оптимальные даты: 15 и 22 сентября, 1 и 15 октября, а также 1 ноября 2025 года. У нас есть 23 уникальных предложения, которые позволят вам выбрать идеальный вариант для вашего отдыха. Не упустите возможность насладиться всеми прелестями Тайланда в самый разгар сезона!</mj-text>
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Пляж Тайланда" width="600px" />
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Уличная еда Тайланда" width="600px" />
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Тропический закат в Тайланде" width="600px" />
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Релакс на пляже Тайланда" width="600px" />
+        <mj-image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&auto=format" alt="Экзотические фрукты в Тайланде" width="600px" />
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text font-weight="700" font-size="18px">Забронируйте свой тур прямо сейчас и откройте для себя этот удивительный уголок мира.</mj-text>
+        <mj-button>Забронируйте тур сейчас</mj-button>
+        <mj-text>Тайланд ждёт вас с открытыми объятиями, а мы поможем сделать вашу поездку максимально комфортной и запоминающейся. Не упустите шанс – количество мест ограничено!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="20px">
+      <mj-column>
+        <mj-text>Следите за нами в социальных сетях:</mj-text>
+        <mj-image src="/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752221834622_ety7v7xd44/assets/optimized/optimized_специальное-предложение-на-поездку-в-сочи-за-3000-рублей.png" alt="Социальные ссылки" width="600px" />
+        <mj-text>Контактная информация: info@example.com | Телефон: +7 (123) 456-78-90</mj-text>
+        <mj-text>Вы получаете это письмо, потому что подписались на рассылку. Если вы не хотите получать подобные сообщения, вы можете <a href="#">отписаться здесь</a>.</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

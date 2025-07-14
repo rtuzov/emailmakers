@@ -1,0 +1,29 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive summer destination analysis for Thailand. Detailed insights for content creation are attached, focusing on pricing, motivation, and market specifics for family and youth segments.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use summer-specific destination trends and actionable insights for Kupibilet messaging and offers. Highlight Samui beaches, pricing advantages, family/youth orientation, and summer campaign brand visuals.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Включить Самуи и Ко Тао как топовые пляжные точки",
+      "Использовать цены и акции Купибилет как эмоциогенную выгоду",
+      "Подчеркнуть семейные впечатления и свежие сезонные фрукты",
+      "Показать реальные отзывы и летние сторис",
+      "Брендовые оттенки Kupibilet (зеленый, синий) через фото природы и воды"
+    ]
+  },
+  "created_at": "2025-07-11T12:05:21.041Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235478017_xoqfypghw0c/handoffs/data-collection specialist-to-content-specialist.json"
+}

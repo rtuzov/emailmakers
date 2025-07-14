@@ -14,7 +14,7 @@ async function testDesignSpecialistMJML() {
       task_type: 'render_email',
       content_package: {
         content: {
-          subject: 'Горящие туры в Турцию!',
+          subject: 'Горящие авиабилеты в Турцию!',
           body: 'Специальные предложения на авиабилеты в Турцию. Успейте забронировать!',
           cta: 'Забронировать сейчас',
           preheader: 'Лучшие цены на билеты'

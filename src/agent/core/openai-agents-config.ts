@@ -9,6 +9,7 @@ import { Agent, run, setTraceProcessors, addTraceProcessor } from '@openai/agent
 import { logger } from './logger';
 import { getConfig } from './config';
 import { createAgentRunConfig, withSDKTrace } from '../utils/tracing-utils';
+import { getAgentModel } from './agent-model-config';
 
 const cfg = getConfig();
 
@@ -133,7 +134,7 @@ export class LoggedAgent extends Agent {
     
     logger.info(`🤖 [OpenAI Agents] Agent created: ${this.agentName}`, {
       agent_name: this.agentName,
-      model: config.model,
+      model: config.model || getAgentModel(),
       instructions_length: config.instructions?.length || 0
     });
   }
@@ -217,7 +218,7 @@ export function createLoggedAgent(config: {
   const agentConfig = {
     name: config.name,
     instructions: config.instructions,
-    model: config.model || 'gpt-4o-mini',
+    model: config.model || getAgentModel(),
     tools: config.tools || [],
     handoffs: config.handoffs || []
   };

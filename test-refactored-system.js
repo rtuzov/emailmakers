@@ -4,7 +4,7 @@ console.log('\n🧪 === TESTING REFACTORED ASSET MANIFEST SYSTEM ===');
 console.log(`📅 Started at: ${new Date().toISOString()}`);
 
 // Test input for Spain campaign to verify dynamic destination detection
-const spainInput = `Создай email-кампанию для продвижения туров в Испанию весной:
+const spainInput = `Создай email-кампанию для продвижения авиабилетов в Испанию весной:
 
 🏖️ НАПРАВЛЕНИЕ: Испания (Мадрид, Барселона, Севилья)
 🌅 СЕЗОН: Весна 2025 (апрель-май)

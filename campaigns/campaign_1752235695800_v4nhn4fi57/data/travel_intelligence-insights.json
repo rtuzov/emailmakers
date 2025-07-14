@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Летом в Таиланде ниже цены и меньше толп",
+    "Южные и островные курорты лучше для моря летом",
+    "Летний Таиланд популярен у молодежи и семей",
+    "Лучшее время бронировать билеты и отели — за 1-2 месяца до вылета",
+    "Цветовая палитра Kupibilet отлично подходит летнему азиатскому настроению"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T12:08:46.794Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752235695800_v4nhn4fi57/data/travel_intelligence-insights.json"
+}

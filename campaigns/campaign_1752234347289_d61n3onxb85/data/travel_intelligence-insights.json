@@ -1,0 +1,13 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Летом в Таиланде самые низкие цены на билеты и отели",
+    "Сезон дождей приносит свежесть и сочную зелень",
+    "Многие ищут приключения и аутентику вне толп",
+    "Популярны гибкие даты и раннее бронирование",
+    "Молодежь выбирает Таиланд летом для живых впечатлений"
+  ],
+  "insights_count": 5,
+  "saved_at": "2025-07-11T11:46:11.911Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752234347289_d61n3onxb85/data/travel_intelligence-insights.json"
+}

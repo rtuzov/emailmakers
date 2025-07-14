@@ -122,8 +122,25 @@ async function collectFromLocalDirectoryWithAI(
     // Get AI analysis for this campaign
     const aiAnalysis = await analyzeContentWithAI(contentContext, campaignContext);
     
+    // Check if sourcePath is a file or directory first
+    let figmaTagsPath: string;
+    let isSourceFile = false;
+    
+    try {
+      const sourceStats = await fs.stat(sourcePath);
+      if (sourceStats.isFile()) {
+        console.log(`⚠️ Source path is a file: ${sourcePath}, falling back to basic collection`);
+        return await collectFromLocalDirectoryBasic(sourcePath, destination);
+      }
+      // If it's a directory, proceed with AI selection
+      figmaTagsPath = path.join(sourcePath, 'ai-optimized-tags.json');
+    } catch (error) {
+      console.error(`❌ Could not access source path ${sourcePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      // CRITICAL FIX: Don't fall back to basic collection for invalid paths
+      throw new Error(`❌ Invalid asset source path: ${sourcePath}. Asset sources must point to existing files or directories. Check your asset source configuration.`);
+    }
+    
     // Load Figma tags for AI selection
-    const figmaTagsPath = path.join(sourcePath, 'ai-optimized-tags.json');
     let figmaTags: any = {};
     
     try {
@@ -131,6 +148,7 @@ async function collectFromLocalDirectoryWithAI(
       figmaTags = JSON.parse(figmaTagsContent);
     } catch (error) {
       console.warn(`⚠️ Could not load Figma tags from ${figmaTagsPath}, using basic selection`);
+      // If Figma tags are missing, fall back to basic collection for the directory
       return await collectFromLocalDirectoryBasic(sourcePath, destination);
     }
     
@@ -210,38 +228,78 @@ async function collectFromLocalDirectoryBasic(
   const assets: AssetItem[] = [];
   
   try {
-    const files = await fs.readdir(sourcePath);
-    const assetFiles = files.filter(file => 
-      /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
-    ).slice(0, 5); // Limit to 5 files as fallback
+    // Check if sourcePath is a file or directory
+    const stats = await fs.stat(sourcePath);
     
-    for (const file of assetFiles) {
-      const filePath = path.join(sourcePath, file);
-      const destPath = path.join(destination, file);
-      
-      try {
-        const stats = await fs.stat(filePath);
-        await fs.copyFile(filePath, destPath);
+    if (stats.isFile()) {
+      // If it's a file, check if it's an asset file
+      const filename = path.basename(sourcePath);
+      if (/\.(jpg|jpeg|png|svg|webp|gif)$/i.test(filename)) {
+        const destPath = path.join(destination, filename);
         
-        assets.push({
-          filename: file,
-          path: destPath,
-          size: stats.size,
-          format: path.extname(file).toLowerCase().substring(1),
-          hash: `basic_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-          created: stats.birthtime.toISOString(),
-          modified: stats.mtime.toISOString(),
-          tags: [],
-          description: `Basic selected asset: ${file}`
-        });
-      } catch (fileError) {
-        console.warn(`⚠️ Could not process file ${file}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        try {
+          await fs.copyFile(sourcePath, destPath);
+          
+          assets.push({
+            filename,
+            path: destPath,
+            size: stats.size,
+            format: path.extname(filename).toLowerCase().substring(1),
+            hash: `basic_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+            created: stats.birthtime.toISOString(),
+            modified: stats.mtime.toISOString(),
+            tags: [],
+            description: `Basic selected asset: ${filename}`
+          });
+          
+          console.log(`✅ Processed single asset file: ${filename}`);
+        } catch (fileError) {
+          console.warn(`⚠️ Could not process file ${filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        }
+      } else {
+        console.warn(`⚠️ Source path is a file but not an asset: ${sourcePath}`);
       }
+    } else if (stats.isDirectory()) {
+      // If it's a directory, process as before
+      const files = await fs.readdir(sourcePath);
+      const assetFiles = files.filter(file => 
+        /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
+      ).slice(0, 5); // Limit to 5 files as fallback
+      
+      for (const file of assetFiles) {
+        const filePath = path.join(sourcePath, file);
+        const destPath = path.join(destination, file);
+        
+        try {
+          const fileStats = await fs.stat(filePath);
+          await fs.copyFile(filePath, destPath);
+          
+          assets.push({
+            filename: file,
+            path: destPath,
+            size: fileStats.size,
+            format: path.extname(file).toLowerCase().substring(1),
+            hash: `basic_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+            created: fileStats.birthtime.toISOString(),
+            modified: fileStats.mtime.toISOString(),
+            tags: [],
+            description: `Basic selected asset: ${file}`
+          });
+        } catch (fileError) {
+          console.warn(`⚠️ Could not process file ${file}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        }
+      }
+      
+      console.log(`✅ Processed ${assetFiles.length} assets from directory: ${sourcePath}`);
+    } else {
+      console.warn(`⚠️ Source path is neither file nor directory: ${sourcePath}`);
     }
     
     return assets;
   } catch (error) {
-    throw new Error(`Failed to collect from local directory: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.warn(`⚠️ Could not access source path ${sourcePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    // CRITICAL FIX: Convert warnings to errors for invalid asset paths
+    throw new Error(`❌ Invalid asset source path: ${sourcePath}. Asset sources must point to existing files or directories. Check your asset source configuration.`);
   }
 }
 

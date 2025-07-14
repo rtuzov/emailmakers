@@ -1,0 +1,87 @@
+{
+  "requestId": "req_1752308882970_epzmiasmxkm",
+  "traceId": "api-1752308882970",
+  "timestamp": "2025-07-12T08:28:02.970Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "final_fix_test_2024",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/final_fix_test_2024",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaignId": "final_fix_test_2024",
+      "validationLevel": "standard",
+      "qualityThreshold": 80
+    },
+    "correlationId": "corr_1752308882970_7f4ogsmg3ys",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 80,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Финальный тест исправлений",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 80,
+    "campaignId": "final_fix_test_2024",
+    "originalOptions": {
+      "traceId": "api-1752308882970",
+      "campaignId": "final_fix_test_2024",
+      "metadata": {
+        "taskType": "generate_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 80,
+        "campaignId": "final_fix_test_2024"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaignId": "final_fix_test_2024",
+        "validationLevel": "standard",
+        "qualityThreshold": 80
+      }
+    }
+  }
+}

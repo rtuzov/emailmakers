@@ -1,0 +1,99 @@
+{
+  "requestId": "req_1752225071392_7euuurc35xl",
+  "traceId": "api-1752225071391",
+  "timestamp": "2025-07-11T09:11:11.392Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752225071391",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752225071391",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "target_audience": "путешественники 25-45 лет",
+      "campaign_type": "promotional",
+      "tone": "enthusiastic",
+      "include_pricing": true,
+      "include_cta": true
+    },
+    "correlationId": "corr_1752225071392_g85b0t0fqpv",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email-кампанию для осенних туров в Таиланд. Акция включает скидки до 40% на популярные направления: Бангкок, Пхукет, Паттайя. Особенности: лучшие цены на авиабилеты, проживание в отелях 4-5 звезд, экскурсии по храмам и пляжам. Целевая аудитория: путешественники 25-45 лет, интересующиеся экзотическими направлениями и культурным отдыхом.",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "target_audience": "путешественники 25-45 лет",
+    "campaign_type": "promotional",
+    "tone": "enthusiastic",
+    "include_pricing": true,
+    "include_cta": true,
+    "originalOptions": {
+      "traceId": "api-1752225071391",
+      "campaignId": "api_campaign_1752225071391",
+      "metadata": {
+        "taskType": "email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "target_audience": "путешественники 25-45 лет",
+        "campaign_type": "promotional",
+        "tone": "enthusiastic",
+        "include_pricing": true,
+        "include_cta": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "target_audience": "путешественники 25-45 лет",
+        "campaign_type": "promotional",
+        "tone": "enthusiastic",
+        "include_pricing": true,
+        "include_cta": true
+      }
+    }
+  }
+}

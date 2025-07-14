@@ -1,0 +1,53 @@
+{
+  "package_info": {
+    "generated_at": "2025-07-12T08:21:57.809Z",
+    "design_specialist_version": "2.0.0",
+    "package_type": "comprehensive_design_review"
+  },
+  "template_specifications": {
+    "layout": "single-column",
+    "typography": "Arial, sans-serif",
+    "colors": "#4BFF7E, #FF6240",
+    "components": "2 custom components",
+    "validation_status": "valid",
+    "mjml_file_path": "campaigns/campaign_1752308293544_swbnwwsizm/templates/email-template.mjml"
+  },
+  "asset_summary": {
+    "total_images": 5,
+    "total_icons": 0,
+    "total_size_kb": 19,
+    "optimization_applied": "Оптимизация завершена успешно. Размеры изображений уменьшены в 70%.",
+    "images_with_alt_text": 5
+  },
+  "quality_metrics": {
+    "technical_compliance": 0,
+    "asset_optimization": 0,
+    "accessibility_score": 70,
+    "email_client_compatibility": 85,
+    "overall_quality_score": 39
+  },
+  "preview_files": {
+    "desktop_preview": "campaigns/campaign_1752308293544_swbnwwsizm/previews/desktop-preview.html",
+    "mobile_preview": "campaigns/campaign_1752308293544_swbnwwsizm/previews/mobile-preview.html"
+  },
+  "performance_analysis": {
+    "estimated_load_time_ms": 2000,
+    "total_file_size_bytes": 19947,
+    "image_optimization_percentage": 75,
+    "accessibility_score_percentage": 100
+  },
+  "qa_checklist": {
+    "template_validation": true,
+    "asset_optimization": false,
+    "accessibility_compliance": true,
+    "preview_generation": true,
+    "performance_analysis": true
+  },
+  "next_steps": [
+    "Quality Assurance Specialist review",
+    "Cross-client compatibility testing",
+    "Performance optimization validation",
+    "Accessibility compliance verification",
+    "Final template approval"
+  ]
+}

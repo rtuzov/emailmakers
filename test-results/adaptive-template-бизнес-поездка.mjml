@@ -1,0 +1,69 @@
+<mjml>
+  <mj-head>
+    <mj-title>Деловая поездка в Лондон - эффективно и комфортно</mj-title>
+    <mj-preview>Бизнес-класс, удобные рейсы, лучшие отели</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Georgia, serif" />
+      <mj-text font-size="15px" line-height="1.8" />
+      <mj-section padding="20px 0" />
+    </mj-attributes>
+    <mj-style>
+      .adaptive-header { background: #2C3E50; color: #FFFFFF; }
+      .adaptive-hero { background: linear-gradient(135deg, #34495E 0%, #2C3E50 100%); color: #FFFFFF; }
+      .adaptive-cta { background: #3498DB; color: #FFFFFF; }
+      .adaptive-content { background: #FFFFFF; color: #2C3E50; }
+      
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#FFFFFF">
+    
+    <!-- Адаптивный Header -->
+    <mj-section css-class="adaptive-header">
+      <mj-column>
+        <mj-text align="center" font-size="18px" font-weight="bold">
+          Kupibilet Business
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Адаптивный Hero -->
+    <mj-section css-class="adaptive-hero" padding="40px 0">
+      <mj-column>
+        <mj-text align="center" font-size="28px" font-weight="bold">
+          Деловая поездка в Лондон - эффективно и комфортно
+        </mj-text>
+        <mj-text align="center" font-size="24px" padding="20px 0">
+          <strong>120,000 RUB</strong>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Адаптивный контент -->
+    <mj-section css-class="adaptive-content">
+      <mj-column>
+        <mj-text font-size="15px">
+          Организуйте свою деловую поездку в Лондон максимально эффективно. Прямые рейсы, отели в центре города, трансфер и полная поддержка.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Адаптивная CTA -->
+    <mj-section padding="40px 0">
+      <mj-column>
+        <mj-button css-class="adaptive-cta" font-size="16px" padding="15px 30px" border-radius="8px">
+          Забронировать билет
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <!-- Адаптивный Footer -->
+    <mj-section background-color="#F8F9FA" padding="20px 0">
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#6C757D">
+          Kupibilet Business Solutions
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+  </mj-body>
+</mjml>

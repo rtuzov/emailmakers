@@ -1,0 +1,87 @@
+{
+  "requestId": "req_1752308541685_szlbulin05",
+  "traceId": "api-1752308541685",
+  "timestamp": "2025-07-12T08:22:21.685Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "quick_test_2024",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/quick_test_2024",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaignId": "quick_test_2024",
+      "validationLevel": "relaxed",
+      "qualityThreshold": 70
+    },
+    "correlationId": "corr_1752308541685_63std1j9d2n",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "relaxed",
+    "requiresApproval": true,
+    "qualityThreshold": 70,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Быстрый тест",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "relaxed",
+    "qualityThreshold": 70,
+    "campaignId": "quick_test_2024",
+    "originalOptions": {
+      "traceId": "api-1752308541685",
+      "campaignId": "quick_test_2024",
+      "metadata": {
+        "taskType": "generate_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "relaxed",
+        "qualityThreshold": 70,
+        "campaignId": "quick_test_2024"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaignId": "quick_test_2024",
+        "validationLevel": "relaxed",
+        "qualityThreshold": 70
+      }
+    }
+  }
+}

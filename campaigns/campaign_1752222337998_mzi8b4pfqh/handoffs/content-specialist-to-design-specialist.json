@@ -1,0 +1,771 @@
+{
+  "request": "Continue with email design using generated content, technical specification, and asset manifest",
+  "metadata": {
+    "handoffId": "handoff_1752222521335_ps2nlj04bd8",
+    "timestamp": "2025-07-11T08:28:41.335Z",
+    "fromAgent": "content",
+    "toAgent": "design",
+    "dataVersion": "1.0",
+    "traceId": null,
+    "executionTime": null
+  },
+  "content_context": {
+    "campaign": {
+      "id": "campaign_1752222337998_mzi8b4pfqh",
+      "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752222337998_mzi8b4pfqh",
+      "name": "Campaign campaign_1752222337998_mzi8b4pfqh",
+      "brand": "Email Makers",
+      "type": "promotional",
+      "target_audience": "travel enthusiasts",
+      "language": "ru",
+      "created_at": "2025-07-11T08:28:41.333Z",
+      "status": "active"
+    },
+    "data_collection_context": {
+      "destination_analysis": {
+        "analysis_type": "destination_analysis",
+        "data": {
+          "climate_factors": "Осень в Таиланде начинается с окончания сезона дождей, к концу сентября влажность падает, в октябре и ноябре комфортная жара 27-31C, осадки минимальны. Температура воды 28C. Идеальное время для пляжа и экскурсий.",
+          "cultural_highlights": "Главные фестивали осени - Лой Кратонг в ноябре, множество ночных рынков, буддийские традиции. Язык - тайский, но в популярных местах многие понимают английский. Уважайте местные обычаи, скромная одежда для храмов важна.",
+          "key_attractions": "Пхукет, Краби, острова Пхи Пхи, Большой дворец в Бангкоке, древний город Аютия. Экскурсии на слонах, ночные рынки, дайвинг и морские прогулки.",
+          "seasonal_advantages": "Меньше туристов по сравнению с зимой, приятная погода, акции от отелей, богатый выбор туров. Хороший шанс поймать спецпредложения.",
+          "travel_experience_quality": "Комфортная температура, чистое море, низкая загруженность, безопасно для семей и пар."
+        },
+        "saved_at": "2025-07-11T08:26:30.271Z"
+      },
+      "market_intelligence": {
+        "analysis_type": "market_intelligence",
+        "data": {
+          "pricing_insights": "Сентябрь-октябрь - плечевой сезон, цены на туры от 28000 руб, что примерно на 30-40 процентов ниже пиковых зимних. Средний пакет на 10 ночей начинается от 28000 до 50000 руб на человека. Лучшие цены при раннем бронировании, но и горящие туры встречаются часто в эти даты.",
+          "competitive_position": "Основные альтернативы для россиян - Вьетнам, Бали, Турция. Тайланд выигрывает круглогодичностью, комфортным климатом осенью, уникальной кухней и легкостью перелета из крупных городов РФ. Для Kupibilet акцент на динамических скидках и уникальных пакетах.",
+          "demand_patterns": "В сентябре и октябре наблюдается стабильный, но не высокий спрос. Многие едут в это время ради комфорта и бюджетных цен. Пик спроса - конец октября на школьные каникулы. Бронирование обычно за 2-5 недель до вылета.",
+          "booking_recommendations": "Лучшие даты для низких цен - вылеты до середины октября. Октябрьские поездки стоит бронировать заранее. Актуально отслеживать акции и спецпредложения Kupibilet на эти даты."
+        },
+        "saved_at": "2025-07-11T08:26:30.271Z"
+      },
+      "emotional_profile": {
+        "analysis_type": "emotional_profile",
+        "data": {
+          "core_motivations": "Побег от осенней хандры в лето, возможность почувствовать тепло и солнце, недорогой отдых без визы. Тайланд дарит эмоциональную разрядку, отдых для души и тела, отличная возможность сделать фото для соцсетей.",
+          "emotional_triggers": "Малолюдные пляжи, вкусная уличная еда, экзотические фрукты, лазурное море, спа, отличный сервис, чувство приключения.",
+          "key_desires": "Хочу солнце, хочу забыть про будни, хочу развлечения и красивые фотографии, хочу перезагрузиться.",
+          "psychological_benefits": "Уход от стресса, ощущение свободы, улучшение настроения, укрепление семейных и дружеских связей."
+        },
+        "saved_at": "2025-07-11T08:26:30.271Z"
+      },
+      "consolidated_insights": {
+        "actionable_insights": [
+          "Выделяйте цену от 28000 руб как преимущество осеннего сезона",
+          "Делайте акцент на пляжном летнем отдыхе осенью и побеге от слякоти",
+          "Используйте образы уличной еды, рынков и тайских спа",
+          "Внедряйте истории путешественников и примеры реальных трипов",
+          "Используйте фирменные цвета синего и зеленого для ассоциации с морем и свежестью",
+          "Предлагайте дополнительные скидки на даты 25 сентября и 10 октября",
+          "Усиливайте выгодность осени: мало туристов и спокойная атмосфера"
+        ],
+        "key_insights": [
+          "Осенью температура воды и воздуха в Таиланде идеально подходят для пляжного отдыха",
+          "Скидки до 40 процентов на туры и отели к началу осени, минимальные цены у Kupibilet",
+          "Меньше туристов - выше комфорт и безопасность для семей",
+          "В этих датах легко подобрать нестандартные экскурсии по выгодной цене",
+          "Синие и зеленые оттенки в фирменном стиле Kupibilet вызывают доверие и ассоциируются с морем"
+        ],
+        "confidence_score": 0.93,
+        "analysis_timestamp": "2025-07-11T08:25:42.252Z",
+        "saved_at": "2025-07-11T08:26:30.273Z"
+      },
+      "travel_intelligence": {
+        "insight_type": "travel_intelligence",
+        "insights": [
+          "Температура воздуха и воды осенью в Таиланде идеальна для пляжного отдыха и экскурсий",
+          "Осенние туры начинаются от 28000 руб, в Shoulder Season скидки до 40 процентов",
+          "Пик спроса в конце октября, до этого самые выгодные предложения на Kupibilet",
+          "Особенно привлекательны поездки для семей и искателей комфорта, мало людей и нет жары",
+          "Яркие фирменные цвета Kupibilet хорошо отражают морские и летние ассоциации"
+        ],
+        "insights_count": 5,
+        "saved_at": "2025-07-11T08:26:30.271Z",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752222337998_mzi8b4pfqh/data/travel_intelligence-insights.json"
+      },
+      "trend_analysis": {
+        "analysis_type": "trend_analysis",
+        "data": {
+          "seasonal_trends": "С каждым годом все больше туристов выбирают осенний Тайланд ради тепла и выгодных цен. Набирают популярность комбинированные туры - пляж плюс активные экскурсии, 10-14 ночей. Участились бронирования онлайн и запросы на индивидуальные пакеты.",
+          "social_trends": "Трендовые темы - морские прогулки, путешествия с детьми, сторис с рынков и пляжей. Активно используются хэштеги #Thailand #Kupibilet. Лидирует визуальный контент с яркими цветами и морским пейзажем.",
+          "booking_behaviors": "Пользователи выбирают быстрые и понятные пакетные туры, ищут лучшие цены по датам и фильтруют по наличию спецпредложений. Проявлен высокий интерес к скидкам и кэшбек-программам.",
+          "content_opportunities": "Осенние коллекции для Instagram, советы по упаковке чемодана, подборки актуальных туров с отправлением в ближайшие даты."
+        },
+        "saved_at": "2025-07-11T08:26:30.271Z"
+      },
+      "collection_metadata": {
+        "campaign_id": "campaign_1752222337998_mzi8b4pfqh",
+        "collection_timestamp": "2025-07-11T08:28:41.333Z",
+        "data_sources": [
+          "destination-analysis",
+          "market-intelligence",
+          "emotional-profile",
+          "consolidated-insights",
+          "travel-intelligence",
+          "trend-analysis"
+        ],
+        "collection_status": "complete",
+        "data_quality_score": 100
+      }
+    },
+    "context_analysis": {
+      "destination": "Thailand",
+      "seasonal_trends": "Current season trends for Thailand",
+      "emotional_triggers": "Exotic adventure and relaxation",
+      "market_positioning": "Premium exotic destination",
+      "competitive_landscape": "Strong competition in Southeast Asia travel market",
+      "price_sensitivity": "Medium price sensitivity for exotic destinations",
+      "booking_patterns": "Advance planning with seasonal booking patterns"
+    },
+    "date_analysis": {
+      "destination": "Thailand",
+      "season": "autumn",
+      "optimal_dates": [
+        "2025-09-15",
+        "2025-09-22",
+        "2025-10-05",
+        "2025-10-12",
+        "2025-11-01"
+      ],
+      "pricing_windows": [
+        "С 2025-09-01 по 2025-09-30: низкий сезон, доступные цены на авиабилеты и проживание.",
+        "С 2025-10-01 по 2025-10-31: переходный период, цены начинают расти, но все еще доступны.",
+        "С 2025-11-01 по 2025-11-30: высокий сезон начинается, цены на авиабилеты и отели значительно увеличиваются."
+      ],
+      "booking_recommendation": "Рекомендуется бронировать билеты и отели за 2-3 месяца до поездки для получения лучших цен.",
+      "seasonal_factors": "Осень в Таиланде характеризуется уменьшением дождей, особенно в сентябре и октябре. Температуры становятся более комфортными, что делает это время идеальным для путешествий. Начиная с ноября, начинается высокий туристический сезон, что приводит к увеличению цен и большему количеству туристов.",
+      "current_date": "2025-07-11"
+    },
+    "pricing_analysis": {
+      "best_price": 24844,
+      "min_price": 24844,
+      "max_price": 26261,
+      "average_price": 25587,
+      "currency": "RUB",
+      "offers_count": 26,
+      "recommended_dates": [
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-27"
+      ],
+      "route": {
+        "from": "Moscow",
+        "to": "Bangkok",
+        "from_code": "MOW",
+        "to_code": "BKK"
+      },
+      "enhanced_features": {
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "BKK",
+            "finalCode": "BKK",
+            "countryCode": "TH",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      }
+    },
+    "asset_strategy": {
+      "theme": "Thailand Travel Experience",
+      "visual_style": "modern",
+      "color_palette": "Tropical warm colors with brand accents",
+      "typography": "Modern clean typography",
+      "image_concepts": [
+        "Hero изображение - пляж с пальмами и закатом, создающее атмосферу отдыха.",
+        "Lifestyle фото - группа туристов, наслаждающихся тайской кухней на открытом воздухе.",
+        "Архитектура/достопримечательности - знаменитый храм Wat Pho с его золотой статуей Будды.",
+        "Кулинария/культура - традиционное тайское блюдо на фоне местного рынка.",
+        "Природа/пейзажи - тропический лес с водопадом и экзотическими растениями.",
+        "Активности/развлечения - люди, занимающиеся серфингом или дайвингом.",
+        "Шоппинг/сувениры - местные рынки с яркими тканями и сувенирами.",
+        "Транспорт/логистика - тайский тук-тук на фоне городской жизни."
+      ],
+      "layout_hierarchy": "Визуальная иерархия с акцентом на изображения, чтобы привлечь внимание к ключевым элементам.",
+      "emotional_triggers": "excitement",
+      "brand_consistency": "Стратегия соответствует бренду Kupibilet через использование фирменных цветов, современный дизайн и акцент на визуальные элементы, что создает единый стиль и повышает узнаваемость."
+    },
+    "generated_content": {
+      "subject": "Погрузитесь в осень на экзотических пляжах Таиланда!",
+      "preheader": "Насладитесь малолюдными пляжами и вкусной уличной едой всего за 24844 RUB.",
+      "body": "Осень в Таиланде — это волшебное время, когда лазурное море и экзотические фрукты становятся доступными для каждого. Представьте себе, как вы лежите на белоснежном песке, слушая шум волн и наслаждаясь атмосферой спокойствия. В это время года пляжи менее многолюдные, а температура воздуха и воды идеально подходят для купания и активного отдыха. Погрузитесь в мир приключений, где каждый день может стать новым открытием!\n\nОдним из главных преимуществ осенних туров в Таиланд является возможность насладиться вкусной уличной едой, которая порадует даже самых требовательных гурманов. Прогулки по рынкам, где вы сможете попробовать экзотические фрукты и местные деликатесы, станут настоящим кулинарным путешествием. Кроме того, вы можете расслабиться в спа-салонах, которые предлагают традиционные тайские процедуры, восстанавливающие силы и дарящие незабываемые ощущения.\n\nМы предлагаем вам уникальные туры по лучшим ценам — всего за 24844 RUB. Оптимальные даты для путешествия: 15 и 22 сентября, 5 и 12 октября, а также 1 ноября 2025 года. Эти даты идеально подходят для того, чтобы насладиться всеми прелестями осеннего Таиланда, когда природа особенно красива, а погода радует.\n\nНе упустите шанс окунуться в атмосферу приключений и расслабления! Забронируйте свой тур прямо сейчас и откройте для себя все секреты этого удивительного направления. Успейте воспользоваться нашим предложением, пока оно доступно — количество мест ограничено!",
+      "cta": {
+        "primary": "Забронировать тур сейчас",
+        "secondary": "Узнать больше о предложении"
+      },
+      "personalization_level": "advanced",
+      "urgency_level": "medium"
+    },
+    "technical_requirements": {
+      "specificationId": "spec_1752222457824_31nn78r0tso",
+      "specification": {
+        "version": "1.0",
+        "generatedAt": "2025-07-11T08:27:37.825Z",
+        "campaign": {
+          "id": "campaign_1752222337998_mzi8b4pfqh",
+          "name": "Campaign campaign_1752222337998_mzi8b4pfqh",
+          "type": "email-marketing",
+          "theme": "general",
+          "targetAudience": "general",
+          "priority": "medium"
+        },
+        "content": {
+          "subject": "Email Subject",
+          "preheader": "Email preheader",
+          "sections": [
+            {
+              "id": "header",
+              "type": "header",
+              "required": true
+            },
+            {
+              "id": "hero",
+              "type": "hero",
+              "required": true
+            },
+            {
+              "id": "content",
+              "type": "content",
+              "required": true
+            },
+            {
+              "id": "cta",
+              "type": "cta",
+              "required": true
+            },
+            {
+              "id": "footer",
+              "type": "footer",
+              "required": true
+            },
+            {
+              "id": "products",
+              "type": "product",
+              "required": true,
+              "metadata": {
+                "productCount": 1
+              }
+            }
+          ],
+          "callToAction": {
+            "primary": {
+              "text": "Click Here",
+              "url": "#",
+              "style": "button"
+            }
+          },
+          "personalization": {
+            "enabled": false,
+            "variables": [],
+            "dynamicContent": []
+          }
+        },
+        "design": {
+          "constraints": {
+            "layout": {
+              "type": "single-column",
+              "maxWidth": 600,
+              "minWidth": 320,
+              "padding": {
+                "top": 20,
+                "right": 20,
+                "bottom": 20,
+                "left": 20
+              },
+              "sections": []
+            },
+            "typography": {
+              "headingFont": {
+                "family": "Inter, Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "sizes": {
+                  "h1": 28,
+                  "h2": 24,
+                  "h3": 20
+                },
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              },
+              "bodyFont": {
+                "family": "Inter, Arial, sans-serif",
+                "fallbacks": [
+                  "Helvetica",
+                  "sans-serif"
+                ],
+                "size": 16,
+                "lineHeight": 1.5,
+                "weights": [
+                  "normal",
+                  "bold"
+                ]
+              }
+            },
+            "colorScheme": {
+              "primary": "#007bff",
+              "secondary": "#6c757d",
+              "accent": "#28a745",
+              "text": {
+                "primary": "#333333",
+                "secondary": "#666666",
+                "muted": "#999999"
+              },
+              "background": {
+                "primary": "#ffffff",
+                "secondary": "#f8f9fa",
+                "accent": "#e9ecef"
+              }
+            },
+            "spacing": {
+              "base": 16,
+              "sections": 40,
+              "elements": 20,
+              "text": 12
+            }
+          },
+          "assets": {
+            "manifest": {
+              "images": [],
+              "icons": [],
+              "fonts": [
+                {
+                  "family": "Arial",
+                  "weights": [
+                    "normal",
+                    "bold"
+                  ],
+                  "fallbacks": [
+                    "Helvetica",
+                    "sans-serif"
+                  ],
+                  "usage": "primary"
+                }
+              ]
+            },
+            "requirements": [
+              {
+                "id": "hero-image",
+                "type": "image",
+                "description": "Hero image for email header",
+                "specifications": {
+                  "dimensions": {
+                    "width": 600,
+                    "height": 300
+                  },
+                  "formats": [
+                    "jpg",
+                    "webp"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Solid color background with text overlay"
+              },
+              {
+                "id": "logo",
+                "type": "image",
+                "description": "Brand logo",
+                "specifications": {
+                  "dimensions": {
+                    "height": 60
+                  },
+                  "formats": [
+                    "png",
+                    "svg"
+                  ],
+                  "quality": "high"
+                },
+                "priority": "required",
+                "fallback": "Text-based brand name"
+              }
+            ]
+          },
+          "responsive": {
+            "enabled": true,
+            "breakpoints": [
+              {
+                "name": "mobile",
+                "width": 480,
+                "constraints": {
+                  "maxWidth": 320
+                }
+              },
+              {
+                "name": "tablet",
+                "width": 768,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              },
+              {
+                "name": "desktop",
+                "width": 1200,
+                "constraints": {
+                  "maxWidth": 600
+                }
+              }
+            ],
+            "strategy": "mobile-first"
+          }
+        },
+        "quality": {
+          "criteria": {
+            "performance": {
+              "maxFileSize": 100000,
+              "maxImageSize": 50000,
+              "compressionQuality": 0.8,
+              "lazyLoading": false,
+              "cacheOptimization": true
+            },
+            "accessibility": {
+              "wcagLevel": "AA",
+              "contrastRatio": 4.5,
+              "altTextRequired": true,
+              "focusIndicators": true,
+              "screenReaderFriendly": true,
+              "keyboardNavigation": false
+            },
+            "emailDeliverability": {
+              "spamScore": 3,
+              "textToHtmlRatio": 0.3,
+              "linkLimit": 10,
+              "imageToTextRatio": 0.6,
+              "subjectLineLength": 50,
+              "preheaderLength": 100
+            },
+            "crossClientCompatibility": {
+              "targetClients": [
+                "gmail",
+                "outlook",
+                "apple-mail",
+                "yahoo-mail"
+              ],
+              "fallbackStrategies": [
+                {
+                  "feature": "WebP images",
+                  "fallback": "JPEG images"
+                },
+                {
+                  "feature": "SVG images",
+                  "fallback": "PNG images"
+                },
+                {
+                  "feature": "Custom fonts",
+                  "fallback": "System fonts"
+                }
+              ],
+              "testing": {
+                "required": true,
+                "platforms": [
+                  "gmail",
+                  "outlook",
+                  "apple-mail",
+                  "yahoo-mail"
+                ],
+                "minCompatibility": 95
+              }
+            },
+            "email_clients": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "performance_thresholds": {
+              "max_file_size": 100000,
+              "load_time": 2
+            },
+            "accessibility_requirements": {
+              "wcag_level": "AA",
+              "color_contrast": 4.5
+            }
+          },
+          "testing": {
+            "required": true,
+            "types": [
+              "functional",
+              "visual",
+              "compatibility"
+            ],
+            "platforms": [
+              "gmail",
+              "outlook",
+              "apple-mail",
+              "yahoo-mail"
+            ],
+            "automation": {
+              "enabled": false,
+              "tools": [],
+              "coverage": 0
+            }
+          },
+          "validation": {
+            "htmlValidation": true,
+            "cssValidation": true,
+            "linkValidation": true,
+            "spamCheck": true,
+            "accessibilityCheck": true
+          }
+        },
+        "delivery": {
+          "emailClients": [
+            {
+              "client": "gmail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Clips emails over 102KB",
+                "Limited CSS support"
+              ]
+            },
+            {
+              "client": "outlook",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Uses Word rendering engine",
+                "Very limited CSS support"
+              ]
+            },
+            {
+              "client": "apple-mail",
+              "maxWidth": 600,
+              "supportsWebP": true,
+              "supportsSVG": true,
+              "supportsCSS": {
+                "flexbox": true,
+                "grid": false,
+                "transform": true,
+                "animation": true
+              },
+              "darkModeSupport": true,
+              "notes": [
+                "Good CSS support",
+                "Supports media queries"
+              ]
+            },
+            {
+              "client": "yahoo-mail",
+              "maxWidth": 600,
+              "supportsWebP": false,
+              "supportsSVG": false,
+              "supportsCSS": {
+                "flexbox": false,
+                "grid": false,
+                "transform": false,
+                "animation": false
+              },
+              "darkModeSupport": false,
+              "notes": [
+                "Limited CSS support",
+                "Similar to Gmail"
+              ]
+            }
+          ],
+          "deployment": {
+            "environment": "production",
+            "approvalRequired": true,
+            "rollbackStrategy": "immediate",
+            "monitoring": {
+              "enabled": true,
+              "metrics": [
+                "open_rate",
+                "click_rate",
+                "bounce_rate"
+              ],
+              "alerts": [
+                "high_bounce_rate",
+                "low_open_rate"
+              ]
+            }
+          },
+          "tracking": {
+            "enabled": true,
+            "openTracking": true,
+            "clickTracking": true,
+            "customEvents": []
+          }
+        },
+        "metadata": {
+          "generatedBy": "technical-spec-generator",
+          "sourceContext": {
+            "campaignId": "campaign_1752222337998_mzi8b4pfqh",
+            "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752222337998_mzi8b4pfqh",
+            "taskType": "specification",
+            "language": "ru",
+            "campaign_type": "promotional",
+            "industry": "travel",
+            "urgency": "medium",
+            "target_audience": "travel_enthusiasts"
+          },
+          "processingTime": 0,
+          "complexity": "low",
+          "estimatedImplementationTime": 4,
+          "dependencies": [
+            "mjml",
+            "image-optimization",
+            "html-validation"
+          ],
+          "notes": []
+        }
+      },
+      "generationSummary": {
+        "timestamp": "2025-07-11T08:27:37.825Z",
+        "processingTime": 1,
+        "sourceContexts": 4,
+        "sectionsGenerated": 6,
+        "assetsProcessed": 0,
+        "constraintsApplied": 4,
+        "validationPassed": true,
+        "errors": [],
+        "warnings": []
+      },
+      "implementationGuidance": {
+        "priority": "high",
+        "estimatedTime": 4,
+        "complexity": "low",
+        "dependencies": [
+          "mjml",
+          "image-optimization",
+          "html-validation"
+        ],
+        "risks": [
+          "Multiple email client compatibility challenges"
+        ],
+        "recommendations": [
+          "Use table-based layout for maximum compatibility",
+          "Inline all CSS for better email client support",
+          "Optimize images for web delivery",
+          "Test across all target email clients",
+          "Implement responsive design with media queries",
+          "Ensure WCAG AA compliance with proper alt text and contrast"
+        ]
+      },
+      "qualityScore": {
+        "completeness": 100,
+        "consistency": 90,
+        "clarity": 100,
+        "implementability": 100,
+        "overall": 98
+      }
+    }
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Осень в Таиланде начинается с окончания сезона дождей, к концу сентября влажность падает, в октябре и ноябре комфортная жара 27-31C, осадки минимальны. Температура воды 28C. Идеальное время для пляжа и экскурсий.",
+        "cultural_highlights": "Главные фестивали осени - Лой Кратонг в ноябре, множество ночных рынков, буддийские традиции. Язык - тайский, но в популярных местах многие понимают английский. Уважайте местные обычаи, скромная одежда для храмов важна.",
+        "key_attractions": "Пхукет, Краби, острова Пхи Пхи, Большой дворец в Бангкоке, древний город Аютия. Экскурсии на слонах, ночные рынки, дайвинг и морские прогулки.",
+        "seasonal_advantages": "Меньше туристов по сравнению с зимой, приятная погода, акции от отелей, богатый выбор туров. Хороший шанс поймать спецпредложения.",
+        "travel_experience_quality": "Комфортная температура, чистое море, низкая загруженность, безопасно для семей и пар."
+      },
+      "saved_at": "2025-07-11T08:26:30.271Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "Сентябрь-октябрь - плечевой сезон, цены на туры от 28000 руб, что примерно на 30-40 процентов ниже пиковых зимних. Средний пакет на 10 ночей начинается от 28000 до 50000 руб на человека. Лучшие цены при раннем бронировании, но и горящие туры встречаются часто в эти даты.",
+        "competitive_position": "Основные альтернативы для россиян - Вьетнам, Бали, Турция. Тайланд выигрывает круглогодичностью, комфортным климатом осенью, уникальной кухней и легкостью перелета из крупных городов РФ. Для Kupibilet акцент на динамических скидках и уникальных пакетах.",
+        "demand_patterns": "В сентябре и октябре наблюдается стабильный, но не высокий спрос. Многие едут в это время ради комфорта и бюджетных цен. Пик спроса - конец октября на школьные каникулы. Бронирование обычно за 2-5 недель до вылета.",
+        "booking_recommendations": "Лучшие даты для низких цен - вылеты до середины октября. Октябрьские поездки стоит бронировать заранее. Актуально отслеживать акции и спецпредложения Kupibilet на эти даты."
+      },
+      "saved_at": "2025-07-11T08:26:30.271Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Побег от осенней хандры в лето, возможность почувствовать тепло и солнце, недорогой отдых без визы. Тайланд дарит эмоциональную разрядку, отдых для души и тела, отличная возможность сделать фото для соцсетей.",
+        "emotional_triggers": "Малолюдные пляжи, вкусная уличная еда, экзотические фрукты, лазурное море, спа, отличный сервис, чувство приключения.",
+        "key_desires": "Хочу солнце, хочу забыть про будни, хочу развлечения и красивые фотографии, хочу перезагрузиться.",
+        "psychological_benefits": "Уход от стресса, ощущение свободы, улучшение настроения, укрепление семейных и дружеских связей."
+      },
+      "saved_at": "2025-07-11T08:26:30.271Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Выделяйте цену от 28000 руб как преимущество осеннего сезона",
+        "Делайте акцент на пляжном летнем отдыхе осенью и побеге от слякоти",
+        "Используйте образы уличной еды, рынков и тайских спа",
+        "Внедряйте истории путешественников и примеры реальных трипов",
+        "Используйте фирменные цвета синего и зеленого для ассоциации с морем и свежестью",
+        "Предлагайте дополнительные скидки на даты 25 сентября и 10 октября",
+        "Усиливайте выгодность осени: мало туристов и спокойная атмосфера"
+      ],
+      "key_insights": [
+        "Осенью температура воды и воздуха в Таиланде идеально подходят для пляжного отдыха",
+        "Скидки до 40 процентов на туры и отели к началу осени, минимальные цены у Kupibilet",
+        "Меньше туристов - выше комфорт и безопасность для семей",
+        "В этих датах легко подобрать нестандартные экскурсии по выгодной цене",
+        "Синие и зеленые оттенки в фирменном стиле Kupibilet вызывают доверие и ассоциируются с морем"
+      ],
+      "confidence_score": 0.93,
+      "analysis_timestamp": "2025-07-11T08:25:42.252Z",
+      "saved_at": "2025-07-11T08:26:30.273Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Температура воздуха и воды осенью в Таиланде идеальна для пляжного отдыха и экскурсий",
+        "Осенние туры начинаются от 28000 руб, в Shoulder Season скидки до 40 процентов",
+        "Пик спроса в конце октября, до этого самые выгодные предложения на Kupibilet",
+        "Особенно привлекательны поездки для семей и искателей комфорта, мало людей и нет жары",
+        "Яркие фирменные цвета Kupibilet хорошо отражают морские и летние ассоциации"
+      ],
+      "insights_count": 5,
+      "saved_at": "2025-07-11T08:26:30.271Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752222337998_mzi8b4pfqh/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "seasonal_trends": "С каждым годом все больше туристов выбирают осенний Тайланд ради тепла и выгодных цен. Набирают популярность комбинированные туры - пляж плюс активные экскурсии, 10-14 ночей. Участились бронирования онлайн и запросы на индивидуальные пакеты.",
+        "social_trends": "Трендовые темы - морские прогулки, путешествия с детьми, сторис с рынков и пляжей. Активно используются хэштеги #Thailand #Kupibilet. Лидирует визуальный контент с яркими цветами и морским пейзажем.",
+        "booking_behaviors": "Пользователи выбирают быстрые и понятные пакетные туры, ищут лучшие цены по датам и фильтруют по наличию спецпредложений. Проявлен высокий интерес к скидкам и кэшбек-программам.",
+        "content_opportunities": "Осенние коллекции для Instagram, советы по упаковке чемодана, подборки актуальных туров с отправлением в ближайшие даты."
+      },
+      "saved_at": "2025-07-11T08:26:30.271Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752222337998_mzi8b4pfqh",
+      "collection_timestamp": "2025-07-11T08:28:41.333Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  }
+}

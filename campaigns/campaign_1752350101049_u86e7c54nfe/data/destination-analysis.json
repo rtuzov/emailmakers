@@ -1,0 +1,36 @@
+{
+  "analysis_type": "destination_analysis",
+  "data": {
+    "raw_analysis": "{\"climate_factors\": \"Тайланд летом - температура 30-35C, высокая влажность, жара. Дожди возможны в августе, но много солнечных дней.\", \"cultural_highlights\": \"Фестивали Лои Кратонг и Сонгкран, тайская кухня, улицы Бангкока и Пхукета.\", \"key_attractions\": \"Пляжи Пхукета, храмы Бангкока, национальные парки, острова Пхи Пхи.\", \"seasonal_advantages\": \"Летние скидки на отели, меньше туристов в начале сезона,\n более доступные экскурсии.\", \"travel_experience_quality\": \"Высокое качество отдыха, множество вариантов активного отдыха и экскурсионных программ.\"}",
+    "climate": {
+      "temperature": "30-35C",
+      "season": "seasonal",
+      "humidity": "high",
+      "rainfall": "moderate"
+    },
+    "culture": {
+      "highlights": [
+        "храм"
+      ],
+      "language": "Thai, English in tourist areas",
+      "customs": [
+        "general_interest"
+      ]
+    },
+    "attractions": {
+      "must_see": [
+        "храм",
+        "парк",
+        "остров"
+      ],
+      "beaches": [
+        "пляж"
+      ],
+      "activities": [
+        "general_interest"
+      ]
+    },
+    "analysis_date": "2025-07-12T19:55:17.927Z"
+  },
+  "saved_at": "2025-07-12T19:55:17.928Z"
+}

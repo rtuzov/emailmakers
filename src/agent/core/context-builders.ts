@@ -97,17 +97,55 @@ export async function loadDataCollectionContext(
     const validation = DataCollectionContextSchema.safeParse(dataCollectionContext);
     
     if (!validation.success) {
-      console.error('❌ DATA COLLECTION CONTEXT VALIDATION FAILED:');
-      console.error('Schema validation errors:', validation.error.errors);
-      console.error('Actual data structure:', JSON.stringify(dataCollectionContext, null, 2));
+      console.warn('⚠️ DATA COLLECTION CONTEXT VALIDATION ISSUES:');
       
-      // Log specific field issues
-      validation.error.errors.forEach(error => {
-        console.error(`  - Path: ${error.path.join('.')} | Message: ${error.message} | Code: ${error.code}`);
+      // Filter out optional field errors for backward compatibility
+      const criticalErrors = validation.error.errors.filter(error => {
+        const path = error.path.join('.');
+        // Allow missing optional fields for backward compatibility
+        const isOptionalField = path.includes('travel_experience_quality') || 
+                               path.includes('pricing_insights') ||
+                               path.includes('competitive_position') ||
+                               path.includes('demand_patterns') ||
+                               path.includes('booking_recommendations') ||
+                               path.includes('core_motivations') ||
+                               path.includes('emotional_triggers') ||
+                               path.includes('key_desires') ||
+                               path.includes('psychological_benefits');
+        return !isOptionalField;
       });
       
-      // Don't throw error, just log for debugging - return the data anyway
-      console.warn('⚠️ Continuing with potentially invalid data collection context for debugging');
+      if (criticalErrors.length > 0) {
+        console.error('❌ CRITICAL validation errors:');
+        criticalErrors.forEach(error => {
+          console.error(`  - Path: ${error.path.join('.')} | Message: ${error.message} | Code: ${error.code}`);
+        });
+      }
+      
+      // Log non-critical issues as warnings
+      const nonCriticalErrors = validation.error.errors.filter(error => {
+        const path = error.path.join('.');
+        const isOptionalField = path.includes('travel_experience_quality') || 
+                               path.includes('pricing_insights') ||
+                               path.includes('competitive_position') ||
+                               path.includes('demand_patterns') ||
+                               path.includes('booking_recommendations') ||
+                               path.includes('core_motivations') ||
+                               path.includes('emotional_triggers') ||
+                               path.includes('key_desires') ||
+                               path.includes('psychological_benefits');
+        return isOptionalField;
+      });
+      
+      if (nonCriticalErrors.length > 0) {
+        console.warn('⚠️ NON-CRITICAL validation warnings (backward compatibility):');
+        nonCriticalErrors.forEach(error => {
+          console.warn(`  - Path: ${error.path.join('.')} | Message: ${error.message} | Code: ${error.code}`);
+        });
+      }
+      
+      // Continue with data anyway for backward compatibility
+      console.warn('⚠️ Continuing with data collection context (backward compatibility mode)');
     } else {
       console.log('✅ Data collection context schema validation passed');
     }
@@ -323,7 +361,9 @@ export async function buildContentContextFromOutputs(
       offers_count: parseInt(pricingAnalysisData?.offers_count) || 0,
       recommended_dates: ensureArray(pricingAnalysisData?.recommended_dates).length > 0
         ? ensureArray(pricingAnalysisData.recommended_dates)
-        : currentDates.slice(0, 2),
+        : ensureArray(dateAnalysisData?.optimal_dates).length > 0
+          ? ensureArray(dateAnalysisData.optimal_dates).slice(0, 2)
+          : currentDates.slice(0, 2),
       route: detectedRoute,
       enhanced_features: {
         airport_conversion: pricingAnalysisData?.enhanced_features?.airport_conversion || {},

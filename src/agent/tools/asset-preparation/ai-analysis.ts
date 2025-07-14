@@ -471,14 +471,13 @@ Return JSON format:
 
 /**
  * Search Unsplash API for real images
+ * NO FALLBACK ALLOWED - System must fail if API key not configured
  */
 async function searchUnsplashImages(query: string, count: number = 5): Promise<any[]> {
   const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
   
   if (!unsplashAccessKey) {
-    console.log('⚠️ UNSPLASH_ACCESS_KEY not configured, using demo images');
-    // Return demo images with real Unsplash URLs
-    return getDemoUnsplashImages(query, count);
+    throw new Error('UNSPLASH_ACCESS_KEY not configured. Please set up your Unsplash API key in environment variables. See UNSPLASH_SETUP.md for instructions.');
   }
   
   try {
@@ -498,45 +497,22 @@ async function searchUnsplashImages(query: string, count: number = 5): Promise<a
     const data = await response.json();
     console.log(`🔍 Unsplash API returned ${data.results.length} results for "${query}"`);
     
+    if (data.results.length === 0) {
+      throw new Error(`No images found for query: "${query}"`);
+    }
+    
     return data.results;
     
   } catch (error) {
     console.error(`❌ Unsplash API search failed for "${query}":`, error);
-    // Fallback to demo images
-    return getDemoUnsplashImages(query, count);
+    throw error; // Re-throw the error instead of falling back to demo images
   }
 }
 
 /**
- * Get demo Unsplash images with real URLs (for when API key is not available)
+ * ❌ REMOVED - Demo images are not allowed per project FALLBACK POLICY
+ * System must fail if Unsplash API is not available
  */
-function getDemoUnsplashImages(query: string, count: number): any[] {
-  // Real Unsplash image IDs that work
-  const realImageIds = [
-    'photo-1506905925346-21bda4d32df4', // Mountain landscape
-    'photo-1469474968028-56623f02e42e', // Nature/trees
-    'photo-1506905925346-21bda4d32df4', // Sunset
-    'photo-1441974231531-c6227db76b6e', // Forest
-    'photo-1501594907352-04cda38ebc29'  // Lake
-  ];
-  
-  const selectedIds = realImageIds.slice(0, count);
-  
-  return selectedIds.map((photoId, index) => ({
-    id: photoId.replace('photo-', ''),
-    urls: {
-      regular: `https://images.unsplash.com/${photoId}?w=800&h=600&fit=crop&auto=format`,
-      small: `https://images.unsplash.com/${photoId}?w=400&h=300&fit=crop&auto=format`
-    },
-    alt_description: `${query} image ${index + 1}`,
-    user: {
-      name: 'Unsplash'
-    },
-    links: {
-      download_location: `https://unsplash.com/photos/${photoId.replace('photo-', '')}/download`
-    }
-  }));
-}
 
 /**
  * Generate fallback external images when AI doesn't provide them

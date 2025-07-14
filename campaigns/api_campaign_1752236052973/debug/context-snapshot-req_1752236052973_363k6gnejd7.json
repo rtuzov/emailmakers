@@ -1,0 +1,83 @@
+{
+  "requestId": "req_1752236052973_363k6gnejd7",
+  "traceId": "api-1752236052973",
+  "timestamp": "2025-07-11T12:14:12.973Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752236052973",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752236052973",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "node",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1752236052973_4mv1cvakkpq",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Зимний отдых в Японии",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1752236052973",
+      "campaignId": "api_campaign_1752236052973",
+      "metadata": {
+        "taskType": "email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "node",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

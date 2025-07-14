@@ -531,7 +531,7 @@ export class SeasonalOptimizer {
         warnings.push({
           destination_id: fit.destination_id,
           warning_type: 'crowds' as const,
-          message: 'Пиковый туристический сезон - большие толпы',
+          message: 'Пиковый сезон - большие толпы',
           severity: 'low' as const
         });
       }
@@ -842,7 +842,7 @@ export class SeasonalOptimizer {
   private determineAvoidanceReason(seasonData: any): string {
     if (seasonData.weather_score < 50) return 'Неблагоприятная погода';
     if (seasonData.price_multiplier > 1.5) return 'Слишком высокие цены';
-    if (seasonData.crowd_factor > 8) return 'Слишком много туристов';
+    if (seasonData.crowd_factor > 8) return 'Слишком много путешественников';
     return 'Низкие общие показатели';
   }
 

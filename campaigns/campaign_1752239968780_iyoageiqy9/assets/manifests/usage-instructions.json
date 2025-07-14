@@ -1,0 +1,47 @@
+[
+  {
+    "assetId": "unsplash_JToi54yZqRs_1752240120287",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Зимние чудеса Японии: Путешествие мечты ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a snow covered forest filled with lots of trees\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_XLFIqxr-SkY_1752240120948",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимние чудеса Японии: Путешествие мечты ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a group of snowmen that are standing in the snow\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_hUbPyuHY3Fo_1752240121620",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимние чудеса Японии: Путешествие мечты ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"A river running through a snow covered forest\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_XmP0m_S2sWo_1752240121640",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимние чудеса Японии: Путешествие мечты ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a snowy night in a small asian town\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_UM3tXmoECb8_1752240122156",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Зимние чудеса Японии: Путешествие мечты ждет вас!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"baked cookies on brown bowl\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]

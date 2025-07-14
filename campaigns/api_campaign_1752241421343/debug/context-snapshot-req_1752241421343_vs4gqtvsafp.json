@@ -1,0 +1,99 @@
+{
+  "requestId": "req_1752241421343_vs4gqtvsafp",
+  "traceId": "api-1752241421343",
+  "timestamp": "2025-07-11T13:43:41.343Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "api_campaign_1752241421343",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/api_campaign_1752241421343",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "destination": "Тестовое направление",
+      "origin": "Москва",
+      "tone": "friendly",
+      "target_audience": "тестовая аудитория",
+      "language": "ru"
+    },
+    "correlationId": "corr_1752241421343_djw9l9c6ido",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создай простой тест для проверки исправлений валидации",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Тестовое направление",
+    "origin": "Москва",
+    "tone": "friendly",
+    "target_audience": "тестовая аудитория",
+    "language": "ru",
+    "originalOptions": {
+      "traceId": "api-1752241421343",
+      "campaignId": "api_campaign_1752241421343",
+      "metadata": {
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Тестовое направление",
+        "origin": "Москва",
+        "tone": "friendly",
+        "target_audience": "тестовая аудитория",
+        "language": "ru"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "destination": "Тестовое направление",
+        "origin": "Москва",
+        "tone": "friendly",
+        "target_audience": "тестовая аудитория",
+        "language": "ru"
+      }
+    }
+  }
+}

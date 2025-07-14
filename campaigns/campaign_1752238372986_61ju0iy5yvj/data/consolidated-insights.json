@@ -1,0 +1,13 @@
+{
+  "actionable_insights": [
+    "test insight 1",
+    "test insight 2"
+  ],
+  "key_insights": [
+    "key insight 1",
+    "key insight 2"
+  ],
+  "confidence_score": 0.9,
+  "analysis_timestamp": "2025-07-11T12:52:58.150Z",
+  "saved_at": "2025-07-11T12:53:09.059Z"
+}

@@ -1,0 +1,87 @@
+{
+  "requestId": "req_1752308087443_uyn9hctxjri",
+  "traceId": "api-1752308087443",
+  "timestamp": "2025-07-12T08:14:47.443Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "data-collection",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "japan_winter_2024",
+    "name": "Email Campaign",
+    "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/japan_winter_2024",
+    "brand": "Default Brand",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaignId": "japan_winter_2024",
+      "validationLevel": "strict",
+      "qualityThreshold": 95
+    },
+    "correlationId": "corr_1752308087443_5wt175debzq",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "strict",
+    "requiresApproval": true,
+    "qualityThreshold": 95,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "info",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Зимние каникулы в Японии",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "generate_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "strict",
+    "qualityThreshold": 95,
+    "campaignId": "japan_winter_2024",
+    "originalOptions": {
+      "traceId": "api-1752308087443",
+      "campaignId": "japan_winter_2024",
+      "metadata": {
+        "taskType": "generate_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "strict",
+        "qualityThreshold": 95,
+        "campaignId": "japan_winter_2024"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaignId": "japan_winter_2024",
+        "validationLevel": "strict",
+        "qualityThreshold": 95
+      }
+    }
+  }
+}

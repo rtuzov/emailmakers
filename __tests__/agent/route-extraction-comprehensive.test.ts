@@ -73,7 +73,7 @@ describe('Route Extraction Comprehensive Test', () => {
 
     test('should filter out non-city words from route extraction', () => {
       const excludeWords = [
-        'авиабилеты', 'билеты', 'рейсы', 'путешествия', 'туры', 
+        'авиабилеты', 'билеты', 'рейсы', 'путешествия', 'перелеты', 
         'отдых', 'каникулы', 'горящие', 'акции', 'скидки'
       ];
 

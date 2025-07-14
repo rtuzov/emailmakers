@@ -29,6 +29,7 @@ import {
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { commonTools } from '../core/common-tools';
+import { getAgentModel } from '../core/agent-model-config';
 
 // ============================================================================
 // SPECIALIST AGENTS ACCESS
@@ -109,10 +110,26 @@ export const createCampaignFolderForOrchestrator = tool({
         await fs.mkdir(path.join(campaignPath, subdir), { recursive: true });
       }
       
+      // Correct campaign name to reflect Kupibilet's business model (flights, not tours)
+      let correctedCampaignName = params.campaign_name;
+      if (correctedCampaignName.includes('туры') || correctedCampaignName.includes('тур')) {
+        correctedCampaignName = correctedCampaignName
+          .replace(/туры в/gi, 'авиабилеты в')
+          .replace(/туры на/gi, 'авиабилеты на') 
+          .replace(/тур в/gi, 'перелет в')
+          .replace(/тур на/gi, 'перелет на')
+          .replace(/осенние туры/gi, 'осенние авиабилеты')
+          .replace(/зимние туры/gi, 'зимние авиабилеты')
+          .replace(/летние туры/gi, 'летние авиабилеты')
+          .replace(/весенние туры/gi, 'весенние авиабилеты');
+        
+        console.log(`🔧 CORRECTED campaign name: "${params.campaign_name}" → "${correctedCampaignName}"`);
+      }
+
       // Create campaign metadata
       const metadata = {
         id: campaignId,
-        name: params.campaign_name,
+        name: correctedCampaignName,
         brand: params.brand_name,
         type: params.campaign_type,
         target_audience: params.target_audience,
@@ -137,7 +154,7 @@ export const createCampaignFolderForOrchestrator = tool({
       );
       
       // Create README
-      const readmeContent = `# ${params.campaign_name}
+      const readmeContent = `# ${correctedCampaignName}
 
 **Campaign ID:** ${campaignId}
 **Brand:** ${params.brand_name}
@@ -259,6 +276,7 @@ export async function createEmailCampaignOrchestrator() {
   
   const orchestrator = new Agent({
     name: 'Email Campaign Orchestrator',
+    model: getAgentModel(),
     instructions: instructions,
     tools: orchestratorTools,
     handoffs: [

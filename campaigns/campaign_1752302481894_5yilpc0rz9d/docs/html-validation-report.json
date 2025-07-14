@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-07-12T06:46:14.543Z",
+  "originalErrors": 1,
+  "finalErrors": 1,
+  "warnings": 0,
+  "enhancementsMade": [
+    "Added 12 emojis for better engagement",
+    "Enhanced pricing presentation with visual elements",
+    "Enhanced call-to-action buttons"
+  ],
+  "validationStatus": "INVALID",
+  "files": {
+    "original": "templates/email-template.html",
+    "enhanced_timestamped": "templates/email-template-enhanced-2025-07-12T06-46-14-543Z.html",
+    "enhanced_latest": "templates/email-template-enhanced-latest.html",
+    "comparison_report": "templates/enhancement-comparison-2025-07-12T06-46-14-543Z.json"
+  },
+  "file_sizes": {
+    "original": 20102,
+    "enhanced": 16184,
+    "difference": -3918
+  }
+}

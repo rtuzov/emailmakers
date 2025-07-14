@@ -1,0 +1,265 @@
+{
+  "template_id": "autumn_thailand_campaign",
+  "template_name": "Откройте для себя Таиланд: лучшие цены на авиабилеты!",
+  "description": "Email шаблон для Thailand кампании с реальными ассетами и ценами",
+  "target_audience": "путешественники",
+  "visual_concept": "Современный дизайн с акцентом на Thailand и осенний отдых",
+  "layout": {
+    "type": "single-column",
+    "max_width": 600,
+    "sections_count": 5,
+    "visual_hierarchy": "Hero изображение → контент → цены → CTA → footer",
+    "spacing_system": {
+      "section_padding": "20px",
+      "content_padding": "15px",
+      "element_margin": "10px"
+    }
+  },
+  "sections": [
+    {
+      "id": "header",
+      "type": "header",
+      "position": 1,
+      "content": {
+        "logo": {
+          "required": true,
+          "position": "center",
+          "size": "medium"
+        }
+      },
+      "styling": {
+        "background_color": "#ffffff",
+        "padding": "20px"
+      }
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "position": 2,
+      "content": {
+        "headline": "Откройте для себя Таиланд: лучшие цены на авиабилеты!",
+        "subheadline": "Путешествие в Таиланд с Kupibilet по цене от 24718 RUB. Успейте забронировать!",
+        "hero_image": {
+          "required": true,
+          "source": "external",
+          "position": "background",
+          "size": "full-width",
+          "asset_file": "https://images.unsplash.com/photo-1721209290993-deea0ffd1c1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTb2NoaSUyMHN1bW1lciUyMGJlYWNofGVufDB8MHx8fDE3NTIyNDU1MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "alt_text": "A crowded beach with lots of people on it"
+        },
+        "cta_button": {
+          "text": "Забронировать билет",
+          "style": "primary",
+          "position": "center"
+        }
+      },
+      "styling": {
+        "background_color": "#FFEDE9",
+        "text_color": "#333333",
+        "padding": "40px 20px",
+        "text_align": "center"
+      }
+    },
+    {
+      "id": "content",
+      "type": "content",
+      "position": 3,
+      "content": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "content": "Представьте себе, как вы наслаждаетесь теплым солнечным светом, гуляя по белоснежным пляжам Таиланда, где лазурные волны нежно омывают берега. Это место, где каждый день начинается с яркого восхода и заканчивается волшебными закатами, полными романтики и приключений.",
+            "styling": "body-text"
+          }
+        ],
+        "images": {
+          "count": 3,
+          "layout": "grid",
+          "sources": [
+            "external",
+            "external",
+            "external"
+          ],
+          "asset_files": [
+            {
+              "file": "https://images.unsplash.com/photo-1723467733568-eed42dcbf767?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxCbGFjayUyMFNlYSUyMGNvYXN0JTIwYXR0cmFjdGlvbnN8ZW58MHwwfHx8MTc1MjI0NTUyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "A large body of water surrounded by mountains",
+              "usage": "destination",
+              "isExternal": true
+            },
+            {
+              "file": "https://images.unsplash.com/photo-1568832359852-a738a9df630e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBmZXN0aXZhbHMlMjBTb2NoaXxlbnwwfDB8fHwxNzUyMjQ1NTI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "white and brown house",
+              "usage": "support",
+              "isExternal": true
+            },
+            {
+              "file": "https://images.unsplash.com/photo-1581917306533-63166366910d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMHN1bW1lciUyMHZpYmVzfGVufDB8MHx8fDE3NTIyNDU1Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+              "alt_text": "green palm tree under blue sky during daytime",
+              "usage": "decoration",
+              "isExternal": true
+            }
+          ]
+        },
+        "pricing": {
+          "display": true,
+          "price": "24718 RUB",
+          "dates": "2025-08-15, 2025-09-10, 2025-10-05",
+          "style": "highlight",
+          "position": "center"
+        }
+      },
+      "styling": {
+        "background_color": "#ffffff",
+        "padding": "30px 20px"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "call-to-action",
+      "position": 4,
+      "content": {
+        "headline": "Не упустите шанс!",
+        "button": {
+          "text": "Забронировать билет от 24718 RUB",
+          "style": "large-primary",
+          "background_color": "#FF6240",
+          "text_color": "#ffffff"
+        },
+        "supporting_text": "Лучшие даты: 2025-08-15, 2025-09-10, 2025-10-05"
+      },
+      "styling": {
+        "background_color": "#4BFF7E",
+        "text_color": "#ffffff",
+        "padding": "40px 20px",
+        "text_align": "center"
+      }
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "position": 5,
+      "content": {
+        "social_links": {
+          "required": true,
+          "platforms": [
+            "facebook",
+            "instagram",
+            "twitter"
+          ]
+        },
+        "contact_info": {
+          "required": true,
+          "elements": [
+            "address",
+            "phone",
+            "email"
+          ]
+        },
+        "unsubscribe": {
+          "required": true,
+          "text": "Отписаться от рассылки"
+        }
+      },
+      "styling": {
+        "background_color": "#f8f9fa",
+        "text_color": "#666666",
+        "padding": "30px 20px",
+        "text_align": "center"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "primary_button",
+      "type": "button",
+      "styling": {
+        "background_color": "#FF6240",
+        "text_color": "#ffffff",
+        "border_radius": "6px",
+        "padding": "12px 24px",
+        "font_weight": "600",
+        "font_size": "16px"
+      },
+      "hover_effects": {
+        "background_color": "#FF6240dd"
+      }
+    },
+    {
+      "id": "price_card",
+      "type": "card",
+      "styling": {
+        "background_color": "#ffffff",
+        "border": "1px solid #e5e5e5",
+        "border_radius": "8px",
+        "padding": "20px",
+        "box_shadow": "0 2px 8px rgba(0,0,0,0.1)"
+      }
+    }
+  ],
+  "responsive": {
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "max_width": "480px",
+        "adjustments": {
+          "font_sizes": "уменьшить на 2px",
+          "padding": "уменьшить на 25%",
+          "images": "full-width",
+          "columns": "stack vertically"
+        }
+      },
+      {
+        "name": "tablet",
+        "max_width": "768px",
+        "adjustments": {
+          "font_sizes": "уменьшить на 1px",
+          "padding": "уменьшить на 15%"
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "alt_texts": "Все изображения должны иметь описательные alt-тексты",
+    "color_contrast": "Минимум 4.5:1 для основного текста",
+    "font_sizes": "Минимум 14px для основного текста",
+    "link_styling": "Подчеркивание для всех ссылок"
+  },
+  "email_client_optimizations": {
+    "outlook": {
+      "table_based_layout": true,
+      "conditional_comments": true,
+      "fallback_fonts": true
+    },
+    "gmail": {
+      "embedded_css": true,
+      "image_blocking": "учтено",
+      "clipping_prevention": true
+    },
+    "apple_mail": {
+      "dark_mode_support": true,
+      "retina_images": true
+    }
+  },
+  "performance": {
+    "total_size_target": "под 100KB",
+    "image_optimization": "WebP с JPEG fallback",
+    "css_inlining": "критичные стили инлайн",
+    "loading_strategy": "прогрессивная загрузка"
+  },
+  "metadata": {
+    "generated_at": "2025-07-11T12:24:12.850Z",
+    "generated_by": "AI Template Designer (OpenAI Agents SDK)",
+    "assets_used": {
+      "total_images": 7,
+      "local_images": 2,
+      "external_images": 5,
+      "icons": 4
+    },
+    "brand_colors": {
+      "primary": "#4BFF7E",
+      "accent": "#FF6240",
+      "background": "#FFEDE9"
+    }
+  }
+}

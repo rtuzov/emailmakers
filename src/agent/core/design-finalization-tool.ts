@@ -26,6 +26,7 @@ import {
 import { getHandoffMonitor } from './handoff-monitoring';
 import { getGlobalLogger } from './agent-logger';
 import { debuggers } from './debug-output';
+import { CampaignPathResolver, CampaignPathError } from './campaign-path-resolver';
 
 // Initialize logging and monitoring
 const logger = getGlobalLogger();
@@ -47,25 +48,20 @@ export const finalizeDesignAndTransferToQuality = tool({
   execute: async (params, context) => {
     const startTime = Date.now();
     
-    // Extract campaign path correctly - handle handoff file path vs campaign directory
-    let campaignPath;
-    if (params.content_context?.campaign?.campaignPath) {
-      campaignPath = params.content_context.campaign.campaignPath;
-    } else if (params.content_context?.campaign_path) {
-      campaignPath = params.content_context.campaign_path;
-    } else {
-      console.error('❌ DESIGN FINALIZATION: Campaign path not found in content context');
-      throw new Error('Campaign path is missing from content context. Content Specialist must provide valid campaign.campaignPath. No fallback campaign detection allowed.');
-    }
-    
-    // If campaignPath is a handoff file path, extract the campaign directory
-    if (campaignPath && campaignPath.includes('/handoffs/')) {
-      campaignPath = campaignPath.split('/handoffs/')[0];
-      console.log(`🔧 Corrected campaignPath from handoff file to directory: ${campaignPath}`);
-    } else if (campaignPath && campaignPath.endsWith('.json')) {
-      // Handle case where full handoff file path is passed
-      campaignPath = path.dirname(path.dirname(campaignPath));
-      console.log(`🔧 Corrected campaignPath from file path to directory: ${campaignPath}`);
+    // Resolve and validate campaign path using centralized resolver
+    let campaignPath: string;
+    try {
+      campaignPath = await CampaignPathResolver.resolveAndValidate(params.content_context);
+      debug.info('DesignFinalization', 'Campaign path resolved successfully', {
+        campaignPath,
+        trace_id: params.trace_id
+      });
+    } catch (error) {
+      console.error('❌ DESIGN FINALIZATION: Campaign path resolution failed');
+      if (error instanceof CampaignPathError) {
+        throw new Error(`Campaign path resolution failed: ${error.message}. Content Specialist must provide valid campaign path.`);
+      }
+      throw new Error(`Unexpected error in campaign path resolution: ${error.message}`);
     }
     
     const handoffMonitor = getHandoffMonitor(campaignPath, logger);

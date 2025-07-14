@@ -409,7 +409,7 @@ async function generateDynamicContextAnalysis(params: {
   
   // Prompt for LLM to generate contextual analysis
   const analysisPrompt = `
-Проанализируй туристическое направление "${destination}" и предоставь детальную информацию для создания маркетинговой кампании.
+Проанализируй направление полетов "${destination}" и предоставь детальную информацию для создания маркетинговой кампании авиабилетов.
 
 КРИТИЧЕСКИ ВАЖНО - АКТУАЛЬНАЯ ДАТА:
 - Сегодняшняя дата: ${actualCurrentDate} (${formattedCurrentDate})
@@ -441,7 +441,7 @@ async function generateDynamicContextAnalysis(params: {
 }
 
 Требования:
-- Используй актуальную информацию о туристическом рынке
+- Используй актуальную информацию о рынке авиаперевозок
 - Учитывай сезонность и текущее время года (месяц ${currentMonth})
 - Адаптируй информацию под целевую аудиторию
 - Предоставь конкретные, применимые данные для маркетинга
@@ -512,7 +512,7 @@ async function generateWithOpenAI(params: {
         messages: [
           {
             role: 'system',
-            content: 'Ты эксперт по туристическому маркетингу. Предоставляй точную, актуальную информацию в запрашиваемом формате.'
+            content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию в запрашиваемом формате.'
           },
           {
             role: 'user',
@@ -672,7 +672,7 @@ async function generateDynamicDateAnalysis(params: {
 Требования:
 - Предложи 4-6 оптимальных дат в ближайшие 12 месяцев от ${actualCurrentDate}
 - Учти сезонность и климатические особенности направления
-- Рассмотри туристические потоки и ценовые периоды
+- Рассмотри пассажиропотоки и ценовые периоды авиаперевозок
 - Адаптируй рекомендации под уровень гибкости (flexible/semi-flexible/fixed)
 - Предоставь практические советы по бронированию
 - Все даты в формате YYYY-MM-DD и ТОЛЬКО В БУДУЩЕМ
@@ -1004,19 +1004,32 @@ ${typeof color_preference === 'object' && color_preference ?
 // Update design brief with specific colors from asset strategy
 async function updateDesignBriefWithColors(assetStrategy: any, context: any) {
   try {
+    console.log('🔍 DEBUG: updateDesignBriefWithColors started');
+    
     // Get campaign context
     const campaignContext = getCampaignContextFromSdk(context);
+    console.log('🔍 DEBUG: Campaign context:', {
+      hasCampaignContext: !!campaignContext,
+      campaignPath: campaignContext?.campaignPath,
+      campaignId: campaignContext?.campaignId
+    });
     
     // Find active campaign folder
     const campaignsDir = path.join(process.cwd(), 'campaigns');
     let campaignPath = campaignContext.campaignPath;
     
+    console.log('🔍 DEBUG: Initial campaignPath:', campaignPath);
+    
     if (!campaignPath) {
+      console.log('🔍 DEBUG: No campaignPath in context, searching for latest campaign...');
       const campaignFolders = await fs.readdir(campaignsDir);
       const latestCampaign = campaignFolders
         .filter(folder => folder.startsWith('campaign_'))
         .sort()
         .pop();
+        
+      console.log('🔍 DEBUG: Found campaign folders:', campaignFolders.filter(f => f.startsWith('campaign_')).slice(-3));
+      console.log('🔍 DEBUG: Latest campaign:', latestCampaign);
         
       if (!latestCampaign) {
         console.log('❌ No active campaign found for design brief update');
@@ -1026,11 +1039,19 @@ async function updateDesignBriefWithColors(assetStrategy: any, context: any) {
       campaignPath = path.join(campaignsDir, latestCampaign);
     }
     
+    console.log('🔍 DEBUG: Final campaignPath:', campaignPath);
+    
     // Read existing design brief
     const designBriefFile = path.join(campaignPath, 'content', 'design-brief-from-context.json');
+    console.log('🔍 DEBUG: Looking for design brief at:', designBriefFile);
     
-    if (await fs.access(designBriefFile).then(() => true).catch(() => false)) {
+    // Check if file exists
+    const fileExists = await fs.access(designBriefFile).then(() => true).catch(() => false);
+    console.log('🔍 DEBUG: Design brief file exists:', fileExists);
+    
+    if (fileExists) {
       const existingBrief = JSON.parse(await fs.readFile(designBriefFile, 'utf8'));
+      console.log('🔍 DEBUG: Loaded existing design brief, keys:', Object.keys(existingBrief));
       
       // Update with specific colors from asset strategy
       const updatedBrief = {
@@ -1065,10 +1086,34 @@ async function updateDesignBriefWithColors(assetStrategy: any, context: any) {
       
     } else {
       console.log('❌ Design brief file not found, cannot update with colors');
+      console.log('🔍 DEBUG: Checked path:', designBriefFile);
+      
+      // Try to find design brief in other possible locations
+      const possiblePaths = [
+        path.join(campaignPath, 'content', 'design-brief-from-context.json'),
+        path.join(campaignPath, 'docs', 'design-brief-from-context.json'),
+        path.join(campaignPath, 'design-brief-from-context.json')
+      ];
+      
+      console.log('🔍 DEBUG: Checking alternative paths...');
+      for (const altPath of possiblePaths) {
+        const altExists = await fs.access(altPath).then(() => true).catch(() => false);
+        console.log(`🔍 DEBUG: ${altPath} exists: ${altExists}`);
+      }
+      
+      // List content directory to see what's actually there
+      try {
+        const contentDir = path.join(campaignPath, 'content');
+        const contentFiles = await fs.readdir(contentDir);
+        console.log('🔍 DEBUG: Content directory files:', contentFiles);
+      } catch (error) {
+        console.log('🔍 DEBUG: Cannot read content directory:', error.message);
+      }
     }
     
   } catch (error) {
     console.error('❌ Error updating design brief with colors:', error.message);
+    console.error('🔍 DEBUG: Full error:', error);
   }
 }
 
@@ -1298,9 +1343,16 @@ async function generateDynamicEmailContent(params: any, pricingData: any, dateAn
     day: 'numeric'
   });
   
+  // 🎯 DYNAMIC OFFERS COUNT - Calculate from real pricing data
+  const realOffersCount = pricingData?.offers_count || 
+                         pricingData?.enhanced_features?.offers_count || 
+                         (pricingData?.best_price ? 1 : 0);
+  
+  console.log(`📊 Dynamic offers count: ${realOffersCount} (from pricing data: ${!!pricingData})`);
+  
   // Prompt for LLM to generate RICH and DETAILED email content
   const contentPrompt = `
-Создай КАЧЕСТВЕННЫЙ и ДЕТАЛЬНЫЙ email-контент для туристической рассылки с БОГАТЫМ ОПИСАНИЕМ.
+Создай КАЧЕСТВЕННЫЙ и ДЕТАЛЬНЫЙ email-контент для рассылки авиабилетов с БОГАТЫМ ОПИСАНИЕМ.
 
 🎯 НОВЫЕ ТРЕБОВАНИЯ - КАЧЕСТВЕННЫЙ КОНТЕНТ:
 - Заголовок: 5-10 слов, эмоциональный и конкретный
@@ -1367,7 +1419,7 @@ async function generateDynamicEmailContent(params: any, pricingData: any, dateAn
   "pricing": {
     "best_price": "${price}",
     "currency": "${currency}",
-    "offers_count": 23
+    "offers_count": ${realOffersCount}
   },
   "dates": {
     "optimal_dates": ${JSON.stringify(dates)},
@@ -1376,7 +1428,7 @@ async function generateDynamicEmailContent(params: any, pricingData: any, dateAn
   },
   "context": {
     "destination": "${destination}",
-    "emotional_triggers": "${contextAnalysis?.emotional_triggers || 'Путешествия, новые впечатления, отдых'}",
+    "emotional_triggers": "${contextAnalysis?.emotional_triggers || 'Выгодные билеты, удобные рейсы, быстрое бронирование'}",
     "current_date_context": "Контекст относительно текущей даты ${actualCurrentDate}"
   }
 }
@@ -1675,15 +1727,19 @@ export const updateCampaignMetadata = tool({
 // EXPORTS
 // ============================================================================
 
+// Import transfer function
+import { transferToDesignSpecialist } from '../core/transfer-tools';
+
 export const contentSpecialistTools = [
   contextProvider,
   dateIntelligence,
   pricingIntelligence,
   assetStrategy,
   contentGenerator,
+  ...assetPreparationTools,          // Asset Manifest Generation FIRST
+  ...technicalSpecificationTools,    // Technical Specification Generation SECOND
   createHandoffFile,
   updateCampaignMetadata,
-  ...assetPreparationTools,
-  ...technicalSpecificationTools,
-  finalizeContentAndTransferToDesign
+  finalizeContentAndTransferToDesign,
+  transferToDesignSpecialist         // ✅ Added direct transfer function
 ]; 
