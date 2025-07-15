@@ -18,14 +18,38 @@ import { log, getGlobalLogger } from '../core/agent-logger';
 import { debuggers } from '../core/debug-output';
 import { OpenAI } from 'openai';
 
-// Import new modular utilities
+// Import existing content services
 import { 
-  ExtendedRunContext, 
-  CampaignWorkflowContext,
-  LLMGenerationParams,
-  LLMResponse 
-} from './content-specialist/types';
+  ContentGeneratorParams,
+  ContentGeneratorResult,
+  PricingService,
+  GenerationService,
+  ContentUtils,
+  DestinationAnalyzer,
+  MultiDestinationPlanner,
+  SeasonalOptimizer
+} from './content/index';
 
+// Campaign context types 
+interface CampaignWorkflowContext {
+  campaignId?: string;
+  campaignPath?: string;
+  metadata?: any;
+  context_analysis?: any;
+  date_analysis?: any;
+  pricing_analysis?: any;
+  asset_strategy?: any;
+  generated_content?: any;
+  technical_requirements?: any;
+  design_brief?: any;
+  trace_id?: string | null;
+}
+
+interface ExtendedRunContext {
+  campaignContext?: CampaignWorkflowContext;
+}
+
+// Import error handling utilities
 import { 
   getErrorMessage, 
   logErrorWithContext, 
@@ -1036,7 +1060,7 @@ async function generateAndSaveAssetManifest(assetStrategy: any, context: any) {
     console.log('🤖 ASSET MANIFEST: Starting AI-powered Figma asset collection...');
     
     // Get campaign context
-    const campaignContext = getCampaignContextFromSdk(context);
+    const campaignContext = extractCampaignContext(context);
     
     // Find active campaign folder
     const campaignsDir = path.join(process.cwd(), 'campaigns');
