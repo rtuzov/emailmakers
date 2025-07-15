@@ -1116,18 +1116,16 @@ async function generateAndSaveAssetManifest(assetStrategy: any, context: any) {
     
     // Define Figma asset sources for AI-powered collection
     const assetSources: AssetSource[] = [
-      {
-        type: 'local',
-        path: path.join(process.cwd(), 'figma-all-pages-1750993353363'),
-        priority: 'high',
-        expected_count: 4
-      },
-      {
-        type: 'local', 
-        path: path.join(process.cwd(), 'figma-assets'),
-        priority: 'medium',
-        expected_count: 2
-      }
+              {
+          type: 'local',
+          path: path.join(process.cwd(), 'figma-all-pages-1750993353363'),
+          priority: 'primary'
+        },
+        {
+          type: 'local', 
+          path: path.join(process.cwd(), 'figma-assets'),
+          priority: 'secondary'
+        }
       // NOTE: External Unsplash images will be handled separately by AI analysis
     ];
     
@@ -1199,7 +1197,7 @@ async function updateDesignBriefWithColors(assetStrategy: any, context: any) {
     console.log('🔍 DEBUG: updateDesignBriefWithColors started');
     
     // Get campaign context
-    const campaignContext = getCampaignContextFromSdk(context);
+    const campaignContext = extractCampaignContext(context);
     console.log('🔍 DEBUG: Campaign context:', {
       hasCampaignContext: !!campaignContext,
       campaignPath: campaignContext?.campaignPath,
