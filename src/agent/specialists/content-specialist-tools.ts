@@ -377,24 +377,25 @@ export const contextProvider = tool({
       
       // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.campaignContext = campaignContext;
+        (context as ExtendedRunContext).campaignContext = campaignContext;
       }
 
       // Return formatted string with design brief info
       return `✅ Контекстная информация для ${params.destination} успешно обработана из данных Data Collection Specialist. Создано техническое задание для дизайна с визуальным стилем, цветовой палитрой и направлением изображений. Ключевых инсайтов: ${contextData.key_insights?.length || 0}. Travel инсайтов: ${contextData.travel_insights?.length || 0}. Design brief сохранен в ${designBriefFile}. Контекст готов для следующих инструментов.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const errorMessage = getErrorMessage(error);
       log.error('ContentSpecialist', 'Context provider failed', {
-        error: error.message,
+        error: errorMessage,
         destination: params.destination,
         context_type: params.context_type,
         duration,
         trace_id: params.trace_id
       });
       
-      log.tool('contextProvider', params, null, duration, false, error.message);
-      return `Ошибка получения контекста: ${error.message}`;
+      log.tool('contextProvider', params, null, duration, false, errorMessage);
+      return `Ошибка получения контекста: ${errorMessage}`;
     }
   }
 });
@@ -491,15 +492,16 @@ async function generateDynamicContextAnalysis(params: {
       booking_patterns: analysisData.booking_patterns
     };
 
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error);
     log.error('ContentSpecialist', 'Failed to generate dynamic context analysis', {
-      error: error.message,
+      error: errorMessage,
       destination,
       context_type
     });
     
     // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать контекстный анализ для ${destination}: ${error.message}`);
+    throw new Error(`Не удалось сгенерировать контекстный анализ для ${destination}: ${errorMessage}`);
   }
 }
 
@@ -752,7 +754,7 @@ export const pricingIntelligence = tool({
       from: z.string().describe('Start date for search (YYYY-MM-DD)'),
       to: z.string().describe('End date for search (YYYY-MM-DD)')
     }).describe('Date range for price search'),
-    cabin_class: z.enum(['economy', 'premium_economy', 'business', 'first']).default('economy').describe('Cabin class'),
+    cabin_class: z.enum(['economy', 'business', 'first']).default('economy').describe('Cabin class'),
     currency: z.string().default('RUB').describe('Currency for pricing'),
     filters: z.object({
       is_direct: z.boolean().nullable().describe('Direct flights only'),
