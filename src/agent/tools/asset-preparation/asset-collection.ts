@@ -14,6 +14,7 @@ import {
 import { 
   analyzeContentWithAI,
   selectFigmaAssetsWithAI,
+  finalFileSelectionWithAI,
   generateAISelectedExternalImages
 } from './ai-analysis';
 
@@ -151,53 +152,72 @@ async function collectFromLocalDirectoryWithAI(
       return await collectFromLocalDirectoryBasic(sourcePath, destination);
     }
     
-    // Get AI-powered tag selection (new approach)
+    // Get AI-powered tag selection (step 1)
     const tagSelections = await selectFigmaAssetsWithAI(aiAnalysis, figmaTags, contentContext);
     
     // Process each tag selection
     for (const selection of tagSelections) {
       console.log(`🎯 Processing selection: ${selection.reasoning}`);
       
-      // Find actual files by tags instead of filtering through GPT
-      const actualFiles = await findActualFilesByTags(
+      // Find actual files by tags (step 2)
+      const foundFiles = await findActualFilesByTags(
         selection.tags,
         selection.folders,
         sourcePath,
-        selection.max_files
+        selection.max_files || 10 // Find more files for AI to choose from
       );
       
-      // Copy selected files to destination
-      for (const file of actualFiles) {
-        const filePath = path.join(sourcePath, file.folder, file.filename);
-        const destPath = path.join(destination, file.filename);
+      if (foundFiles.length === 0) {
+        console.warn(`⚠️ No files found for tags: ${selection.tags.join(', ')}`);
+        continue;
+      }
+      
+      // AI makes final selection (step 3) - максимум 2 файла
+      const finalSelection = await finalFileSelectionWithAI(
+        foundFiles,
+        campaignContext,
+        contentContext,
+        2 // Максимум 2 файла для email
+      );
+      
+      // Copy only the finally selected files (step 4)
+      for (const selected of finalSelection) {
+        const filePath = path.join(sourcePath, selected.folder, selected.filename);
+        const destPath = path.join(destination, selected.filename);
         
         try {
           const stats = await fs.stat(filePath);
           await fs.copyFile(filePath, destPath);
           
+          // Find original file data for full metadata
+          const originalFile = foundFiles.find(f => f.filename === selected.filename);
+          
           assets.push({
-            filename: file.filename,
+            filename: selected.filename,
             path: destPath,
             size: stats.size,
-            format: path.extname(file.filename).toLowerCase().substring(1),
-            hash: `ai_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+            format: path.extname(selected.filename).toLowerCase().substring(1),
+            hash: `ai_final_${Date.now()}_${Math.random().toString(36).substring(2)}`,
             created: stats.birthtime.toISOString(),
             modified: stats.mtime.toISOString(),
-            tags: selection.tags,
-            description: `AI-selected by tags: ${file.matchedTags.join(', ')}`,
+            tags: originalFile?.matchedTags || selection.tags,
+            description: `AI final selection: ${selected.reasoning}`,
             purpose: 'visual',
-            priority: file.score > 2 ? 'high' : 'medium',
-            aiReasoning: selection.reasoning
+            priority: 'high', // All finally selected files are high priority
+            aiReasoning: selected.reasoning,
+            selectionScore: originalFile?.score || 0
           });
           
-          console.log(`✅ Added asset: ${file.filename} (score: ${file.score}, tags: ${file.matchedTags.join(', ')})`);
+          console.log(`✅ Added final selection: ${selected.filename}`);
+          console.log(`   📝 Reasoning: ${selected.reasoning}`);
           
         } catch (fileError) {
-          throw new Error(`❌ Could not process file ${file.filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+          throw new Error(`❌ Could not process finally selected file ${selected.filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
         }
       }
     }
     
+    console.log(`🎯 Final result: ${assets.length} carefully selected assets`);
     return assets;
     
   } catch (error) {
@@ -213,11 +233,11 @@ async function findActualFilesByTags(
   selectedTags: string[],
   priorityFolders: string[],
   sourcePath: string,
-  maxFiles: number = 5
-): Promise<{ filename: string; folder: string; score: number; matchedTags: string[] }[]> {
+  maxFiles: number = 10 // Увеличиваем лимит для большего выбора
+): Promise<{ filename: string; folder: string; score: number; matchedTags: string[]; size: number }[]> {
   console.log(`🔍 Finding actual files by tags: ${selectedTags.join(', ')}`);
   
-  const foundFiles: { filename: string; folder: string; score: number; matchedTags: string[] }[] = [];
+  const foundFiles: { filename: string; folder: string; score: number; matchedTags: string[]; size: number }[] = [];
   
   // Search in each priority folder
   for (const folderName of priorityFolders) {
@@ -240,27 +260,34 @@ async function findActualFilesByTags(
           )
         );
         
-        if (matchedTags.length > 0) {
-          foundFiles.push({
-            filename,
-            folder: folderName,
-            score: matchedTags.length,
-            matchedTags
-          });
+        // Get file size for AI selection
+        try {
+          const filePath = path.join(folderPath, filename);
+          const stats = await fs.stat(filePath);
+          
+          if (matchedTags.length > 0) {
+            foundFiles.push({
+              filename,
+              folder: folderName,
+              score: matchedTags.length,
+              matchedTags,
+              size: stats.size
+            });
+          }
+          
+          // Also include some files without direct tag matches but from priority folders
+          else if (foundFiles.filter(f => f.folder === folderName).length < 2) {
+            foundFiles.push({
+              filename,
+              folder: folderName,
+              score: 0.1, // Very low score for non-matching files
+              matchedTags: [],
+              size: stats.size
+            });
+          }
+        } catch (statError) {
+          console.warn(`⚠️ Could not get stats for ${filename}: ${statError instanceof Error ? statError.message : 'Unknown error'}`);
         }
-      }
-      
-      // If no tag matches, take a few representative files from high-priority folders
-      if (foundFiles.filter(f => f.folder === folderName).length === 0 && assetFiles.length > 0) {
-        const representativeFiles = assetFiles.slice(0, 2); // Take first 2 files
-        representativeFiles.forEach(filename => {
-          foundFiles.push({
-            filename,
-            folder: folderName,
-            score: 0.5, // Low score for non-matching files
-            matchedTags: []
-          });
-        });
       }
       
     } catch (error) {
@@ -268,11 +295,14 @@ async function findActualFilesByTags(
     }
   }
   
-  // Sort by score and return top files
+  // Sort by score and return top files for AI to choose from
   foundFiles.sort((a, b) => b.score - a.score);
   const selectedFiles = foundFiles.slice(0, maxFiles);
   
-  console.log(`✅ Found ${selectedFiles.length} files by tags`);
+  console.log(`✅ Found ${selectedFiles.length} candidate files for AI selection`);
+  selectedFiles.forEach(file => {
+    console.log(`   📁 ${file.filename} (score: ${file.score}, tags: ${file.matchedTags.join(', ')})`);
+  });
   
   return selectedFiles;
 }

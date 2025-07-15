@@ -13,11 +13,31 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import path from 'path';
-import { getCampaignContextFromSdk } from '../tools/campaign-context';
 import { withSDKTrace } from '../utils/tracing-utils';
 import { log, getGlobalLogger } from '../core/agent-logger';
 import { debuggers } from '../core/debug-output';
 import { OpenAI } from 'openai';
+
+// Import new modular utilities
+import { 
+  ExtendedRunContext, 
+  CampaignWorkflowContext,
+  LLMGenerationParams,
+  LLMResponse 
+} from './content-specialist/types';
+
+import { 
+  getErrorMessage, 
+  logErrorWithContext, 
+  contentSpecialistErrorHandler 
+} from './content-specialist/utils/error-handling';
+import { 
+  extractCampaignContext, 
+  validateCampaignPath, 
+  loadAnalysisFromFiles,
+  saveToCampaignFile,
+  ensureCampaignDirectories 
+} from './content-specialist/utils/context-management';
 
 // Enhanced pricing integration
 import { getPrices } from '../tools/prices';
@@ -47,20 +67,6 @@ const debug = debuggers.contentSpecialist;
 // ============================================================================
 // CONTEXT-AWARE CAMPAIGN STATE MANAGEMENT
 // ============================================================================
-
-interface CampaignWorkflowContext {
-  campaignId?: string;
-  campaignPath?: string;
-  metadata?: any;
-  context_analysis?: any;
-  date_analysis?: any;
-  pricing_analysis?: any;
-  asset_strategy?: any;
-  generated_content?: any;
-  technical_requirements?: any;
-  design_brief?: any;
-  trace_id?: string;
-}
 
 /**
  * Builds campaign context from individual tool outputs
@@ -199,23 +205,24 @@ export const createCampaignFolder = tool({
       
       // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.campaignContext = campaignContext;
+        (context as ExtendedRunContext).campaignContext = campaignContext;
       }
 
       // Return string as required by OpenAI Agents SDK
       return `Кампания успешно создана! ID: ${campaignId}. Папка: ${campaignPath}. Структура включает: content/, assets/, templates/, docs/, exports/. Метаданные сохранены в campaign-metadata.json. Контекст сохранен для передачи следующим инструментам.`;
       
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const errorMessage = getErrorMessage(error);
       log.error('ContentSpecialist', 'Campaign folder creation failed', {
-        error: error.message,
+        error: errorMessage,
         duration,
         campaign_name: params.campaign_name,
         trace_id: params.trace_id
       });
       
-      log.tool('createCampaignFolder', params, null, duration, false, error.message);
-      return `Ошибка создания кампании: ${error.message}`;
+      log.tool('createCampaignFolder', params, null, duration, false, errorMessage);
+      return `Ошибка создания кампании: ${errorMessage}`;
     }
   }
 });

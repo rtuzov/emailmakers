@@ -492,3 +492,140 @@ export function generateFallbackExternalImages(contentContext: any): any[] {
   console.log('❌ Fallback external images are not allowed - failing fast');
   throw new Error('Fallback external images are not allowed. AI must generate real images or the operation fails.');
 } 
+
+/**
+ * Final AI-powered file selection from filtered results
+ */
+export async function finalFileSelectionWithAI(
+  foundFiles: { filename: string; folder: string; score: number; matchedTags: string[]; size?: number }[],
+  campaignContext: any,
+  contentContext: any,
+  maxSelection: number = 2
+): Promise<{ filename: string; folder: string; reasoning: string }[]> {
+  console.log(`🎯 Making final selection from ${foundFiles.length} files (max ${maxSelection})...`);
+  
+  if (foundFiles.length <= maxSelection) {
+    console.log(`✅ Returning all ${foundFiles.length} files (under limit)`);
+    return foundFiles.map(f => ({
+      filename: f.filename,
+      folder: f.folder,
+      reasoning: `Auto-selected: only ${foundFiles.length} files found`
+    }));
+  }
+  
+  const selectionPrompt = `
+Выберите ${maxSelection} лучших файла для email-кампании из найденных по тегам файлов.
+
+КОНТЕКСТ КАМПАНИИ:
+- Тема: ${contentContext.generated_content?.subject || 'N/A'}
+- Описание: ${contentContext.generated_content?.body?.substring(0, 200) || 'N/A'}...
+- Тип кампании: ${contentContext.campaign_type || 'N/A'}
+- Целевая аудитория: ${contentContext.target_audience || 'N/A'}
+
+ДОСТУПНЫЕ ФАЙЛЫ:
+${foundFiles.map((file, index) => `
+${index + 1}. "${file.filename}"
+   - Папка: ${file.folder}
+   - Совпавшие теги: ${file.matchedTags.join(', ')}
+   - Скор релевантности: ${file.score}
+   - Размер: ${file.size ? Math.round(file.size / 1024) + 'KB' : 'unknown'}
+`).join('')}
+
+КРИТЕРИИ ВЫБОРА:
+1. Максимальная релевантность к теме кампании
+2. Высокий скор совпадения тегов
+3. Разнообразие (предпочтительно из разных папок)
+4. Оптимальный размер для email (меньше - лучше)
+5. Качество названия файла (описательность)
+
+ИНСТРУКЦИИ:
+- Выберите ТОЧНО ${maxSelection} файла
+- Обязательно объясните выбор каждого файла
+- Используйте точные имена файлов из списка
+- Приоритет: релевантность > разнообразие > размер
+
+Формат ответа JSON:
+{
+  "selected_files": [
+    {
+      "filename": "точное имя файла из списка",
+      "folder": "название папки", 
+      "reasoning": "подробное объяснение почему выбран этот файл"
+    }
+  ],
+  "overall_strategy": "общая стратегия выбора для данной кампании"
+}
+`;
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Вы эксперт по подбору визуального контента для email-маркетинга. Выбирайте файлы на основе максимальной релевантности к кампании и качества контента.'
+          },
+          {
+            role: 'user',
+            content: selectionPrompt
+          }
+        ],
+        temperature: 0.2, // Низкая температура для более предсказуемого выбора
+        max_tokens: 1000
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
+    const selection = JSON.parse(aiContent);
+    
+    const selectedFiles = selection.selected_files || [];
+    
+    // Валидация: проверяем что все выбранные файлы существуют в исходном списке
+    const validSelections = selectedFiles.filter((selected: any) => {
+      const found = foundFiles.find(f => f.filename === selected.filename);
+      if (!found) {
+        console.error(`❌ AI selected non-existent file: ${selected.filename}`);
+        return false;
+      }
+      return true;
+    });
+    
+    if (validSelections.length === 0) {
+      throw new Error(`❌ AI selected no valid files from ${foundFiles.length} available files`);
+    }
+    
+    console.log(`✅ AI selected ${validSelections.length} files for campaign:`);
+    validSelections.forEach((file: any) => {
+      console.log(`   📁 ${file.filename} → ${file.reasoning}`);
+    });
+    console.log(`🎯 Overall strategy: ${selection.overall_strategy}`);
+    
+    return validSelections;
+    
+  } catch (error) {
+    console.error('❌ Final AI file selection failed:', error);
+    // Fallback: возвращаем файлы с лучшим скором
+    const fallbackFiles = foundFiles
+      .sort((a, b) => b.score - a.score)
+      .slice(0, maxSelection)
+      .map(f => ({
+        filename: f.filename,
+        folder: f.folder,
+        reasoning: `Fallback selection: highest score (${f.score})`
+      }));
+    
+    console.log(`⚠️ Using fallback selection: ${fallbackFiles.map(f => f.filename).join(', ')}`);
+    return fallbackFiles;
+  }
+} 
