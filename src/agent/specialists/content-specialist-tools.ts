@@ -550,9 +550,10 @@ async function generateWithOpenAI(params: {
 
     return data.choices[0].message.content;
 
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error);
     log.error('ContentSpecialist', 'OpenAI API call failed', {
-      error: error.message,
+      error: errorMessage,
       prompt: prompt.substring(0, 100) + '...'
     });
     throw error;
@@ -614,24 +615,25 @@ export const dateIntelligence = tool({
       
       // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.campaignContext = campaignContext;
+        (context as ExtendedRunContext).campaignContext = campaignContext;
       }
 
       // Return formatted string
       return `Анализ дат для ${params.destination} в ${params.season}: Оптимальные даты - ${dateAnalysis.optimal_dates.join(', ')}. Ценовые окна - ${dateAnalysis.pricing_windows.join(', ')}. Рекомендация по бронированию - ${dateAnalysis.booking_recommendation}. Сезонные факторы - ${dateAnalysis.seasonal_factors}. Контекст сохранен для передачи следующим инструментам.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const errorMessage = getErrorMessage(error);
       log.error('ContentSpecialist', 'Date intelligence failed', {
-        error: error.message,
+        error: errorMessage,
         destination: params.destination,
         season: params.season,
         duration,
         trace_id: params.trace_id
       });
       
-      log.tool('dateIntelligence', params, null, duration, false, error.message);
-      return `Ошибка анализа дат: ${error.message}`;
+      log.tool('dateIntelligence', params, null, duration, false, errorMessage);
+      return `Ошибка анализа дат: ${errorMessage}`;
     }
   }
 });
@@ -723,16 +725,17 @@ async function generateDynamicDateAnalysis(params: {
       current_date: analysisData.current_date
     };
 
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error);
     log.error('ContentSpecialist', 'Failed to generate dynamic date analysis', {
-      error: error.message,
+      error: errorMessage,
       destination,
       season,
       flexibility
     });
     
     // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать анализ дат для ${destination}: ${error.message}`);
+    throw new Error(`Не удалось сгенерировать анализ дат для ${destination}: ${errorMessage}`);
   }
 }
 
@@ -837,23 +840,24 @@ export const pricingIntelligence = tool({
       
       // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.campaignContext = campaignContext;
+        (context as ExtendedRunContext).campaignContext = campaignContext;
       }
 
       // Return formatted string with enhanced pricing
       return `Улучшенный ценовой анализ маршрута ${params.route.from} - ${params.route.to}: Лучшая цена ${campaignPricingData.best_price} ${campaignPricingData.currency}. Диапазон цен: ${campaignPricingData.min_price} - ${campaignPricingData.max_price} ${campaignPricingData.currency}. Средняя цена: ${campaignPricingData.average_price} ${campaignPricingData.currency}. Найдено предложений: ${campaignPricingData.offers_count}. Рекомендуемые даты: ${campaignPricingData.recommended_dates.join(', ')}. Используется улучшенная система конвертации аэропортов и CSV-интеграция. Контекст сохранен для передачи следующим инструментам.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const errorMessage = getErrorMessage(error);
       log.error('ContentSpecialist', 'Enhanced pricing intelligence failed', {
-        error: error.message,
+        error: errorMessage,
         route: `${params.route.from_code}-${params.route.to_code}`,
         duration,
         trace_id: params.trace_id
       });
       
-      log.tool('pricingIntelligence', params, null, duration, false, error.message);
-      return `Ошибка получения цен от улучшенного API: ${error.message}`;
+      log.tool('pricingIntelligence', params, null, duration, false, errorMessage);
+      return `Ошибка получения цен от улучшенного API: ${errorMessage}`;
     }
   }
 });
