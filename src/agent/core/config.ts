@@ -22,7 +22,7 @@ type PartialDeep<T> = {
 export interface AgentCoreConfig {
   env: 'development' | 'production' | 'test';
   openaiApiKey: string;
-  redisUrl?: string;
+  redisUrl?: string | undefined;
   logLevel: 'debug' | 'info' | 'warn' | 'error';
   prometheusEnabled: boolean;
   defaultTimeoutMs: number;

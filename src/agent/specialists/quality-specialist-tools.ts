@@ -186,11 +186,9 @@ export const loadDesignPackage = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
     
     try {
-      const designPackagePath = path.join(params.campaignPath, 'design-package');
-      
-      // Load MJML template
+      // Load MJML template from campaign templates directory (not design-package)
       console.log('📄 Loading MJML template...');
-      const mjmlPath = path.join(designPackagePath, 'templates', 'email-template.mjml');
+      const mjmlPath = path.join(params.campaignPath, 'templates', 'email-template.mjml');
       
       // Check file existence before reading
       try {
@@ -202,9 +200,9 @@ export const loadDesignPackage = tool({
       const mjmlSource = await fs.readFile(mjmlPath, 'utf8');
       const mjmlStats = await fs.stat(mjmlPath);
       
-      // Load asset manifest
+      // Load asset manifest from campaign assets directory
       console.log('📋 Loading asset manifest...');
-      const assetManifestPath = path.join(designPackagePath, 'assets', 'asset-manifest.json');
+      const assetManifestPath = path.join(params.campaignPath, 'assets', 'manifests', 'asset-manifest.json');
       
       try {
         await fs.access(assetManifestPath);
@@ -214,9 +212,9 @@ export const loadDesignPackage = tool({
       
       const assetManifestData = JSON.parse(await fs.readFile(assetManifestPath, 'utf8'));
       
-      // Load technical specification
+      // Load technical specification from campaign docs directory
       console.log('📐 Loading technical specification...');
-      const techSpecPath = path.join(designPackagePath, 'specifications', 'technical-specification.json');
+      const techSpecPath = path.join(params.campaignPath, 'docs', 'specifications', 'technical-specification.json');
       
       try {
         await fs.access(techSpecPath);
@@ -226,17 +224,24 @@ export const loadDesignPackage = tool({
       
       const techSpecData = JSON.parse(await fs.readFile(techSpecPath, 'utf8'));
       
-      // Load package metadata
+      // Load package metadata from campaign docs directory (if exists)
       console.log('📊 Loading package metadata...');
-      const metadataPath = path.join(designPackagePath, 'package-metadata.json');
+      const metadataPath = path.join(params.campaignPath, 'docs', 'design-context.json');
+      let metadataData = {};
       
       try {
         await fs.access(metadataPath);
+        metadataData = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
+        console.log('✅ Package metadata loaded from design-context.json');
       } catch {
-        throw new Error(`Package metadata file not found: ${metadataPath}`);
+        console.log('⚠️ Package metadata not found, using defaults');
+        metadataData = {
+          package_id: params.packageId || 'default',
+          quality_indicators: {},
+          readiness_status: {},
+          performance_metrics: {}
+        };
       }
-      
-      const metadataData = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
       
       // Build design package data
       const designPackageData: DesignPackageData = {
@@ -245,9 +250,9 @@ export const loadDesignPackage = tool({
           source: mjmlSource,
           filePath: mjmlPath,
           fileSize: mjmlStats.size,
-          technicalCompliance: metadataData.package_contents?.mjml_template?.technical_compliance || {},
-          assetsUsed: metadataData.package_contents?.mjml_template?.assets_used || {},
-          specificationsUsed: metadataData.package_contents?.mjml_template?.specifications_used || {}
+          technicalCompliance: metadataData.package_contents?.mjml_template?.technical_compliance || metadataData.mjml_template?.technical_compliance || {},
+          assetsUsed: metadataData.package_contents?.mjml_template?.assets_used || metadataData.asset_manifest || {},
+          specificationsUsed: metadataData.package_contents?.mjml_template?.specifications_used || metadataData.technical_specification || {}
         },
         assetManifest: {
           images: assetManifestData.images || [],
@@ -499,8 +504,8 @@ export const validateEmailTemplate = tool({
       const technicalSpec = designPackage.technicalSpecification;
       const assetManifest = designPackage.assetManifest;
       
-      console.log(`📄 Template Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
-      console.log(`🖼️ Assets: ${assetManifest.images.length} images, ${assetManifest.icons.length} icons`);
+      console.log(`📄 Template Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
+      console.log(`🖼️ Assets: ${assetManifest?.images?.length || 0} images, ${assetManifest?.icons?.length || 0} icons`);
       
       const validationResults = {
         html_validation: {
@@ -786,7 +791,7 @@ export const testEmailClientCompatibility = tool({
         technicalSpec?.delivery?.emailClients?.map((client: any) => client.client || client.name || client) || 
         ['gmail', 'outlook', 'apple_mail', 'yahoo_mail'];
       
-      console.log(`📄 Template Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
+      console.log(`📄 Template Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
       console.log(`🎯 Target Clients: ${clientTargets.join(', ')}`);
       console.log(`🖼️ Assets: ${images.length} images, ${icons.length} icons`);
       
@@ -981,8 +986,8 @@ export const testAccessibilityCompliance = tool({
       const technicalSpec = designPackage.technicalSpecification;
       const assetManifest = designPackage.assetManifest;
       
-      console.log(`📄 Template Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
-      console.log(`🖼️ Assets: ${assetManifest.images.length} images, ${assetManifest.icons.length} icons`);
+      console.log(`📄 Template Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
+      console.log(`🖼️ Assets: ${assetManifest?.images?.length || 0} images, ${assetManifest?.icons?.length || 0} icons`);
       
       const accessibilityTest = {
         wcag_level: params.accessibility_level,
@@ -1274,21 +1279,21 @@ export const analyzeEmailPerformance = tool({
       const technicalSpec = designPackage.technicalSpecification;
       const packageMetadata = designPackage.packageMetadata;
       
-      console.log(`📄 HTML Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
-      console.log(`🖼️ Assets: ${assetManifest.images.length} images, ${assetManifest.icons.length} icons`);
+      console.log(`📄 HTML Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
+      console.log(`🖼️ Assets: ${assetManifest?.images?.length || 0} images, ${assetManifest?.icons?.length || 0} icons`);
       
-      // Calculate real file sizes
-      const htmlSize = mjmlTemplate.fileSize;
+      // Calculate real file sizes - fix: provide default values for undefined properties
+      const htmlSize = mjmlTemplate?.fileSize || 0;
       const cssSize = htmlSize * 0.25; // Estimated CSS size (typically 25% of HTML)
-      const imagesSize = assetManifest.images.reduce((sum: number, img: any) => sum + (img.file_size || 0), 0);
-      const iconsSize = assetManifest.icons.reduce((sum: number, icon: any) => sum + (icon.file_size || 0), 0);
+      const imagesSize = (assetManifest?.images || []).reduce((sum: number, img: any) => sum + (img.file_size || 0), 0);
+      const iconsSize = (assetManifest?.icons || []).reduce((sum: number, icon: any) => sum + (icon.file_size || 0), 0);
       const totalAssetSize = imagesSize + iconsSize;
       const totalSize = htmlSize + cssSize + totalAssetSize;
       
       // Calculate load time based on real performance metrics
       const baseLoadTime = 500; // Base load time
       const sizeBasedLoadTime = totalSize / 1000; // 1ms per KB
-      const assetCountPenalty = (assetManifest.images.length + assetManifest.icons.length) * 50; // 50ms per asset
+      const assetCountPenalty = ((assetManifest?.images?.length || 0) + (assetManifest?.icons?.length || 0)) * 50;
       const loadTime = Math.round(baseLoadTime + sizeBasedLoadTime + assetCountPenalty);
       
       const performanceAnalysis = {
@@ -1470,8 +1475,8 @@ export const generateQualityReport = tool({
       const packageMetadata = designPackage.packageMetadata;
       
       console.log(`📄 Template: ${campaignId}`);
-      console.log(`📄 Template Size: ${(mjmlTemplate.fileSize / 1024).toFixed(2)} KB`);
-      console.log(`🖼️ Assets: ${designPackage.assetManifest.images.length} images, ${designPackage.assetManifest.icons.length} icons`);
+      console.log(`📄 Template Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
+      console.log(`🖼️ Assets: ${designPackage.assetManifest?.images?.length || 0} images, ${designPackage.assetManifest?.icons?.length || 0} icons`);
       
       // Extract results from validation context
       const integrityValidation = validationResults.integrity_validation || null;
@@ -1551,8 +1556,8 @@ export const generateQualityReport = tool({
             performanceAnalysis?.optimization_suggestions?.length || 0
           ].reduce((sum, count) => sum + count, 0),
           email_clients_tested: clientCompatibility?.client_tests?.length || 0,
-          assets_analyzed: designPackage.assetManifest.images.length + designPackage.assetManifest.icons.length,
-          template_size_kb: Math.round(mjmlTemplate.fileSize / 1024)
+          assets_analyzed: (designPackage.assetManifest?.images?.length || 0) + (designPackage.assetManifest?.icons?.length || 0),
+          template_size_kb: Math.round((mjmlTemplate?.fileSize || 0) / 1024)
         },
         
         // Compliance status

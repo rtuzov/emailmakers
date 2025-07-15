@@ -165,38 +165,76 @@ export async function selectFigmaAssetsWithAI(
 ): Promise<any[]> {
   console.log('🎨 Using AI to select Figma assets...');
   
+  // Extract available folder names for validation
+  const availableFolders = Object.keys(figmaTags.folders || {});
+  console.log(`📁 Available folders: ${availableFolders.join(', ')}`);
+  
   const selectionPrompt = `
-Based on the content analysis and available Figma assets, select the most appropriate assets for this email campaign.
+Based on the content analysis and available Figma assets, select ONLY from the available folders listed below.
 
 Content Analysis:
 ${JSON.stringify(aiAnalysis, null, 2)}
-
-Available Figma Assets:
-${JSON.stringify(figmaTags, null, 2)}
 
 Content Context:
 - Subject: ${contentContext.generated_content?.subject || 'N/A'}
 - Body: ${contentContext.generated_content?.body || 'N/A'}
 - Campaign Type: ${contentContext.campaign_type || 'N/A'}
 
-INSTRUCTIONS:
-1. Match the content requirements with available Figma assets
-2. Select assets that best represent the campaign theme
-3. Prioritize assets that match the emotional tone
-4. Ensure variety in asset types (hero, supporting, icons)
+CRITICAL: ONLY USE THESE AVAILABLE FOLDERS (do not create new folder names):
+${availableFolders.map(folder => `- "${folder}"`).join('\n')}
+
+Folder Descriptions:
+${Object.entries(figmaTags.folders || {}).map(([folder, info]: [string, any]) => 
+  `- "${folder}": ${info.description || 'No description'} (${info.files_count || 0} files)`
+).join('\n')}
+
+STRICT INSTRUCTIONS:
+1. ONLY select folders from the available list above - NO EXCEPTIONS
+2. Do NOT create folder names like "images", "icons", "brand elements" - these do not exist
+3. Match content requirements with available folder descriptions
+4. Select 2-5 folders maximum based on campaign needs
+5. Prioritize folders that best match the campaign theme
 
 Return JSON format:
 {
   "selections": [
     {
-      "folder": "figma_folder_name",
+      "folder": "EXACT_FOLDER_NAME_FROM_AVAILABLE_LIST",
       "usage": "hero|support|icon|decoration",
       "priority": "high|medium|low",
-      "expected_count": 3,
+      "expected_count": 1,
       "search_criteria": {
-        "tags": ["relevant", "tags"],
-        "purpose": "specific purpose",
-        "emotional_match": "why this matches campaign emotion"
+        "tags": ["relevant", "tags", "from", "figma"],
+        "purpose": "specific purpose for this campaign",
+        "emotional_match": "why this folder matches campaign emotion"
+      }
+    }
+  ]
+}
+
+EXAMPLE for Guatemala travel campaign:
+{
+  "selections": [
+    {
+      "folder": "иллюстрации",
+      "usage": "hero",
+      "priority": "high",
+      "expected_count": 1,
+      "search_criteria": {
+        "tags": ["путешествия", "природа", "пейзаж"],
+        "purpose": "main travel destination visuals",
+        "emotional_match": "adventure and discovery"
+      }
+    },
+    {
+      "folder": "логотипы-ак",
+      "usage": "decoration",
+      "priority": "medium",
+      "expected_count": 1,
+      "search_criteria": {
+        "tags": ["логотип", "брендинг"],
+        "purpose": "brand identity",
+        "emotional_match": "establishing brand presence"
       }
     }
   ]
@@ -235,26 +273,27 @@ Return JSON format:
     const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
     const selection = JSON.parse(aiContent);
     
-    console.log(`✅ AI selected ${selection.selections?.length || 0} asset groups`);
+    // 🔒 CRITICAL VALIDATION: Filter out invalid folder selections 
+    const validSelections = (selection.selections || []).filter((sel: any) => {
+      if (!availableFolders.includes(sel.folder)) {
+        console.error(`❌ INVALID FOLDER: AI selected "${sel.folder}" which does not exist. Available folders: ${availableFolders.join(', ')}`);
+        throw new Error(`❌ CRITICAL ERROR: AI selected non-existent folder "${sel.folder}". Available folders are: ${availableFolders.join(', ')}. No fallback allowed - all selected folders must exist.`);
+      }
+      return true;
+    });
     
-    return selection.selections || [];
+    console.log(`✅ AI selected ${validSelections.length} valid asset groups: ${validSelections.map((sel: any) => sel.folder).join(', ')}`);
+    
+    if (validSelections.length === 0) {
+      throw new Error(`❌ CRITICAL ERROR: AI failed to select any valid folders from available options: ${availableFolders.join(', ')}. No fallback allowed - AI must select from existing folders.`);
+    }
+    
+    return validSelections;
     
   } catch (error) {
     console.error('❌ AI Figma asset selection failed:', error);
-    // Return basic fallback selection
-    return [
-      {
-        folder: 'зайцы-общие',
-        usage: 'hero',
-        priority: 'high',
-        expected_count: 2,
-        search_criteria: {
-          tags: ['путешествия', 'отдых'],
-          purpose: 'hero image',
-          emotional_match: 'travel and vacation theme'
-        }
-      }
-    ];
+    // NO FALLBACK POLICY: Fail fast if AI selection fails
+    throw new Error(`❌ CRITICAL ERROR: AI-powered Figma asset selection failed: ${error instanceof Error ? error.message : 'Unknown error'}. No fallback selection allowed - AI must successfully select assets.`);
   }
 }
 
@@ -330,14 +369,27 @@ Return JSON format:
     const selection = JSON.parse(aiContent);
     
     const selectedFiles = selection.selected_files || [];
-    console.log(`✅ AI filtered to ${selectedFiles.length} files: ${selectedFiles.join(', ')}`);
     
-    return selectedFiles;
+    // 🔒 CRITICAL VALIDATION: Ensure AI only returned files that actually exist
+    const validFiles = selectedFiles.filter((file: string) => {
+      if (!files.includes(file)) {
+        console.error(`❌ INVALID FILE: AI selected "${file}" which does not exist in folder. Available files: ${files.slice(0, 10).join(', ')}${files.length > 10 ? '...' : ''}`);
+        return false;
+      }
+      return true;
+    });
+    
+    if (validFiles.length === 0) {
+      throw new Error(`❌ AI FILTERING FAILED: AI returned no valid files from ${files.length} available files in folder. This indicates AI analysis is not working properly. Available files: ${files.slice(0, 10).join(', ')}${files.length > 10 ? ` and ${files.length - 10} more...` : ''}`);
+    }
+    
+    console.log(`✅ AI filtered to ${validFiles.length} valid files: ${validFiles.join(', ')}`);
+    
+    return validFiles;
     
   } catch (error) {
     console.error('❌ AI file filtering failed:', error);
-    // Return first N files as fallback
-    return files.slice(0, expectedCount);
+    throw new Error(`❌ AI FILTERING SYSTEM FAILURE: Unable to filter files with AI analysis. Original error: ${error.message}. Expected ${expectedCount} files from ${files.length} available files.`);
   }
 }
 

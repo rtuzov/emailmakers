@@ -1,85 +1,86 @@
 import { promises as fs } from 'fs';
-import * as path from 'path';
-import { randomBytes } from 'crypto';
-import * as os from 'os';
+import path from 'path';
 
 /**
- * Create a temporary directory for processing
+ * STRICT NO-FALLBACK FILE SYSTEM UTILITIES
+ * According to project policy: NO FALLBACK LOGIC ALLOWED
+ * System must fail fast if operations cannot be completed
  */
-export async function createTempDir(): Promise<string> {
-  const tempBase = os.tmpdir();
-  const randomSuffix = randomBytes(8).toString('hex');
-  const tempDir = path.join(tempBase, `figma-sprite-${randomSuffix}`);
-  
-  await fs.mkdir(tempDir, { recursive: true });
-  return tempDir;
-}
 
 /**
- * Ensure a directory exists, creating it if necessary with proper error handling
+ * Ensures a directory exists, creating it if necessary
+ * STRICT MODE: Fails immediately if directory cannot be created
  */
-export async function ensureDirectoryExists(dirPath: string): Promise<void> {
+export async function ensureDirectoryExists(dirPath: string): Promise<string> {
   try {
     await fs.access(dirPath);
+    console.log(`✅ Directory exists: ${dirPath}`);
+    return dirPath;
   } catch (error) {
-    // Directory doesn't exist, create it with permission handling
+    console.log(`📁 Creating directory: ${dirPath}`);
+    
     try {
       await fs.mkdir(dirPath, { recursive: true });
-      console.log(`✅ Directory created: ${dirPath}`);
-    } catch (createError: any) {
-      if (createError.code === 'EACCES') {
-        // Permission denied - try alternative directory
-        const fallbackDir = await createFallbackDirectory(dirPath);
-        console.warn(`⚠️ Permission denied for ${dirPath}, using fallback: ${fallbackDir}`);
-        return;
-      } else if (createError.code === 'EEXIST') {
-        // Directory already exists, continue
-        console.log(`📁 Directory already exists: ${dirPath}`);
-        return;
-      } else {
-        console.error(`❌ Failed to create directory ${dirPath}:`, createError);
-        throw createError;
-      }
+      console.log(`✅ Directory created successfully: ${dirPath}`);
+      return dirPath;
+    } catch (createError) {
+      // NO FALLBACK - FAIL IMMEDIATELY
+      throw new Error(`Failed to create directory: ${dirPath}. Error: ${createError instanceof Error ? createError.message : 'Unknown error'}`);
     }
   }
 }
 
 /**
- * Create a fallback directory in a writable location when permission is denied
+ * Creates a directory with strict error handling
+ * NO FALLBACK - fails immediately if cannot create
  */
-export async function createFallbackDirectory(originalPath: string): Promise<string> {
-  const os = await import('os');
-  const path = await import('path');
-  
-  // Try user's temp directory first
-  const tempDir = os.tmpdir();
-  const projectName = 'email-makers';
-  const fallbackBase = path.join(tempDir, projectName);
-  
-  // Extract relative path from original
-  const relativePath = originalPath.replace(process.cwd(), '').replace(/^[\/\\]/, '');
-  const fallbackPath = path.join(fallbackBase, relativePath);
-  
+export async function createDirectory(dirPath: string): Promise<string> {
   try {
-    await fs.mkdir(fallbackPath, { recursive: true });
-    console.log(`✅ Fallback directory created: ${fallbackPath}`);
-    return fallbackPath;
-  } catch (fallbackError) {
-    // Last resort: use current directory subdirectory
-    const currentDirFallback = path.join(process.cwd(), 'temp', relativePath);
-    try {
-      await fs.mkdir(currentDirFallback, { recursive: true });
-      console.log(`✅ Current directory fallback created: ${currentDirFallback}`);
-      return currentDirFallback;
-    } catch (finalError) {
-      console.error(`❌ All directory creation attempts failed:`, finalError);
-      throw new Error(`Cannot create directory: ${originalPath}. Permission denied and fallback failed.`);
-    }
+    await fs.mkdir(dirPath, { recursive: true });
+    console.log(`✅ Directory created: ${dirPath}`);
+    return dirPath;
+  } catch (error) {
+    // NO FALLBACK - FAIL IMMEDIATELY
+    throw new Error(`Cannot create directory: ${dirPath}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
- * Check if file exists
+ * Writes content to a file with strict error handling
+ * NO FALLBACK - fails immediately if cannot write
+ */
+export async function writeFileStrict(filePath: string, content: string): Promise<void> {
+  try {
+    // Ensure parent directory exists first
+    const parentDir = path.dirname(filePath);
+    await ensureDirectoryExists(parentDir);
+    
+    await fs.writeFile(filePath, content, 'utf-8');
+    console.log(`✅ File written: ${filePath}`);
+  } catch (error) {
+    // NO FALLBACK - FAIL IMMEDIATELY
+    throw new Error(`Cannot write file: ${filePath}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+/**
+ * Reads a file with strict error handling
+ * NO FALLBACK - fails immediately if cannot read
+ */
+export async function readFileStrict(filePath: string): Promise<string> {
+  try {
+    const content = await fs.readFile(filePath, 'utf-8');
+    console.log(`✅ File read: ${filePath}`);
+    return content;
+  } catch (error) {
+    // NO FALLBACK - FAIL IMMEDIATELY
+    throw new Error(`Cannot read file: ${filePath}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+/**
+ * Checks if a file exists with strict error handling
+ * Returns boolean - does not use fallback
  */
 export async function fileExists(filePath: string): Promise<boolean> {
   try {
@@ -91,81 +92,28 @@ export async function fileExists(filePath: string): Promise<boolean> {
 }
 
 /**
- * Get file size in bytes
+ * Ensures a campaign directory structure exists
+ * NO FALLBACK - fails immediately if cannot create required structure
  */
-export async function getFileSize(filePath: string): Promise<number> {
-  const stats = await fs.stat(filePath);
-  return stats.size;
-}
+export async function ensureCampaignDirectoryStructure(campaignPath: string): Promise<string> {
+  const requiredDirs = [
+    campaignPath,
+    path.join(campaignPath, 'assets'),
+    path.join(campaignPath, 'templates'),
+    path.join(campaignPath, 'handoffs'),
+    path.join(campaignPath, 'docs'),
+    path.join(campaignPath, 'outputs')
+  ];
 
-/**
- * Clean up directory and all contents
- */
-export async function cleanupDirectory(dirPath: string): Promise<void> {
   try {
-    await fs.rm(dirPath, { recursive: true, force: true });
+    for (const dir of requiredDirs) {
+      await ensureDirectoryExists(dir);
+    }
+    
+    console.log(`✅ Campaign directory structure created: ${campaignPath}`);
+    return campaignPath;
   } catch (error) {
-    console.warn(`Failed to cleanup directory ${dirPath}: ${error}`);
-  }
-}
-
-/**
- * Safe directory creation that handles permission errors gracefully
- * Returns the actual path created (might be different from requested if fallback was used)
- */
-export async function safeCreateDirectory(dirPath: string): Promise<string> {
-  try {
-    await fs.mkdir(dirPath, { recursive: true });
-    console.log(`✅ Directory created: ${dirPath}`);
-    return dirPath;
-  } catch (createError: any) {
-    if (createError.code === 'EACCES') {
-      // Permission denied - create fallback directory
-      const fallbackDir = await createFallbackDirectory(dirPath);
-      console.warn(`⚠️ Permission denied for ${dirPath}, using fallback: ${fallbackDir}`);
-      return fallbackDir;
-    } else if (createError.code === 'EEXIST') {
-      // Directory already exists
-      console.log(`📁 Directory already exists: ${dirPath}`);
-      return dirPath;
-    } else {
-      console.error(`❌ Failed to create directory ${dirPath}:`, createError);
-      throw createError;
-    }
-  }
-}
-
-/**
- * Safe file write that handles permission errors gracefully
- */
-export async function safeWriteFile(filePath: string, content: string): Promise<string> {
-  try {
-    // Ensure parent directory exists
-    const parentDir = require('path').dirname(filePath);
-    const actualParentDir = await safeCreateDirectory(parentDir);
-    
-    // Adjust file path if parent directory was changed
-    const fileName = require('path').basename(filePath);
-    const actualFilePath = require('path').join(actualParentDir, fileName);
-    
-    await fs.writeFile(actualFilePath, content, 'utf8');
-    console.log(`✅ File written: ${actualFilePath}`);
-    return actualFilePath;
-  } catch (writeError: any) {
-    if (writeError.code === 'EACCES') {
-      // Permission denied - try in temp directory
-      const os = await import('os');
-      const path = await import('path');
-      const fileName = path.basename(filePath);
-      const tempFilePath = path.join(os.tmpdir(), 'email-makers', fileName);
-      
-      await safeCreateDirectory(path.dirname(tempFilePath));
-      await fs.writeFile(tempFilePath, content, 'utf8');
-      console.warn(`⚠️ Permission denied for ${filePath}, saved to: ${tempFilePath}`);
-      return tempFilePath;
-    } else {
-      console.error(`❌ Failed to write file ${filePath}:`, writeError);
-      throw writeError;
-    }
+    // NO FALLBACK - FAIL IMMEDIATELY
+    throw new Error(`Failed to create campaign directory structure: ${campaignPath}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 } 

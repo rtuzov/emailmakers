@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { executeContentSpecialistTask } from '@/agent/specialists/content-specialist-agent';
+import { contentSpecialistAgent } from '@/agent/core/tool-registry';
 
 /**
  * Zod schema for Content Specialist API request validation
@@ -123,7 +123,37 @@ export async function POST(request: NextRequest) {
     };
 
     // Execute the content specialist task with OpenAI Agents SDK
-    const result = await executeContentSpecialistTask(agentInput);
+    const { run } = await import('@openai/agents');
+    
+    // Create prompt for the agent
+    const prompt = `Process content generation task:
+
+**Task Type:** ${task_type}
+**Topic:** ${topic}
+**Destination:** ${destination}
+**Language:** ${language}
+
+**Instructions:**
+1. Analyze the topic and destination context
+2. Generate compelling email content
+3. Create asset strategy and manifest  
+4. Prepare pricing analysis if needed
+5. Generate technical specifications
+
+Please execute the content workflow and provide comprehensive results.`;
+
+    console.log('🚀 Running Content Specialist Agent with OpenAI Agents SDK...');
+    
+    // Run the agent with the prepared input
+    const result = await run(contentSpecialistAgent, prompt, {
+      context: {
+        agentInput,
+        apiCall: true,
+        timestamp: new Date().toISOString(),
+        requestId: `req_${Date.now()}_${Math.random().toString(36).substring(2)}`
+      }
+    });
+    
     const executionTime = Date.now() - startTime;
 
     console.log('✅ ContentSpecialist agent completed (OpenAI Agents SDK v2):', {

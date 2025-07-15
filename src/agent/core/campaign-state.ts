@@ -234,7 +234,7 @@ class CampaignStateManager {
       this.updateCampaign(campaignData.campaignId, {
         emailFolder: campaignData.emailFolder,
         topic: campaignData.topic,
-        trace_id: campaignData.trace_id
+        trace_id: campaignData.trace_id || 'default-trace'
       });
     } else {
       const campaign: Campaign = {
@@ -248,7 +248,7 @@ class CampaignStateManager {
         updated_at: new Date().toISOString(),
         emailFolder: campaignData.emailFolder,
         topic: campaignData.topic,
-        trace_id: campaignData.trace_id
+        trace_id: campaignData.trace_id || 'default-trace'
       };
       
       this.campaigns.set(campaignData.campaignId, campaign);

@@ -10,8 +10,7 @@
  * - Валидация ассетов
  */
 
-import { figmaSearch, FigmaSearchSchema } from '../tools/simple/figma-search';
-import { figmaFolders, FigmaFoldersSchema } from '../tools/simple/figma-folders';
+import { figmaSearch } from '../tools/simple/figma-search';
 import { Agent, run } from '@openai/agents';
 import { getUsageModel } from '../../shared/utils/model-config';
 
@@ -95,7 +94,6 @@ export class AssetManager {
    * Основной метод поиска ассетов с интеллектуальным подходом
    */
   async searchAssets(params: AssetSearchParams, contentPackage?: any): Promise<AssetSearchResult> {
-    const startTime = Date.now();
     
     // Если теги не предоставлены, генерируем их через AI
     let searchTags = params.tags;
@@ -115,7 +113,7 @@ export class AssetManager {
     }
 
     // Выполняем интеллектуальный поиск с альтернативными вариантами
-    const searchResult = await this.performIntelligentSearch(searchTags, params, contentPackage);
+    const searchResult = await this.performIntelligentSearch(searchTags, params);
 
     // Кэшируем результат
     this.cache.set(cacheKey, searchResult);
@@ -221,7 +219,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       const all_tags: string[] = [];
       const folders = data.folders || {};
       
-      for (const [folderName, folderData] of Object.entries(folders)) {
+      for (const [, folderData] of Object.entries(folders)) {
         if (folderData && typeof folderData === 'object' && 'tags' in folderData) {
           const folderWithTags = folderData as { tags: string[] };
           all_tags.push(...folderWithTags.tags);
@@ -267,14 +265,14 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       return this.aiOptimizedTagsCache;
       
     } catch (error) {
-      throw new Error(`AssetManager: Failed to load AI-optimized tags: ${error.message}`);
+      throw new Error(`AssetManager: Failed to load AI-optimized tags: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
   /**
    * Интеллектуальный поиск с альтернативными внешними источниками
    */
-  private async performIntelligentSearch(tags: string[], params: AssetSearchParams, contentPackage?: any): Promise<AssetSearchResult> {
+  private async performIntelligentSearch(tags: string[], params: AssetSearchParams): Promise<AssetSearchResult> {
     const startTime = Date.now();
     let figmaAssets: StandardAsset[] = [];
     let externalAssets: StandardAsset[] = [];
@@ -303,7 +301,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
         console.log(`⚠️ No Figma assets found for tags: [${tags.join(', ')}]`);
       }
     } catch (error) {
-      console.warn(`⚠️ Figma search failed: ${error.message}`);
+      console.warn(`⚠️ Figma search failed: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     // Шаг 2: Проверяем результат Figma поиска
@@ -322,13 +320,13 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
       success: true,
       assets: allAssets.slice(0, params.target_count), // Ограничиваем количество
       total_found: allAssets.length,
-      external_images: externalAssets.length > 0 ? externalAssets : undefined,
+      ...(externalAssets.length > 0 && { external_images: externalAssets }),
       search_metadata: {
         query_tags: tags,
         search_time_ms: Date.now() - startTime,
         recommendations: this.generateRecommendations(allAssets, params),
         figma_tags_used: usedTags,
-        external_sources_used: externalSources.length > 0 ? externalSources : undefined
+        ...(externalSources.length > 0 && { external_sources_used: externalSources })
       }
     };
 
@@ -342,10 +340,9 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
     return result;
   }
 
-  /**
-   * Поиск внешних изображений
-   */
-  private async searchExternalImages(tags: string[], params: AssetSearchParams, contentPackage?: any): Promise<StandardAsset[]> {
+  /*
+  // COMMENTED OUT - Reserved for future external image search implementation
+  private async _searchExternalImages(tags: string[], params: AssetSearchParams, contentPackage?: any): Promise<StandardAsset[]> {
     // Переводим русские теги в английские для поиска в международных источниках
     const englishTags = await this.translateTagsToEnglish(tags);
     
@@ -363,10 +360,10 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
     // Return empty array - external images should be handled by AI asset collection
     return [];
   }
+  */
 
-  /**
-   * Перевод русских тегов в английские для поиска в международных источниках
-   */
+  /*
+  // COMMENTED OUT - Used by external image search (also commented out)
   private async translateTagsToEnglish(russianTags: string[]): Promise<string[]> {
     const translations: Record<string, string> = {
       'путешествия': 'travel',
@@ -393,6 +390,7 @@ ${Object.entries(aiOptimizedTags.search_recommendations).map(([type, rec]) =>
     
     return russianTags.map(tag => translations[tag] || tag).filter(Boolean);
   }
+  */
 
   /**
    * Трансформация в стандартный формат

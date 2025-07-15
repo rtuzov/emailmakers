@@ -1,6 +1,6 @@
 'use client';
 
-import { RefreshCw, Filter, Search, Download, Trash2, Settings, Clock, AlertCircle, Info, Bug, AlertTriangle, Zap, Activity, Bell, BellOff, Plus, Eye, EyeOff, BarChart3, Cpu, MemoryStick, TrendingUp, Target, Play, Square, BarChart2, Monitor } from 'lucide-react';
+import { RefreshCw, Filter, Search, Download, Trash2, Settings, Clock, AlertCircle, Info, Bug, AlertTriangle, Zap, Activity, Bell, BellOff, Plus, Eye, EyeOff, BarChart3, Cpu, MemoryStick, TrendingUp, Target, Play, BarChart2, Monitor } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface LogEntry {
@@ -93,8 +93,8 @@ export default function AgentLogsPage() {
   const [levelFilter, setLevelFilter] = useState<string>('all');
   const [toolFilter, setToolFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [limit, setLimit] = useState(100);
-  const [since, setSince] = useState<string>('');
+  const [limit, _setLimit] = useState(100);
+  const [since, _setSince] = useState<string>('');
   const [clearingLogs, setClearingLogs] = useState(false);
   const [exportingLogs, setExportingLogs] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
@@ -107,7 +107,7 @@ export default function AgentLogsPage() {
 
   // Phase 3.3.6: Performance debugging state
   const [showPerformanceTools, setShowPerformanceTools] = useState(false);
-  const [profilingData, setProfilingData] = useState<any>(null);
+  const [_profilingData, setProfilingData] = useState<any>(null);
   const [performanceAnalysis, setPerformanceAnalysis] = useState<any>(null);
   const [activeProfiles, setActiveProfiles] = useState<any[]>([]);
   const [debugSessions, setDebugSessions] = useState<any[]>([]);

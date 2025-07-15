@@ -44,7 +44,7 @@ export function BuilderLayout({ children, leftPanel, rightPanel }: BuilderLayout
     }
   ]
 
-  const userActions = [
+  const _userActions = [
     {
       label: 'Save Template',
       icon: (

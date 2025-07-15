@@ -110,6 +110,84 @@ export const generateAssetManifest = tool({
     console.log(`📊 Asset Sources: ${assetSources.length}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
+    // STRICT MODE: Validate asset sources and fail fast for invalid paths
+    const validatedAssetSources = [];
+    for (const source of assetSources) {
+      if (source.type === 'local') {
+        // Check if the path exists
+        try {
+          const sourcePath = path.resolve(source.path);
+          await fs.access(sourcePath);
+          validatedAssetSources.push(source);
+          console.log(`✅ Valid asset source: ${source.path}`);
+        } catch (error) {
+          console.error(`❌ Invalid asset source path: ${source.path} - ${error.message}`);
+          
+          // IMPROVED ERROR HANDLING: Try to suggest and auto-correct common mistakes
+          let correctedSource = null;
+          
+          // Common mistake: "assets/images/" -> should be "figma-assets/"
+          if (source.path.includes('assets/images') || source.path === 'assets/images/') {
+            const suggestedPath = 'figma-assets';
+            try {
+              await fs.access(path.resolve(suggestedPath));
+              correctedSource = { ...source, path: suggestedPath };
+              console.log(`🔄 Auto-corrected asset source: ${source.path} -> ${suggestedPath}`);
+            } catch {
+              // Still doesn't exist, continue with error
+            }
+          }
+          
+          // Common mistake: "figma-assets/" with trailing slash
+          if (source.path.endsWith('/')) {
+            const suggestedPath = source.path.slice(0, -1);
+            try {
+              await fs.access(path.resolve(suggestedPath));
+              correctedSource = { ...source, path: suggestedPath };
+              console.log(`🔄 Auto-corrected asset source: ${source.path} -> ${suggestedPath}`);
+            } catch {
+              // Still doesn't exist, continue with error
+            }
+          }
+          
+          // If we found a correction, use it
+          if (correctedSource) {
+            validatedAssetSources.push(correctedSource);
+            console.log(`✅ Using corrected asset source: ${correctedSource.path}`);
+          } else {
+            // STRICT MODE: No fallback allowed, but provide helpful error message
+            const availableDirs = [];
+            try {
+              const entries = await fs.readdir(process.cwd(), { withFileTypes: true });
+              for (const entry of entries) {
+                if (entry.isDirectory() && (entry.name.includes('figma') || entry.name.includes('assets'))) {
+                  availableDirs.push(entry.name);
+                }
+              }
+            } catch {
+              availableDirs.push('figma-assets', 'figma-all-pages-*');
+            }
+            
+            throw new Error(
+              `❌ Asset source validation failed: "${source.path}" does not exist.\n` +
+              `🚫 No fallback allowed per strict mode.\n` +
+              `💡 Available asset directories: ${availableDirs.join(', ')}\n` +
+              `💡 Common valid paths: "figma-assets", "figma-all-pages-1750993353363"\n` +
+              `💡 Make sure to use exact directory names without trailing slashes.`
+            );
+          }
+        }
+      } else {
+        // Non-local sources (figma, url, campaign) are validated differently
+        validatedAssetSources.push(source);
+        console.log(`✅ Non-local asset source: ${source.type}:${source.path}`);
+      }
+    }
+    
+    // Use validated sources
+    const finalAssetSources = validatedAssetSources;
+    console.log(`📊 Validated Asset Sources: ${finalAssetSources.length}`);
+    
     const startTime = Date.now();
     const manifestId = `manifest_${Date.now()}_${Math.random().toString(36).substring(2)}`;
     const generationOptions: AssetManifestOptions = {
@@ -141,12 +219,12 @@ export const generateAssetManifest = tool({
       console.log('📁 Collecting assets from sources...');
       let collectionResult: any = null;
       
-      if (generationOptions.collectFromSources && assetSources.length > 0) {
+      if (generationOptions.collectFromSources && finalAssetSources.length > 0) {
         const assetsDestination = path.join(campaignPath, 'assets', 'collected');
         await fs.mkdir(assetsDestination, { recursive: true });
         
         collectionResult = await collectAssetsFromSources(
-          assetSources,
+          finalAssetSources,
           assetsDestination,
           contentContext,
           context || undefined
@@ -163,7 +241,7 @@ export const generateAssetManifest = tool({
           console.log('⚠️ No external images collected, forcing external image generation');
           
           // Add external fallback source if not present
-          const hasExternalSource = assetSources.some(source => 
+          const hasExternalSource = finalAssetSources.some(source => 
             source.type === 'url' && source.path === 'external_fallback'
           );
           
@@ -200,20 +278,8 @@ export const generateAssetManifest = tool({
                 console.log('⚠️ AI generated 0 external images - this is unexpected');
               }
             } catch (error) {
-              console.error('❌ Failed to generate external images:', error);
-              console.log('🔄 Attempting fallback external image generation...');
-              
-              try {
-                const { generateFallbackExternalImages } = await import('./ai-analysis');
-                const fallbackImages = generateFallbackExternalImages(contentContext);
-                
-                if (fallbackImages.length > 0) {
-                  collectionResult.assets.push(...fallbackImages);
-                  console.log(`✅ Added ${fallbackImages.length} fallback external images`);
-                }
-              } catch (fallbackError) {
-                console.error('❌ Fallback external image generation also failed:', fallbackError);
-              }
+              // NO FALLBACK POLICY: Fail fast if external image generation fails
+              throw new Error(`❌ CRITICAL ERROR: External image generation failed: ${error instanceof Error ? error.message : 'Unknown error'}. AI must generate real external images or the operation fails - no fallback allowed.`);
             }
           } else {
             console.log('✅ External source already configured, should have been processed');
@@ -361,7 +427,7 @@ export const generateAssetManifest = tool({
         generationSummary: {
           timestamp: new Date().toISOString(),
           processingTime,
-          sourcesProcessed: assetSources.length,
+          sourcesProcessed: finalAssetSources.length,
           assetsCollected: collectionResult?.assets?.length || 0,
           assetsValidated: collectionResult?.assets?.length || 0,
           assetsOptimized: collectionResult?.assets?.filter(a => a.optimized)?.length || 0,

@@ -39,9 +39,35 @@ export const saveAnalysisResult = tool({
   execute: async ({ analysis_type, result_data, campaign_path }) => {
     try {
       console.log(`💾 Saving ${analysis_type} analysis to: ${campaign_path}`);
+      console.log(`🔍 DEBUG: Full campaign_path value:`, JSON.stringify(campaign_path));
+      console.log(`🔍 DEBUG: campaign_path length:`, campaign_path?.length);
+      console.log(`🔍 DEBUG: campaign_path type:`, typeof campaign_path);
+      
+      // Validate campaign_path before proceeding
+      if (!campaign_path) {
+        throw new Error('❌ Campaign path is null or undefined. Context manager must provide valid campaign path.');
+      }
+      
+      if (typeof campaign_path !== 'string') {
+        throw new Error(`❌ Campaign path must be a string, got: ${typeof campaign_path}`);
+      }
+      
+      if (campaign_path.includes('...')) {
+        throw new Error(`❌ Campaign path appears to be truncated (contains '...'): ${campaign_path}`);
+      }
       
       // Ensure data directory exists
       const dataDir = path.join(campaign_path, 'data');
+      console.log(`🔍 DEBUG: Target data directory: ${dataDir}`);
+      
+      // Check if campaign_path exists first
+      try {
+        await fs.access(campaign_path);
+        console.log(`✅ Campaign path exists: ${campaign_path}`);
+      } catch (error) {
+        throw new Error(`❌ Campaign path does not exist: ${campaign_path}. Error: ${error.message}`);
+      }
+      
       await fs.mkdir(dataDir, { recursive: true });
       
       // Helper function to convert text to structured JSON

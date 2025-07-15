@@ -96,14 +96,23 @@ async function generateDynamicMjmlTemplate(params: {
 }): Promise<any> {
   const { contentContext, designBrief, assetManifest, templateDesign, colors, layout } = params;
   
-  // Extract content for template generation - NO FALLBACK VALUES
-  const subject = contentContext.subject;
-  const preheader = contentContext.preheader;
-  const body = contentContext.body;
-  const pricing = contentContext.pricing;
-  const cta = contentContext.cta;
+  // Extract content for template generation with fallback values
+  const subject = contentContext.subject || contentContext.generated_content?.subject;
+  const preheader = contentContext.preheader || contentContext.generated_content?.preheader;
+  const body = contentContext.body || contentContext.generated_content?.body;
+  const pricing = contentContext.pricing || contentContext.pricing_analysis || contentContext.generated_content?.pricing;
+  const cta = contentContext.cta || contentContext.generated_content?.cta;
   
   if (!subject || !preheader || !body || !pricing || !cta) {
+    console.error('Missing content fields diagnostic:', {
+      subject: !!subject,
+      preheader: !!preheader,
+      body: !!body,
+      pricing: !!pricing,
+      cta: !!cta,
+      contentContextKeys: Object.keys(contentContext),
+      generated_content: !!contentContext.generated_content
+    });
     throw new Error('Required content fields missing: subject, preheader, body, pricing, or cta');
   }
   

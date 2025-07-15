@@ -4,11 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 interface LivePreviewProps {
-  htmlContent?: string
+  htmlContent?: string | undefined
   isLoading?: boolean
   title?: string
-  subjectLine?: string
-  preheader?: string
+  subjectLine?: string | undefined
+  preheader?: string | undefined
   metadata?: {
     generation_time?: number
     token_usage?: number

@@ -88,15 +88,15 @@ export class EmailMakersAgent {
       const enhancedContext = await createEnhancedContext(request, {
         traceId: options?.traceId,
         workflowType: options?.specialist ? 'specialist-direct' : 'full-campaign',
-        currentPhase: options?.specialist || 'data-collection',
+        currentPhase: options?.specialist || 'orchestration',
         
         campaign: {
           id: options?.campaignId || `campaign_${Date.now()}`,
-          name: options?.metadata?.campaignName || 'Email Campaign',
+          name: options?.metadata?.campaignName || options?.metadata?.campaign_name || 'API Generated Campaign',
           path: options?.campaignPath || '',
-          brand: options?.metadata?.brand || 'Default Brand',
+          brand: options?.metadata?.brand || 'API Brand',
           language: options?.metadata?.language || 'ru',
-          type: options?.metadata?.campaignType || 'promotional'
+          type: options?.metadata?.campaignType || options?.metadata?.type || 'promotional'
         },
         
         execution: {
@@ -232,6 +232,16 @@ export class EmailMakersAgent {
     const enhancedContext = await createEnhancedContext(request, {
       workflowType: 'specialist-direct',
       currentPhase: type,
+      
+      // Pass campaign data from context if available
+      campaign: context?.campaign || {
+        id: context?.campaign_id || (() => { throw new Error('❌ STRICT MODE: Campaign ID is required for specialist run'); })(),
+        name: context?.campaign_info?.name || context?.campaign?.name || (() => { throw new Error('❌ STRICT MODE: Campaign name is required'); })(),
+        path: context?.campaign_path || context?.absolute_campaign_path || (() => { throw new Error('❌ STRICT MODE: Campaign path is required'); })(),
+        brand: context?.campaign_info?.brand || context?.campaign?.brand || (() => { throw new Error('❌ STRICT MODE: Brand is required'); })(),
+        language: context?.campaign?.language || 'ru',
+        type: context?.campaign_info?.type || context?.campaign?.type || (() => { throw new Error('❌ STRICT MODE: Campaign type is required'); })()
+      },
       
       execution: {
         directSpecialistRun: true,

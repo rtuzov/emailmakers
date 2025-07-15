@@ -1,0 +1,12 @@
+{
+  "task_type": "email_campaign_generation",
+  "input": {
+    "brief": "Создать email-рассылку для осеннего путешествия в Тайланд. Включить информацию о турах с ценами от 24400 рублей, красивые пейзажи, культурные достопримечательности, местную кухню. Акцент на комфортную погоду осенью и специальные предложения.",
+    "metadata": {
+      "brand": "Travel Dreams",
+      "language": "ru", 
+      "campaign_name": "Thailand Autumn Adventure 2024",
+      "type": "promotional"
+    }
+  }
+} 

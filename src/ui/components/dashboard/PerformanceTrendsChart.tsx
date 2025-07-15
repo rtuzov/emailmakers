@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, BarChart3, Activity, Calendar, Filter } from 'lucide-react';
+import { TrendingUp, TrendingDown, BarChart3, Activity, Calendar } from 'lucide-react';
 
 interface PerformanceData {
   timestamp: string;
@@ -79,7 +79,7 @@ export default function PerformanceTrendsChart({ className = '' }: PerformanceTr
     return names[agent] || agent;
   };
 
-  const getAgentColor = (agent: string) => {
+  const _getAgentColor = (agent: string) => {
     const colors: Record<string, string> = {
       'content-specialist': 'kupibilet-primary',
       'design-specialist': 'kupibilet-secondary',

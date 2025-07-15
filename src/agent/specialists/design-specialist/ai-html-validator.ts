@@ -218,9 +218,9 @@ ${currentHtml}
 
   try {
     // Use OpenAI Agents SDK sub-agent for HTML enhancement
-    const result = await run(htmlValidationAgent, enhancementPrompt);
+    const aiResult = await run(htmlValidationAgent, enhancementPrompt);
     
-    const enhancedHtml = result.finalOutput.trim();
+    const enhancedHtml = aiResult.finalOutput.trim();
     
     // 🔒 КРИТИЧЕСКАЯ ПРОВЕРКА: Защита от обрезания контента
     const originalLength = currentHtml.length;
@@ -228,6 +228,10 @@ ${currentHtml}
     const sizeChangePercent = ((enhancedLength - originalLength) / originalLength) * 100;
     
     console.log(`📊 Size analysis: ${originalLength} → ${enhancedLength} (${sizeChangePercent.toFixed(1)}%)`);
+    
+    // 🔧 НОВАЯ ЛОГИКА: Всегда сохраняем оба варианта!
+    let shouldPreferOriginal = false;
+    let warningReasons: string[] = [];
     
     // Проверка на критическое уменьшение размера (>15% потери)
     if (sizeChangePercent < -15) {
@@ -244,36 +248,25 @@ ${currentHtml}
       if (!hasTitle || !hasMainContent || !hasImages) {
         console.error(`❌ ОБНАРУЖЕНО ОБРЕЗАНИЕ КОНТЕНТА!`);
         console.error(`❌ Title: ${hasTitle}, Content: ${hasMainContent}, Images: ${hasImages}`);
-        console.error(`❌ Возвращаем оригинальный HTML`);
-        
-        return {
-          enhancedHtml: currentHtml,
-          enhancementsMade: ['Защита от обрезания контента - изменения отменены']
-        };
+        shouldPreferOriginal = true;
+        warningReasons.push(`Обнаружено обрезание контента (Title: ${hasTitle}, Content: ${hasMainContent}, Images: ${hasImages})`);
       }
     }
     
     // Проверка на слишком большое увеличение размера (>200%)
     if (sizeChangePercent > 200) {
       console.warn(`⚠️ СЛИШКОМ БОЛЬШОЕ УВЕЛИЧЕНИЕ: ${sizeChangePercent.toFixed(1)}%`);
-      console.warn(`⚠️ Возможно добавлен лишний контент. Используем оригинал.`);
-      
-      return {
-        enhancedHtml: currentHtml,
-        enhancementsMade: ['Защита от избыточного контента - изменения отменены']
-      };
+      console.warn(`⚠️ Возможно добавлен лишний контент.`);
+      shouldPreferOriginal = true;
+      warningReasons.push(`Слишком большое увеличение размера: ${sizeChangePercent.toFixed(1)}%`);
     }
     
     // Базовая проверка на валидность HTML
     if (!enhancedHtml.includes('<html') || !enhancedHtml.includes('</html>') || 
         !enhancedHtml.includes('<body') || !enhancedHtml.includes('</body>')) {
       console.error(`❌ НЕКОРРЕКТНЫЙ HTML СТРУКТУРА!`);
-      console.error(`❌ Возвращаем оригинальный HTML`);
-      
-      return {
-        enhancedHtml: currentHtml,
-        enhancementsMade: ['Защита от некорректного HTML - изменения отменены']
-      };
+      shouldPreferOriginal = true;
+      warningReasons.push('Некорректная HTML структура');
     }
     
     // 🔍 ДОПОЛНИТЕЛЬНАЯ ВАЛИДАЦИЯ ЦЕЛОСТНОСТИ КОНТЕНТА
@@ -284,63 +277,123 @@ ${currentHtml}
       console.error(`❌ ОБНАРУЖЕНЫ ПРОБЛЕМЫ С ЦЕЛОСТНОСТЬЮ КОНТЕНТА!`);
       console.error(`❌ Проблемы: ${integrityCheck.issues.join(', ')}`);
       console.error(`❌ Детали проверки:`, integrityCheck.details);
-      console.error(`❌ Возвращаем оригинальный HTML`);
+      shouldPreferOriginal = true;
+      warningReasons.push(`Проблемы целостности: ${integrityCheck.issues.slice(0, 2).join(', ')}`);
+    }
+    
+    // 📦 НОВЫЙ ПОДХОД: Возвращаем структуру с обоими вариантами
+    const result = {
+      // Основной HTML (предпочтительный)
+      enhancedHtml: shouldPreferOriginal ? currentHtml : enhancedHtml,
       
-      return {
-        enhancedHtml: currentHtml,
-        enhancementsMade: [
-          'Защита от потери контента - изменения отменены',
-          `Проблемы: ${integrityCheck.issues.slice(0, 2).join(', ')}`
-        ]
-      };
+      // Альтернативный HTML (всегда доступен)
+      originalHtml: currentHtml,
+      optimizedHtml: enhancedHtml,
+      
+      // Мета-информация о выборе
+      preferredVersion: shouldPreferOriginal ? 'original' : 'optimized',
+      sizeChange: {
+        originalLength,
+        optimizedLength: enhancedLength,
+        changePercent: sizeChangePercent,
+        changeBytes: enhancedLength - originalLength
+      },
+      
+      // Статус проверок
+      validationStatus: {
+        hasWarnings: shouldPreferOriginal,
+        warningReasons,
+        integrityCheck: {
+          isValid: integrityCheck.isValid,
+          issues: integrityCheck.issues,
+          details: integrityCheck.details
+        }
+      },
+      
+      enhancementsMade: shouldPreferOriginal ? 
+        ['Оригинальный HTML сохранён из-за проблем с оптимизацией', ...warningReasons] :
+        []
+    };
+    
+    if (!shouldPreferOriginal) {
+      console.log('✅ Проверка целостности контента пройдена');
+      console.log('✅ Детали:', integrityCheck.details);
     }
     
-    console.log('✅ Проверка целостности контента пройдена');
-    console.log('✅ Детали:', integrityCheck.details);
+    console.log(`📊 РЕЗУЛЬТАТ: Используется ${result.preferredVersion} версия`);
+    console.log(`📁 Доступны обе версии: original (${originalLength} chars), optimized (${enhancedLength} chars)`);
     
-    // Analyze what improvements were made
-    const enhancementsMade: string[] = [];
-    
-    // Check for improvements
-    if (enhancedHtml.includes('@media') && !hasResponsiveDesign) {
-      enhancementsMade.push('Добавлена мобильная адаптивность');
+    // Analyze what improvements were made (только если используем оптимизированную версию)
+    if (!shouldPreferOriginal) {
+      const enhancementsMade: string[] = [];
+      
+      // Check for improvements
+      if (enhancedHtml.includes('@media') && !hasResponsiveDesign) {
+        enhancementsMade.push('Добавлена мобильная адаптивность');
+      }
+      
+      if (enhancedHtml.includes('prefers-color-scheme') && !hasDarkModeSupport) {
+        enhancementsMade.push('Добавлена поддержка темной темы');
+      }
+      
+      if (enhancedHtml.includes('box-shadow') || enhancedHtml.includes('gradient')) {
+        enhancementsMade.push('Добавлены современные визуальные эффекты');
+      }
+      
+      if (enhancedHtml.includes('border-radius')) {
+        enhancementsMade.push('Улучшен дизайн кнопок и элементов');
+      }
+      
+      if (enhancedHtml.includes('alt=')) {
+        enhancementsMade.push('Улучшена доступность с alt текстами');
+      }
+      
+      if (enhancedHtml.includes('font-weight: bold') || enhancedHtml.includes('<strong>')) {
+        enhancementsMade.push('Улучшена типографика и выделения');
+      }
+      
+      // Проверка на улучшение цветовой схемы
+      if (enhancedHtml.includes(primaryColor) || enhancedHtml.includes(accentColor)) {
+        enhancementsMade.push('Оптимизирована цветовая схема');
+      }
+      
+      // Default enhancements if none detected
+      if (enhancementsMade.length === 0) {
+        enhancementsMade.push('Общие улучшения дизайна и структуры');
+        enhancementsMade.push('Оптимизация для email клиентов');
+      }
+      
+      console.log(`✅ HTML Enhancement successful: ${enhancementsMade.length} improvements`);
+      console.log(`✅ Size change: ${sizeChangePercent.toFixed(1)}% (${originalLength} → ${enhancedLength})`);
+      
+      // Добавляем улучшения в result объект
+      result.enhancementsMade = enhancementsMade;
     }
+
+    // 📦 ВСЕГДА ВОЗВРАЩАЕМ ПОЛНУЮ СТРУКТУРУ С ОБОИМИ ВАРИАНТАМИ
+    const finalResult = {
+      // Для обратной совместимости - основной HTML
+      enhancedHtml: result.enhancedHtml,
+      enhancementsMade: result.enhancementsMade,
+      
+      // Расширенная информация с обоими вариантами
+      versions: {
+        original: result.originalHtml,
+        optimized: result.optimizedHtml,
+        preferred: result.preferredVersion
+      },
+      
+      // Мета-информация о размерах и изменениях
+      sizeAnalysis: result.sizeChange,
+      
+      // Статус валидации
+      validation: result.validationStatus
+    };
     
-    if (enhancedHtml.includes('prefers-color-scheme') && !hasDarkModeSupport) {
-      enhancementsMade.push('Добавлена поддержка темной темы');
-    }
+    console.log(`✅ HTML Enhancement complete. Both versions available.`);
+    console.log(`📋 Preferred: ${finalResult.versions.preferred}, Original: ${originalLength} chars, Optimized: ${enhancedLength} chars`);
     
-    if (enhancedHtml.includes('box-shadow') || enhancedHtml.includes('gradient')) {
-      enhancementsMade.push('Добавлены современные визуальные эффекты');
-    }
-    
-    if (enhancedHtml.includes('border-radius')) {
-      enhancementsMade.push('Улучшен дизайн кнопок и элементов');
-    }
-    
-    if (enhancedHtml.includes('alt=')) {
-      enhancementsMade.push('Улучшена доступность с alt текстами');
-    }
-    
-    if (enhancedHtml.includes('font-weight: bold') || enhancedHtml.includes('<strong>')) {
-      enhancementsMade.push('Улучшена типографика и выделения');
-    }
-    
-    // Проверка на улучшение цветовой схемы
-    if (enhancedHtml.includes(primaryColor) || enhancedHtml.includes(accentColor)) {
-      enhancementsMade.push('Оптимизирована цветовая схема');
-    }
-    
-    // Default enhancements if none detected
-    if (enhancementsMade.length === 0) {
-      enhancementsMade.push('Общие улучшения дизайна и структуры');
-      enhancementsMade.push('Оптимизация для email клиентов');
-    }
-    
-    console.log(`✅ HTML Enhancement successful: ${enhancementsMade.length} improvements`);
-    console.log(`✅ Size change: ${sizeChangePercent.toFixed(1)}% (${originalLength} → ${enhancedLength})`);
-    
-    return { enhancedHtml, enhancementsMade };
+    return finalResult;
 
   } catch (error) {
     console.error('❌ AI HTML Enhancement generation failed:', error);
@@ -600,7 +653,7 @@ export const validateAndCorrectHtml = tool({
          templateRequirements = cachedContext.templateRequirements;
          technicalRequirements = cachedContext.technicalRequirements;
          assetManifest = cachedContext.assetManifest;
-         contentContext = cachedContext.contentContext;
+         contentContext = cachedContext.content_context;
        } catch (error) {
          console.error('❌ Critical error loading campaign context:', error);
          throw new Error(`Failed to load campaign context: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -633,7 +686,7 @@ export const validateAndCorrectHtml = tool({
       // 🤖 ENHANCE HTML WITH AI using OpenAI Agents SDK
       console.log('🎨 Enhancing HTML with AI agent...');
       
-      let enhancementResult: { enhancedHtml: string; enhancementsMade: string[] };
+      let enhancementResult: any; // Изменяем тип для поддержки расширенной структуры
       try {
         enhancementResult = await generateEnhancedHtml({
           currentHtml,
@@ -647,27 +700,72 @@ export const validateAndCorrectHtml = tool({
         console.error('❌ AI enhancement failed, using original HTML:', error);
         enhancementResult = {
           enhancedHtml: currentHtml,
-          enhancementsMade: [`AI enhancement failed: ${error instanceof Error ? error.message : 'Unknown error'}`]
+          enhancementsMade: [`AI enhancement failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
+          versions: {
+            original: currentHtml,
+            optimized: currentHtml,
+            preferred: 'original'
+          },
+          sizeAnalysis: {
+            originalLength: currentHtml.length,
+            optimizedLength: currentHtml.length,
+            changePercent: 0,
+            changeBytes: 0
+          },
+          validation: {
+            hasWarnings: true,
+            warningReasons: [`AI enhancement failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
+            integrityCheck: { isValid: false, issues: ['Enhancement failed'], details: {} }
+          }
         };
       }
       
+      // Извлекаем данные из новой структуры
       const { enhancedHtml, enhancementsMade } = enhancementResult;
+      const { versions = {}, sizeAnalysis = {}, validation = {} } = enhancementResult;
+      
+      // 📊 ЛОГИРОВАНИЕ РЕЗУЛЬТАТОВ ОБЕИХ ВЕРСИЙ
+      console.log(`📊 Enhancement Results:`);
+      console.log(`   🔧 Preferred Version: ${versions.preferred || 'unknown'}`);
+      console.log(`   📁 Original HTML: ${sizeAnalysis.originalLength || currentHtml.length} chars`);
+      console.log(`   ⚡ Optimized HTML: ${sizeAnalysis.optimizedLength || enhancedHtml.length} chars`);
+      console.log(`   📈 Size Change: ${sizeAnalysis.changePercent || 0}% (${sizeAnalysis.changeBytes || 0} bytes)`);
+      console.log(`   ⚠️ Has Warnings: ${validation.hasWarnings || false}`);
+      
+      if (validation.warningReasons && validation.warningReasons.length > 0) {
+        console.log(`   📝 Warning Reasons: ${validation.warningReasons.join(', ')}`);
+      }
       
       // 🔒 ПРОВЕРКА: Были ли изменения отменены из-за защиты?
       const wasProtectionTriggered = enhancementsMade.some(enhancement => 
         enhancement.includes('защита') || enhancement.includes('отменены') || enhancement.includes('ошибка') || enhancement.includes('failed')
-      );
+      ) || validation.hasWarnings;
       
       // Generate timestamp for unique filename
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       
-      // Save enhanced HTML with timestamp - with error handling
+      // 💾 СОХРАНЕНИЕ ОБЕИХ ВЕРСИЙ С УЛУЧШЕННОЙ ЛОГИКОЙ
       try {
         await fs.mkdir(path.dirname(path.join(params.campaign_path, 'templates')), { recursive: true });
         
+        // Всегда сохраняем основную версию (предпочтительную)
         const enhancedHtmlPath = path.join(params.campaign_path, 'templates', `email-template-enhanced-${timestamp}.html`);
         await fs.writeFile(enhancedHtmlPath, enhancedHtml);
-        console.log(`✅ Enhanced HTML saved to: ${enhancedHtmlPath}`);
+        console.log(`✅ Enhanced HTML (${versions.preferred || 'unknown'}) saved to: ${enhancedHtmlPath}`);
+        
+        // Сохраняем оригинальную версию если есть
+        if (versions.original && versions.original !== enhancedHtml) {
+          const originalBackupPath = path.join(params.campaign_path, 'templates', `email-template-original-${timestamp}.html`);
+          await fs.writeFile(originalBackupPath, versions.original);
+          console.log(`📁 Original HTML backup saved to: ${originalBackupPath}`);
+        }
+        
+        // Сохраняем оптимизированную версию если есть и отличается
+        if (versions.optimized && versions.optimized !== enhancedHtml && versions.optimized !== versions.original) {
+          const optimizedPath = path.join(params.campaign_path, 'templates', `email-template-optimized-${timestamp}.html`);
+          await fs.writeFile(optimizedPath, versions.optimized);
+          console.log(`⚡ Optimized HTML version saved to: ${optimizedPath}`);
+        }
         
         // Also save as latest enhanced version for easy access
         const latestEnhancedPath = path.join(params.campaign_path, 'templates', 'email-template-enhanced-latest.html');
@@ -702,31 +800,84 @@ export const validateAndCorrectHtml = tool({
       try {
         comparisonReport = {
           timestamp: new Date().toISOString(),
-          original_file: 'email-template.html',
-          enhanced_file: `email-template-enhanced-${timestamp}.html`,
-          latest_enhanced_file: 'email-template-enhanced-latest.html',
-          enhancements_made: enhancementsMade,
-          original_size: currentHtml.length,
-          enhanced_size: enhancedHtml.length,
-          size_difference: enhancedHtml.length - currentHtml.length,
-          size_change_percent: ((enhancedHtml.length - currentHtml.length) / currentHtml.length * 100).toFixed(2),
-          protection_triggered: wasProtectionTriggered,
+          
+          // 📁 ФАЙЛЫ
+          files: {
+            original_file: 'email-template.html',
+            enhanced_file: `email-template-enhanced-${timestamp}.html`,
+            latest_enhanced_file: 'email-template-enhanced-latest.html',
+            ...(versions.original && versions.original !== enhancedHtml ? {
+              original_backup_file: `email-template-original-${timestamp}.html`
+            } : {}),
+            ...(versions.optimized && versions.optimized !== enhancedHtml && versions.optimized !== versions.original ? {
+              optimized_file: `email-template-optimized-${timestamp}.html`
+            } : {})
+          },
+          
+          // 📊 ВЕРСИИ И РАЗМЕРЫ
+          versions: {
+            preferred: versions.preferred || 'unknown',
+            original_size: sizeAnalysis.originalLength || currentHtml.length,
+            optimized_size: sizeAnalysis.optimizedLength || enhancedHtml.length,
+            preferred_size: enhancedHtml.length,
+            size_change: {
+              bytes: sizeAnalysis.changeBytes || (enhancedHtml.length - currentHtml.length),
+              percent: sizeAnalysis.changePercent || (((enhancedHtml.length - currentHtml.length) / currentHtml.length * 100).toFixed(2))
+            }
+          },
+          
+          // 🔧 УЛУЧШЕНИЯ И МОДИФИКАЦИИ
+          enhancements: {
+            made: enhancementsMade,
+            protection_triggered: wasProtectionTriggered,
+            warning_reasons: validation.warningReasons || [],
+            has_warnings: validation.hasWarnings || false
+          },
+          
+          // ✅ СТАТУС ВАЛИДАЦИИ
           validation_status: {
             original_errors: validationResults.errors.length,
             enhanced_errors: enhancedValidation.errors.length,
             improvement: validationResults.errors.length - enhancedValidation.errors.length,
             original_warnings: validationResults.warnings.length,
-            enhanced_warnings: enhancedValidation.warnings.length
+            enhanced_warnings: enhancedValidation.warnings.length,
+            integrity_check: validation.integrityCheck || {}
           },
-          ai_agent_used: 'OpenAI Agents SDK - HTML Validation & Enhancement AI'
+          
+          // 🔧 ТЕХНИЧЕСКАЯ ИНФОРМАЦИЯ
+          technical: {
+            ai_agent_used: 'OpenAI Agents SDK - HTML Validation & Enhancement AI',
+            both_versions_saved: true,
+            main_template_updated: !wasProtectionTriggered,
+            processing_timestamp: timestamp
+          },
+          
+          // 📋 КРАТКИЙ ОТЧЁТ
+          summary: {
+            status: wasProtectionTriggered ? 'PROTECTED' : 'ENHANCED',
+            preferred_version: versions.preferred || 'unknown',
+            total_files_saved: 3 + // базовые файлы (enhanced, latest, comparison)
+              (versions.original && versions.original !== enhancedHtml ? 1 : 0) + // original backup
+              (versions.optimized && versions.optimized !== enhancedHtml && versions.optimized !== versions.original ? 1 : 0), // optimized
+            size_change_description: sizeAnalysis.changePercent > 0 ? 
+              `Увеличился на ${Math.abs(sizeAnalysis.changePercent).toFixed(1)}%` :
+              sizeAnalysis.changePercent < 0 ?
+              `Уменьшился на ${Math.abs(sizeAnalysis.changePercent).toFixed(1)}%` :
+              'Без изменений размера',
+            validation_improvement: validationResults.errors.length - enhancedValidation.errors.length
+          }
         };
         
         const comparisonReportPath = path.join(params.campaign_path, 'templates', `enhancement-comparison-${timestamp}.json`);
         await fs.writeFile(comparisonReportPath, JSON.stringify(comparisonReport, null, 2));
-        console.log(`📊 Comparison report saved to: ${comparisonReportPath}`);
+        console.log(`📊 Comprehensive comparison report saved to: ${comparisonReportPath}`);
+        console.log(`📋 Summary: ${comparisonReport.summary.status} | ${comparisonReport.summary.preferred_version} version | ${comparisonReport.summary.size_change_description}`);
       } catch (error) {
         console.error('❌ Failed to save comparison report:', error);
-        comparisonReport = { size_change_percent: '0.00', protection_triggered: wasProtectionTriggered };
+        comparisonReport = { 
+          summary: { status: 'ERROR', size_change_description: 'Не удалось создать отчёт' },
+          protection_triggered: wasProtectionTriggered 
+        };
       }
       
       // 🔒 ВАЖНО: Обновляем основной template ТОЛЬКО если защита НЕ сработала

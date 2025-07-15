@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell, BellOff, AlertTriangle, CheckCircle, Clock, Settings, Filter, X, Plus } from 'lucide-react';
+import { Bell, BellOff, AlertTriangle, CheckCircle, Clock, Settings, X } from 'lucide-react';
 
 interface Alert {
   id: string;
@@ -40,7 +40,7 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
   const [alertRules, setAlertRules] = useState<AlertRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'active' | 'acknowledged' | 'resolved'>('all');
-  const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
+  const [_selectedAlert, _setSelectedAlert] = useState<Alert | null>(null);
   const [showRules, setShowRules] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
@@ -52,9 +52,9 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
       const priorities = ['high', 'medium', 'low'] as const;
 
       return Array.from({ length: 12 }, (_, i) => {
-        const type = types[Math.floor(Math.random() * types.length)];
-        const source = sources[Math.floor(Math.random() * sources.length)];
-        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        const type = types[Math.floor(Math.random() * types.length)] as Alert['type'];
+        const source = sources[Math.floor(Math.random() * sources.length)] as Alert['source'];
+        const status = statuses[Math.floor(Math.random() * statuses.length)] as Alert['status'];
         
         return {
           id: `alert-${Date.now()}-${i}`,
@@ -64,7 +64,7 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
           source,
           timestamp: new Date(Date.now() - Math.random() * 3600000 * 24).toISOString(),
           status,
-          priority: priorities[Math.floor(Math.random() * priorities.length)],
+          priority: priorities[Math.floor(Math.random() * priorities.length)] as Alert['priority'],
           actions_available: ['acknowledge', 'resolve', 'escalate'],
           metadata: {
             error_count: Math.floor(Math.random() * 10) + 1,
@@ -140,7 +140,7 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
       ]
     };
     
-    const typeTitle = titles[type as keyof typeof titles][Math.floor(Math.random() * 3)];
+    const typeTitle = titles[type as keyof typeof titles][Math.floor(Math.random() * 3)] || 'Unknown Alert';
     const sourceNames = {
       'content-specialist': 'Content Specialist',
       'design-specialist': 'Design Specialist', 
@@ -149,10 +149,10 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
       'system': 'System'
     };
     
-    return `${typeTitle} - ${sourceNames[source as keyof typeof sourceNames]}`;
+    return `${typeTitle} - ${sourceNames[source as keyof typeof sourceNames] || 'Unknown Source'}`;
   };
 
-  const generateAlertDescription = (type: string, source: string) => {
+  const generateAlertDescription = (type: string, _source: string) => {
     const descriptions = {
       critical: 'Требует немедленного вмешательства. Система может работать нестабильно.',
       warning: 'Рекомендуется проверить настройки и производительность.',

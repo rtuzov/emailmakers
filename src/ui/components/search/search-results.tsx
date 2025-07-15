@@ -130,9 +130,9 @@ export function SearchResults({
 
 interface SearchResultCardProps {
   result: SearchResult
-  onClick?: (result: SearchResult) => void
-  onPreview?: (result: SearchResult) => void
-  onDownload?: (result: SearchResult) => void
+  onClick?: ((result: SearchResult) => void) | undefined
+  onPreview?: ((result: SearchResult) => void) | undefined
+  onDownload?: ((result: SearchResult) => void) | undefined
 }
 
 function SearchResultCard({ result, onClick, onPreview, onDownload }: SearchResultCardProps) {

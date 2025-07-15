@@ -25,32 +25,32 @@ export const createFinalDeliveryPackage = tool({
   description: 'Create final delivery package with all campaign materials, reports, and export files',
   parameters: z.object({
     request: z.string().describe('Original user request'),
-          content_context: z.any().describe('Content context from Content Specialist'),
-      design_context: z.any().describe('Design context from Design Specialist'),
-      quality_context: z.any().describe('Quality context from Quality Specialist'),
-      delivery_manifest: z.any().describe('Delivery manifest with package contents'),
-      export_format: z.any().describe('Export format configuration'),
-      delivery_report: z.any().describe('Final delivery report'),
-      deployment_artifacts: z.any().describe('Deployment artifacts organization'),
+    content_context: z.object({}).passthrough().describe('Content context from Content Specialist'),
+    design_context: z.object({}).passthrough().describe('Design context from Design Specialist'),
+    quality_context: z.object({}).passthrough().describe('Quality context from Quality Specialist'),
+    delivery_manifest: z.object({}).passthrough().describe('Delivery manifest with package contents'),
+    export_format: z.object({}).passthrough().describe('Export format configuration'),
+    delivery_report: z.object({}).passthrough().describe('Final delivery report'),
+    deployment_artifacts: z.object({}).passthrough().describe('Deployment artifacts organization'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async (params, context) => {
+  execute: async (params, _context) => {
     console.log('\n🎯 === DELIVERY SPECIALIST FINALIZATION STARTED ===');
     console.log(`📋 Request: ${params.request.substring(0, 50)}...`);
     console.log(`📦 Package Format: ${params.export_format.format}`);
     console.log(`📁 Total Files: ${params.delivery_manifest.total_files}`);
-    console.log(`💾 Total Size: ${(params.delivery_manifest.total_size / 1024).toFixed(2)} KB`);
+    console.log(`💾 Total Size: ${(Number(params.delivery_manifest.total_size) / 1024).toFixed(2)} KB`);
     console.log(`🚀 Deployment Ready: ${params.delivery_report.deployment_ready}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
       // Build comprehensive delivery context
       const deliveryContext = await buildDeliveryContextFromOutputs(
-        params.quality_context,
-        params.delivery_manifest,
-        params.export_format,
-        params.delivery_report,
-        params.deployment_artifacts
+        params.quality_context as any,
+        params.delivery_manifest as any,
+        params.export_format as any,
+        params.delivery_report as any,
+        params.deployment_artifacts as any
       );
 
       // Validate delivery context completeness
@@ -62,7 +62,7 @@ export const createFinalDeliveryPackage = tool({
 
       // Save delivery context to campaign folder
       // Extract campaign path correctly - handle handoff file path vs campaign directory
-    let campaignPath = params.content_context.campaign.campaignPath;
+    let campaignPath = (params.content_context as any).campaign?.campaignPath;
     
     // If campaignPath is a handoff file path, extract the campaign directory
     if (campaignPath && campaignPath.includes('/handoffs/')) {
@@ -81,13 +81,13 @@ export const createFinalDeliveryPackage = tool({
 
       // Create final delivery summary
       const deliverySummary = {
-        campaign_id: params.content_context.campaign.id,
-        campaign_name: params.content_context.campaign.name,
+        campaign_id: (params.content_context as any).campaign?.id || 'unknown',
+        campaign_name: (params.content_context as any).campaign?.name || 'unknown',
         total_files: deliveryContext.delivery_manifest.total_files,
         total_size: `${(deliveryContext.delivery_manifest.total_size / 1024).toFixed(2)} KB`,
         export_path: deliveryContext.export_format.export_path,
         deployment_ready: deliveryContext.delivery_report.deployment_ready,
-        quality_score: params.quality_context.quality_report.overall_score,
+        quality_score: (params.quality_context as any).quality_report?.overall_score || 0,
         completion_time: deliveryContext.delivery_timestamp
       };
 
@@ -107,25 +107,25 @@ export const createFinalDeliveryPackage = tool({
       // Create final workflow completion report
       const workflowReport = {
         status: 'completed',
-        campaign_id: params.content_context.campaign.id,
-        campaign_name: params.content_context.campaign.name,
+        campaign_id: (params.content_context as any).campaign?.id || 'unknown',
+        campaign_name: (params.content_context as any).campaign?.name || 'unknown',
         completion_time: new Date().toISOString(),
         workflow_summary: {
           content_specialist: {
-            subject: params.content_context.generated_content.subject,
-            pricing: `${params.content_context.pricing_analysis.best_price} ${params.content_context.pricing_analysis.currency}`,
-            visual_style: params.content_context.asset_strategy.visual_style
+            subject: (params.content_context as any).generated_content?.subject || 'N/A',
+            pricing: `${(params.content_context as any).pricing_analysis?.best_price || 'N/A'} ${(params.content_context as any).pricing_analysis?.currency || ''}`,
+            visual_style: (params.content_context as any).asset_strategy?.visual_style || 'N/A'
           },
           design_specialist: {
-            template_size: `${(params.design_context.mjml_template.file_size / 1024).toFixed(2)} KB`,
-            assets_count: params.design_context.asset_manifest.images.length + params.design_context.asset_manifest.icons.length,
-            performance_score: params.design_context.performance_metrics.optimization_score
+            template_size: `${(Number((params.design_context as any).mjml_template?.file_size) / 1024).toFixed(2)} KB`,
+            assets_count: ((params.design_context as any).asset_manifest?.images?.length || 0) + ((params.design_context as any).asset_manifest?.icons?.length || 0),
+            performance_score: (params.design_context as any).performance_metrics?.optimization_score || 0
           },
           quality_specialist: {
-            overall_score: params.quality_context.quality_report.overall_score,
-            email_client_tests: params.quality_context.quality_report.email_client_tests.length,
-            accessibility_score: params.quality_context.quality_report.accessibility_test.overall_score,
-            approval_status: params.quality_context.quality_report.approval_status
+            overall_score: (params.quality_context as any).quality_report?.overall_score || 0,
+            email_client_tests: (params.quality_context as any).quality_report?.email_client_tests?.length || 0,
+            accessibility_score: (params.quality_context as any).quality_report?.accessibility_test?.overall_score || 0,
+            approval_status: (params.quality_context as any).quality_report?.approval_status || 'unknown'
           },
           delivery_specialist: {
             package_format: deliveryContext.export_format.format,
@@ -151,9 +151,10 @@ Final package available at: ${deliveryContext.export_format.export_path}
 
 All specialist work has been successfully completed with full context preservation throughout the workflow.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('❌ Delivery finalization failed:', error);
-      return `Delivery finalization failed: ${error.message}`;
+      return `Delivery finalization failed: ${errorMessage}`;
     }
   }
 }); 

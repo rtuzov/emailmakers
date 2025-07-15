@@ -36,13 +36,16 @@ export const processContentAssets = tool({
       let campaignPath = params.handoff_directory;
       if (campaignPath.endsWith('/handoffs/') || campaignPath.endsWith('/handoffs')) {
         campaignPath = campaignPath.replace(/\/handoffs\/?$/, '');
+      } else if (campaignPath.endsWith('/assets/') || campaignPath.endsWith('/assets')) {
+        // Handle case where assets directory is passed instead of handoffs
+        campaignPath = campaignPath.replace(/\/assets\/?$/, '');
       }
       
       // Load context from handoff files
       const context = await loadContextFromHandoffFiles(campaignPath);
       
       // Validate required context
-      if (!context.contentContext) {
+      if (!context.content_context) {
         throw new Error('Content context not found in handoff files');
       }
       
@@ -85,7 +88,7 @@ export const processContentAssets = tool({
       const enhancedManifest = enhanceAssetManifestWithTechSpec(combinedAssetManifest, context.technical_specification);
       
       // Generate asset usage instructions
-      const usageInstructions = generateAssetUsageInstructions(enhancedManifest, context.contentContext);
+      const usageInstructions = generateAssetUsageInstructions(enhancedManifest, context.content_context);
       
       // Save processed asset manifest
       const manifestPath = path.join(params.handoff_directory, 'processed-assets.json');

@@ -1,261 +1,272 @@
 /**
- * Design Context Management
- * Handles loading and building design context from handoff files
+ * 🎯 DESIGN SPECIALIST CONTEXT LOADER
+ * 
+ * Loads design context from handoff files with enhanced OpenAI SDK context extraction.
+ * This tool MUST be called first to load campaign context and handoff data.
  */
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import { tool } from '@openai/agents';
 import { z } from 'zod';
-import { DesignWorkflowContext } from './types';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-// Import structured logging system
-import { log, getGlobalLogger } from '../../core/agent-logger';
-import { debuggers } from '../../core/debug-output';
+// ============================================================================
+// CONTEXT-AWARE CAMPAIGN STATE MANAGEMENT
+// ============================================================================
 
-// Initialize debug output for Design Specialist
-const debug = debuggers.designSpecialist;
+interface CampaignWorkflowContext {
+  campaignId?: string;
+  campaignPath?: string;
+  campaignName?: string;
+  brandName?: string;
+  language?: string;
+  campaignType?: string;
+  metadata?: any;
+  context_analysis?: any;
+  date_analysis?: any;
+  pricing_analysis?: any;
+  asset_strategy?: any;
+  generated_content?: any;
+  technical_requirements?: any;
+}
 
 /**
- * Load Design Context Tool
- * Loads all necessary context from handoff files into Design Specialist
+ * Gets campaign context from OpenAI Agents SDK context parameter (same as Content Specialist)
  */
+function getCampaignContextFromSdk(context: any): CampaignWorkflowContext {
+  // Debug: Let's see what's actually in the context
+  console.log('🔍 DEBUG: Full context structure:', {
+    contextKeys: Object.keys(context || {}),
+    contextType: typeof context,
+    hasWorkflowType: !!context?.workflowType,
+    hasCampaign: !!context?.campaign,
+    campaignKeys: context?.campaign ? Object.keys(context.campaign) : []
+  });
+  
+  // Try multiple possible context structures from OpenAI SDK
+  let campaignContext: CampaignWorkflowContext = {};
+  
+  // Method 1: Direct campaign context
+  if (context?.campaignContext) {
+    campaignContext = context.campaignContext;
+    console.log('🎯 Found campaign context via: campaignContext');
+  }
+  // Method 2: campaign object (most likely from ContextManager)
+  else if (context?.campaign) {
+    campaignContext = {
+      campaignId: context.campaign.id,
+      campaignPath: context.campaign.path,
+      campaignName: context.campaign.name,
+      brandName: context.campaign.brand,
+      language: context.campaign.language || 'ru',
+      campaignType: context.campaign.type || 'promotional'
+    };
+    console.log('🎯 Found campaign context via: campaign object');
+  }
+  // Method 3: dataFlow context
+  else if (context?.dataFlow?.persistentState?.campaign) {
+    const campaign = context.dataFlow.persistentState.campaign;
+    campaignContext = {
+      campaignId: campaign.id,
+      campaignPath: campaign.path,
+      campaignName: campaign.name,
+      brandName: campaign.brand,
+      language: campaign.language || 'ru',
+      campaignType: campaign.type || 'promotional'
+    };
+    console.log('🎯 Found campaign context via: dataFlow.persistentState.campaign');
+  }
+  // Method 4: Try to extract from handoff data
+  else if (context?.dataFlow?.handoffData?.campaign) {
+    const campaign = context.dataFlow.handoffData.campaign;
+    campaignContext = {
+      campaignId: campaign.id,
+      campaignPath: campaign.campaignPath || campaign.path,
+      campaignName: campaign.name,
+      brandName: campaign.brand,
+      language: campaign.language || 'ru',
+      campaignType: campaign.type || 'promotional'
+    };
+    console.log('🎯 Found campaign context via: dataFlow.handoffData.campaign');
+  }
+  else {
+    console.log('⚠️ No campaign context found in any expected location');
+  }
+  
+  return campaignContext;
+}
+
 export const loadDesignContext = tool({
   name: 'loadDesignContext',
-  description: 'Load design context from Content Specialist handoff files and campaign data',
+  description: `
+🎯 CRITICAL FIRST STEP: Load complete design context from handoff files and OpenAI SDK context.
+
+This tool MUST be called first to:
+1. Extract campaign path from OpenAI SDK context (passed from orchestrator)
+2. Load content context and handoff data from Content Specialist
+3. Prepare design context for all subsequent tools
+
+⚠️ ALL OTHER TOOLS DEPEND ON THIS CONTEXT - CALL FIRST!
+  `,
   parameters: z.object({
-    campaign_path: z.string().describe('Path to campaign directory'),
-    trace_id: z.string().nullable().describe('Trace ID for debugging')
+    campaign_path: z.string()
+      .default('/auto-detect')
+      .describe('Campaign path - use /auto-detect to extract from context automatically'),
+    trace_id: z.string()
+      .default('initial-load')
+      .describe('Trace ID for context tracking')
   }),
   execute: async (params, context) => {
-    console.log('\n📁 === LOADING DESIGN CONTEXT ===');
-    console.log(`📋 Campaign path: ${params.campaign_path}`);
-    console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
+    console.log('📁 === LOADING DESIGN CONTEXT ===');
+    console.log('🔍 DEBUG: Received parameters:', { campaign_path: params.campaign_path, trace_id: params.trace_id });
+    
+    console.log('🔍 DEBUG: SDK context structure:', {
+      hasContext: !!context,
+      contextKeys: context ? Object.keys(context) : [],
+      hasCampaign: !!(context as any)?.campaign,
+      campaignKeys: (context as any)?.campaign ? Object.keys((context as any).campaign) : [],
+      hasDataFlow: !!(context as any)?.dataFlow,
+      dataFlowKeys: (context as any)?.dataFlow ? Object.keys((context as any).dataFlow) : []
+    });
+    
+    // 🎯 ENHANCED: Use the same logic as Content Specialist to extract campaign context
+    const campaignContext = getCampaignContextFromSdk(context);
+    let campaignPath = campaignContext.campaignPath;
+    
+    console.log('🎯 Campaign context extracted:', {
+      campaignId: campaignContext.campaignId,
+      campaignPath: campaignContext.campaignPath,
+      campaignName: campaignContext.campaignName
+    });
+
+    // If no campaign path found in context, try auto-detection
+    if (!campaignPath || campaignPath === '/auto-detect' || campaignPath.startsWith('/path/to/')) {
+      console.log('⚠️ Campaign path is placeholder or missing from SDK context, auto-detecting...');
+      try {
+        const campaignsDir = path.join(process.cwd(), 'campaigns');
+        const folders = await fs.readdir(campaignsDir);
+        
+        // Find latest campaign folder
+        const latestCampaign = folders
+          .filter(folder => folder.startsWith('campaign_'))
+          .sort()
+          .pop();
+          
+        if (latestCampaign) {
+          campaignPath = path.join(campaignsDir, latestCampaign);
+          console.log('✅ Auto-detected campaign path:', campaignPath);
+        } else {
+          throw new Error('No campaign folders found in campaigns directory');
+        }
+      } catch (error) {
+        throw new Error(`Failed to auto-detect campaign path: ${(error as Error).message}`);
+      }
+    }
+
+    console.log('📋 Final campaign path:', campaignPath);
+    console.log('🔍 Trace ID:', params.trace_id);
 
     try {
-      // Load comprehensive context from handoff files
-      const loadedContext = await loadContextFromHandoffFiles(params.campaign_path);
+      // Load context from handoff files
+      const loadedContext = await loadContextFromHandoffFiles(campaignPath);
       
-      // Store context in OpenAI SDK context parameter
-      if (context) {
-        context.content_context = loadedContext.contentContext;
-        context.contentContext = loadedContext.contentContext; // Alternative naming
-        context.designContext = {
-          content_context: loadedContext.contentContext, // Add content_context to designContext
-          asset_manifest: loadedContext.asset_manifest,
-          technical_specification: loadedContext.technical_specification,
-          campaign_path: params.campaign_path, // Add campaign_path directly
-          campaign: loadedContext.campaign,
-          trace_id: params.trace_id
-        };
-        
-        // CRITICAL: Ensure contentContext has campaign with campaignPath for generateTemplateDesign
-        if (context.content_context) {
-          context.content_context.campaign = {
-            ...loadedContext.campaign,
-            campaignPath: params.campaign_path
-          };
-        }
-        if (context.contentContext) {
-          context.contentContext.campaign = {
-            ...loadedContext.campaign,
-            campaignPath: params.campaign_path
-          };
-        }
-      }
+      // Store in context for other tools
+      (context as any).designContext = {
+        campaign_path: campaignPath,
+        trace_id: params.trace_id,
+        ...loadedContext
+      };
       
-      console.log('✅ Design context loaded successfully into OpenAI SDK context');
-      console.log(`📊 Content keys: ${Object.keys(loadedContext.contentContext).length}`);
-      console.log(`🖼️ Assets: ${loadedContext.asset_manifest.images.length} images, ${loadedContext.asset_manifest.icons.length} icons`);
-      console.log(`🎯 Campaign: ${loadedContext.campaign.id}`);
+      console.log('✅ DESIGN: Context loaded successfully');
+      console.log('📊 DESIGN: Content sections available:', Object.keys(loadedContext.content_context || {}));
       
-      return `Design context loaded successfully! Campaign: ${loadedContext.campaign.id}. Content context with ${Object.keys(loadedContext.contentContext).length} properties. Asset manifest with ${loadedContext.asset_manifest.images.length} images and ${loadedContext.asset_manifest.icons.length} icons. Technical specification loaded. Context is now available for all Design Specialist tools.`;
+      return {
+        success: true,
+        campaign_path: campaignPath,
+        trace_id: params.trace_id,
+        content_sections: Object.keys(loadedContext.content_context || {}),
+        asset_strategy: !!loadedContext.asset_strategy,
+        design_brief: !!loadedContext.design_brief,
+        message: 'Design context loaded successfully. Ready for design generation.'
+      };
       
     } catch (error) {
-      console.error('❌ Failed to load design context:', error);
-      throw error;
+      console.error('❌ DESIGN: Failed to load context from handoff files:', (error as Error).message);
+      throw new Error(`❌ Failed to load design context: ${(error as Error).message}`);
     }
   }
 });
 
+// ============================================================================
+// CONTEXT LOADING UTILITIES
+// ============================================================================
+
 /**
- * Helper function to load context from handoff files - NO FALLBACK ALLOWED
+ * Simple helper function to build/update design context
  */
-export async function loadContextFromHandoffFiles(campaignPath?: string): Promise<any> {
-  if (!campaignPath) {
-    throw new Error('Campaign path is required for loading context from handoff files');
+export function buildDesignContext(context: any, newData: any): any {
+  if (!context) {
+    return { designContext: newData };
   }
+  
+  if (!context.designContext) {
+    context.designContext = {};
+  }
+  
+  // Merge new data into design context
+  context.designContext = {
+    ...context.designContext,
+    ...newData
+  };
+  
+  return context;
+}
+
+/**
+ * Loads context from handoff directory files
+ */
+export async function loadContextFromHandoffFiles(campaignPath: string): Promise<any> {
+  const handoffDir = path.join(campaignPath, 'handoffs');
   
   try {
-    // Load handoff file from Content Specialist - REQUIRED
-    const handoffPath = path.join(campaignPath, 'handoffs', 'content-specialist-to-design-specialist.json');
+    // Load Content Specialist handoff
+    const contentHandoffPath = path.join(handoffDir, 'content-specialist-to-design-specialist.json');
+    const handoffData = JSON.parse(await fs.readFile(contentHandoffPath, 'utf-8'));
     
-    if (!await fs.access(handoffPath).then(() => true).catch(() => false)) {
-      throw new Error(`Handoff file not found: ${handoffPath}. Content Specialist must complete content generation first.`);
-    }
-    
-    const handoffContent = await fs.readFile(handoffPath, 'utf-8');
-    const handoffData = JSON.parse(handoffContent);
-    
-    console.log('✅ DESIGN: Loaded context from Content Specialist handoff file');
-    
-    // Extract context from handoff data - REQUIRED STRUCTURE
-    const handoffContentContext = handoffData.content_context;
-    
-    if (!handoffContentContext) {
-      throw new Error('No content_context found in handoff file. Content Specialist must provide valid context structure.');
-    }
-    
-    console.log('🔍 DEBUG: Handoff file structure:', {
-      hasContentContext: !!handoffContentContext,
-      hasMetadata: !!handoffData.metadata,
-      hasRequest: !!handoffData.request,
-      contentContextKeys: Object.keys(handoffContentContext)
+    // Диагностическая информация о загруженном handoff файле
+    console.log('🔍 Handoff file diagnostic:', {
+      hasContentContext: !!handoffData.content_context,
+      hasGeneratedContent: !!handoffData.content_context?.generated_content,
+      hasCta: !!handoffData.content_context?.generated_content?.cta,
+      ctaStructure: handoffData.content_context?.generated_content?.cta ? 
+        Object.keys(handoffData.content_context.generated_content.cta) : 'null',
+      ctaPrimary: handoffData.content_context?.generated_content?.cta?.primary || 'missing'
     });
     
-    // Load content files directly - REQUIRED
-    const contentDir = path.join(campaignPath, 'content');
-    const emailContentPath = path.join(contentDir, 'email-content.json');
-    
-    if (!await fs.access(emailContentPath).then(() => true).catch(() => false)) {
-      throw new Error(`Email content file not found: ${emailContentPath}. Content Specialist must generate email content first.`);
-    }
-    
-    const emailContentData = await fs.readFile(emailContentPath, 'utf-8');
-    const emailContent = JSON.parse(emailContentData);
-    console.log('✅ DESIGN: Loaded email content from content directory');
-    
-    // Load campaign metadata - REQUIRED
-    const metadataPath = path.join(campaignPath, 'campaign-metadata.json');
-    if (!await fs.access(metadataPath).then(() => true).catch(() => false)) {
-      throw new Error(`Campaign metadata not found: ${metadataPath}. Campaign must be properly initialized.`);
-    }
-    
-    const metadataContent = await fs.readFile(metadataPath, 'utf-8');
-    const campaignMetadata = JSON.parse(metadataContent);
-    console.log('✅ DESIGN: Loaded campaign metadata');
-    
-    // Load asset manifest - REQUIRED
-    const assetManifestPath = path.join(campaignPath, 'assets', 'manifests', 'asset-manifest.json');
-    if (!await fs.access(assetManifestPath).then(() => true).catch(() => false)) {
-      throw new Error(`Asset manifest not found: ${assetManifestPath}. Content Specialist must generate asset manifest first.`);
-    }
-    
-    const assetManifestContent = await fs.readFile(assetManifestPath, 'utf-8');
-    const assetManifestData = JSON.parse(assetManifestContent);
-    console.log('✅ DESIGN: Loaded asset manifest');
-    
-    // Load technical specification - REQUIRED
-    const techSpecPath = path.join(campaignPath, 'docs', 'specifications', 'technical-specification.json');
-    if (!await fs.access(techSpecPath).then(() => true).catch(() => false)) {
-      throw new Error(`Technical specification not found: ${techSpecPath}. Content Specialist must generate technical specification first.`);
-    }
-    
-    const techSpecContent = await fs.readFile(techSpecPath, 'utf-8');
-    const techSpecData = JSON.parse(techSpecContent);
-    console.log('✅ DESIGN: Loaded technical specification');
-    
-    // Build comprehensive context - NO FALLBACK VALUES
-    const mergedContext = {
-      campaign: {
-        id: campaignMetadata.campaign_id,
-        name: campaignMetadata.campaign_name,
-        campaignPath: campaignPath
-      },
-      contentContext: {
-        generated_content: handoffContentContext.generated_content,
-        asset_requirements: handoffContentContext.asset_requirements,
-        campaign_type: handoffContentContext.campaign_type,
-        language: handoffContentContext.language,
-        target_audience: handoffContentContext.target_audience,
-        context_analysis: handoffContentContext.context_analysis,
-        asset_strategy: handoffContentContext.asset_strategy,
-        pricing_analysis: handoffContentContext.pricing_analysis,
-        date_analysis: handoffContentContext.date_analysis,
-        handoff_summary: handoffData.metadata.summary,
-        
-        // Add email content directly to context for easier access
-        subject: emailContent.subject,
-        preheader: emailContent.preheader,
-        body: emailContent.body,
-        cta: emailContent.cta,
-        pricing: emailContent.pricing,
-        dates: emailContent.dates,
-        context: emailContent.context
-      },
-      asset_manifest: assetManifestData.assetManifest,
-      technical_specification: techSpecData.specification
+    return {
+      content_context: handoffData.content_context,
+      asset_strategy: handoffData.asset_strategy,
+      design_brief: handoffData.design_brief,
+      technical_specification: handoffData.technical_specification,
+      campaign: handoffData.campaign
     };
-    
-    console.log('🔍 DEBUG: Merged context structure:', {
-      hasSubject: !!mergedContext.contentContext.subject,
-      hasPreheader: !!mergedContext.contentContext.preheader,
-      hasBody: !!mergedContext.contentContext.body,
-      bodyLength: mergedContext.contentContext.body?.length || 0,
-      hasCta: !!mergedContext.contentContext.cta,
-      hasPricing: !!mergedContext.contentContext.pricing
-    });
-    
-    return mergedContext;
-    
   } catch (error) {
-    console.error('❌ DESIGN: Failed to load context from handoff files:', error.message);
-    throw error;
+    throw new Error(`Handoff file not found: ${path.join(handoffDir, 'content-specialist-to-design-specialist.json')}. Content Specialist must complete content generation first.`);
   }
 }
 
 /**
- * Builds design context from content context and design outputs
- */
-export function buildDesignContext(context: any, updates: Partial<DesignWorkflowContext>): DesignWorkflowContext {
-  const existingContext = context?.designContext || {};
-  const newContext = { ...existingContext, ...updates };
-  
-  // Debug output with environment variable support
-  debug.debug('DesignSpecialist', 'Design context built', {
-    updatedFields: Object.keys(updates),
-    contextSize: Object.keys(newContext).length
-  });
-  
-  // Also use structured logging
-  log.debug('DesignSpecialist', 'Design context built', {
-    updatedFields: Object.keys(updates),
-    contextSize: Object.keys(newContext).length
-  });
-  
-  return newContext;
-}
-
-/**
- * Load design context from handoff directory (legacy signature support)
- * This function provides backward compatibility for tools that expect buildDesignContext(handoff_directory)
+ * Loads design context from handoff directory (backward compatibility)
  */
 export async function loadDesignContextFromHandoffDirectory(handoff_directory: string): Promise<any> {
-  if (!handoff_directory) {
-    throw new Error('Handoff directory is required for loading design context');
-  }
+  console.log('🔍 Loading design context from handoff directory:', handoff_directory);
   
   try {
-    // Extract campaign path from handoff directory
-    // handoff_directory is typically: /path/to/campaign/handoffs
-    const campaignPath = handoff_directory.replace('/handoffs', '');
-    
-    console.log(`🔧 Loading design context from handoff directory: ${handoff_directory}`);
-    console.log(`📁 Extracted campaign path: ${campaignPath}`);
-    
-    // Use the existing loadContextFromHandoffFiles function
-    const loadedContext = await loadContextFromHandoffFiles(campaignPath);
-    
-    // Return context in the format expected by legacy tools
-    return {
-      content_context: loadedContext.contentContext,
-      campaign: loadedContext.campaign,
-      asset_manifest: loadedContext.asset_manifest,
-      technical_specification: loadedContext.technical_specification
-    };
-    
+    const loadedContext = await loadContextFromHandoffFiles(handoff_directory);
+    console.log('✅ Design context loaded from handoff directory');
+    return loadedContext;
   } catch (error) {
-    console.error('❌ Failed to load design context from handoff directory:', error);
+    console.error('❌ Failed to load design context from handoff directory:', (error as Error).message);
     throw error;
   }
 } 

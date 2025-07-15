@@ -7,10 +7,10 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { getGlobalLogger } from './agent-logger';
+// import { getGlobalLogger } from './agent-logger'; // Reserved for future logging
 import { debuggers } from './debug-output';
 
-const logger = getGlobalLogger();
+// const logger = getGlobalLogger(); // Reserved for future logging
 const debug = debuggers.core;
 
 export class CampaignPathError extends Error {
@@ -84,15 +84,18 @@ export class CampaignPathResolver {
     let campaignPath = inputPath;
 
     // Handle handoff file path: /path/to/campaign/handoffs/file.json -> /path/to/campaign
-    if (campaignPath.includes('/handoffs/')) {
-      campaignPath = campaignPath.split('/handoffs/')[0];
-      debug.info('CampaignPathResolver', 'Extracted from handoff path', {
-        original: inputPath,
-        extracted: campaignPath
-      });
+    if (campaignPath && campaignPath.includes('/handoffs/')) {
+      const extractedPath = campaignPath.split('/handoffs/')[0];
+      if (extractedPath) {
+        campaignPath = extractedPath;
+        debug.info('CampaignPathResolver', 'Extracted from handoff path', {
+          original: inputPath,
+          extracted: campaignPath
+        });
+      }
     }
     // Handle direct file path: /path/to/campaign/file.json -> /path/to/campaign
-    else if (campaignPath.endsWith('.json') || path.extname(campaignPath)) {
+    else if (campaignPath && (campaignPath.endsWith('.json') || path.extname(campaignPath))) {
       campaignPath = path.dirname(campaignPath);
       debug.info('CampaignPathResolver', 'Extracted from file path', {
         original: inputPath,
@@ -140,7 +143,7 @@ export class CampaignPathResolver {
     } catch (error) {
       debug.error('CampaignPathResolver', 'Path validation failed', {
         campaignPath,
-        error: error.message
+        error: error instanceof Error ? error.message : String(error)
       });
       
       if (error instanceof CampaignPathError) {
@@ -167,7 +170,8 @@ export class CampaignPathResolver {
   }
 
   /**
-   * Creates required subdirectories for a campaign if they don't exist
+   * STRICT MODE: Only verify subdirectories exist, do not create them
+   * Campaign creation should only happen through the main workflow
    */
   static async ensureSubdirectories(campaignPath: string): Promise<void> {
     const requiredDirs = [
@@ -181,19 +185,21 @@ export class CampaignPathResolver {
       'logs'
     ];
 
-    debug.info('CampaignPathResolver', 'Ensuring campaign subdirectories', {
+    debug.info('CampaignPathResolver', 'Verifying campaign subdirectories exist', {
       campaignPath,
       requiredDirs
     });
 
+    // Only verify, don't create
     for (const dir of requiredDirs) {
       const dirPath = path.join(campaignPath, dir);
       try {
-        await fs.mkdir(dirPath, { recursive: true });
+        await fs.access(dirPath);
+        debug.info('CampaignPathResolver', 'Subdirectory exists', { dirPath });
       } catch (error) {
-        debug.warn('CampaignPathResolver', 'Failed to create subdirectory', {
+        debug.warn('CampaignPathResolver', 'Subdirectory missing (will not create)', {
           dirPath,
-          error: error.message
+          message: 'Use main workflow to create proper campaign structure'
         });
       }
     }
@@ -214,7 +220,7 @@ export class CampaignPathResolver {
         travel: path.join(campaignPath, 'data', 'travel_intelligence-insights.json')
       },
       handoffs: {
-        dataToContent: path.join(campaignPath, 'handoffs', 'data-collection specialist-to-content-specialist.json'),
+        dataToContent: path.join(campaignPath, 'handoffs', 'data-collection-specialist-to-content-specialist.json'),
         contentToDesign: path.join(campaignPath, 'handoffs', 'content-to-design.json'),
         designToQuality: path.join(campaignPath, 'handoffs', 'design-to-quality.json'),
         qualityToDelivery: path.join(campaignPath, 'handoffs', 'quality-to-delivery.json')

@@ -44,6 +44,8 @@ export async function collectAssetsFromSources(
       
       switch (source.type) {
         case 'local':
+        case 'figma':
+          // Both local and figma sources use local directory collection
           sourceAssets = await collectFromLocalDirectoryWithAI(
             source.path,
             destination,
@@ -60,16 +62,17 @@ export async function collectAssetsFromSources(
           break;
           
         case 'url':
-          if (source.path === 'external_fallback') {
-            sourceAssets = await collectFromExternalUrls(
-              contentContext,
-              campaignContext
-            );
-          }
+          // Direct URL collection (e.g., external image URLs)
+          sourceAssets = await collectFromExternalUrls(
+            source.path,
+            contentContext,
+            campaignContext
+          );
           break;
           
         default:
-          console.warn(`⚠️ ${source.type} source type not implemented`);
+          // NO FALLBACK POLICY: Fail fast if source type not supported
+          throw new Error(`❌ CRITICAL ERROR: Source type '${source.type}' not implemented. All source types must be supported - no fallback allowed.`);
       }
       
       // Update counters
@@ -197,14 +200,16 @@ async function collectFromLocalDirectoryWithAI(
               aiReasoning: selection.search_criteria.emotional_match
             });
           } catch (fileError) {
-            console.warn(`⚠️ Could not process file ${file}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+            // NO FALLBACK POLICY: Fail fast if file cannot be processed
+            throw new Error(`❌ CRITICAL ERROR: Could not process required file ${file}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}. All selected assets must be processable - no fallback allowed.`);
           }
         }
         
         console.log(`✅ Selected ${selectedFiles.length} assets from ${selection.folder}`);
         
       } catch (error) {
-        console.warn(`⚠️ Could not access folder ${selection.folder}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        // NO FALLBACK POLICY: Fail fast if folder is inaccessible
+        throw new Error(`❌ CRITICAL ERROR: Could not access required folder ${selection.folder}: ${error instanceof Error ? error.message : 'Unknown error'}. All asset sources must be accessible - no fallback allowed.`);
       }
     }
     
@@ -254,17 +259,19 @@ async function collectFromLocalDirectoryBasic(
           
           console.log(`✅ Processed single asset file: ${filename}`);
         } catch (fileError) {
-          console.warn(`⚠️ Could not process file ${filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+          // NO FALLBACK POLICY: Fail fast if file cannot be processed
+          throw new Error(`❌ CRITICAL ERROR: Could not process required file ${filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}. All selected assets must be processable - no fallback allowed.`);
         }
       } else {
-        console.warn(`⚠️ Source path is a file but not an asset: ${sourcePath}`);
+        // NO FALLBACK POLICY: Fail fast if source path is not an asset
+        throw new Error(`❌ CRITICAL ERROR: Source path is a file but not an asset: ${sourcePath}. All source paths must point to valid assets - no fallback allowed.`);
       }
     } else if (stats.isDirectory()) {
       // If it's a directory, process as before
       const files = await fs.readdir(sourcePath);
       const assetFiles = files.filter(file => 
         /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
-      ).slice(0, 5); // Limit to 5 files as fallback
+      ).slice(0, 5); // Limit to 5 files for performance
       
       for (const file of assetFiles) {
         const filePath = path.join(sourcePath, file);
@@ -327,6 +334,7 @@ async function collectFromCampaignDirectory(
  * Collect external images using AI selection
  */
 async function collectFromExternalUrls(
+  sourcePath: string,
   contentContext: ContentContext,
   campaignContext?: CampaignContext
 ): Promise<AssetItem[]> {

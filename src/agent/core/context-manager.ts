@@ -10,11 +10,9 @@
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { getGlobalLogger } from './agent-logger';
 import { debuggers } from './debug-output';
 import { CampaignPathResolver } from './campaign-path-resolver';
 
-const logger = getGlobalLogger();
 const debug = debuggers.core;
 
 // ============================================================================
@@ -120,34 +118,34 @@ export class ContextManager {
     baseContext: Partial<AgentRunContext> = {},
     options: ContextEnhancementOptions = {}
   ): Promise<AgentRunContext> {
-    const requestId = `req_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-    const correlationId = `corr_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+    const correlationId = this.generateCorrelationId();
     
     debug.info('ContextManager', 'Creating enhanced agent run context', {
-      requestId,
-      correlationId,
+      requestPreview: request.substring(0, 100),
       hasBaseContext: Object.keys(baseContext).length > 0,
-      options
+      correlationId
     });
+
+    // For API requests, allow automatic campaign creation
+    const isApiRequest = baseContext.execution?.apiRequest || false;
     
-    // Build enhanced context with proper defaults
     const enhancedContext: AgentRunContext = {
-      requestId,
+      requestId: this.generateRequestId(),
       traceId: baseContext.traceId || null,
       timestamp: new Date().toISOString(),
       
-      workflowType: baseContext.workflowType || 'full-campaign',
-      currentPhase: baseContext.currentPhase || 'data-collection',
+      workflowType: baseContext.workflowType || (isApiRequest ? 'full-campaign' : 'partial'),
+      currentPhase: baseContext.currentPhase || 'orchestration',
       totalPhases: baseContext.totalPhases || 5,
       phaseIndex: baseContext.phaseIndex || 0,
       
       campaign: {
-        id: baseContext.campaign?.id || `campaign_${Date.now()}`,
-        name: baseContext.campaign?.name || 'Email Campaign',
-        path: baseContext.campaign?.path || await this.createCampaignPath(baseContext.campaign?.id),
-        brand: baseContext.campaign?.brand || 'Default Brand',
+        id: baseContext.campaign?.id || (isApiRequest ? this.generateCampaignId() : (() => { throw new Error('❌ STRICT MODE: Campaign ID is required - no automatic generation allowed'); })()),
+        name: baseContext.campaign?.name || (isApiRequest ? 'API Generated Campaign' : (() => { throw new Error('❌ STRICT MODE: Campaign name is required - no fallback allowed'); })()),
+        path: baseContext.campaign?.path || (isApiRequest ? await this.createOrGetCampaignPath(baseContext.campaign?.id || this.generateCampaignId(), isApiRequest) : (() => { throw new Error('❌ STRICT MODE: Campaign path is required'); })()),
+        brand: baseContext.campaign?.brand || (isApiRequest ? 'API Brand' : (() => { throw new Error('❌ STRICT MODE: Brand is required - no fallback allowed'); })()),
         language: baseContext.campaign?.language || 'ru',
-        type: baseContext.campaign?.type || 'promotional'
+        type: baseContext.campaign?.type || (isApiRequest ? 'promotional' : (() => { throw new Error('❌ STRICT MODE: Campaign type is required - no fallback allowed'); })())
       },
       
       execution: {
@@ -196,7 +194,7 @@ export class ContextManager {
     }
     
     // Store context for retrieval
-    this.contextStore.set(requestId, enhancedContext);
+    this.contextStore.set(enhancedContext.requestId, enhancedContext);
     
     // Save context snapshot if enabled
     if (options.enableSnapshot) {
@@ -204,7 +202,7 @@ export class ContextManager {
     }
     
     debug.info('ContextManager', 'Enhanced context created successfully', {
-      requestId,
+      requestId: enhancedContext.requestId,
       correlationId,
       campaign: enhancedContext.campaign.id,
       currentPhase: enhancedContext.currentPhase,
@@ -230,7 +228,7 @@ export class ContextManager {
       correlationId: currentContext.dataFlow.correlationId
     });
     
-    const phaseMap = {
+    const phaseMap: Record<string, number> = {
       'data-collection': 0,
       'content': 1,
       'design': 2,
@@ -283,11 +281,16 @@ export class ContextManager {
       AgentRunContextSchema.parse(context);
       
       // Additional validation for campaign path
-      if (context.campaign.path) {
+      // Skip path validation for API requests - Orchestrator will create the campaign folder
+      if (context.campaign.path && !context.execution.apiRequest) {
         const pathExists = await CampaignPathResolver.validatePath(context.campaign.path);
         if (!pathExists) {
           throw new Error(`Campaign path does not exist: ${context.campaign.path}`);
         }
+      } else if (context.execution.apiRequest) {
+        debug.info('ContextManager', 'Skipping campaign path validation for API request - Orchestrator will create folder', {
+          campaignPath: context.campaign.path
+        });
       }
       
       debug.info('ContextManager', 'Context validation passed', {
@@ -296,11 +299,12 @@ export class ContextManager {
       });
       
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       debug.error('ContextManager', 'Context validation failed', {
-        error: error.message,
+        error: errorMessage,
         requestId: context.requestId
       });
-      throw new Error(`Context validation failed: ${error.message}`);
+      throw new Error(`Context validation failed: ${errorMessage}`);
     }
   }
   
@@ -351,22 +355,49 @@ export class ContextManager {
   }
   
   /**
-   * Creates campaign path if not provided
+   * STRICT MODE: Do not create campaign paths automatically
+   * Test endpoints and context manager should not create new campaigns
    */
   private async createCampaignPath(campaignId?: string): Promise<string> {
-    const id = campaignId || `campaign_${Date.now()}`;
-    const campaignPath = path.join(process.cwd(), 'campaigns', id);
+    if (!campaignId) {
+      throw new Error('❌ STRICT MODE: Campaign ID is required. Context manager cannot create new campaigns automatically.');
+    }
     
+    const campaignPath = path.join(process.cwd(), 'campaigns', campaignId);
+    
+    // Verify campaign exists but don't create it
     try {
-      await fs.mkdir(campaignPath, { recursive: true });
-      debug.info('ContextManager', 'Created campaign path', { campaignPath });
+      await fs.access(campaignPath);
+      debug.info('ContextManager', 'Found existing campaign path', { campaignPath });
       return campaignPath;
     } catch (error) {
-      debug.warn('ContextManager', 'Failed to create campaign path', {
-        error: error.message,
-        campaignPath
-      });
-      return campaignPath; // Return path even if creation failed
+      throw new Error(`❌ STRICT MODE: Campaign directory does not exist: ${campaignPath}. Use the main workflow to create campaigns first.`);
+    }
+  }
+
+  private generateRequestId(): string {
+    return `req_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+  }
+
+  private generateCorrelationId(): string {
+    return `corr_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+  }
+
+  private generateCampaignId(): string {
+    return `camp_${Date.now()}_${Math.random().toString(36).substring(2)}`;
+  }
+
+  private async createOrGetCampaignPath(campaignId: string, isApiRequest: boolean): Promise<string> {
+    if (isApiRequest) {
+      // For API requests, return placeholder path - Orchestrator will create the actual campaign
+      const placeholderPath = path.join(process.cwd(), 'campaigns', campaignId);
+      console.log(`🔍 DEBUG: API request - returning placeholder path for Orchestrator: ${campaignId}`);
+      console.log(`📋 Orchestrator will create the actual campaign folder`);
+      
+      // Don't create anything - let Orchestrator handle campaign creation
+      return placeholderPath;
+    } else {
+      return await this.createCampaignPath(campaignId);
     }
   }
   
@@ -390,8 +421,9 @@ export class ContextManager {
       });
       
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       debug.warn('ContextManager', 'Failed to save context snapshot', {
-        error: error.message,
+        error: errorMessage,
         requestId: context.requestId
       });
     }

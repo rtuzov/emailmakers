@@ -14,10 +14,8 @@
 
 import { promises as fs, Stats } from 'fs';
 import path from 'path';
-import { getGlobalLogger } from './agent-logger';
 import { debuggers } from './debug-output';
 
-const logger = getGlobalLogger();
 const debug = debuggers.core;
 
 // ============================================================================

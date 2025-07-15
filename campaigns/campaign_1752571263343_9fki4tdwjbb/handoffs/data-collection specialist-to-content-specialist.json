@@ -1,0 +1,27 @@
+{
+  "from_specialist": "Data Collection Specialist",
+  "to_specialist": "Content Specialist",
+  "handoff_data": {
+    "summary": "Completed comprehensive destination analysis for Guatemala in autumn.",
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ],
+    "context_for_next": "Use the destination analysis and market intelligence for content creation focused on fall travel.",
+    "data_files": [
+      "data/destination-analysis.json",
+      "data/market-intelligence.json",
+      "data/emotional-profile.json",
+      "data/trend-analysis.json"
+    ],
+    "recommendations": [
+      "Highlight accessibility of Guatemala in autumn",
+      "Emphasize cultural festivals and events",
+      "Utilize emotional triggers in marketing"
+    ]
+  },
+  "created_at": "2025-07-15T09:21:34.805Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752571263343_9fki4tdwjbb/handoffs/data-collection specialist-to-content-specialist.json"
+}

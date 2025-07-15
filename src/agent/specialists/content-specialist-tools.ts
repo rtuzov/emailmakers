@@ -13,6 +13,11 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import path from 'path';
+import { getCampaignContextFromSdk } from '../tools/campaign-context';
+import { withSDKTrace } from '../utils/tracing-utils';
+import { log, getGlobalLogger } from '../core/agent-logger';
+import { debuggers } from '../core/debug-output';
+import { OpenAI } from 'openai';
 
 // Enhanced pricing integration
 import { getPrices } from '../tools/prices';
@@ -21,15 +26,20 @@ import { convertAirportToCity, getDestinationInfo } from '../tools/airports-load
 // Import asset preparation tools
 import { assetPreparationTools } from '../tools/asset-preparation';
 
+// Import AI-powered asset collection system
+import { collectAssetsFromSources } from '../tools/asset-preparation/asset-collection';
+import { 
+  AssetSource, 
+  ContentContext, 
+  CampaignContext 
+} from '../tools/asset-preparation/types';
+
 // Import technical specification tools
 import { technicalSpecificationTools } from '../tools/technical-specification';
 
 // Import finalization tools
 import { finalizeContentAndTransferToDesign } from '../core/specialist-finalization-tools';
-
-// Import structured logging system
-import { log, getGlobalLogger } from '../core/agent-logger';
-import { debuggers } from '../core/debug-output';
+import { transferToDesignSpecialist } from '../core/transfer-tools';
 
 // Initialize debug output for Content Specialist
 const debug = debuggers.contentSpecialist;
@@ -75,12 +85,7 @@ function buildCampaignContext(context: any, updates: Partial<CampaignWorkflowCon
   return newContext;
 }
 
-/**
- * Gets campaign context from OpenAI Agents SDK context parameter
- */
-function getCampaignContextFromSdk(context: any): CampaignWorkflowContext {
-  return context?.campaignContext || {};
-}
+// Duplicate function removed - using the imported getCampaignContextFromSdk from campaign-context
 
 // ============================================================================
 // CAMPAIGN FOLDER CREATION
@@ -973,6 +978,17 @@ ${typeof color_preference === 'object' && color_preference ?
     
     const strategyData = JSON.parse(jsonString.trim());
     
+    // 🔍 DEBUG: Log what AI returned
+    console.log('🔍 AI Strategy Data received:', JSON.stringify(strategyData, null, 2));
+    
+    // 🔧 VALIDATION: Ensure all required fields are present
+    const requiredFields = ['theme', 'visual_style', 'primary_color', 'accent_color', 'background_color', 'text_color'];
+    const missingFields = requiredFields.filter(field => !strategyData[field]);
+    
+    if (missingFields.length > 0) {
+      throw new Error(`❌ AI STRATEGY GENERATION FAILED: Missing required fields from AI response: ${missingFields.join(', ')}. AI must provide all required fields: ${requiredFields.join(', ')}. This indicates AI prompt or processing is not working correctly.`);
+    }
+    
     return {
       theme: strategyData.theme,
       visual_style: strategyData.visual_style,
@@ -998,6 +1014,134 @@ ${typeof color_preference === 'object' && color_preference ?
     
     // Fallback error - no static fallback allowed per project rules
     throw new Error(`Не удалось сгенерировать визуальную стратегию для ${campaign_theme}: ${error.message}`);
+  }
+}
+
+// Generate and save asset manifest file for Design Specialist using AI-powered asset collection
+async function generateAndSaveAssetManifest(assetStrategy: any, context: any) {
+  try {
+    console.log('🤖 ASSET MANIFEST: Starting AI-powered Figma asset collection...');
+    
+    // Get campaign context
+    const campaignContext = getCampaignContextFromSdk(context);
+    
+    // Find active campaign folder
+    const campaignsDir = path.join(process.cwd(), 'campaigns');
+    let campaignPath = campaignContext.campaignPath;
+    
+    if (!campaignPath) {
+      const campaignFolders = await fs.readdir(campaignsDir);
+      const latestCampaign = campaignFolders
+        .filter(folder => folder.startsWith('campaign_'))
+        .sort()
+        .pop();
+        
+      if (!latestCampaign) {
+        console.log('❌ No active campaign found for asset manifest generation');
+        return;
+      }
+      
+      campaignPath = path.join(campaignsDir, latestCampaign);
+    }
+    
+    console.log('🤖 ASSET MANIFEST: Using campaign path:', campaignPath);
+    
+    // Create assets/manifests and collected directories
+    const manifestsDir = path.join(campaignPath, 'assets', 'manifests');
+    const collectedDir = path.join(campaignPath, 'assets', 'collected');
+    await fs.mkdir(manifestsDir, { recursive: true });
+    await fs.mkdir(collectedDir, { recursive: true });
+    
+    // Setup AI-powered asset collection
+    console.log('🤖 Setting up AI-powered asset collection...');
+    
+    // Prepare content context for AI analysis
+    const contentContext: ContentContext = {
+      generated_content: context.content_context?.generated_content || context.contentContext?.generated_content || {
+        subject: assetStrategy.campaign_theme || 'Email Campaign',
+        body: assetStrategy.image_concepts?.join(' ') || 'Travel campaign',
+        context: {
+          emotional_triggers: assetStrategy.target_emotion
+        }
+      },
+      campaign_type: assetStrategy.campaign_type || 'promotional',
+      target_audience: assetStrategy.target_audience || 'families',
+      language: 'ru'
+    };
+    
+    // Prepare campaign context
+    const aiCampaignContext: CampaignContext = {
+      campaignPath: campaignPath,
+      campaign_type: assetStrategy.campaign_type || 'promotional',
+      target_audience: assetStrategy.target_audience || 'families',
+      language: 'ru'
+    };
+    
+    // Define Figma asset sources for AI-powered collection
+    const assetSources: AssetSource[] = [
+      {
+        type: 'local',
+        path: path.join(process.cwd(), 'figma-all-pages-1750993353363'),
+        priority: 'high',
+        expected_count: 4
+      },
+      {
+        type: 'local', 
+        path: path.join(process.cwd(), 'figma-assets'),
+        priority: 'medium',
+        expected_count: 2
+      }
+      // NOTE: External Unsplash images will be handled separately by AI analysis
+    ];
+    
+    console.log('🤖 AI analyzing content and selecting optimal Figma assets...');
+    
+        // ✅ USE PROPER ASSET MANIFEST GENERATOR with Unsplash + Usage Instructions
+    console.log('🔄 Using main asset manifest generator for complete functionality...');
+    
+    // Import the proper asset manifest generator
+    const { generateAssetManifest } = await import('../tools/asset-preparation/asset-manifest-generator');
+    
+    // Configure generation options with ALL features enabled
+    const generationOptions = {
+      analyzeContentContext: true,
+      collectFromSources: true,
+      validateAssets: true, 
+      optimizeAssets: true,
+      generateUsageInstructions: true,  // ✅ Enable usage instructions
+      includePerformanceMetrics: true,
+      enableFallbackGeneration: false  // Keep no-fallback policy
+    };
+    
+    // Call the main asset manifest generator
+    const result = await generateAssetManifest(
+      assetSources,
+      contentContext,
+      aiCampaignContext,
+      collectedDir,
+      generationOptions
+    );
+    
+    if (!result.success) {
+      console.error('❌ Asset manifest generation failed:', result.errors);
+      throw new Error(`Asset manifest generation failed: ${result.errors?.join(', ') || 'Unknown error'}`);
+    }
+    
+    console.log(`✅ Complete asset manifest generated successfully`);
+    console.log(`📊 Generation stats:`, {
+      figma_assets: result.assetManifest.images.filter(img => !img.isExternal).length,
+      external_assets: result.assetManifest.images.filter(img => img.isExternal).length,
+      total_images: result.assetManifest.images.length,
+      usage_instructions: result.usageInstructions?.length || 0,
+      colors_resolved: Object.keys(result.colors || {}).length
+    });
+    
+    // The main generator already saves the manifest, so we're done
+    return result;
+    
+  } catch (error) {
+    console.error('❌ ASSET MANIFEST: Generation failed:', error.message);
+    throw new Error(`Asset manifest generation failed: ${error.message}`);
   }
 }
 
@@ -1155,6 +1299,9 @@ export const assetStrategy = tool({
         target_emotion: params.target_emotion
       });
 
+      // 🔧 CRITICAL FIX: Generate and save asset manifest file
+      await generateAndSaveAssetManifest(assetStrategy, context);
+
       const duration = Date.now() - startTime;
       log.info('ContentSpecialist', 'Asset strategy developed', {
         theme: assetStrategy.theme,
@@ -1184,7 +1331,7 @@ export const assetStrategy = tool({
       }
 
       // Return formatted string with specific colors
-      return `Визуальная стратегия для темы "${assetStrategy.theme}": Стиль - ${assetStrategy.visual_style}, цветовая палитра - ${assetStrategy.color_palette}. КОНКРЕТНЫЕ ЦВЕТА: Основной - ${assetStrategy.primary_color}, Акцентный - ${assetStrategy.accent_color}, Фон - ${assetStrategy.background_color}, Текст - ${assetStrategy.text_color}. Типографика - ${assetStrategy.typography}. Концепции изображений: ${assetStrategy.image_concepts.join(', ')}. Иерархия макета: ${assetStrategy.layout_hierarchy}. Эмоциональные триггеры: ${assetStrategy.emotional_triggers}. Соблюдение бренда: ${assetStrategy.brand_consistency}. Контекст сохранен для передачи следующим инструментам.`;
+      return `Визуальная стратегия для темы "${assetStrategy.theme}": Стиль - ${assetStrategy.visual_style}, цветовая палитра - ${assetStrategy.color_palette}. КОНКРЕТНЫЕ ЦВЕТА: Основной - ${assetStrategy.primary_color}, Акцентный - ${assetStrategy.accent_color}, Фон - ${assetStrategy.background_color}, Текст - ${assetStrategy.text_color}. Типографика - ${assetStrategy.typography}. Концепции изображений: ${assetStrategy.image_concepts.join(', ')}. Иерархия макета: ${assetStrategy.layout_hierarchy}. Эмоциональные триггеры: ${assetStrategy.emotional_triggers}. Соблюдение бренда: ${assetStrategy.brand_consistency}. Asset manifest сохранен для Design Specialist. Контекст сохранен для передачи следующим инструментам.`;
 
     } catch (error) {
       const duration = Date.now() - startTime;
@@ -1727,9 +1874,6 @@ export const updateCampaignMetadata = tool({
 // EXPORTS
 // ============================================================================
 
-// Import transfer function
-import { transferToDesignSpecialist } from '../core/transfer-tools';
-
 export const contentSpecialistTools = [
   contextProvider,
   dateIntelligence,
@@ -1737,7 +1881,7 @@ export const contentSpecialistTools = [
   assetStrategy,
   contentGenerator,
   ...assetPreparationTools,          // Asset Manifest Generation FIRST
-  ...technicalSpecificationTools,    // Technical Specification Generation SECOND
+  // ...technicalSpecificationTools,    // ⚠️ TEMPORARILY DISABLED for testing
   createHandoffFile,
   updateCampaignMetadata,
   finalizeContentAndTransferToDesign,

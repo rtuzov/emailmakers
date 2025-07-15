@@ -1,10 +1,10 @@
 /**
- * Airport Data Loader
- * Loads airport data from CSV and provides airport to city code mapping
+ * Airport Data Loader - Automated CSV-based Destination Matching
+ * Automatically finds correct city_code from airports.csv without hardcoded mappings
  */
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface AirportData {
   code: string;
@@ -19,186 +19,22 @@ interface AirportData {
   lon: string;
 }
 
-interface DestinationInfo {
-  originalCode: string;
-  finalCode: string;
+interface DestinationSearchResult {
+  originalInput: string;
+  finalCityCode: string;
+  matchedAirport: AirportData | null;
   countryCode: string;
   isInternational: boolean;
-  wasConverted: boolean;
+  matchType: 'exact_airport_code' | 'exact_city_code' | 'name_match' | 'country_main_airport' | 'fuzzy_match' | 'not_found';
+  confidence: number;
 }
 
 let airportsData: Map<string, AirportData> | null = null;
-
-// Russian city names to IATA codes mapping
-const RUSSIAN_CITY_TO_IATA: Record<string, string> = {
-  // Major Russian cities
-  'москва': 'MOW',
-  'санкт-петербург': 'LED',
-  'петербург': 'LED',
-  'спб': 'LED',
-  'питер': 'LED',
-  'сочи': 'AER',
-  'екатеринбург': 'SVX',
-  'новосибирск': 'OVB',
-  'казань': 'KZN',
-  'нижний новгород': 'GOJ',
-  'челябинск': 'CEK',
-  'омск': 'OMS',
-  'самара': 'KUF',
-  'ростов-на-дону': 'ROV',
-  'ростов': 'ROV',
-  'уфа': 'UFA',
-  'красноярск': 'KJA',
-  'воронеж': 'VOZ',
-  'пермь': 'PEE',
-  'волгоград': 'VOG',
-  'краснодар': 'KRR',
-  'саратов': 'RTW',
-  'тюмень': 'TJM',
-  'иркутск': 'IKT',
-  'хабаровск': 'KHV',
-  'владивосток': 'VVO',
-  'калининград': 'KGD',
-  'мурманск': 'MMK',
-  'архангельск': 'ARH',
-  'сыктывкар': 'SCW',
-  'киров': 'KVX',
-  'ижевск': 'IJK',
-  'оренбург': 'REN',
-  'пенза': 'PEZ',
-  'ульяновск': 'ULY',
-  'курск': 'URS',
-  'белгород': 'EGO',
-  'тула': 'TYA',
-  'рязань': 'RZN',
-  'липецк': 'LPK',
-  'тамбов': 'TBW',
-  'брянск': 'BZK',
-  'калуга': 'KLF',
-  'орел': 'OEL',
-  'смоленск': 'LNX',
-  'тверь': 'KLD',
-  'ярославль': 'IAR',
-  'кострома': 'KMW',
-  'иваново': 'IWA',
-  'владимир': 'VLM',
-  
-  // International destinations
-  'париж': 'PAR',
-  'лондон': 'LON',
-  'рим': 'ROM',
-  'берлин': 'BER',
-  'мадрид': 'MAD',
-  'барселона': 'BCN',
-  'амстердам': 'AMS',
-  'вена': 'VIE',
-  'прага': 'PRG',
-  'варшава': 'WAW',
-  'стокгольм': 'STO',
-  'хельсинки': 'HEL',
-  'копенгаген': 'CPH',
-  'осло': 'OSL',
-  'цюрих': 'ZUR',
-  'женева': 'GVA',
-  'милан': 'MIL',
-  'венеция': 'VCE',
-  'неаполь': 'NAP',
-  'афины': 'ATH',
-  'стамбул': 'IST',
-  'анкара': 'ANK',
-  'анталья': 'AYT',
-  'дубай': 'DXB',
-  'абу-даби': 'AUH',
-  'доха': 'DOH',
-  'эр-рияд': 'RUH',
-  'кувейт': 'KWI',
-  'тель-авив': 'TLV',
-  'каир': 'CAI',
-  'касабланка': 'CAS',
-  'тунис': 'TUN',
-  'алжир': 'ALG',
-  'нью-йорк': 'NYC',
-  'лос-анджелес': 'LAX',
-  'чикаго': 'CHI',
-  'майами': 'MIA',
-  'торонто': 'YTO',
-  'ванкувер': 'YVR',
-  'токио': 'TYO',
-  'осака': 'OSA',
-  'сеул': 'SEL',
-  'пекин': 'BJS',
-  'шанхай': 'SHA',
-  'гонконг': 'HKG',
-  'сингапур': 'SIN',
-  'куала-лумпур': 'KUL',
-  'джакарта': 'JKT',
-  'бангкок': 'BKK',
-  'хошимин': 'SGN',
-  'ханой': 'HAN',
-  'манила': 'MNL',
-  'дели': 'DEL',
-  'мумбаи': 'BOM',
-  'бангалор': 'BLR',
-  'коломбо': 'CMB',
-  'катманду': 'KTM',
-  'ташкент': 'TAS',
-  'алматы': 'ALA',
-  'астана': 'NUR',
-  'бишкек': 'FRU',
-  'душанбе': 'DYU',
-  'ашхабад': 'ASB',
-  'баку': 'BAK',
-  'ереван': 'EVN',
-  'тбилиси': 'TBS',
-  'минск': 'MSQ',
-  'киев': 'KBP',
-  'одесса': 'ODS',
-  'львов': 'LWO',
-  'кишинев': 'KIV',
-  'рига': 'RIX',
-  'таллин': 'TLL',
-  'вильнюс': 'VNO',
-  'краков': 'KRK',
-  'гданьск': 'GDN',
-  'будапешт': 'BUD',
-  'бухарест': 'BUH',
-  'софия': 'SOF',
-  'белград': 'BEG',
-  'загреб': 'ZAG',
-  'любляна': 'LJU',
-  'скопье': 'SKP',
-  'подгорица': 'TGD',
-  'сараево': 'SJJ',
-  'тирана': 'TIA',
-  
-  // Popular resort destinations
-  'бали': 'DPS',
-  'пхукет': 'HKT',
-  'самуи': 'USM',
-  'паттайя': 'BKK', // Паттайя использует Бангкок
-  'гоа': 'GOI',
-  'мальдивы': 'MLE',
-  'сейшелы': 'SEZ',
-  'маврикий': 'MRU',
-  'занзибар': 'ZNZ',
-  'кипр': 'LCA',
-  'крит': 'HER',
-  'родос': 'RHO',
-  'корфу': 'CFU',
-  'санторини': 'JTR',
-  'миконос': 'JMK',
-  'ибица': 'IBZ',
-  'майорка': 'PMI',
-  'тенерифе': 'TFS',
-  'лас-пальмас': 'LPA',
-  'мальта': 'MLA',
-  'ницца': 'NCE',
-  'канны': 'NCE', // Канны используют Ниццу
-  'монако': 'NCE', // Монако использует Ниццу
-};
+let airportsByCity: Map<string, AirportData[]> | null = null;
+let airportsByCountry: Map<string, AirportData[]> | null = null;
 
 /**
- * Load airports data from CSV file
+ * Load airports data from CSV file and create indices
  */
 function loadAirportsData(): Map<string, AirportData> {
   if (airportsData) {
@@ -215,6 +51,8 @@ function loadAirportsData(): Map<string, AirportData> {
     const dataLines = lines.slice(1).filter(line => line.trim());
     
     airportsData = new Map();
+    airportsByCity = new Map();
+    airportsByCountry = new Map();
     
     for (const line of dataLines) {
       // Split by semicolon as per CSV format
@@ -222,23 +60,39 @@ function loadAirportsData(): Map<string, AirportData> {
       
       if (columns.length >= 10) {
         const airport: AirportData = {
-          code: columns[0].trim(),
-          city_code: columns[1].trim(),
-          country_code: columns[2].trim(),
-          time_zone: columns[3].trim(),
-          iata_type: columns[4].trim(),
-          flightable: columns[5].trim(),
-          name: columns[6].trim(),
-          name_en: columns[7].trim(),
-          lat: columns[8].trim(),
-          lon: columns[9].trim()
+          code: columns[0]?.trim() || '',
+          city_code: columns[1]?.trim() || '',
+          country_code: columns[2]?.trim() || '',
+          time_zone: columns[3]?.trim() || '',
+          iata_type: columns[4]?.trim() || '',
+          flightable: columns[5]?.trim() || '',
+          name: columns[6]?.trim() || '',
+          name_en: columns[7]?.trim() || '',
+          lat: columns[8]?.trim() || '',
+          lon: columns[9]?.trim() || ''
         };
         
+        // Index by airport code
         airportsData.set(airport.code, airport);
+        
+        // Index by city code
+        if (!airportsByCity.has(airport.city_code)) {
+          airportsByCity.set(airport.city_code, []);
+        }
+        airportsByCity.get(airport.city_code)!.push(airport);
+        
+        // Index by country code
+        if (!airportsByCountry.has(airport.country_code)) {
+          airportsByCountry.set(airport.country_code, []);
+        }
+        airportsByCountry.get(airport.country_code)!.push(airport);
       }
     }
     
     console.log(`✈️ Loaded ${airportsData.size} airports from CSV`);
+    console.log(`🏙️ Indexed ${airportsByCity.size} city codes`);
+    console.log(`🌍 Indexed ${airportsByCountry.size} countries`);
+    
     return airportsData;
     
   } catch (error) {
@@ -248,90 +102,287 @@ function loadAirportsData(): Map<string, AirportData> {
 }
 
 /**
- * Convert Russian city name to IATA code
+ * Find airport by exact airport code match
  */
-export function convertRussianCityToIATA(cityName: string): string {
-  const normalizedName = cityName.toLowerCase().trim();
-  
-  // Direct mapping lookup
-  const iataCode = RUSSIAN_CITY_TO_IATA[normalizedName];
-  if (iataCode) {
-    console.log(`🌍 Russian city → IATA conversion: ${cityName} → ${iataCode}`);
-    return iataCode;
-  }
-  
-  // Try partial matches for compound city names
-  for (const [russianCity, iata] of Object.entries(RUSSIAN_CITY_TO_IATA)) {
-    if (normalizedName.includes(russianCity) || russianCity.includes(normalizedName)) {
-      console.log(`🌍 Partial Russian city → IATA conversion: ${cityName} → ${iata} (matched: ${russianCity})`);
-      return iata;
-    }
-  }
-  
-  // If no mapping found, return original (it might be already an IATA code)
-  return cityName;
-}
-
-/**
- * Convert airport code to city code using CSV data
- */
-export function convertAirportToCity(airportCode: string): string {
+function findByAirportCode(code: string): DestinationSearchResult | null {
   const airports = loadAirportsData();
-  const airport = airports.get(airportCode);
-  
-  if (airport && airport.city_code) {
-    return airport.city_code;
-  }
-  
-  // Return original code if not found
-  return airportCode;
-}
-
-/**
- * Get comprehensive destination information with Russian city name support
- */
-export function getDestinationInfo(destination: string): DestinationInfo {
-  const originalCode = destination;
-  
-  // First try to convert Russian city name to IATA
-  const convertedFromRussian = convertRussianCityToIATA(destination);
-  
-  // If conversion happened, use the IATA code
-  let finalCode = convertedFromRussian;
-  let wasConverted = convertedFromRussian !== destination;
-  
-  // Then try to get airport info from CSV
-  const airports = loadAirportsData();
-  const airport = airports.get(convertedFromRussian);
+  const airport = airports.get(code.toUpperCase());
   
   if (airport) {
-    // If we found airport data, use city_code if available
-    if (airport.city_code && airport.city_code !== convertedFromRussian) {
-      finalCode = airport.city_code;
-      wasConverted = true;
-      console.log(`🏢 Airport → City conversion: ${convertedFromRussian} → ${airport.city_code}`);
-    }
-    
-    const countryCode = airport.country_code;
-    const isRussianDestination = countryCode === 'RU';
-    
+    console.log(`✅ Exact airport code match: ${code} → ${airport.city_code}`);
     return {
-      originalCode,
-      finalCode,
-      countryCode,
-      isInternational: !isRussianDestination,
-      wasConverted
+      originalInput: code,
+      finalCityCode: airport.city_code,
+      matchedAirport: airport,
+      countryCode: airport.country_code,
+      isInternational: airport.country_code !== 'RU',
+      matchType: 'exact_airport_code',
+      confidence: 1.0
     };
   }
   
-  // If no airport data found, assume it's international if we converted from Russian
-  return {
-    originalCode,
-    finalCode,
-    countryCode: wasConverted ? 'UNKNOWN' : 'UNKNOWN',
-    isInternational: wasConverted,
-    wasConverted
+  return null;
+}
+
+/**
+ * Find by exact city code match
+ */
+function findByCityCode(code: string): DestinationSearchResult | null {
+  loadAirportsData();
+  const cityCode = code.toUpperCase();
+  const airportsInCity = airportsByCity!.get(cityCode);
+  
+  if (airportsInCity && airportsInCity.length > 0) {
+    // Use the first airport as representative
+    const airport = airportsInCity[0]!;
+    console.log(`✅ Exact city code match: ${code} → ${airport.city_code}`);
+    return {
+      originalInput: code,
+      finalCityCode: airport.city_code,
+      matchedAirport: airport,
+      countryCode: airport.country_code,
+      isInternational: airport.country_code !== 'RU',
+      matchType: 'exact_city_code',
+      confidence: 1.0
+    };
+  }
+  
+  return null;
+}
+
+/**
+ * Find by airport name (supports both Russian and English names)
+ */
+function findByName(searchName: string): DestinationSearchResult | null {
+  const airports = loadAirportsData();
+  const searchLower = searchName.toLowerCase().trim();
+  
+  let bestMatch: { airport: AirportData; score: number } | null = null;
+  
+  for (const airport of Array.from(airports.values())) {
+    const nameLower = airport.name.toLowerCase();
+    const nameEnLower = airport.name_en.toLowerCase();
+    
+    // Exact name match (highest priority)
+    if (nameLower === searchLower || nameEnLower === searchLower) {
+      console.log(`✅ Exact name match: ${searchName} → ${airport.city_code} (${airport.name_en})`);
+      return {
+        originalInput: searchName,
+        finalCityCode: airport.city_code,
+        matchedAirport: airport,
+        countryCode: airport.country_code,
+        isInternational: airport.country_code !== 'RU',
+        matchType: 'name_match',
+        confidence: 1.0
+      };
+    }
+    
+    // Partial name matching
+    let score = 0;
+    
+    // Check Russian name
+    if (nameLower.includes(searchLower)) {
+      score = Math.max(score, searchLower.length / nameLower.length);
+    } else if (searchLower.includes(nameLower) && nameLower.length > 2) {
+      score = Math.max(score, nameLower.length / searchLower.length);
+    }
+    
+    // Check English name
+    if (nameEnLower.includes(searchLower)) {
+      score = Math.max(score, searchLower.length / nameEnLower.length);
+    } else if (searchLower.includes(nameEnLower) && nameEnLower.length > 2) {
+      score = Math.max(score, nameEnLower.length / searchLower.length);
+    }
+    
+    // Boost score for city matches
+    if (nameLower.includes('city') || nameEnLower.includes('city') || 
+        nameLower.includes('central') || nameEnLower.includes('central') ||
+        nameLower.includes('international') || nameEnLower.includes('international')) {
+      score *= 1.2;
+    }
+    
+    // Prevent infinity scores and ensure reasonable scoring
+    if (score > 1) score = 1;
+    if (score > 0.2 && (!bestMatch || score > bestMatch.score)) {
+      bestMatch = { airport, score };
+    }
+  }
+  
+  if (bestMatch) {
+    console.log(`✅ Partial name match: ${searchName} → ${bestMatch.airport.city_code} (${bestMatch.airport.name_en}, confidence: ${bestMatch.score.toFixed(2)})`);
+    return {
+      originalInput: searchName,
+      finalCityCode: bestMatch.airport.city_code,
+      matchedAirport: bestMatch.airport,
+      countryCode: bestMatch.airport.country_code,
+      isInternational: bestMatch.airport.country_code !== 'RU',
+      matchType: 'fuzzy_match',
+      confidence: bestMatch.score
+    };
+  }
+  
+  return null;
+}
+
+/**
+ * Get main airport for a country (prioritizes capital cities and large airports)
+ */
+function getMainAirportForCountry(countryCode: string): AirportData | null {
+  loadAirportsData();
+  const countryAirports = airportsByCountry!.get(countryCode.toUpperCase());
+  
+  if (!countryAirports || countryAirports.length === 0) {
+    return null;
+  }
+  
+  // Priority keywords for finding main airports
+  const mainAirportKeywords = [
+    'international', 'capital', 'main', 'central', 'primary',
+    'metropolitan', 'city', 'urban'
+  ];
+  
+  // Capital city names for major countries
+  const capitalCityNames: Record<string, string[]> = {
+    'FR': ['paris', 'cdg', 'orly'],
+    'GB': ['london', 'heathrow', 'gatwick', 'stansted'],
+    'DE': ['berlin', 'frankfurt', 'munich'],
+    'ES': ['madrid', 'barcelona'],
+    'IT': ['rome', 'milan'],
+    'US': ['new york', 'los angeles', 'chicago', 'washington'],
+    'RU': ['moscow', 'st. petersburg', 'saint petersburg'],
+    'CN': ['beijing', 'shanghai'],
+    'JP': ['tokyo', 'osaka'],
+    'IN': ['delhi', 'mumbai'],
+    'TR': ['istanbul', 'ankara']
   };
+  
+  // First, try to find airports matching capital city names
+  const capitalNames = capitalCityNames[countryCode.toUpperCase()];
+  if (capitalNames) {
+    for (const capitalName of capitalNames) {
+      const capitalAirport = countryAirports.find(airport => 
+        airport.name_en.toLowerCase().includes(capitalName.toLowerCase()) &&
+        airport.flightable === 'True'
+      );
+      if (capitalAirport) {
+        return capitalAirport;
+      }
+    }
+  }
+  
+  // Then try to find airports with "international" in the name
+  const internationalAirports = countryAirports.filter(airport => 
+    airport.name_en.toLowerCase().includes('international') && 
+    airport.flightable === 'True'
+  );
+  
+  if (internationalAirports.length > 0) {
+    return internationalAirports[0]!;
+  }
+  
+  // Then try airports with main city keywords
+  const mainAirports = countryAirports.filter(airport => {
+    const nameEnLower = airport.name_en.toLowerCase();
+    return mainAirportKeywords.some(keyword => nameEnLower.includes(keyword)) &&
+           airport.flightable === 'True';
+  });
+  
+  if (mainAirports.length > 0) {
+    return mainAirports[0]!;
+  }
+  
+  // Finally, return the first flightable airport
+  const flightableAirports = countryAirports.filter(airport => airport.flightable === 'True');
+  return flightableAirports.length > 0 ? flightableAirports[0]! : countryAirports[0]!;
+}
+
+/**
+ * Find by country code
+ */
+function findByCountry(countryCode: string): DestinationSearchResult | null {
+  const mainAirport = getMainAirportForCountry(countryCode);
+  
+  if (mainAirport) {
+    console.log(`✅ Country code match: ${countryCode} → ${mainAirport.city_code} (${mainAirport.name_en})`);
+    return {
+      originalInput: countryCode,
+      finalCityCode: mainAirport.city_code,
+      matchedAirport: mainAirport,
+      countryCode: mainAirport.country_code,
+      isInternational: mainAirport.country_code !== 'RU',
+      matchType: 'country_main_airport',
+      confidence: 0.8
+    };
+  }
+  
+  return null;
+}
+
+/**
+ * Main search function - tries multiple strategies to find destination
+ */
+export function searchDestination(input: string): DestinationSearchResult {
+  const trimmedInput = input.trim();
+  
+  console.log(`🔍 Searching for destination: "${trimmedInput}"`);
+  
+  // Strategy 1: Exact airport code match
+  const airportMatch = findByAirportCode(trimmedInput);
+  if (airportMatch) return airportMatch;
+  
+  // Strategy 2: Exact city code match
+  const cityMatch = findByCityCode(trimmedInput);
+  if (cityMatch) return cityMatch;
+  
+  // Strategy 3: Country code match (2-3 letter codes)
+  if (trimmedInput.length === 2 || trimmedInput.length === 3) {
+    const countryMatch = findByCountry(trimmedInput);
+    if (countryMatch) return countryMatch;
+  }
+  
+  // Strategy 4: Name-based search
+  const nameMatch = findByName(trimmedInput);
+  if (nameMatch) return nameMatch;
+  
+  // No match found
+  console.log(`❌ No match found for: "${trimmedInput}"`);
+  return {
+    originalInput: trimmedInput,
+    finalCityCode: trimmedInput, // Return original as fallback
+    matchedAirport: null,
+    countryCode: 'UNKNOWN',
+    isInternational: false,
+    matchType: 'not_found',
+    confidence: 0.0
+  };
+}
+
+/**
+ * Legacy function for backward compatibility
+ */
+export function getDestinationInfo(destination: string): {
+  originalCode: string;
+  finalCode: string;
+  countryCode: string;
+  isInternational: boolean;
+  wasConverted: boolean;
+} {
+  const result = searchDestination(destination);
+  return {
+    originalCode: result.originalInput,
+    finalCode: result.finalCityCode,
+    countryCode: result.countryCode,
+    isInternational: result.isInternational,
+    wasConverted: result.originalInput !== result.finalCityCode
+  };
+}
+
+/**
+ * Convert airport code to city code (legacy function)
+ */
+export function convertAirportToCity(airportCode: string): string {
+  const result = searchDestination(airportCode);
+  return result.finalCityCode;
 }
 
 /**
@@ -339,7 +390,7 @@ export function getDestinationInfo(destination: string): DestinationInfo {
  */
 export function getAirportDetails(airportCode: string): AirportData | null {
   const airports = loadAirportsData();
-  return airports.get(airportCode) || null;
+  return airports.get(airportCode.toUpperCase()) || null;
 }
 
 /**
@@ -350,7 +401,7 @@ export function searchAirportsByName(searchTerm: string): AirportData[] {
   const results: AirportData[] = [];
   const searchLower = searchTerm.toLowerCase();
   
-  for (const airport of airports.values()) {
+  for (const airport of Array.from(airports.values())) {
     if (airport.name.toLowerCase().includes(searchLower) || 
         airport.name_en.toLowerCase().includes(searchLower)) {
       results.push(airport);
@@ -364,14 +415,50 @@ export function searchAirportsByName(searchTerm: string): AirportData[] {
  * Get all airports in a country
  */
 export function getAirportsByCountry(countryCode: string): AirportData[] {
+  loadAirportsData();
+  return airportsByCountry!.get(countryCode.toUpperCase()) || [];
+}
+
+/**
+ * Get all airports for a city code
+ */
+export function getAirportsByCity(cityCode: string): AirportData[] {
+  loadAirportsData();
+  return airportsByCity!.get(cityCode.toUpperCase()) || [];
+}
+
+/**
+ * Get destination suggestions based on partial input
+ */
+export function getDestinationSuggestions(partialInput: string, limit: number = 10): DestinationSearchResult[] {
   const airports = loadAirportsData();
-  const results: AirportData[] = [];
+  const suggestions: DestinationSearchResult[] = [];
+  const searchLower = partialInput.toLowerCase().trim();
   
-  for (const airport of airports.values()) {
-    if (airport.country_code === countryCode) {
-      results.push(airport);
+  if (searchLower.length < 2) return suggestions;
+  
+  for (const airport of Array.from(airports.values())) {
+    if (suggestions.length >= limit) break;
+    
+    const matches = [
+      airport.code.toLowerCase().startsWith(searchLower),
+      airport.city_code.toLowerCase().startsWith(searchLower),
+      airport.name.toLowerCase().includes(searchLower),
+      airport.name_en.toLowerCase().includes(searchLower)
+    ];
+    
+    if (matches.some(Boolean)) {
+      suggestions.push({
+        originalInput: partialInput,
+        finalCityCode: airport.city_code,
+        matchedAirport: airport,
+        countryCode: airport.country_code,
+        isInternational: airport.country_code !== 'RU',
+        matchType: 'fuzzy_match',
+        confidence: matches[0] || matches[1] ? 1.0 : 0.7
+      });
     }
   }
   
-  return results;
+  return suggestions.sort((a, b) => b.confidence - a.confidence);
 }

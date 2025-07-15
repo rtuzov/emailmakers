@@ -87,16 +87,16 @@ export class ContentExtractor {
         const generatedText = contentData.generated_content;
         
         // Простая логика извлечения компонентов из generated_content
-        const lines = generatedText.split('\n').filter(line => line.trim());
+        const lines = generatedText.split('\n').filter((line: string) => line.trim());
         
         contentSource = {
-          subject: lines.find(line => line.includes('Subject:') || line.includes('Тема:'))?.replace(/Subject:|Тема:/i, '').trim() || 
+          subject: lines.find((line: string) => line.includes('Subject:') || line.includes('Тема:'))?.replace(/Subject:|Тема:/i, '').trim() || 
                   `${contentPackage.topic || 'Travel Campaign'} - Специальное предложение`,
-          preheader: lines.find(line => line.includes('Preheader:') || line.includes('Превью:'))?.replace(/Preheader:|Превью:/i, '').trim() || 
+          preheader: lines.find((line: string) => line.includes('Preheader:') || line.includes('Превью:'))?.replace(/Preheader:|Превью:/i, '').trim() || 
                     'Узнайте больше о наших предложениях',
           body: generatedText.length > 50 ? generatedText : 
                 `Специальное предложение по теме "${contentPackage.topic || 'путешествие'}". ${generatedText}`,
-          cta: lines.find(line => line.includes('CTA:') || line.includes('Кнопка:'))?.replace(/CTA:|Кнопка:/i, '').trim() || 
+          cta: lines.find((line: string) => line.includes('CTA:') || line.includes('Кнопка:'))?.replace(/CTA:|Кнопка:/i, '').trim() || 
                'Узнать больше'
         };
       } else if (contentData.complete_content) {

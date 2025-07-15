@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752571341330_3qmjltxutz3",
+  "name": "Test Campaign",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "general",
+  "user_request": "simple test",
+  "created_at": "2025-07-15T09:22:21.331Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-15T09:22:54.401Z"
+}

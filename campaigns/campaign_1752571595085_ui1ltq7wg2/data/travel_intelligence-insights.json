@@ -1,0 +1,11 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Летние путешествия по России становятся все более популярными",
+    "Цены на внутренние курорты остаются конкурентоспособными",
+    "Семейные поездки с детьми увеличиваются в летний период"
+  ],
+  "insights_count": 3,
+  "saved_at": "2025-07-15T09:27:10.404Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752571595085_ui1ltq7wg2/data/travel_intelligence-insights.json"
+}

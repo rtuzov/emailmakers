@@ -1,0 +1,482 @@
+{
+  "manifestId": "manifest_1752572333677_dmp1quctqap",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "unsplash_YNV2YxFEuOU_1752572380112",
+        "path": "https://images.unsplash.com/photo-1667735395057-96efa4ccb9ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhdXR1bW4lMjBsYW5kc2NhcGV8ZW58MHwwfHx8MTc1MjUwMjg0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1667735395057-96efa4ccb9ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhdXR1bW4lMjBsYW5kc2NhcGV8ZW58MHwwfHx8MTc1MjUwMjg0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a grassy area with trees and bushes",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: A vibrant and colorful representation of Guatemala's unique landscapes during the autumn season, capturing the essence of the culture and nature.",
+          "emotional_match": "Adventurous, inspiring, calm, and inviting.",
+          "tags": [
+            "Guatemala",
+            "autumn",
+            "landscape"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_hYPWqZVHtxg_1752572380177",
+        "path": "https://images.unsplash.com/photo-1745127300183-1c4ddb750f5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBjdWx0dXJhbCUyMHRyYWRpdGlvbnN8ZW58MHwwfHx8MTc1MjU4MTAyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1745127300183-1c4ddb750f5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBjdWx0dXJhbCUyMHRyYWRpdGlvbnN8ZW58MHwwfHx8MTc1MjU4MTAyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "Women in white veils stand together outdoors.",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the rich cultural traditions of Guatemala, including local festivals, crafts, and community gatherings.",
+          "emotional_match": "Adventurous, inspiring, calm, and inviting.",
+          "tags": [
+            "Guatemala",
+            "cultural",
+            "traditions"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_GxXyt-nZ9cg_1752572380235",
+        "path": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBpbiUyMEd1YXRlbWFsYXxlbnwwfDB8fHwxNzUyNTc2NDg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBpbiUyMEd1YXRlbWFsYXxlbnwwfDB8fHwxNzUyNTc2NDg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Serene and inviting images that illustrate the calm and pleasant travel experience in Guatemala during the fall season.",
+          "emotional_match": "Adventurous, inspiring, calm, and inviting.",
+          "tags": [
+            "autumn",
+            "travel",
+            "in",
+            "Guatemala"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_iYzbr2YVml4_1752572380549",
+        "path": "https://images.unsplash.com/photo-1711941340447-e646d7f1fe30?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGFuJTIwbmF0dXJlJTIwYW5kJTIwd2lsZGxpZmV8ZW58MHwwfHx8MTc1MjUwOTY3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1711941340447-e646d7f1fe30?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGFuJTIwbmF0dXJlJTIwYW5kJTIwd2lsZGxpZmV8ZW58MHwwfHx8MTc1MjUwOTY3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a stream running through a lush green forest",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images highlighting the natural beauty and wildlife of Guatemala, emphasizing the adventurous aspect of exploring the country's landscapes.",
+          "emotional_match": "Adventurous, inspiring, calm, and inviting.",
+          "tags": [
+            "Guatemalan",
+            "nature",
+            "and",
+            "wildlife"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_AhZIzCHByhk_1752572381172",
+        "path": "https://images.unsplash.com/photo-1635100770215-6cd59c56d407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjB3YXJtJTIwYXV0dW1uJTIwY29sb3JzfGVufDB8MHx8fDE3NTI1ODEzNzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1635100770215-6cd59c56d407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjB3YXJtJTIwYXV0dW1uJTIwY29sb3JzfGVufDB8MHx8fDE3NTI1ODEzNzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a close up of a tree with red and yellow leaves",
+        "usage": "branding",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Visuals that incorporate warm autumn tones to reflect the inviting atmosphere of traveling in Guatemala during this season.",
+          "emotional_match": "Adventurous, inspiring, calm, and inviting.",
+          "tags": [
+            "Guatemala",
+            "warm",
+            "autumn",
+            "colors"
+          ]
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752572368580_59u7b7ouoqh",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_3d-логотип-в-зеленом-цвете-подходящий-для-брендинга.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_3d-логотип-в-зеленом-цвете-подходящий-для-брендинга.png",
+        "alt_text": "AI-selected hero",
+        "usage": "Showcase the beauty and culture of Guatemala",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 23719,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 24,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752572372517_avshk0zv2yl",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_предложение-о-бонусах-и-акциях-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Highlight special offers and booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4585,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752572372518_0w0evqlmp6mc",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_предложение-vip-статуса-с-эксклюзивными-привилегиями-для-клиентов.png",
+        "alt_text": "AI-selected icon",
+        "usage": "Highlight special offers and booking process",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4485,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752572374458_bdg4iuco02l",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_логотип-аэрофлота-ведущей-российской-авиакомпании.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752572049997_7nfg859n0mt/assets/optimized/optimized_логотип-аэрофлота-ведущей-российской-авиакомпании.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "Brand identity for the campaign",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 15249,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 15,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "to capture the essence of Guatemala's culture and nature, showcasing its unique landscapes and traditions",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "adventurous and inspiring",
+      "visual_style": "vibrant and colorful, reflecting the rich culture of Guatemala",
+      "content_context": "highlighting the beauty of Guatemala during the autumn season"
+    },
+    {
+      "type": "seasonal",
+      "purpose": "to illustrate autumn in Guatemala, emphasizing the pleasant weather and reduced tourist crowds",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "calm and inviting",
+      "visual_style": "warm tones with autumnal elements",
+      "content_context": "showcasing the serene travel experience during the fall season"
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "unsplash_YNV2YxFEuOU_1752572380112",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a grassy area with trees and bushes\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_hYPWqZVHtxg_1752572380177",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"Women in white veils stand together outdoors.\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_GxXyt-nZ9cg_1752572380235",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_iYzbr2YVml4_1752572380549",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a stream running through a lush green forest\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_AhZIzCHByhk_1752572381172",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a close up of a tree with red and yellow leaves\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752572368580_59u7b7ouoqh",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752572372517_avshk0zv2yl",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752572372518_0w0evqlmp6mc",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752572374458_bdg4iuco02l",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Уникальное путешествие в Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 10,
+    "totalSize": 48038,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-15T09:39:41.178Z",
+    "processingTime": 47501,
+    "sourcesProcessed": 1,
+    "assetsCollected": 9,
+    "assetsValidated": 9,
+    "assetsOptimized": 9,
+    "errors": []
+  }
+}

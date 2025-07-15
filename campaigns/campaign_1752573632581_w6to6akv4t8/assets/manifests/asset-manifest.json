@@ -1,0 +1,423 @@
+{
+  "manifestId": "manifest_1752574577946_ymokacthcxs",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "ai_1752574613855_os104tku6cm",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_иллюстрация-зеленого-кролика-держащего-бабочек-символизирующая-радость-и-природу.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_иллюстрация-зеленого-кролика-держащего-бабочек-символизирующая-радость-и-природу.png",
+        "alt_text": "AI-selected support",
+        "usage": "To enhance the emotional appeal of the email campaign.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 101277,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 101,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "unsplash_DCsp6P3R26c_1752574658749",
+        "path": "https://images.unsplash.com/photo-1673272957725-7d2dfafcecdb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzcHJpbmclMjB0cmF2ZWwlMjBJdGFseXxlbnwwfDB8fHwxNzUyNTgyODEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1673272957725-7d2dfafcecdb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzcHJpbmclMjB0cmF2ZWwlMjBJdGFseXxlbnwwfDB8fHwxNzUyNTgyODEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a cobblestone street lined with potted plants",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that capture the essence of springtime travel in Italy, showcasing vibrant landscapes and cultural experiences.",
+          "emotional_match": "Inviting and warm, evoking feelings of joy, celebration, and exploration.",
+          "tags": [
+            "spring",
+            "travel",
+            "Italy"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_jvvhpQwxfbQ_1752574658772",
+        "path": "https://images.unsplash.com/photo-1585556071847-5bd660e07c84?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxFYXN0ZXIlMjBjZWxlYnJhdGlvbnMlMjBpbiUyMEl0YWx5fGVufDB8MHx8fDE3NTI1ODMxNTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1585556071847-5bd660e07c84?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxFYXN0ZXIlMjBjZWxlYnJhdGlvbnMlMjBpbiUyMEl0YWx5fGVufDB8MHx8fDE3NTI1ODMxNTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "people holding flags during daytime",
+        "usage": "destination",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images highlighting the joyful and celebratory atmosphere of Easter festivities in various Italian cities.",
+          "emotional_match": "Inviting and warm, evoking feelings of joy, celebration, and exploration.",
+          "tags": [
+            "Easter",
+            "celebrations",
+            "in",
+            "Italy"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_dee-SNuieog_1752574659113",
+        "path": "https://images.unsplash.com/photo-1599675383234-1f7ea6495eb8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJdGFsaWFuJTIwY3Vpc2luZSUyMHNwcmluZ3xlbnwwfDB8fHwxNzUyNTgyODEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1599675383234-1f7ea6495eb8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJdGFsaWFuJTIwY3Vpc2luZSUyMHNwcmluZ3xlbnwwfDB8fHwxNzUyNTgyODEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "pizza with sliced tomato and green leaf vegetable on white ceramic plate",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images representing the culinary delights and gastronomic experiences available in Italy during the spring.",
+          "emotional_match": "Inviting and warm, evoking feelings of joy, celebration, and exploration.",
+          "tags": [
+            "Italian",
+            "cuisine",
+            "spring"
+          ]
+        }
+      }
+    ],
+    "icons": [
+      {
+        "id": "ai_1752574610957_vr18w17ic7k",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_3d-логотип-в-зеленом-цвете-подходящий-для-брендинга.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_3d-логотип-в-зеленом-цвете-подходящий-для-брендинга.png",
+        "alt_text": "AI-selected hero",
+        "usage": "To capture the essence of springtime in Italy, showcasing its culture and gastronomy.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 23719,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 24,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752574617636_y77qi17ozl8",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_иконка-символизирующая-email-рассылки-и-коммуникацию.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_иконка-символизирующая-email-рассылки-и-коммуникацию.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To enhance the call to action and assist users in navigating through the email content.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 5434,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 5,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752574617638_alpxs0mxsdw",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_эмодзи-символизирующий-радость-и-удовлетворение-от-покупки-билета.png",
+        "alt_text": "AI-selected icon",
+        "usage": "To enhance the call to action and assist users in navigating through the email content.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 4011,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 4,
+          "optimization_score": 80
+        }
+      },
+      {
+        "id": "ai_1752574620390_tkbl164r6ei",
+        "path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_логотип-аэрофлота-ведущей-российской-авиакомпании.png",
+        "url": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752573632581_w6to6akv4t8/assets/optimized/optimized_логотип-аэрофлота-ведущей-российской-авиакомпании.png",
+        "alt_text": "AI-selected decoration",
+        "usage": "To establish brand identity in the email header.",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 15249,
+        "format": "png",
+        "optimized": false,
+        "isExternal": false,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 15,
+          "optimization_score": 80
+        }
+      }
+    ],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "To capture the essence of springtime in Italy, showcasing the blooming nature and cultural experiences.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "inviting and vibrant",
+      "visual_style": "colorful and warm, reflecting the beauty of Italy in spring",
+      "content_context": "Highlight the cultural richness and gastronomic delights of Italy during spring."
+    },
+    {
+      "type": "destination",
+      "purpose": "To visually represent specific locations mentioned, such as Rome and Tuscany.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "serene and picturesque",
+      "visual_style": "natural and scenic, focusing on landscapes and local culture",
+      "content_context": "Showcase the beauty of blooming meadows in Tuscany and Easter celebrations in Rome."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "ai_1752574613855_os104tku6cm",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [
+        "Large file size may affect loading in some email clients"
+      ],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected support\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_DCsp6P3R26c_1752574658749",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a cobblestone street lined with potted plants\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_jvvhpQwxfbQ_1752574658772",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"people holding flags during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_dee-SNuieog_1752574659113",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"pizza with sliced tomato and green leaf vegetable on white ceramic plate\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752574610957_vr18w17ic7k",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected hero\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752574617636_y77qi17ozl8",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752574617638_alpxs0mxsdw",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected icon\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "ai_1752574620390_tkbl164r6ei",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Путешествие в Италию весной: откройте новую культуру и вкусную кухню. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"AI-selected decoration\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 9,
+    "totalSize": 149690,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-15T10:17:39.427Z",
+    "processingTime": 81481,
+    "sourcesProcessed": 2,
+    "assetsCollected": 8,
+    "assetsValidated": 8,
+    "assetsOptimized": 8,
+    "errors": []
+  }
+}

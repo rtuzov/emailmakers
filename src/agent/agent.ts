@@ -7,7 +7,7 @@
  * NEW CODE SHOULD USE: src/agent/main-agent.ts
  */
 
-import { EmailMakersAgent, generateEmail } from './main-agent';
+import { EmailMakersAgent } from './main-agent';
 
 // Legacy interfaces for backward compatibility
 export interface AgentRequest {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { qualitySpecialistAgent } from '@/agent/specialists/quality-specialist-v2';
+import { qualitySpecialistAgent } from '@/agent/core/tool-registry';
 import { QualitySpecialistInput } from '@/agent/specialists/quality/types/quality-types';
 
 export async function POST(request: NextRequest) {

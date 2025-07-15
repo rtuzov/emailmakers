@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { BarChart3, Users, TrendingUp, Target, Settings, Play, Pause, BarChart, PieChart, Activity, AlertCircle, CheckCircle, RefreshCw, Plus, Eye, Edit, Trash2 } from 'lucide-react';
+import { BarChart3, Users, TrendingUp, Target, Play, Pause, BarChart, Activity, AlertCircle, RefreshCw, Plus, Eye, Edit } from 'lucide-react';
 
 interface ABTest {
   id: string;
@@ -239,6 +239,7 @@ export default function ABTestingPage() {
       const interval = setInterval(fetchABTestingData, 30000); // Refresh every 30 seconds
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [autoRefresh]);
 
   // Manual refresh

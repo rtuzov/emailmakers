@@ -499,8 +499,8 @@ export const generateTemplateDesign = tool({
     } else if (context?.content_context) {
       contentContext = context.content_context;
       console.log('⚠️ Using content context from SDK context (fallback)');
-    } else if (context?.contentContext) {
-      contentContext = context.contentContext;
+          } else if (context?.content_context) {
+        contentContext = context.content_context;
       console.log('⚠️ Using contentContext from SDK context (fallback)');
     } else {
       throw new Error('Content context not found in parameters or context. loadDesignContext must be called first to load campaign context.');

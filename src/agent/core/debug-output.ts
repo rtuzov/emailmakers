@@ -19,7 +19,6 @@
  */
 
 import { promises as fs } from 'fs';
-import path from 'path';
 import { AgentLogger } from './agent-logger';
 
 // ============================================================================
@@ -32,7 +31,7 @@ export interface DebugConfig {
   verbose: boolean;
   performanceProfiling: boolean;
   interactiveMode: boolean;
-  outputFile?: string;
+  outputFile?: string | undefined;
   colorOutput: boolean;
   includeTimestamp: boolean;
   includeMemoryUsage: boolean;
@@ -48,7 +47,7 @@ export interface DebugEntry {
   level: string;
   message: string;
   data?: any;
-  stackTrace?: string;
+  stackTrace?: string | undefined;
   memoryUsage?: NodeJS.MemoryUsage;
   performance?: {
     timeOrigin: number;
@@ -313,7 +312,7 @@ export class DebugOutput {
       dim: '\x1b[2m'        // dim
     };
 
-    const color = colors[entry.level] || colors.debug;
+    const color = colors[entry.level as keyof typeof colors] || colors.debug;
     const timestamp = this.config.includeTimestamp ? 
       `${colors.dim}${entry.timestamp}${colors.reset} ` : '';
     const namespace = `${colors.dim}${entry.namespace}${colors.reset}`;
@@ -525,7 +524,8 @@ export class DebugOutput {
   private getEntriesByLevel(): Record<string, number> {
     const counts = { trace: 0, debug: 0, info: 0, warn: 0, error: 0 };
     this.entries.forEach(entry => {
-      counts[entry.level] = (counts[entry.level] || 0) + 1;
+      const level = entry.level as keyof typeof counts;
+      counts[level] = (counts[level] || 0) + 1;
     });
     return counts;
   }
@@ -575,7 +575,10 @@ export class DebugOutput {
     }
 
     const lastEntry = memoryEntries[memoryEntries.length - 1];
-    const mem = lastEntry.memoryUsage!;
+    if (!lastEntry?.memoryUsage) {
+      return { rss: 0, heapUsed: 0, heapTotal: 0, external: 0 };
+    }
+    const mem = lastEntry.memoryUsage;
     
     return {
       rss: Math.round(mem.rss / 1024 / 1024),

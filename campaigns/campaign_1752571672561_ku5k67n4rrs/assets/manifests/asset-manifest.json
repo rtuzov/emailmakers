@@ -1,0 +1,327 @@
+{
+  "manifestId": "manifest_1752572270553_aok4k0m3gyw",
+  "assetManifest": {
+    "images": [
+      {
+        "id": "unsplash_oAn4Ox_0jHE_1752572325456",
+        "path": "https://images.unsplash.com/photo-1668503610897-cdaa8bc475f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhdXR1bW4lMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTI1MDQ1NDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1668503610897-cdaa8bc475f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhdXR1bW4lMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTI1MDQ1NDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a bicycle leaning against a wall",
+        "usage": "hero",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images showcasing the natural beauty and vibrant landscapes of Guatemala during the autumn season.",
+          "emotional_match": "Adventurous and enriching, inviting travelers to explore and experience the warmth of Guatemala.",
+          "tags": [
+            "Guatemala",
+            "autumn",
+            "landscapes"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_WRgY_DJy288_1752572325478",
+        "path": "https://images.unsplash.com/photo-1565310561707-a1001331f86f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTI1Nzk5MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1565310561707-a1001331f86f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTI1Nzk5MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "person wearing brown sombrero sitting near woman in purple and yellow dress",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that highlight the rich culture, traditions, and historical sites of Guatemala.",
+          "emotional_match": "Adventurous and enriching, inviting travelers to explore and experience the warmth of Guatemala.",
+          "tags": [
+            "Guatemala",
+            "cultural",
+            "experiences"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_GxXyt-nZ9cg_1752572325758",
+        "path": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBpbiUyMEd1YXRlbWFsYXxlbnwwfDB8fHwxNzUyNTc2NDg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjB0cmF2ZWwlMjBpbiUyMEd1YXRlbWFsYXxlbnwwfDB8fHwxNzUyNTc2NDg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images depicting travelers exploring Guatemala in autumn, emphasizing adventure and discovery.",
+          "emotional_match": "Adventurous and enriching, inviting travelers to explore and experience the warmth of Guatemala.",
+          "tags": [
+            "autumn",
+            "travel",
+            "in",
+            "Guatemala"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_AhZIzCHByhk_1752572325779",
+        "path": "https://images.unsplash.com/photo-1635100770215-6cd59c56d407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx3YXJtJTIwYXV0dW1uJTIwY29sb3JzJTIwR3VhdGVtYWxhfGVufDB8MHx8fDE3NTI1ODA4MzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1635100770215-6cd59c56d407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx3YXJtJTIwYXV0dW1uJTIwY29sb3JzJTIwR3VhdGVtYWxhfGVufDB8MHx8fDE3NTI1ODA4MzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "a close up of a tree with red and yellow leaves",
+        "usage": "decoration",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images that illustrate the warm and inviting colors of autumn in Guatemala, perfect for seasonal themes.",
+          "emotional_match": "Adventurous and enriching, inviting travelers to explore and experience the warmth of Guatemala.",
+          "tags": [
+            "warm",
+            "autumn",
+            "colors",
+            "Guatemala"
+          ]
+        }
+      },
+      {
+        "id": "unsplash_SZaWI4PM-W0_1752572325802",
+        "path": "https://images.unsplash.com/photo-1605591182723-de026639ab9a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnN8ZW58MHwwfHx8MTc1MjU4MDgyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "url": "https://images.unsplash.com/photo-1605591182723-de026639ab9a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHdWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnN8ZW58MHwwfHx8MTc1MjU4MDgyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "alt_text": "gray concrete building near green leaf tree during daytime",
+        "usage": "support",
+        "dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "file_size": 0,
+        "format": "jpg",
+        "optimized": false,
+        "isExternal": true,
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        },
+        "accessibility": {
+          "alt_text_provided": true,
+          "descriptive": true,
+          "wcag_compliant": true
+        },
+        "performance": {
+          "load_time_estimate": 0,
+          "optimization_score": 80
+        },
+        "external_metadata": {
+          "source": "ai_selected",
+          "reasoning": "Real Unsplash image for: Images of ancient ruins in Guatemala that capture the essence of cultural exploration.",
+          "emotional_match": "Adventurous and enriching, inviting travelers to explore and experience the warmth of Guatemala.",
+          "tags": [
+            "Guatemala",
+            "ancient",
+            "ruins"
+          ]
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": [
+      {
+        "id": "default-font",
+        "family": "Arial, sans-serif",
+        "weights": [
+          "400",
+          "700"
+        ],
+        "fallbacks": [
+          "Helvetica",
+          "sans-serif"
+        ],
+        "usage": "primary-text",
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple_mail": true,
+          "yahoo_mail": true
+        }
+      }
+    ]
+  },
+  "assetRequirements": [
+    {
+      "type": "hero",
+      "purpose": "To capture the essence of Guatemala's landscapes and culture, enticing travelers to explore.",
+      "dimensions": {
+        "width": 1200,
+        "height": 600
+      },
+      "priority": "required",
+      "emotional_tone": "adventurous and inviting",
+      "visual_style": "vibrant and culturally rich",
+      "content_context": "Showcasing Guatemala's ancient ruins, natural beauty, and cultural richness."
+    },
+    {
+      "type": "seasonal",
+      "purpose": "Highlight the autumn season and its appeal for travel.",
+      "dimensions": {
+        "width": 800,
+        "height": 400
+      },
+      "priority": "recommended",
+      "emotional_tone": "warm and welcoming",
+      "visual_style": "autumn-themed with warm colors",
+      "content_context": "Emphasizing the best time for travel to Guatemala during the autumn months."
+    }
+  ],
+  "usageInstructions": [
+    {
+      "assetId": "unsplash_oAn4Ox_0jHE_1752572325456",
+      "placement": "Place at top of email as main header image with full width",
+      "context": "Use in context of: Откройте для себя Гватемалу осенью по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a bicycle leaning against a wall\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_WRgY_DJy288_1752572325478",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Гватемалу осенью по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"person wearing brown sombrero sitting near woman in purple and yellow dress\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_GxXyt-nZ9cg_1752572325758",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Гватемалу осенью по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_AhZIzCHByhk_1752572325779",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Гватемалу осенью по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"a close up of a tree with red and yellow leaves\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    },
+    {
+      "assetId": "unsplash_SZaWI4PM-W0_1752572325802",
+      "placement": "Place according to campaign layout requirements",
+      "context": "Use in context of: Откройте для себя Гватемалу осенью по лучшей цене!. Ensure asset aligns with brand guidelines and campaign messaging.",
+      "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+      "emailClientNotes": [],
+      "accessibilityRequirements": "Ensure alt text is provided: \"gray concrete building near green leaf tree during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+      "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+    }
+  ],
+  "performanceMetrics": {
+    "totalAssets": 6,
+    "totalSize": 0,
+    "averageOptimization": 80,
+    "emailClientCompatibility": 85,
+    "accessibilityScore": 90
+  },
+  "recommendations": [
+    "Add fallback formats for better email client compatibility",
+    "Improve alt text descriptions for better accessibility",
+    "Address asset collection errors to ensure complete manifest"
+  ],
+  "generationSummary": {
+    "timestamp": "2025-07-15T09:38:45.803Z",
+    "processingTime": 55250,
+    "sourcesProcessed": 2,
+    "assetsCollected": 5,
+    "assetsValidated": 5,
+    "assetsOptimized": 5,
+    "errors": [
+      "Failed to collect from local: AI asset collection failed: ❌ CRITICAL ERROR: Could not access required folder зайцы-подборка: ❌ CRITICAL ERROR: Could not process required file иллюстрация-забавного-зеленого-кролика-с-покупками.png: ENOENT: no such file or directory, stat 'figma-assets/зайцы-подборка/иллюстрация-забавного-зеленого-кролика-с-покупками.png'. All selected assets must be processable - no fallback allowed.. All asset sources must be accessible - no fallback allowed."
+    ]
+  }
+}

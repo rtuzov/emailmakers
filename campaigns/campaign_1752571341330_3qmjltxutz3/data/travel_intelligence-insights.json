@@ -1,0 +1,11 @@
+{
+  "insight_type": "travel_intelligence",
+  "insights": [
+    "Турция летом - отличный выбор для отдыха",
+    "Доступные цены на авиаперелеты и отели",
+    "Повышенный интерес к культурным мероприятиям"
+  ],
+  "insights_count": 3,
+  "saved_at": "2025-07-15T09:22:46.701Z",
+  "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752571341330_3qmjltxutz3/data/travel_intelligence-insights.json"
+}

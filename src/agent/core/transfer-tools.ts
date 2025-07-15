@@ -11,13 +11,6 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { run } from '@openai/agents';
-import {
-  dataCollectionSpecialistAgent,
-  contentSpecialistAgent,
-  designSpecialistAgent,
-  qualitySpecialistAgent,
-  deliverySpecialistAgent
-} from './tool-registry';
 
 // ============================================================================
 // CONTEXT-AWARE TRANSFER TOOLS
@@ -36,7 +29,8 @@ export const transferToDataCollectionSpecialist = tool({
     console.log('📋 Request:', request.slice(0, 100) + '...');
     console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
     
-    // Pass context through OpenAI Agents SDK context parameter
+    // Pass context through OpenAI Agents SDK context parameter  
+    const { dataCollectionSpecialistAgent } = await import('./tool-registry');
     const result = await run(dataCollectionSpecialistAgent, request, { context });
     
     console.log('✅ Data Collection Specialist completed');
@@ -54,6 +48,7 @@ export const transferToContentSpecialist = tool({
     console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
     
     // Pass context through OpenAI Agents SDK context parameter
+    const { contentSpecialistAgent } = await import('./tool-registry');
     const result = await run(contentSpecialistAgent, request, { context });
     
     // NEW: Persist generated content context into the shared workflow context
@@ -86,6 +81,7 @@ export const transferToDesignSpecialist = tool({
     console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
     
     // Pass context through OpenAI Agents SDK context parameter
+    const { designSpecialistAgent } = await import('./tool-registry');
     const result = await run(designSpecialistAgent, request, { context });
     
     console.log('✅ Design Specialist completed');
@@ -103,6 +99,7 @@ export const transferToQualitySpecialist = tool({
     console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
     
     // Pass context through OpenAI Agents SDK context parameter
+    const { qualitySpecialistAgent } = await import('./tool-registry');
     const result = await run(qualitySpecialistAgent, request, { context });
     
     console.log('✅ Quality Specialist completed');
@@ -120,6 +117,7 @@ export const transferToDeliverySpecialist = tool({
     console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
     
     // Pass context through OpenAI Agents SDK context parameter
+    const { deliverySpecialistAgent } = await import('./tool-registry');
     const result = await run(deliverySpecialistAgent, request, { context });
     
     console.log('✅ Delivery Specialist completed');

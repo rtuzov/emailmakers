@@ -220,7 +220,7 @@ ${params.user_request}
  */
 async function loadOrchestratorInstructions(): Promise<string> {
   try {
-    const instructionsPath = path.join(process.cwd(), 'src', 'agent', 'prompts', 'orchestrator', 'main-orchestrator.md');
+    const instructionsPath = path.join(process.cwd(), 'prompts', 'orchestrator', 'main-orchestrator.md');
     const instructions = await fs.readFile(instructionsPath, 'utf-8');
     console.log('📖 Loaded orchestrator instructions from:', instructionsPath);
     return instructions;
@@ -274,10 +274,11 @@ export async function createEmailCampaignOrchestrator() {
     ...commonTools
   ];
   
-  const orchestrator = new Agent({
+  const orchestrator = Agent.create({
     name: 'Email Campaign Orchestrator',
     model: getAgentModel(),
     instructions: instructions,
+    handoffDescription: 'I orchestrate the entire email campaign workflow by coordinating between specialized agents for data collection, content generation, design creation, quality assurance, and delivery.',
     tools: orchestratorTools,
     handoffs: [
       dataCollectionSpecialistAgent,

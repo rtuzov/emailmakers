@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "ES2020"],
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,13 +15,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "noImplicitThis": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noUncheckedIndexedAccess": false,
-    "exactOptionalPropertyTypes": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "plugins": [
       {
         "name": "next"
@@ -33,7 +33,8 @@
       "@/domains/*": ["./src/domains/*"],
       "@/shared/*": ["./src/shared/*"],
       "@/ui/*": ["./src/ui/*"],
-      "@/api/*": ["./src/api/*"]
+      "@/api/*": ["./src/api/*"],
+      "@/prompts/*": ["./prompts/*"]
     }
   },
   "include": ["next-env.d.ts", "global.d.ts", "src/**/*", ".next/types/**/*.ts"],
@@ -46,6 +47,7 @@
     "tests",
     "examples",
     "coverage",
+    "temp",
     "src/agent/tools/consolidated/content-generator.ts",
     "src/agent/tools/consolidated/figma-asset-manager.ts",
     "src/agent/tools/consolidated/pricing-intelligence.ts"

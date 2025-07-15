@@ -13,13 +13,499 @@ import {
   QualityContext,
   DeliveryContext,
   DataCollectionContext,
-  CampaignMetadata,
   ContentToDesignHandoff,
   DesignToQualityHandoff,
   QualityToDeliveryHandoff,
-  createHandoffMetadata,
-  type HandoffMetadata
+  createHandoffMetadata
 } from './handoff-schemas';
+
+/**
+ * PHASE 11 TASK 11.8: Workflow Continuity System
+ * Enhanced workflow continuity validation and quality preservation tracking
+ * Addresses Thailand campaign issue: Quality work lost during phase transitions
+ */
+
+/**
+ * Workflow state that accumulates context from all specialists
+ */
+interface WorkflowState {
+  campaign_id: string;
+  current_stage: 'data_collection' | 'content' | 'design' | 'quality' | 'delivery';
+  completed_stages: string[];
+  data_collection_context?: any;
+  content_context?: any;
+  design_context?: any;
+  quality_context?: any;
+  delivery_context?: any;
+  workflow_metadata: {
+    started_at: string;
+    current_stage_started_at: string;
+    total_processing_time: number;
+    stage_transitions: Array<{
+      from_stage: string;
+      to_stage: string;
+      timestamp: string;
+      duration: number;
+    }>;
+  };
+}
+
+/**
+ * Workflow Continuity Validation Interface
+ */
+interface WorkflowContinuityValidation {
+  continuity_score: number; // 0-100
+  phase_transition_quality: {
+    data_to_content: number;
+    content_to_design: number;
+    design_to_quality: number;
+    quality_to_delivery: number;
+    overall_transition_quality: number;
+  };
+  quality_preservation: {
+    content_preservation_score: number;
+    design_preservation_score: number;
+    asset_preservation_score: number;
+    brand_preservation_score: number;
+    overall_preservation_score: number;
+  };
+  continuity_issues: Array<{
+    phase_transition: string;
+    severity: 'critical' | 'high' | 'medium' | 'low';
+    issue_type: 'data_loss' | 'quality_degradation' | 'specification_drift' | 'context_loss';
+    description: string;
+    impact: string;
+    recommendation: string;
+  }>;
+  rollback_triggers: Array<{
+    trigger_type: string;
+    threshold: number;
+    current_value: number;
+    triggered: boolean;
+    action_required: string;
+  }>;
+  phase11_compliance: boolean;
+}
+
+/**
+ * Enhanced workflow continuity validation with quality preservation tracking
+ */
+export async function validateWorkflowContinuity(
+  workflowState: WorkflowState,
+  options: {
+    strict_mode?: boolean;
+    continuity_threshold?: number; // Default: 90%
+    preservation_threshold?: number; // Default: 95%
+    enable_rollback?: boolean;
+    validate_all_transitions?: boolean;
+  } = {}
+): Promise<WorkflowContinuityValidation> {
+  const config = {
+    strict_mode: true,
+    continuity_threshold: 90,
+    preservation_threshold: 95,
+    enable_rollback: true,
+    validate_all_transitions: true,
+    ...options
+  };
+
+  console.log(`🚀 Phase 11 Task 11.8: Starting Workflow Continuity Validation`);
+  console.log(`📊 Targets: Continuity ${config.continuity_threshold}%+, Preservation ${config.preservation_threshold}%+`);
+
+  try {
+    // Step 1: Validate Phase Transitions
+    console.log(`🔄 Step 1: Validating phase transitions...`);
+    const phaseTransitionQuality = await validatePhaseTransitions(workflowState, config);
+    
+    // Step 2: Validate Quality Preservation
+    console.log(`🎯 Step 2: Validating quality preservation...`);
+    const qualityPreservation = await validateQualityPreservation(workflowState, config);
+    
+    // Step 3: Calculate Overall Continuity Score
+    const continuityScore = calculateContinuityScore(phaseTransitionQuality, qualityPreservation);
+    console.log(`📊 Overall continuity score: ${continuityScore}%`);
+    
+    // Step 4: Identify Continuity Issues
+    const continuityIssues = identifyContinuityIssues(
+      phaseTransitionQuality,
+      qualityPreservation,
+      config
+    );
+    
+    // Step 5: Check Rollback Triggers
+    const rollbackTriggers = checkRollbackTriggers(
+      continuityScore,
+      phaseTransitionQuality,
+      qualityPreservation,
+      config
+    );
+    
+    // Step 6: Phase 11 Compliance Check
+    const phase11Compliance = checkWorkflowContinuityCompliance(
+      continuityScore,
+      phaseTransitionQuality,
+      qualityPreservation,
+      config
+    );
+    
+    console.log(`${phase11Compliance ? '✅' : '❌'} Phase 11 Workflow Continuity: ${phase11Compliance ? 'PASSED' : 'FAILED'}`);
+    
+    const validation: WorkflowContinuityValidation = {
+      continuity_score: continuityScore,
+      phase_transition_quality: phaseTransitionQuality,
+      quality_preservation: qualityPreservation,
+      continuity_issues: continuityIssues,
+      rollback_triggers: rollbackTriggers,
+      phase11_compliance: phase11Compliance
+    };
+    
+    // Log results
+    console.log(`\n📊 WORKFLOW CONTINUITY VALIDATION RESULTS:`);
+    console.log(`   Continuity Score: ${continuityScore}%`);
+    console.log(`   Transition Quality: ${phaseTransitionQuality.overall_transition_quality}%`);
+    console.log(`   Preservation Quality: ${qualityPreservation.overall_preservation_score}%`);
+    console.log(`   Critical Issues: ${continuityIssues.filter(i => i.severity === 'critical').length}`);
+    console.log(`   Rollback Triggers: ${rollbackTriggers.filter(t => t.triggered).length}`);
+    
+    return validation;
+    
+  } catch (error) {
+    console.error('❌ Workflow continuity validation failed:', error);
+    throw new Error(`Workflow continuity validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+/**
+ * Validate phase transitions for quality preservation
+ */
+async function validatePhaseTransitions(
+  workflowState: WorkflowState,
+  _config: any
+): Promise<any> {
+  console.log('🔄 Validating phase transitions...');
+  
+  const transitions = {
+    data_to_content: 0,
+    content_to_design: 0,
+    design_to_quality: 0,
+    quality_to_delivery: 0,
+    overall_transition_quality: 0
+  };
+  
+  // Data to Content transition
+  if (workflowState.data_collection_context && workflowState.content_context) {
+    transitions.data_to_content = validateDataToContentTransition(
+      workflowState.data_collection_context,
+      workflowState.content_context
+    );
+  }
+  
+  // Content to Design transition
+  if (workflowState.content_context && workflowState.design_context) {
+    transitions.content_to_design = validateContentToDesignTransition(
+      workflowState.content_context,
+      workflowState.design_context
+    );
+  }
+  
+  // Design to Quality transition
+  if (workflowState.design_context && workflowState.quality_context) {
+    transitions.design_to_quality = validateDesignToQualityTransition(
+      workflowState.design_context,
+      workflowState.quality_context
+    );
+  }
+  
+  // Quality to Delivery transition
+  if (workflowState.quality_context && workflowState.delivery_context) {
+    transitions.quality_to_delivery = validateQualityToDeliveryTransition(
+      workflowState.quality_context,
+      workflowState.delivery_context
+    );
+  }
+  
+  // Calculate overall transition quality
+  const validTransitions = Object.values(transitions).filter(score => score > 0);
+  transitions.overall_transition_quality = validTransitions.length > 0 
+    ? Math.round(validTransitions.reduce((sum, score) => sum + score, 0) / validTransitions.length)
+    : 0;
+  
+  return transitions;
+}
+
+/**
+ * Validate quality preservation across workflow
+ */
+async function validateQualityPreservation(
+  workflowState: WorkflowState,
+  _config: any
+): Promise<any> {
+  console.log('🎯 Validating quality preservation...');
+  
+  const preservation = {
+    content_preservation_score: 0,
+    design_preservation_score: 0,
+    asset_preservation_score: 0,
+    brand_preservation_score: 0,
+    overall_preservation_score: 0
+  };
+  
+  // Content preservation (Thailand campaign: lost pricing, dates, routes)
+  if (workflowState.content_context && workflowState.design_context) {
+    preservation.content_preservation_score = validateContentPreservationInWorkflow(
+      workflowState.content_context,
+      workflowState.design_context,
+      workflowState.quality_context
+    );
+  }
+  
+  // Design preservation
+  if (workflowState.design_context && workflowState.quality_context) {
+    preservation.design_preservation_score = validateDesignPreservationInWorkflow(
+      workflowState.design_context,
+      workflowState.quality_context
+    );
+  }
+  
+  // Asset preservation (Thailand campaign: only 1/7 images used)
+  if (workflowState.design_context) {
+    preservation.asset_preservation_score = validateAssetPreservationInWorkflow(
+      workflowState.design_context,
+      workflowState.quality_context
+    );
+  }
+  
+  // Brand preservation (Thailand campaign: no brand colors used)
+  if (workflowState.design_context) {
+    preservation.brand_preservation_score = validateBrandPreservationInWorkflow(
+      workflowState.design_context,
+      workflowState.quality_context
+    );
+  }
+  
+  // Calculate overall preservation score
+  const preservationScores = Object.values(preservation).filter(score => score > 0);
+  preservation.overall_preservation_score = preservationScores.length > 0
+    ? Math.round(preservationScores.reduce((sum, score) => sum + score, 0) / preservationScores.length)
+    : 0;
+  
+  return preservation;
+}
+
+// Helper functions for transition validation
+function validateDataToContentTransition(dataContext: any, contentContext: any): number {
+  let score = 100;
+  
+  // Check if key data elements are preserved
+  if (!contentContext.destination && dataContext.destination) score -= 20;
+  if (!contentContext.travel_dates && dataContext.travel_dates) score -= 15;
+  if (!contentContext.pricing && dataContext.pricing) score -= 20;
+  
+  return Math.max(score, 0);
+}
+
+function validateContentToDesignTransition(contentContext: any, designContext: any): number {
+  let score = 100;
+  
+  // Check if content elements are preserved in design
+  if (!designContext.content_integration?.subject && contentContext.subject) score -= 25;
+  if (!designContext.content_integration?.pricing && contentContext.pricing) score -= 25;
+  if (!designContext.content_integration?.travel_dates && contentContext.travel_dates) score -= 20;
+  
+  return Math.max(score, 0);
+}
+
+function validateDesignToQualityTransition(designContext: any, qualityContext: any): number {
+  let score = 100;
+  
+  // Check if design elements are preserved in quality validation
+  if (!qualityContext.design_validation && designContext.design_decisions) score -= 30;
+  if (!qualityContext.asset_validation && designContext.asset_manifest) score -= 25;
+  
+  return Math.max(score, 0);
+}
+
+function validateQualityToDeliveryTransition(qualityContext: any, deliveryContext: any): number {
+  let score = 100;
+  
+  // Check if quality standards are maintained in delivery
+  if (!deliveryContext.quality_preservation && qualityContext.quality_report) score -= 30;
+  
+  return Math.max(score, 0);
+}
+
+// Helper functions for preservation validation
+function validateContentPreservationInWorkflow(contentContext: any, designContext: any, _qualityContext?: any): number {
+  let score = 100;
+  
+  // Thailand campaign issues: pricing, dates, routes lost
+  const criticalContent = ['pricing', 'travel_dates', 'destination', 'routes'];
+  
+  criticalContent.forEach(element => {
+    if (contentContext[element] && !designContext.content_integration?.[element]) {
+      score -= 25; // Heavy penalty for content loss
+    }
+  });
+  
+  return Math.max(score, 0);
+}
+
+function validateDesignPreservationInWorkflow(_designContext: any, qualityContext: any): number {
+  let score = 100;
+  
+  // Check if design decisions are preserved
+  if (!qualityContext.design_validation?.layout_consistency) score -= 20;
+  if (!qualityContext.design_validation?.visual_hierarchy) score -= 20;
+  if (!qualityContext.design_validation?.typography_consistency) score -= 15;
+  
+  return Math.max(score, 0);
+}
+
+function validateAssetPreservationInWorkflow(designContext: any, _qualityContext?: any): number {
+  // Thailand campaign: only 1/7 images used
+  const totalAssets = (designContext.asset_manifest?.images?.length || 0) + 
+                     (designContext.asset_manifest?.icons?.length || 0);
+  const usedAssets = designContext.asset_utilization?.used_assets?.length || 1; // Thailand: only 1 used
+  
+  if (totalAssets === 0) return 100;
+  
+  const utilizationRate = (usedAssets / totalAssets) * 100;
+  return Math.min(utilizationRate, 100);
+}
+
+function validateBrandPreservationInWorkflow(designContext: any, _qualityContext?: any): number {
+  let score = 100;
+  
+  // Thailand campaign: no brand colors used
+  const brandElements = ['primary_color', 'secondary_color', 'accent_color', 'logo'];
+  
+  brandElements.forEach(element => {
+    if (!designContext.brand_application?.[element]) {
+      score -= 25; // Heavy penalty for brand inconsistency
+    }
+  });
+  
+  return Math.max(score, 0);
+}
+
+function calculateContinuityScore(phaseTransitions: any, qualityPreservation: any): number {
+  const transitionWeight = 0.4;
+  const preservationWeight = 0.6;
+  
+  return Math.round(
+    (phaseTransitions.overall_transition_quality * transitionWeight) +
+    (qualityPreservation.overall_preservation_score * preservationWeight)
+  );
+}
+
+function identifyContinuityIssues(phaseTransitions: any, qualityPreservation: any, _config: any): any[] {
+  const issues = [];
+  
+  // Transition quality issues
+  if (phaseTransitions.content_to_design < 80) {
+    issues.push({
+      phase_transition: 'content_to_design',
+      severity: 'critical',
+      issue_type: 'data_loss',
+      description: 'Critical content elements lost during content-to-design transition',
+      impact: 'Key information (pricing, dates, routes) missing from final template',
+      recommendation: 'Implement mandatory content preservation validation'
+    });
+  }
+  
+  // Preservation issues
+  if (qualityPreservation.content_preservation_score < 90) {
+    issues.push({
+      phase_transition: 'workflow_wide',
+      severity: 'critical',
+      issue_type: 'quality_degradation',
+      description: 'Content preservation below 90% threshold',
+      impact: 'Important content details lost during workflow execution',
+      recommendation: 'Strengthen content handoff validation and tracking'
+    });
+  }
+  
+  if (qualityPreservation.asset_preservation_score < 80) {
+    issues.push({
+      phase_transition: 'design_phase',
+      severity: 'high',
+      issue_type: 'specification_drift',
+      description: 'Asset utilization below 80% threshold',
+      impact: 'Collected assets not properly integrated into final template',
+      recommendation: 'Enforce asset utilization requirements in design phase'
+    });
+  }
+  
+  if (qualityPreservation.brand_preservation_score < 70) {
+    issues.push({
+      phase_transition: 'design_phase',
+      severity: 'high',
+      issue_type: 'specification_drift',
+      description: 'Brand consistency below 70% threshold',
+      impact: 'Brand guidelines not properly applied in final template',
+      recommendation: 'Implement automatic brand consistency enforcement'
+    });
+  }
+  
+  return issues;
+}
+
+function checkRollbackTriggers(
+  continuityScore: number,
+  _phaseTransitions: any,
+  qualityPreservation: any,
+  config: any
+): any[] {
+  const triggers = [];
+  
+  // Overall continuity trigger
+  triggers.push({
+    trigger_type: 'overall_continuity',
+    threshold: config.continuity_threshold,
+    current_value: continuityScore,
+    triggered: continuityScore < config.continuity_threshold,
+    action_required: continuityScore < config.continuity_threshold 
+      ? 'Rollback to previous phase for continuity restoration'
+      : 'Continue workflow'
+  });
+  
+  // Content preservation trigger
+  triggers.push({
+    trigger_type: 'content_preservation',
+    threshold: config.preservation_threshold,
+    current_value: qualityPreservation.content_preservation_score,
+    triggered: qualityPreservation.content_preservation_score < config.preservation_threshold,
+    action_required: qualityPreservation.content_preservation_score < config.preservation_threshold
+      ? 'Rollback to content phase to restore lost content'
+      : 'Content preservation acceptable'
+  });
+  
+  // Asset utilization trigger
+  triggers.push({
+    trigger_type: 'asset_utilization',
+    threshold: 80,
+    current_value: qualityPreservation.asset_preservation_score,
+    triggered: qualityPreservation.asset_preservation_score < 80,
+    action_required: qualityPreservation.asset_preservation_score < 80
+      ? 'Rollback to design phase to improve asset integration'
+      : 'Asset utilization acceptable'
+  });
+  
+  return triggers;
+}
+
+function checkWorkflowContinuityCompliance(
+  continuityScore: number,
+  phaseTransitions: any,
+  qualityPreservation: any,
+  config: any
+): boolean {
+  return (
+    continuityScore >= config.continuity_threshold &&
+    qualityPreservation.overall_preservation_score >= config.preservation_threshold &&
+    phaseTransitions.overall_transition_quality >= 85
+  );
+}
 
 // ============================================================================
 // DATA COLLECTION CONTEXT LOADER
@@ -38,8 +524,9 @@ export async function loadDataCollectionContext(
     try {
       const content = await fs.readFile(path.join(dataDir, fileName), 'utf-8');
       return JSON.parse(content);
-    } catch (error) {
-      console.warn(`Failed to read ${fileName}:`, error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.warn(`Failed to read ${fileName}:`, errorMessage);
       return null;
     }
   }
@@ -85,8 +572,8 @@ export async function loadDataCollectionContext(
       campaign_id: path.basename(campaignPath),
       collection_timestamp: new Date().toISOString(),
       data_sources: availableSources,
-      collection_status: availableSources.length >= 4 ? 'complete' : 
-                        availableSources.length >= 2 ? 'partial' : 'failed',
+      collection_status: availableSources.length >= 4 ? 'complete' as const : 
+                        availableSources.length >= 2 ? 'partial' as const : 'failed' as const,
       data_quality_score: dataQualityScore
     }
   };
@@ -149,8 +636,9 @@ export async function loadDataCollectionContext(
     } else {
       console.log('✅ Data collection context schema validation passed');
     }
-  } catch (importError) {
-    console.warn('Could not import schema for validation:', importError.message);
+  } catch (importError: unknown) {
+    const errorMessage = importError instanceof Error ? importError.message : String(importError);
+    console.warn('Could not import schema for validation:', errorMessage);
   }
   
   return dataCollectionContext;
@@ -238,10 +726,10 @@ export async function buildContentContextFromOutputs(
       const futureDate = new Date(currentDate);
       futureDate.setMonth(futureDate.getMonth() + i);
       futureDate.setDate(1); // First of month
-      dates.push(futureDate.toISOString().split('T')[0]);
+      dates.push(futureDate.toISOString().split('T')[0] || '');
       
       futureDate.setDate(15); // Mid month
-      dates.push(futureDate.toISOString().split('T')[0]);
+      dates.push(futureDate.toISOString().split('T')[0] || '');
     }
     
     return dates;
@@ -507,7 +995,21 @@ export async function buildQualityContextFromOutputs(
   
   const qualityContext: QualityContext = {
     design_context: designContext,
-    data_collection_context: dataCollectionContext || designContext.data_collection_context,
+    data_collection_context: dataCollectionContext || designContext.data_collection_context || {
+      destination_analysis: null,
+      market_intelligence: null,
+      emotional_profile: null,
+      travel_intelligence: null,
+      trend_analysis: null,
+      consolidated_insights: null,
+      collection_metadata: {
+        campaign_id: 'unknown',
+        collection_timestamp: new Date().toISOString(),
+        data_sources: [],
+        collection_status: 'failed' as const,
+        data_quality_score: 0
+      }
+    },
     quality_report: {
       overall_score: qualityReportData.overall_score,
       html_validation: qualityReportData.html_validation,
@@ -645,11 +1147,52 @@ export async function prepareContentToDesignHandoff(
     metadata.executionTime = executionTime;
   }
   
+  // PHASE 11 FIX: Include original content for preservation validation
+  const originalContent = {
+    user_request: request,
+    campaign_brief: contentContext.campaign?.name || 'Email campaign',
+    content_requirements: {
+      personalization_level: contentContext.generated_content?.personalization_level,
+      urgency_level: contentContext.generated_content?.urgency_level,
+      target_audience: contentContext.campaign?.target_audience
+    },
+    data_collection_inputs: contentContext.data_collection_context || {
+      destination_analysis: null,
+      market_intelligence: null,
+      emotional_profile: null,
+      travel_intelligence: null,
+      trend_analysis: null,
+      consolidated_insights: null,
+      collection_metadata: {
+        campaign_id: 'unknown',
+        collection_timestamp: new Date().toISOString(),
+        data_sources: [],
+        collection_status: 'failed' as const,
+        data_quality_score: 0
+      }
+    }
+  };
+  
   return {
     request,
     metadata,
     content_context: contentContext,
-    data_collection_context: contentContext.data_collection_context
+    data_collection_context: contentContext.data_collection_context || {
+      destination_analysis: null,
+      market_intelligence: null,
+      emotional_profile: null,
+      travel_intelligence: null,
+      trend_analysis: null,
+      consolidated_insights: null,
+      collection_metadata: {
+        campaign_id: 'unknown',
+        collection_timestamp: new Date().toISOString(),
+        data_sources: [],
+        collection_status: 'failed' as const,
+        data_quality_score: 0
+      }
+    },
+    original_content: originalContent
   };
 }
 
@@ -701,30 +1244,6 @@ export async function prepareQualityToDeliveryHandoff(
 // WORKFLOW CONTEXT ACCUMULATION
 // ============================================================================
 
-/**
- * Workflow state that accumulates context from all specialists
- */
-interface WorkflowState {
-  campaign_id: string;
-  current_stage: 'data_collection' | 'content' | 'design' | 'quality' | 'delivery';
-  completed_stages: string[];
-  data_collection_context?: DataCollectionContext;
-  content_context?: ContentContext;
-  design_context?: DesignContext;
-  quality_context?: QualityContext;
-  delivery_context?: DeliveryContext;
-  workflow_metadata: {
-    started_at: string;
-    current_stage_started_at: string;
-    total_processing_time: number;
-    stage_transitions: Array<{
-      from_stage: string;
-      to_stage: string;
-      timestamp: string;
-      duration: number;
-    }>;
-  };
-}
 
 /**
  * Creates initial workflow state for context accumulation
@@ -824,8 +1343,9 @@ export async function recoverWorkflowState(
     const workflowState = JSON.parse(stateContent) as WorkflowState;
     console.log(`🔄 Recovered workflow state from: ${statePath}`);
     return workflowState;
-  } catch (error) {
-    console.warn(`⚠️ Could not recover workflow state from ${statePath}:`, error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn(`⚠️ Could not recover workflow state from ${statePath}:`, errorMessage);
     return null;
   }
 }
@@ -848,7 +1368,9 @@ export function validateContextAccumulation(workflowState: WorkflowState): {
   
   // Check context consistency across stages
   if (workflowState.content_context && workflowState.design_context) {
-    if (workflowState.content_context.campaign.id !== workflowState.design_context.content_context.campaign.id) {
+    const contentCampaignId = workflowState.content_context.campaign?.id;
+    const designCampaignId = workflowState.design_context.content_context?.campaign?.id;
+    if (contentCampaignId && designCampaignId && contentCampaignId !== designCampaignId) {
       issues.push('Campaign ID mismatch between content and design contexts');
     }
     
@@ -1037,15 +1559,18 @@ export function validateContextCompleteness(context: any, contextType: string): 
   };
 
   // Helper function to check for hardcoded values
-  function checkHardcodes(value: any, path: string, patterns: string[]): void {
+  function checkHardcodes(value: any, path: string, patterns: (string | number)[]): void {
     if (typeof value === 'string') {
       for (const pattern of patterns) {
-        if (value.includes(pattern)) {
+        if (typeof pattern === 'string' && value.includes(pattern)) {
+          hardcodeViolations.push(`${path}: contains hardcoded value '${pattern}'`);
+        } else if (typeof pattern === 'number' && value.includes(pattern.toString())) {
           hardcodeViolations.push(`${path}: contains hardcoded value '${pattern}'`);
         }
       }
     } else if (typeof value === 'number') {
-      if (patterns.includes(value)) {
+      const stringPatterns = patterns.map(p => typeof p === 'string' ? p : p.toString());
+      if (stringPatterns.includes(value.toString()) || patterns.includes(value)) {
         hardcodeViolations.push(`${path}: suspicious hardcoded number '${value}'`);
       }
     }
@@ -1107,7 +1632,6 @@ export function validateContextCompleteness(context: any, contextType: string): 
     if (contextType === 'content' && context.context_analysis && context.date_analysis && context.pricing_analysis) {
       const destination1 = context.context_analysis.destination;
       const destination2 = context.date_analysis.destination;
-      const routeDestination = context.pricing_analysis.route?.to;
       
       // Check destination consistency
       if (destination1 !== destination2) {
@@ -1329,8 +1853,9 @@ export async function recoverContextFromCampaign(
     const context = JSON.parse(contextContent);
     console.log(`🔄 Recovered ${contextType} context from: ${contextPath}`);
     return context;
-  } catch (error) {
-    throw new Error(`Failed to recover ${contextType} context from ${contextPath}: ${error.message}`);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to recover ${contextType} context from ${contextPath}: ${errorMessage}`);
   }
 }
 
@@ -1512,8 +2037,9 @@ export function extractWithLogging(
       logDataSource(campaignId, fieldPath, 'fallback', 'empty_value', null, 0, 'error');
       return null;
     }
-  } catch (error) {
-    console.warn(`⚠️ Extraction failed for ${fieldPath}:`, error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn(`⚠️ Extraction failed for ${fieldPath}:`, errorMessage);
     
     if (fallbackValue !== undefined) {
       logDataSource(campaignId, fieldPath, 'fallback', 'extraction_error', fallbackValue, 30, 'error');

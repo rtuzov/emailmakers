@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cors } from '@/lib/cors';
-import { DesignSpecialistAgent } from '@/agent/specialists/design-specialist-v2';
+import { designSpecialistAgent as EnhancedDesignSpecialistAgent } from '@/agent/core/tool-registry';
 
 // Type for Design Specialist Input
 interface DesignSpecialistInputV2 {
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
     const prompt = buildDesignPrompt(agentInput);
     console.log('🎨 Design Specialist prompt:', prompt);
     
-    const result = await run(DesignSpecialistAgent, prompt);
+    const result = await run(EnhancedDesignSpecialistAgent, prompt);
 
     // Parse agent result
     const parsedResult = parseDesignAgentResult(result, agentInput);

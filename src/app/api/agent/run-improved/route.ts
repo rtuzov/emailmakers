@@ -53,6 +53,15 @@ export async function POST(request: NextRequest) {
       campaignId: context.campaignId || `api_campaign_${Date.now()}`,
       campaignPath: context.campaignPath,
       metadata: {
+        // Map metadata from both body.metadata and input.metadata for flexibility
+        campaignName: body.metadata?.campaignName || body.metadata?.campaign_name || 
+                     input.metadata?.campaign_name || input.metadata?.campaignName,
+        brand: body.metadata?.brand || input.metadata?.brand,
+        language: body.metadata?.language || input.metadata?.language,
+        campaignType: body.metadata?.campaignType || body.metadata?.type || 
+                     input.metadata?.type || input.metadata?.campaignType,
+        
+        // API metadata
         taskType: task_type,
         endpoint: '/api/agent/run-improved',
         inputType: typeof input,

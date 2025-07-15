@@ -16,12 +16,8 @@ import {
   AssetManifestOptions,
   ContentContext,
   CampaignContext,
-  ManifestGenerationResult,
-  AssetUsageInstruction,
   PerformanceMetrics
 } from './types';
-import { analyzeContentWithAI } from './ai-analysis';
-import { collectAssetsFromSources } from './asset-collection';
 
 // ============================================================================
 // AI-POWERED DYNAMIC ANALYSIS

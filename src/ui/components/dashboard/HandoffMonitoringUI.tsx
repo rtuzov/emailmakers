@@ -24,7 +24,7 @@ interface HandoffMonitoringUIProps {
 export default function HandoffMonitoringUI({ className = '' }: HandoffMonitoringUIProps) {
   const [handoffEvents, setHandoffEvents] = useState<HandoffEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState<HandoffEvent | null>(null);
+  const [_selectedEvent, _setSelectedEvent] = useState<HandoffEvent | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed' | 'failed'>('all');
 
   useEffect(() => {
@@ -36,15 +36,15 @@ export default function HandoffMonitoringUI({ className = '' }: HandoffMonitorin
       return Array.from({ length: 8 }, (_, i) => {
         const fromIndex = Math.floor(Math.random() * agents.length);
         const toIndex = (fromIndex + 1) % agents.length;
-        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        const status = statuses[Math.floor(Math.random() * statuses.length)] as HandoffEvent['status'];
         
         return {
           id: `handoff-${Date.now()}-${i}`,
-          from_agent: agents[fromIndex],
-          to_agent: agents[toIndex],
+          from_agent: agents[fromIndex] as string,
+          to_agent: agents[toIndex] as string,
           timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
           status,
-          data_type: dataTypes[Math.floor(Math.random() * dataTypes.length)],
+          data_type: dataTypes[Math.floor(Math.random() * dataTypes.length)] as HandoffEvent['data_type'],
           duration_ms: status === 'completed' ? Math.floor(Math.random() * 5000) + 500 : undefined,
           validation_score: status === 'completed' ? Math.floor(Math.random() * 20) + 80 : undefined,
           issues_count: Math.floor(Math.random() * 5),

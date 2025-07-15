@@ -37,7 +37,7 @@ logAgentModelConfig();
  */
 function loadPrompt(promptPath: string): string {
   try {
-    const fullPath = join(process.cwd(), 'src/agent/prompts', promptPath);
+    const fullPath = join(process.cwd(), 'prompts', promptPath);
     const content = readFileSync(fullPath, 'utf-8');
     console.log(`📄 Loaded prompt: ${promptPath} (${content.length} chars)`);
     
@@ -61,10 +61,11 @@ function loadPrompt(promptPath: string): string {
 /**
  * Delivery Specialist Agent (Final destination - no handoffs needed)
  */
-export const deliverySpecialistAgent = new Agent({
+export const deliverySpecialistAgent = Agent.create({
   name: 'Delivery Specialist',
   model: getAgentModel(),
   instructions: loadPrompt('specialists/delivery-specialist.md'),
+  handoffDescription: 'I finalize and package email campaigns for delivery. I create ZIP packages, documentation, and ensure deployment readiness.',
   tools: [...deliverySpecialistTools, ...commonTools]
 });
 
@@ -75,17 +76,19 @@ export const qualitySpecialistAgent = Agent.create({
   name: 'Quality Specialist',
   model: getAgentModel(),
   instructions: loadPrompt('specialists/quality-specialist.md'),
+  handoffDescription: 'I validate email templates for cross-client compatibility, accessibility, and performance. I run comprehensive tests and ensure email standards compliance.',
   tools: [...qualitySpecialistTools, ...commonTools],
   handoffs: [deliverySpecialistAgent]
 });
 
 /**
- * Design Specialist Agent with handoff to Quality
+ * Design Specialist Agent V3 with handoff to Quality (ENHANCED VERSION)
  */
 export const designSpecialistAgent = Agent.create({
-  name: 'Design Specialist',
+  name: 'Enhanced Design Specialist V3',
   model: getAgentModel(),
-  instructions: loadPrompt('specialists/design-specialist.md'),
+  instructions: loadPrompt('specialists/design-specialist-v3.md'),
+  handoffDescription: 'I create intelligent MJML email templates with AI content analysis, adaptive design, and modern responsive components. I analyze content to determine optimal design patterns.',
   tools: [...designSpecialistTools, ...commonTools],
   handoffs: [qualitySpecialistAgent]
 });
@@ -97,6 +100,7 @@ export const contentSpecialistAgent = Agent.create({
   name: 'Content Specialist',
   model: getAgentModel(),
   instructions: loadPrompt('specialists/content-specialist.md'),
+  handoffDescription: 'I generate compelling email content, create asset strategies, and prepare technical specifications. I transform data insights into engaging email copy.',
   tools: [...contentSpecialistTools, ...commonTools],
   handoffs: [designSpecialistAgent]
 });
@@ -108,6 +112,7 @@ export const dataCollectionSpecialistAgent = Agent.create({
   name: 'Data Collection Specialist',
   model: getAgentModel(),
   instructions: loadPrompt('specialists/data-collection-specialist.md'),
+  handoffDescription: 'I gather pricing data, destination information, and market intelligence. I provide data insights and context for email campaigns.',
   tools: [...dataCollectionSpecialistTools, ...commonTools],
   handoffs: [contentSpecialistAgent]
 });

@@ -10,7 +10,7 @@ import { SearchResults, type SearchResult } from '@/ui/components/search/search-
 import { TemplatePreviewModal } from '@/ui/components/templates/template-preview-modal'
 
 // Icons
-const SearchIcon = () => (
+const _SearchIcon = () => (
   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
@@ -315,7 +315,7 @@ export function TemplatesPage() {
     setPagination(prev => ({ ...prev, page: newPage }))
   }
 
-  const handleSortChange = (field: string) => {
+  const _handleSortChange = (field: string) => {
     if (field === sortBy) {
       setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')
     } else {
@@ -352,7 +352,7 @@ export function TemplatesPage() {
       // Get filename from Content-Disposition header
       const contentDisposition = response.headers.get('Content-Disposition')
       const filename = contentDisposition
-        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+        ? contentDisposition.split('filename=')[1]?.replace(/"/g, '') || `template-${templateId}.html`
         : `template-${templateId}.html`
 
       // Create download link

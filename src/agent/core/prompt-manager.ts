@@ -6,7 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const PROMPTS_DIR = path.join(process.cwd(), 'src', 'agent', 'prompts', 'specialists');
+const PROMPTS_DIR = path.join(process.cwd(), 'prompts', 'specialists');
 
 export interface PromptConfig {
   role: string;
@@ -25,7 +25,7 @@ export class PromptManager {
   private promptsPath: string;
 
   constructor() {
-    this.promptsPath = path.join(process.cwd(), 'src/agent/prompts');
+    this.promptsPath = path.join(process.cwd(), 'prompts');
   }
 
   /**

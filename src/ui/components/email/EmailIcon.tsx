@@ -24,7 +24,7 @@ const EmailIcon: React.FC<EmailIconProps> = ({
   emailCompatible = false
 }) => {
   // Asset mapping for Figma icons
-  const getAssetPath = (type: IconType, variant: IconVariant): string => {
+  const getAssetPath = (type: IconType, _variant: IconVariant): string => {
     switch (type) {
       case 'arrow':
         return '/src/ui/components/email/assets/arrow-icon.png';

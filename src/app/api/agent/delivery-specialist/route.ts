@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deliverySpecialistAgent } from '@/agent/specialists/delivery-specialist-v2';
-import { DeliverySpecialistInput } from '@/agent/specialists/delivery-specialist-v2';
+import { deliverySpecialistAgent } from '@/agent/core/tool-registry';
+import { DeliverySpecialistInput } from '@/agent/specialists/delivery/common/delivery-types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,46 +8,56 @@ export async function POST(request: NextRequest) {
     
     const {
       task_type = 'finalize_delivery',
-      quality_package,
-      delivery_requirements,
+      email_package,
+      deployment_config,
+      upload_requirements,
+      testing_requirements,
       campaign_context
     } = body;
 
     console.log('🚀 DeliverySpecialist API called (OpenAI Agents SDK):', { 
       task_type, 
-      hasQualityPackage: !!quality_package,
-      hasDeliveryRequirements: !!delivery_requirements,
+      hasEmailPackage: !!email_package,
+      hasDeploymentConfig: !!deployment_config,
       hasCampaignContext: !!campaign_context
     });
 
     // Prepare input for the delivery specialist agent
     const agentInput: DeliverySpecialistInput = {
       task_type,
-      quality_package: quality_package || {
-        html_content: '<html><body><h1>Sample Email</h1><p>Sample content</p></body></html>',
+      email_package: email_package || {
+        html_output: '<html><body><h1>Sample Email</h1><p>Sample content</p></body></html>',
         mjml_source: undefined,
         quality_score: 85,
-        quality_report: {
+        compliance_status: {
           overall_score: 85,
           passed_checks: ['HTML validation', 'Email standards'],
           recommendations: []
-        },
-        metadata: {
-          topic: 'Sample Campaign',
-          campaign_id: `campaign_${Date.now()}`,
-          generation_time_ms: 5000,
-          agents_used: ['content_specialist', 'design_specialist', 'quality_specialist'],
-          iteration_count: 1
         }
       },
-      delivery_requirements: delivery_requirements || {
-        create_preview: true,
-        create_zip: true,
-        include_metadata: true
+      deployment_config: deployment_config || {
+        environment: 'staging',
+        rollout_strategy: 'immediate',
+        validation_required: true,
+        auto_monitoring: true
+      },
+      upload_requirements: upload_requirements || {
+        s3_bucket: 'email-makers-assets',
+        cdn_distribution: true,
+        compression_enabled: true,
+        versioning_enabled: true
+      },
+      testing_requirements: testing_requirements || {
+        visual_regression: true,
+        performance_benchmarks: true,
+        cross_client_validation: true,
+        screenshot_comparison: true
       },
       campaign_context: campaign_context || {
         campaign_id: `campaign_${Date.now()}`,
-        performance_session: `session_${Date.now()}`
+        folder_path: `campaigns/campaign_${Date.now()}`,
+        performance_session: `session_${Date.now()}`,
+        deployment_target: 'production'
       }
     };
 
@@ -59,138 +69,124 @@ export async function POST(request: NextRequest) {
     
     // Create prompt for the agent
     const prompt = `Finalize email campaign delivery:
-    
-    Task Type: ${agentInput.task_type}
-    Campaign ID: ${agentInput.quality_package.metadata.campaign_id}
-    Topic: ${agentInput.quality_package.metadata.topic}
-    HTML Content: ${agentInput.quality_package.html_content.substring(0, 200)}...
-    Quality Score: ${agentInput.quality_package.quality_score}
-    
-    Please use the delivery_manager tool to create final files, then use campaign_archiver and performance_reporter to complete the delivery process.
-    
-    Campaign Details:
-    - Generation Time: ${agentInput.quality_package.metadata.generation_time_ms}ms
-    - Agents Used: ${agentInput.quality_package.metadata.agents_used.join(', ')}
-    - Iterations: ${agentInput.quality_package.metadata.iteration_count}
-    
-    Create comprehensive delivery package with all files and reports.`;
 
-    // Execute the agent
-    const result = await run(deliverySpecialistAgent, prompt);
-    
-    const executionTime = Date.now() - startTime;
+**Task Type:** ${task_type}
+**Email Package:**
+- HTML Output: ${agentInput.email_package.html_output ? 'Available' : 'Missing'}
+- MJML Source: ${agentInput.email_package.mjml_source ? 'Available' : 'Missing'}
+- Quality Score: ${agentInput.email_package.quality_score}
 
-    console.log('✅ DeliverySpecialist agent completed:', {
-      success: true,
+**Deployment Configuration:**
+- Environment: ${agentInput.deployment_config?.environment}
+- Strategy: ${agentInput.deployment_config?.rollout_strategy}
+
+**Campaign Context:**
+- Campaign ID: ${agentInput.campaign_context?.campaign_id}
+- Folder Path: ${agentInput.campaign_context?.folder_path}
+
+**Instructions:**
+1. Process the email package for final delivery
+2. Handle asset uploads and deployment
+3. Generate screenshots and visual tests
+4. Create final deliverable package
+5. Ensure all quality checks are met
+
+Please execute the delivery workflow and provide comprehensive results.`;
+
+    console.log('🚀 Running Delivery Specialist Agent with OpenAI Agents SDK...');
+    console.log('📋 Agent Input Summary:', {
       task_type: agentInput.task_type,
-      executionTime,
-      campaignId: agentInput.quality_package.metadata.campaign_id
+      email_package_available: !!agentInput.email_package,
+      deployment_environment: agentInput.deployment_config?.environment,
+      campaign_id: agentInput.campaign_context?.campaign_id
     });
 
-    // Format response to match expected structure
-    const formattedResult = {
-      success: true,
-      task_type: agentInput.task_type,
-      results: {
-        status: 'completed',
-        files_created: [
-          `${agentInput.quality_package.metadata.campaign_id}_email.html`,
-          `${agentInput.quality_package.metadata.campaign_id}_metadata.json`
-        ],
-        campaign_id: agentInput.quality_package.metadata.campaign_id,
-        delivery_report: {
-          status: 'completed',
-          timestamp: new Date().toISOString(),
-          total_size: Buffer.byteLength(agentInput.quality_package.html_content, 'utf8'),
-          files_count: 2,
-          processing_time_ms: executionTime
-        },
-        processing_time_ms: executionTime,
-        timestamp: new Date().toISOString()
-      },
-      recommendations: {
-        deployment_ready: true,
-        next_steps: [
-          'Campaign ready for deployment',
-          'All files created successfully',
-          'Quality validation passed'
-        ],
-        optimization_notes: [
-          'HTML size optimized',
-          'Cross-client compatibility ensured',
-          'Metadata complete'
-        ]
-      },
-      analytics: {
-        execution_time: executionTime,
-        files_processed: 2,
-        total_size_bytes: Buffer.byteLength(agentInput.quality_package.html_content, 'utf8'),
-        efficiency_score: 95
+    // Run the agent with the prepared input
+    const result = await run(deliverySpecialistAgent, prompt, {
+      context: {
+        agentInput,
+        apiCall: true,
+        timestamp: new Date().toISOString(),
+        requestId: `req_${Date.now()}_${Math.random().toString(36).substring(2)}`
       }
+    });
+
+    const endTime = Date.now();
+    const processingTime = endTime - startTime;
+
+    console.log('✅ Delivery Specialist completed successfully');
+    console.log('📊 Processing time:', processingTime, 'ms');
+
+    // Parse the agent response
+    let deliveryResults;
+    try {
+      // Try to extract structured data from the response
+      if (typeof result === 'object' && result !== null) {
+        deliveryResults = result;
+      } else if (typeof result === 'string') {
+        // Try to parse JSON from string response
+        const stringResult = result as string;
+        const jsonMatch = stringResult.match(/```json\n([\s\S]*?)\n```/);
+        if (jsonMatch && jsonMatch[1]) {
+          deliveryResults = JSON.parse(jsonMatch[1]);
+        } else {
+          deliveryResults = { message: stringResult, raw_output: stringResult };
+        }
+      } else {
+        deliveryResults = { message: 'Delivery completed', raw_output: result };
+      }
+    } catch (parseError) {
+      console.warn('⚠️ Could not parse agent response as JSON, using raw output');
+      deliveryResults = { 
+        message: 'Delivery completed', 
+        raw_output: result,
+        parse_error: parseError instanceof Error ? parseError.message : 'Unknown parse error'
+      };
+    }
+
+    // Prepare successful response
+    const response = {
+      success: true,
+      task_type,
+      results: deliveryResults,
+      processing_time_ms: processingTime,
+      agent_info: {
+        name: 'Delivery Specialist',
+        version: 'OpenAI Agents SDK',
+        model: 'gpt-4o-mini'
+      },
+      input_summary: {
+        task_type: agentInput.task_type,
+        email_package_available: !!agentInput.email_package,
+        deployment_environment: agentInput.deployment_config?.environment,
+        campaign_id: agentInput.campaign_context?.campaign_id
+      },
+      timestamp: new Date().toISOString()
     };
 
-    return NextResponse.json({
-      status: 'success',
-      data: {
-        agent: 'delivery-specialist-v2',
-        task_type: formattedResult.task_type,
-        success: formattedResult.success,
-        results: formattedResult.results,
-        recommendations: formattedResult.recommendations,
-        analytics: formattedResult.analytics,
-        execution_time: executionTime,
-        capabilities: {
-          agent_id: 'delivery-specialist-v2',
-          specialization: 'Campaign Delivery & Finalization',
-          tools: [
-            'delivery_manager',
-            'campaign_archiver',
-            'performance_reporter',
-            'handleToolErrorUnified'
-          ],
-          handoff_support: false, // Final agent in chain
-          workflow_stage: 'final_delivery',
-          sdk: 'openai-agents'
-        }
-      }
+    console.log('📋 Final Response Summary:', {
+      success: response.success,
+      task_type: response.task_type,
+      processing_time: response.processing_time_ms,
+      has_results: !!response.results
     });
 
+    return NextResponse.json(response);
+
   } catch (error) {
-    console.error('❌ DeliverySpecialist API error:', error);
+    console.error('❌ DeliverySpecialist API Error:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     
     return NextResponse.json({
-      status: 'error',
-      error: {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined
-      },
-      fallback_result: {
-        success: false,
-        task_type: 'finalize_delivery',
-        results: {
-          status: 'failed',
-          files_created: [],
-          campaign_id: 'error_campaign',
-          delivery_report: {
-            status: 'failed',
-            error: error instanceof Error ? error.message : 'Unknown error',
-            timestamp: new Date().toISOString()
-          },
-          processing_time_ms: 0,
-          timestamp: new Date().toISOString()
-        },
-        recommendations: {
-          deployment_ready: false,
-          next_steps: ['Fix delivery errors and retry'],
-          optimization_notes: ['Check input data and system status']
-        },
-        analytics: {
-          execution_time: 0,
-          files_processed: 0,
-          total_size_bytes: 0,
-          efficiency_score: 0
-        },
-        error: error instanceof Error ? error.message : 'Unknown error'
+      success: false,
+      error: errorMessage,
+      details: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+      agent_info: {
+        name: 'Delivery Specialist',
+        version: 'OpenAI Agents SDK',
+        model: 'gpt-4o-mini'
       }
     }, { status: 500 });
   }

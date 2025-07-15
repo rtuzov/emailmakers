@@ -221,12 +221,36 @@ export const finalizeContentAndTransferToDesign = tool({
               // Use enhanced file operations with retry logic
               await accessFileOrThrow(filePath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
               const data = await readJSONOrThrow(filePath, CRITICAL_OPERATION_RETRY_OPTIONS);
+              
+              console.log(`🔍 Checking ${filePath} for asset strategy...`);
+              
+              // Check for direct fields (original logic)
               if (data.visual_style || data.theme || data.image_concepts || data.color_palette) {
                 assetData = data;
-                console.log(`✅ Asset strategy loaded from ${filePath}`);
+                console.log(`✅ Asset strategy loaded from ${filePath} (direct fields)`);
                 break;
               }
+              // Check for nested design_requirements structure (design-brief-from-context.json)
+              else if (data.design_requirements && (
+                data.design_requirements.visual_style || 
+                data.design_requirements.color_palette || 
+                data.design_requirements.imagery_direction
+              )) {
+                assetData = data;
+                console.log(`✅ Asset strategy loaded from ${filePath} (design_requirements structure)`);
+                break;
+              }
+              // Check for destination_context structure 
+              else if (data.destination_context && data.destination_context.emotional_appeal) {
+                assetData = data;
+                console.log(`✅ Asset strategy loaded from ${filePath} (destination_context structure)`);
+                break;
+              }
+              else {
+                console.log(`⚠️ File ${filePath} exists but doesn't contain required asset strategy fields`);
+              }
             } catch (err) {
+              console.log(`⚠️ Could not access ${filePath}: ${err.message}`);
               // Continue to next path
             }
           }
@@ -234,47 +258,8 @@ export const finalizeContentAndTransferToDesign = tool({
           if (assetData) {
             assetStrategy = assetData;
           } else {
-            // Try to find asset strategy in recent campaigns as fallback
-            const campaignsDir = path.join(process.cwd(), 'campaigns');
-            const campaigns = await fs.readdir(campaignsDir);
-            
-            // Sort campaigns by timestamp (newest first)
-            const sortedCampaigns = campaigns
-              .filter(name => name.startsWith('campaign_'))
-              .sort((a, b) => {
-                const timestampA = parseInt(a.split('_')[1]);
-                const timestampB = parseInt(b.split('_')[1]);
-                return timestampB - timestampA;
-              });
-            
-            let foundAssetStrategy = false;
-            for (const campaignDir of sortedCampaigns.slice(0, 5)) { // Check last 5 campaigns
-              const possiblePaths = [
-                path.join(campaignsDir, campaignDir, 'content', 'design-brief-from-context.json'),
-                path.join(campaignsDir, campaignDir, 'content', 'asset-strategy.json'),
-                path.join(campaignsDir, campaignDir, 'data', 'emotional-profile.json')
-              ];
-              
-              for (const fallbackPath of possiblePaths) {
-                try {
-                  await accessFileOrThrow(fallbackPath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
-                  const data = await readJSONOrThrow(fallbackPath, CRITICAL_OPERATION_RETRY_OPTIONS);
-                  if (data.visual_style || data.theme || data.image_concepts || data.color_palette) {
-                    assetStrategy = data;
-                    console.log(`✅ Asset strategy found in fallback campaign: ${campaignDir}`);
-                    foundAssetStrategy = true;
-                    break;
-                  }
-                } catch (fallbackError) {
-                  // Continue searching
-                }
-              }
-              if (foundAssetStrategy) break;
-            }
-            
-            if (!foundAssetStrategy) {
-              throw new Error('❌ CRITICAL ERROR: No asset strategy found in any campaign. Asset strategy is required for email generation.');
-            }
+            // NO FALLBACK POLICY: Fail fast if asset strategy not found in current campaign
+            throw new Error(`❌ CRITICAL ERROR: No asset strategy found in current campaign ${params.campaign_path}. Content Specialist must generate asset strategy in current campaign first. Checked paths: ${possiblePaths.join(', ')}`);
           }
         } catch (error) {
           throw new Error(`❌ CRITICAL ERROR: Could not load asset strategy: ${error.message}`);
@@ -292,43 +277,13 @@ export const finalizeContentAndTransferToDesign = tool({
             generatedContent = await readJSONOrThrow(contentPath, CRITICAL_OPERATION_RETRY_OPTIONS);
             console.log('✅ Generated content loaded from primary campaign path');
           } catch (primaryError) {
-            console.log(`🔍 Content not found in primary campaign path: ${contentPath}, searching in recent campaigns...`);
-            
-            // Search for content in recent campaigns as fallback
-            const campaignsDir = path.join(process.cwd(), 'campaigns');
-            const campaigns = await fs.readdir(campaignsDir);
-            
-            // Sort campaigns by timestamp (newest first)
-            const sortedCampaigns = campaigns
-              .filter(name => name.startsWith('campaign_'))
-              .sort((a, b) => {
-                const timestampA = parseInt(a.split('_')[1]);
-                const timestampB = parseInt(b.split('_')[1]);
-                return timestampB - timestampA;
-              });
-            
-            let foundContent = false;
-            for (const campaignDir of sortedCampaigns.slice(0, 5)) { // Check last 5 campaigns
-              const fallbackPath = path.join(campaignsDir, campaignDir, 'content', 'email-content.json');
-              try {
-                await accessFileOrThrow(fallbackPath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
-                generatedContent = await readJSONOrThrow(fallbackPath, CRITICAL_OPERATION_RETRY_OPTIONS);
-                console.log(`✅ Generated content found in fallback campaign: ${campaignDir}`);
-                foundContent = true;
-                break;
-              } catch (fallbackError) {
-                // Continue searching
-              }
-            }
-            
-            if (!foundContent) {
-              throw new DataExtractionError(
-                'generated_content',
-                'email-content',
-                contentPath,
-                primaryError
-              );
-            }
+            // NO FALLBACK POLICY: Fail fast if content not found in current campaign
+            throw new DataExtractionError(
+              'generated_content',
+              'email-content',
+              contentPath,
+              primaryError
+            );
           }
         } catch (error) {
           throw new DataExtractionError(
@@ -340,63 +295,11 @@ export const finalizeContentAndTransferToDesign = tool({
         }
       }
 
+      // Technical requirements check removed as requested
+      // Use empty object as default instead of loading from file
       if (Object.keys(params.technical_requirements).length === 0) {
-        console.log('🔍 Loading technical requirements from campaign files...');
-        try {
-          let techPath = path.join(params.campaign_path, 'docs', 'specifications', 'technical-specification.json');
-          
-          // Try primary campaign path first
-          try {
-            await accessFileOrThrow(techPath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
-            technicalRequirements = await readJSONOrThrow(techPath, CRITICAL_OPERATION_RETRY_OPTIONS);
-            console.log('✅ Technical requirements loaded from primary campaign path');
-          } catch (primaryError) {
-            console.log(`🔍 Technical requirements not found in primary campaign path: ${techPath}, searching in recent campaigns...`);
-            
-            // Search for technical requirements in recent campaigns as fallback
-            const campaignsDir = path.join(process.cwd(), 'campaigns');
-            const campaigns = await fs.readdir(campaignsDir);
-            
-            // Sort campaigns by timestamp (newest first)
-            const sortedCampaigns = campaigns
-              .filter(name => name.startsWith('campaign_'))
-              .sort((a, b) => {
-                const timestampA = parseInt(a.split('_')[1]);
-                const timestampB = parseInt(b.split('_')[1]);
-                return timestampB - timestampA;
-              });
-            
-            let foundTechSpec = false;
-            for (const campaignDir of sortedCampaigns.slice(0, 5)) { // Check last 5 campaigns
-              const fallbackPath = path.join(campaignsDir, campaignDir, 'docs', 'specifications', 'technical-specification.json');
-              try {
-                await accessFileOrThrow(fallbackPath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
-                technicalRequirements = await readJSONOrThrow(fallbackPath, CRITICAL_OPERATION_RETRY_OPTIONS);
-                console.log(`✅ Technical requirements found in fallback campaign: ${campaignDir}`);
-                foundTechSpec = true;
-                break;
-              } catch (fallbackError) {
-                // Continue searching
-              }
-            }
-            
-            if (!foundTechSpec) {
-              throw new DataExtractionError(
-                'technical_requirements',
-                'technical-specification',
-                techPath,
-                primaryError
-              );
-            }
-          }
-        } catch (error) {
-          throw new DataExtractionError(
-            'technical_requirements',
-            'technical-specification',
-            path.join(params.campaign_path, 'docs', 'specifications', 'technical-specification.json'),
-            error
-          );
-        }
+        console.log('⚠️ Technical requirements check disabled - using empty requirements');
+        technicalRequirements = {};
       }
 
       // Build comprehensive content context with loaded data
@@ -539,27 +442,8 @@ export const finalizeDesignAndTransferToQuality = tool({
       }
       
       if (!campaignPath) {
-        // Try to find campaign path from recent campaigns
-        const campaignsDir = path.join(process.cwd(), 'campaigns');
-        try {
-          const campaigns = await fs.readdir(campaignsDir);
-          const sortedCampaigns = campaigns
-            .filter(name => name.startsWith('campaign_'))
-            .sort((a, b) => {
-              const timestampA = parseInt(a.split('_')[1]);
-              const timestampB = parseInt(b.split('_')[1]);
-              return timestampB - timestampA;
-            });
-          
-          if (sortedCampaigns.length > 0) {
-            campaignPath = path.join(campaignsDir, sortedCampaigns[0]);
-            console.log(`🔧 Using most recent campaign path: ${campaignPath}`);
-          } else {
-            throw new Error('❌ CRITICAL ERROR: Campaign path is missing from content context and no campaigns found. Content Specialist must provide valid campaign.campaignPath.');
-          }
-        } catch (error) {
-          throw new Error('❌ CRITICAL ERROR: Campaign path is missing from content context and cannot access campaigns directory. Content Specialist must provide valid campaign.campaignPath.');
-        }
+        // NO FALLBACK POLICY: Fail fast if campaign path is missing
+        throw new Error('❌ CRITICAL ERROR: Campaign path is missing from content context. Content Specialist must provide valid campaign.campaignPath.');
       }
       
       // Save design context to campaign folder

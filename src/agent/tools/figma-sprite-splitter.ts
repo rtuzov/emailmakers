@@ -3,7 +3,8 @@ import { Sharp } from 'sharp';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { OpenAI } from 'openai';
-import { createTempDir, ensureDirectoryExists } from '../utils/file-system';
+import { ensureDirectoryExists } from '../utils/file-system';
+import { tmpdir } from 'os';
 import { performance } from 'perf_hooks';
 import EmailFolderManager, { EmailFolder } from './email-folder-manager';
 import { getUsageModel } from '../../shared/utils/model-config';
@@ -603,7 +604,8 @@ class FigmaSpriteProcessor {
     
     try {
       // Create temporary directory for processing
-      tempDir = await createTempDir();
+      tempDir = path.join(tmpdir(), `sprite-split-${Date.now()}`);
+      await ensureDirectoryExists(tempDir);
       
       // Load and trim the image
       const originalImage = sharp(imagePath);

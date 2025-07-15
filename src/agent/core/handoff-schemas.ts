@@ -489,7 +489,13 @@ export const BaseHandoffDataSchema = z.object({
 
 export const ContentToDesignHandoffSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Complete content specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
+  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
+  original_content: z.object({
+    user_request: z.string().describe('Original user request'),
+    campaign_brief: z.string().optional().describe('Campaign brief'),
+    content_requirements: z.object({}).optional().describe('Original content requirements'),
+    data_collection_inputs: z.object({}).optional().describe('Original data collection inputs')
+  }).describe('Original content for preservation validation')
 });
 
 export const DesignToQualityHandoffSchema = BaseHandoffDataSchema.extend({

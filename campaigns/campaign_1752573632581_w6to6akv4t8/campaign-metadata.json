@@ -1,0 +1,30 @@
+{
+  "id": "campaign_1752573632581_w6to6akv4t8",
+  "name": "Путешествие в Италию весной",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители путешествий",
+  "user_request": "путешествие в Италия весной",
+  "created_at": "2025-07-15T10:00:32.582Z",
+  "status": "active",
+  "workflow_phase": "content_creation",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-15T10:01:08.965Z"
+}

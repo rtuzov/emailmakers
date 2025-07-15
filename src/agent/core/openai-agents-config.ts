@@ -5,10 +5,10 @@
  * for the Email-Makers agent system.
  */
 
-import { Agent, run, setTraceProcessors, addTraceProcessor } from '@openai/agents';
+import { Agent, run, addTraceProcessor } from '@openai/agents';
 import { logger } from './logger';
 import { getConfig } from './config';
-import { createAgentRunConfig, withSDKTrace } from '../utils/tracing-utils';
+import { withSDKTrace } from '../utils/tracing-utils';
 import { getAgentModel } from './agent-model-config';
 
 const cfg = getConfig();

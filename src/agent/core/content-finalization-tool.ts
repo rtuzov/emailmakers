@@ -16,15 +16,12 @@ import {
   CRITICAL_OPERATION_RETRY_OPTIONS
 } from './file-operations-retry';
 import {
-  FileNotFoundError,
   DataExtractionError,
   HandoffError,
   createError
 } from './error-types';
 
 import {
-  ContentContext,
-  createHandoffMetadata,
   validateHandoffData,
   ContentToDesignHandoffSchema
 } from './handoff-schemas';
@@ -83,13 +80,14 @@ async function readCampaignData(campaignPath: string) {
       consolidated: consolidatedData || {}
     };
 
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     debug.error('CampaignDataReader', 'Failed to load campaign data', {
-      error: error.message,
+      error: errorMessage,
       campaignPath
     });
     
-    throw new Error(`CAMPAIGN_DATA_READ_ERROR: Failed to load campaign data from ${campaignPath}. Error: ${error.message}. No fallback data allowed.`);
+    throw new Error(`CAMPAIGN_DATA_READ_ERROR: Failed to load campaign data from ${campaignPath}. Error: ${errorMessage}. No fallback data allowed.`);
   }
 }
 
@@ -100,9 +98,10 @@ async function readJsonFile(filePath: string): Promise<any> {
   try {
     await accessFileOrThrow(filePath, undefined, CRITICAL_OPERATION_RETRY_OPTIONS);
     return await readJSONOrThrow(filePath, CRITICAL_OPERATION_RETRY_OPTIONS);
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     debug.warn('CampaignDataReader', `Failed to read ${filePath} after retries`, { 
-      error: error.message,
+      error: errorMessage,
       retryContext: (error as any).retryContext
     });
     return null;
@@ -315,7 +314,7 @@ export const finalizeContentAndTransferToDesign = tool({
     technical_requirements: z.any().describe('Technical requirements'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async (params, context) => {
+  execute: async (params, _context) => {
     const startTime = Date.now();
     
     // Resolve and validate campaign path using centralized resolver
@@ -329,12 +328,13 @@ export const finalizeContentAndTransferToDesign = tool({
         campaignPath,
         trace_id: params.trace_id
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('❌ CONTENT FINALIZATION: Campaign path resolution failed');
       if (error instanceof CampaignPathError) {
         throw new Error(`Campaign path resolution failed: ${error.message}. Orchestrator must provide valid campaign path.`);
       }
-      throw new Error(`Unexpected error in campaign path resolution: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Unexpected error in campaign path resolution: ${errorMessage}`);
     }
     
     const handoffMonitor = getHandoffMonitor(campaignPath, logger);
@@ -510,7 +510,7 @@ export const finalizeContentAndTransferToDesign = tool({
       const handoffData = await prepareContentToDesignHandoff(
         params.request,
         contentContext,
-        params.trace_id,
+        params.trace_id ?? undefined,
         executionTime
       );
 
@@ -522,10 +522,10 @@ export const finalizeContentAndTransferToDesign = tool({
       }
 
       debug.info('ContentFinalization', 'Content context built and validated', {
-        subject: contentContext.generated_content.subject,
-        pricing: `${contentContext.pricing_analysis.best_price} ${contentContext.pricing_analysis.currency}`,
-        visual_style: contentContext.asset_strategy.visual_style,
-        dates: contentContext.date_analysis.optimal_dates.slice(0, 3).join(', ')
+        subject: contentContext.generated_content?.subject || 'N/A',
+        pricing: `${contentContext.pricing_analysis?.best_price || 'N/A'} ${contentContext.pricing_analysis?.currency || 'N/A'}`,
+        visual_style: contentContext.asset_strategy?.visual_style || 'N/A',
+        dates: contentContext.date_analysis?.optimal_dates?.slice(0, 3)?.join(', ') || 'N/A'
       });
 
       // Monitor handoff to Design Specialist
@@ -561,25 +561,26 @@ export const finalizeContentAndTransferToDesign = tool({
         data_size: handoffMetrics.dataSize
       });
 
-      return `✅ Content work finalized! Campaign: ${params.campaign_id}. Subject: "${contentContext.generated_content.subject}". Price: ${contentContext.pricing_analysis.best_price} ${contentContext.pricing_analysis.currency}. Visual style: ${contentContext.asset_strategy.visual_style}. Data collection: ${dataCollectionContext.collection_metadata.collection_status} (${dataCollectionContext.collection_metadata.data_quality_score}% quality). Ready for Design Specialist transfer via OpenAI SDK handoff system.`;
+      return `✅ Content work finalized! Campaign: ${params.campaign_id}. Subject: "${contentContext.generated_content?.subject || 'N/A'}". Price: ${contentContext.pricing_analysis?.best_price || 'N/A'} ${contentContext.pricing_analysis?.currency || 'N/A'}. Visual style: ${contentContext.asset_strategy?.visual_style || 'N/A'}. Data collection: ${dataCollectionContext.collection_metadata.collection_status} (${dataCollectionContext.collection_metadata.data_quality_score}% quality). Ready for Design Specialist transfer via OpenAI SDK handoff system.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : String(error);
       
       debug.error('ContentFinalization', 'Content finalization failed', {
-        error: error.message,
+        error: errorMessage,
         campaign_id: params.campaign_id,
         duration,
         trace_id: params.trace_id
       });
       
       logger.error('ContentFinalization', 'Content finalization failed', {
-        error: error.message,
+        error: errorMessage,
         campaign_id: params.campaign_id,
         duration
       });
       
-      return `Content finalization failed: ${error.message}`;
+      return `Content finalization failed: ${errorMessage}`;
     }
   }
 }); 

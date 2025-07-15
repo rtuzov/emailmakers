@@ -176,7 +176,7 @@ export class AgentLogger {
         endTime: Date.now(),
         duration,
         success,
-        error,
+        ...(error && { error }),
         metadata: { params: Object.keys(params), resultType: typeof result }
       });
     }
@@ -212,7 +212,7 @@ export class AgentLogger {
         endTime: Date.now(),
         duration,
         success,
-        error,
+        ...(error && { error }),
         metadata: { 
           inputLength: input.length, 
           outputLength: output.length 
@@ -252,7 +252,7 @@ export class AgentLogger {
         timestamp: new Date().toISOString(),
         dataSize,
         success,
-        error,
+        ...(error && { error }),
         metadata: { dataKeys: Object.keys(data) }
       });
     }
@@ -300,10 +300,10 @@ export class AgentLogger {
       category,
       component,
       message,
-      data,
-      traceId: this.config.traceId,
-      sessionId: this.config.sessionId,
-      duration
+      ...(data && { data }),
+      ...(this.config.traceId && { traceId: this.config.traceId }),
+      ...(this.config.sessionId && { sessionId: this.config.sessionId }),
+      ...(duration && { duration })
     };
 
     // Add to buffer
@@ -345,7 +345,7 @@ export class AgentLogger {
         gray: '\x1b[90m',
         reset: '\x1b[0m'
       };
-      return `${colors[color] || ''}${text}${colors.reset}`;
+      return `${colors[color as keyof typeof colors] || ''}${text}${colors.reset}`;
     };
 
     const levelColors = {
@@ -377,11 +377,13 @@ export class AgentLogger {
       return;
     }
 
+    // STRICT MODE: Only verify logs directory exists, don't create it
     try {
       const logsDir = path.join(this.config.campaignPath, 'logs');
-      await fs.mkdir(logsDir, { recursive: true });
+      await fs.access(logsDir);
     } catch (error) {
-      console.error('Failed to create logs directory:', error);
+      console.warn('⚠️ STRICT MODE: Logs directory does not exist. Logging to file disabled. Use main workflow to create proper campaign structure.');
+      this.config.enableFileOutput = false;
     }
   }
 

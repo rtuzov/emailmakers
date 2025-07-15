@@ -9,8 +9,6 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
 import {
-  DesignContext,
-  createHandoffMetadata,
   validateHandoffData,
   DesignToQualityHandoffSchema
 } from './handoff-schemas';
@@ -45,7 +43,7 @@ export const finalizeDesignAndTransferToQuality = tool({
     performance_metrics: z.object({}).strict().describe('Performance metrics'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }).strict(),
-  execute: async (params, context) => {
+  execute: async (params, _context) => {
     const startTime = Date.now();
     
     // Resolve and validate campaign path using centralized resolver
@@ -56,20 +54,21 @@ export const finalizeDesignAndTransferToQuality = tool({
         campaignPath,
         trace_id: params.trace_id
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('❌ DESIGN FINALIZATION: Campaign path resolution failed');
       if (error instanceof CampaignPathError) {
         throw new Error(`Campaign path resolution failed: ${error.message}. Content Specialist must provide valid campaign path.`);
       }
-      throw new Error(`Unexpected error in campaign path resolution: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Unexpected error in campaign path resolution: ${errorMessage}`);
     }
     
     const handoffMonitor = getHandoffMonitor(campaignPath, logger);
     
     debug.info('DesignFinalization', 'Design Specialist finalization started', {
       request_preview: params.request.substring(0, 50),
-      mjml_status: params.mjml_template.validation_status,
-      performance_score: params.performance_metrics.optimization_score,
+      mjml_status: (params.mjml_template as any).validation_status || 'unknown',
+      performance_score: (params.performance_metrics as any).optimization_score || 0,
       campaignPath,
       trace_id: params.trace_id
     });
@@ -100,7 +99,7 @@ export const finalizeDesignAndTransferToQuality = tool({
         params.request,
         params.content_context,
         designContext,
-        params.trace_id
+        params.trace_id || undefined
       );
 
       // Validate handoff data
@@ -111,10 +110,10 @@ export const finalizeDesignAndTransferToQuality = tool({
       }
 
       debug.info('DesignFinalization', 'Design context built and validated', {
-        template_size: `${(designContext.mjml_template.file_size / 1024).toFixed(2)} KB`,
-        assets_count: designContext.asset_manifest.images.length + designContext.asset_manifest.icons.length,
-        performance_score: designContext.performance_metrics.optimization_score,
-        layout_strategy: designContext.design_decisions.layout_strategy
+        template_size: `${(designContext.mjml_template?.file_size || 0) / 1024} KB`,
+        assets_count: (designContext.asset_manifest?.images?.length || 0) + (designContext.asset_manifest?.icons?.length || 0),
+        performance_score: designContext.performance_metrics?.optimization_score || 0,
+        layout_strategy: designContext.design_decisions?.layout_strategy || 'unknown'
       });
 
       // Monitor handoff to Quality Specialist
@@ -147,29 +146,30 @@ export const finalizeDesignAndTransferToQuality = tool({
         handoff_duration: handoffMetrics.duration,
         handoff_success: handoffMetrics.success,
         data_size: handoffMetrics.dataSize,
-        template_size: designContext.mjml_template.file_size,
+        template_size: designContext.mjml_template?.file_size || 0,
         campaignPath
       });
 
-      return `Design work finalized and successfully transferred to Quality Specialist. Template: ${(designContext.mjml_template.file_size / 1024).toFixed(2)} KB. Assets: ${designContext.asset_manifest.images.length + designContext.asset_manifest.icons.length}. Performance: ${designContext.performance_metrics.optimization_score}. Layout: ${designContext.design_decisions.layout_strategy}. Handoff monitored (${handoffMetrics.duration}ms, ${handoffMetrics.dataSize} bytes). Handoff data saved to campaign folder for Quality Specialist to process.`;
+      return `Design work finalized and successfully transferred to Quality Specialist. Template: ${((designContext.mjml_template?.file_size || 0) / 1024).toFixed(2)} KB. Assets: ${(designContext.asset_manifest?.images?.length || 0) + (designContext.asset_manifest?.icons?.length || 0)}. Performance: ${designContext.performance_metrics?.optimization_score || 0}. Layout: ${designContext.design_decisions?.layout_strategy || 'unknown'}. Handoff monitored (${handoffMetrics.duration}ms, ${handoffMetrics.dataSize} bytes). Handoff data saved to campaign folder for Quality Specialist to process.`;
 
-    } catch (error) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
       
+      const errorMessage = error instanceof Error ? error.message : String(error);
       debug.error('DesignFinalization', 'Design finalization failed', {
-        error: error.message,
+        error: errorMessage,
         duration,
         campaignPath,
         trace_id: params.trace_id
       });
       
       logger.error('DesignFinalization', 'Design finalization failed', {
-        error: error.message,
+        error: errorMessage,
         duration,
         campaignPath
       });
       
-      return `Design finalization failed: ${error.message}`;
+      return `Design finalization failed: ${errorMessage}`;
     }
   }
 }); 

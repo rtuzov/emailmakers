@@ -6,8 +6,6 @@
  */
 
 import { promises as fs } from 'fs';
-import path from 'path';
-import { z } from 'zod';
 import { 
   ContentToDesignHandoffSchema,
   DesignToQualityHandoffSchema,
@@ -18,10 +16,8 @@ import {
   type QualityToDeliveryHandoff
 } from './handoff-schemas';
 import { CampaignPathResolver } from './campaign-path-resolver';
-import { getGlobalLogger } from './agent-logger';
 import { debuggers } from './debug-output';
 
-const logger = getGlobalLogger();
 const debug = debuggers.core;
 
 export class HandoffValidationError extends Error {
@@ -68,13 +64,13 @@ export class HandoffValidator {
 
     // 1. Schema validation
     const schemaValidation = validateHandoffData(handoffData, ContentToDesignHandoffSchema);
-    if (!schemaValidation.success) {
+    if (schemaValidation.success === false) {
       result.schemaErrors = schemaValidation.errors;
       result.isValid = false;
       debug.error('HandoffValidator', 'Schema validation failed', { errors: schemaValidation.errors });
     }
 
-    if (schemaValidation.success) {
+    if (schemaValidation.success === true) {
       const data = schemaValidation.data as ContentToDesignHandoff;
       
       // 2. Campaign path validation
@@ -148,13 +144,13 @@ export class HandoffValidator {
 
     // 1. Schema validation
     const schemaValidation = validateHandoffData(handoffData, DesignToQualityHandoffSchema);
-    if (!schemaValidation.success) {
+    if (schemaValidation.success === false) {
       result.schemaErrors = schemaValidation.errors;
       result.isValid = false;
       debug.error('HandoffValidator', 'Design handoff schema validation failed', { errors: schemaValidation.errors });
     }
 
-    if (schemaValidation.success) {
+    if (schemaValidation.success === true) {
       const data = schemaValidation.data as DesignToQualityHandoff;
       
       // 2. Design output completeness
@@ -211,7 +207,7 @@ export class HandoffValidator {
 
     // 1. Schema validation
     const schemaValidation = validateHandoffData(handoffData, QualityToDeliveryHandoffSchema);
-    if (!schemaValidation.success) {
+    if (schemaValidation.success === false) {
       result.schemaErrors = schemaValidation.errors;
       result.isValid = false;
     }
@@ -373,7 +369,7 @@ export class HandoffValidator {
    */
   private static async checkDesignCompleteness(
     data: DesignToQualityHandoff,
-    campaignPath?: string
+    _campaignPath?: string
   ): Promise<{ missing: string[], warnings: string[], critical: string[] }> {
     const missing: string[] = [];
     const warnings: string[] = [];
@@ -393,7 +389,7 @@ export class HandoffValidator {
     }
 
     // Check performance metrics
-    if (data.design_context.performance_metrics.file_size > 100000) { // 100KB
+    if (data.design_context.performance_metrics.total_assets_size && data.design_context.performance_metrics.total_assets_size > 100000) { // 100KB
       warnings.push('Template file size exceeds recommended 100KB limit');
     }
 

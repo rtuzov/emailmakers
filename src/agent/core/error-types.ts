@@ -26,7 +26,7 @@ export abstract class EmailMakersError extends Error {
   public readonly errorType: string;
   public readonly timestamp: string;
   public readonly errorId: string;
-  public readonly context?: Record<string, any>;
+  public readonly context?: Record<string, any> | undefined;
   public readonly retryable: boolean;
   public readonly severity: 'low' | 'medium' | 'high' | 'critical';
 
@@ -34,10 +34,10 @@ export abstract class EmailMakersError extends Error {
     message: string,
     errorType: string,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message);
@@ -115,10 +115,10 @@ export class CampaignError extends EmailMakersError {
     public readonly campaignId?: string,
     public readonly campaignPath?: string,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'CAMPAIGN_ERROR', {
@@ -165,7 +165,7 @@ export class CampaignPathError extends CampaignError {
       `Campaign path error during ${operation}: ${path}`,
       undefined,
       path,
-      { cause, severity: 'medium', retryable: true }
+      { cause: cause || undefined, severity: 'medium' as const, retryable: true }
     );
   }
 
@@ -188,10 +188,10 @@ export class DataError extends EmailMakersError {
     public readonly dataType: string,
     public readonly filePath?: string,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'DATA_ERROR', {
@@ -224,7 +224,7 @@ export class DataExtractionError extends DataError {
       `Failed to extract ${field} from ${dataType} data`,
       dataType,
       filePath,
-      { cause, severity: 'high' }
+      { cause: cause || undefined, severity: 'high' as const }
     );
   }
 
@@ -275,10 +275,10 @@ export class FileOperationError extends EmailMakersError {
     public readonly filePath: string,
     public readonly retryContext?: RetryContext,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'FILE_OPERATION_ERROR', {
@@ -328,7 +328,7 @@ export class FileAccessError extends FileOperationError {
       operation,
       filePath,
       undefined,
-      { cause, severity: 'medium', retryable: true }
+      { cause: cause || undefined, severity: 'medium' as const, retryable: true }
     );
   }
 
@@ -352,10 +352,10 @@ export class HandoffError extends EmailMakersError {
     public readonly toAgent: string,
     public readonly handoffData?: any,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'HANDOFF_ERROR', {
@@ -416,10 +416,10 @@ export class AgentError extends EmailMakersError {
     public readonly agentName: string,
     public readonly agentContext?: AgentRunContext,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'AGENT_ERROR', {
@@ -499,10 +499,10 @@ export class ValidationError extends EmailMakersError {
     value: any,
     expectedFormat: string,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(
@@ -567,10 +567,10 @@ export class ExternalServiceError extends EmailMakersError {
     public readonly endpoint?: string,
     public readonly statusCode?: number,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'EXTERNAL_SERVICE_ERROR', {
@@ -648,10 +648,10 @@ export class ProcessingError extends EmailMakersError {
     public readonly stage: string,
     public readonly inputData?: any,
     options: {
-      context?: Record<string, any>;
-      retryable?: boolean;
-      severity?: 'low' | 'medium' | 'high' | 'critical';
-      cause?: Error;
+      context?: Record<string, any> | undefined;
+      retryable?: boolean | undefined;
+      severity?: 'low' | 'medium' | 'high' | 'critical' | undefined;
+      cause?: Error | undefined;
     } = {}
   ) {
     super(message, 'PROCESSING_ERROR', {
@@ -726,25 +726,25 @@ export function createError(
 ): EmailMakersError {
   switch (errorType) {
     case 'CAMPAIGN_ERROR':
-      return new CampaignError(message, context.campaignId, context.campaignPath, { cause });
+      return new CampaignError(message, context.campaignId, context.campaignPath, { cause: cause || undefined });
     
     case 'FILE_OPERATION_ERROR':
-      return new FileOperationError(message, context.operation, context.filePath, context.retryContext, { cause });
+      return new FileOperationError(message, context.operation, context.filePath, context.retryContext, { cause: cause || undefined });
     
     case 'HANDOFF_ERROR':
-      return new HandoffError(message, context.fromAgent, context.toAgent, context.handoffData, { cause });
+      return new HandoffError(message, context.fromAgent, context.toAgent, context.handoffData, { cause: cause || undefined });
     
     case 'AGENT_ERROR':
-      return new AgentError(message, context.agentName, context.agentContext, { cause });
+      return new AgentError(message, context.agentName, context.agentContext, { cause: cause || undefined });
     
     case 'VALIDATION_ERROR':
-      return new ValidationError(context.field, context.value, context.expectedFormat, { cause });
+      return new ValidationError(context.field, context.value, context.expectedFormat, { cause: cause || undefined });
     
     case 'EXTERNAL_SERVICE_ERROR':
-      return new ExternalServiceError(message, context.serviceName, context.endpoint, context.statusCode, { cause });
+      return new ExternalServiceError(message, context.serviceName, context.endpoint, context.statusCode, { cause: cause || undefined });
     
     case 'PROCESSING_ERROR':
-      return new ProcessingError(message, context.stage, context.inputData, { cause });
+      return new ProcessingError(message, context.stage, context.inputData, { cause: cause || undefined });
     
     default:
       // Create a concrete implementation for unknown error types
@@ -757,7 +757,7 @@ export function createError(
           return ['Check the error context for more details'];
         }
       }
-      return new GenericEmailMakersError(message, errorType, { context, cause });
+      return new GenericEmailMakersError(message, errorType, { context, cause: cause || undefined });
   }
 }
 

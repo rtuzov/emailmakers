@@ -1,0 +1,10 @@
+{
+  "analysis_type": "trend_analysis",
+  "data": {
+    "seasonal_trends": "Тенденции сезона для теста.",
+    "social_media_trends": "Тренды в соцсетях в рамках теста.",
+    "travel_preferences": "Предпочтения в рамках теста.",
+    "market_dynamics": "Динамика рынка для теста."
+  },
+  "saved_at": "2025-07-15T10:18:04.330Z"
+}
