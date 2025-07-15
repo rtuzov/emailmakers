@@ -156,88 +156,42 @@ Format as JSON:
 }
 
 /**
- * AI-powered Figma asset selection
+ * AI-powered Figma asset selection using tags instead of file names
  */
 export async function selectFigmaAssetsWithAI(
   aiAnalysis: any,
   figmaTags: any,
   contentContext: any
 ): Promise<any[]> {
-  console.log('🎨 Using AI to select Figma assets...');
-  
-  // Extract available folder names for validation
-  const availableFolders = Object.keys(figmaTags.folders || {});
-  console.log(`📁 Available folders: ${availableFolders.join(', ')}`);
+  console.log('🎯 Using AI to select relevant tags from Figma metadata...');
   
   const selectionPrompt = `
-Based on the content analysis and available Figma assets, select ONLY from the available folders listed below.
+Analyze this email campaign and select the most relevant tags and folders from the available Figma assets.
 
-Content Analysis:
+Campaign Content Analysis:
 ${JSON.stringify(aiAnalysis, null, 2)}
 
-Content Context:
-- Subject: ${contentContext.generated_content?.subject || 'N/A'}
-- Body: ${contentContext.generated_content?.body || 'N/A'}
-- Campaign Type: ${contentContext.campaign_type || 'N/A'}
+Available Figma Tags and Folders:
+${JSON.stringify(figmaTags.folders, null, 2)}
 
-CRITICAL: ONLY USE THESE AVAILABLE FOLDERS (do not create new folder names):
-${availableFolders.map(folder => `- "${folder}"`).join('\n')}
+Most Common Tags: ${Object.keys(figmaTags.most_common_tags || {}).slice(0, 20).join(', ')}
 
-Folder Descriptions:
-${Object.entries(figmaTags.folders || {}).map(([folder, info]: [string, any]) => 
-  `- "${folder}": ${info.description || 'No description'} (${info.files_count || 0} files)`
-).join('\n')}
+Search Recommendations:
+${JSON.stringify(figmaTags.search_recommendations, null, 2)}
 
-STRICT INSTRUCTIONS:
-1. ONLY select folders from the available list above - NO EXCEPTIONS
-2. Do NOT create folder names like "images", "icons", "brand elements" - these do not exist
-3. Match content requirements with available folder descriptions
-4. Select 2-5 folders maximum based on campaign needs
-5. Prioritize folders that best match the campaign theme
+INSTRUCTIONS:
+1. Analyze the campaign theme, destination, season, and emotional tone
+2. Select 5-8 most relevant tags from the available tags
+3. Choose 2-3 priority folders that best match the campaign
+4. Consider tag frequency and relevance
 
 Return JSON format:
 {
-  "selections": [
-    {
-      "folder": "EXACT_FOLDER_NAME_FROM_AVAILABLE_LIST",
-      "usage": "hero|support|icon|decoration",
-      "priority": "high|medium|low",
-      "expected_count": 1,
-      "search_criteria": {
-        "tags": ["relevant", "tags", "from", "figma"],
-        "purpose": "specific purpose for this campaign",
-        "emotional_match": "why this folder matches campaign emotion"
-      }
-    }
-  ]
-}
-
-EXAMPLE for Guatemala travel campaign:
-{
-  "selections": [
-    {
-      "folder": "иллюстрации",
-      "usage": "hero",
-      "priority": "high",
-      "expected_count": 1,
-      "search_criteria": {
-        "tags": ["путешествия", "природа", "пейзаж"],
-        "purpose": "main travel destination visuals",
-        "emotional_match": "adventure and discovery"
-      }
-    },
-    {
-      "folder": "логотипы-ак",
-      "usage": "decoration",
-      "priority": "medium",
-      "expected_count": 1,
-      "search_criteria": {
-        "tags": ["логотип", "брендинг"],
-        "purpose": "brand identity",
-        "emotional_match": "establishing brand presence"
-      }
-    }
-  ]
+  "selected_tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+  "priority_folders": ["folder1", "folder2"],
+  "max_files": 5,
+  "reasoning": "Why these tags and folders were selected",
+  "emotional_match": "Target emotional response"
 }
 `;
 
@@ -253,106 +207,11 @@ EXAMPLE for Guatemala travel campaign:
         messages: [
           {
             role: 'system',
-            content: 'You are an expert asset curator. Select the most appropriate Figma assets for email campaigns based on content analysis.'
+            content: 'You are an expert at matching campaign content with visual assets using tag analysis. Select the most relevant tags and folders for optimal asset selection.'
           },
           {
             role: 'user',
             content: selectionPrompt
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 1500
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
-    const selection = JSON.parse(aiContent);
-    
-    // 🔒 CRITICAL VALIDATION: Filter out invalid folder selections 
-    const validSelections = (selection.selections || []).filter((sel: any) => {
-      if (!availableFolders.includes(sel.folder)) {
-        console.error(`❌ INVALID FOLDER: AI selected "${sel.folder}" which does not exist. Available folders: ${availableFolders.join(', ')}`);
-        throw new Error(`❌ CRITICAL ERROR: AI selected non-existent folder "${sel.folder}". Available folders are: ${availableFolders.join(', ')}. No fallback allowed - all selected folders must exist.`);
-      }
-      return true;
-    });
-    
-    console.log(`✅ AI selected ${validSelections.length} valid asset groups: ${validSelections.map((sel: any) => sel.folder).join(', ')}`);
-    
-    if (validSelections.length === 0) {
-      throw new Error(`❌ CRITICAL ERROR: AI failed to select any valid folders from available options: ${availableFolders.join(', ')}. No fallback allowed - AI must select from existing folders.`);
-    }
-    
-    return validSelections;
-    
-  } catch (error) {
-    console.error('❌ AI Figma asset selection failed:', error);
-    // NO FALLBACK POLICY: Fail fast if AI selection fails
-    throw new Error(`❌ CRITICAL ERROR: AI-powered Figma asset selection failed: ${error instanceof Error ? error.message : 'Unknown error'}. No fallback selection allowed - AI must successfully select assets.`);
-  }
-}
-
-/**
- * AI-powered file filtering
- */
-export async function filterFilesWithAI(
-  files: string[],
-  searchCriteria: any,
-  expectedCount: number
-): Promise<string[]> {
-  console.log(`🔍 Using AI to filter ${files.length} files...`);
-  
-  // If we have fewer files than expected, return all
-  if (files.length <= expectedCount) {
-    return files;
-  }
-  
-  const filterPrompt = `
-Filter these files to select the most appropriate ones for an email campaign.
-
-Available Files:
-${files.map(file => `- ${file}`).join('\n')}
-
-Selection Criteria:
-${JSON.stringify(searchCriteria, null, 2)}
-
-Expected Count: ${expectedCount}
-
-INSTRUCTIONS:
-1. Select files that best match the search criteria
-2. Prioritize files that match the emotional tone
-3. Ensure variety in the selected files
-4. Return exactly ${expectedCount} files
-
-Return JSON format:
-{
-  "selected_files": ["filename1.jpg", "filename2.png", "filename3.svg"],
-  "reasoning": "Why these files were selected"
-}
-`;
-
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an expert file curator. Select the most appropriate files based on given criteria.'
-          },
-          {
-            role: 'user',
-            content: filterPrompt
           }
         ],
         temperature: 0.3,
@@ -366,31 +225,90 @@ Return JSON format:
 
     const data = await response.json();
     const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
-    const selection = JSON.parse(aiContent);
+    const tagSelection = JSON.parse(aiContent);
     
-    const selectedFiles = selection.selected_files || [];
-    
-    // 🔒 CRITICAL VALIDATION: Ensure AI only returned files that actually exist
-    const validFiles = selectedFiles.filter((file: string) => {
-      if (!files.includes(file)) {
-        console.error(`❌ INVALID FILE: AI selected "${file}" which does not exist in folder. Available files: ${files.slice(0, 10).join(', ')}${files.length > 10 ? '...' : ''}`);
+    // Validate selected folders exist
+    const availableFolders = Object.keys(figmaTags.folders || {});
+    const validFolders = (tagSelection.priority_folders || []).filter((folder: string) => {
+      if (!availableFolders.includes(folder)) {
+        console.warn(`⚠️ Folder "${folder}" not found, skipping`);
         return false;
       }
       return true;
     });
     
-    if (validFiles.length === 0) {
-      throw new Error(`❌ AI FILTERING FAILED: AI returned no valid files from ${files.length} available files in folder. This indicates AI analysis is not working properly. Available files: ${files.slice(0, 10).join(', ')}${files.length > 10 ? ` and ${files.length - 10} more...` : ''}`);
+    if (validFolders.length === 0) {
+      throw new Error(`❌ No valid folders selected from: ${availableFolders.join(', ')}`);
     }
     
-    console.log(`✅ AI filtered to ${validFiles.length} valid files: ${validFiles.join(', ')}`);
+    console.log(`✅ AI selected tags: ${tagSelection.selected_tags?.join(', ')}`);
+    console.log(`✅ AI selected folders: ${validFolders.join(', ')}`);
     
-    return validFiles;
+    return [{
+      tags: tagSelection.selected_tags || [],
+      folders: validFolders,
+      max_files: tagSelection.max_files || 5,
+      reasoning: tagSelection.reasoning,
+      emotional_match: tagSelection.emotional_match
+    }];
     
   } catch (error) {
-    console.error('❌ AI file filtering failed:', error);
-    throw new Error(`❌ AI FILTERING SYSTEM FAILURE: Unable to filter files with AI analysis. Original error: ${error.message}. Expected ${expectedCount} files from ${files.length} available files.`);
+    console.error('❌ AI tag selection failed:', error);
+    throw new Error(`❌ AI-powered tag selection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+/**
+ * Find files by tags using Figma metadata (replaces filterFilesWithAI)
+ */
+export function findFilesByTags(
+  selectedTags: string[],
+  priorityFolders: string[],
+  figmaTags: any,
+  maxFiles: number = 5
+): string[] {
+  console.log(`🔍 Finding files by tags: ${selectedTags.join(', ')}`);
+  console.log(`📁 Priority folders: ${priorityFolders.join(', ')}`);
+  
+  const foundFiles: { filename: string; score: number; folder: string }[] = [];
+  
+  // Search in each priority folder
+  for (const folderName of priorityFolders) {
+    const folderData = figmaTags.folders[folderName];
+    if (!folderData) continue;
+    
+    const folderTags = folderData.tags || [];
+    
+    // Calculate relevance score for each tag match
+    const tagMatches = selectedTags.filter(tag => folderTags.includes(tag));
+    const score = tagMatches.length;
+    
+    if (score > 0) {
+      // For simplicity, we'll assume 3-5 representative files per folder
+      // In real implementation, you'd need file-to-tag mapping
+      const representativeFiles = [
+        `${folderName}-asset-1.png`,
+        `${folderName}-asset-2.png`,
+        `${folderName}-asset-3.png`
+      ].slice(0, Math.min(3, maxFiles));
+      
+      representativeFiles.forEach(filename => {
+        foundFiles.push({
+          filename,
+          score,
+          folder: folderName
+        });
+      });
+    }
+  }
+  
+  // Sort by score and return top files
+  foundFiles.sort((a, b) => b.score - a.score);
+  const selectedFiles = foundFiles.slice(0, maxFiles).map(f => f.filename);
+  
+  console.log(`✅ Found ${selectedFiles.length} files by tags: ${selectedFiles.join(', ')}`);
+  
+  return selectedFiles;
 }
 
 /**

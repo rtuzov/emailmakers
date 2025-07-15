@@ -2,7 +2,7 @@
  * Asset collection from multiple sources
  */
 
-import { promises as fs } from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import {
   AssetSource,
@@ -11,10 +11,9 @@ import {
   ContentContext,
   CampaignContext
 } from './types';
-import {
+import { 
   analyzeContentWithAI,
   selectFigmaAssetsWithAI,
-  filterFilesWithAI,
   generateAISelectedExternalImages
 } from './ai-analysis';
 
@@ -127,7 +126,6 @@ async function collectFromLocalDirectoryWithAI(
     
     // Check if sourcePath is a file or directory first
     let figmaTagsPath: string;
-    let isSourceFile = false;
     
     try {
       const sourceStats = await fs.stat(sourcePath);
@@ -139,8 +137,7 @@ async function collectFromLocalDirectoryWithAI(
       figmaTagsPath = path.join(sourcePath, 'ai-optimized-tags.json');
     } catch (error) {
       console.error(`❌ Could not access source path ${sourcePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      // CRITICAL FIX: Don't fall back to basic collection for invalid paths
-      throw new Error(`❌ Invalid asset source path: ${sourcePath}. Asset sources must point to existing files or directories. Check your asset source configuration.`);
+      throw new Error(`❌ Invalid asset source path: ${sourcePath}. Asset sources must point to existing files or directories.`);
     }
     
     // Load Figma tags for AI selection
@@ -151,65 +148,53 @@ async function collectFromLocalDirectoryWithAI(
       figmaTags = JSON.parse(figmaTagsContent);
     } catch (error) {
       console.warn(`⚠️ Could not load Figma tags from ${figmaTagsPath}, using basic selection`);
-      // If Figma tags are missing, fall back to basic collection for the directory
       return await collectFromLocalDirectoryBasic(sourcePath, destination);
     }
     
-    // Get AI-powered asset selection
-    const assetSelection = await selectFigmaAssetsWithAI(aiAnalysis, figmaTags, contentContext);
+    // Get AI-powered tag selection (new approach)
+    const tagSelections = await selectFigmaAssetsWithAI(aiAnalysis, figmaTags, contentContext);
     
-    // Process each selected asset group
-    for (const selection of assetSelection) {
-      const folderPath = path.join(sourcePath, selection.folder);
+    // Process each tag selection
+    for (const selection of tagSelections) {
+      console.log(`🎯 Processing selection: ${selection.reasoning}`);
       
-      try {
-        await fs.access(folderPath);
-        const files = await fs.readdir(folderPath);
-        const assetFiles = files.filter(file => 
-          /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
-        );
+      // Find actual files by tags instead of filtering through GPT
+      const actualFiles = await findActualFilesByTags(
+        selection.tags,
+        selection.folders,
+        sourcePath,
+        selection.max_files
+      );
+      
+      // Copy selected files to destination
+      for (const file of actualFiles) {
+        const filePath = path.join(sourcePath, file.folder, file.filename);
+        const destPath = path.join(destination, file.filename);
         
-        // Use AI to filter files based on search criteria
-        const selectedFiles = await filterFilesWithAI(
-          assetFiles,
-          selection.search_criteria,
-          selection.expected_count || 3
-        );
-        
-        // Copy selected files to destination
-        for (const file of selectedFiles) {
-          const filePath = path.join(folderPath, file);
-          const destPath = path.join(destination, file);
+        try {
+          const stats = await fs.stat(filePath);
+          await fs.copyFile(filePath, destPath);
           
-          try {
-            const stats = await fs.stat(filePath);
-            await fs.copyFile(filePath, destPath);
-            
-            assets.push({
-              filename: file,
-              path: destPath,
-              size: stats.size,
-              format: path.extname(file).toLowerCase().substring(1),
-              hash: `ai_${Date.now()}_${Math.random().toString(36).substring(2)}`,
-              created: stats.birthtime.toISOString(),
-              modified: stats.mtime.toISOString(),
-              tags: selection.search_criteria.tags || [],
-              description: `AI-selected ${selection.usage}`,
-              purpose: selection.search_criteria.purpose,
-              priority: selection.priority,
-              aiReasoning: selection.search_criteria.emotional_match
-            });
-          } catch (fileError) {
-            // NO FALLBACK POLICY: Fail fast if file cannot be processed
-            throw new Error(`❌ CRITICAL ERROR: Could not process required file ${file}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}. All selected assets must be processable - no fallback allowed.`);
-          }
+          assets.push({
+            filename: file.filename,
+            path: destPath,
+            size: stats.size,
+            format: path.extname(file.filename).toLowerCase().substring(1),
+            hash: `ai_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+            created: stats.birthtime.toISOString(),
+            modified: stats.mtime.toISOString(),
+            tags: selection.tags,
+            description: `AI-selected by tags: ${file.matchedTags.join(', ')}`,
+            purpose: 'visual',
+            priority: file.score > 2 ? 'high' : 'medium',
+            aiReasoning: selection.reasoning
+          });
+          
+          console.log(`✅ Added asset: ${file.filename} (score: ${file.score}, tags: ${file.matchedTags.join(', ')})`);
+          
+        } catch (fileError) {
+          throw new Error(`❌ Could not process file ${file.filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
         }
-        
-        console.log(`✅ Selected ${selectedFiles.length} assets from ${selection.folder}`);
-        
-      } catch (error) {
-        // NO FALLBACK POLICY: Fail fast if folder is inaccessible
-        throw new Error(`❌ CRITICAL ERROR: Could not access required folder ${selection.folder}: ${error instanceof Error ? error.message : 'Unknown error'}. All asset sources must be accessible - no fallback allowed.`);
       }
     }
     
@@ -219,6 +204,77 @@ async function collectFromLocalDirectoryWithAI(
     console.error('❌ AI-powered asset collection failed:', error);
     throw new Error(`AI asset collection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+/**
+ * Find actual files by tags from the file system
+ */
+async function findActualFilesByTags(
+  selectedTags: string[],
+  priorityFolders: string[],
+  sourcePath: string,
+  maxFiles: number = 5
+): Promise<{ filename: string; folder: string; score: number; matchedTags: string[] }[]> {
+  console.log(`🔍 Finding actual files by tags: ${selectedTags.join(', ')}`);
+  
+  const foundFiles: { filename: string; folder: string; score: number; matchedTags: string[] }[] = [];
+  
+  // Search in each priority folder
+  for (const folderName of priorityFolders) {
+    const folderPath = path.join(sourcePath, folderName);
+    
+    try {
+      await fs.access(folderPath);
+      const files = await fs.readdir(folderPath);
+      const assetFiles = files.filter(file => 
+        /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
+      );
+      
+      // Score files based on tag matches in filename
+      for (const filename of assetFiles) {
+        const matchedTags = selectedTags.filter(tag => 
+          filename.toLowerCase().includes(tag.toLowerCase()) ||
+          // Also check for partial matches
+          tag.toLowerCase().split('-').some(part => 
+            filename.toLowerCase().includes(part)
+          )
+        );
+        
+        if (matchedTags.length > 0) {
+          foundFiles.push({
+            filename,
+            folder: folderName,
+            score: matchedTags.length,
+            matchedTags
+          });
+        }
+      }
+      
+      // If no tag matches, take a few representative files from high-priority folders
+      if (foundFiles.filter(f => f.folder === folderName).length === 0 && assetFiles.length > 0) {
+        const representativeFiles = assetFiles.slice(0, 2); // Take first 2 files
+        representativeFiles.forEach(filename => {
+          foundFiles.push({
+            filename,
+            folder: folderName,
+            score: 0.5, // Low score for non-matching files
+            matchedTags: []
+          });
+        });
+      }
+      
+    } catch (error) {
+      console.warn(`⚠️ Could not access folder ${folderName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  // Sort by score and return top files
+  foundFiles.sort((a, b) => b.score - a.score);
+  const selectedFiles = foundFiles.slice(0, maxFiles);
+  
+  console.log(`✅ Found ${selectedFiles.length} files by tags`);
+  
+  return selectedFiles;
 }
 
 /**

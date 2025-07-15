@@ -1,0 +1,28 @@
+{
+  "analysis_type": "trend_analysis",
+  "data": {
+    "raw_analysis": "{\"seasonal_trends\": \"Гватемала становится популярной среди туристов в осенний период, растет интерес к экотуризму и культурным экскурсиям.\", \"social_media_trends\": \"Делается акцент на уникальных фотографиях природных и культурных достопримечательностей, активность блогеров о Гватемале растет.\", \"travel_preferences\": \"Путешественники ценят автентичные впечатления, интерес к экотуризму и местным кухням растет.\", \"market_dynamics\": \"Осенью наблюдается конкурентное ценообразование среди туристических операторов, что приводит к лучшим предложениям.",
+    "social_media": {
+      "trending_hashtags": [
+        "#ThailandAutumn",
+        "#PhuketRomance",
+        "#ThaiFood"
+      ],
+      "viral_content": [
+        "general_interest"
+      ]
+    },
+    "booking_patterns": {
+      "advance_booking": "2-3 months",
+      "group_size": "couples",
+      "preferences": [
+        "general_interest"
+      ]
+    },
+    "opportunities": [
+      "general_interest"
+    ],
+    "analysis_date": "2025-07-15T12:15:19.152Z"
+  },
+  "saved_at": "2025-07-15T12:15:19.152Z"
+}

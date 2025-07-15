@@ -1,0 +1,202 @@
+{
+  "campaign": {
+    "id": "campaign_1752581684994_fe2sq9q9lsu",
+    "campaignPath": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752581684994_fe2sq9q9lsu",
+    "name": "Campaign campaign_1752581684994_fe2sq9q9lsu",
+    "brand": "Email Makers",
+    "type": "promotional",
+    "target_audience": "travel enthusiasts",
+    "language": "ru",
+    "created_at": "2025-07-15T12:20:46.195Z",
+    "status": "active"
+  },
+  "data_collection_context": {
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "climate_factors": "Осень в Гватемале: температура 21-27C, период дожди с небольшим количеством осадков, идеальное время для экскурсий.",
+        "cultural_highlights": "День мертвых (ноябрь), древние майянские руины, шоколадные мастерские, местные рынки.",
+        "key_attractions": "Руины Тикаль, озеро Атитлан, город Антигуа, вулкан Активер, местные рынки.",
+        "seasonal_advantages": "Снижение цен на туры, меньшее количество туристов, идеальная температура для активных путешествий.",
+        "travel_experience_quality": "Отличное качество осеннего отдыха с возможностью видеть уникальные культурные события, возможность насладиться природой."
+      },
+      "saved_at": "2025-07-15T12:15:19.152Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_insights": "Осенью цены на авиабилеты и отели снижаются на 20-30%, типичный бюджет 60000-90000 руб на человека за поездку.",
+        "competitive_position": "Конкуренты: Мексика, Коста-Рика. Гватемала выделяется уникальными культурными и природными предложениями.",
+        "demand_patterns": "Спрос на осенние бронирования стабилен, особенно на экскурсии и активные поездки.",
+        "booking_recommendations": "Рекомендуется бронировать за 1-2 месяца для лучших предложений, особенно на праздничные даты."
+      },
+      "saved_at": "2025-07-15T12:15:19.152Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "core_motivations": "Стремление к познанию новой культуры, отдых от повседневной суеты, поиск уникальных впечатлений.",
+        "emotional_triggers": "Будет интересно, тайны майя, теплый климат, аромат местных блюд, местные традиции.",
+        "key_desires": "Новый опыт, комфортабельные условия, безопасность.",
+        "psychological_benefits": "Снятие стресса, новое вдохновение, интересные знакомства."
+      },
+      "saved_at": "2025-07-15T12:15:19.152Z"
+    },
+    "consolidated_insights": {
+      "actionable_insights": [
+        "Сосредоточиться на культурных событиях, таких как День мертвых",
+        "Подчеркнуть уникальные местные блюда и традиции",
+        "Использовать сезонные предложения для привлечения клиентов"
+      ],
+      "key_insights": [
+        "Гватемала идеальна осенью для познавательных поездок",
+        "Путешественники ценят культурные и природные интересы",
+        "Оптимальное время для бронирования за месяц до поездки"
+      ],
+      "confidence_score": 0.9,
+      "analysis_timestamp": "2025-07-15T12:14:49Z",
+      "saved_at": "2025-07-15T12:15:19.155Z"
+    },
+    "travel_intelligence": {
+      "insight_type": "travel_intelligence",
+      "insights": [
+        "Гватемала идеально подходит для осенних путешествий",
+        "Снижение цен на туры и гостиницы",
+        "Акцент на культурные события и уникальный опыт"
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-15T12:15:19.152Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1752581684994_fe2sq9q9lsu/data/travel_intelligence-insights.json"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "raw_analysis": "{\"seasonal_trends\": \"Гватемала становится популярной среди туристов в осенний период, растет интерес к экотуризму и культурным экскурсиям.\", \"social_media_trends\": \"Делается акцент на уникальных фотографиях природных и культурных достопримечательностей, активность блогеров о Гватемале растет.\", \"travel_preferences\": \"Путешественники ценят автентичные впечатления, интерес к экотуризму и местным кухням растет.\", \"market_dynamics\": \"Осенью наблюдается конкурентное ценообразование среди туристических операторов, что приводит к лучшим предложениям.",
+        "social_media": {
+          "trending_hashtags": [
+            "#ThailandAutumn",
+            "#PhuketRomance",
+            "#ThaiFood"
+          ],
+          "viral_content": [
+            "general_interest"
+          ]
+        },
+        "booking_patterns": {
+          "advance_booking": "2-3 months",
+          "group_size": "couples",
+          "preferences": [
+            "general_interest"
+          ]
+        },
+        "opportunities": [
+          "general_interest"
+        ],
+        "analysis_date": "2025-07-15T12:15:19.152Z"
+      },
+      "saved_at": "2025-07-15T12:15:19.152Z"
+    },
+    "collection_metadata": {
+      "campaign_id": "campaign_1752581684994_fe2sq9q9lsu",
+      "collection_timestamp": "2025-07-15T12:20:46.194Z",
+      "data_sources": [
+        "destination-analysis",
+        "market-intelligence",
+        "emotional-profile",
+        "consolidated-insights",
+        "travel-intelligence",
+        "trend-analysis"
+      ],
+      "collection_status": "complete",
+      "data_quality_score": 100
+    }
+  },
+  "context_analysis": {
+    "destination": "Thailand",
+    "seasonal_trends": "Current season trends for Thailand",
+    "emotional_triggers": "Exotic adventure and relaxation",
+    "market_positioning": "Premium exotic destination",
+    "competitive_landscape": "Strong competition in Southeast Asia travel market",
+    "price_sensitivity": "Medium price sensitivity for exotic destinations",
+    "booking_patterns": "Advance planning with seasonal booking patterns"
+  },
+  "date_analysis": {
+    "destination": "Thailand",
+    "season": "autumn",
+    "optimal_dates": [
+      "2025-09-15",
+      "2025-09-22",
+      "2025-10-05",
+      "2025-10-12",
+      "2025-11-01",
+      "2025-11-15"
+    ],
+    "pricing_windows": [
+      "Период с 2025-09-01 по 2025-09-30: низкие цены на авиабилеты из-за окончания летнего сезона.",
+      "Период с 2025-10-01 по 2025-10-31: умеренные цены, так как начинается сезон дождей, но все еще много туристов.",
+      "Период с 2025-11-01 по 2025-11-30: цены могут увеличиться из-за начала высокого сезона перед рождественскими праздниками."
+    ],
+    "booking_recommendation": "Рекомендуется бронировать билеты за 2-3 месяца до поездки для получения лучших цен.",
+    "seasonal_factors": "Осень в Гватемале характеризуется переходом от сухого к дождливому сезону. Сентябрь и октябрь могут быть дождливыми, но в ноябре погода обычно улучшается. Это также время, когда меньше туристов, что может привести к более низким ценам на авиабилеты и жилье.",
+    "current_date": "2025-07-15"
+  },
+  "pricing_analysis": {
+    "best_price": 57264,
+    "min_price": 57264,
+    "max_price": 124646,
+    "average_price": 82585,
+    "currency": "RUB",
+    "offers_count": 87,
+    "recommended_dates": [
+      "2025-09-01",
+      "2025-09-02",
+      "2025-09-03"
+    ],
+    "route": {
+      "from": "Moscow",
+      "to": "Bangkok",
+      "from_code": "MOW",
+      "to_code": "BKK"
+    },
+    "enhanced_features": {
+      "airport_conversion": {
+        "originInfo": null,
+        "destinationInfo": {
+          "originalCode": "GUA",
+          "finalCode": "GUA",
+          "countryCode": "GT",
+          "isInternational": true,
+          "wasConverted": false
+        }
+      },
+      "csv_integration": "enabled",
+      "api_source": "kupibilet_api_v2"
+    }
+  },
+  "asset_strategy": {
+    "theme": "Thailand Travel Experience",
+    "visual_style": "modern",
+    "color_palette": "Tropical warm colors with brand accents",
+    "typography": "Modern clean typography",
+    "image_concepts": [
+      "Hero destination image",
+      "Cultural lifestyle photography",
+      "Service and amenity icons"
+    ],
+    "layout_hierarchy": "Hero section, content blocks, call-to-action",
+    "emotional_triggers": "excitement",
+    "brand_consistency": "Maintain brand colors and typography"
+  },
+  "generated_content": {
+    "subject": "Откройте для себя Гватемалу этой осенью!",
+    "preheader": "Уникальные предложения на авиабилеты в Гватемалу с ценами от 57264 RUB.",
+    "body": "Гватемала — это удивительная страна, где древние тайны майя переплетаются с яркими традициями местных жителей. Осень — идеальное время для путешествия, когда теплый климат и яркие краски природы создают атмосферу уюта и волшебства. Погрузитесь в мир ароматов местной кухни, исследуйте величественные руины и насладитесь уникальной культурой. \n\nВы сможете посетить знаменитые города, такие как Антигуа, с его колониальной архитектурой и уютными кафе, или Тикаль, где вас ждут величественные храмы и захватывающие пейзажи. Кроме того, осень — это сезон фестивалей, когда вы сможете стать частью ярких праздников и традиций, которые делают Гватемалу поистине уникальной. \n\nНаши лучшие предложения начинаются от 57264 RUB с возможностью вылета в оптимальные даты: 15 и 22 сентября, 5 и 12 октября, 1 и 15 ноября 2025 года. Не упустите шанс насладиться осенним солнцем и открыть для себя все тайны этой удивительной страны. \n\nЗабронируйте свой билет сейчас и станьте частью этого невероятного приключения! Путешествие в Гватемалу — это не просто отпуск, это возможность открыть для себя новое, вдохновиться и создать незабываемые воспоминания. Не ждите, пока другие займут лучшие места!",
+    "cta": {
+      "primary": "Забронировать билет",
+      "secondary": "Узнать больше"
+    },
+    "personalization_level": "advanced",
+    "urgency_level": "medium"
+  },
+  "technical_requirements": {}
+}

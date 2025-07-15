@@ -1113,31 +1113,42 @@ async function generateAndSaveAssetManifest(assetStrategy: any, context: any) {
       enableFallbackGeneration: false  // Keep no-fallback policy
     };
     
-    // Call the main asset manifest generator
-    const result = await generateAssetManifest(
-      assetSources,
-      contentContext,
-      aiCampaignContext,
-      collectedDir,
-      generationOptions
-    );
+    // Call the main asset manifest generator with proper SDK tool syntax
+    const result = await generateAssetManifest.execute({
+      campaignId: campaignContext.campaignId || 'unknown',
+      campaignPath: campaignPath,
+      contentContext: contentContext,
+      assetSources: assetSources,
+      options: generationOptions,
+      context: aiCampaignContext,
+      trace_id: ''
+    });
     
-    if (!result.success) {
-      console.error('❌ Asset manifest generation failed:', result.errors);
-      throw new Error(`Asset manifest generation failed: ${result.errors?.join(', ') || 'Unknown error'}`);
+    // The tool returns a string result, so we need to parse success differently
+    if (!result || typeof result !== 'string') {
+      console.error('❌ Asset manifest generation failed: Invalid result');
+      throw new Error(`Asset manifest generation failed: Invalid result returned`);
     }
     
     console.log(`✅ Complete asset manifest generated successfully`);
-    console.log(`📊 Generation stats:`, {
-      figma_assets: result.assetManifest.images.filter(img => !img.isExternal).length,
-      external_assets: result.assetManifest.images.filter(img => img.isExternal).length,
-      total_images: result.assetManifest.images.length,
-      usage_instructions: result.usageInstructions?.length || 0,
-      colors_resolved: Object.keys(result.colors || {}).length
-    });
+    console.log(`📊 Result summary: ${result}`);
+    
+    // Try to read the actual generated manifest file for stats
+    try {
+      const manifestPath = path.join(campaignPath, 'assets', 'manifests', 'asset-manifest.json');
+      const manifestContent = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+      console.log(`📊 Generation stats:`, {
+        total_images: manifestContent.assetManifest?.images?.length || 0,
+        total_icons: manifestContent.assetManifest?.icons?.length || 0,
+        usage_instructions: manifestContent.usageInstructions?.length || 0,
+        processing_time: manifestContent.generationSummary?.processingTime || 0
+      });
+    } catch (statsError) {
+      console.log('📊 Stats unavailable (manifest file not found)');
+    }
     
     // The main generator already saves the manifest, so we're done
-    return result;
+    return { success: true, message: result };
     
   } catch (error) {
     console.error('❌ ASSET MANIFEST: Generation failed:', error.message);

@@ -64,7 +64,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "drizzle-kit": "^0.31.2",
     "drizzle-orm": "^0.44.2",
     "figma-mcp-pro": "^3.49.0",

@@ -1,0 +1,47 @@
+[
+  {
+    "assetId": "unsplash_GxXyt-nZ9cg_1752582040369",
+    "placement": "Place at top of email as main header image with full width",
+    "context": "Use in context of: Откройте для себя Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_TnS6oIOfsXI_1752582040389",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"trees near houses\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_Wb5hkLYPRgs_1752582040408",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"man in orange pants and white shirt holding brown stick\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_fftF2sqNEsE_1752582040430",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"a view of the top of a mountain in the clouds\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  },
+  {
+    "assetId": "unsplash_GxXyt-nZ9cg_1752582041068",
+    "placement": "Place according to campaign layout requirements",
+    "context": "Use in context of: Откройте для себя Гватемалу этой осенью!. Ensure asset aligns with brand guidelines and campaign messaging.",
+    "responsiveBehavior": "Scale proportionally for mobile devices. Ensure minimum readable size on small screens.",
+    "emailClientNotes": [],
+    "accessibilityRequirements": "Ensure alt text is provided: \"white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime\". Alt text should be descriptive and convey the image's purpose in the email context.",
+    "fallbackStrategy": "If image fails to load, display alt text with appropriate background color"
+  }
+]
