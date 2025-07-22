@@ -17,11 +17,11 @@ import {
   MultiDestinationValidationResults,
   QualityServiceContext
 } from '../types/quality-types';
-import { 
-  MultiDestinationPlan,
-  DestinationPlan,
-  LayoutType
-} from '../../../../shared/types/multi-destination-types';
+// import { 
+//   MultiDestinationPlan,
+//   DestinationPlan,
+//   LayoutType
+// } from '../../../../shared/types/multi-destination-types'; // Currently unused
 
 export class MultiDestinationValidationService {
   private readonly DEFAULT_MAX_EMAIL_SIZE_KB = 100;
@@ -139,13 +139,13 @@ export class MultiDestinationValidationService {
     const minResolution = criteria.min_image_resolution || this.DEFAULT_MIN_RESOLUTION;
 
     // Извлекаем информацию об изображениях из email package
-    const images = this.extractImagesFromEmailPackage(emailPackage);
+    const images = this._extractImagesFromEmailPackage(emailPackage);
     
     const invalidFormats: string[] = [];
     const lowResolutionImages: string[] = [];
     const oversizedImages: string[] = [];
 
-    images.forEach(image => {
+    images.forEach((image: any) => {
       // Проверка формата
       const format = this.getImageFormat(image.url);
       if (!requiredFormats.includes(format)) {
@@ -376,7 +376,7 @@ export class MultiDestinationValidationService {
 
   // Helper methods
   
-  private extractImagesFromEmailPackage(emailPackage: any): Array<{
+  private _extractImagesFromEmailPackage(_emailPackage: any): Array<{ // Currently unused
     name: string;
     url: string;
     width: number;
@@ -396,7 +396,7 @@ export class MultiDestinationValidationService {
     return extension;
   }
 
-  private checkSeasonalConsistency(context: any): { consistent: boolean; conflicts: string[] } {
+  private checkSeasonalConsistency(_context: any): { consistent: boolean; conflicts: string[] } {
     // Mock implementation
     return {
       consistent: true,
@@ -404,7 +404,7 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private checkOptimalTiming(context: any): { optimal: boolean; suggestions: string[] } {
+  private checkOptimalTiming(_context: any): { optimal: boolean; suggestions: string[] } {
     // Mock implementation
     return {
       optimal: true,
@@ -412,7 +412,7 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private checkGeographicConsistency(context: any): { consistent: boolean; issues: string[] } {
+  private checkGeographicConsistency(_context: any): { consistent: boolean; issues: string[] } {
     // Mock implementation
     return {
       consistent: true,
@@ -420,7 +420,7 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private checkPricingConsistency(context: any): { consistent: boolean; issues: string[] } {
+  private checkPricingConsistency(_context: any): { consistent: boolean; issues: string[] } {
     // Mock implementation
     return {
       consistent: true,
@@ -428,12 +428,12 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private calculateContentRelevance(context: any): number {
+  private calculateContentRelevance(_context: any): number {
     // Mock implementation - возвращаем высокую релевантность
     return 0.92;
   }
 
-  private checkResponsiveCompatibility(emailPackage: any): { compatible: boolean; issues: string[] } {
+  private checkResponsiveCompatibility(_emailPackage: any): { compatible: boolean; issues: string[] } {
     // Mock implementation
     return {
       compatible: true,
@@ -441,7 +441,7 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private checkTemplateSuitability(emailPackage: any, context: any): { suitable: boolean; issues: string[] } {
+  private checkTemplateSuitability(_emailPackage: any, _context: any): { suitable: boolean; issues: string[] } {
     // Mock implementation
     return {
       suitable: true,
@@ -449,7 +449,7 @@ export class MultiDestinationValidationService {
     };
   }
 
-  private calculateMobileOptimization(emailPackage: any): number {
+  private calculateMobileOptimization(_emailPackage: any): number {
     // Mock implementation
     return 0.88;
   }

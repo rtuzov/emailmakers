@@ -1,0 +1,98 @@
+graph TD
+    %% ORCHESTRATOR
+    OR["🎯 ORCHESTRATOR<br/>Entry Point"]
+    
+    %% DATA COLLECTION SPECIALIST (10 functions)
+    OR --> DC1["📥 CREATE_CAMPAIGN_FOLDER<br/>2KB → 3KB"]
+    DC1 --> DC2["📋 PROCESS_BRIEF<br/>3KB → 5KB"]
+    DC2 --> DC3["🔍 EXTRACT_REQUIREMENTS<br/>5KB → 7KB"]
+    DC3 --> DC4["📊 ANALYZE_TARGET_AUDIENCE<br/>7KB → 9KB"]
+    DC4 --> DC5["🎯 DETERMINE_CONTENT_STRATEGY<br/>9KB → 11KB"]
+    DC5 --> DC6["📝 CREATE_CONTENT_OUTLINE<br/>11KB → 13KB"]
+    DC6 --> DC7["💾 CACHE_ANALYSIS_RESULTS<br/>13KB → 13KB"]
+    DC7 --> DC8["🔄 UPDATE_CONTEXT<br/>13KB → 14KB"]
+    DC8 --> DC9["📤 PREPARE_HANDOFF<br/>14KB → 15KB"]
+    DC9 --> DC10["✅ VALIDATE_DATA_COLLECTION<br/>15KB → 15KB"]
+    
+    %% CONTENT SPECIALIST (9 functions)
+    DC10 --> CS1["📥 RECEIVE_DATA_HANDOFF<br/>15KB → 16KB"]
+    CS1 --> CS2["🎨 GENERATE_EMAIL_CONTENT<br/>16KB → 20KB<br/>🤖 OpenAI GPT-4o-mini"]
+    CS2 --> CS3["✈️ INTEGRATE_TRAVEL_DATA<br/>20KB → 22KB<br/>🌐 Kupibilet API v2"]
+    CS3 --> CS4["🔄 OPTIMIZE_CONTENT<br/>22KB → 24KB<br/>🤖 OpenAI GPT-4o-mini"]
+    CS4 --> CS5["📱 ADAPT_FOR_MOBILE<br/>24KB → 25KB"]
+    CS5 --> CS6["🎭 PERSONALIZE_CONTENT<br/>25KB → 26KB<br/>🤖 OpenAI GPT-4o-mini"]
+    CS6 --> CS7["📤 FINALIZE_CONTENT<br/>26KB → 27KB"]
+    CS7 --> CS8["🔄 UPDATE_CONTEXT<br/>27KB → 28KB"]
+    CS8 --> CS9["📋 PREPARE_DESIGN_HANDOFF<br/>28KB → 29KB"]
+    
+    %% DESIGN SPECIALIST V3 (14 functions)
+    CS9 --> DS1["📥 RECEIVE_CONTENT_HANDOFF<br/>29KB → 30KB"]
+    DS1 --> DS2["🎨 CREATE_DESIGN_BRIEF<br/>30KB → 31KB"]
+    DS2 --> DS3["🖼️ GENERATE_VISUAL_CONCEPTS<br/>31KB → 32KB"]
+    DS3 --> DS4["🎭 APPLY_BRAND_GUIDELINES<br/>32KB → 33KB"]
+    DS4 --> DS5["📐 CREATE_LAYOUT_STRUCTURE<br/>33KB → 34KB"]
+    DS5 --> DS6["🏗️ GENERATE_MJML_TEMPLATE<br/>34KB → 36KB"]
+    DS6 --> DS7["🎨 APPLY_STYLING<br/>36KB → 37KB"]
+    DS7 --> DS8["📱 IMPLEMENT_RESPONSIVE_DESIGN<br/>37KB → 38KB"]
+    DS8 --> DS9["🌙 ADD_DARK_MODE_SUPPORT<br/>38KB → 39KB"]
+    DS9 --> DS10["🔍 VALIDATE_DESIGN_AI<br/>39KB → 39KB<br/>🤖 Internal AI"]
+    DS10 --> DS11["📊 OPTIMIZE_PERFORMANCE<br/>39KB → 40KB"]
+    DS11 --> DS12["💾 SAVE_DESIGN_ASSETS<br/>40KB → 40KB"]
+    DS12 --> DS13["🔄 UPDATE_CONTEXT<br/>40KB → 40KB"]
+    DS13 --> DS14["📋 PREPARE_QUALITY_HANDOFF<br/>40KB → 40KB"]
+    
+    %% QUALITY SPECIALIST (10 functions)
+    DS14 --> QS1["📥 RECEIVE_DESIGN_HANDOFF<br/>40KB → 40KB"]
+    QS1 --> QS2["🔍 VALIDATE_HTML_STRUCTURE<br/>40KB → 40KB"]
+    QS2 --> QS3["📧 TEST_EMAIL_CLIENTS<br/>40KB → 40KB"]
+    QS3 --> QS4["♿ CHECK_ACCESSIBILITY<br/>40KB → 40KB"]
+    QS4 --> QS5["📱 VALIDATE_RESPONSIVE_DESIGN<br/>40KB → 40KB"]
+    QS5 --> QS6["🌙 TEST_DARK_MODE<br/>40KB → 40KB"]
+    QS6 --> QS7["⚡ ANALYZE_PERFORMANCE<br/>40KB → 40KB"]
+    QS7 --> QS8["📊 GENERATE_QUALITY_REPORT<br/>40KB → 40KB"]
+    QS8 --> QS9["🔄 UPDATE_CONTEXT<br/>40KB → 40KB"]
+    QS9 --> QS10["📋 PREPARE_DELIVERY_HANDOFF<br/>40KB → 40KB"]
+    
+    %% DELIVERY SPECIALIST (4 functions)
+    QS10 --> DL1["📥 RECEIVE_QUALITY_HANDOFF<br/>40KB → 40KB"]
+    DL1 --> DL2["📦 PACKAGE_FINAL_TEMPLATE<br/>40KB → 40KB"]
+    DL2 --> DL3["📁 CREATE_EXPORT_PACKAGE<br/>40KB → 40KB"]
+    DL3 --> DL4["✅ FINALIZE_DELIVERY<br/>40KB → 40KB"]
+    
+    %% EXTERNAL INTEGRATIONS
+    EXT1["🤖 OpenAI GPT-4o-mini<br/>3 integrations<br/>41-63s processing"]
+    EXT2["🌐 Kupibilet API v2<br/>1 integration<br/>2-5s response"]
+    EXT3["💾 File System<br/>30+ operations<br/>5-10s total"]
+    
+    CS2 -.-> EXT1
+    CS4 -.-> EXT1
+    CS6 -.-> EXT1
+    CS3 -.-> EXT2
+    DC1 -.-> EXT3
+    DS12 -.-> EXT3
+    DL2 -.-> EXT3
+    
+    %% PERFORMANCE INDICATORS
+    PERF1["⚠️ PERFORMANCE BOTTLENECK<br/>Context Growth: 2KB → 40KB<br/>20x increase"]
+    PERF2["🕐 TOTAL EXECUTION TIME<br/>68-98 seconds<br/>Target: 30-45 seconds"]
+    
+    DS14 -.-> PERF1
+    DL4 -.-> PERF2
+    
+    %% STYLING
+    style OR fill:#ff6b6b,stroke:#e55555,color:white,stroke-width:3px
+    style DC1 fill:#4ecdc4,stroke:#45b7aa,color:white
+    style DC10 fill:#4ecdc4,stroke:#45b7aa,color:white
+    style CS1 fill:#45b7d1,stroke:#3a9bc1,color:white
+    style CS9 fill:#45b7d1,stroke:#3a9bc1,color:white
+    style DS1 fill:#96ceb4,stroke:#85b7a3,color:white
+    style DS14 fill:#96ceb4,stroke:#85b7a3,color:white
+    style QS1 fill:#feca57,stroke:#fd9644,color:white
+    style QS10 fill:#feca57,stroke:#fd9644,color:white
+    style DL1 fill:#ff9ff3,stroke:#f368e0,color:white
+    style DL4 fill:#ff9ff3,stroke:#f368e0,color:white
+    style EXT1 fill:#ff6b6b,stroke:#e55555,color:white
+    style EXT2 fill:#ff6b6b,stroke:#e55555,color:white
+    style EXT3 fill:#ff6b6b,stroke:#e55555,color:white
+    style PERF1 fill:#ff4757,stroke:#ff3838,color:white
+    style PERF2 fill:#ff4757,stroke:#ff3838,color:white

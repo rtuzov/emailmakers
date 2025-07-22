@@ -205,6 +205,13 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
     }
 
     const latestMetrics = this.metricsHistory[this.metricsHistory.length - 1];
+    if (!latestMetrics) {
+      if (shouldLog) {
+        console.warn('⚠️ No valid metrics data for bottleneck analysis');
+      }
+      return [];
+    }
+    
     const bottlenecks: Bottleneck[] = [];
 
     // Анализ bottlenecks системы
@@ -421,7 +428,7 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
     
     const sumX = xValues.reduce((a, b) => a + b, 0);
     const sumY = yValues.reduce((a, b) => a + b, 0);
-    const sumXY = xValues.reduce((sum, x, i) => sum + x * yValues[i], 0);
+    const sumXY = xValues.reduce((sum, x, i) => sum + x * (yValues[i] || 0), 0);
     const sumXX = xValues.reduce((sum, x) => sum + x * x, 0);
     
     const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
@@ -465,7 +472,7 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
 
     return {
       metric_name: metricName,
-      agent_id: agentId,
+      agent_id: agentId || ('system' as AgentType),
       trend_direction: trendDirection,
       change_percent: changePercent,
       confidence_score: confidenceScore,
@@ -640,7 +647,7 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
     const loadTrend = recentMetrics.map(m => m.system_metrics.total_requests);
     
     // Простой прогноз на основе роста нагрузки
-    const isIncreasing = loadTrend.slice(-3).every((val, i, arr) => i === 0 || val >= arr[i - 1]);
+    const isIncreasing = loadTrend.slice(-3).every((val, i, arr) => i === 0 || val >= (arr[i - 1] || 0));
     
     if (isIncreasing && avgRequests > 100) {
       return [{
@@ -705,7 +712,7 @@ export class OptimizationAnalyzer implements PatternAnalyzer {
         confidence_score: 75,
         time_window: '1h',
         data_points: successRates.map((rate, i) => ({
-          timestamp: metrics[i].timestamp,
+          timestamp: metrics[i]?.timestamp || new Date().toISOString(),
           value: rate,
           anomaly_detected: false
         }))

@@ -117,7 +117,7 @@ export class MLQualityScorer {
    * Анализирует контент с помощью ML-алгоритмов
    */
   private static analyzeContent(emailData: any): ContentAnalysis {
-    const { subject, content_data, html_content } = emailData;
+    const { subject, content_data } = emailData;
     
     // Симуляция ML-анализа контента
     const wordCount = content_data.body.split(' ').length;
@@ -351,7 +351,7 @@ export class MLQualityScorer {
    * Генерирует рекомендации по улучшению
    */
   private static generateRecommendations(
-    score: QualityScore,
+    _score: QualityScore,
     analyses: {
       content: ContentAnalysis;
       design: DesignAnalysis;
@@ -403,7 +403,7 @@ export class MLQualityScorer {
    * Генерирует список проблем
    */
   private static generateIssues(
-    score: QualityScore,
+    _score: QualityScore,
     analyses: {
       content: ContentAnalysis;
       design: DesignAnalysis;

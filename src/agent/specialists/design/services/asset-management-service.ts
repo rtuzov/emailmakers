@@ -6,7 +6,7 @@
  */
 
 import { AssetManager, AssetSearchParams, AssetSearchResult, StandardAsset } from '../../../core/asset-manager';
-import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { ExtractedContentPackage } from '../../content/utils/content-extractor';
 import {
   DesignSpecialistInputV2,
   AssetRequirements,
@@ -56,7 +56,7 @@ export class AssetManagementService {
       
       // Step 3: Search external images if needed
       let externalImages: ExternalImageResult | null = null;
-      if (input.asset_requirements?.image_requirements?.internet_images_count > 0) {
+      if (input.asset_requirements?.image_requirements?.internet_images_count && input.asset_requirements.image_requirements.internet_images_count > 0) {
         const imagePlan = await this.planEmailImages(content, null);
         externalImages = await this.searchExternalImages(imagePlan);
       }
@@ -241,9 +241,10 @@ export class AssetManagementService {
   /**
    * Select tags by context analysis
    */
-  private selectTagsByContext(
+  /*
+  private _selectTagsByContext(
     context: TagSelectionContext,
-    tagsData: any
+    _tagsData: any
   ): string[] {
     const contextualTags = [
       ...this.getContextualTags(context.campaign_context),
@@ -252,10 +253,12 @@ export class AssetManagementService {
     
     return contextualTags.slice(0, context.max_tags);
   }
+  */
 
   /**
    * Get contextual tags based on campaign context
    */
+  /*
   private getContextualTags(campaignContext: any): string[] {
     const tags: string[] = [];
     
@@ -273,13 +276,16 @@ export class AssetManagementService {
     
     return tags;
   }
+  */
 
   /**
    * Get fallback tags
    */
-  private getFallbackTags(_: ExtractedContentPackage): never {
+  /*
+  private __getFallbackTags(_: ExtractedContentPackage): never { // Currently unused - disabled fallback
     throw new Error('getFallbackTags is disabled by project policy.');
   }
+  */
 
   /**
    * Plan email images based on content and template
@@ -302,7 +308,7 @@ export class AssetManagementService {
   /**
    * Analyze image context
    */
-  private analyzeImageContext(content: ExtractedContentPackage, templateDesign: any): any {
+  private analyzeImageContext(content: ExtractedContentPackage, _templateDesign: any): any {
     return {
       content_type: this.determineCampaignTypeFromContent(content),
       content_length: this.calculateContentLength(content),
@@ -346,7 +352,7 @@ export class AssetManagementService {
   /**
    * Plan images by context
    */
-  private planImagesByContext(imageContext: any): ImagePlan {
+  private planImagesByContext(_imageContext: any): ImagePlan {
     const totalImages = 2; // Conservative fallback
     
     const imagePlan: ImagePlanItem[] = Array.from({ length: totalImages }, (_, index) => ({
@@ -432,7 +438,7 @@ export class AssetManagementService {
       success: true,
       assets: combinedAssets,
       total_found: combinedAssets.length,
-      search_query: figmaAssets.search_query,
+      ...(figmaAssets.search_query ? { search_query: figmaAssets.search_query } : {}),
       confidence_score: Math.min(
         figmaAssets.confidence_score || 1,
         externalImages?.confidence_score || 1
@@ -443,7 +449,7 @@ export class AssetManagementService {
         recommendations: [],
         figma_tags_used: []
       }
-    };
+    } as any; // Cast to any for exactOptionalPropertyTypes compatibility
   }
 
   /**
@@ -453,7 +459,7 @@ export class AssetManagementService {
     if (assetResult.assets.length === 0) return 0;
     
     const baseScore = Math.min(assetResult.assets.length / 10, 1);
-    const qualityScore = assetResult.confidence_score;
+    const qualityScore = assetResult.confidence_score || 0;
     
     return (baseScore + qualityScore) / 2;
   }

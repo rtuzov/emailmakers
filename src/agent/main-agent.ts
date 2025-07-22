@@ -15,11 +15,11 @@
 
 import { run, Agent } from '@openai/agents';
 import {
-  dataCollectionSpecialistAgent,
-  contentSpecialistAgent,
-  designSpecialistAgent,
-  qualitySpecialistAgent,
-  deliverySpecialistAgent,
+  // dataCollectionSpecialistAgent,
+  // contentSpecialistAgent,
+  // designSpecialistAgent,
+  // qualitySpecialistAgent,
+  // deliverySpecialistAgent,
   getWorkflowSequence,
   getRegistryStatistics,
   getAgentBySpecialist
@@ -28,10 +28,10 @@ import { createEmailCampaignOrchestrator } from './specialists/specialist-agents
 import { cleanupLogger } from './core/agent-logger';
 import { 
   createEnhancedContext, 
-  enhanceContextForHandoff,
-  validateAgentContext,
-  getContextManager,
-  type AgentRunContext 
+  // enhanceContextForHandoff,
+  // validateAgentContext,
+  getContextManager
+  // type AgentRunContext 
 } from './core/context-manager';
 
 // ============================================================================
@@ -40,7 +40,11 @@ import {
 
 export class EmailMakersAgent {
   private entryAgent: Agent | null = null;
-  private orchestrator: any;
+  private orchestrator: any = null;
+  
+  getOrchestrator() {
+    return this.orchestrator;
+  }
 
   constructor() {
     // Entry agent will be set during initialization
@@ -86,15 +90,15 @@ export class EmailMakersAgent {
       
       // Create enhanced context using the new context manager
       const enhancedContext = await createEnhancedContext(request, {
-        traceId: options?.traceId,
+        traceId: options?.traceId || null,
         workflowType: options?.specialist ? 'specialist-direct' : 'full-campaign',
         currentPhase: options?.specialist || 'orchestration',
         
         campaign: {
           id: options?.campaignId || `campaign_${Date.now()}`,
-          name: options?.metadata?.campaignName || options?.metadata?.campaign_name || 'API Generated Campaign',
-          path: options?.campaignPath || '',
-          brand: options?.metadata?.brand || 'API Brand',
+          name: options?.metadata?.campaignName || options?.metadata?.campaign_name || 'Guatemala Autumn Campaign',
+          path: options?.campaignPath || '', // Empty for orchestrator - will be created by create_campaign_folder tool
+          brand: options?.metadata?.brand || 'Kupibilet',
           language: options?.metadata?.language || 'ru',
           type: options?.metadata?.campaignType || options?.metadata?.type || 'promotional'
         },
@@ -103,7 +107,9 @@ export class EmailMakersAgent {
           mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
           apiRequest: options?.metadata?.apiRequest || false,
           directSpecialistRun: !!options?.specialist,
-          maxTurns: options?.specialist ? 20 : 50
+          maxTurns: options?.specialist ? 8 : 25,
+          timeout: null,
+          retryAttempt: 0
         },
         
         dataFlow: {
@@ -123,9 +129,10 @@ export class EmailMakersAgent {
         
         monitoring: {
           enableDebugOutput: process.env.NODE_ENV === 'development',
-          logLevel: 'info',
+          logLevel: 'warn', // Changed from 'info' to 'warn' to reduce verbosity
           performanceTracking: true,
-          contextSnapshot: process.env.NODE_ENV === 'development'
+          contextSnapshot: process.env.NODE_ENV === 'development',
+          additionalMetrics: {}
         },
         
         metadata: {
@@ -245,7 +252,11 @@ export class EmailMakersAgent {
       
       execution: {
         directSpecialistRun: true,
-        maxTurns: 20
+        maxTurns: 20,
+        mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+        apiRequest: false,
+        timeout: null,
+        retryAttempt: 0
       },
       
       dataFlow: {
@@ -258,7 +269,10 @@ export class EmailMakersAgent {
       
       monitoring: {
         enableDebugOutput: process.env.NODE_ENV === 'development',
-        contextSnapshot: true
+        contextSnapshot: true,
+        logLevel: 'warn',
+        performanceTracking: true,
+        additionalMetrics: {}
       },
       
       metadata: {
@@ -351,7 +365,7 @@ export async function generateWithSpecialist(
 ): Promise<any> {
   const agent = new EmailMakersAgent();
   await agent.initialize();
-  return await agent.processRequest(topic, { specialist, context });
+  return await agent.processRequest(topic, { specialist, context: context || {} });
 }
 
 /**

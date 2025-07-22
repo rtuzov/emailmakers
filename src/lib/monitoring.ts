@@ -1,4 +1,4 @@
-import CacheService from './cache'
+// import CacheService from './cache' // Currently unused
 
 interface ServiceStatus {
   name: string
@@ -103,7 +103,7 @@ export class MonitoringService {
       service.successRate = Math.max(0, service.successRate - 10)
       
       this.services.set(name, service)
-      console.error(`❌ ${name} check failed:`, error.message)
+      console.error(`❌ ${name} check failed:`, error instanceof Error ? error.message : String(error))
     }
 
     return service

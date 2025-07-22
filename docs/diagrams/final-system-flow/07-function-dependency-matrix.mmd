@@ -1,0 +1,97 @@
+graph TD
+    subgraph "📊 DATA COLLECTION CLUSTER (10 functions)"
+        DC_CLUSTER["🗂️ DATA COLLECTION<br/>Functions 1-10<br/>Dependencies: 0 external<br/>Performance: 20s, 2KB→15KB"]
+        
+        DC_F1["create_campaign_folder()"]
+        DC_F2["process_brief()"]
+        DC_F3["extract_requirements()"]
+        DC_F4["analyze_target_audience()"]
+        DC_F5["determine_content_strategy()"]
+        DC_F6["create_content_outline()"]
+        DC_F7["cache_analysis_results()"]
+        DC_F8["update_context()"]
+        DC_F9["prepare_handoff()"]
+        DC_F10["validate_data_collection()"]
+    end
+    
+    subgraph "📝 CONTENT CLUSTER (9 functions)"
+        CS_CLUSTER["📄 CONTENT GENERATION<br/>Functions 11-19<br/>Dependencies: 3 OpenAI, 1 Kupibilet<br/>Performance: 25s, 15KB→29KB"]
+        
+        CS_F1["receive_data_handoff()"]
+        CS_F2["generate_email_content()"]
+        CS_F3["integrate_travel_data()"]
+        CS_F4["optimize_content()"]
+        CS_F5["adapt_for_mobile()"]
+        CS_F6["personalize_content()"]
+        CS_F7["finalize_content()"]
+        CS_F8["update_context()"]
+        CS_F9["prepare_design_handoff()"]
+    end
+    
+    subgraph "🎨 DESIGN CLUSTER (14 functions)"
+        DS_CLUSTER["🎭 DESIGN GENERATION<br/>Functions 20-33<br/>Dependencies: 1 AI validation<br/>Performance: 20s, 29KB→40KB"]
+        
+        DS_F1["receive_content_handoff()"]
+        DS_F2["create_design_brief()"]
+        DS_F3["generate_visual_concepts()"]
+        DS_F4["apply_brand_guidelines()"]
+        DS_F5["create_layout_structure()"]
+        DS_F6["generate_mjml_template()"]
+        DS_F7["apply_styling()"]
+        DS_F8["implement_responsive_design()"]
+        DS_F9["add_dark_mode_support()"]
+        DS_F10["validate_design_ai()"]
+        DS_F11["optimize_performance()"]
+        DS_F12["save_design_assets()"]
+        DS_F13["update_context()"]
+        DS_F14["prepare_quality_handoff()"]
+    end
+    
+    subgraph "✅ QUALITY CLUSTER (10 functions)"
+        QS_CLUSTER["🔍 QUALITY ASSURANCE<br/>Functions 34-43<br/>Dependencies: 0 external<br/>Performance: 20s, 40KB maintained"]
+        
+        QS_F1["receive_design_handoff()"]
+        QS_F2["validate_html_structure()"]
+        QS_F3["test_email_clients()"]
+        QS_F4["check_accessibility()"]
+        QS_F5["validate_responsive_design()"]
+        QS_F6["test_dark_mode()"]
+        QS_F7["analyze_performance()"]
+        QS_F8["generate_quality_report()"]
+        QS_F9["update_context()"]
+        QS_F10["prepare_delivery_handoff()"]
+    end
+    
+    subgraph "📦 DELIVERY CLUSTER (4 functions)"
+        DL_CLUSTER["🚚 FINAL DELIVERY<br/>Functions 44-47<br/>Dependencies: 0 external<br/>Performance: 13s, 40KB maintained"]
+        
+        DL_F1["receive_quality_handoff()"]
+        DL_F2["package_final_template()"]
+        DL_F3["create_export_package()"]
+        DL_F4["finalize_delivery()"]
+    end
+    
+    %% CLUSTER CONNECTIONS
+    DC_CLUSTER --> CS_CLUSTER
+    CS_CLUSTER --> DS_CLUSTER
+    DS_CLUSTER --> QS_CLUSTER
+    QS_CLUSTER --> DL_CLUSTER
+    
+    %% CRITICAL DEPENDENCIES
+    CRITICAL_DEP["🔴 CRITICAL DEPENDENCIES<br/>• 3× OpenAI GPT-4o-mini calls<br/>• 1× Kupibilet API v2 call<br/>• 1× Internal AI validation<br/>• 30+ File system operations"]
+    
+    CS_CLUSTER -.-> CRITICAL_DEP
+    DS_CLUSTER -.-> CRITICAL_DEP
+    
+    %% PERFORMANCE ANALYSIS
+    PERF_ANALYSIS["📊 PERFORMANCE PROFILE<br/>Total Time: 68-98 seconds<br/>Total Data: 2KB → 40KB<br/>External Calls: 5<br/>File Operations: 30+"]
+    
+    DL_CLUSTER --> PERF_ANALYSIS
+    
+    style DC_CLUSTER fill:#4ecdc4,stroke:#45b7aa,color:white
+    style CS_CLUSTER fill:#45b7d1,stroke:#3a9bc1,color:white
+    style DS_CLUSTER fill:#96ceb4,stroke:#85b7a3,color:white
+    style QS_CLUSTER fill:#feca57,stroke:#fd9644,color:white
+    style DL_CLUSTER fill:#ff9ff3,stroke:#f368e0,color:white
+    style CRITICAL_DEP fill:#ff6b6b,stroke:#e55555,color:white
+    style PERF_ANALYSIS fill:#2196f3,stroke:#1976d2,color:white

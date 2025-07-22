@@ -389,7 +389,7 @@ export class SpamAnalysisService {
    * Analyze deliverability issues
    */
   private analyzeDeliverabilityIssues(
-    emailData: any,
+    _emailData: any,
     violations: SpamViolation[]
   ): DeliverabilityIssue[] {
     const issues: DeliverabilityIssue[] = [];
@@ -426,7 +426,7 @@ export class SpamAnalysisService {
    */
   private generateSpamRecommendations(
     violations: SpamViolation[],
-    issues: DeliverabilityIssue[]
+    _issues: DeliverabilityIssue[]
   ): string[] {
     const recommendations: string[] = [];
 

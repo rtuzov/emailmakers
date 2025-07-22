@@ -27,11 +27,11 @@ export class CacheService {
   constructor(
     private redisClient?: any, // Redis client (optional for local-only mode)
     private metricsService?: MetricsService,
-    private options: CacheOptions = {}
+    private _options: CacheOptions = {} // Used in constructor
   ) {
-    this.maxLocalSize = options.maxSize || 1000;
-    this.defaultTTL = options.ttl || 3600;
-    this.strategy = options.strategy || 'lru';
+    this.maxLocalSize = this._options.maxSize || 1000;
+    this.defaultTTL = this._options.ttl || 3600;
+    this.strategy = this._options.strategy || 'lru';
 
     // Start cleanup interval for expired entries
     setInterval(() => this.cleanupExpired(), 60000); // Every minute
@@ -249,10 +249,12 @@ export class CacheService {
    */
   private evictLRU(count: number): void {
     const entries = Array.from(this.localCache.entries())
-      .sort(([, a], [, b]) => a.lastAccessed - b.lastAccessed);
+      .sort(([, a], [, b]) => a.lastAccessed - (b?.lastAccessed || 0));
 
     for (let i = 0; i < Math.min(count, entries.length); i++) {
-      this.localCache.delete(entries[i][0]);
+      if (entries[i]) {
+        this.localCache.delete(entries[i][0]);
+      }
     }
   }
 
@@ -261,10 +263,12 @@ export class CacheService {
    */
   private evictLFU(count: number): void {
     const entries = Array.from(this.localCache.entries())
-      .sort(([, a], [, b]) => a.accessCount - b.accessCount);
+      .sort(([, a], [, b]) => a.accessCount - (b?.accessCount || 0));
 
     for (let i = 0; i < Math.min(count, entries.length); i++) {
-      this.localCache.delete(entries[i][0]);
+      if (entries[i]) {
+        this.localCache.delete(entries[i][0]);
+      }
     }
   }
 
@@ -272,7 +276,7 @@ export class CacheService {
    * Clean up expired entries
    */
   private cleanupExpired(): void {
-    const now = Date.now();
+    // const now = Date.now(); // Currently unused
     const expiredKeys: string[] = [];
 
     for (const [key, entry] of this.localCache.entries()) {

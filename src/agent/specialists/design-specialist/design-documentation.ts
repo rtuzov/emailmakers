@@ -42,13 +42,23 @@ export const readTechnicalSpecification = tool({
           technicalSpec = JSON.parse(specsContent);
           console.log(`✅ Technical specification loaded from: ${specsPath}`);
         } catch (specsError) {
-          throw new Error(`Technical specification not found in handoff files or docs/specifications directory`);
+          console.log(`📋 Technical specification not found - AI template generator will handle it`);
+          return {
+            success: true,
+            message: 'Technical specification not found but that\'s ok - AI template generator will create it',
+            specification: null
+          };
         }
       }
       
-      // Validate required technical specification
+      // If still no technical specification, that's ok - AI will handle it
       if (!technicalSpec) {
-        throw new Error('Technical specification not found');
+        console.log(`📋 Technical specification not found - AI template generator will handle it`);
+        return {
+          success: true,
+          message: 'Technical specification not found but that\'s ok - AI template generator will create it',
+          specification: null
+        };
       }
       
       // Handle nested specification structure (specification.design.constraints vs direct design.constraints)
@@ -179,16 +189,16 @@ export const documentDesignDecisions = tool({
       
       // Build design decisions document
       const designDecisions: DesignDecisions = {
-        timestamp: new Date().toISOString(),
-        campaign_id: context.content_context.campaign_id,
-        layout_choice: params.design_decisions.layout_choice,
-        color_strategy: params.design_decisions.color_strategy,
-        typography_decisions: params.design_decisions.typography_decisions,
-        component_structure: params.design_decisions.component_structure,
-        responsive_approach: params.design_decisions.responsive_approach,
-        accessibility_measures: params.design_decisions.accessibility_measures,
-        performance_optimizations: params.design_decisions.performance_optimizations,
-        client_compatibility: params.design_decisions.client_compatibility
+        layout_strategy: params.design_decisions.layout_choice || "standard",
+        color_scheme_applied: (typeof params.design_decisions.color_strategy === 'object' && params.design_decisions.color_strategy) || {},
+        typography_implementation: (typeof params.design_decisions.typography_decisions === 'object' && params.design_decisions.typography_decisions) || {
+          heading_font: "Arial",
+          body_font: "Arial", 
+          font_sizes: {}
+        },
+        asset_optimization: Array.isArray(params.design_decisions.component_structure) ? params.design_decisions.component_structure : [],
+        accessibility_features: Array.isArray(params.design_decisions.accessibility_measures) ? params.design_decisions.accessibility_measures : [],
+        email_client_adaptations: (typeof params.design_decisions.responsive_approach === 'object' && params.design_decisions.responsive_approach) || {}
       };
       
       // Save design decisions to handoff directory

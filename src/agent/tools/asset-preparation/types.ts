@@ -47,10 +47,11 @@ export interface ContentContext {
 }
 
 export interface AssetSource {
-  type: 'figma' | 'local' | 'url' | 'campaign';
+  type: 'figma' | 'local' | 'url' | 'campaign' | 'external';
   path: string;
   credentials?: Record<string, string>;
   priority?: 'primary' | 'secondary' | 'fallback';
+  images?: any[];  // For external type
 }
 
 export interface AssetManifestOptions {
@@ -129,6 +130,7 @@ export interface ExternalImage {
 export interface AssetItem {
   filename: string;
   path: string;
+  file_path?: string;  // ✅ ДОБАВЛЕНО: относительный путь для манифеста
   size: number;
   format: string;
   hash: string;
@@ -283,8 +285,8 @@ export interface AIRequestConfig {
 }
 
 export const DEFAULT_AI_CONFIG: AIRequestConfig = {
-  model: 'gpt-4o-mini',
-  temperature: 0.3,
-  max_tokens: 2000,
-  system_prompt: 'You are an expert in email marketing and visual asset curation.'
+  model: process.env.AI_MODEL || 'gpt-4o-mini',
+  temperature: parseFloat(process.env.AI_TEMPERATURE || '0.3'),
+  max_tokens: parseInt(process.env.AI_MAX_TOKENS || '2000'),
+  system_prompt: process.env.AI_SYSTEM_PROMPT || 'You are an expert in email marketing and visual asset curation.'
 }; 

@@ -49,7 +49,7 @@ interface UploadResult {
  * Upload final email assets to S3 and provide public URLs
  */
 export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
-  const traceId = generateTraceId();
+  const _traceId // Currently unused = generateTraceId();
   
     try {
       console.log('T9: Uploading files to S3');
@@ -75,7 +75,7 @@ export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
         fullHtml = await fs.readFile(htmlPath, 'utf8');
         console.log(`✅ T9: Loaded full HTML from file: ${fullHtml.length} characters`);
       } catch (error) {
-        console.warn('⚠️ T9: Could not load full HTML from file, using provided HTML:', error.message);
+        console.warn('⚠️ T9: Could not load full HTML from file, using provided HTML:', error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -157,7 +157,7 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
 async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
   try {
     // Use EmailFolderManager to create proper campaign structure
-    const campaignId = params.campaign_id || `auto_${Date.now()}`;
+    const _campaignId // Currently unused = params.campaign_id || `auto_${Date.now()}`;
     const emailFolder = await EmailFolderManager.createEmailFolder(
       `Auto Campaign ${new Date().toISOString()}`,
       'auto-generated'
@@ -206,7 +206,7 @@ async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
     // ❌ FALLBACK POLICY: do not generate local URLs automatically. Fail fast.
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error),
       metadata: {
         storage_type: 'none',
         timestamp: new Date().toISOString(),

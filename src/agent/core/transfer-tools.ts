@@ -12,6 +12,17 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { run } from '@openai/agents';
 
+// Error handling utility
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  return String(error || 'Unknown error');
+}
+
 // ============================================================================
 // CONTEXT-AWARE TRANSFER TOOLS
 // ============================================================================
@@ -43,31 +54,38 @@ export const transferToContentSpecialist = tool({
   description: 'Hand off the current request to the Content Specialist agent and return its response',
   parameters: baseSchema,
   execute: async ({ request }, context) => {
-    console.log('🔄 Transferring to Content Specialist with context');
-    console.log('📋 Request:', request.slice(0, 100) + '...');
-    console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
-    
-    // Pass context through OpenAI Agents SDK context parameter
-    const { contentSpecialistAgent } = await import('./tool-registry');
-    const result = await run(contentSpecialistAgent, request, { context });
-    
-    // NEW: Persist generated content context into the shared workflow context
-    if (result?.finalOutput) {
-      // Heuristic: if finalOutput already contains a content_context field – use it; otherwise treat the
-      // whole finalOutput object as the context itself (legacy behaviour)
-      const extractedContext = (result.finalOutput as any).content_context ?? result.finalOutput;
-      if (extractedContext && typeof extractedContext === 'object') {
-        context.content_context = extractedContext;
-        console.log('💾 Saved content_context into shared context');
+    try {
+      console.log('🔄 Transferring to Content Specialist with context');
+      console.log('📋 Request:', request.slice(0, 100) + '...');
+      console.log('📦 Context keys:', context ? Object.keys(context) : 'none');
+      
+      // Pass context through OpenAI Agents SDK context parameter
+      const { contentSpecialistAgent } = await import('./tool-registry');
+      const result = await run(contentSpecialistAgent, request, { context });
+      
+      // NEW: Persist generated content context into the shared workflow context
+      if (result?.finalOutput) {
+        // Heuristic: if finalOutput already contains a content_context field – use it; otherwise treat the
+        // whole finalOutput object as the context itself (legacy behaviour)
+        const extractedContext = (result.finalOutput as any).content_context ?? result.finalOutput;
+        if (extractedContext && typeof extractedContext === 'object' && context) {
+          (context as any).content_context = extractedContext;
+          console.log('💾 Saved content_context into shared context');
+        } else {
+          console.warn('⚠️ transfer_to_Content_Specialist: finalOutput did not include usable content context');
+        }
       } else {
-        console.warn('⚠️ transfer_to_Content_Specialist: finalOutput did not include usable content context');
+        console.warn('⚠️ transfer_to_Content_Specialist: No finalOutput returned by Content Specialist');
       }
-    } else {
-      console.warn('⚠️ transfer_to_Content_Specialist: No finalOutput returned by Content Specialist');
-    }
 
-    console.log('✅ Content Specialist completed');
-    return result.finalOutput ?? result;
+      console.log('✅ Content Specialist completed');
+      return result.finalOutput ?? result;
+      
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
+      console.error('❌ Content Specialist transfer failed:', errorMessage);
+      return `Content Specialist transfer failed: ${errorMessage}`;
+    }
   }
 });
 

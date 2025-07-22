@@ -252,7 +252,7 @@ async function applyEnhancement(
   context: ServiceExecutionContext,
   mjmlService: MjmlCompilationService,
   componentService: ComponentRenderingService,
-  optimizationService: OptimizationService
+  _optimizationService: OptimizationService
 ): Promise<EmailRendererResult> {
   try {
     switch (enhancement) {
@@ -361,7 +361,7 @@ function generateTraceId(): string {
 
 // Export for backward compatibility
 export async function emailRenderer(params: EmailRendererParams): Promise<EmailRendererResult> {
-  const startTime = Date.now();
+  const _startTime // Currently unused = Date.now();
   
   try {
     // Record tool usage for analytics

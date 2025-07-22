@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753098980448_kb025ilw3ra",
+  "traceId": "api-1753098980448",
+  "timestamp": "2025-07-21T11:56:20.448Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753098980448",
+    "name": "Debug Asset Test",
+    "path": "",
+    "brand": "Test",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 25,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Email-Makers-Test",
+      "clientIp": "::1",
+      "validationLevel": "relaxed",
+      "qualityThreshold": 60,
+      "enableDebugLogs": false
+    },
+    "correlationId": "corr_1753098980448_60lbj78m69l",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "relaxed",
+    "requiresApproval": true,
+    "qualityThreshold": 60,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "тест debug assets",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Debug Asset Test",
+    "brand": "Test",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "relaxed",
+    "qualityThreshold": 60,
+    "enableDebugLogs": false,
+    "originalOptions": {
+      "traceId": "api-1753098980448",
+      "metadata": {
+        "campaignName": "Debug Asset Test",
+        "brand": "Test",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "relaxed",
+        "qualityThreshold": 60,
+        "enableDebugLogs": false
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Email-Makers-Test",
+        "clientIp": "::1",
+        "validationLevel": "relaxed",
+        "qualityThreshold": 60,
+        "enableDebugLogs": false
+      }
+    }
+  }
+}

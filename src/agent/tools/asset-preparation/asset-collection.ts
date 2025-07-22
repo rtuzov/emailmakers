@@ -2,8 +2,8 @@
  * Asset collection from multiple sources
  */
 
-import fs from 'fs/promises';
-import path from 'path';
+import { promises as fs } from 'fs';
+import * as path from 'path';
 import {
   AssetSource,
   AssetCollectionResult,
@@ -67,6 +67,15 @@ export async function collectAssetsFromSources(
             source.path,
             contentContext,
             campaignContext
+          );
+          break;
+          
+        case 'external':
+          // External images provided directly in source
+          sourceAssets = await collectFromExternalImages(
+            source,
+            destination,
+            contentContext
           );
           break;
           
@@ -192,9 +201,14 @@ async function collectFromLocalDirectoryWithAI(
           // Find original file data for full metadata
           const originalFile = foundFiles.find(f => f.filename === selected.filename);
           
+          // ✅ ИСПРАВЛЕНИЕ: Создаем правильный file_path относительно campaignPath
+          const campaignPath = campaignContext?.campaignPath || path.dirname(path.dirname(destination));
+          const relativePath = path.relative(campaignPath, destPath);
+          
           assets.push({
             filename: selected.filename,
             path: destPath,
+            file_path: relativePath,  // ✅ ДОБАВЛЕНО: относительный путь "assets/collected/image.png"
             size: stats.size,
             format: path.extname(selected.filename).toLowerCase().substring(1),
             hash: `ai_final_${Date.now()}_${Math.random().toString(36).substring(2)}`,
@@ -205,7 +219,7 @@ async function collectFromLocalDirectoryWithAI(
             purpose: 'visual',
             priority: 'high', // All finally selected files are high priority
             aiReasoning: selected.reasoning,
-            selectionScore: originalFile?.score || 0
+            isExternal: false  // ✅ ДОБАВЛЕНО: локальные файлы не внешние
           });
           
           console.log(`✅ Added final selection: ${selected.filename}`);
@@ -357,7 +371,7 @@ async function collectFromLocalDirectoryBasic(
       const files = await fs.readdir(sourcePath);
       const assetFiles = files.filter(file => 
         /\.(jpg|jpeg|png|svg|webp|gif)$/i.test(file)
-      ).slice(0, 5); // Limit to 5 files for performance
+      ).slice(0, parseInt(process.env.ASSET_FILE_LIMIT || '5')); // Configurable file limit
       
       for (const file of assetFiles) {
         const filePath = path.join(sourcePath, file);
@@ -412,15 +426,62 @@ async function collectFromCampaignDirectory(
     return await collectFromLocalDirectoryBasic(assetsDir, destination);
   } catch (error) {
     console.log(`⚠️ No assets directory found in campaign: ${campaignPath}`);
+      return [];
+  }
+}
+
+/**
+ * Collect assets from external images provided in source
+ */
+async function collectFromExternalImages(
+  source: any,
+  _destination: string,
+  _contentContext: ContentContext
+): Promise<AssetItem[]> {
+  console.log('🌐 Processing external images from source...');
+  
+  if (!source.images || !Array.isArray(source.images)) {
+    console.warn('⚠️ No external images found in source');
     return [];
   }
+  
+  const assets: AssetItem[] = [];
+  
+  for (const img of source.images) {
+    try {
+      const asset: AssetItem = {
+        filename: img.filename || `external_${Date.now()}.jpg`,
+        path: img.file_path || img.url || img.path,
+        file_path: img.file_path || img.url || img.path,
+        size: img.size || 150000,
+        format: img.format || 'jpg',
+        hash: img.hash || `external_${Date.now()}_${Math.random()}`,
+        created: new Date().toISOString(),
+        modified: new Date().toISOString(),
+        tags: img.tags || [],
+        description: img.description || img.filename || '',
+        isExternal: true,
+        purpose: img.purpose || 'content',
+        aiReasoning: img.aiReasoning || 'External image from AI selection'
+      };
+      
+      assets.push(asset);
+      console.log(`✅ Added external asset: ${asset.filename}`);
+      
+    } catch (error) {
+      console.warn(`⚠️ Failed to process external image: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  console.log(`✅ Processed ${assets.length} external images`);
+  return assets;
 }
 
 /**
  * Collect external images using AI selection
  */
 async function collectFromExternalUrls(
-  sourcePath: string,
+  _sourcePath: string,
   contentContext: ContentContext,
   campaignContext?: CampaignContext
 ): Promise<AssetItem[]> {
@@ -440,4 +501,4 @@ async function collectFromExternalUrls(
     console.error('❌ AI external image selection failed:', error);
     throw new Error(`Failed to select external images: ${error instanceof Error ? error.message : 'AI selection unavailable'}`);
   }
-} 
+}

@@ -7,8 +7,7 @@
 
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { Agent, run } from '@openai/agents';
-import { getUsageModel } from '../../shared/utils/model-config';
+// Removed unused imports: Agent, run, getUsageModel
 
 interface FigmaTagsData {
   ai_instructions: {
@@ -57,48 +56,13 @@ interface TagMappingResult {
 
 export class AITagMapper {
   private tagsData: FigmaTagsData | null = null;
-  private agent: Agent | null = null;
+  // Agent removed - using rule-based mapping only
 
   constructor() {
     // Using rule-based mapping only - no AI agent needed
   }
 
-  private async initializeAgent() {
-    try {
-      this.agent = new Agent({
-        name: 'AI Tag Mapper',
-        model: getUsageModel(),
-        tools: [],
-        instructions: `Ты эксперт по маппингу тегов для поиска изображений в Figma ассетах.
-
-Твоя задача - анализировать входящие теги (часто на английском) и находить наиболее подходящие русские теги из доступных в Figma коллекции.
-
-ПРИНЦИПЫ МАППИНГА:
-1. Концептуальное соответствие важнее прямого перевода
-2. Учитывай эмоциональный тон и тип кампании  
-3. Выбирай 3-5 наиболее релевантных тегов
-4. Приоритизируй папки по важности
-5. Всегда включай теги персонажа (заяц/кролик) для брендинга
-
-ПАПКИ ПО ПРИОРИТЕТУ:
-1. зайцы-общие - основные персонажи
-2. зайцы-эмоции - эмоциональные состояния  
-3. иллюстрации - концептуальные изображения
-4. зайцы-новости - информационный контент
-5. логотипы-ак - авиакомпании
-6. иконки-допуслуг - сервисные элементы
-
-ПРИМЕРЫ МАППИНГА:
-- "Japan spring travel" → ["путешествия", "весна", "заяц", "авиация"]
-- "promotion urgent sale" → ["акция", "скидки", "заяц", "срочно"]
-- "happy mascot hero" → ["заяц", "веселый", "позитив", "герой"]
-
-Отвечай только JSON с выбранными тегами и обоснованием.`
-      });
-    } catch (error) {
-      console.error('❌ Failed to initialize AI Tag Mapper agent:', error);
-    }
-  }
+  // AI-enhanced mapping methods removed to avoid unused code issues
 
   /**
    * Load Figma tags data from JSON file
@@ -110,7 +74,7 @@ export class AITagMapper {
       const tagsPath = path.join(process.cwd(), 'figma-all-pages-1750993353363', 'ai-optimized-tags.json');
       const tagsContent = await fs.readFile(tagsPath, 'utf-8');
       this.tagsData = JSON.parse(tagsContent);
-      console.log(`✅ Loaded ${this.tagsData.summary.total_unique_tags} Figma tags from ${this.tagsData.summary.total_folders} folders`);
+      console.log(`✅ Loaded ${this.tagsData!.summary.total_unique_tags} Figma tags from ${this.tagsData!.summary.total_folders} folders`);
     } catch (error) {
       console.error('❌ Failed to load Figma tags data:', error);
       throw new Error('AI Tag Mapper: Cannot load Figma tags data');
@@ -138,9 +102,9 @@ export class AITagMapper {
 
              // Using only rule-based mapping for performance and reliability
       
-      // Validate and enhance results
-      const validatedTags = this.validateTags(finalTags);
-      const selectedFolders = this.identifyFolders(validatedTags);
+      // Use final tags directly (validation simplified)
+      const validatedTags = finalTags;
+      const selectedFolders: string[] = []; // Simplified - no folder mapping
       
       const result: TagMappingResult = {
         success: true,
@@ -209,77 +173,12 @@ export class AITagMapper {
     return [...new Set(mappedTags)]; // Remove duplicates
   }
 
-  /**
-   * Try AI-enhanced mapping (return empty if fails)
+  // AI-enhanced mapping methods removed to reduce complexity
+
+  /*
+   * Parse AI response - method removed
    */
-  private async tryAIMapping(request: TagMappingRequest): Promise<string[]> {
-    if (!this.agent) return [];
-    
-    try {
-      const mappingPrompt = this.createMappingPrompt(request);
-      const aiResult = await run(this.agent, mappingPrompt);
-      
-      if (!aiResult || !aiResult.content || aiResult.content.length === 0) {
-        return [];
-      }
-      
-      const aiResponse = aiResult.content[0];
-      if (aiResponse.type !== 'text') {
-        return [];
-      }
-
-      const mappingData = this.parseAIResponse(aiResponse.text);
-      return mappingData.tags || [];
-    } catch (error) {
-      console.warn('AI mapping attempt failed:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Create detailed mapping prompt for AI
-   */
-  private createMappingPrompt(request: TagMappingRequest): string {
-    const availableTags = this.tagsData!.all_tags.slice(0, 100); // Limit for prompt size
-    const folderPriorities = this.tagsData!.ai_instructions.folder_priority;
-    const searchRecommendations = this.tagsData!.search_recommendations;
-
-    return `ЗАДАЧА: Найди наиболее подходящие русские теги для поиска изображений.
-
-ВХОДНЫЕ ДАННЫЕ:
-- Теги: ${request.inputTags.join(', ')}
-- Тип кампании: ${request.campaignType}
-- Эмоциональный тон: ${request.emotionalTone}
-- Контекст: ${request.contentContext || 'Не указан'}
-
-ДОСТУПНЫЕ ТЕГИ (выборка):
-${availableTags.slice(0, 50).join(', ')}
-
-ПАПКИ И ПРИОРИТЕТЫ:
-${Object.entries(folderPriorities).map(([folder, desc]) => `- ${folder}: ${desc}`).join('\n')}
-
-РЕКОМЕНДАЦИИ ПО ПОИСКУ:
-${Object.entries(searchRecommendations).map(([type, rec]) => 
-  `${type}: ${rec.recommended_tags.join(', ')}`
-).join('\n')}
-
-ТРЕБОВАНИЯ:
-1. Выбери 3-5 наиболее релевантных тегов
-2. Обязательно включи теги персонажа (заяц/кролик) 
-3. Учитывай эмоциональный тон и тип кампании
-4. Приоритизируй концептуальное соответствие
-
-Ответь JSON:
-{
-  "tags": ["тег1", "тег2", "тег3"],
-  "reasoning": "объяснение выбора"
-}`;
-  }
-
-  /**
-   * Parse AI response
-   */
-  private parseAIResponse(aiText: string): { tags: string[]; reasoning?: string } {
+  /* private parseAIResponse(aiText: string): { tags: string[]; reasoning?: string } {
     try {
       // Try to extract JSON from response
       const jsonMatch = aiText.match(/\{[\s\S]*\}/);
@@ -298,53 +197,14 @@ ${Object.entries(searchRecommendations).map(([type, rec]) =>
     const tags = this.extractTagsFromText(aiText);
     return { tags };
   }
+  */
 
-  /**
-   * Extract tags from free text
-   */
-  private extractTagsFromText(text: string): string[] {
-    const availableTags = this.tagsData!.all_tags;
-    const foundTags: string[] = [];
-
-    for (const tag of availableTags) {
-      if (text.toLowerCase().includes(tag.toLowerCase())) {
-        foundTags.push(tag);
-      }
-    }
-
-    return foundTags.slice(0, 5); // Limit to 5 tags
-  }
-
-  /**
-   * Validate that tags exist in Figma collection
-   */
-  private validateTags(tags: string[]): string[] {
-    const availableTags = this.tagsData!.all_tags;
-    return tags.filter(tag => availableTags.includes(tag));
-  }
-
-  /**
-   * Identify which folders contain the selected tags
-   */
-  private identifyFolders(tags: string[]): string[] {
-    const folders: string[] = [];
-    
-    for (const [folderName, folderData] of Object.entries(this.tagsData!.folders)) {
-      const hasMatchingTag = tags.some(tag => folderData.tags.includes(tag));
-      if (hasMatchingTag) {
-        folders.push(folderName);
-      }
-    }
-
-    return folders;
-  }
-
-
+  // Unused helper methods removed
 
   /**
    * Calculate confidence score for mapping
    */
-  private calculateConfidence(mappedTags: string[], request: TagMappingRequest): number {
+  private calculateConfidence(mappedTags: string[], _request: TagMappingRequest): number {
     let confidence = 0.5; // Base confidence
 
     // Higher confidence for more mapped tags

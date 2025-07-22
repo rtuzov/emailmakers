@@ -70,7 +70,7 @@ export class TestingService {
         quality_report: qualityReport,
         compliance_status: complianceStatus,
         recommendations: {
-          next_agent: this.shouldProceedToCompliance(qualityReport) ? 'delivery_specialist' : undefined,
+          ...(this.shouldProceedToCompliance(qualityReport) ? { next_agent: 'delivery_specialist' as const } : {}),
           next_actions: this.generateTestingActions(qualityReport),
           critical_fixes: this.extractTestingFixes(testingResult),
           handoff_data: handoffData
@@ -179,7 +179,7 @@ Please use the email_test tool to perform comprehensive rendering tests across a
       const fixPattern = /fix[:\s]*(.*?)(?:\n|$)/gi;
       let match;
       while ((match = fixPattern.exec(testingResult)) !== null) {
-        fixes.push(match[1].trim());
+        if (match[1]) fixes.push(match[1].trim());
       }
     } else if (testingResult && typeof testingResult === 'object') {
       if (Array.isArray(testingResult.recommended_fixes)) {

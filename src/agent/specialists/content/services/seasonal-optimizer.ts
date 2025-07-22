@@ -9,12 +9,12 @@
 import {
   DestinationPlan,
   TravelSeason,
-  SupportedRegion,
-  TRAVEL_SEASONS,
-  SUPPORTED_REGIONS,
-  REGION_CHARACTERISTICS
+  // SupportedRegion,
+  // TRAVEL_SEASONS,
+  // SUPPORTED_REGIONS,
+  // REGION_CHARACTERISTICS
 } from '../../../../shared/types/multi-destination-types';
-import { ContentUtils } from '../common/content-utils';
+// import { ContentUtils } from '../common/content-utils';
 
 export interface SeasonalOptimizerConfig {
   preferredSeasons?: TravelSeason[];
@@ -116,7 +116,7 @@ export interface CountrySeasonalData {
 export class SeasonalOptimizer {
   private config: SeasonalOptimizerConfig;
   private seasonalDatabase: Map<string, CountrySeasonalData>;
-  private performanceStart: number = 0;
+  // private _performanceStart: number = 0;
 
   constructor(config: SeasonalOptimizerConfig = {}) {
     this.config = {
@@ -134,7 +134,7 @@ export class SeasonalOptimizer {
    * Анализ сезонной пригодности направлений
    */
   async analyzeSeasonalFit(destinations: DestinationPlan[]): Promise<SeasonalAnalysis[]> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`🗓️ Analyzing seasonal fit for ${destinations.length} destinations`);
@@ -159,7 +159,7 @@ export class SeasonalOptimizer {
    * Оптимизация дат кампании на основе сезонных факторов
    */
   async optimizeCampaignDates(params: DateOptimizationParams): Promise<DateOptimizationResult> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`📅 Optimizing campaign dates for ${params.destinations.length} destinations`);
@@ -410,10 +410,10 @@ export class SeasonalOptimizer {
     travelEnd.setDate(travelEnd.getDate() + 60); // 2 месяца на путешествия
     
     return {
-      campaign_start: bestStartDate.toISOString().split('T')[0],
-      campaign_end: bestEndDate.toISOString().split('T')[0],
-      travel_period_start: travelStart.toISOString().split('T')[0],
-      travel_period_end: travelEnd.toISOString().split('T')[0]
+      campaign_start: bestStartDate.toISOString().split('T')[0]!,
+      campaign_end: bestEndDate.toISOString().split('T')[0]!,
+      travel_period_start: travelStart.toISOString().split('T')[0]!,
+      travel_period_end: travelEnd.toISOString().split('T')[0]!
     };
   }
 
@@ -487,8 +487,8 @@ export class SeasonalOptimizer {
       const score = this.scoreTimeWindow(altDate, duration, analyses);
       
       alternatives.push({
-        start_date: altDate.toISOString().split('T')[0],
-        end_date: endDate.toISOString().split('T')[0],
+        start_date: altDate.toISOString().split('T')[0]!,
+        end_date: endDate.toISOString().split('T')[0]!,
         score: score,
         advantages: this.determineAdvantages(altDate, analyses),
         trade_offs: this.determineTradeOffs(altDate, analyses)
@@ -503,7 +503,7 @@ export class SeasonalOptimizer {
    */
   private generateWarnings(
     destinationsFit: DateOptimizationResult['destinations_seasonal_fit'],
-    timeWindow: DateOptimizationResult['optimized_dates']
+    _timeWindow: DateOptimizationResult['optimized_dates']
   ): DateOptimizationResult['warnings'] {
     
     const warnings = [];
@@ -791,7 +791,7 @@ export class SeasonalOptimizer {
   /**
    * Скоринг временного окна
    */
-  private scoreTimeWindow(startDate: Date, duration: number, analyses: SeasonalAnalysis[]): number {
+  private scoreTimeWindow(startDate: Date, _duration: number, analyses: SeasonalAnalysis[]): number {
     const startMonth = startDate.getMonth() + 1;
     let totalScore = 0;
     

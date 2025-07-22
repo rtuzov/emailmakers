@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * - /api/test-handoff - для тестирования handoff между агентами
  */
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
       return NextResponse.json({ 
     success: false,
     message: '🚧 Этот тест устарел. Consolidated tools перемещены в useless/.',

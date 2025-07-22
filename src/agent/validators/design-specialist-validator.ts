@@ -117,8 +117,8 @@ export class DesignSpecialistValidator {
       
       return {
         isValid: errors.length === 0,
-        errors: errors.filter(e => e.severity === 'critical'),
-        warnings: warnings.concat(errors.filter(e => e.severity !== 'critical').map(e => e.message)),
+        errors: errors.filter(e => (e || {}).severity === 'critical'),
+        warnings: warnings.concat(errors.filter(e => (e || {}).severity !== 'critical').map(e => (e || {}).message)),
         correctionSuggestions: correctionSuggestions,
         validatedData: errors.length === 0 ? typedData : undefined,
         validationDuration: Date.now() - startTime
@@ -247,7 +247,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -339,7 +339,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -406,7 +406,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -456,7 +456,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -528,7 +528,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -550,7 +550,7 @@ export class DesignSpecialistValidator {
     // Проверка максимальной ширины (600-640px для email)
     const widthPattern = /width\s*:\s*(\d+)px/gi;
     let match;
-    let hasValidWidth = false;
+    let _hasValidWidth // Currently unused = false;
     
     while ((match = widthPattern.exec(htmlContent)) !== null) {
       const width = parseInt(match[1]);
@@ -599,7 +599,7 @@ export class DesignSpecialistValidator {
     }
     
     return {
-      isValid: errors.filter(e => e.severity === 'critical').length === 0,
+      isValid: errors.filter(e => (e || {}).severity === 'critical').length === 0,
       errors,
       suggestions
     };
@@ -611,7 +611,7 @@ export class DesignSpecialistValidator {
 
   private findUnclosedTags(html: string): string[] {
     const openTags: string[] = [];
-    const unclosedTags: string[] = [];
+    const _unclosedTags // Currently unused: string[] = [];
     
     // Простая проверка основных тегов
     const tagRegex = /<\/?(\w+)[^>]*>/g;

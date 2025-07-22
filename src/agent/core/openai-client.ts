@@ -2,7 +2,6 @@ import { OpenAI } from 'openai';
 import { Agent, run } from '@openai/agents';
 import { logger } from './logger';
 import { getConfig } from './config';
-import { createAgentRunConfig } from '../utils/tracing-utils';
 
 const cfg = getConfig();
 

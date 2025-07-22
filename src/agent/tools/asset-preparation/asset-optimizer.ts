@@ -114,13 +114,25 @@ export const optimizeAssets = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ inputPath, outputPath, options, breakpoints, context, trace_id }) => {
+  execute: async ({ inputPath, outputPath, options, breakpoints, context: _context, trace_id }) => {
     console.log('\n🎯 === ASSET OPTIMIZATION STARTED ===');
     console.log(`📂 Input Path: ${inputPath}`);
     console.log(`📁 Output Path: ${outputPath}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
-    const optimizationOptions = options || {};
+    const optimizationOptions = options || {} as {
+      profiles?: Array<{
+        name: string;
+        quality: number;
+        format: string;
+        maxWidth: number;
+        maxHeight: number;
+      }>;
+      generateResponsive?: boolean;
+      generateWebp?: boolean;
+      preserveOriginal?: boolean;
+      validateOutput?: boolean;
+    };
     const responsiveBreakpoints = breakpoints || {};
     
     try {
@@ -139,7 +151,7 @@ export const optimizeAssets = tool({
         console.log(`⚡ Optimizing: ${path.basename(assetPath)}`);
         
         try {
-          for (const profile of optimizationOptions.profiles!) {
+          for (const profile of optimizationOptions.profiles || []) {
             const result = await optimizeAsset(assetPath, outputPath, profile, responsiveBreakpoints);
             optimizationResults.push(result);
             
@@ -205,7 +217,7 @@ async function optimizeAsset(
   assetPath: string, 
   outputPath: string, 
   profile: any, 
-  breakpoints: any
+  _breakpoints: any
 ): Promise<OptimizationResult> {
   const filename = path.parse(assetPath).name;
   const stats = await fs.stat(assetPath);

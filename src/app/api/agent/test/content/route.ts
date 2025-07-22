@@ -13,7 +13,10 @@ export async function POST(request: NextRequest) {
       useLatest = true, 
       customRequest,
       testMode = 'full', // 'full' | 'quick' | 'validation'
-      skipDataCollection = false // Skip if data collection context not available
+      skipDataCollection = false, // Skip if data collection context not available
+      campaign_name,
+      destination,
+      brief
     } = body;
 
     console.log('\n🧪 === CONTENT SPECIALIST TEST STARTED ===');
@@ -86,21 +89,27 @@ export async function POST(request: NextRequest) {
     // Prepare enhanced context for content specialist
     const enhancedContext = {
       campaign_id: targetCampaignId,
+      campaign_path: campaignContext?.campaign_path,
+      absolute_campaign_path: campaignContext?.campaign_path,
       test_mode: testMode,
       api_test: true,
       existing_context: campaignContext,
       specialist_focus: 'content',
       
-      // Campaign info from context
+      // Campaign info from context or request
       campaign_info: campaignContext?.readme ? {
         brand: campaignContext.readme.brand || 'Kupibilet',
         type: campaignContext.readme.type || 'promotional',
         audience: campaignContext.readme.audience || 'travelers',
-        user_request: campaignContext.readme.user_request
+        user_request: campaignContext.readme.user_request,
+        name: campaignContext.readme.name || campaign_name
       } : {
         brand: 'Kupibilet',
         type: 'promotional',
-        audience: 'travelers'
+        audience: 'travelers',
+        name: campaign_name,
+        destination,
+        brief
       },
       
       // Data Collection context if available

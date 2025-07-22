@@ -276,7 +276,7 @@ class SegmentClassifier {
    */
   private async classifyWithHeuristics(segment: ImageSegment): Promise<Classification> {
     try {
-      const image = sharp(segment.imageData);
+      const image = sharp((segment || {}).imageData);
       const { data, info } = await image.raw().toBuffer({ resolveWithObject: true });
       
       // Kupibilet brand green: #00d56b (RGB: 0, 213, 107)
@@ -382,7 +382,7 @@ class SegmentClassifier {
    */
   private async classifyWithVision(segment: ImageSegment): Promise<Classification> {
     try {
-      const base64 = segment.imageData.toString('base64');
+      const base64 = (segment || {}).imageData.toString('base64');
       
       const response = await this.openaiClient.chat.completions.create({
         model: getUsageModel(),
@@ -484,28 +484,28 @@ class ExportManager {
       
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        const filename = `slice_${i + 1}_${segment.classification.type}.png`;
+        const filename = `slice_${i + 1}_${(segment || {}).classification.type}.png`;
         
         // Подготавливаем данные для сохранения
         sliceBuffers.push({
           filename,
-          buffer: segment.imageData
+          buffer: (segment || {}).imageData
         });
         
         // Вычисляем размер
-        const sizeKb = Math.round(segment.imageData.length / 1024 * 100) / 100;
+        const sizeKb = Math.round((segment || {}).imageData.length / 1024 * 100) / 100;
         
         slices.push({
           filename,
-          type: segment.classification.type,
-          confidence: segment.classification.confidence,
-          bounds: segment.bounds,
+          type: (segment || {}).classification.type,
+          confidence: (segment || {}).classification.confidence,
+          bounds: (segment || {}).bounds,
           size_kb: sizeKb,
           metadata: {
-            ...segment.metadata,
-            classification_reasoning: segment.classification.reasoning,
-            heuristic_score: segment.classification.heuristicScore,
-            vision_score: segment.classification.visionScore
+            ...(segment || {}).metadata,
+            classification_reasoning: (segment || {}).classification.reasoning,
+            heuristic_score: (segment || {}).classification.heuristicScore,
+            vision_score: (segment || {}).classification.visionScore
           }
         });
       }
@@ -643,7 +643,7 @@ class FigmaSpriteProcessor {
       console.log(`📏 T10: Image size: ${width}x${height}, total area: ${totalArea}, min segment area: ${minArea}`);
       
       const filteredSegments = segments.filter(
-        segment => segment.area >= minArea // Minimum 8% of total area
+        segment => (segment || {}).area >= minArea // Minimum 8% of total area
       );
       
       console.log(`🔽 T10: Filtered to ${filteredSegments.length} segments (removed ${segments.length - filteredSegments.length} small segments)`);

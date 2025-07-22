@@ -1,14 +1,15 @@
-import { Agent, run, tool } from '@openai/agents';
+import { Agent, tool } from '@openai/agents';
 import { z } from 'zod';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { buildDesignContext } from './design-context';
+import { runWithTracing } from '../../core/openai-agents-config';
+// import { buildDesignContext } from './design-context';
 
 // Import comprehensive validation from html-validator
 import { 
   performComprehensiveValidation,
-  ValidationError,
-  ValidationWarning 
+  // ValidationError,
+  // ValidationWarning 
 } from './html-validator';
 
 // 🚀 КЭШИРОВАНИЕ ДЛЯ ОПТИМИЗАЦИИ ПРОИЗВОДИТЕЛЬНОСТИ
@@ -50,7 +51,9 @@ async function getCachedValidation(
   // Cleanup old cache entries
   if (validationCache.size > 10) {
     const oldestKey = validationCache.keys().next().value;
-    validationCache.delete(oldestKey);
+    if (oldestKey) {
+      validationCache.delete(oldestKey);
+    }
   }
   
   return result;
@@ -82,8 +85,23 @@ async function getCachedContext(campaignPath: string): Promise<any> {
       return { images: [], icons: [] };
     }),
     loadContentContext(campaignPath).catch(err => {
-      console.warn('⚠️ Failed to load content context, using defaults:', err.message);
-      return { generated_content: { subject: 'Email Subject', body: 'Email content' } };
+      console.warn('⚠️ Failed to load content context, using comprehensive defaults:', err.message);
+      return {
+        generated_content: { 
+          subject: 'Email Subject', 
+          body: 'Email content',
+          preheader: 'Email preview text',
+          cta: { primary: { text: 'Узнать больше' } }
+        },
+        context_analysis: { destination: 'направление' },
+        pricing_analysis: { 
+          best_price: null, 
+          currency: 'RUB' 
+        },
+        subject: 'Email Subject',
+        preheader: 'Email preview text',
+        cta: { primary: { text: 'Узнать больше' } }
+      };
     })
   ];
   
@@ -104,7 +122,9 @@ async function getCachedContext(campaignPath: string): Promise<any> {
   // Cleanup old cache entries
   if (contextCache.size > 5) {
     const oldestKey = contextCache.keys().next().value;
-    contextCache.delete(oldestKey);
+    if (oldestKey) {
+      contextCache.delete(oldestKey);
+    }
   }
   
   return context;
@@ -152,26 +172,36 @@ async function generateEnhancedHtml(params: {
   assetManifest: any;
   validationErrors: any[];
 }): Promise<{ enhancedHtml: string; enhancementsMade: string[] }> {
-  const { currentHtml, contentContext, templateRequirements, technicalRequirements, assetManifest, validationErrors } = params;
+  const { currentHtml, contentContext, templateRequirements, technicalRequirements: _technicalRequirements, assetManifest: _assetManifest, validationErrors: _validationErrors } = params;
   
-  // Extract key information for analysis
-  const subject = contentContext.generated_content?.subject || contentContext.subject || 'Email Subject';
-  const destination = contentContext.context_analysis?.destination || contentContext.generated_content?.context?.destination || 'направление';
-  const pricingData = contentContext.pricing_analysis || contentContext.pricing || contentContext.generated_content?.pricing;
+  // SAFE: Extract key information for analysis with null checks
+  const subject = contentContext?.generated_content?.subject || contentContext?.subject || 'Email Subject';
+  const destination = contentContext?.context_analysis?.destination || contentContext?.generated_content?.context?.destination || 'направление';
+  const pricingData = contentContext?.pricing_analysis || contentContext?.pricing || contentContext?.generated_content?.pricing;
   const bestPrice = pricingData?.best_price || pricingData?.min_price;
   const currency = pricingData?.currency || 'RUB';
   const formattedPrice = bestPrice ? `${bestPrice} ${currency}` : 'Цена по запросу';
+  
+  // Диагностика контекста для отладки
+  console.log('🔍 Content Context Diagnostic:', {
+    hasContentContext: !!contentContext,
+    contentContextKeys: contentContext ? Object.keys(contentContext) : 'null',
+    hasGeneratedContent: !!contentContext?.generated_content,
+    hasPricingAnalysis: !!contentContext?.pricing_analysis,
+    subject: subject,
+    destination: destination,
+    formattedPrice: formattedPrice
+  });
   
   // Extract brand information
   const brandColors = templateRequirements?.brand_colors || {};
   const primaryColor = brandColors.primary || '#4BFF7E';
   const accentColor = brandColors.accent || '#FF6240';
-  const backgroundColor = brandColors.background || '#EDEFFF';
   
   // Extract assets information
-  const images = Array.isArray(assetManifest?.images) ? assetManifest.images : [];
-  const localImages = images.filter((img: any) => !img.isExternal);
-  const externalImages = images.filter((img: any) => img.isExternal);
+  // const images = Array.isArray(assetManifest?.images) ? assetManifest.images : [];
+  // const _localImages = images.filter((img: any) => !img.isExternal);
+  // const _externalImages = images.filter((img: any) => img.isExternal);
   
   // Analyze current HTML issues
   const htmlLength = currentHtml.length;
@@ -191,36 +221,48 @@ async function generateEnhancedHtml(params: {
   
   console.log(`📊 Original HTML analysis: ${htmlLength} chars, ${imageCount} images, ${ctaButtonCount} CTAs`);
   
-  // Оптимизированный промпт - более короткий и фокусированный
+  // БЕЗОПАСНЫЙ промпт - минимальные улучшения без сжатия
   const enhancementPrompt = `
-Улучши HTML email шаблон, сохранив ВСЕ содержимое:
+ЗАДАЧА: Улучши HTML email шаблон, СТРОГО СОХРАНИВ ВСЕ СОДЕРЖИМОЕ
 
 КОНТЕКСТ: ${subject} | ${destination} | ${formattedPrice}
-ЦВЕТА: ${primaryColor}, ${accentColor}, ${backgroundColor}
 
-КРИТИЧЕСКИЕ ТРЕБОВАНИЯ:
-1. СОХРАНИ ВЕСЬ ТЕКСТ И КОНТЕНТ - не удаляй ничего
-2. СОХРАНИ ВСЕ ИЗОБРАЖЕНИЯ и их пути
-3. СОХРАНИ ВСЕ ССЫЛКИ и CTA кнопки
-4. Размер результата должен быть ≥90% от оригинала
+🔒 КРИТИЧЕСКИЕ ТРЕБОВАНИЯ (НАРУШЕНИЕ = ОТКЛОНЕНИЕ):
+1. СОХРАНИ ВСЕ CSS СТИЛИ - не удаляй inline styles, классы или <style> блоки
+2. СОХРАНИ ВСЕ ТЕКСТОВОЕ СОДЕРЖИМОЕ - каждое слово, каждый символ
+3. СОХРАНИ ВСЕ ИЗОБРАЖЕНИЯ, атрибуты и пути
+4. СОХРАНИ ВСЕ ССЫЛКИ, кнопки и интерактивные элементы
+5. РАЗМЕР ФАЙЛА: результат должен быть 95-105% от оригинала (${htmlLength} символов)
+6. СОХРАНИ ВСЕ ТАБЛИЦЫ и их структуру
 
-УЛУЧШЕНИЯ:
-- Добавь @media (prefers-color-scheme: dark) поддержку
-- Улучши дизайн кнопок (border-radius, box-shadow)
-- Добавь responsive @media (max-width: 600px)
-- Улучши alt тексты для изображений
-- Оптимизируй цветовую схему
+✅ РАЗРЕШЕННЫЕ УЛУЧШЕНИЯ (только добавления, не замены):
+- Добавь alt="" к изображениям без alt текстов
+- Добавь одну @media (prefers-color-scheme: dark) секцию
+- Добавь border-radius: 4px; к кнопкам (только как дополнение)
+- Добавь одну @media (max-width: 600px) секцию для мобильных
 
-ОРИГИНАЛЬНЫЙ HTML:
+❌ ЗАПРЕЩЕНО:
+- Удалять или заменять существующие CSS стили
+- Сокращать текстовое содержимое
+- Удалять HTML комментарии
+- Менять структуру таблиц
+- Оптимизировать или минифицировать код
+
+ОРИГИНАЛЬНЫЙ HTML (${htmlLength} символов):
 ${currentHtml}
 
-Верни ТОЛЬКО улучшенный HTML код. НЕ ОБРЕЗАЙ КОНТЕНТ.`;
+Верни ТОЛЬКО улучшенный HTML с размером 95-105% от оригинала.`;
 
   try {
-    // Use OpenAI Agents SDK sub-agent for HTML enhancement
-    const aiResult = await run(htmlValidationAgent, enhancementPrompt);
+    // Use OpenAI Agents SDK sub-agent for HTML enhancement with tracing
+    const aiResult = await runWithTracing(htmlValidationAgent, enhancementPrompt, {
+      agent: 'HTML Validation & Enhancement AI',
+      operation: 'enhance_html_template',
+      component_type: 'agent',
+      workflow_stage: 'design'
+    });
     
-    const enhancedHtml = aiResult.finalOutput.trim();
+    const enhancedHtml = aiResult.finalOutput?.trim() || '';
     
     // 🔒 КРИТИЧЕСКАЯ ПРОВЕРКА: Защита от обрезания контента
     const originalLength = currentHtml.length;
@@ -504,16 +546,16 @@ function validateContentIntegrity(originalHtml: string, enhancedHtml: string): {
   // Проверка сохранности путей к изображениям
   const originalImageSrcs = original.images.map(img => {
     const srcMatch = img.match(/src=["']([^"']*)["']/i);
-    return srcMatch ? srcMatch[1] : '';
+    return srcMatch?.[1] || '';
   }).filter(src => src.length > 0);
   
   const enhancedImageSrcs = enhanced.images.map(img => {
     const srcMatch = img.match(/src=["']([^"']*)["']/i);
-    return srcMatch ? srcMatch[1] : '';
+    return srcMatch?.[1] || '';
   }).filter(src => src.length > 0);
   
   const preservedImageSrcs = originalImageSrcs.filter(src => 
-    enhancedImageSrcs.some(enhSrc => enhSrc.includes(src) || src.includes(enhSrc))
+    enhancedImageSrcs.some(enhSrc => enhSrc?.includes(src || '') || src?.includes(enhSrc || ''))
   );
   
   if (originalImageSrcs.length > 0 && preservedImageSrcs.length < originalImageSrcs.length * 0.8) {
@@ -609,7 +651,7 @@ export const validateAndCorrectHtml = tool({
     campaign_path: z.string().describe('Path to the campaign directory'),
     trace_id: z.string().nullable().describe('Trace ID for debugging')
   }),
-  execute: async (params, context) => {
+  execute: async (params, _context) => {
     console.log('\n🔍 === AI HTML VALIDATION & ENHANCEMENT (OpenAI Agents SDK) ===');
     console.log(`📋 Campaign: ${path.basename(params.campaign_path)}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
@@ -737,7 +779,7 @@ export const validateAndCorrectHtml = tool({
       }
       
       // 🔒 ПРОВЕРКА: Были ли изменения отменены из-за защиты?
-      const wasProtectionTriggered = enhancementsMade.some(enhancement => 
+      const wasProtectionTriggered = enhancementsMade.some((enhancement: any) => 
         enhancement.includes('защита') || enhancement.includes('отменены') || enhancement.includes('ошибка') || enhancement.includes('failed')
       ) || validation.hasWarnings;
       
@@ -913,7 +955,7 @@ export const validateAndCorrectHtml = tool({
             original_size: currentHtml.length,
             enhanced_size: enhancedHtml.length,
             size_change_percent: comparisonReport.size_change_percent,
-            protection_reasons: wasProtectionTriggered ? enhancementsMade.filter(e => 
+            protection_reasons: wasProtectionTriggered ? enhancementsMade.filter((e: any) => 
               e.includes('защита') || e.includes('отменены') || e.includes('ошибка') || e.includes('failed')
             ) : [],
             validation_steps: [
@@ -1027,7 +1069,7 @@ async function loadTechnicalRequirements(campaignPath: string): Promise<any> {
 
 async function loadAssetManifest(campaignPath: string): Promise<any> {
   try {
-    const assetManifestPath = path.join(campaignPath, 'assets', 'asset-manifest.json');
+    const assetManifestPath = path.join(campaignPath, 'assets', 'manifests', 'asset-manifest.json');
     const assetManifestContent = await fs.readFile(assetManifestPath, 'utf8');
     return JSON.parse(assetManifestContent);
   } catch (error) {
@@ -1042,7 +1084,22 @@ async function loadContentContext(campaignPath: string): Promise<any> {
     const contentContextContent = await fs.readFile(contentContextPath, 'utf8');
     return JSON.parse(contentContextContent);
   } catch (error) {
-    console.warn('⚠️ Content context not found, using defaults');
-    return { generated_content: { subject: 'Email Subject', body: 'Email content' } };
+    console.warn('⚠️ Content context not found, using comprehensive fallback defaults');
+    return {
+      generated_content: { 
+        subject: 'Email Subject', 
+        body: 'Email content',
+        preheader: 'Email preview text',
+        cta: { primary: { text: 'Узнать больше' } }
+      },
+      context_analysis: { destination: 'направление' },
+      pricing_analysis: { 
+        best_price: null, 
+        currency: 'RUB' 
+      },
+      subject: 'Email Subject',
+      preheader: 'Email preview text',
+      cta: { primary: { text: 'Узнать больше' } }
+    };
   }
 } 

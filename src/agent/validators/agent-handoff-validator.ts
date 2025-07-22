@@ -526,7 +526,7 @@ export class HandoffValidator {
   ): CorrectionSuggestion[] {
     return errors.map(error => ({
       field: error.field,
-      issue: error.message,
+      issue: error instanceof Error ? error.message : String(error),
       suggestion: this.getContentToDesignSuggestion(error.field, error.errorType),
       correctionPrompt: this.generateContentToDesignPrompt(error.field, error.errorType, originalData),
       priority: error.severity === 'critical' ? 'high' : error.severity === 'major' ? 'medium' : 'low'
@@ -539,7 +539,7 @@ export class HandoffValidator {
   ): CorrectionSuggestion[] {
     return errors.map(error => ({
       field: error.field,
-      issue: error.message,
+      issue: error instanceof Error ? error.message : String(error),
       suggestion: this.getDesignToQualitySuggestion(error.field, error.errorType),
       correctionPrompt: this.generateDesignToQualityPrompt(error.field, error.errorType, originalData),
       priority: error.severity === 'critical' ? 'high' : error.severity === 'major' ? 'medium' : 'low'
@@ -552,7 +552,7 @@ export class HandoffValidator {
   ): CorrectionSuggestion[] {
     return errors.map(error => ({
       field: error.field,
-      issue: error.message,
+      issue: error instanceof Error ? error.message : String(error),
       suggestion: this.getQualityToDeliverySuggestion(error.field, error.errorType),
       correctionPrompt: this.generateQualityToDeliveryPrompt(error.field, error.errorType, originalData),
       priority: error.severity === 'critical' ? 'high' : error.severity === 'major' ? 'medium' : 'low'
@@ -664,7 +664,7 @@ export class HandoffValidator {
     try {
       return await this.aiCorrector.correctData(data, suggestions, handoffType);
     } catch (error) {
-      console.error('❌ AI коррекция провалена:', error.message);
+      console.error('❌ AI коррекция провалена:', error instanceof Error ? error.message : String(error));
       return null;
     }
   }

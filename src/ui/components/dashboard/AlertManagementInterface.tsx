@@ -364,7 +364,7 @@ export default function AlertManagementInterface({ className = '' }: AlertManage
           <div 
             key={alert.id}
             className={`p-4 rounded-xl border cursor-pointer hover:border-white/30 transition-all duration-200 ${getAlertColor(alert.type)}`}
-            onClick={() => setSelectedAlert(alert)}
+            onClick={() => _setSelectedAlert(alert)}
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-start space-x-3">

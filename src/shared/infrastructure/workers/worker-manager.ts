@@ -314,8 +314,8 @@ class WorkerInstance {
   constructor(
     config: WorkerConfig,
     private queueService: QueueService,
-    private storageService: StorageService,
-    private metricsService: MetricsService,
+    private _storageService: StorageService, // Marked as private for future use
+    private _metricsService: MetricsService, // Marked as private for future use
     private screenshotCaptureService: ScreenshotCaptureService,
     private emailClients: Map<string, EmailClient>
   ) {
@@ -408,26 +408,41 @@ class WorkerInstance {
       // Process results
       const results = captureResults.map(result => ({
         clientId: result.clientId,
-        screenshots: result.screenshots.map(screenshot => ({
-          viewport: screenshot.viewport,
-          lightMode: screenshot.lightMode?.url,
-          darkMode: screenshot.darkMode?.url,
-        })),
+        screenshots: result.screenshots.map(screenshot => {
+          const screenshotData: { viewport: string; lightMode?: string; darkMode?: string } = {
+            viewport: screenshot.viewport
+          };
+          if (screenshot.lightMode?.url) {
+            screenshotData.lightMode = screenshot.lightMode.url;
+          }
+          if (screenshot.darkMode?.url) {
+            screenshotData.darkMode = screenshot.darkMode.url;
+          }
+          return screenshotData;
+        }),
         compatibility: {
           score: result.success ? 95 : 0, // Simplified scoring
           issues: result.error ? [result.error] : [],
-          warnings: [],
+          warnings: [], // CaptureResult doesn't have warnings property
         },
-        accessibility: options?.accessibility ? {
-          score: 90, // Placeholder
-          violations: [],
-        } : undefined,
-        performance: options?.performance ? {
-          loadTime: result.metadata.captureTime,
-          renderTime: result.metadata.captureTime,
-          fileSize: 0, // Would calculate from screenshots
-          optimizations: [],
-        } : undefined,
+        ...(options?.accessibility ? {
+          accessibility: {
+            score: 90, // Placeholder
+            violations: [] as Array<{
+              rule: string;
+              severity: 'error' | 'warning' | 'info';
+              description: string;
+            }>, // CaptureResult doesn't have accessibility property
+          }
+        } : {}),
+        ...(options?.performance ? {
+          performance: {
+            loadTime: result.metadata.captureTime,
+            renderTime: result.metadata.captureTime,
+            fileSize: 0, // Would calculate from screenshots
+            optimizations: [],
+          }
+        } : {}),
       }));
 
       await job.updateProgress(100);
@@ -486,18 +501,26 @@ class WorkerInstance {
   }
 
   getStats(): WorkerStats {
-    return {
+    const stats: WorkerStats = {
       workerId: this.config.workerId,
       status: this.status,
       processedJobs: this.processedJobs,
       failedJobs: this.failedJobs,
       currentJobs: this.currentJobs,
       uptime: Date.now() - this.startTime.getTime(),
-      lastJobAt: this.lastJobAt,
-      lastError: this.lastError,
       memoryUsage: process.memoryUsage(),
       cpuUsage: process.cpuUsage(),
     };
+    
+    if (this.lastJobAt) {
+      stats.lastJobAt = this.lastJobAt;
+    }
+    
+    if (this.lastError) {
+      stats.lastError = this.lastError;
+    }
+    
+    return stats;
   }
 
   isHealthy(): boolean {

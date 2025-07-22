@@ -45,7 +45,7 @@ const ContentSpecialistRequestSchema = z.object({
   origin: z.string().optional().describe('Origin location for travel content'),
   destination: z.string().optional().describe('Destination location for travel content'),
   
-  campaign_context: z.record(z.any()).optional().describe('Additional campaign context and metadata')
+      campaign_context: z.object({}).optional().describe('Additional campaign context and metadata')
 });
 
 export type ContentSpecialistRequest = z.infer<typeof ContentSpecialistRequestSchema>;
@@ -231,7 +231,7 @@ Please execute the content workflow and provide comprehensive results.`;
       }, { status: 400 });
     }
     
-    if (error instanceof SyntaxError || error.message?.includes('JSON')) {
+    if (error instanceof SyntaxError || error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error)?.includes('JSON')) {
       // JSON parsing errors - return 400
       return NextResponse.json({
         success: false,
@@ -263,9 +263,9 @@ Please execute the content workflow and provide comprehensive results.`;
       }, { status: 400 });
     }
     
-    if (error.message?.includes('Content-Type') || 
-        error.message?.includes('empty') || 
-        error.message?.includes('too large')) {
+    if (error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error)?.includes('Content-Type') || 
+        error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error)?.includes('empty') || 
+        error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error)?.includes('too large')) {
       // Request validation errors - return 400
       return NextResponse.json({
         success: false,
@@ -284,7 +284,7 @@ Please execute the content workflow and provide comprehensive results.`;
           confidence_score: 0,
           agent_efficiency: 0
         },
-        error: error.message,
+        error: error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error),
         _meta: {
           agent: 'content-specialist',
           task_type: 'generate_content',
@@ -298,7 +298,7 @@ Please execute the content workflow and provide comprehensive results.`;
     }
     
     // Agent execution errors - return 500 with diagnostic info
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : 'Unknown error';
     const errorStack = error instanceof Error ? error.stack : undefined;
     
     return NextResponse.json({

@@ -534,9 +534,9 @@ export class MJMLProcessorService {
     try {
       const result = mjml2html(mjmlContent, {
         keepComments: false,
-        beautify: false,
         minify: false, // We'll handle minification separately
         validationLevel: 'strict'
+        // Removed deprecated 'beautify' option to prevent warning escalation
       });
 
       return {
@@ -1014,8 +1014,8 @@ class DarkModeProcessor {
 
     // Apply color mappings to inline styles
     for (const [lightColor, darkColor] of Object.entries(config.colorMappings)) {
-      const colorRegex = new RegExp(`color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
-      const bgColorRegex = new RegExp(`background-color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
+      const _colorRegex // Currently unused = new RegExp(`color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
+      const _bgColorRegex // Currently unused = new RegExp(`background-color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
       
       // Note: This is a simplified approach. Production would need more sophisticated parsing
       // to avoid conflicts with existing dark mode styles
@@ -1047,7 +1047,7 @@ class PerformanceOptimizer {
   async optimize(
     html: string,
     targets: PerformanceTargets,
-    strategy: OptimizationStrategy
+    _strategy: OptimizationStrategy
   ): Promise<string> {
     let optimized = html;
 

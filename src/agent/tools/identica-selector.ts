@@ -86,7 +86,7 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
       
       // Ищем соответствие в mapping
       const shortName = fileName.replace('.png', '');
-      const mappingKey = Object.keys(assetMapping).find(key => 
+      const mappingKey = (Object || {}).keys(assetMapping).find(key => 
         fileName.includes(key) || shortName.includes(key)
       );
       
@@ -127,7 +127,7 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
     };
     
     console.log(`✅ T16: Selected ${selectedAssets.length} identica assets:`, 
-      selectedAssets.map(a => ({ name: a.shortName, tags: a.tags, tone: a.tone }))
+      selectedAssets.map(a => ({ name: (a || {}).shortName, tags: (a || {}).tags, tone: (a || {}).tone }))
     );
     
     return {
@@ -137,7 +137,7 @@ export async function selectIdenticaCreatives(params: IdenticaSelectionParams): 
         source: 'identica-folder',
         total_processed: assets.length,
         selection_method: 'smart-matching',
-        avg_confidence: selectedAssets.reduce((sum, a) => sum + a.confidence, 0) / selectedAssets.length
+        avg_confidence: selectedAssets.reduce((sum, a) => sum + (a || {}).confidence, 0) / selectedAssets.length
       }
     };
     
@@ -172,7 +172,7 @@ function selectBestAssets(assets: IdenticaAsset[], params: IdenticaSelectionPara
   }));
   
   // Сортируем по убыванию релевантности
-  scoredAssets.sort((a, b) => b.score - a.score);
+  scoredAssets.sort((a, b) => (b || {}).score - (a || {}).score);
   
   console.log('🎯 T16: Asset scoring results (top 5):', 
     scoredAssets.slice(0, 5).map(item => ({

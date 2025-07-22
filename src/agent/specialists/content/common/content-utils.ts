@@ -79,7 +79,7 @@ export class ContentUtils {
    * Расчет метрик производительности
    */
   static calculatePerformance(
-    action: string,
+    _action: string,
     startTime: number,
     additionalMetrics?: Record<string, number>
   ): PerformanceMetrics {
@@ -87,9 +87,9 @@ export class ContentUtils {
     
     return {
       execution_time: executionTime,
-      tokens_used: additionalMetrics?.tokens_used,
+      tokens_used: additionalMetrics?.tokens_used || 0,
       api_calls_made: additionalMetrics?.api_calls_made || 1,
-      cache_hits: additionalMetrics?.cache_hits,
+      cache_hits: additionalMetrics?.cache_hits || 0,
       success_rate: additionalMetrics?.success_rate || 100
     };
   }
@@ -267,13 +267,13 @@ export class ContentUtils {
     };
 
     const formatter = formatters[currency] || formatters['RUB'];
-    return formatter.format(price);
+    return formatter!.format(price);
   }
 
   /**
    * Создание контекста для персонализации
    */
-  static createPersonalizationContext(audience: string | any, params: ContentGeneratorParams): Record<string, any> {
+  static createPersonalizationContext(audience: string | any, _params: ContentGeneratorParams): Record<string, any> {
     const audienceType = typeof audience === 'string' ? audience : audience?.primary;
     const preferences = this.getContentPreferences(audience);
     const triggers = this.mapAudienceToTriggers(audienceType || 'families');

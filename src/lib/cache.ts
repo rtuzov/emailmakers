@@ -4,7 +4,7 @@ import Redis from 'ioredis'
 const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
   port: parseInt(process.env.REDIS_PORT || '6379'),
-  password: process.env.REDIS_PASSWORD,
+  ...(process.env.REDIS_PASSWORD && { password: process.env.REDIS_PASSWORD }),
   enableReadyCheck: false,
   maxRetriesPerRequest: 3,
 })
@@ -182,7 +182,7 @@ export class CacheService {
     } catch (error) {
       return {
         status: 'fail',
-        message: `Redis connection failed: ${error.message}`
+        message: `Redis connection failed: ${error instanceof Error ? error.message : String(error)}`
       }
     }
   }

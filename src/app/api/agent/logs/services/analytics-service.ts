@@ -91,7 +91,7 @@ export class AnalyticsService {
   /**
    * Analyze log patterns
    */
-  async analyzeLogPatterns(filters: LogFilters): Promise<{
+  async analyzeLogPatterns(_filters: LogFilters): Promise<{
     temporal_patterns: any;
     error_patterns: any;
     performance_patterns: any;

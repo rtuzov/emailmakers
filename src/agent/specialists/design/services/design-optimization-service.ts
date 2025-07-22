@@ -5,8 +5,8 @@
  * for the Design Specialist Agent V2
  */
 
-import { ExtractedContentPackage } from '../../../core/content-extractor';
-import { StandardAsset } from '../../../core/asset-manager';
+import { ExtractedContentPackage } from '../../content/utils/content-extractor';
+// import { StandardAsset } from '../../../core/asset-manager'; // Currently unused
 import { ResponsiveDesignParams, responsiveDesign } from '../../../tools/simple/responsive-design';
 import { AccessibilityParams, accessibility } from '../../../tools/simple/accessibility';
 import {
@@ -19,7 +19,7 @@ import {
 } from '../types/design-types';
 
 export class DesignOptimizationService {
-  private optimizationCache: Map<string, any> = new Map();
+  // private _optimizationCache: Map<string, any> = new Map(); // Currently unused
   
   constructor() {}
 
@@ -28,7 +28,7 @@ export class DesignOptimizationService {
    */
   async executeDesignOptimization(
     input: DesignSpecialistInputV2,
-    content: ExtractedContentPackage | null,
+    _content: ExtractedContentPackage | null,
     htmlContent?: string
   ): Promise<ServiceExecutionResult<OptimizationResult>> {
     const startTime = Date.now();
@@ -84,7 +84,7 @@ export class DesignOptimizationService {
    */
   async executeResponsiveDesign(
     input: DesignSpecialistInputV2,
-    content: ExtractedContentPackage | null,
+    _content: ExtractedContentPackage | null,
     htmlContent?: string
   ): Promise<ServiceExecutionResult<ResponsiveDesignResult>> {
     const startTime = Date.now();
@@ -121,7 +121,7 @@ export class DesignOptimizationService {
    */
   async executeAccessibilityCheck(
     input: DesignSpecialistInputV2,
-    content: ExtractedContentPackage | null,
+    _content: ExtractedContentPackage | null,
     htmlContent?: string
   ): Promise<ServiceExecutionResult<AccessibilityResult>> {
     const startTime = Date.now();
@@ -168,7 +168,7 @@ export class DesignOptimizationService {
     
     return {
       optimized_html: result.optimized_html,
-      optimized_mjml: undefined,
+      optimized_mjml: undefined as string | undefined,
       optimization_type: 'responsive',
       improvements: [
         'Mobile-first responsive design applied',
@@ -181,7 +181,7 @@ export class DesignOptimizationService {
         after: afterMetrics,
         improvement_percentage: this.calculateImprovementPercentage(beforeMetrics, afterMetrics)
       }
-    };
+    } as OptimizationResult;
   }
 
   /**
@@ -189,9 +189,9 @@ export class DesignOptimizationService {
    */
   private async optimizeAccessibility(
     htmlContent: string,
-    input: DesignSpecialistInputV2
+    _input: DesignSpecialistInputV2
   ): Promise<OptimizationResult> {
-    const accessibilityParams = this.prepareAccessibilityParams(input, htmlContent);
+    const accessibilityParams = this.prepareAccessibilityParams(_input, htmlContent);
     const result = await accessibility(accessibilityParams);
     
     const beforeMetrics = this.calculateMetrics(htmlContent);
@@ -199,7 +199,7 @@ export class DesignOptimizationService {
     
     return {
       optimized_html: result.fixed_html,
-      optimized_mjml: undefined,
+      optimized_mjml: undefined as string | undefined,
       optimization_type: 'accessibility',
       improvements: [
         `WCAG ${(result as any).compliance_level || 'AA'} compliance achieved`,
@@ -213,7 +213,7 @@ export class DesignOptimizationService {
         after: afterMetrics,
         improvement_percentage: this.calculateImprovementPercentage(beforeMetrics, afterMetrics)
       }
-    };
+    } as OptimizationResult;
   }
 
   /**
@@ -221,7 +221,7 @@ export class DesignOptimizationService {
    */
   private async optimizePerformance(
     htmlContent: string,
-    input: DesignSpecialistInputV2
+    _input: DesignSpecialistInputV2
   ): Promise<OptimizationResult> {
     const beforeMetrics = this.calculateMetrics(htmlContent);
     
@@ -241,7 +241,7 @@ export class DesignOptimizationService {
     
     return {
       optimized_html: optimizedHtml,
-      optimized_mjml: undefined,
+      optimized_mjml: undefined as string | undefined,
       optimization_type: 'performance',
       improvements: [
         'HTML minification applied',
@@ -255,7 +255,7 @@ export class DesignOptimizationService {
         after: afterMetrics,
         improvement_percentage: this.calculateImprovementPercentage(beforeMetrics, afterMetrics)
       }
-    };
+    } as OptimizationResult;
   }
 
   /**
@@ -263,7 +263,7 @@ export class DesignOptimizationService {
    */
   private async optimizeCrossClient(
     htmlContent: string,
-    input: DesignSpecialistInputV2
+    _input: DesignSpecialistInputV2
   ): Promise<OptimizationResult> {
     const beforeMetrics = this.calculateMetrics(htmlContent);
     
@@ -286,7 +286,7 @@ export class DesignOptimizationService {
     
     return {
       optimized_html: optimizedHtml,
-      optimized_mjml: undefined,
+      optimized_mjml: undefined as string | undefined,
       optimization_type: 'cross_client',
       improvements: [
         'Table-based layout ensured',
@@ -300,7 +300,7 @@ export class DesignOptimizationService {
         after: afterMetrics,
         improvement_percentage: this.calculateImprovementPercentage(beforeMetrics, afterMetrics)
       }
-    };
+    } as OptimizationResult;
   }
 
   /**
@@ -308,7 +308,7 @@ export class DesignOptimizationService {
    */
   private async optimizeGeneral(
     htmlContent: string,
-    input: DesignSpecialistInputV2
+    _input: DesignSpecialistInputV2
   ): Promise<OptimizationResult> {
     const beforeMetrics = this.calculateMetrics(htmlContent);
     
@@ -328,7 +328,7 @@ export class DesignOptimizationService {
     
     return {
       optimized_html: optimizedHtml,
-      optimized_mjml: undefined,
+      optimized_mjml: undefined as string | undefined,
       optimization_type: 'performance',
       improvements: [
         'HTML cleanup applied',
@@ -341,14 +341,14 @@ export class DesignOptimizationService {
         after: afterMetrics,
         improvement_percentage: this.calculateImprovementPercentage(beforeMetrics, afterMetrics)
       }
-    };
+    } as OptimizationResult;
   }
 
   /**
    * Prepare responsive design parameters
    */
   private prepareResponsiveParams(
-    input: DesignSpecialistInputV2,
+    _input: DesignSpecialistInputV2,
     htmlContent: string
   ): ResponsiveDesignParams {
     return {
@@ -365,7 +365,7 @@ export class DesignOptimizationService {
    * Prepare accessibility parameters
    */
   private prepareAccessibilityParams(
-    input: DesignSpecialistInputV2,
+    _input: DesignSpecialistInputV2,
     htmlContent: string
   ): AccessibilityParams {
     return {
@@ -456,7 +456,7 @@ export class DesignOptimizationService {
     // Move critical styles inline
     return html.replace(
       /<style[^>]*>([\s\S]*?)<\/style>/gi,
-      (match, styles) => {
+      (_match, _styles) => {
         // This is a simplified implementation
         return `<!-- Critical CSS inlined -->`;
       }

@@ -179,7 +179,7 @@ export class ScreenshotCaptureService {
    * Capture screenshots for a specific email client
    */
   async captureClientScreenshots(job: RenderJob, client: EmailClient): Promise<Screenshot[]> {
-    const screenshots: Screenshot[] = [];
+    const _screenshots // Currently unused: Screenshot[] = [];
     
     // Create screenshot entities for each viewport and theme combination
     const screenshotEntities = this.createScreenshotEntities(job, client);
@@ -372,7 +372,7 @@ export class ScreenshotCaptureService {
             delay: 0
           });
 
-          const metadata = await this.analyzeImageBuffer(imageBuffer);
+          const _metadata // Currently unused = await this.analyzeImageBuffer(imageBuffer);
           const result: CaptureResult = {
             clientId: screenshot.clientId,
             screenshots: [],
@@ -523,7 +523,7 @@ export class ScreenshotCaptureService {
     
     // Parse result and extract image data
     const imageData = JSON.parse(result);
-    const imageBuffer = Buffer.from(imageData.image, 'base64');
+    const _imageBuffer // Currently unused = Buffer.from(imageData.image, 'base64');
 
     return {
       clientId: screenshot.clientId,
@@ -552,7 +552,7 @@ export class ScreenshotCaptureService {
     
     // Parse result and extract image data
     const imageData = JSON.parse(result);
-    const imageBuffer = Buffer.from(imageData.image, 'base64');
+    const _imageBuffer // Currently unused = Buffer.from(imageData.image, 'base64');
 
     return {
       clientId: screenshot.clientId,
@@ -987,9 +987,9 @@ export class ScreenshotCaptureService {
   }
 
   async compareScreenshots(
-    baseline: Buffer,
-    current: Buffer,
-    threshold: number = 0.1
+    _baseline: Buffer,
+    _current: Buffer,
+    _threshold: number = 0.1
   ): Promise<{
     match: boolean;
     difference: number;

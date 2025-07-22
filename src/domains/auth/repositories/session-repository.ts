@@ -1,4 +1,4 @@
-import { eq, and, gt, lt, sql } from 'drizzle-orm';
+import { eq, and, gt, lt } from 'drizzle-orm'; // sql unused
 import { db } from '@/shared/infrastructure/database/connection';
 import { sessions, Session as SessionSchema, NewSession } from '@/shared/infrastructure/database/schema';
 

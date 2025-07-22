@@ -383,7 +383,7 @@ export class QualityAssuranceService {
     recommendations: string[];
     criticalIssues: string[];
   }> {
-    const startTime = Date.now();
+    const _startTime // Currently unused = Date.now();
     
     try {
       // Run all enhanced validations in parallel
@@ -438,7 +438,7 @@ export class QualityAssuranceService {
 
     } catch (error) {
       console.error('Enhanced quality assurance failed:', error);
-      throw new Error(`Enhanced quality assurance failed: ${error.message}`);
+      throw new Error(`Enhanced quality assurance failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -566,7 +566,7 @@ export class QualityAssuranceService {
       // HTML fixes
       htmlResult.errors.forEach(error => {
         // For now, all HTML errors require manual fixes since ValidationError doesn't have fixSuggestion
-        manualFixesRequired.push(error.message);
+        manualFixesRequired.push(error instanceof Error ? error.message : String(error));
       });
 
       // Accessibility fixes
@@ -687,7 +687,7 @@ export class QualityAssuranceService {
           category: 'html',
           priority: error.severity === 'error' ? 'critical' : 'medium',
           title: `HTML ${error.severity}: ${error.rule}`,
-          description: error.message,
+          description: error instanceof Error ? error.message : String(error),
           impact: 'Email client compatibility and rendering issues',
           implementation: 'Review and fix HTML structure',
           estimatedEffort: 'medium',
@@ -880,7 +880,7 @@ export class QualityAssuranceService {
    * Create error result when analysis fails
    */
   private createErrorResult(html: string, startTime: number, error: any): QualityAssuranceResult {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    const errorMessage = error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error occurred';
     
     return {
       html: {
@@ -2016,7 +2016,7 @@ export class QualityAssuranceService {
 
     } catch (error) {
       console.error('❌ Email client optimization failed:', error);
-      throw new Error(`Email client optimization failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Email client optimization failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
     }
   }
 
@@ -2109,7 +2109,7 @@ export class QualityAssuranceService {
    */
   private async testEmailClientCompatibility(
     html: string,
-    targetClients: string[]
+    _targetClients: string[]
   ): Promise<{
     overall: number;
     outlook: number;

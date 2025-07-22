@@ -11,10 +11,8 @@
 import {
   QualitySpecialistInput,
   QualityReport,
-  ComplianceStatusReport,
   QualityIssue,
-  IssueSeverity,
-  ComplianceStatus
+  IssueSeverity
 } from '../types/quality-types';
 
 export class ReportGeneratorUtils {
@@ -200,7 +198,7 @@ export class ReportGeneratorUtils {
     if (typeof result === 'string') {
       const scoreMatch = result.match(/overall[:\s]*(\d+)/i) || result.match(/score[:\s]*(\d+)/i);
       if (scoreMatch) {
-        return Math.max(0, Math.min(100, parseInt(scoreMatch[1])));
+        return Math.max(0, Math.min(100, parseInt(scoreMatch[1] || '0')));
       }
     }
     return 75; // Default score
@@ -258,7 +256,7 @@ export class ReportGeneratorUtils {
         issues.push({
           severity: 'medium' as IssueSeverity,
           category: 'general',
-          description: match[1].trim(),
+          description: (match[1] || '').trim(),
           fix_suggestion: 'Review and address this issue',
           auto_fixable: false
         });
@@ -278,7 +276,7 @@ export class ReportGeneratorUtils {
       const checks: string[] = [];
       let match;
       while ((match = passedPattern.exec(result)) !== null) {
-        checks.push(match[1].trim());
+        if (match[1]) checks.push(match[1].trim());
       }
       return checks;
     }
@@ -375,7 +373,7 @@ export class ReportGeneratorUtils {
     return this.extractPassedChecks(result);
   }
 
-  private static generateComplianceRecommendations(result: any): string[] {
+  private static generateComplianceRecommendations(_result: any): string[] {
     return ['Proceed to performance optimization', 'Address compliance gaps'];
   }
 
@@ -391,7 +389,7 @@ export class ReportGeneratorUtils {
     return this.extractPassedChecks(result);
   }
 
-  private static generateOptimizationRecommendations(result: any): string[] {
+  private static generateOptimizationRecommendations(_result: any): string[] {
     return ['Ready for comprehensive audit', 'Monitor performance metrics'];
   }
 
@@ -407,7 +405,7 @@ export class ReportGeneratorUtils {
     return this.extractPassedChecks(result);
   }
 
-  private static generateAuditRecommendations(result: any, input: QualitySpecialistInput): string[] {
+  private static generateAuditRecommendations(_result: any, input: QualitySpecialistInput): string[] {
     const recommendations = ['Ready for delivery', 'Final quality review complete'];
     
     if (input.quality_requirements?.mobile_optimization) {

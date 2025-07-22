@@ -107,7 +107,7 @@ export class MjmlCompilationService {
       const result = mjml(mjmlContent, {
         validationLevel: 'soft', // Changed from 'strict' to 'soft' to be more permissive
         keepComments: false,
-        beautify: false
+        // Removed deprecated 'beautify' option
         // Removed filePath as it causes issues with file system paths
       });
       
@@ -118,7 +118,7 @@ export class MjmlCompilationService {
           (err as any).level === 'error' || err.formattedMessage?.includes('error')
         );
         if (actualErrors.length > 0) {
-          throw new Error(`MJML validation errors: ${actualErrors.map(e => e.message).join(', ')}`);
+          throw new Error(`MJML validation errors: ${actualErrors.map(e => (e || {}).message).join(', ')}`);
         }
       }
       
@@ -163,7 +163,7 @@ export class MjmlCompilationService {
         try {
           let actualImagePath = imagePath;
           let fileName = '';
-          let isExternal = false;
+          let _isExternal // Currently unused = false;
           
           // 🌐 CHECK FOR EXTERNAL URLS FIRST
           if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
@@ -359,19 +359,19 @@ export class MjmlCompilationService {
       const originalPath = match[1];
       
       // 🌐 KEEP EXTERNAL URLS AS-IS - they should work directly in email clients
-      if (originalPath.startsWith('http://') || originalPath.startsWith('https://')) {
+      if ((originalPath || {}).startsWith('http://') || (originalPath || {}).startsWith('https://')) {
         console.log(`🌐 External image kept in HTML: ${originalPath}`);
         continue;
       }
       
       // Пропускаем data: URLs
-      if (originalPath.startsWith('data:')) {
+      if ((originalPath || {}).startsWith('data:')) {
         continue;
       }
       
       // 📁 HANDLE LOCAL IMAGES - update paths to local assets
       // Получаем имя файла из оригинального пути
-      const fileName = originalPath.split('/').pop();
+      const fileName = (originalPath || {}).split('/').pop();
       if (!fileName) continue;
       
       // Создаем новый локальный путь относительно HTML файла

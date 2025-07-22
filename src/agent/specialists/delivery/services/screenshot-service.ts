@@ -5,14 +5,14 @@
  * Отвечает за создание скриншотов email-шаблонов в различных клиентах
  */
 
-import { z } from 'zod';
-import { Agent, run } from '@openai/agents';
+// import { z } from 'zod';
+import { Agent } from '@openai/agents';
 
-import { screenshots, ScreenshotsSchema } from '../../../tools/simple/screenshots';
-import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
+// import { screenshots, ScreenshotsSchema } from '../../../tools/simple/screenshots';
+// import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
 // Note: htmlValidatorTool moved to useless/ - using direct validation instead
 import { runWithTimeout } from '../../../utils/run-with-timeout';
-import { createAgentRunConfig } from '../../../utils/tracing-utils';
+// import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';
 
 import {
@@ -222,7 +222,7 @@ export class ScreenshotService {
       console.error('❌ Error parsing screenshot result:', error);
       return {
         screenshots: [],
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         success: false
       };
     }
@@ -323,7 +323,7 @@ export class ScreenshotService {
     error?: Error
   ): PerformanceMetrics {
     const screenshotsCount = result?.screenshots?.length || 0;
-    const averageCaptureTime = screenshotsCount > 0 ? screenshotDuration / screenshotsCount : 0;
+    // const _averageCaptureTime = screenshotsCount > 0 ? screenshotDuration / screenshotsCount : 0;
 
     return {
       task_duration_ms: screenshotDuration,

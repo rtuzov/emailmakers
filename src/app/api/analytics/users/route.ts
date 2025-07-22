@@ -112,7 +112,7 @@ class UserAnalyticsService {
     };
   }
 
-  private async getOverviewMetrics(now: Date, oneDayAgo: Date, oneWeekAgo: Date, oneMonthAgo: Date, twoMonthsAgo: Date) {
+  private async getOverviewMetrics(_now: Date, oneDayAgo: Date, oneWeekAgo: Date, oneMonthAgo: Date, twoMonthsAgo: Date) {
     try {
       let totalUsers = 0;
       let activeUsers = 0;
@@ -610,7 +610,7 @@ export const dynamic = 'force-dynamic';
 /**
  * GET /api/analytics/users - User analytics for dashboard
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const analytics = await userAnalyticsService.getUserAnalytics();
 

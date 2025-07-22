@@ -24,11 +24,11 @@ export class Email {
   }
 
   get domain(): string {
-    return this.value.split('@')[1];
+    return this.value.split('@')[1] || '';
   }
 
   get localPart(): string {
-    return this.value.split('@')[0];
+    return this.value.split('@')[0] || '';
   }
 
   equals(other: Email): boolean {

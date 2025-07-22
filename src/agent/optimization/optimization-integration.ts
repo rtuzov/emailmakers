@@ -12,7 +12,7 @@ import {
   SystemAnalysis,
   OptimizationResult,
   AgentType,
-  OPTIMIZATION_CONSTANTS 
+  // OPTIMIZATION_CONSTANTS 
 } from './optimization-types';
 import { OptimizationEngine } from './optimization-engine';
 import { ValidationMonitor } from '../monitoring/validation-monitor';
@@ -226,7 +226,8 @@ export class OptimizationIntegration extends EventEmitter {
       if (shouldLog) {
         console.error('❌ Failed to collect integrated metrics:', error);
       }
-      throw new Error(`Integrated metrics collection failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Integrated metrics collection failed: ${errorMessage}`);
     }
   }
 
@@ -324,7 +325,7 @@ export class OptimizationIntegration extends EventEmitter {
     const CRITICAL_EVENT_THROTTLE = 120000; // 2 minutes between critical event analyses
 
     // Слушаем события ValidationMonitor
-    this.validationMonitor.on('critical_event', (event) => {
+    this.validationMonitor.on('critical_event', (_event) => {
       const timeSinceLastAnalysis = Date.now() - lastCriticalEventAnalysis;
       
       if (timeSinceLastAnalysis > CRITICAL_EVENT_THROTTLE) {
@@ -460,12 +461,12 @@ export class OptimizationIntegration extends EventEmitter {
     return Math.min(95, validationMetrics.successRate + 5);
   }
 
-  private getAgentMemoryUsage(agentId: string): number {
+  private getAgentMemoryUsage(_agentId: string): number {
     // Заглушка для получения использования памяти агента
     return Math.floor(Math.random() * 512) + 256; // 256-768 MB
   }
 
-  private getAgentCpuUsage(agentId: string): number {
+  private getAgentCpuUsage(_agentId: string): number {
     // Заглушка для получения использования CPU агента
     return Math.floor(Math.random() * 60) + 20; // 20-80%
   }

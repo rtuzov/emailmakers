@@ -140,7 +140,7 @@ export class PricingService implements BaseContentService {
     }
 
     const { cheapest, statistics } = pricingData;
-    const { average, price_range } = statistics;
+    const { average, price_range: _price_range } = statistics;
     
     const priceRatio = cheapest / average;
     
@@ -178,7 +178,6 @@ export class PricingService implements BaseContentService {
    */
   private analyzeMarketPosition(pricingData: PricingData): any {
     const positioning = this.determinePricePositioning(pricingData);
-    const savingsPotential = this.calculateSavingsPotential(pricingData);
 
     const positionData: Record<string, any> = {
       'budget': {
@@ -210,13 +209,13 @@ export class PricingService implements BaseContentService {
    * Анализ психологических факторов ценообразования
    */
   private analyzePsychologicalFactors(pricingData: PricingData, params: ContentGeneratorParams): any {
-    const positioning = this.determinePricePositioning(pricingData);
+    const _positioning = this.determinePricePositioning(pricingData);
     const audience = typeof params.target_audience === 'string' ? params.target_audience : 'general';
     
     const factors: any = {
       price_anchoring: this.createPriceAnchoring(pricingData),
       scarcity_messaging: this.createScarcityMessaging(params.campaign_context),
-      social_proof: this.createSocialProofElements(positioning),
+      social_proof: this.createSocialProofElements(_positioning),
       urgency_drivers: this.createUrgencyDrivers(pricingData, params.campaign_context)
     };
 
@@ -247,7 +246,6 @@ export class PricingService implements BaseContentService {
    */
   private generateUrgencyIndicators(enhancedPricing: any, campaignContext: any): any {
     const savingsPotential = enhancedPricing.savings_potential || 0;
-    const positioning = enhancedPricing.price_positioning;
     
     const indicators = {
       is_deal: savingsPotential > 15,
@@ -326,8 +324,8 @@ export class PricingService implements BaseContentService {
     const average = priceValues.reduce((sum, price) => sum + price, 0) / priceValues.length;
     const sorted = [...priceValues].sort((a, b) => a - b);
     const median = sorted.length % 2 === 0 
-      ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2 
-      : sorted[Math.floor(sorted.length / 2)];
+      ? ((sorted[Math.floor(sorted.length / 2) - 1] ?? 0) + (sorted[Math.floor(sorted.length / 2)] ?? 0)) / 2 
+      : sorted[Math.floor(sorted.length / 2)] ?? 0;
 
     return {
       average: Math.round(average),
@@ -362,9 +360,8 @@ export class PricingService implements BaseContentService {
     return messages;
   }
 
-  private generateUrgencyTriggers(enhancedPricing: any, params: ContentGeneratorParams): string[] {
+  private generateUrgencyTriggers(_enhancedPricing: any, _params: ContentGeneratorParams): string[] {
     const triggers: string[] = [];
-    const positioning = enhancedPricing.price_positioning;
 
     // Удален предустановленный контент - все триггеры должны генерироваться через OpenAI SDK
     // в зависимости от конкретного контекста и ценовых данных
@@ -409,7 +406,7 @@ export class PricingService implements BaseContentService {
       'premium': ['Эксклюзивное предложение', 'Для взыскательных клиентов']
     };
 
-    return proofElements[positioning] || proofElements['competitive'];
+    return proofElements[positioning] || proofElements['competitive'] || [];
   }
 
   private createUrgencyDrivers(pricingData: PricingData, campaignContext: any): string[] {
@@ -426,7 +423,7 @@ export class PricingService implements BaseContentService {
     return drivers;
   }
 
-  private determinePsychologicalPricing(enhancedPricing: any, audience: string): string {
+  private determinePsychologicalPricing(_enhancedPricing: any, audience: string): string {
     const strategies: Record<string, string> = {
       'budget_conscious': 'price_emphasis',
       'luxury_seekers': 'value_emphasis', 
@@ -466,22 +463,8 @@ export class PricingService implements BaseContentService {
     return opportunities;
   }
 
-  private getDefaultPricingContext(): PricingContext {
-    return {
-      price_positioning: 'competitive',
-      savings_potential: 0,
-      urgency_indicators: {
-        is_deal: false,
-        time_sensitive: false,
-        inventory_limited: false,
-        messaging: []
-      },
-      competitive_analysis: {
-        market_position: 'competitive',
-        value_proposition: 'Стандартные рыночные цены',
-        messaging_strategy: ['качественный сервис', 'надежность']
-      }
-    };
+  private getDefaultPricingContext(): never {
+    throw new Error('PricingService.getDefaultPricingContext: default pricing context disabled by policy.');
   }
 
   // ============ ПРИВАТНЫЕ УТИЛИТЫ ============

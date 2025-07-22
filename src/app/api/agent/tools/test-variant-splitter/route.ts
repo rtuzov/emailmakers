@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     console.log(`🎨 Context:`, context);
 
     // Mock variant splitting to avoid build errors
-    const fullPath = path.resolve(process.cwd(), assetPath);
+    const _fullPath // Currently unused = path.resolve(process.cwd(), assetPath);
     
     const result = {
       success: true,

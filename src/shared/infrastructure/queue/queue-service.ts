@@ -75,7 +75,7 @@ export class QueueService {
     this.redis = new Redis({
       host: redisConfig.host,
       port: redisConfig.port,
-      password: redisConfig.password,
+      ...(redisConfig.password ? { password: redisConfig.password } : {}),
       db: redisConfig.db || 0,
       enableReadyCheck: true,
       maxRetriesPerRequest: 3,
@@ -160,10 +160,10 @@ export class QueueService {
 
     return {
       status: state as any,
-      progress: typeof progress === 'number' ? progress : undefined,
+      ...(typeof progress === 'number' ? { progress } : {}),
       result,
       error,
-      position,
+      ...(position !== undefined ? { position } : {}),
     };
   }
 
@@ -320,15 +320,15 @@ export class QueueService {
 
       // Get last completed job timestamp
       const completedJobs = await this.renderQueue.getCompleted(0, 0);
-      const lastJobProcessed = completedJobs.length > 0 
-        ? new Date(completedJobs[0].processedOn || 0)
+      const lastJobProcessed = completedJobs.length > 0 && completedJobs[0]?.processedOn
+        ? new Date(completedJobs[0].processedOn)
         : undefined;
 
       return {
         redis: redisHealthy,
         queue: queueHealthy,
         workers: this.workers.size,
-        lastJobProcessed,
+        ...(lastJobProcessed ? { lastJobProcessed } : {}),
       };
     } catch (error) {
       return {

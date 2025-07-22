@@ -30,7 +30,7 @@ const JobDetailsResponseSchema = z.object({
       estimatedTimeRemaining: z.number().optional().nullable(),
       details: z.string().optional().nullable()
     }),
-    config: z.object({
+    _config: z.object({
       clients: z.array(z.string()),
       viewports: z.array(z.object({
         width: z.number(),
@@ -58,7 +58,7 @@ const JobDetailsResponseSchema = z.object({
     startedAt: z.string().optional().nullable(),
     completedAt: z.string().optional().nullable()
   }),
-  result: z.object({
+  _result: z.object({
     id: z.string(),
     overallStatus: z.string(),
     overallScore: z.number(),
@@ -163,7 +163,7 @@ const renderOrchestrationService = {
   async getRenderJobProgress(jobId: string) {
     // Return a proper Progress object structure
     return {
-      data: { completed: 0, total: 100 },
+      _data: { completed: 0, total: 100 },
       currentStep: 0,
       totalSteps: 100,
       completedSteps: 0,
@@ -189,8 +189,8 @@ const renderOrchestrationService = {
  * Get detailed job information with results and screenshots
  */
 export async function GET(
-  request: Request,
-  { params }: { params: { jobId: string } }
+  _request: Request,
+  { params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
@@ -221,8 +221,8 @@ export async function GET(
  * Cancel a render testing job
  */
 export async function DELETE(
-  request: Request,
-  { params }: { params: { jobId: string } }
+  _request: Request,
+  { params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
@@ -245,8 +245,8 @@ export async function DELETE(
  * Retry a failed render testing job
  */
 export async function POST(
-  request: Request,
-  { params }: { params: { jobId: string } }
+  _request: Request,
+  { params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
@@ -271,7 +271,7 @@ export async function POST(
  * Helper function to get user ID from request
  * In real implementation, this would extract from JWT token or session
  */
-async function getUserIdFromRequest(request: NextRequest): Promise<string | null> {
+async function getUserIdFromRequest(_request: NextRequest): Promise<string | null> {
   // Placeholder implementation
   // In real app, this would validate JWT token or session
   const authHeader = request.headers.get('authorization');

@@ -5,14 +5,14 @@
  * Отвечает за развертывание, мониторинг, визуальное тестирование и финализацию
  */
 
-import { z } from 'zod';
-import { Agent, run } from '@openai/agents';
+// import { z } from 'zod';
+import { Agent } from '@openai/agents';
 
-import { campaignDeployment, CampaignDeploymentSchema } from '../../../tools/simple/campaign-deployment';
-import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
+// import { campaignDeployment, CampaignDeploymentSchema } from '../../../tools/simple/campaign-deployment';
+// import { visualTesting, visualTestingSchema } from '../../../tools/simple/visual-testing';
 // Note: deliveryManagerTool moved to useless/ - using direct tool calls instead
 import { runWithTimeout } from '../../../utils/run-with-timeout';
-import { createAgentRunConfig } from '../../../utils/tracing-utils';
+// import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';
 
 import {
@@ -21,7 +21,7 @@ import {
   VisualTestResult,
   MonitoringResult,
   FinalizationResult,
-  DeploymentStatus,
+  // DeploymentStatus,
   PerformanceMetrics
 } from '../common/delivery-types';
 import { DeliveryUtils } from '../common/delivery-utils';
@@ -536,20 +536,20 @@ export class DeploymentService {
     };
   }
 
-  private async setupDeploymentMonitoring(deploymentResult: any, input: DeliverySpecialistInput): Promise<void> {
+  private async setupDeploymentMonitoring(_deploymentResult: any, _input: DeliverySpecialistInput): Promise<void> {
     // Placeholder for monitoring setup
     console.log('🔍 Setting up deployment monitoring...');
   }
 
-  private assessDeploymentStatus(deploymentResult: any): DeploymentStatus {
-    if (deploymentResult?.success === false) {
-      return 'failed';
-    }
-    if (deploymentResult?.rollout_status === 'in_progress') {
-      return 'in_progress';
-    }
-    return 'completed';
-  }
+  // private _assessDeploymentStatus(deploymentResult: any): DeploymentStatus {
+  //   if (deploymentResult?.success === false) {
+  //     return 'failed';
+  //   }
+  //   if (deploymentResult?.rollout_status === 'in_progress') {
+  //     return 'in_progress';
+  //   }
+  //   return 'completed';
+  // }
 
   // ============ RESULT PARSERS ============
 
@@ -571,7 +571,8 @@ export class DeploymentService {
       };
     } catch (error) {
       console.error('❌ Error parsing deployment result:', error);
-      return { success: false, error: error.message };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { success: false, error: errorMessage };
     }
   }
 
@@ -652,7 +653,7 @@ export class DeploymentService {
 
   private calculateDeploymentPerformance(
     deploymentDuration: number,
-    result: any,
+    _result: any,
     error?: Error
   ): PerformanceMetrics {
     return {

@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
  * Get template preview content (HTML, MJML, metadata)
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const startTime = Date.now();
@@ -74,22 +74,22 @@ export async function GET(
     const template = templates[0];
 
     // Extract content data
-    const generatedContent = template.generated_content as any;
-    const designTokens = template.design_tokens as any;
+    const generatedContent = (template || {}).generated_content as any;
+    const designTokens = (template || {}).design_tokens as any;
 
     // Prepare preview data
     const previewData = {
-      id: template.id,
-      name: template.name,
-      description: template.description,
-      status: template.status,
-      quality_score: template.quality_score,
-      created_at: template.created_at,
-      updated_at: template.updated_at,
+      id: (template || {}).id,
+      name: (template || {}).name,
+      description: (template || {}).description,
+      status: (template || {}).status,
+      quality_score: (template || {}).quality_score,
+      created_at: (template || {}).created_at,
+      updated_at: (template || {}).updated_at,
       
       // Content data
-      html_content: template.html_output,
-      mjml_code: template.mjml_code,
+      html_content: (template || {}).html_output,
+      mjml_code: (template || {}).mjml_code,
       
       // Email metadata
       subject_line: generatedContent?.subject_line || generatedContent?.subject || null,
@@ -111,9 +111,9 @@ export async function GET(
       design_tokens: designTokens || null,
       
       // Performance data
-      has_content: Boolean(template.html_output || template.mjml_code),
-      content_length: template.html_output?.length || 0,
-      mjml_length: template.mjml_code?.length || 0,
+      has_content: Boolean((template || {}).html_output || (template || {}).mjml_code),
+      content_length: (template || {}).html_output?.length || 0,
+      mjml_length: (template || {}).mjml_code?.length || 0,
     };
 
     const queryTime = Date.now() - startTime;

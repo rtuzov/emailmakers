@@ -25,7 +25,7 @@ import {
 } from './types';
 import { logger } from '../../core/logger';
 import { getValidatedUsageModel } from '../../../shared/utils/model-config';
-import { createAgentRunConfig, withSDKTrace } from '../../utils/tracing-utils';
+import { /* createAgentRunConfig, */ withSDKTrace } from '../../utils/tracing-utils';
 
 export class AIQualityConsultant {
   private analyzer: AgentEmailAnalyzer;
@@ -38,7 +38,7 @@ export class AIQualityConsultant {
     this.config = this.createDefaultConfig(config);
     this.analyzer = new AgentEmailAnalyzer(this.config);
     this.recommendationEngine = new RecommendationEngine(this.config);
-    this.commandGenerator = new CommandGenerator(this.config);
+    this.commandGenerator = new CommandGenerator();
     this.actionExecutor = new ActionExecutor(this.config);
   }
 
@@ -89,9 +89,9 @@ export class AIQualityConsultant {
           const executionContext: ExecutionContext = {
             session_id: request.session_id || `session_${Date.now()}`,
             iteration_number: (request.iteration_count || 0) + 1,
-            user_id: request.user_id,
-            approval_callback: request.approval_callback,
-            progress_callback: request.progress_callback
+            ...(request.user_id && { user_id: request.user_id }),
+            ...(request.approval_callback && { approval_callback: request.approval_callback }),
+            ...(request.progress_callback && { progress_callback: request.progress_callback })
           };
 
           executionResults = await this.actionExecutor.executeCommands(
@@ -122,7 +122,7 @@ export class AIQualityConsultant {
           execution_plan: executionPlan,
           next_actions: nextActions,
           should_continue: shouldContinue,
-          completion_reason: shouldContinue ? undefined : this.getCompletionReason(analysis),
+          completion_reason: shouldContinue ? 'continuing_improvement' : this.getCompletionReason(analysis),
           execution_results: executionResults
         };
 
@@ -152,12 +152,12 @@ export class AIQualityConsultant {
       logger.info(`🔄 Processing iteration ${iterationResults.iteration_number} results`);
 
       // Create updated request with iteration history
-      const updatedRequest: AIConsultantRequest = {
+      const updatedRequest = {
         ...originalRequest,
         iteration_count: iterationResults.iteration_number,
-        improvement_history: [...(originalRequest.improvement_history || []), iterationResults],
-        previous_analysis: undefined // Will be set by new analysis
-      };
+        improvement_history: [...(originalRequest.improvement_history || []), iterationResults]
+        // previous_analysis will be set during new analysis
+      } as AIConsultantRequest;
 
       // Analyze the improved email
       return await this.consultOnQuality(updatedRequest);
@@ -211,27 +211,33 @@ export class AIQualityConsultant {
   /**
    * Determine next actions based on analysis and execution plan
    */
-  private determineNextActions(analysis: QualityAnalysisResult, plan: ExecutionPlan): NextAction[] {
+  private determineNextActions(_analysis: QualityAnalysisResult, plan: ExecutionPlan): NextAction[] {
     const actions: NextAction[] = [];
 
     // Auto-execute actions
     if (plan.auto_execute_actions.length > 0 && this.config.enable_auto_execution) {
-      actions.push({
-        type: 'auto_execute',
-        description: `Automatically execute ${plan.auto_execute_actions.length} safe improvements`,
-        command: plan.auto_execute_actions[0], // First command to execute
-        approval_required: false
-      });
+      const firstCommand = plan.auto_execute_actions[0];
+      if (firstCommand) {
+        actions.push({
+          type: 'auto_execute',
+          description: `Automatically execute ${plan.auto_execute_actions.length} safe improvements`,
+          command: firstCommand,
+          approval_required: false
+        });
+      }
     }
 
     // Manual approval actions
     if (plan.manual_approval_actions.length > 0) {
-      actions.push({
-        type: 'request_approval',
-        description: `Request approval for ${plan.manual_approval_actions.length} content changes`,
-        command: plan.manual_approval_actions[0], // First command needing approval
-        approval_required: true
-      });
+      const firstCommand = plan.manual_approval_actions[0];
+      if (firstCommand) {
+        actions.push({
+          type: 'request_approval',
+          description: `Request approval for ${plan.manual_approval_actions.length} content changes`,
+          command: firstCommand,
+          approval_required: true
+        });
+      }
     }
 
     // Critical review actions

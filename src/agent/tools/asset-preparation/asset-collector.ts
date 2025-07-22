@@ -13,14 +13,14 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import path from 'path';
+import * as path from 'path';
 
 // ============================================================================
 // ASSET COLLECTION SCHEMAS
 // ============================================================================
 
 const AssetSourceSchema = z.object({
-  type: z.enum(['figma', 'local', 'url', 'campaign']).describe('Asset source type'),
+      type: z.enum(['figma', 'local', 'url', 'campaign', 'external']).describe('Asset source type'),
   path: z.string().describe('Source path or URL'),
   credentials: z.record(z.string()).nullable().describe('Authentication credentials if needed'),
   filters: z.object({
@@ -103,7 +103,13 @@ export const collectAssets = tool({
     console.log(`📂 Destination: ${destination}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
-    const collectionOptions = options || {};
+    const collectionOptions = options || {} as {
+      recursive?: boolean;
+      validateAssets?: boolean;
+      generateThumbnails?: boolean;
+      extractMetadata?: boolean;
+      deduplicate?: boolean;
+    };
     const collectionId = `collection_${Date.now()}_${Math.random().toString(36).substring(2)}`;
     
     try {
@@ -135,7 +141,7 @@ export const collectAssets = tool({
       let duplicatesRemoved = 0;
       let finalAssets = collectedAssets;
       
-      if (collectionOptions.deduplicate) {
+      if (collectionOptions.deduplicate !== false) { // Default to true
         const deduplicatedAssets = deduplicateAssets(collectedAssets);
         duplicatesRemoved = collectedAssets.length - deduplicatedAssets.length;
         finalAssets = deduplicatedAssets;
@@ -236,12 +242,19 @@ export const validateAssets = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ assetPath, validationRules, context, trace_id }) => {
+  execute: async ({ assetPath, validationRules, context: _context, trace_id }) => {
     console.log('\n✅ === ASSET VALIDATION STARTED ===');
     console.log(`📂 Asset Path: ${assetPath}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
-    const rules = validationRules || {};
+    const rules = validationRules || {} as {
+      maxFileSize?: number;
+      allowedFormats?: string[];
+      requireOptimization?: boolean;
+      validateDimensions?: boolean;
+      minWidth?: number;
+      maxWidth?: number;
+    };
     const validationResults: any[] = [];
     const issues: string[] = [];
     
@@ -273,7 +286,7 @@ export const validateAssets = tool({
           };
           
           // Validate file size
-          if (fileStats.size > rules.maxFileSize!) {
+          if (rules.maxFileSize && fileStats.size > rules.maxFileSize) {
             validation.valid = false;
             validation.issues.push(`File size ${fileStats.size} exceeds maximum ${rules.maxFileSize}`);
           }
@@ -300,7 +313,7 @@ export const validateAssets = tool({
           path: assetPath,
           size: stats.size,
           format,
-          valid: stats.size <= rules.maxFileSize! && 
+          valid: (!rules.maxFileSize || stats.size <= rules.maxFileSize) && 
                 (!rules.allowedFormats || rules.allowedFormats.includes(format)),
           issues: [] as string[]
         };
@@ -344,7 +357,7 @@ async function collectFromSource(
   destination: string,
   options: any
 ): Promise<AssetMetadata[]> {
-  const assets: AssetMetadata[] = [];
+  // const _assets: AssetMetadata[] = []; // Currently unused
   
   switch (source.type) {
     case 'local':
@@ -363,7 +376,7 @@ async function collectFromSource(
 async function collectFromLocalPath(
   sourcePath: string,
   destination: string,
-  options: any
+  _options: any
 ): Promise<AssetMetadata[]> {
   const assets: AssetMetadata[] = [];
   
@@ -404,9 +417,9 @@ async function collectFromLocalPath(
 }
 
 async function collectFromFigma(
-  figmaPath: string,
-  destination: string,
-  options: any
+  _figmaPath: string,
+  _destination: string,
+  _options: any
 ): Promise<AssetMetadata[]> {
   // Placeholder for Figma integration
   // This would use the Figma API to collect assets
@@ -415,9 +428,9 @@ async function collectFromFigma(
 }
 
 async function collectFromUrl(
-  url: string,
-  destination: string,
-  options: any
+  _url: string,
+  _destination: string,
+  _options: any
 ): Promise<AssetMetadata[]> {
   // Placeholder for URL-based asset collection
   console.log('🌐 URL asset collection not yet implemented');

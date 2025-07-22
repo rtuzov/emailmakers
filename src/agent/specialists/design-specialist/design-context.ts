@@ -120,6 +120,20 @@ This tool MUST be called first to:
     console.log('📁 === LOADING DESIGN CONTEXT ===');
     console.log('🔍 DEBUG: Received parameters:', { campaign_path: params.campaign_path, trace_id: params.trace_id });
     
+    // 🔍 ПОЛНОЕ ЛОГИРОВАНИЕ КОНТЕКСТА
+    console.log('\n🔍 === ПОЛНЫЙ КОНТЕКСТ DEBUG ===');
+    console.log('📋 Весь context:', JSON.stringify(context, null, 2));
+    console.log('📊 Context keys:', context ? Object.keys(context) : 'none');
+    
+    if (context) {
+      console.log('📁 context.context:', (context as any)?.context);
+      console.log('📁 context.campaignContext:', (context as any)?.campaignContext);
+      console.log('📁 context.campaign:', (context as any)?.campaign);
+      console.log('📁 context.dataFlow:', (context as any)?.dataFlow);
+      console.log('📁 context.usage:', (context as any)?.usage);
+    }
+    console.log('🔍 === КОНЕЦ ПОЛНОГО DEBUG ===\n');
+    
     console.log('🔍 DEBUG: SDK context structure:', {
       hasContext: !!context,
       contextKeys: context ? Object.keys(context) : [],
@@ -213,45 +227,113 @@ export function buildDesignContext(context: any, newData: any): any {
     context.designContext = {};
   }
   
-  // Merge new data into design context
-  context.designContext = {
+  // Merge new data into design context WITHOUT circular references
+  const updatedDesignContext = {
     ...context.designContext,
     ...newData
   };
+  
+  // Remove any potential circular references before assignment
+  const cleanData = JSON.parse(JSON.stringify(updatedDesignContext, (key, value) => {
+    // Skip context references to prevent circular dependency
+    if (key === 'context' && typeof value === 'object' && value !== null) {
+      return '[Circular Reference Removed]';
+    }
+    return value;
+  }));
+  
+  context.designContext = cleanData;
   
   return context;
 }
 
 /**
- * Loads context from handoff directory files
+ * Load context from campaign content files (OpenAI SDK compatible)
  */
 export async function loadContextFromHandoffFiles(campaignPath: string): Promise<any> {
-  const handoffDir = path.join(campaignPath, 'handoffs');
+  const contentDir = path.join(campaignPath, 'content');
   
   try {
-    // Load Content Specialist handoff
-    const contentHandoffPath = path.join(handoffDir, 'content-specialist-to-design-specialist.json');
-    const handoffData = JSON.parse(await fs.readFile(contentHandoffPath, 'utf-8'));
+    console.log('🔍 Loading design context from content files...');
     
-    // Диагностическая информация о загруженном handoff файле
-    console.log('🔍 Handoff file diagnostic:', {
-      hasContentContext: !!handoffData.content_context,
-      hasGeneratedContent: !!handoffData.content_context?.generated_content,
-      hasCta: !!handoffData.content_context?.generated_content?.cta,
-      ctaStructure: handoffData.content_context?.generated_content?.cta ? 
-        Object.keys(handoffData.content_context.generated_content.cta) : 'null',
-      ctaPrimary: handoffData.content_context?.generated_content?.cta?.primary || 'missing'
+    // Load email content for content context
+    const emailContentPath = path.join(contentDir, 'email-content.json');
+    let contentContext = null;
+    try {
+      const emailContent = JSON.parse(await fs.readFile(emailContentPath, 'utf-8'));
+      contentContext = {
+        generated_content: emailContent,
+        sections: emailContent.sections || [],
+        subject_line: emailContent.subject_line,
+        preheader: emailContent.preheader,
+        cta: emailContent.cta || emailContent.call_to_action
+      };
+      console.log('✅ Email content loaded successfully');
+    } catch (error) {
+      throw new Error(`Email content file not found: ${emailContentPath}. Content Specialist must complete content generation first.`);
+    }
+    
+    // Load asset strategy
+    const assetStrategyPath = path.join(contentDir, 'asset-strategy.json');
+    let assetStrategy = null;
+    try {
+      assetStrategy = JSON.parse(await fs.readFile(assetStrategyPath, 'utf-8'));
+      console.log('✅ Asset strategy loaded successfully');
+    } catch (error) {
+      console.log('⚠️ Asset strategy file not found, will use default');
+    }
+    
+    // Load design brief
+    const designBriefPath = path.join(contentDir, 'design-brief-from-context.json');
+    let designBrief = null;
+    try {
+      designBrief = JSON.parse(await fs.readFile(designBriefPath, 'utf-8'));
+      console.log('✅ Design brief loaded successfully');
+    } catch (error) {
+      console.log('⚠️ Design brief file not found, will use default');
+    }
+    
+    // Load asset manifest
+    const assetManifestPath = path.join(campaignPath, 'assets', 'manifests', 'asset-manifest.json');
+    let assetManifest = null;
+    try {
+      assetManifest = JSON.parse(await fs.readFile(assetManifestPath, 'utf-8'));
+      console.log('✅ Asset manifest loaded successfully from:', assetManifestPath);
+      console.log(`📊 Asset manifest contains: ${assetManifest.assetManifest?.images?.length || 0} images, ${assetManifest.assetManifest?.icons?.length || 0} icons`);
+    } catch (error) {
+      console.log(`⚠️ Asset manifest file not found at: ${assetManifestPath}`);
+      console.log('⚠️ Asset manifest will not be available for asset processing');
+    }
+    
+    // Load campaign metadata
+    const campaignMetadataPath = path.join(campaignPath, 'campaign-metadata.json');
+    let campaign = null;
+    try {
+      campaign = JSON.parse(await fs.readFile(campaignMetadataPath, 'utf-8'));
+      console.log('✅ Campaign metadata loaded successfully');
+    } catch (error) {
+      console.log('⚠️ Campaign metadata file not found');
+    }
+    
+    // Диагностическая информация о загруженном контексте
+    console.log('🔍 Content context diagnostic:', {
+      hasContentContext: !!contentContext,
+      hasGeneratedContent: !!contentContext?.generated_content,
+      hasCta: !!contentContext?.cta,
+      ctaStructure: contentContext?.cta ? Object.keys(contentContext.cta) : 'null',
+      ctaPrimary: contentContext?.cta?.primary || 'missing'
     });
     
     return {
-      content_context: handoffData.content_context,
-      asset_strategy: handoffData.asset_strategy,
-      design_brief: handoffData.design_brief,
-      technical_specification: handoffData.technical_specification,
-      campaign: handoffData.campaign
+      content_context: contentContext,
+      asset_strategy: assetStrategy,
+      design_brief: designBrief,
+      asset_manifest: assetManifest,
+      technical_specification: designBrief?.technical_specifications,
+      campaign: campaign
     };
   } catch (error) {
-    throw new Error(`Handoff file not found: ${path.join(handoffDir, 'content-specialist-to-design-specialist.json')}. Content Specialist must complete content generation first.`);
+    throw new Error(`Failed to load design context from content files: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

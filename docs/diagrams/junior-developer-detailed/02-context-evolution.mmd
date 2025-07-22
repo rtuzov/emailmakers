@@ -1,0 +1,23 @@
+graph LR
+    subgraph "📊 КОНТЕКСТ: 2KB → 40KB (20x рост)"
+        CTX1["🌱 НАЧАЛЬНЫЙ КОНТЕКСТ<br/>2KB<br/>• user_brief: string<br/>• timestamp: datetime"]
+        
+        CTX2["📋 ПОСЛЕ DATA COLLECTION<br/>15KB (+13KB)<br/>• campaign_id: string<br/>• requirements: array<br/>• audience_profile: object<br/>• content_strategy: object<br/>• content_outline: object<br/>• analysis_cache: object"]
+        
+        CTX3["📝 ПОСЛЕ CONTENT<br/>29KB (+14KB)<br/>• email_content: object<br/>• travel_data: object<br/>• pricing_info: object<br/>• optimized_content: object<br/>• mobile_adaptations: object<br/>• personalization_tokens: array<br/>• final_content: object"]
+        
+        CTX4["🎨 ПОСЛЕ DESIGN<br/>40KB (+11KB)<br/>• design_brief: object<br/>• visual_concepts: array<br/>• mjml_template: string<br/>• css_styles: object<br/>• responsive_rules: object<br/>• dark_mode_styles: object<br/>• validation_result: object<br/>• design_assets: array"]
+        
+        CTX5["✅ ПОСЛЕ QUALITY<br/>40KB (maintained)<br/>• html_validation: object<br/>• client_test_results: array<br/>• accessibility_score: number<br/>• performance_analysis: object<br/>• quality_report: object<br/>• overall_score: number"]
+        
+        CTX6["📦 ПОСЛЕ DELIVERY<br/>40KB (maintained)<br/>• delivery_complete: boolean<br/>• final_package_path: string<br/>• export_manifest: object"]
+    end
+    
+    CTX1 --> CTX2 --> CTX3 --> CTX4 --> CTX5 --> CTX6
+    
+    style CTX1 fill:#e8f5e8,stroke:#4caf50,color:black
+    style CTX2 fill:#e3f2fd,stroke:#2196f3,color:black
+    style CTX3 fill:#f3e5f5,stroke:#9c27b0,color:black
+    style CTX4 fill:#fff3e0,stroke:#ff9800,color:black
+    style CTX5 fill:#e8f5e8,stroke:#4caf50,color:black
+    style CTX6 fill:#f1f8e9,stroke:#8bc34a,color:black

@@ -202,7 +202,7 @@ const debugSessions = new Map<string, DebugSession>();
  * GET /api/agent/logs
  * Enhanced log retrieval with advanced filtering and search capabilities
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const traceId = searchParams.get('traceId');
@@ -223,7 +223,7 @@ export async function GET(request: NextRequest) {
     const includeContext = searchParams.get('includeContext') === 'true';
     const highlightSearch = searchParams.get('highlightSearch') === 'true';
 
-    console.log('📋 Enhanced logs request:', { 
+    console.log('📋 Enhanced logs _request: ', { 
       traceId, limit, level, agent, tool, since, until, search, 
       requestId, userId, minDuration, maxDuration, sortBy, sortOrder,
       format, includeContext, highlightSearch
@@ -401,7 +401,7 @@ export async function GET(request: NextRequest) {
     // Prepare enhanced response
     const response = {
       success: true,
-      data: {
+      _data: {
         logs: limitedLogs,
         metrics: {
           totalLogs: logs.length,
@@ -466,7 +466,7 @@ export async function GET(request: NextRequest) {
     console.error('❌ Failed to get agent logs:', error);
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to retrieve agent logs'
     }, { status: 500 });
   }
@@ -476,7 +476,7 @@ export async function GET(request: NextRequest) {
  * POST /api/agent/logs
  * Enhanced log management with advanced actions and error tracking
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const body = await request.json();
     const { action, traceId, level, message, agent, tool, details, filters } = body;
@@ -539,14 +539,14 @@ export async function POST(request: NextRequest) {
     console.error('❌ Failed to execute log action:', error);
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to execute log action'
     }, { status: 500 });
   }
 }
 
 // Enhanced log management functions
-async function addLogEntry(params: {
+async function addLogEntry(_params: {
   traceId: string;
   level: string;
   message: string;
@@ -640,7 +640,7 @@ async function clearLogs(filters?: any) {
     });
     
   } catch (error) {
-    throw new Error(`Failed to clear logs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to clear logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -693,7 +693,7 @@ async function exportFilteredLogs(filters: any, format: string = 'json') {
     });
     
   } catch (error) {
-    throw new Error(`Failed to export logs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to export logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -755,7 +755,7 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
       agent: errorData.agent || 'unknown',
       tool: errorData.tool,
       timestamp: now,
-      context: errorData.context,
+      _context: errorData.context,
       stackTrace: errorData.stackTrace,
       userId: errorData.userId,
       sessionId: errorData.sessionId,
@@ -767,14 +767,14 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
     
     // Check for duplicate error (same message within last 5 minutes)
     const recentErrors = agentErrors.filter(e => 
-      e.message === error.message && 
+      e.message === error instanceof Error ? error.message : String(error) && 
       (new Date().getTime() - new Date(e.timestamp).getTime()) < 5 * 60 * 1000
     );
     
     if (recentErrors.length > 0) {
       // Update frequency of existing error
-      recentErrors[0].frequency = (recentErrors[0].frequency || 1) + 1;
-      recentErrors[0].timestamp = now;
+      (recentErrors && recentErrors[0] ? recentErrors[0] : "").frequency = ((recentErrors && recentErrors[0] ? recentErrors[0] : "").frequency || 1) + 1;
+      (recentErrors && recentErrors[0] ? recentErrors[0] : "").timestamp = now;
     } else {
       // Add new error
       agentErrors.push(error);
@@ -798,7 +798,7 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
     });
 
   } catch (error) {
-    throw new Error(`Failed to track error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to track error: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -837,7 +837,7 @@ async function getActiveAlerts(filters?: any) {
     });
 
   } catch (error) {
-    throw new Error(`Failed to get alerts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to get alerts: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -868,7 +868,7 @@ async function createAlert(alertConfig: Partial<Alert>) {
     });
 
   } catch (error) {
-    throw new Error(`Failed to create alert: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to create alert: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -901,7 +901,7 @@ async function updateAlert(alertId: string, alertConfig: Partial<Alert>) {
     });
 
   } catch (error) {
-    throw new Error(`Failed to update alert: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to update alert: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -928,7 +928,7 @@ async function deleteAlert(alertId: string) {
     });
 
   } catch (error) {
-    throw new Error(`Failed to delete alert: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to delete alert: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -1140,7 +1140,7 @@ async function performAdvancedSearch(searchConfig: any) {
     });
     
   } catch (error) {
-    throw new Error(`Advanced search failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Advanced search failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -1182,7 +1182,7 @@ async function analyzeLogPatterns(filters: any) {
     });
     
   } catch (error) {
-    throw new Error(`Log analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Log analysis failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -1220,7 +1220,7 @@ async function archiveLogs(filters: any) {
     });
     
   } catch (error) {
-    throw new Error(`Log archiving failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Log archiving failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 
 }
@@ -1415,9 +1415,9 @@ function getTimeRange(logs: any[]) {
   timestamps.sort((a, b) => a.getTime() - b.getTime());
   
   return {
-    start: timestamps[0].toISOString(),
+    start: (timestamps && timestamps[0] ? timestamps[0] : "").toISOString(),
     end: timestamps[timestamps.length - 1].toISOString(),
-    duration: timestamps[timestamps.length - 1].getTime() - timestamps[0].getTime()
+    duration: timestamps[timestamps.length - 1].getTime() - (timestamps && timestamps[0] ? timestamps[0] : "").getTime()
   };
 }
 
@@ -1490,7 +1490,7 @@ async function clearAgentLogs() {
 
     return { message: `Cleared ${cleared} log files` };
   } catch (error) {
-    throw new Error(`Failed to clear logs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to clear logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -1533,7 +1533,7 @@ async function exportLogs(format: string) {
       total_logs: logs.length
     };
   } catch (error) {
-    throw new Error(`Failed to export logs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to export logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
 
@@ -1566,9 +1566,9 @@ async function getSystemLogs(): Promise<LogEntry[]> {
             const match = line.match(/(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+(\w+)\s+(.+)/);
             if (match) {
               logs.push({
-                timestamp: match[1],
-                level: match[2].toLowerCase() as any,
-                msg: match[3],
+                timestamp: (match && match[1] ? match[1] : ""),
+                level: (match && match[2] ? match[2] : "").toLowerCase() as any,
+                msg: (match && match[3] ? match[3] : ""),
                 tool: logFile.replace('.log', '')
               });
             }
@@ -1673,7 +1673,7 @@ async function getSystemMetrics() {
     logLevels,
     timeRange: {
       start: logs[logs.length - 1]?.timestamp || new Date().toISOString(),
-      end: logs[0]?.timestamp || new Date().toISOString()
+      end: (logs && logs[0] ? logs[0] : "")?.timestamp || new Date().toISOString()
     }
   };
 }
@@ -1946,8 +1946,8 @@ function getTemporalPatterns(logs: any[]) {
   return {
     hourly_distribution: hourCounts,
     daily_distribution: dayOfWeekCounts,
-    peak_hour: Object.entries(hourCounts).reduce((a, b) => hourCounts[parseInt(a[0])] > hourCounts[parseInt(b[0])] ? a : b)[0],
-    peak_day: Object.entries(dayOfWeekCounts).reduce((a, b) => dayOfWeekCounts[parseInt(a[0])] > dayOfWeekCounts[parseInt(b[0])] ? a : b)[0]
+    peak_hour: Object.entries(hourCounts).reduce((a, b) => hourCounts[parseInt((a && a[0] ? a[0] : ""))] > hourCounts[parseInt((b && b[0] ? b[0] : ""))] ? a : b)[0],
+    peak_day: Object.entries(dayOfWeekCounts).reduce((a, b) => dayOfWeekCounts[parseInt((a && a[0] ? a[0] : ""))] > dayOfWeekCounts[parseInt((b && b[0] ? b[0] : ""))] ? a : b)[0]
   };
 }
 
@@ -2184,7 +2184,7 @@ async function startPerformanceProfiling(config: ProfilingConfig) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to start performance profiling'
     }, { status: 500 });
   }
@@ -2236,7 +2236,7 @@ async function stopPerformanceProfiling(profilingId: string) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to stop performance profiling'
     }, { status: 500 });
   }
@@ -2279,7 +2279,7 @@ async function getProfilingData(profilingId: string) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to get profiling data'
     }, { status: 500 });
   }
@@ -2353,7 +2353,7 @@ async function analyzeAgentPerformance(analysisConfig: any) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to analyze agent performance'
     }, { status: 500 });
   }
@@ -2403,7 +2403,7 @@ async function getPerformanceMetrics(metricsConfig: any) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to get performance metrics'
     }, { status: 500 });
   }
@@ -2434,14 +2434,14 @@ async function debugAgent(agentId: string, debugConfig: any) {
       debug_session_started: true,
       session_id: sessionId,
       agent_id: agentId,
-      config: debugConfig,
+      _config: debugConfig,
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to start debug session'
     }, { status: 500 });
   }
@@ -2471,7 +2471,7 @@ async function getDebugSession(sessionId: string) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to get debug session'
     }, { status: 500 });
   }
@@ -2497,7 +2497,7 @@ async function traceAgentExecution(traceConfig: any) {
       level: log.level,
       duration_ms: (log.details as any)?.duration || 0,
       success: log.level !== 'error',
-      context: log.details,
+      _context: log.details,
       call_depth: Math.floor(Math.random() * depth_limit) // Simulated
     }));
 
@@ -2519,7 +2519,7 @@ async function traceAgentExecution(traceConfig: any) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to trace agent execution'
     }, { status: 500 });
   }
@@ -2570,7 +2570,7 @@ async function analyzeMemoryUsage(analysisConfig: any) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to analyze memory usage'
     }, { status: 500 });
   }
@@ -2653,7 +2653,7 @@ async function detectBottlenecks(detectionConfig: any) {
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to detect bottlenecks'
     }, { status: 500 });
   }
@@ -2689,19 +2689,19 @@ async function monitorResources(monitoringConfig: any) {
       success: true,
       monitoring_started: true,
       monitoring_id: monitoringId,
-      config: {
+      _config: {
         duration_minutes,
         sample_interval_seconds,
         estimated_samples: Math.floor((duration_minutes * 60) / sample_interval_seconds)
       },
-      initial_sample: samples[0],
+      initial_sample: (samples && samples[0] ? samples[0] : ""),
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Failed to start resource monitoring'
     }, { status: 500 });
   }
@@ -2714,7 +2714,7 @@ async function detectPerformanceBottlenecks(profile: PerformanceProfile): Promis
   
   // Analyze memory snapshots for leaks
   if (profile.data.memory_snapshots.length > 2) {
-    const first = profile.data.memory_snapshots[0];
+    const first = profile.data.memory_snapshots && profile.data.memory_snapshots[0] ? profile.data.memory_snapshots[0] : null;
     const last = profile.data.memory_snapshots[profile.data.memory_snapshots.length - 1];
     const memoryGrowth = last.heap_used_mb - first.heap_used_mb;
     

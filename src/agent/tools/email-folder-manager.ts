@@ -576,7 +576,7 @@ export default class EmailFolderManager {
   /**
    * Получает URL для ассета (для использования в email)
    */
-  static getAssetUrl(emailFolder: EmailFolder, fileName: string): string {
+  static getAssetUrl(_emailFolder: EmailFolder, fileName: string): string {
     // Возвращаем относительный путь для использования в email
     return `./assets/${fileName}`;
   }

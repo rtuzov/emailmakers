@@ -6,7 +6,7 @@
  */
 
 import { AssetSearchResult, StandardAsset } from '../../../core/asset-manager';
-import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { ExtractedContentPackage } from '../../content/utils/content-extractor';
 import { RenderingResult } from '../services/email-rendering-service';
 import { DesignToQualityHandoffData } from '../../../types/base-agent-types';
 

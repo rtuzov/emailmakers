@@ -78,7 +78,7 @@ export class PerformanceMonitoringService {
    */
   endTracking(
     trackingId: string, 
-    options: {
+    _options: {
       endpoint?: string;
       userId?: string;
       statusCode?: number;
@@ -97,7 +97,7 @@ export class PerformanceMonitoringService {
       memoryUsage: process.memoryUsage(),
       cpuUsage: process.cpuUsage(),
       timestamp: Date.now(),
-      ...options,
+      ...(options || {}),
     };
 
     this.recordMetrics(metrics);
@@ -158,7 +158,7 @@ export class PerformanceMonitoringService {
         currentValue: metrics.requestDuration,
         timestamp: Date.now(),
         severity: 'critical',
-        endpoint: metrics.endpoint,
+        ...(metrics.endpoint && { endpoint: metrics.endpoint }),
       });
     } else if (metrics.requestDuration > this.thresholds.slowRequestThreshold) {
       this.generateAlert({
@@ -168,7 +168,7 @@ export class PerformanceMonitoringService {
         currentValue: metrics.requestDuration,
         timestamp: Date.now(),
         severity: 'medium',
-        endpoint: metrics.endpoint,
+        ...(metrics.endpoint && { endpoint: metrics.endpoint }),
       });
     }
 
@@ -406,12 +406,12 @@ export class PerformanceMonitoringService {
     this.prometheusMetrics.cpu_usage_percent = this.calculateCpuUsagePercent(cpuUsage);
 
     // Check thresholds for system metrics
-    const mockMetrics: PerformanceMetrics = {
-      requestDuration: 0,
-      memoryUsage,
-      cpuUsage,
-      timestamp: Date.now(),
-    };
+    // const mockMetrics: PerformanceMetrics = {
+    //   requestDuration: 0,
+    //   memoryUsage,
+    //   cpuUsage,
+    //   timestamp: Date.now(),
+    // };
 
     // Only check memory and CPU thresholds for system monitoring
     const memoryUsageMB = memoryUsage.heapUsed;
@@ -482,11 +482,11 @@ export class PerformanceMonitoringService {
     const durations = this.metrics.map(m => m.requestDuration).sort((a, b) => a - b);
     const memoryUsages = this.metrics.map(m => m.memoryUsage.heapUsed);
     const errorRequests = this.metrics.filter(m => m.statusCode && m.statusCode >= 400);
-    const recentMetrics = this.getRecentMetrics(100);
+    // const recentMetrics = this.getRecentMetrics(100); // Currently unused
     const recentAlerts = this.alerts.filter(a => a.timestamp > Date.now() - (60 * 60 * 1000)); // Last hour
 
     // Calculate throughput (requests per second)
-    const timeSpan = Math.max(1, (Date.now() - this.metrics[0].timestamp) / 1000);
+    const timeSpan = Math.max(1, (Date.now() - (this.metrics && this.metrics[0] ? this.metrics[0].timestamp : Date.now())) / 1000);
     const throughput = this.metrics.length / timeSpan;
 
     // Determine system health
@@ -497,9 +497,9 @@ export class PerformanceMonitoringService {
 
     return {
       averageRequestDuration: durations.reduce((a, b) => a + b, 0) / durations.length,
-      medianRequestDuration: durations[Math.floor(durations.length / 2)],
-      p95RequestDuration: durations[Math.floor(durations.length * 0.95)],
-      p99RequestDuration: durations[Math.floor(durations.length * 0.99)],
+      medianRequestDuration: durations[Math.floor(durations.length / 2)] || 0,
+      p95RequestDuration: durations[Math.floor(durations.length * 0.95)] || 0,
+      p99RequestDuration: durations[Math.floor(durations.length * 0.99)] || 0,
       averageMemoryUsage: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length,
       peakMemoryUsage: Math.max(...memoryUsages),
       totalRequests: this.metrics.length,

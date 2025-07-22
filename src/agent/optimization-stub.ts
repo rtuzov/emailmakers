@@ -25,7 +25,7 @@ export interface OptimizationServiceStub {
 /**
  * Create mock optimization service for demo purposes
  */
-export function createOptimizationService(config: { enabled: boolean }): OptimizationServiceStub {
+export function createOptimizationService(_config: { enabled: boolean }): OptimizationServiceStub {
   return {
     async initialize(): Promise<void> {
       console.log('🔧 Mock optimization service initialized');

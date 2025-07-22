@@ -83,10 +83,10 @@ export async function GET(
     }
 
     const template = templates[0];
-    const generatedContent = template.generated_content as any;
+    const generatedContent = (template || {}).generated_content as any;
 
     // Check if template has the requested content
-    if (format === 'html' && !template.html_output) {
+    if (format === 'html' && !(template || {}).html_output) {
       return NextResponse.json(
         { 
           success: false, 
@@ -97,7 +97,7 @@ export async function GET(
       );
     }
 
-    if (format === 'mjml' && !template.mjml_code) {
+    if (format === 'mjml' && !(template || {}).mjml_code) {
       return NextResponse.json(
         { 
           success: false, 
@@ -108,7 +108,7 @@ export async function GET(
       );
     }
 
-    if (format === 'both' && !template.html_output && !template.mjml_code) {
+    if (format === 'both' && !(template || {}).html_output && !(template || {}).mjml_code) {
       return NextResponse.json(
         { 
           success: false, 
@@ -120,7 +120,7 @@ export async function GET(
     }
 
     // Generate safe filename with enhanced security
-    const safeName = template.name
+    const safeName = (template || {}).name
       .replace(/[^a-zA-Z0-9\-_\s]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .replace(/script|javascript|vbscript|onload|onerror|onclick/gi, '') // Remove dangerous keywords
@@ -130,7 +130,7 @@ export async function GET(
       .substring(0, 50); // Limit length to prevent filesystem issues
     
     // Fallback to UUID if name becomes empty after sanitization
-    const fileName = safeName || `template-${template.id.split('-')[0]}`;
+    const fileName = safeName || `template-${(template || {}).id.split('-')[0]}`;
     const timestamp = new Date().toISOString().split('T')[0];
 
     const queryTime = Date.now() - startTime;
@@ -139,7 +139,7 @@ export async function GET(
     switch (format) {
       case 'html': {
         const filename = `${fileName}-${timestamp}.html`;
-        const response = new NextResponse(template.html_output, {
+        const response = new NextResponse((template || {}).html_output, {
           status: 200,
           headers: {
             'Content-Type': 'text/html',
@@ -154,7 +154,7 @@ export async function GET(
 
       case 'mjml': {
         const filename = `${fileName}-${timestamp}.mjml`;
-        const response = new NextResponse(template.mjml_code, {
+        const response = new NextResponse((template || {}).mjml_code, {
           status: 200,
           headers: {
             'Content-Type': 'text/plain',
@@ -173,24 +173,24 @@ export async function GET(
         const zip = new JSZip();
 
         // Add HTML if available
-        if (template.html_output) {
-          zip.file(`${fileName}-${timestamp}.html`, template.html_output);
+        if ((template || {}).html_output) {
+          zip.file(`${fileName}-${timestamp}.html`, (template || {}).html_output);
         }
 
         // Add MJML if available
-        if (template.mjml_code) {
-          zip.file(`${fileName}-${timestamp}.mjml`, template.mjml_code);
+        if ((template || {}).mjml_code) {
+          zip.file(`${fileName}-${timestamp}.mjml`, (template || {}).mjml_code);
         }
 
         // Add metadata file
         const metadata = {
           template: {
-            id: template.id,
-            name: template.name,
-            description: template.description,
-            status: template.status,
-            created_at: template.created_at,
-            updated_at: template.updated_at
+            id: (template || {}).id,
+            name: (template || {}).name,
+            description: (template || {}).description,
+            status: (template || {}).status,
+            created_at: (template || {}).created_at,
+            updated_at: (template || {}).updated_at
           },
           email_details: {
             subject_line: generatedContent?.subject_line || null,
@@ -328,10 +328,10 @@ export async function POST(
     }
 
     const template = templates[0];
-    const generatedContent = template.generated_content as any;
+    const generatedContent = (template || {}).generated_content as any;
 
     // Generate safe filename with enhanced security
-    const baseFileName = template.name
+    const baseFileName = (template || {}).name
       .replace(/[^a-zA-Z0-9\-_\s]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .replace(/script|javascript|vbscript|onload|onerror|onclick/gi, '') // Remove dangerous keywords
@@ -341,7 +341,7 @@ export async function POST(
       .substring(0, 50); // Limit length to prevent filesystem issues
     
     // Fallback to UUID if name becomes empty after sanitization
-    const sanitizedName = baseFileName || `template-${template.id.split('-')[0]}`;
+    const sanitizedName = baseFileName || `template-${(template || {}).id.split('-')[0]}`;
     const safeName = (filename_prefix ? filename_prefix + '-' : '') + sanitizedName;
     const timestamp = new Date().toISOString().split('T')[0];
 
@@ -354,14 +354,14 @@ export async function POST(
 
       // Add requested content
       if (format === 'html' || format === 'both') {
-        if (template.html_output) {
-          zip.file(`${safeName}-${timestamp}.html`, template.html_output);
+        if ((template || {}).html_output) {
+          zip.file(`${safeName}-${timestamp}.html`, (template || {}).html_output);
         }
       }
 
       if (format === 'mjml' || format === 'both') {
-        if (template.mjml_code) {
-          zip.file(`${safeName}-${timestamp}.mjml`, template.mjml_code);
+        if ((template || {}).mjml_code) {
+          zip.file(`${safeName}-${timestamp}.mjml`, (template || {}).mjml_code);
         }
       }
 
@@ -369,20 +369,20 @@ export async function POST(
       if (include_metadata) {
         const metadata = {
           template: {
-            id: template.id,
-            name: template.name,
-            description: template.description,
-            status: template.status,
-            quality_score: template.quality_score,
-            created_at: template.created_at,
-            updated_at: template.updated_at
+            id: (template || {}).id,
+            name: (template || {}).name,
+            description: (template || {}).description,
+            status: (template || {}).status,
+            quality_score: (template || {}).quality_score,
+            created_at: (template || {}).created_at,
+            updated_at: (template || {}).updated_at
           },
           email_details: {
             subject_line: generatedContent?.subject_line || null,
             preheader_text: generatedContent?.preheader_text || null,
           },
           generation_metadata: generatedContent?.metadata || null,
-          design_tokens: template.design_tokens || null,
+          design_tokens: (template || {}).design_tokens || null,
           download_info: {
             format,
             packaging,
@@ -418,9 +418,9 @@ export async function POST(
       return response;
     } else {
       // Single file download
-      if (format === 'html' && template.html_output) {
+      if (format === 'html' && (template || {}).html_output) {
         const filename = `${safeName}-${timestamp}.html`;
-        return new NextResponse(template.html_output, {
+        return new NextResponse((template || {}).html_output, {
           status: 200,
           headers: {
             'Content-Type': 'text/html',
@@ -432,9 +432,9 @@ export async function POST(
         });
       }
 
-      if (format === 'mjml' && template.mjml_code) {
+      if (format === 'mjml' && (template || {}).mjml_code) {
         const filename = `${safeName}-${timestamp}.mjml`;
-        return new NextResponse(template.mjml_code, {
+        return new NextResponse((template || {}).mjml_code, {
           status: 200,
           headers: {
             'Content-Type': 'text/plain',

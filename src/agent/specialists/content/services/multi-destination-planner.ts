@@ -12,16 +12,11 @@ import {
   SupportedRegion,
   TravelSeason,
   LayoutType,
-  SUPPORTED_REGIONS,
-  TRAVEL_SEASONS,
-  LAYOUT_TYPES,
   MULTI_DESTINATION_LIMITS,
-  REGION_CHARACTERISTICS,
   multiDestinationPlanSchema,
   destinationPlanSchema
 } from '../../../../shared/types/multi-destination-types';
-import { ContentUtils } from '../common/content-utils';
-import { DestinationAnalyzer, DestinationGenerationParams } from './destination-analyzer';
+import { DestinationAnalyzer } from './destination-analyzer';
 
 export interface MultiDestinationPlannerConfig {
   maxDestinations?: number;
@@ -77,20 +72,20 @@ export interface UnifiedPlanCreationParams {
 export class MultiDestinationPlanner {
   private config: MultiDestinationPlannerConfig;
   private destinationAnalyzer: DestinationAnalyzer;
-  private performanceStart: number = 0;
+  // private _performanceStart: number = 0;
 
   constructor(config: MultiDestinationPlannerConfig = {}) {
     this.config = {
-      maxDestinations: config.maxDestinations || 6,
+      maxDestinations: config.maxDestinations ?? 6,
       preferBalancedRegions: config.preferBalancedRegions ?? true,
       seasonalOptimization: config.seasonalOptimization ?? true,
-      pricingStrategy: config.pricingStrategy || 'balanced',
-      layoutPreferences: config.layoutPreferences || ['grid', 'compact', 'carousel'],
+      pricingStrategy: config.pricingStrategy ?? 'balanced',
+      layoutPreferences: config.layoutPreferences ?? ['grid', 'compact', 'carousel'],
       ...config
     };
     
     this.destinationAnalyzer = new DestinationAnalyzer({
-      maxDestinations: this.config.maxDestinations
+      maxDestinations: this.config.maxDestinations ?? 6
     });
   }
 
@@ -99,7 +94,7 @@ export class MultiDestinationPlanner {
    * Главный метод для создания multi-destination кампаний
    */
   async createUnifiedPlan(params: UnifiedPlanCreationParams): Promise<MultiDestinationPlan> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`🗺️ Creating unified plan for "${params.campaignName}" with ${params.destinations.length} destinations`);
@@ -111,18 +106,20 @@ export class MultiDestinationPlanner {
       const optimizedDestinations = await this.optimizeDestinationsForPlan(params.destinations, params);
       
       // Шаг 3: Определение layout типа
-      const layoutType = this.determineOptimalLayout(optimizedDestinations, params.layoutPreference);
+      // const _layoutType = this.determineOptimalLayout(optimizedDestinations, params.layoutPreference);
       
       // Шаг 4: Создание базового плана через DestinationAnalyzer
+      const planParams: Record<string, any> = {
+        theme: params.campaignTheme ?? params.campaignName
+      };
+      if (params.targetSeason !== undefined) planParams.targetSeason = params.targetSeason;
+      if (params.budgetRange !== undefined) planParams.budgetRange = params.budgetRange;
+      if (params.urgencyLevel !== undefined) planParams.urgencyLevel = params.urgencyLevel;
+      
       const basePlan = await this.destinationAnalyzer.createUnifiedPlan(
         optimizedDestinations,
         params.campaignName,
-        {
-          theme: params.campaignTheme || params.campaignName,
-          targetSeason: params.targetSeason,
-          budgetRange: params.budgetRange,
-          urgencyLevel: params.urgencyLevel
-        }
+        planParams
       );
       
       // Шаг 5: Расширение плана с дополнительной логикой планировщика
@@ -148,7 +145,7 @@ export class MultiDestinationPlanner {
    * Оптимизация микса направлений для улучшения performance
    */
   async optimizeDestinationMix(params: PlanOptimizationParams): Promise<DestinationMixOptimization> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`🔧 Optimizing destination mix for plan: ${params.originalPlan.name}`);
@@ -278,30 +275,9 @@ export class MultiDestinationPlanner {
     return optimized.slice(0, this.config.maxDestinations);
   }
 
-  /**
-   * Определение оптимального layout
-   */
-  private determineOptimalLayout(destinations: DestinationPlan[], preference?: LayoutType): LayoutType {
-    const count = destinations.length;
-    
-    // Если есть предпочтение и оно подходит, используем его
-    if (preference && this.isLayoutSuitableForCount(preference, count)) {
-      return preference;
-    }
-    
-    // Автоматический выбор на основе количества
-    if (count <= 3) return 'compact';
-    if (count <= 6) return 'grid';
-    return 'carousel';
-  }
+  // Note: Layout determination logic moved to base class
 
-  /**
-   * Проверка подходит ли layout для количества направлений
-   */
-  private isLayoutSuitableForCount(layout: LayoutType, count: number): boolean {
-    const limits = MULTI_DESTINATION_LIMITS.OPTIMAL_DESTINATIONS[layout];
-    return count >= limits.min && count <= limits.max;
-  }
+  // Note: Layout suitability check moved to base class
 
   /**
    * Расширение плана с логикой планировщика
@@ -316,7 +292,7 @@ export class MultiDestinationPlanner {
       // Обновляем стратегию позиционирования
       positioning_strategy: {
         ...basePlan.positioning_strategy,
-        target_audience: params.targetAudience || basePlan.positioning_strategy.target_audience,
+        target_audience: params.targetAudience ?? basePlan.positioning_strategy.target_audience,
         primary_value_proposition: this.generateValueProposition(basePlan.destinations, params),
         competitive_advantages: this.generateCompetitiveAdvantages(basePlan.destinations, params)
       },
@@ -361,13 +337,14 @@ export class MultiDestinationPlanner {
     
     const balanced: DestinationPlan[] = [];
     const regions = Array.from(grouped.keys());
-    let maxIndex = Math.max(...Array.from(grouped.values()).map(arr => arr.length));
+    const regionArrays = Array.from(grouped.values());
+    let maxIndex = regionArrays.length > 0 ? Math.max(...regionArrays.map(arr => arr.length)) : 0;
     
     for (let i = 0; i < maxIndex; i++) {
       for (const region of regions) {
         const regionDests = grouped.get(region)!;
         if (i < regionDests.length) {
-          balanced.push(regionDests[i]);
+          balanced.push(regionDests[i]!);
         }
       }
     }
@@ -413,7 +390,7 @@ export class MultiDestinationPlanner {
   /**
    * Применение ценовой стратегии
    */
-  private applyPricingStrategy(destinations: DestinationPlan[], budgetRange?: string): DestinationPlan[] {
+  private applyPricingStrategy(destinations: DestinationPlan[], _budgetRange?: string): DestinationPlan[] {
     if (!this.config.pricingStrategy || this.config.pricingStrategy === 'balanced') {
       return destinations;
     }
@@ -456,7 +433,7 @@ export class MultiDestinationPlanner {
    */
   private async optimizeRegionalBalance(
     destinations: DestinationPlan[], 
-    constraints: any
+    _constraints: any
   ): Promise<{ destinations: DestinationPlan[], changes: any[] }> {
     
     const balanced = this.balanceRegionalDistribution(destinations);
@@ -464,10 +441,10 @@ export class MultiDestinationPlanner {
     
     // Находим изменения
     for (let i = 0; i < destinations.length; i++) {
-      if (destinations[i].id !== balanced[i].id) {
+      if (destinations[i]?.id !== balanced[i]?.id) {
         changes.push({
           type: 'regional_balance',
-          destination_id: balanced[i].id,
+          destination_id: balanced[i]?.id || 'unknown',
           action: 'reordered',
           reason: 'Regional balance optimization'
         });
@@ -489,10 +466,10 @@ export class MultiDestinationPlanner {
     const changes = [];
     
     for (let i = 0; i < destinations.length; i++) {
-      if (destinations[i].id !== optimized[i].id) {
+      if (destinations[i] && optimized[i] && destinations[i]!.id !== optimized[i]!.id) {
         changes.push({
           type: 'seasonal',
-          destination_id: optimized[i].id,
+          destination_id: optimized[i]!.id,
           action: 'reordered',
           reason: `Seasonal optimization for ${targetSeason}`
         });
@@ -508,17 +485,17 @@ export class MultiDestinationPlanner {
   private async optimizePricing(
     destinations: DestinationPlan[], 
     budgetRange: string,
-    constraints: any
+    _constraints: any
   ): Promise<{ destinations: DestinationPlan[], changes: any[] }> {
     
     const priceOptimized = this.applyPricingStrategy(destinations, budgetRange);
     const changes = [];
     
     for (let i = 0; i < destinations.length; i++) {
-      if (destinations[i].id !== priceOptimized[i].id) {
+      if (destinations[i] && priceOptimized[i] && destinations[i]!.id !== priceOptimized[i]!.id) {
         changes.push({
           type: 'pricing',
-          destination_id: priceOptimized[i].id,
+          destination_id: priceOptimized[i]!.id,
           action: 'reordered',
           reason: `Price optimization for ${budgetRange} segment`
         });
@@ -545,10 +522,10 @@ export class MultiDestinationPlanner {
     
     const changes = [];
     for (let i = 0; i < destinations.length; i++) {
-      if (destinations[i].id !== optimized[i].id) {
+      if (destinations[i]?.id !== optimized[i]?.id) {
         changes.push({
           type: 'conversion',
-          destination_id: optimized[i].id,
+          destination_id: optimized[i]?.id || 'unknown',
           action: 'reordered',
           reason: `Conversion optimization for ${targetAudience}`
         });
@@ -587,7 +564,7 @@ export class MultiDestinationPlanner {
    * Расчет метрик оптимизации
    */
   private calculateOptimizationMetrics(
-    original: DestinationPlan[], 
+    _original: DestinationPlan[], 
     optimized: DestinationPlan[], 
     changes: any[]
   ): any {
@@ -632,7 +609,7 @@ export class MultiDestinationPlanner {
   /**
    * Генерация ценностного предложения
    */
-  private generateValueProposition(destinations: DestinationPlan[], params: UnifiedPlanCreationParams): string {
+  private generateValueProposition(destinations: DestinationPlan[], _params: UnifiedPlanCreationParams): string {
     const count = destinations.length;
     const regions = new Set(destinations.map(d => d.geographical_info.region));
     
@@ -641,7 +618,7 @@ export class MultiDestinationPlanner {
     }
     
     const region = Array.from(regions)[0];
-    const regionName = this.getRegionDisplayName(region);
+    const regionName = region ? this.getRegionDisplayName(region) : 'мира';
     
     return `Эксклюзивная подборка ${count} лучших направлений ${regionName}`;
   }
@@ -649,7 +626,7 @@ export class MultiDestinationPlanner {
   /**
    * Генерация конкурентных преимуществ
    */
-  private generateCompetitiveAdvantages(destinations: DestinationPlan[], params: UnifiedPlanCreationParams): string[] {
+  private generateCompetitiveAdvantages(destinations: DestinationPlan[], _params: UnifiedPlanCreationParams): string[] {
     const advantages = [
       'Тщательно отобранные направления экспертами',
       `${destinations.length} направлений в одном предложении`

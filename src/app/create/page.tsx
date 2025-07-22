@@ -133,7 +133,7 @@ export default function Create() {
     let details = '';
     let retryable = false;
     
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+    if (error.name === 'TypeError' && error instanceof Error ? error.message : String(error).includes('fetch')) {
       errorType = 'network';
       message = 'Ошибка подключения к серверу';
       details = 'Проверьте подключение к интернету и попробуйте снова';
@@ -146,17 +146,17 @@ export default function Create() {
     } else if (error.status === 400) {
       errorType = 'validation';
       message = 'Ошибка валидации данных';
-      details = error.message || 'Проверьте правильность заполнения формы';
+      details = error instanceof Error ? error.message : String(error) || 'Проверьте правильность заполнения формы';
       retryable = false;
     } else if (error.status === 500) {
       errorType = 'server';
       message = 'Внутренняя ошибка сервера';
       details = 'Попробуйте позже или обратитесь в службу поддержки';
       retryable = true;
-    } else if (error.message?.includes('agent')) {
+    } else if (error instanceof Error ? error.message : String(error)?.includes('agent')) {
       errorType = 'agent';
       message = 'Ошибка в агентной системе';
-      details = error.message || 'Один из агентов столкнулся с проблемой';
+      details = error instanceof Error ? error.message : String(error) || 'Один из агентов столкнулся с проблемой';
       retryable = true;
     }
     

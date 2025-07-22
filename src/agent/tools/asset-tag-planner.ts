@@ -103,7 +103,7 @@ export const assetTagPlannerTool = tool({
         inputTags: allTags,
         campaignType: params.campaign_type,
         emotionalTone: params.emotional_tone,
-        contentContext: params.content_context || undefined
+        ...(params.content_context ? { contentContext: params.content_context } : {})
       });
       
       const figmaTags = mappingResult.success ? mappingResult.mappedTags : [];
@@ -137,7 +137,7 @@ export const assetTagPlannerTool = tool({
       
     } catch (error) {
       console.error('❌ Asset Tag Planner error:', error);
-      throw new Error(`Asset Tag Planner failed: ${error.message}`);
+      throw new Error(`Asset Tag Planner failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error)}`);
     }
   }
 });
@@ -377,7 +377,7 @@ export const executeAssetTagPlanner = async (params: AssetTagPlannerParams): Pro
       inputTags: allTags,
       campaignType: params.campaign_type,
       emotionalTone: params.emotional_tone,
-      contentContext: params.content_context || undefined
+      ...(params.content_context ? { contentContext: params.content_context } : {})
     });
     
     const figmaTags = mappingResult.success ? mappingResult.mappedTags : [];
@@ -411,7 +411,7 @@ export const executeAssetTagPlanner = async (params: AssetTagPlannerParams): Pro
     
   } catch (error) {
     console.error('❌ Asset Tag Planner error:', error);
-    throw new Error(`Asset Tag Planner failed: ${error.message}`);
+    throw new Error(`Asset Tag Planner failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error)}`);
   }
 };
 

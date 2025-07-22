@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Simple readiness check for Kubernetes
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Basic readiness check - ensure database and critical services are available
     const memoryUsage = process.memoryUsage();

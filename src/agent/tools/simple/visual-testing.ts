@@ -306,11 +306,11 @@ async function runSingleVisualTest(
  * Захват скриншота email в указанном клиенте
  */
 async function captureScreenshot(
-  emailContent: string,
+  _emailContent: string,
   client: string,
   device: string,
   mode: 'light' | 'dark',
-  viewport: any,
+  _viewport: any,
   options: any
 ): Promise<string> {
   
@@ -339,7 +339,7 @@ async function captureScreenshot(
  * Анализ скриншота на наличие проблем
  */
 async function analyzeScreenshot(
-  screenshotPath: string,
+  _screenshotPath: string,
   client: string,
   device: string
 ): Promise<Array<{
@@ -444,7 +444,7 @@ function calculateCompatibilityScore(
  */
 async function runVisualComparison(
   screenshotPath: string,
-  referenceTemplate: string,
+  _referenceTemplate: string,
   options: any
 ): Promise<{
   test_case: string;

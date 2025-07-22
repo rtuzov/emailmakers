@@ -88,7 +88,7 @@ export class AgentLogger {
 
   constructor(config: Partial<LoggerConfig> = {}) {
     this.config = {
-      logLevel: 'info',
+      logLevel: 'warn', // Changed from 'info' to 'warn' to reduce verbosity
       enableConsoleOutput: true,
       enableFileOutput: true,
       enableMetrics: true,
@@ -328,7 +328,8 @@ export class AgentLogger {
   }
 
   private shouldLogToolData(): boolean {
-    return !process.env.OPENAI_AGENTS_DONT_LOG_TOOL_DATA;
+    // Default to false for less verbose logging, unless explicitly enabled
+    return process.env.OPENAI_AGENTS_LOG_TOOL_DATA === 'true';
   }
 
   private shouldLogModelData(): boolean {

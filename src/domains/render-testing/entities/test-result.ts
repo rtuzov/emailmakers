@@ -407,7 +407,7 @@ export class TestResult {
   /**
    * Fail testing with error
    */
-  fail(errorMessage: string): void {
+  fail(_errorMessage: string): void {
     this.data.overallStatus = TestStatus.ERROR;
     this.data.completedAt = new Date();
     this.data.metadata.testDuration = Math.floor((this.data.completedAt.getTime() - this.data.createdAt.getTime()) / 1000);

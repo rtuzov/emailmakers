@@ -151,7 +151,7 @@ export class AssetHashManager {
     let deletedCount = 0;
     const updatedRegistry: SharedAssetRegistry = {};
     
-    for (const [hash, asset] of Object.entries(registry)) {
+    for (const [hash, asset] of (Object || {}).entries(registry)) {
       const assetDate = new Date(asset.createdAt);
       
       if (assetDate < cutoffDate) {
@@ -184,7 +184,7 @@ export class AssetHashManager {
     newestAsset: string;
   }> {
     const registry = await AssetHashManager.loadRegistry();
-    const assets = Object.values(registry);
+    const assets = (Object || {}).values(registry);
     
     if (assets.length === 0) {
       return {
@@ -196,7 +196,7 @@ export class AssetHashManager {
     }
     
     const totalSizeBytes = assets.reduce((sum, asset) => sum + asset.size, 0);
-    const sortedByDate = assets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    const sortedByDate = assets.sort((a, b) => new Date(a.createdAt).getTime() - new Date((b || {}).createdAt).getTime());
     
     return {
       totalAssets: assets.length,

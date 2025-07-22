@@ -22,7 +22,7 @@ export const processContentAssets = tool({
     handoff_directory: z.string().describe('Directory containing handoff files from Content Specialist'),
     optimization_level: z.enum(['basic', 'standard', 'high']).describe('Asset optimization level - must be specified explicitly'),
   }),
-  execute: async (params) => {
+  execute: async (params, _context) => {
     try {
       console.log(`🎨 Processing content assets from: ${params.handoff_directory}`);
       console.log(`🔧 Optimization level: ${params.optimization_level}`);
@@ -49,23 +49,27 @@ export const processContentAssets = tool({
         throw new Error('Content context not found in handoff files');
       }
       
-      if (!context.technical_specification) {
-        throw new Error('Technical specification not found in handoff files');
-      }
+      // Technical specification check removed - not required for asset processing
       
       // Extract asset manifest from context
-      const assetManifest = context.asset_manifest;
-      if (!assetManifest) {
+      const assetManifestData = context.asset_manifest;
+      if (!assetManifestData) {
         throw new Error('Asset manifest not found in context');
       }
       
+      // Extract the actual manifest from the loaded file structure
+      const assetManifest = assetManifestData.assetManifest || assetManifestData;
+      
       // Validate asset manifest structure
       if (!assetManifest.images || !Array.isArray(assetManifest.images)) {
+        console.log('📊 Asset manifest structure:', JSON.stringify(assetManifest, null, 2));
         throw new Error('Asset manifest must contain images array');
       }
       
       if (!assetManifest.icons || !Array.isArray(assetManifest.icons)) {
-        throw new Error('Asset manifest must contain icons array');
+        // Icons array is optional, initialize if missing
+        assetManifest.icons = [];
+        console.log('⚠️ Icons array missing, initialized empty array');
       }
       
       console.log(`📷 Processing ${assetManifest.images.length} images`);
@@ -85,7 +89,7 @@ export const processContentAssets = tool({
       };
       
       // Enhance with technical specification
-      const enhancedManifest = enhanceAssetManifestWithTechSpec(combinedAssetManifest, context.technical_specification);
+      const enhancedManifest = enhanceAssetManifestWithTechSpec(combinedAssetManifest, context.technical_specification || {});
       
       // Generate asset usage instructions
       const usageInstructions = generateAssetUsageInstructions(enhancedManifest, context.content_context);
@@ -104,6 +108,15 @@ export const processContentAssets = tool({
       };
       
       await fs.writeFile(manifestPath, JSON.stringify(assetData, null, 2));
+      
+      // ✅ UPDATE DESIGN CONTEXT WITH PROCESSED ASSET MANIFEST
+      if (context) {
+        if (!(context as any).designContext) {
+          (context as any).designContext = {};
+        }
+        (context as any).designContext.asset_manifest = enhancedManifest;
+        console.log('✅ Asset manifest saved to design context for next tools');
+      }
       
       console.log(`✅ Asset processing completed successfully!`);
       console.log(`📁 Processed manifest saved to: ${manifestPath}`);
@@ -246,7 +259,7 @@ async function processLocalIcon(icon: any, optimizationLevel: string): Promise<a
 /**
  * Process individual external image
  */
-async function processExternalImage(image: any, optimizationLevel: string): Promise<any> {
+async function processExternalImage(image: any, _optimizationLevel: string): Promise<any> {
   // Validate URL is accessible
   if (!image.url || !image.url.startsWith('http')) {
     throw new Error(`Invalid external image URL: ${image.url}`);
@@ -265,7 +278,7 @@ async function processExternalImage(image: any, optimizationLevel: string): Prom
 /**
  * Process individual external icon
  */
-async function processExternalIcon(icon: any, optimizationLevel: string): Promise<any> {
+async function processExternalIcon(icon: any, _optimizationLevel: string): Promise<any> {
   // Validate URL is accessible
   if (!icon.url || !icon.url.startsWith('http')) {
     throw new Error(`Invalid external icon URL: ${icon.url}`);

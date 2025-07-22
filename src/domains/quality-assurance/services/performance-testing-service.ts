@@ -717,8 +717,8 @@ export class PerformanceTestingService {
     
     const totalElements = $('*').length;
     const images = $('img').length;
-    const links = $('a').length;
-    const tables = $('table').length;
+    const _links // Currently unused = $('a').length;
+    const _tables // Currently unused = $('table').length;
     
     // Critical elements that affect rendering
     const criticalElements = $('table, img, style, [style]').length;
@@ -927,7 +927,7 @@ export class PerformanceTestingService {
   }
 
   // Helper methods
-  private estimateRenderTime(html: string, domComplexity: DOMComplexityMetrics): number {
+  private estimateRenderTime(_html: string, domComplexity: DOMComplexityMetrics): number {
     const baseTime = 50; // Base rendering time
     const elementTime = domComplexity.totalElements * 0.1;
     const complexityPenalty = domComplexity.complexityScore * 100;

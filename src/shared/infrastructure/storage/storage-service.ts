@@ -180,7 +180,7 @@ export class StorageService {
     const result: UploadResult = {
       key,
       url,
-      cdnUrl,
+      ...(cdnUrl ? { cdnUrl } : {}),
       size: buffer.length,
       contentType: options.contentType || 'application/octet-stream',
     };
@@ -229,7 +229,7 @@ export class StorageService {
     const result: UploadResult = {
       key,
       url,
-      cdnUrl,
+      ...(cdnUrl ? { cdnUrl } : {}),
       size: buffer.length,
       contentType: options.contentType || 'application/octet-stream',
     };
@@ -275,7 +275,7 @@ export class StorageService {
       thumbnails.push({
         key: thumbnailKey,
         url: uploadResult.url,
-        cdnUrl: uploadResult.cdnUrl,
+        ...(uploadResult.cdnUrl ? { cdnUrl: uploadResult.cdnUrl } : {}),
         size: { width: size.width, height: size.height },
       });
     }

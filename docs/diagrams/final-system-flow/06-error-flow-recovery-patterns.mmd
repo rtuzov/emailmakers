@@ -1,0 +1,80 @@
+graph TD
+    subgraph "🚀 NORMAL EXECUTION FLOW"
+        N1["🎯 Orchestrator Start"]
+        N2["📊 Data Collection"]
+        N3["📝 Content Generation"]
+        N4["🎨 Design Creation"]
+        N5["✅ Quality Validation"]
+        N6["📦 Delivery Packaging"]
+        N7["✅ Success Completion"]
+    end
+    
+    subgraph "❌ ERROR DETECTION POINTS"
+        E1["⚠️ Brief Processing Error<br/>Invalid input format"]
+        E2["⚠️ Content Generation Error<br/>AI service failure"]
+        E3["⚠️ Design Creation Error<br/>Template generation failure"]
+        E4["⚠️ Quality Validation Error<br/>Testing framework failure"]
+        E5["⚠️ Delivery Error<br/>Export packaging failure"]
+    end
+    
+    subgraph "🔄 RECOVERY STRATEGIES"
+        R1["🔧 INPUT SANITIZATION<br/>• Format validation<br/>• Content cleaning<br/>• Fallback processing"]
+        R2["🔧 AI RETRY LOGIC<br/>• Exponential backoff<br/>• Alternative models<br/>• Content fallbacks"]
+        R3["🔧 DESIGN REGENERATION<br/>• Template retry<br/>• Simplified layouts<br/>• Default styling"]
+        R4["🔧 QUALITY BYPASS<br/>• Essential tests only<br/>• Warning flags<br/>• Conditional delivery"]
+        R5["🔧 MANUAL PACKAGING<br/>• Basic export<br/>• Asset verification<br/>• Partial delivery"]
+    end
+    
+    subgraph "📊 MONITORING & ALERTS"
+        M1["🔍 ERROR TRACKING<br/>• Error classification<br/>• Frequency analysis<br/>• Performance impact"]
+        M2["📈 RECOVERY METRICS<br/>• Success rate<br/>• Recovery time<br/>• Resource usage"]
+        M3["🚨 ALERT SYSTEM<br/>• Critical failures<br/>• Performance degradation<br/>• Resource exhaustion"]
+    end
+    
+    %% NORMAL FLOW
+    N1 --> N2 --> N3 --> N4 --> N5 --> N6 --> N7
+    
+    %% ERROR TRIGGERS
+    N2 -.-> E1
+    N3 -.-> E2
+    N4 -.-> E3
+    N5 -.-> E4
+    N6 -.-> E5
+    
+    %% RECOVERY FLOWS
+    E1 --> R1 --> N2
+    E2 --> R2 --> N3
+    E3 --> R3 --> N4
+    E4 --> R4 --> N5
+    E5 --> R5 --> N6
+    
+    %% MONITORING
+    E1 & E2 & E3 & E4 & E5 --> M1
+    R1 & R2 & R3 & R4 & R5 --> M2
+    M1 & M2 --> M3
+    
+    %% FAILURE ESCALATION
+    ESCALATION["🚨 ESCALATION TRIGGERS<br/>• 3+ consecutive failures<br/>• Critical system errors<br/>• Resource exhaustion<br/>• Manual intervention required"]
+    
+    E1 & E2 & E3 & E4 & E5 -.-> ESCALATION
+    
+    %% RECOVERY SUCCESS PATHS
+    R1 -.-> N3
+    R2 -.-> N4
+    R3 -.-> N5
+    R4 -.-> N6
+    R5 -.-> N7
+    
+    style N1 fill:#4caf50,stroke:#45a049,color:white
+    style N7 fill:#4caf50,stroke:#45a049,color:white
+    style E1 fill:#ff6b6b,stroke:#e55555,color:white
+    style E2 fill:#ff6b6b,stroke:#e55555,color:white
+    style E3 fill:#ff6b6b,stroke:#e55555,color:white
+    style E4 fill:#ff6b6b,stroke:#e55555,color:white
+    style E5 fill:#ff6b6b,stroke:#e55555,color:white
+    style R1 fill:#ff9800,stroke:#f57c00,color:white
+    style R2 fill:#ff9800,stroke:#f57c00,color:white
+    style R3 fill:#ff9800,stroke:#f57c00,color:white
+    style R4 fill:#ff9800,stroke:#f57c00,color:white
+    style R5 fill:#ff9800,stroke:#f57c00,color:white
+    style ESCALATION fill:#9c27b0,stroke:#7b1fa2,color:white

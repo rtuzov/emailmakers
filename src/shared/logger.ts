@@ -1,7 +1,7 @@
 import pino from 'pino';
 
 const base = {
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || 'warn', // Changed from 'info' to 'warn' to reduce verbosity
   redact: ['password', 'apiKey'],
 };
 

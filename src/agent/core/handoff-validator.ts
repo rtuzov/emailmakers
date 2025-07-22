@@ -78,7 +78,7 @@ export class HandoffValidator {
         try {
           await CampaignPathResolver.validatePath(campaignPath);
         } catch (error) {
-          result.errors.push(`Campaign path validation failed: ${error.message}`);
+          result.errors.push(`Campaign path validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
           result.isValid = false;
         }
       }
@@ -267,19 +267,19 @@ export class HandoffValidator {
     }
 
     // Check content completeness
-    if (!data.content_context.generated_content.subject) {
+    if (!data.content_context.generated_content?.subject) {
       missing.push('Email subject line is required');
     }
     
-    if (!data.content_context.generated_content.body) {
+    if (!data.content_context.generated_content?.body) {
       missing.push('Email body content is required');
     }
     
-    if (!data.content_context.pricing_analysis.best_price || data.content_context.pricing_analysis.best_price <= 0) {
+    if (!data.content_context.pricing_analysis?.best_price || data.content_context.pricing_analysis.best_price <= 0) {
       missing.push('Valid pricing information is required');
     }
 
-    if (!data.content_context.asset_strategy.visual_style) {
+    if (!data.content_context.asset_strategy?.visual_style) {
       missing.push('Visual style specification is required');
     }
 
@@ -306,26 +306,28 @@ export class HandoffValidator {
     const critical: string[] = [];
 
     // Check destination consistency
-    const contentDestination = data.content_context.context_analysis.destination;
-    const dateDestination = data.content_context.date_analysis.destination;
+    const contentDestination = data.content_context.context_analysis?.destination;
+    const dateDestination = data.content_context.date_analysis?.destination;
     
-    if (contentDestination !== dateDestination) {
+    if (contentDestination && dateDestination && contentDestination !== dateDestination) {
       issues.push(`Destination mismatch: context (${contentDestination}) vs date analysis (${dateDestination})`);
     }
 
     // Check currency consistency
-    const pricingCurrency = data.content_context.pricing_analysis.currency;
+    const pricingCurrency = data.content_context.pricing_analysis?.currency;
     if (pricingCurrency && !['RUB', 'USD', 'EUR'].includes(pricingCurrency)) {
       warnings.push(`Unusual currency code: ${pricingCurrency}`);
     }
 
     // Check price range validity
-    const { min_price, max_price, best_price } = data.content_context.pricing_analysis;
-    if (min_price > max_price) {
-      critical.push(`Invalid price range: min (${min_price}) > max (${max_price})`);
-    }
-    if (best_price < min_price || best_price > max_price) {
-      warnings.push(`Best price (${best_price}) outside of range (${min_price}-${max_price})`);
+    if (data.content_context.pricing_analysis) {
+      const { min_price, max_price, best_price } = data.content_context.pricing_analysis;
+      if ((min_price || 0) > (max_price || 0)) {
+        critical.push(`Invalid price range: min (${min_price || 0}) > max (${max_price || 0})`);
+      }
+      if ((best_price || 0) < (min_price || 0) || (best_price || 0) > (max_price || 0)) {
+        warnings.push(`Best price (${best_price || 0}) outside of range (${min_price || 0}-${max_price || 0})`);
+      }
     }
 
     return { issues, warnings, critical };
@@ -343,22 +345,24 @@ export class HandoffValidator {
 
     const content = data.content_context.generated_content;
 
-    // Subject line validation
-    if (content.subject.length < 10) {
-      warnings.push('Subject line is very short (< 10 characters)');
-    }
-    if (content.subject.length > 50) {
-      warnings.push('Subject line is very long (> 50 characters)');
-    }
+    if (content) {
+      // Subject line validation
+      if (content.subject && content.subject.length < 10) {
+        warnings.push('Subject line is very short (< 10 characters)');
+      }
+      if (content.subject && content.subject.length > 50) {
+        warnings.push('Subject line is very long (> 50 characters)');
+      }
 
-    // Body content validation
-    if (content.body.length < 100) {
-      warnings.push('Email body is very short (< 100 characters)');
-    }
+      // Body content validation
+      if (content.body && typeof content.body === 'string' && content.body.length < 100) {
+        warnings.push('Email body is very short (< 100 characters)');
+      }
 
-    // CTA validation
-    if (!content.cta.primary) {
-      critical.push('Primary CTA is required');
+      // CTA validation
+      if (!content.cta?.primary) {
+        critical.push('Primary CTA is required');
+      }
     }
 
     return { warnings, critical };
@@ -376,20 +380,20 @@ export class HandoffValidator {
     const critical: string[] = [];
 
     // Check MJML template
-    if (!data.design_context.mjml_template.source) {
+    if (!data.design_context?.mjml_template?.source) {
       critical.push('MJML template source is required');
     }
-    if (!data.design_context.mjml_template.compiled_html) {
+    if (!data.design_context?.mjml_template?.compiled_html) {
       critical.push('Compiled HTML is required');
     }
 
     // Check asset manifest
-    if (!data.design_context.asset_manifest.images.length) {
+    if (!data.design_context?.asset_manifest?.images?.length) {
       missing.push('At least one image asset is required');
     }
 
     // Check performance metrics
-    if (data.design_context.performance_metrics.total_assets_size && data.design_context.performance_metrics.total_assets_size > 100000) { // 100KB
+    if (data.design_context?.performance_metrics?.total_assets_size && data.design_context.performance_metrics.total_assets_size > 100000) { // 100KB
       warnings.push('Template file size exceeds recommended 100KB limit');
     }
 

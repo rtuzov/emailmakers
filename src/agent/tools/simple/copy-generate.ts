@@ -91,7 +91,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
   const result = { 
     success: false, 
     error: 'generateCopy tool removed - use consolidated content generator',
-    data: null
+    _data: null
   };
     
     if (!result.success) {
@@ -164,7 +164,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
         keyword_coverage: 0,
         recommendations: ['Check error logs', 'Verify generation settings']
       },
-      error: error instanceof Error ? error.message : 'Unknown copy generation error'
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown copy generation error'
     };
   }
 }
@@ -189,7 +189,7 @@ function extractCopyByType(data: any, copyType: string): string {
 function extractHeadlineFromBody(body: string): string {
   // Extract first meaningful sentence as headline
   const sentences = body.split(/[.!?]/);
-  const headline = sentences[0]?.trim();
+  const headline = (sentences && sentences[0] ? sentences[0] : "")?.trim();
   
   if (headline && headline.length > 10 && headline.length < 80) {
     return headline;
@@ -198,7 +198,7 @@ function extractHeadlineFromBody(body: string): string {
   return 'Заголовок предложения';
 }
 
-function generateAlternatives(primaryCopy: string, params: CopyGenerateParams): string[] {
+function generateAlternatives(primaryCopy: string, _params: CopyGenerateParams): string[] {
   const alternatives: string[] = [];
   
   // Simple alternative generation based on copy type and style
@@ -219,7 +219,7 @@ function generateAlternatives(primaryCopy: string, params: CopyGenerateParams): 
   return alternatives.filter(alt => alt && alt !== primaryCopy);
 }
 
-function analyzeCopyQuality(copy: string, params: CopyGenerateParams): any {
+function analyzeCopyQuality(copy: string, _params: CopyGenerateParams): any {
   const lowerCopy = copy.toLowerCase();
   
   // Style score based on tone matching

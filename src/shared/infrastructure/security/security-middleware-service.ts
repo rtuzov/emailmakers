@@ -112,8 +112,8 @@ export class SecurityMiddlewareService {
    * CORS middleware
    */
   corsMiddleware() {
-    return (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
-      const origin = req.headers.origin;
+    return (_req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+      const origin = _req.headers.origin;
       
       if (origin && this.config.cors.origin.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
@@ -124,7 +124,7 @@ export class SecurityMiddlewareService {
       res.setHeader('Access-Control-Allow-Headers', this.config.cors.allowedHeaders.join(', '));
       
       // Handle preflight requests
-      if (req.method === 'OPTIONS') {
+      if (_req.method === 'OPTIONS') {
         res.status(200).end();
         return;
       }
@@ -137,7 +137,7 @@ export class SecurityMiddlewareService {
    * Content Security Policy middleware
    */
   cspMiddleware() {
-    return (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+    return (_req: NextApiRequest, res: NextApiResponse, next: () => void) => {
       const cspDirectives = Object.entries(this.config.csp.directives)
         .map(([directive, sources]) => `${directive} ${sources.join(' ')}`)
         .join('; ');
@@ -151,7 +151,7 @@ export class SecurityMiddlewareService {
    * Security headers middleware
    */
   securityHeadersMiddleware() {
-    return (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+    return (_req: NextApiRequest, res: NextApiResponse, next: () => void) => {
       Object.entries(this.config.headers).forEach(([header, value]) => {
         if (value) {
           res.setHeader(header, value);
@@ -166,10 +166,9 @@ export class SecurityMiddlewareService {
    * Rate limiting middleware
    */
   rateLimitMiddleware() {
-    return (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
-      const clientId = this.getClientIdentifier(req);
+    return (_req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+      const clientId = this.getClientIdentifier(_req);
       const now = Date.now();
-      const windowStart = now - this.config.rateLimit.windowMs;
       
       // Initialize or get existing rate limit data
       if (!this.rateLimitStore[clientId]) {
@@ -213,13 +212,13 @@ export class SecurityMiddlewareService {
    * Input validation and sanitization middleware
    */
   validateAndSanitizeMiddleware<T>(schema: ZodSchema<T>) {
-    return (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+    return (_req: NextApiRequest, res: NextApiResponse, next: () => void) => {
       try {
         // Validate input against schema
-        const validatedData = schema.parse(req.body);
+        const validatedData = schema.parse(_req.body);
         
         // Sanitize HTML content recursively
-        req.body = this.sanitizeObject(validatedData);
+        _req.body = this.sanitizeObject(validatedData);
         
         next();
       } catch (error) {
@@ -291,7 +290,8 @@ export class SecurityMiddlewareService {
   private cleanupRateLimitStore(): void {
     const now = Date.now();
     Object.keys(this.rateLimitStore).forEach(clientId => {
-      if (now > this.rateLimitStore[clientId].resetTime) {
+      const entry = this.rateLimitStore[clientId];
+      if (entry && now > entry.resetTime) {
         delete this.rateLimitStore[clientId];
       }
     });

@@ -475,29 +475,35 @@ export class ValidationMonitor extends EventEmitter {
     }
 
     const agentMetrics = this.metrics.agentMetrics[event.agentId];
-    agentMetrics.totalExecutions++;
-    agentMetrics.lastExecutionTime = Date.now();
+    if (agentMetrics) {
+      agentMetrics.totalExecutions++;
+      agentMetrics.lastExecutionTime = Date.now();
 
-    if (event.success) {
-      agentMetrics.successfulExecutions++;
-    } else {
-      agentMetrics.failedExecutions++;
+      if (event.success) {
+        agentMetrics.successfulExecutions++;
+      } else {
+        agentMetrics.failedExecutions++;
+      }
     }
 
-    agentMetrics.validationSuccessRate = (agentMetrics.successfulExecutions / agentMetrics.totalExecutions) * 100;
+    if (agentMetrics) {
+      agentMetrics.validationSuccessRate = (agentMetrics.successfulExecutions / agentMetrics.totalExecutions) * 100;
+    }
     
     // Обновляем среднее время выполнения агента
-    const totalTime = agentMetrics.averageExecutionTime * (agentMetrics.totalExecutions - 1) + event.duration;
-    agentMetrics.averageExecutionTime = totalTime / agentMetrics.totalExecutions;
+    if (agentMetrics) {
+      const totalTime = agentMetrics.averageExecutionTime * (agentMetrics.totalExecutions - 1) + event.duration;
+      agentMetrics.averageExecutionTime = totalTime / agentMetrics.totalExecutions;
 
-    // Обновляем статистику использования инструментов
-    if (event.toolsUsed) {
-      event.toolsUsed.forEach((tool: string) => {
-        agentMetrics.toolUsageStats[tool] = (agentMetrics.toolUsageStats[tool] || 0) + 1;
-      });
+      // Обновляем статистику использования инструментов
+      if (event.toolsUsed) {
+        event.toolsUsed.forEach((tool: string) => {
+          agentMetrics.toolUsageStats[tool] = (agentMetrics.toolUsageStats[tool] || 0) + 1;
+        });
+      }
     }
 
-    if (event.correctionAttempts) {
+    if (event.correctionAttempts && agentMetrics) {
       agentMetrics.correctionAttempts += event.correctionAttempts;
     }
   }
@@ -526,7 +532,7 @@ export class ValidationMonitor extends EventEmitter {
     this.metrics.validationsPerSecond = recentValidations.total / (windowDuration / 1000);
   }
 
-  private getRecentValidationsInWindow(start: number, end: number) {
+  private getRecentValidationsInWindow(_start: number, _end: number) {
     // Это упрощенная реализация - в реальности нужно отслеживать временные метки всех валидаций
     return {
       total: 0,
@@ -693,7 +699,7 @@ export class ValidationMonitor extends EventEmitter {
     
     const first = values[0];
     const last = values[values.length - 1];
-    return last - first;
+    return (last ?? 0) - (first ?? 0);
   }
 
   private cleanupOldMetrics(): void {

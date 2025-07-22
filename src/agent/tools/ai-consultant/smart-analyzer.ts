@@ -36,7 +36,7 @@ export class SmartEmailAnalyzer {
       try {
         // Try to extract JSON from markdown code blocks
         const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
-        if (jsonMatch) {
+        if (jsonMatch && jsonMatch[1]) {
           return JSON.parse(jsonMatch[1]);
         }
         
@@ -202,7 +202,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const content = response.choices[0].message.content;
+      const content = response.choices[0]?.message.content;
       if (!content) {
         throw new Error('Empty response from AI model');
       }
@@ -298,7 +298,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const content = response.choices[0].message.content;
+      const content = response.choices[0]?.message.content;
       if (!content) {
         throw new Error('Empty response from AI model');
       }
@@ -355,7 +355,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const content = response.choices[0].message.content;
+      const content = response.choices[0]?.message.content;
       if (!content) {
         throw new Error('Empty response from AI model');
       }
@@ -411,7 +411,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const content = response.choices[0].message.content;
+      const content = response.choices[0]?.message.content;
       if (!content) {
         throw new Error('Empty response from AI model');
       }
@@ -470,7 +470,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         max_tokens: 1000
       });
 
-      const content = response.choices[0].message.content;
+      const content = response.choices[0]?.message.content;
       if (!content) {
         throw new Error('Empty response from AI model');
       }
@@ -532,7 +532,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
       brand_alignment: 0.10
     };
 
-    return Object.entries(dimensionScores).reduce((total, [dimension, score]) => {
+    return (Object || {}).entries(dimensionScores).reduce((total, [dimension, score]) => {
       return total + (score * weights[dimension as QualityDimension]);
     }, 0);
   }
@@ -553,10 +553,10 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
    */
   private estimateImprovementPotential(
     dimensionScores: Record<QualityDimension, number>,
-    elements: AnalyzedElement[]
+    _elements: AnalyzedElement[]
   ): number {
     // Calculate potential improvement based on lowest scoring dimensions
-    const scores = Object.values(dimensionScores);
+    const scores = (Object || {}).values(dimensionScores);
     const lowestScores = scores.filter(score => score < 80);
     const averageImprovement = lowestScores.length > 0 
       ? lowestScores.reduce((sum, score) => sum + (80 - score), 0) / lowestScores.length
@@ -570,16 +570,16 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
    */
   private calculateMaxAchievableScore(dimensionScores: Record<QualityDimension, number>): number {
     // Assume we can improve each dimension by up to 20 points, but not exceed 95
-    const improvedScores = Object.values(dimensionScores).map(score => 
+    const improvedScores = (Object || {}).values(dimensionScores).map(score => 
       Math.min(95, score + 20)
     );
     
     return this.calculateOverallScore({
-      content_quality: improvedScores[0],
-      visual_appeal: improvedScores[1],
-      technical_compliance: improvedScores[2],
-      emotional_resonance: improvedScores[3],
-      brand_alignment: improvedScores[4]
+      content_quality: improvedScores[0] || 0,
+      visual_appeal: improvedScores[1] || 0,
+      technical_compliance: improvedScores[2] || 0,
+      emotional_resonance: improvedScores[3] || 0,
+      brand_alignment: improvedScores[4] || 0
     });
   }
 
@@ -588,7 +588,7 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
    */
   private calculateConfidenceLevel(dimensionScores: Record<QualityDimension, number>): number {
     // Higher confidence when scores are consistent across dimensions
-    const scores = Object.values(dimensionScores);
+    const scores = (Object || {}).values(dimensionScores);
     const average = scores.reduce((sum, score) => sum + score, 0) / scores.length;
     const variance = scores.reduce((sum, score) => sum + Math.pow(score - average, 2), 0) / scores.length;
     const standardDeviation = Math.sqrt(variance);

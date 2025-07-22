@@ -51,19 +51,23 @@ export function parseSearchQuery(query: string): SearchQuery {
   const phraseRegex = /"([^"]+)"/g
   let match
   while ((match = phraseRegex.exec(query)) !== null) {
-    result.exactPhrases.push(match[1].toLowerCase())
-    query = query.replace(match[0], '') // Удаляем из основного запроса
+    if (match && match[1]) {
+      result.exactPhrases.push(match[1].toLowerCase())
+      query = query.replace(match[0], '') // Удаляем из основного запроса
+    }
   }
 
   // Извлекаем field:value запросы
   const fieldRegex = /(\w+):(\S+)/g
   let originalQuery = query
   while ((match = fieldRegex.exec(originalQuery)) !== null) {
-    result.fieldQueries.push({
-      field: match[1].toLowerCase(),
-      value: match[2].toLowerCase()
-    })
-    query = query.replace(match[0], '') // Удаляем из основного запроса
+    if (match && match[1] && match[2]) {
+      result.fieldQueries.push({
+        field: match[1].toLowerCase(),
+        value: match[2].toLowerCase()
+      })
+      query = query.replace(match[0], '') // Удаляем из основного запроса
+    }
   }
 
   // Обрабатываем OR операторы (группы слов)
@@ -213,12 +217,14 @@ export function highlightSearchTerms(
   }
 
   // Сортируем по позиции
-  highlights.sort((a, b) => a.start - b.start)
+  highlights.sort((a, b) => (a?.start || 0) - (b?.start || 0))
 
   // Применяем подсветку с конца текста, чтобы не сбить позиции
   let result = text
   for (let i = highlights.length - 1; i >= 0; i--) {
-    const {start, end} = highlights[i]
+    const highlight = highlights[i]
+    if (!highlight) continue
+    const {start, end} = highlight
     const before = result.substring(0, start)
     const highlighted = result.substring(start, end)
     const after = result.substring(end)
@@ -343,7 +349,7 @@ export function validateSearchQuery(query: string): { valid: boolean; errors: st
   for (const fieldQuery of fieldQueries) {
     const [field] = fieldQuery.split(':')
     const validFields = ['name', 'description', 'brief_text', 'tags', 'status']
-    if (!validFields.includes(field.toLowerCase())) {
+    if (field && !validFields.includes(field.toLowerCase())) {
       errors.push(`Invalid field "${field}" in field:value query`)
     }
   }

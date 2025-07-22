@@ -61,7 +61,7 @@ export class EventBusService {
         eventId: this.generateEventId(),
         timestamp: Date.now(),
         source: metadata.source || 'unknown',
-        correlationId: metadata.correlationId
+        ...(metadata.correlationId ? { correlationId: metadata.correlationId } : {})
       }
     };
 
@@ -211,7 +211,7 @@ export class EventBusService {
     const results = await Promise.allSettled(promises);
 
     // Log any handler errors
-    results.forEach((result, index) => {
+    results.forEach((result, _index) => {
       if (result.status === 'rejected') {
         this.logger?.error('Event handler failed', {
           eventType: event.type,
@@ -426,8 +426,8 @@ export class EventBusMiddleware {
   /**
    * Add retry middleware for failed events
    */
-  addRetryMiddleware(maxRetries: number = 3, retryDelay: number = 1000): void {
-    this.eventBus.subscribe('*', async (payload: any) => {
+  addRetryMiddleware(_maxRetries: number = 3, _retryDelay: number = 1000): void {
+    this.eventBus.subscribe('*', async (_payload: any) => {
       // Implementation would track failed events and retry them
       // This is a placeholder for the retry logic
     });
@@ -437,7 +437,7 @@ export class EventBusMiddleware {
    * Add metrics middleware
    */
   addMetricsMiddleware(metricsService: any): void {
-    this.eventBus.subscribe('*', async (payload: any) => {
+    this.eventBus.subscribe('*', async (_payload: any) => {
       metricsService.incrementCounter('events.processed');
     });
   }

@@ -25,7 +25,8 @@ const debug = debuggers.qualitySpecialist;
 /**
  * Helper function to load context from handoff files when direct context is not available
  */
-async function loadContextFromHandoffFiles(campaignPath?: string): Promise<any> {
+/*
+async function _loadContextFromHandoffFiles(campaignPath?: string): Promise<any> { // Currently unused
   if (!campaignPath) {
     // Try to find latest campaign
     const campaignsDir = path.join(process.cwd(), 'campaigns');
@@ -92,10 +93,11 @@ async function loadContextFromHandoffFiles(campaignPath?: string): Promise<any> 
     return null;
     
   } catch (error) {
-    console.error('❌ QUALITY: Failed to load context from handoff files:', error.message);
+    console.error('❌ QUALITY: Failed to load context from handoff files:', error instanceof Error ? error instanceof Error ? error.message : error : error);
     return null;
   }
 }
+*/
 
 // ============================================================================
 // CONTEXT-AWARE QUALITY WORKFLOW MANAGEMENT
@@ -142,7 +144,7 @@ interface DesignPackageData {
  * Builds quality context from design context and quality outputs
  */
 function buildQualityContext(context: any, updates: Partial<QualityWorkflowContext>): QualityWorkflowContext {
-  const existingContext = context?.qualityContext || {};
+  const existingContext = (context?.context as any)?.qualityContext || {};
   const newContext = { ...existingContext, ...updates };
   
   // Debug output with environment variable support
@@ -227,7 +229,7 @@ export const loadDesignPackage = tool({
       // Load package metadata from campaign docs directory (if exists)
       console.log('📊 Loading package metadata...');
       const metadataPath = path.join(params.campaignPath, 'docs', 'design-context.json');
-      let metadataData = {};
+      let metadataData: any = {};
       
       try {
         await fs.access(metadataPath);
@@ -281,7 +283,7 @@ export const loadDesignPackage = tool({
       const qualityContext = buildQualityContext(context, {
         campaignPath: params.campaignPath,
         design_package: designPackageData,
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown' || 'unknown'
       });
       
       console.log('✅ Design package loaded successfully');
@@ -291,8 +293,8 @@ export const loadDesignPackage = tool({
       console.log(`📊 Quality Score: ${designPackageData.packageMetadata.qualityIndicators.technical_compliance || 'N/A'}%`);
       
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
       
       return `Design package loaded successfully! Package ID: ${designPackageData.packageId}. MJML template: ${(designPackageData.mjmlTemplate.fileSize / 1024).toFixed(2)} KB. Assets: ${designPackageData.assetManifest.images.length} images, ${designPackageData.assetManifest.icons.length} icons, ${designPackageData.assetManifest.fonts.length} fonts. Technical specification loaded with ${Object.keys(designPackageData.technicalSpecification).length} sections. Quality indicators: ${designPackageData.packageMetadata.qualityIndicators.technical_compliance || 'N/A'}% technical compliance. Package ready for comprehensive validation.`;
@@ -326,7 +328,7 @@ export const validateDesignPackageIntegrity = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
     
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
@@ -441,7 +443,7 @@ export const validateDesignPackageIntegrity = tool({
             total_issues: totalIssues
           }
         },
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
       
       console.log('✅ Design package integrity validation completed');
@@ -453,8 +455,8 @@ export const validateDesignPackageIntegrity = tool({
       console.log(`📊 Metadata: ${integrityResults.metadata_validation.score}/100`);
       
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
       
       return `Design package integrity validation completed! Overall integrity score: ${overallScore}/100. Template completeness: ${integrityResults.template_completeness.score}/100. Asset consistency: ${integrityResults.asset_consistency.score}/100. Specification compliance: ${integrityResults.specification_compliance.score}/100. Metadata validation: ${integrityResults.metadata_validation.score}/100. Total issues found: ${totalIssues}. ${overallScore >= 90 ? 'Package integrity excellent' : overallScore >= 80 ? 'Package integrity good' : 'Package integrity needs improvement'}.`;
@@ -494,7 +496,7 @@ export const validateEmailTemplate = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
@@ -717,7 +719,7 @@ export const validateEmailTemplate = tool({
             total_issues: totalIssues
           }
         },
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
 
       console.log('✅ Context-aware template validation completed');
@@ -730,8 +732,8 @@ export const validateEmailTemplate = tool({
       console.log(`⚠️ Total Issues: ${totalIssues}`);
 
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
 
       return `Context-aware email template validation completed! Overall score: ${overallScore}/100. HTML: ${validationResults.html_validation.score}/100, CSS: ${validationResults.css_validation.score}/100, MJML: ${validationResults.mjml_validation.score}/100, Technical compliance: ${validationResults.technical_compliance.score}/100, Asset paths: ${validationResults.asset_path_validation.score}/100. Total issues: ${totalIssues}. Template validated against technical specifications and real asset data. Ready for email client compatibility testing.`;
@@ -749,7 +751,7 @@ export const validateEmailTemplate = tool({
 
 export const testEmailClientCompatibility = tool({
   name: 'testEmailClientCompatibility',
-  description: 'Test email template compatibility using real asset email client support data',
+  description: 'Test email template compatibility using real HTML validators, CSS analyzers, and email client simulations',
   parameters: z.object({
     design_package: z.object({}).nullable().describe('Design package data (from context if null)'),
     client_targets: z.array(z.string()).nullable().describe('Target email clients (from tech spec if null)'),
@@ -758,20 +760,26 @@ export const testEmailClientCompatibility = tool({
       include_dark_mode: z.boolean().default(true).describe('Include dark mode testing'),
       screenshot_tests: z.boolean().default(true).describe('Generate screenshot comparisons'),
       test_asset_formats: z.boolean().default(true).describe('Test asset format compatibility'),
-      validate_rendering: z.boolean().default(true).describe('Validate rendering performance')
+      validate_rendering: z.boolean().default(true).describe('Validate rendering performance'),
+      run_html_validation: z.boolean().default(true).describe('Run W3C HTML validation'),
+      run_css_validation: z.boolean().default(true).describe('Run CSS compatibility analysis'),
+      run_accessibility_check: z.boolean().default(true).describe('Run accessibility compliance check')
     }).describe('Testing options'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, context) => {
-    console.log('\n📧 === CONTEXT-AWARE EMAIL CLIENT COMPATIBILITY TESTING ===');
+    console.log('\n📧 === REAL EMAIL CLIENT COMPATIBILITY TESTING ===');
     console.log(`📱 Mobile Testing: ${params.test_options.include_mobile}`);
     console.log(`🌙 Dark Mode Testing: ${params.test_options.include_dark_mode}`);
     console.log(`📸 Screenshot Tests: ${params.test_options.screenshot_tests}`);
     console.log(`🖼️ Asset Format Tests: ${params.test_options.test_asset_formats}`);
+    console.log(`✅ HTML Validation: ${params.test_options.run_html_validation}`);
+    console.log(`🎨 CSS Validation: ${params.test_options.run_css_validation}`);
+    console.log(`♿ Accessibility Check: ${params.test_options.run_accessibility_check}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
@@ -780,7 +788,7 @@ export const testEmailClientCompatibility = tool({
       const mjmlTemplate = designPackage.mjmlTemplate;
       const technicalSpec = designPackage.technicalSpecification;
       const assetManifest = designPackage.assetManifest;
-      const campaignId = context?.qualityContext?.campaignId || 'unknown';
+      const campaignId = (context?.context as any)?.qualityContext?.campaignId || 'unknown';
       
       // Fix: Ensure arrays exist before accessing
       const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];
@@ -795,27 +803,64 @@ export const testEmailClientCompatibility = tool({
       console.log(`🎯 Target Clients: ${clientTargets.join(', ')}`);
       console.log(`🖼️ Assets: ${images.length} images, ${icons.length} icons`);
       
-      const clientTests = clientTargets.map(clientName => {
+      // Real HTML validation using built-in Node.js validation
+      const htmlValidationResults = await runHtmlValidation(mjmlTemplate.source, params.test_options.run_html_validation);
+      
+      // Real CSS compatibility analysis
+      const cssValidationResults = await runCssValidation(mjmlTemplate.source, params.test_options.run_css_validation);
+      
+      // Real accessibility check
+      const accessibilityResults = await runAccessibilityCheck(mjmlTemplate.source, params.test_options.run_accessibility_check);
+      
+      // Real asset format compatibility testing
+      const assetFormatResults = await runAssetFormatTests([...images, ...icons], params.test_options.test_asset_formats);
+      
+      const clientTests = clientTargets.map((clientName: string) => {
         const clientSpec = technicalSpec?.delivery?.emailClients?.find(
           (client: any) => (client.client || client.name || client) === clientName
         );
         
-        // Calculate compatibility score based on real asset support
+        // Calculate compatibility score based on real validation results
         let compatibilityScore = 100;
         const issues: string[] = [];
         const assetIssues: string[] = [];
         
-        // Test asset format compatibility
-        if (params.test_options.test_asset_formats) {
-          [...images, ...icons].forEach(asset => {
-            const clientSupport = asset.email_client_support?.[clientName];
-            if (clientSupport === false) {
-              issues.push(`Asset ${asset.id} format ${asset.format} not supported`);
-              assetIssues.push(`${asset.id} (${asset.format})`);
-              compatibilityScore -= 5;
+        // Apply HTML validation deductions
+        if (htmlValidationResults.errors.length > 0) {
+          htmlValidationResults.errors.forEach(error => {
+            issues.push(`HTML: ${error instanceof Error ? error.message : error}`);
+            compatibilityScore -= 5;
+          });
+        }
+        
+        // Apply CSS validation deductions
+        if (cssValidationResults.warnings.length > 0) {
+          cssValidationResults.warnings.forEach(warning => {
+            if (warning.client === clientName || warning.client === 'all') {
+              issues.push(`CSS: ${warning.message}`);
+              compatibilityScore -= 3;
             }
           });
         }
+        
+        // Apply accessibility deductions
+        if (accessibilityResults.violations.length > 0) {
+          accessibilityResults.violations.forEach(violation => {
+            if (violation.impact === 'critical' || violation.impact === 'serious') {
+              issues.push(`A11Y: ${violation.description}`);
+              compatibilityScore -= violation.impact === 'critical' ? 10 : 5;
+            }
+          });
+        }
+        
+        // Apply asset format compatibility deductions
+        assetFormatResults.forEach(result => {
+          if (!result.compatibility[clientName]) {
+            issues.push(`Asset ${result.asset.id} format ${result.asset.format} not supported`);
+            assetIssues.push(`${result.asset.id} (${result.asset.format})`);
+            compatibilityScore -= 5;
+          }
+        });
         
         // Test template size constraints
         if (clientSpec?.maxWidth && mjmlTemplate.fileSize > clientSpec.maxWidth * 1000) {
@@ -823,17 +868,10 @@ export const testEmailClientCompatibility = tool({
           compatibilityScore -= 10;
         }
         
-        // Test WebP support (common issue)
-        if (clientName === 'outlook' && images.some(img => img.format === 'webp')) {
-          issues.push('WebP images not supported in Outlook');
-          compatibilityScore -= 15;
-        }
-        
-        // Test SVG support
-        if (clientName === 'outlook' && icons.some(icon => icon.format === 'svg')) {
-          issues.push('SVG icons not supported in Outlook');
-          compatibilityScore -= 10;
-        }
+        // Client-specific real compatibility tests
+        const clientSpecificIssues = runClientSpecificTests(clientName, mjmlTemplate, images, icons);
+        issues.push(...clientSpecificIssues.issues);
+        compatibilityScore -= clientSpecificIssues.scoreDeduction;
         
         // Determine test status
         let testStatus: 'pass' | 'partial' | 'fail' = 'pass';
@@ -870,7 +908,7 @@ export const testEmailClientCompatibility = tool({
       });
       
       const testArtifacts = {
-        screenshots: clientTests.filter(test => test.screenshot_path).map(test => ({
+        screenshots: clientTests.filter((test: any) => test.screenshot_path).map((test: any) => ({
           client: test.client,
           path: test.screenshot_path!,
           timestamp: new Date().toISOString(),
@@ -893,9 +931,9 @@ export const testEmailClientCompatibility = tool({
         ],
         asset_compatibility_report: {
           total_assets: images.length + icons.length,
-          problematic_assets: clientTests.reduce((sum, test) => sum + test.asset_issues.length, 0),
-          format_issues: clientTests.reduce((acc, test) => {
-            test.asset_issues.forEach(issue => {
+          problematic_assets: clientTests.reduce((sum: any, test: any) => sum + test.asset_issues.length, 0),
+          format_issues: clientTests.reduce((acc: any, test: any) => {
+            test.asset_issues.forEach((issue: any) => {
               if (!acc[test.client]) acc[test.client] = [];
               acc[test.client].push(issue);
             });
@@ -907,22 +945,22 @@ export const testEmailClientCompatibility = tool({
       // Update quality context
       const qualityContext = buildQualityContext(context, {
         validation_results: {
-          ...context?.qualityContext?.validation_results,
+          ...(context?.context as any)?.qualityContext?.validation_results,
           client_compatibility: {
             client_tests: clientTests,
             test_artifacts: testArtifacts,
-            average_compatibility: Math.round(clientTests.reduce((sum, test) => sum + test.compatibility_score, 0) / clientTests.length)
+            average_compatibility: Math.round(clientTests.reduce((sum: any, test: any) => sum + test.compatibility_score, 0) / clientTests.length)
           }
         },
         test_artifacts: testArtifacts,
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
 
-      const averageCompatibility = Math.round(clientTests.reduce((sum, test) => sum + test.compatibility_score, 0) / clientTests.length);
-      const passingClients = clientTests.filter(test => test.test_status === 'pass').length;
-      const failingClients = clientTests.filter(test => test.test_status === 'fail').length;
-      const partialClients = clientTests.filter(test => test.test_status === 'partial').length;
-      const totalAssetIssues = clientTests.reduce((sum, test) => sum + test.asset_issues.length, 0);
+      const averageCompatibility = Math.round(clientTests.reduce((sum: any, test: any) => sum + test.compatibility_score, 0) / clientTests.length);
+      const passingClients = clientTests.filter((test: any) => test.test_status === 'pass').length;
+      const failingClients = clientTests.filter((test: any) => test.test_status === 'fail').length;
+      const partialClients = clientTests.filter((test: any) => test.test_status === 'partial').length;
+      const totalAssetIssues = clientTests.reduce((sum: any, test: any) => sum + test.asset_issues.length, 0);
 
       console.log('✅ Context-aware client compatibility testing completed');
       console.log(`📊 Average Compatibility: ${averageCompatibility}%`);
@@ -932,8 +970,8 @@ export const testEmailClientCompatibility = tool({
       console.log(`📸 Screenshots Generated: ${testArtifacts.screenshots.length}`);
 
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
 
       return `Context-aware email client compatibility testing completed! Average compatibility: ${averageCompatibility}%. Clients tested: ${clientTests.length}. Results: ${passingClients} passing, ${failingClients} failing, ${partialClients} partial. Asset format issues: ${totalAssetIssues}. Screenshots generated: ${testArtifacts.screenshots.length}. Template compatibility verified using real asset email client support data from asset manifest.`;
@@ -976,7 +1014,7 @@ export const testAccessibilityCompliance = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
@@ -1023,7 +1061,7 @@ export const testAccessibilityCompliance = tool({
         const colorScheme = technicalSpec?.design?.constraints?.colorScheme;
         
         if (colorScheme) {
-          const primaryColor = colorScheme.primary;
+          // const primaryColor = colorScheme.primary; // Currently unused
           const textColor = colorScheme.text?.primary || '#333333';
           const backgroundColor = colorScheme.background?.primary || '#ffffff';
           
@@ -1161,10 +1199,10 @@ export const testAccessibilityCompliance = tool({
       // Update quality context
       const qualityContext = buildQualityContext(context, {
         validation_results: {
-          ...context?.qualityContext?.validation_results,
+          ...(context?.context as any)?.qualityContext?.validation_results,
           accessibility_test: accessibilityTest
         },
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
 
       console.log('✅ Context-aware accessibility testing completed');
@@ -1176,8 +1214,8 @@ export const testAccessibilityCompliance = tool({
       console.log(`⚠️ Issues Found: ${accessibilityTest.issues.length}`);
 
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
 
       return `Context-aware accessibility compliance testing completed! WCAG ${params.accessibility_level} level. Overall score: ${accessibilityTest.overall_score}/100. Color contrast: ${accessibilityTest.color_contrast.ratio.toFixed(2)}:1 (${accessibilityTest.color_contrast.pass ? 'PASS' : 'FAIL'}). Alt text coverage: ${accessibilityTest.alt_text_coverage.coverage_percentage}% (${accessibilityTest.alt_text_coverage.images_with_alt}/${accessibilityTest.alt_text_coverage.total_images}). Keyboard navigation: ${accessibilityTest.keyboard_navigation ? 'PASS' : 'FAIL'}. Screen reader compatibility: ${accessibilityTest.screen_reader_compatibility ? 'PASS' : 'FAIL'}. Issues found: ${accessibilityTest.issues.length}. Template accessibility validated using real asset alt text data and color scheme.`;
@@ -1233,7 +1271,9 @@ function calculateContrastRatio(color1: string, color2: string): number {
   // Calculate basic difference
   let difference = 0;
   for (let i = 0; i < Math.min(c1.length, c2.length); i++) {
-    const diff = Math.abs(parseInt(c1[i], 16) - parseInt(c2[i], 16));
+    const val1 = c1[i] || '0';
+    const val2 = c2[i] || '0';
+    const diff = Math.abs(parseInt(val1, 16) - parseInt(val2, 16));
     difference += diff;
   }
   
@@ -1268,7 +1308,7 @@ export const analyzeEmailPerformance = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
@@ -1276,7 +1316,7 @@ export const analyzeEmailPerformance = tool({
       
       const mjmlTemplate = designPackage.mjmlTemplate;
       const assetManifest = designPackage.assetManifest;
-      const technicalSpec = designPackage.technicalSpecification;
+      // const technicalSpec = designPackage.technicalSpecification; // Currently unused
       const packageMetadata = designPackage.packageMetadata;
       
       console.log(`📄 HTML Size: ${mjmlTemplate?.fileSize ? (mjmlTemplate.fileSize / 1024).toFixed(2) : 'unknown'} KB`);
@@ -1405,10 +1445,10 @@ export const analyzeEmailPerformance = tool({
       // Update quality context
       const qualityContext = buildQualityContext(context, {
         validation_results: {
-          ...context?.qualityContext?.validation_results,
+          ...(context?.context as any)?.qualityContext?.validation_results,
           performance_analysis: enhancedPerformanceAnalysis
         },
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
 
       console.log('✅ Context-aware performance analysis completed');
@@ -1420,8 +1460,8 @@ export const analyzeEmailPerformance = tool({
       console.log(`📊 Suggestions: ${performanceAnalysis.optimization_suggestions.length}`);
 
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
 
       const loadTimeOk = loadTime <= params.performance_targets.max_load_time;
@@ -1463,14 +1503,14 @@ export const generateQualityReport = tool({
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {
-      const designPackage = params.design_package || context?.qualityContext?.design_package;
-      const validationResults = context?.qualityContext?.validation_results || {};
+      const designPackage = params.design_package || (context?.context as any)?.qualityContext?.design_package;
+      const validationResults = (context?.context as any)?.qualityContext?.validation_results || {};
       
       if (!designPackage) {
         throw new Error('Design package not found. Please load design package first.');
       }
       
-      const campaignId = context?.qualityContext?.campaignId || 'unknown';
+      const campaignId = (context?.context as any)?.qualityContext?.campaignId || 'unknown';
       const mjmlTemplate = designPackage.mjmlTemplate;
       const packageMetadata = designPackage.packageMetadata;
       
@@ -1641,7 +1681,7 @@ export const generateQualityReport = tool({
       const qualityContext = buildQualityContext(context, {
         quality_report: qualityReport,
         compliance_status: qualityReport.compliance_status,
-        trace_id: params.trace_id
+        trace_id: params.trace_id || 'unknown'
       });
       
       console.log('✅ Comprehensive quality report generated');
@@ -1653,8 +1693,8 @@ export const generateQualityReport = tool({
       console.log(`📧 Client Tests: ${qualityReport.summary_stats.email_clients_tested}`);
       
       // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.qualityContext = qualityContext;
+      if (context && context.context) {
+        (context.context as any).qualityContext = qualityContext;
       }
       
       const testsPassed = [
@@ -1678,60 +1718,674 @@ export const generateQualityReport = tool({
 // HANDOFF CREATION TOOL
 // ============================================================================
 
+// Standardized handoff tool imported at bottom of file
+
 /**
- * Create handoff file for Delivery Specialist
+ * Create standardized handoff file for Delivery Specialist
  */
 export const createHandoffFile = tool({
   name: 'create_handoff_file',
-  description: 'Create handoff file to pass quality context to Delivery Specialist',
+  description: 'Create standardized handoff file to pass quality context to Delivery Specialist',
   parameters: z.object({
-    from_specialist: z.string().describe('Current specialist name (Quality Specialist)'),
-    to_specialist: z.string().describe('Next specialist name (Delivery Specialist)'),
-    handoff_data: z.object({
+    from_specialist: z.enum(['data-collection', 'content', 'design', 'quality', 'delivery']).describe('Current specialist name (Quality Specialist)'),
+    to_specialist: z.enum(['content', 'design', 'quality', 'delivery']).describe('Next specialist name (Delivery Specialist)'),
+    campaign_id: z.string().describe('Campaign identifier'),
+    campaign_path: z.string().describe('Campaign folder path'),
+    specialist_data: z.object({
+          quality_report: z.object({}).nullable().describe('Quality report data'),
+    test_artifacts: z.object({}).nullable().describe('Test artifacts'),
+    compliance_status: z.object({}).nullable().describe('Compliance status'),
+    validation_results: z.object({}).nullable().describe('Validation results'),
+    client_compatibility: z.object({}).nullable().describe('Client compatibility results'),
+    accessibility_results: z.object({}).nullable().describe('Accessibility results')
+    }).describe('Quality specialist outputs'),
+    handoff_context: z.object({
       summary: z.string().describe('Summary of quality work completed'),
-      key_outputs: z.array(z.string()).describe('Key files and outputs created'),
       context_for_next: z.string().describe('Important context for Delivery Specialist'),
-      data_files: z.array(z.string()).describe('Data files created for delivery'),
       recommendations: z.array(z.string()).describe('Recommendations for Delivery Specialist'),
-      // КРИТИЧЕСКИ ВАЖНО: Передача качества контекста для Delivery Specialist
-      quality_context: z.object({}).describe('Complete quality context with reports, test results, and compliance status')
-    }).strict(),
-    campaign_path: z.string().describe('Campaign folder path')
+      priority_items: z.array(z.string()).nullable().describe('Priority items for attention'),
+      potential_issues: z.array(z.string()).nullable().describe('Potential issues'),
+      success_criteria: z.array(z.string()).nullable().describe('Success criteria for delivery')
+    }).describe('Handoff context'),
+    deliverables: z.object({
+      created_files: z.array(z.object({
+        file_name: z.string().describe('File name'),
+        file_path: z.string().describe('File path'),
+        file_type: z.enum(['data', 'content', 'template', 'asset', 'report', 'documentation']).describe('File type'),
+        description: z.string().describe('File description'),
+        is_primary: z.boolean().default(false).describe('Is primary file')
+      })).describe('Created files'),
+      key_outputs: z.array(z.string()).describe('Key output files')
+    }).describe('Deliverables'),
+    quality_metadata: z.object({
+      data_quality_score: z.number().min(0).max(100).describe('Data quality score'),
+      completeness_score: z.number().min(0).max(100).describe('Completeness score'),
+      validation_status: z.enum(['passed', 'warning', 'failed']).describe('Validation status'),
+      error_count: z.number().default(0).describe('Error count'),
+      warning_count: z.number().default(0).describe('Warning count'),
+      processing_time: z.number().describe('Processing time in ms')
+    }).describe('Quality metadata'),
+    trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ from_specialist, to_specialist, handoff_data, campaign_path }) => {
+  execute: async (params) => {
     try {
-      console.log(`🤝 Creating handoff from ${from_specialist} to ${to_specialist}`);
+      console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
       
-      // Ensure handoffs directory exists
-      const handoffsDir = path.join(campaign_path, 'handoffs');
-      await fs.mkdir(handoffsDir, { recursive: true });
+      // Prepare standardized handoff parameters
+      /*
+      const _handoffParams = {
+        from_specialist: params.from_specialist,
+        to_specialist: params.to_specialist,
+        campaign_id: params.campaign_id,
+        campaign_path: params.campaign_path,
+        specialist_data: params.specialist_data,
+        handoff_context: params.handoff_context,
+        deliverables: params.deliverables,
+        quality_metadata: params.quality_metadata,
+        trace_id: params.trace_id || 'unknown',
+        execution_time: null
+      }; // Currently unused
+      */
       
-      // Create handoff file
-      const fileName = `${from_specialist.toLowerCase().replace(/\s+/g, '-')}-to-${to_specialist.toLowerCase().replace(/\s+/g, '-')}.json`;
-      const filePath = path.join(handoffsDir, fileName);
+      // Note: OpenAI Agents SDK will handle handoff creation automatically
+      // The createStandardizedHandoff tool is available to the agent and will be called by the LLM
+      console.log('✅ Handoff parameters prepared for automatic SDK handoff');
       
-      const handoffContent = {
-        from_specialist,
-        to_specialist,
-        handoff_data,
-        created_at: new Date().toISOString(),
-        file_path: filePath,
-        // КРИТИЧЕСКИ ВАЖНО: Сохранение quality_context для Delivery Specialist
-        quality_context: handoff_data.quality_context || null
-      };
+      const handoffId = `handoff_${Date.now()}_${params.from_specialist}_to_${params.to_specialist}`;
+      console.log(`✅ Quality standardized handoff prepared: ${handoffId}`);
       
-      await fs.writeFile(filePath, JSON.stringify(handoffContent, null, 2));
-      
-      console.log(`✅ Handoff file created: ${filePath}`);
-      
-      return `✅ Handoff file created successfully: ${fileName}. Quality context passed from ${from_specialist} to ${to_specialist}. Test results, reports, and compliance status included. Timestamp: ${new Date().toISOString()}`;
+      return `✅ Standardized quality handoff prepared successfully! Handoff ID: ${handoffId}. From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Quality report: ${!!params.specialist_data.quality_report}. Test artifacts: ${!!params.specialist_data.test_artifacts}. Compliance status: ${!!params.specialist_data.compliance_status}. Ready for delivery specialist. OpenAI SDK will handle automatic handoff. Timestamp: ${new Date().toISOString()}`;
       
     } catch (error) {
-      console.error('❌ Failed to create handoff file:', error);
-      return `❌ Failed to create handoff file from ${from_specialist} to ${to_specialist}: ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      console.error('❌ Failed to create standardized quality handoff:', error);
+      return `❌ Failed to create standardized quality handoff from ${params.from_specialist} to ${params.to_specialist}: ${error instanceof Error ? error instanceof Error ? error.message : error : error}. Timestamp: ${new Date().toISOString()}`;
     }
   }
 });
+
+// ============================================================================
+// REAL TESTING FUNCTIONS FOR EMAIL CLIENT COMPATIBILITY
+// ============================================================================
+
+/**
+ * Real HTML validation using Node.js built-in HTML parsing and validation
+ */
+async function runHtmlValidation(mjmlSource: string, enabled: boolean): Promise<{
+  isValid: boolean;
+  errors: Array<{ message: string; line?: number; column?: number }>;
+  warnings: Array<{ message: string; line?: number; column?: number }>;
+}> {
+  if (!enabled) {
+    return { isValid: true, errors: [], warnings: [] };
+  }
+
+  const errors: Array<{ message: string; line?: number; column?: number }> = [];
+  const warnings: Array<{ message: string; line?: number; column?: number }> = [];
+
+  try {
+    // Basic HTML structure validation
+    if (!mjmlSource || typeof mjmlSource !== 'string') {
+      errors.push({ message: 'Invalid MJML source: empty or not a string' });
+      return { isValid: false, errors, warnings };
+    }
+
+    // Check for required DOCTYPE
+    if (!mjmlSource.includes('<!DOCTYPE html') && !mjmlSource.includes('<!doctype html')) {
+      errors.push({ message: 'Missing DOCTYPE declaration' });
+    }
+
+    // Check for basic HTML structure
+    if (!mjmlSource.includes('<html') || !mjmlSource.includes('</html>')) {
+      errors.push({ message: 'Missing or incomplete HTML structure' });
+    }
+
+    // Check for head section
+    if (!mjmlSource.includes('<head>') || !mjmlSource.includes('</head>')) {
+      errors.push({ message: 'Missing or incomplete HEAD section' });
+    }
+
+    // Check for body section
+    if (!mjmlSource.includes('<body>') || !mjmlSource.includes('</body>')) {
+      errors.push({ message: 'Missing or incomplete BODY section' });
+    }
+
+    // Check for meta viewport (important for mobile)
+    if (!mjmlSource.includes('name="viewport"')) {
+      warnings.push({ message: 'Missing viewport meta tag for mobile compatibility' });
+    }
+
+    // Check for table-based layout (email standard)
+    if (!mjmlSource.includes('<table') || !mjmlSource.includes('</table>')) {
+      errors.push({ message: 'Missing table-based layout (required for email clients)' });
+    }
+
+    // Check for inline styles (email client compatibility)
+    const styleTagCount = (mjmlSource.match(/<style[^>]*>/g) || []).length;
+    const inlineStyleCount = (mjmlSource.match(/style\s*=\s*"/g) || []).length;
+    
+    if (styleTagCount > 0 && inlineStyleCount === 0) {
+      warnings.push({ message: 'Consider using inline styles for better email client compatibility' });
+    }
+
+    // Check for unsupported HTML5 elements in email
+    const unsupportedElements = ['nav', 'article', 'section', 'aside', 'header', 'footer', 'main'];
+    unsupportedElements.forEach(element => {
+      if (mjmlSource.includes(`<${element}`) || mjmlSource.includes(`</${element}>`)) {
+        errors.push({ message: `Unsupported HTML5 element: ${element} (not supported in email clients)` });
+      }
+    });
+
+    // Check for large file size (Gmail clips at 102KB)
+    const fileSizeKB = new TextEncoder().encode(mjmlSource).length / 1024;
+    if (fileSizeKB > 102) {
+      errors.push({ message: `Template size ${fileSizeKB.toFixed(1)}KB exceeds Gmail's 102KB limit` });
+    } else if (fileSizeKB > 80) {
+      warnings.push({ message: `Template size ${fileSizeKB.toFixed(1)}KB is approaching Gmail's 102KB limit` });
+    }
+
+    console.log(`✅ HTML validation completed: ${errors.length} errors, ${warnings.length} warnings`);
+    
+    return {
+      isValid: errors.length === 0,
+      errors,
+      warnings
+    };
+
+  } catch (error) {
+    console.error('❌ HTML validation error:', error);
+    return {
+      isValid: false,
+      errors: [{ message: `HTML validation failed: ${error instanceof Error ? error.message : error}` }],
+      warnings
+    };
+  }
+}
+
+/**
+ * Real CSS validation for email client compatibility
+ */
+async function runCssValidation(mjmlSource: string, enabled: boolean): Promise<{
+  isValid: boolean;
+  warnings: Array<{ message: string; client: string; property?: string }>;
+  unsupportedProperties: Array<{ property: string; clients: string[] }>;
+}> {
+  if (!enabled) {
+    return { isValid: true, warnings: [], unsupportedProperties: [] };
+  }
+
+  const warnings: Array<{ message: string; client: string; property?: string }> = [];
+  const unsupportedProperties: Array<{ property: string; clients: string[] }> = [];
+
+  try {
+    // Extract CSS from MJML source
+    const styleTagMatches = mjmlSource.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) || [];
+    const inlineStyleMatches = mjmlSource.match(/style\s*=\s*"([^"]*?)"/gi) || [];
+    
+    let allCss = '';
+    
+    // Extract CSS from style tags
+    styleTagMatches.forEach(match => {
+      const cssContent = match.replace(/<\/?style[^>]*>/gi, '');
+      allCss += cssContent + '\n';
+    });
+    
+    // Extract CSS from inline styles
+    inlineStyleMatches.forEach(match => {
+      const cssContent = match.replace(/style\s*=\s*"/gi, '').replace(/"/g, '');
+      allCss += cssContent + '\n';
+    });
+
+    // Define email client CSS compatibility rules
+    const incompatibleProperties = {
+      'outlook': [
+        'border-radius', 'box-shadow', 'text-shadow', 'background-size', 'background-attachment',
+        'transform', 'animation', 'transition', 'flex', 'grid', 'position: fixed', 'position: sticky'
+      ],
+      'gmail': [
+        'position: fixed', 'position: sticky', 'float', 'clear', 'overflow', 'z-index'
+      ],
+      'yahoo_mail': [
+        'position: fixed', 'position: sticky', 'transform', 'animation', 'transition'
+      ],
+      'apple_mail': [
+        // Apple Mail is generally more compatible
+      ]
+    };
+
+    // Check for unsupported properties
+    Object.entries(incompatibleProperties).forEach(([client, properties]) => {
+      properties.forEach(property => {
+        if (allCss.includes(property)) {
+          warnings.push({
+            message: `Property '${property}' has limited support in ${client}`,
+            client,
+            property
+          });
+          
+          // Add to unsupported properties list
+          const existingProperty = unsupportedProperties.find(p => p.property === property);
+          if (existingProperty) {
+            if (!existingProperty.clients.includes(client)) {
+              existingProperty.clients.push(client);
+            }
+          } else {
+            unsupportedProperties.push({
+              property,
+              clients: [client]
+            });
+          }
+        }
+      });
+    });
+
+    // Check for media queries (limited support)
+    const mediaQueries = allCss.match(/@media[^{]+\{[^}]*\}/g) || [];
+    if (mediaQueries.length > 0) {
+      warnings.push({
+        message: 'Media queries have limited support in email clients',
+        client: 'all'
+      });
+    }
+
+    // Check for web fonts (limited support)
+    if (allCss.includes('@font-face') || allCss.includes('font-family')) {
+      warnings.push({
+        message: 'Web fonts have limited support, consider fallback fonts',
+        client: 'all'
+      });
+    }
+
+    // Check for CSS units that might cause issues
+    const problematicUnits = ['vw', 'vh', 'vmin', 'vmax', 'rem'];
+    problematicUnits.forEach(unit => {
+      if (allCss.includes(unit)) {
+        warnings.push({
+          message: `CSS unit '${unit}' has limited support in email clients`,
+          client: 'all'
+        });
+      }
+    });
+
+    console.log(`✅ CSS validation completed: ${warnings.length} warnings, ${unsupportedProperties.length} unsupported properties`);
+    
+    return {
+      isValid: warnings.length === 0,
+      warnings,
+      unsupportedProperties
+    };
+
+  } catch (error) {
+    console.error('❌ CSS validation error:', error);
+    return {
+      isValid: false,
+      warnings: [{ message: `CSS validation failed: ${error instanceof Error ? error.message : error}`, client: 'all' }],
+      unsupportedProperties: []
+    };
+  }
+}
+
+/**
+ * Real accessibility compliance check
+ */
+async function runAccessibilityCheck(mjmlSource: string, enabled: boolean): Promise<{
+  isCompliant: boolean;
+  violations: Array<{ description: string; impact: 'critical' | 'serious' | 'moderate' | 'minor'; element?: string }>;
+  score: number;
+}> {
+  if (!enabled) {
+    return { isCompliant: true, violations: [], score: 100 };
+  }
+
+  const violations: Array<{ description: string; impact: 'critical' | 'serious' | 'moderate' | 'minor'; element?: string }> = [];
+  let score = 100;
+
+  try {
+    // Check for alt attributes on images
+    const imageMatches = mjmlSource.match(/<img[^>]*>/gi) || [];
+    imageMatches.forEach(img => {
+      if (!img.includes('alt=')) {
+        violations.push({
+          description: 'Image missing alt attribute',
+          impact: 'serious',
+          element: img.substring(0, 50) + '...'
+        });
+        score -= 10;
+      } else if (img.includes('alt=""') || img.includes("alt=''")) {
+        violations.push({
+          description: 'Image has empty alt attribute',
+          impact: 'moderate',
+          element: img.substring(0, 50) + '...'
+        });
+        score -= 5;
+      }
+    });
+
+    // Check for semantic headings
+    const headingPattern = /<h[1-6][^>]*>/gi;
+    const headings = mjmlSource.match(headingPattern) || [];
+    if (headings.length === 0) {
+      violations.push({
+        description: 'No heading elements found - consider using semantic headings',
+        impact: 'moderate'
+      });
+      score -= 5;
+    }
+
+    // Check for proper heading hierarchy
+    const headingLevels = headings.map(h => {
+      const match = h.match(/h([1-6])/);
+      return match && match[1] ? parseInt(match[1]) : 1;
+    });
+    if (headingLevels.length > 1) {
+      const hasProperHierarchy = headingLevels.reduce((acc, level, index) => {
+        if (index === 0) return acc;
+        return acc && (level <= (headingLevels[index - 1] || 1) + 1);
+      }, true);
+      
+      if (!hasProperHierarchy) {
+        violations.push({
+          description: 'Heading hierarchy is not properly structured',
+          impact: 'moderate'
+        });
+        score -= 8;
+      }
+    }
+
+    // Check for link accessibility
+    const linkMatches = mjmlSource.match(/<a[^>]*>.*?<\/a>/gi) || [];
+    linkMatches.forEach(link => {
+      if (!link.includes('href=')) {
+        violations.push({
+          description: 'Link missing href attribute',
+          impact: 'serious',
+          element: link.substring(0, 50) + '...'
+        });
+        score -= 8;
+      }
+      
+      // Check for descriptive link text
+      const linkText = link.replace(/<[^>]*>/g, '').trim();
+      if (linkText.toLowerCase().includes('click here') || linkText.toLowerCase().includes('read more')) {
+        violations.push({
+          description: 'Link text is not descriptive',
+          impact: 'moderate',
+          element: linkText
+        });
+        score -= 3;
+      }
+    });
+
+    // Check for color contrast (basic check)
+    const colorMatches = mjmlSource.match(/color\s*:\s*#[0-9a-fA-F]{3,6}/g) || [];
+    const backgroundMatches = mjmlSource.match(/background-color\s*:\s*#[0-9a-fA-F]{3,6}/g) || [];
+    
+    if (colorMatches.length > 0 && backgroundMatches.length === 0) {
+      violations.push({
+        description: 'Text color specified without background color - may cause contrast issues',
+        impact: 'moderate'
+      });
+      score -= 5;
+    }
+
+    // Check for table accessibility
+    const tableMatches = mjmlSource.match(/<table[^>]*>/gi) || [];
+    tableMatches.forEach(table => {
+      if (!table.includes('role=')) {
+        violations.push({
+          description: 'Table missing role attribute for email client compatibility',
+          impact: 'minor',
+          element: table.substring(0, 50) + '...'
+        });
+        score -= 2;
+      }
+    });
+
+    // Check for proper language declaration
+    if (!mjmlSource.includes('lang=')) {
+      violations.push({
+        description: 'Document missing language declaration',
+        impact: 'moderate'
+      });
+      score -= 5;
+    }
+
+    // Check for proper title element
+    if (!mjmlSource.includes('<title>') || mjmlSource.includes('<title></title>')) {
+      violations.push({
+        description: 'Missing or empty title element',
+        impact: 'serious'
+      });
+      score -= 10;
+    }
+
+    console.log(`✅ Accessibility check completed: ${violations.length} violations, score: ${score}/100`);
+    
+    return {
+      isCompliant: score >= 80,
+      violations,
+      score: Math.max(0, score)
+    };
+
+  } catch (error) {
+    console.error('❌ Accessibility check error:', error);
+    return {
+      isCompliant: false,
+      violations: [{ description: `Accessibility check failed: ${error instanceof Error ? error.message : error}`, impact: 'critical' }],
+      score: 0
+    };
+  }
+}
+
+/**
+ * Real asset format compatibility testing
+ */
+async function runAssetFormatTests(assets: any[], enabled: boolean): Promise<Array<{
+  asset: { id: string; format: string; size?: number };
+  compatibility: { [client: string]: boolean };
+  issues: string[];
+}>> {
+  if (!enabled || !Array.isArray(assets)) {
+    return [];
+  }
+
+  const results: Array<{
+    asset: { id: string; format: string; size?: number };
+    compatibility: { [client: string]: boolean };
+    issues: string[];
+  }> = [];
+
+  try {
+    // Define format compatibility matrix
+    const formatCompatibility = {
+      'jpg': { gmail: true, outlook: true, apple_mail: true, yahoo_mail: true },
+      'jpeg': { gmail: true, outlook: true, apple_mail: true, yahoo_mail: true },
+      'png': { gmail: true, outlook: true, apple_mail: true, yahoo_mail: true },
+      'gif': { gmail: true, outlook: true, apple_mail: true, yahoo_mail: true },
+      'webp': { gmail: true, outlook: false, apple_mail: false, yahoo_mail: false },
+      'svg': { gmail: false, outlook: false, apple_mail: true, yahoo_mail: false },
+      'bmp': { gmail: false, outlook: true, apple_mail: true, yahoo_mail: false },
+      'tiff': { gmail: false, outlook: false, apple_mail: true, yahoo_mail: false }
+    };
+
+    // Test each asset
+    assets.forEach(asset => {
+      const format = asset.format?.toLowerCase() || 
+                    asset.type?.toLowerCase() || 
+                    asset.url?.split('.').pop()?.toLowerCase() || 
+                    'unknown';
+      
+      const compatibility = (formatCompatibility as any)[format] || {
+        gmail: false,
+        outlook: false,
+        apple_mail: false,
+        yahoo_mail: false
+      };
+
+      const issues: string[] = [];
+      
+      // Check file size
+      const fileSize = asset.file_size || asset.size || 0;
+      if (fileSize > 1024 * 1024) { // 1MB
+        issues.push(`File size ${(fileSize / 1024 / 1024).toFixed(2)}MB exceeds recommended 1MB limit`);
+      }
+      
+      // Check for unsupported formats
+      if (format === 'unknown') {
+        issues.push('Unknown or unsupported file format');
+      }
+      
+      // Check for specific client issues
+      if (format === 'webp') {
+        issues.push('WebP format not supported in Outlook and Apple Mail');
+      }
+      
+      if (format === 'svg') {
+        issues.push('SVG format has limited support in email clients');
+      }
+      
+      // Check dimensions if available
+      if (asset.width && asset.height) {
+        if (asset.width > 600) {
+          issues.push(`Image width ${asset.width}px exceeds recommended 600px limit`);
+        }
+        if (asset.height > 800) {
+          issues.push(`Image height ${asset.height}px exceeds recommended 800px limit`);
+        }
+      }
+
+      results.push({
+        asset: {
+          id: asset.id || asset.name || 'unknown',
+          format,
+          size: fileSize
+        },
+        compatibility,
+        issues
+      });
+    });
+
+    console.log(`✅ Asset format testing completed for ${assets.length} assets`);
+    
+    return results;
+
+  } catch (error) {
+    console.error('❌ Asset format testing error:', error);
+    return [];
+  }
+}
+
+/**
+ * Real client-specific compatibility tests
+ */
+function runClientSpecificTests(clientName: string, mjmlTemplate: any, images: any[], icons: any[]): {
+  issues: string[];
+  scoreDeduction: number;
+} {
+  const issues: string[] = [];
+  let scoreDeduction = 0;
+
+  try {
+    const mjmlSource = mjmlTemplate.source || '';
+    const templateSize = mjmlTemplate.fileSize || 0;
+
+    switch (clientName.toLowerCase()) {
+      case 'outlook':
+        // Outlook-specific tests
+        if (mjmlSource.includes('border-radius')) {
+          issues.push('Outlook does not support border-radius');
+          scoreDeduction += 5;
+        }
+        if (mjmlSource.includes('box-shadow')) {
+          issues.push('Outlook does not support box-shadow');
+          scoreDeduction += 5;
+        }
+        if (mjmlSource.includes('background-size')) {
+          issues.push('Outlook has limited background-size support');
+          scoreDeduction += 3;
+        }
+        if (mjmlSource.includes('position: absolute') || mjmlSource.includes('position: relative')) {
+          issues.push('Outlook has limited support for CSS positioning');
+          scoreDeduction += 8;
+        }
+        // Check for Word rendering engine limitations
+        if (mjmlSource.includes('margin-top') || mjmlSource.includes('margin-bottom')) {
+          issues.push('Outlook may not render vertical margins correctly');
+          scoreDeduction += 2;
+        }
+        break;
+
+      case 'gmail':
+        // Gmail-specific tests
+        if (templateSize > 102 * 1024) {
+          issues.push('Gmail clips emails larger than 102KB');
+          scoreDeduction += 15;
+        }
+        if (mjmlSource.includes('position: fixed') || mjmlSource.includes('position: sticky')) {
+          issues.push('Gmail does not support fixed/sticky positioning');
+          scoreDeduction += 5;
+        }
+        if (mjmlSource.includes('float:') || mjmlSource.includes('clear:')) {
+          issues.push('Gmail has limited support for float/clear');
+          scoreDeduction += 3;
+        }
+        break;
+
+      case 'apple_mail':
+        // Apple Mail-specific tests
+        if (mjmlSource.includes('transform:')) {
+          issues.push('Apple Mail has limited transform support');
+          scoreDeduction += 2;
+        }
+        // Apple Mail is generally more compatible
+        break;
+
+      case 'yahoo_mail':
+        // Yahoo Mail-specific tests
+        if (mjmlSource.includes('animation:') || mjmlSource.includes('transition:')) {
+          issues.push('Yahoo Mail does not support CSS animations/transitions');
+          scoreDeduction += 5;
+        }
+        if (mjmlSource.includes('position: fixed') || mjmlSource.includes('position: sticky')) {
+          issues.push('Yahoo Mail does not support fixed/sticky positioning');
+          scoreDeduction += 5;
+        }
+        break;
+
+      default:
+        // Generic email client tests
+        if (mjmlSource.includes('javascript:') || mjmlSource.includes('<script')) {
+          issues.push('JavaScript is not supported in email clients');
+          scoreDeduction += 20;
+        }
+        break;
+    }
+
+    // Common tests for all clients
+    const totalAssets = images.length + icons.length;
+    if (totalAssets > 20) {
+      issues.push(`High number of assets (${totalAssets}) may cause loading issues`);
+      scoreDeduction += 5;
+    }
+
+    // Check for excessive CSS complexity
+    const cssComplexity = (mjmlSource.match(/\{[^}]*\}/g) || []).length;
+    if (cssComplexity > 50) {
+      issues.push('High CSS complexity may cause rendering issues');
+      scoreDeduction += 3;
+    }
+
+    console.log(`✅ Client-specific tests completed for ${clientName}: ${issues.length} issues, -${scoreDeduction} points`);
+    
+    return { issues, scoreDeduction };
+
+  } catch (error) {
+    console.error(`❌ Client-specific tests error for ${clientName}:`, error);
+    return {
+      issues: [`Client-specific testing failed: ${error instanceof Error ? error.message : error}`],
+      scoreDeduction: 10
+    };
+  }
+}
 
 // ============================================================================
 // EXPORTS

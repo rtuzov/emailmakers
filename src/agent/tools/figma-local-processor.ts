@@ -60,7 +60,7 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       return {
         success: false,
         error: `Figma assets directory not found: ${basePath}`,
-        data: { metadata: {} }
+        _data: { metadata: {} }
       };
     }
 
@@ -92,7 +92,7 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       return {
         success: false,
         error: 'No assets found in Figma directory',
-        data: { metadata: {} }
+        _data: { metadata: {} }
       };
     }
 
@@ -126,14 +126,14 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
 
     return {
       success: true,
-      data: { metadata }
+      _data: { metadata }
     };
     
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error during asset search',
-      data: { metadata: {} }
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error during asset search',
+      _data: { metadata: {} }
     };
   }
 }
@@ -352,7 +352,7 @@ function calculateAssetRelevanceScore(asset: LocalFigmaAsset, searchTags: string
 /**
  * Применение контекстных фильтров
  */
-function applyContextFilters(assets: LocalFigmaAsset[], context: LocalFigmaSearchParams['context']): LocalFigmaAsset[] {
+function applyContextFilters(assets: LocalFigmaAsset[], _context: LocalFigmaSearchParams['context']): LocalFigmaAsset[] {
   let filtered = [...assets];
   
   // Фильтр по предпочитаемой эмоции

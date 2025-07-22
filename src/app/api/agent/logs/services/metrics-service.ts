@@ -107,7 +107,7 @@ export class MetricsService {
     });
     
     // Calculate metrics
-    const allExecutionTimes = relevantProfiles.flatMap(p => p.data.execution_times);
+    const allExecutionTimes = relevantProfiles.flatMap(p => (p || {}).data.execution_times);
     const durations = allExecutionTimes.map(et => et.duration_ms);
     
     const metrics = {
@@ -135,7 +135,7 @@ export class MetricsService {
     const recommendations = include_recommendations ? this.generatePerformanceRecommendations(metrics) : [];
     
     // Collect all bottlenecks
-    const bottlenecks = relevantProfiles.flatMap(p => p.data.bottlenecks);
+    const bottlenecks = relevantProfiles.flatMap(p => (p || {}).data.bottlenecks);
     
     return {
       agent_id: agent_id || 'all',
@@ -293,12 +293,12 @@ export class MetricsService {
     const { agent_id, time_range, detect_leaks = true } = analysisConfig;
     
     const relevantProfiles = this.getRelevantProfiles(agent_id, time_range);
-    const memorySnapshots = relevantProfiles.flatMap(p => p.data.memory_snapshots);
+    const memorySnapshots = relevantProfiles.flatMap(p => (p || {}).data.memory_snapshots);
     
     const memoryStats = {
-      avg_heap_used_mb: this.calculateAverage(memorySnapshots.map(s => s.heap_used_mb)),
-      max_heap_used_mb: Math.max(...memorySnapshots.map(s => s.heap_used_mb)),
-      avg_heap_total_mb: this.calculateAverage(memorySnapshots.map(s => s.heap_total_mb)),
+      avg_heap_used_mb: this.calculateAverage(memorySnapshots.map(s => (s || {}).heap_used_mb)),
+      max_heap_used_mb: Math.max(...memorySnapshots.map(s => (s || {}).heap_used_mb)),
+      avg_heap_total_mb: this.calculateAverage(memorySnapshots.map(s => (s || {}).heap_total_mb)),
       gc_frequency: this.calculateGcFrequency(memorySnapshots)
     };
     
@@ -326,7 +326,7 @@ export class MetricsService {
     const { agent_id, time_range, severity_threshold = 'medium' } = detectionConfig;
     
     const relevantProfiles = this.getRelevantProfiles(agent_id, time_range);
-    const allBottlenecks = relevantProfiles.flatMap(p => p.data.bottlenecks);
+    const allBottlenecks = relevantProfiles.flatMap(p => (p || {}).data.bottlenecks);
     
     // Filter by severity
     const severityOrder = ['low', 'medium', 'high', 'critical'];
@@ -463,7 +463,7 @@ export class MetricsService {
     // Analyze memory usage
     const memorySnapshots = profile.data.memory_snapshots;
     if (memorySnapshots.length > 0) {
-      const heapUsages = memorySnapshots.map(s => s.heap_used_mb);
+      const heapUsages = memorySnapshots.map(s => (s || {}).heap_used_mb);
       const maxHeap = Math.max(...heapUsages);
       const avgHeap = heapUsages.reduce((a, b) => a + b, 0) / heapUsages.length;
       
@@ -507,18 +507,18 @@ export class MetricsService {
   }
 
   private calculateMemoryEfficiencyScore(profiles: PerformanceProfile[]): number {
-    const allSnapshots = profiles.flatMap(p => p.data.memory_snapshots);
+    const allSnapshots = profiles.flatMap(p => (p || {}).data.memory_snapshots);
     if (allSnapshots.length === 0) return 100;
     
-    const avgHeapUsed = allSnapshots.reduce((sum, s) => sum + s.heap_used_mb, 0) / allSnapshots.length;
-    const avgHeapTotal = allSnapshots.reduce((sum, s) => sum + s.heap_total_mb, 0) / allSnapshots.length;
+    const avgHeapUsed = allSnapshots.reduce((sum, s) => sum + (s || {}).heap_used_mb, 0) / allSnapshots.length;
+    const avgHeapTotal = allSnapshots.reduce((sum, s) => sum + (s || {}).heap_total_mb, 0) / allSnapshots.length;
     
     const efficiency = (avgHeapUsed / avgHeapTotal) * 100;
     return Math.max(0, 100 - efficiency); // Higher score for lower usage
   }
 
   private calculateCpuEfficiencyScore(profiles: PerformanceProfile[]): number {
-    const allResourceUsage = profiles.flatMap(p => p.data.resource_usage);
+    const allResourceUsage = profiles.flatMap(p => (p || {}).data.resource_usage);
     if (allResourceUsage.length === 0) return 100;
     
     const avgCpuUsage = allResourceUsage.reduce((sum, r) => sum + r.cpu_percent, 0) / allResourceUsage.length;
@@ -544,8 +544,8 @@ export class MetricsService {
   }
 
   private calculateMemoryTrend(profiles: PerformanceProfile[]): string {
-    const allSnapshots = profiles.flatMap(p => p.data.memory_snapshots);
-    const heapUsages = allSnapshots.map(s => s.heap_used_mb);
+    const allSnapshots = profiles.flatMap(p => (p || {}).data.memory_snapshots);
+    const heapUsages = allSnapshots.map(s => (s || {}).heap_used_mb);
     return this.calculateTrend(heapUsages, 'memory');
   }
 
@@ -625,13 +625,13 @@ export class MetricsService {
   }
 
   private calculateGcFrequency(snapshots: MemorySnapshot[]): number {
-    const gcSnapshots = snapshots.filter(s => s.gc_stats);
+    const gcSnapshots = snapshots.filter(s => (s || {}).gc_stats);
     return gcSnapshots.length / Math.max(1, snapshots.length);
   }
 
   private identifyMemoryPatterns(snapshots: MemorySnapshot[]): any {
     // Simplified pattern identification
-    const heapUsages = snapshots.map(s => s.heap_used_mb);
+    const heapUsages = snapshots.map(s => (s || {}).heap_used_mb);
     const trend = this.calculateTrend(heapUsages, 'memory');
     
     return {
@@ -646,7 +646,7 @@ export class MetricsService {
     const leaks: any[] = [];
     
     // Simple leak detection: consistently increasing memory usage
-    const heapUsages = snapshots.map(s => s.heap_used_mb);
+    const heapUsages = snapshots.map(s => (s || {}).heap_used_mb);
     if (heapUsages.length >= 10) {
       const firstQuarter = heapUsages.slice(0, Math.floor(heapUsages.length / 4));
       const lastQuarter = heapUsages.slice(-Math.floor(heapUsages.length / 4));
@@ -697,7 +697,7 @@ export class MetricsService {
   }
 
   private aggregateResponseTimes(profiles: PerformanceProfile[], aggregation: string): number {
-    const allTimes = profiles.flatMap(p => p.data.execution_times.map(et => et.duration_ms));
+    const allTimes = profiles.flatMap(p => (p || {}).data.execution_times.map(et => et.duration_ms));
     
     switch (aggregation) {
       case 'avg': return this.calculateAverage(allTimes);
@@ -709,18 +709,18 @@ export class MetricsService {
   }
 
   private aggregateErrorRates(profiles: PerformanceProfile[], aggregation: string): number {
-    const allExecutions = profiles.flatMap(p => p.data.execution_times);
+    const allExecutions = profiles.flatMap(p => (p || {}).data.execution_times);
     return this.calculateErrorRate(allExecutions);
   }
 
   private aggregateThroughput(profiles: PerformanceProfile[], aggregation: string): number {
-    const allExecutions = profiles.flatMap(p => p.data.execution_times);
+    const allExecutions = profiles.flatMap(p => (p || {}).data.execution_times);
     return this.calculateThroughput(allExecutions);
   }
 
   private aggregateMemoryUsage(profiles: PerformanceProfile[], aggregation: string): number {
-    const allSnapshots = profiles.flatMap(p => p.data.memory_snapshots);
-    const heapUsages = allSnapshots.map(s => s.heap_used_mb);
+    const allSnapshots = profiles.flatMap(p => (p || {}).data.memory_snapshots);
+    const heapUsages = allSnapshots.map(s => (s || {}).heap_used_mb);
     
     switch (aggregation) {
       case 'avg': return this.calculateAverage(heapUsages);
@@ -732,7 +732,7 @@ export class MetricsService {
   }
 
   private aggregateCpuUsage(profiles: PerformanceProfile[], aggregation: string): number {
-    const allResourceUsage = profiles.flatMap(p => p.data.resource_usage);
+    const allResourceUsage = profiles.flatMap(p => (p || {}).data.resource_usage);
     const cpuUsages = allResourceUsage.map(r => r.cpu_percent);
     
     switch (aggregation) {

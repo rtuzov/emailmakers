@@ -6,7 +6,7 @@ import { promises as fs } from 'fs';
 const FIGMA_TOKEN = process.env.FIGMA_ACCESS_TOKEN || process.env.FIGMA_TOKEN || 'YOUR_FIGMA_TOKEN_HERE';
 const FIGMA_PROJECT_ID = process.env.FIGMA_PROJECT_ID;
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     if (!FIGMA_TOKEN) {
       return NextResponse.json({

@@ -20,6 +20,29 @@ import {
 } from './handoff-schemas';
 
 /**
+ * Creates a proper empty DataCollectionContext with undefined values for optional fields
+ * to satisfy Zod schema requirements with exactOptionalPropertyTypes
+ */
+function createEmptyDataCollectionContext(campaignId: string): DataCollectionContext {
+  return {
+    // Optional fields should be undefined, not null
+    destination_analysis: undefined,
+    market_intelligence: undefined,
+    emotional_profile: undefined,
+    travel_intelligence: undefined,
+    trend_analysis: undefined,
+    consolidated_insights: undefined,
+    collection_metadata: {
+      campaign_id: campaignId,
+      collection_timestamp: new Date().toISOString(),
+      data_sources: [],
+      collection_status: 'failed' as const,
+      data_quality_score: 0
+    }
+  };
+}
+
+/**
  * PHASE 11 TASK 11.8: Workflow Continuity System
  * Enhanced workflow continuity validation and quality preservation tracking
  * Addresses Thailand campaign issue: Quality work lost during phase transitions
@@ -995,21 +1018,7 @@ export async function buildQualityContextFromOutputs(
   
   const qualityContext: QualityContext = {
     design_context: designContext,
-    data_collection_context: dataCollectionContext || designContext.data_collection_context || {
-      destination_analysis: null,
-      market_intelligence: null,
-      emotional_profile: null,
-      travel_intelligence: null,
-      trend_analysis: null,
-      consolidated_insights: null,
-      collection_metadata: {
-        campaign_id: 'unknown',
-        collection_timestamp: new Date().toISOString(),
-        data_sources: [],
-        collection_status: 'failed' as const,
-        data_quality_score: 0
-      }
-    },
+    data_collection_context: dataCollectionContext || designContext.data_collection_context || createEmptyDataCollectionContext('unknown'),
     quality_report: {
       overall_score: qualityReportData.overall_score,
       html_validation: qualityReportData.html_validation,
@@ -1177,21 +1186,7 @@ export async function prepareContentToDesignHandoff(
     request,
     metadata,
     content_context: contentContext,
-    data_collection_context: contentContext.data_collection_context || {
-      destination_analysis: null,
-      market_intelligence: null,
-      emotional_profile: null,
-      travel_intelligence: null,
-      trend_analysis: null,
-      consolidated_insights: null,
-      collection_metadata: {
-        campaign_id: 'unknown',
-        collection_timestamp: new Date().toISOString(),
-        data_sources: [],
-        collection_status: 'failed' as const,
-        data_quality_score: 0
-      }
-    },
+    data_collection_context: contentContext.data_collection_context || createEmptyDataCollectionContext('unknown'),
     original_content: originalContent
   };
 }
@@ -1385,8 +1380,8 @@ export function validateContextAccumulation(workflowState: WorkflowState): {
   for (let i = 0; i < workflowState.completed_stages.length - 1; i++) {
     const currentStage = workflowState.completed_stages[i];
     const nextStage = workflowState.completed_stages[i + 1];
-    const currentIndex = expectedProgression.indexOf(currentStage);
-    const nextIndex = expectedProgression.indexOf(nextStage);
+    const currentIndex = expectedProgression.indexOf(currentStage || '');
+    const nextIndex = expectedProgression.indexOf(nextStage || '');
     
     if (nextIndex !== currentIndex + 1) {
       issues.push(`Invalid stage progression: ${currentStage} -> ${nextStage}`);

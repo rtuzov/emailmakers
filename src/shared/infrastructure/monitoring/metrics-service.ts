@@ -560,7 +560,7 @@ export class MetricsService {
     const buckets: number[] = [];
     let bucket = 0.001; // Start with 1ms
     
-    while (bucket <= max * 2) {
+    while (bucket <= (max || 1) * 2) {
       buckets.push(bucket);
       bucket *= 2;
     }

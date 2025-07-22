@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // import { processNewsRabbits } from '@/agent/tools/figma-news-rabbits-processor';
 
 // Stub implementation
-async function processNewsRabbits(params: any) {
+async function processNewsRabbits(_params: any) {
   return { success: false, error: 'processNewsRabbits not implemented', data: { summary: { totalAssets: 0 }, processedAssets: [] } };
 }
 import { z } from 'zod';

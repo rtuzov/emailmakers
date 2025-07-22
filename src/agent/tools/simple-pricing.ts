@@ -124,7 +124,7 @@ function generateRoutePrices(origin: string, destination: string) {
     });
   }
 
-  const cheapest = Math.min(...prices.map(p => p.price));
+  const cheapest = Math.min(...prices.map(p => (p || {}).price));
   const popularity = routeBasePrices[routeKey] ? 'high' : 'medium';
 
   return {
@@ -167,7 +167,7 @@ function getRandomDuration(origin: string, destination: string): number {
   // Базовая продолжительность в минутах для разных типов маршрутов
   const shortHaul = 120 + Math.random() * 60; // 2-3 часа
   const mediumHaul = 180 + Math.random() * 120; // 3-5 часов
-  const longHaul = 300 + Math.random() * 180; // 5-8 часов
+  const _longHaul // Currently unused = 300 + Math.random() * 180; // 5-8 часов
 
   // Определяем тип маршрута по коду аэропорта
   if (origin.startsWith('MOW') || origin.startsWith('LED')) {

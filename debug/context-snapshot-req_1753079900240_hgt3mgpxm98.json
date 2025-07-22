@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753079900240_hgt3mgpxm98",
+  "traceId": "api-1753079900240",
+  "timestamp": "2025-07-21T06:38:20.240Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753079900240",
+    "name": "Spain Spring 2024",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Email-Makers-Test",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 85,
+      "enableDebugLogs": true
+    },
+    "correlationId": "corr_1753079900240_xrv2w18rxpj",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Путешествие в солнечную Испанию! Мадрид, Барселона, Севилья. Весна 2024 - лучшее время для поездки.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Spain Spring 2024",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "enableDebugLogs": true,
+    "originalOptions": {
+      "traceId": "api-1753079900240",
+      "metadata": {
+        "campaignName": "Spain Spring 2024",
+        "brand": "Kupibilet",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "enableDebugLogs": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Email-Makers-Test",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "enableDebugLogs": true
+      }
+    }
+  }
+}

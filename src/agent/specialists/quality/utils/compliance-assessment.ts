@@ -36,7 +36,7 @@ export class ComplianceAssessmentUtils {
   /**
    * Generate detailed compliance status for testing
    */
-  static assessTestingCompliance(testResults: any, input: QualitySpecialistInput): ComplianceStatusReport {
+  static assessTestingCompliance(testResults: any, _input: QualitySpecialistInput): ComplianceStatusReport {
     try {
       return {
         email_standards: this.assessTestingEmailStandards(testResults),
@@ -145,7 +145,7 @@ export class ComplianceAssessmentUtils {
   }
 
   // Private helper methods for compliance assessment
-  private static assessEmailStandards(result: any, input: QualitySpecialistInput): ComplianceStatus {
+  private static assessEmailStandards(result: any, _input: QualitySpecialistInput): ComplianceStatus {
     if (this.hasEmailStandardsIssues(result)) {
       return 'fail';
     }
@@ -179,7 +179,7 @@ export class ComplianceAssessmentUtils {
     return 'pass';
   }
 
-  private static assessSecurity(result: any, input: QualitySpecialistInput): ComplianceStatus {
+  private static assessSecurity(result: any, _input: QualitySpecialistInput): ComplianceStatus {
     if (this.hasSecurityIssues(result)) {
       return 'fail';
     }
@@ -219,28 +219,28 @@ export class ComplianceAssessmentUtils {
     return result?.email_standards?.status === 'warning' || false;
   }
 
-  private static hasAccessibilityIssues(result: any, level: string): boolean {
+  private static hasAccessibilityIssues(result: any, _level: string): boolean {
     if (typeof result === 'string') {
       return /accessibility.*error|alt.*missing|contrast.*fail/i.test(result);
     }
     return result?.accessibility?.status === 'fail' || false;
   }
 
-  private static hasAccessibilityWarnings(result: any, level: string): boolean {
+  private static hasAccessibilityWarnings(result: any, _level: string): boolean {
     if (typeof result === 'string') {
       return /accessibility.*warning|contrast.*low/i.test(result);
     }
     return result?.accessibility?.status === 'warning' || false;
   }
 
-  private static hasPerformanceIssues(result: any, targets?: any): boolean {
+  private static hasPerformanceIssues(result: any, _targets?: any): boolean {
     if (typeof result === 'string') {
       return /performance.*error|size.*too.*large|load.*slow/i.test(result);
     }
     return result?.performance?.status === 'fail' || false;
   }
 
-  private static hasPerformanceWarnings(result: any, targets?: any): boolean {
+  private static hasPerformanceWarnings(result: any, _targets?: any): boolean {
     if (typeof result === 'string') {
       return /performance.*warning|size.*large/i.test(result);
     }

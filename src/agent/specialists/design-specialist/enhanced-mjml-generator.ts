@@ -137,7 +137,7 @@ export class VisualComponentLibrary {
   /**
    * Социальные доказательства для премиум сегмента
    */
-  generateTrustElements(analysis: ContentAnalysis, colors: any): string {
+  generateTrustElements(analysis: ContentAnalysis, _colors: any): string {
     if (analysis.priceCategory !== 'premium') return '';
     
     return `
@@ -159,7 +159,7 @@ export class VisualComponentLibrary {
   /**
    * Адаптивная галерея изображений
    */
-  generateImageGallery(images: any[], colors: any): string {
+  generateImageGallery(images: any[], _colors: any): string {
     if (!images || images.length <= 1) return '';
     
     const galleryImages = images.slice(1, 5).map(image => `
@@ -205,14 +205,14 @@ export class VisualComponentLibrary {
   }
 
   // Утилиты
-  private getOfferText(urgencyLevel: string, campaignType: string): string {
+  private getOfferText(urgencyLevel: string, _campaignType: string): string {
     const texts = {
       high: 'Ограниченное предложение',
       medium: 'Специальная цена',
       low: 'Выгодное предложение'
     };
     
-    return texts[urgencyLevel] || texts.low;
+    return texts[urgencyLevel as keyof typeof texts] || texts.low;
   }
 
   private formatDateMonth(dateStr: string): string {
@@ -234,7 +234,7 @@ export class VisualComponentLibrary {
       premium: ['Эксклюзивность', 'Персональный сервис', 'Высокое качество']
     };
     
-    return featureMap[theme] || featureMap.business;
+    return featureMap[theme as keyof typeof featureMap] || featureMap.business;
   }
 
   private getThemeIcons(theme: string): string[] {
@@ -245,7 +245,7 @@ export class VisualComponentLibrary {
       premium: ['👑', '🌟', '💎']
     };
     
-    return iconMap[theme] || iconMap.business;
+    return iconMap[theme as keyof typeof iconMap] || iconMap.business;
   }
 
   private generateFeatureColor(colors: any, index: number): string {
@@ -270,7 +270,7 @@ export class VisualComponentLibrary {
       baseStyle.cssClass += ' urgent-cta';
     }
 
-    if (analysis.visualStyle === 'luxurious') {
+    if ((analysis as any).visualStyle === 'luxurious') {
       baseStyle.borderRadius = '12px';
       baseStyle.padding = '18px 35px';
     }
@@ -362,7 +362,7 @@ export class EnhancedMjmlGenerator {
   private generateBodySections(
     contentContext: any,
     analysis: ContentAnalysis,
-    personality: DesignPersonality,
+    _personality: DesignPersonality,
     adaptiveDesign: AdaptiveDesign,
     assets: any
   ): string {
@@ -430,7 +430,7 @@ export class EnhancedMjmlGenerator {
     return sections;
   }
 
-  private generateHeaderSection(contentContext: any, adaptiveDesign: AdaptiveDesign): string {
+  private generateHeaderSection(_contentContext: any, adaptiveDesign: AdaptiveDesign): string {
     return `
     <!-- Header Section -->
     <mj-section background-color="${adaptiveDesign.adaptedColors.surface}" padding="10px 0">
@@ -443,9 +443,8 @@ export class EnhancedMjmlGenerator {
     </mj-section>`;
   }
 
-  private generateHeroSection(contentContext: any, adaptiveDesign: AdaptiveDesign, assets: any, analysis: ContentAnalysis): string {
+  private generateHeroSection(contentContext: any, adaptiveDesign: AdaptiveDesign, assets: any, _analysis: ContentAnalysis): string {
     const heroImage = assets.images && assets.images[0] ? assets.images[0] : null;
-    const gradientBg = adaptiveDesign.adaptedColors.gradients.primary;
     
     return `
     <!-- Hero Section -->
@@ -474,7 +473,7 @@ export class EnhancedMjmlGenerator {
     </mj-section>`;
   }
 
-  private generateContentSections(contentContext: any, adaptiveDesign: AdaptiveDesign, analysis: ContentAnalysis): string {
+  private generateContentSections(contentContext: any, adaptiveDesign: AdaptiveDesign, _analysis: ContentAnalysis): string {
     // Защитная проверка для поля body с fallback значениями
     const bodyText = contentContext.body || 
                     contentContext.generated_content?.body || 
@@ -484,7 +483,7 @@ export class EnhancedMjmlGenerator {
     
     let contentSections = '';
     
-    bodyParagraphs.forEach((paragraph, index) => {
+    bodyParagraphs.forEach((paragraph, _index) => {
       contentSections += `
       <mj-section background-color="${adaptiveDesign.adaptedColors.surface}" 
                   padding="20px">
@@ -523,7 +522,7 @@ export class EnhancedMjmlGenerator {
     </mj-section>`;
   }
 
-  private generateAdvancedCSS(analysis: ContentAnalysis, personality: DesignPersonality, adaptiveDesign: AdaptiveDesign): string {
+  private generateAdvancedCSS(_analysis: ContentAnalysis, _personality: DesignPersonality, adaptiveDesign: AdaptiveDesign): string {
     return `
       /* Enhanced Email Styles */
       .hero-title {
@@ -607,16 +606,16 @@ export const generateEnhancedMjmlTemplate = tool({
   parameters: z.object({
     trace_id: z.string().describe('ID трассировки для отладки').default('mjml-trace')
   }),
-  execute: async (params, context) => {
+  execute: async (_params, context) => {
     console.log('\n📧 === ENHANCED MJML GENERATOR ===');
     
     try {
       // Проверяем наличие всех необходимых данных
-      const contentContext = context?.designContext?.content_context;
-      const contentAnalysis = context?.designContext?.content_analysis;
-      const designPersonality = context?.designContext?.design_personality;
-      const adaptiveDesign = context?.designContext?.adaptive_design;
-      const assetManifest = context?.designContext?.asset_manifest;
+      const contentContext = (context?.context as any)?.designContext?.content_context;
+      const contentAnalysis = (context?.context as any)?.designContext?.content_analysis;
+      const designPersonality = (context?.context as any)?.designContext?.design_personality;
+      const adaptiveDesign = (context?.context as any)?.designContext?.adaptive_design;
+      const assetManifest = (context?.context as any)?.designContext?.asset_manifest;
       
       if (!contentContext || !contentAnalysis || !designPersonality || !adaptiveDesign) {
         throw new Error('All analysis data required: content context, content analysis, design personality, and adaptive design must be generated first.');
@@ -645,8 +644,8 @@ export const generateEnhancedMjmlTemplate = tool({
       });
       
       // Сохраняем результат в контекст
-      if (context?.designContext) {
-        context.designContext.enhanced_mjml = {
+      if (context && (context.context as any)?.designContext) {
+        (context.context as any).designContext.enhanced_mjml = {
           mjml_code: mjmlCode,
           generation_method: 'enhanced',
           features: {

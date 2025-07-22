@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-21T12:06:16.223Z",
+  "campaign_id": "campaign_1753099507033_wasjq7ilbr",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_i9AmVEjT8VI.jpg",
+      "file_path": "https://images.unsplash.com/photo-1551279076-6887dee32c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBkZXN0aW5hdGlvbnN8ZW58MHwwfHx8MTc1MzA4OTc1Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_i9AmVEjT8VI",
+      "purpose": "external_image",
+      "description": "brown painted house",
+      "source": "external",
+      "external_id": "i9AmVEjT8VI",
+      "download_url": "https://images.unsplash.com/photo-1551279076-6887dee32c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBkZXN0aW5hdGlvbnN8ZW58MHwwfHx8MTc1MzA4OTc1Nnww&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      "filename": "external_QXfKHLvMDfA.jpg",
+      "file_path": "https://images.unsplash.com/photo-1549414279-656ada2e7d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHRyYXZlbGVyc3xlbnwwfDB8fHwxNzUzMDg5ODAwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_QXfKHLvMDfA",
+      "purpose": "external_image",
+      "description": "man in black crew neck t-shirt sitting on brown wicker chair",
+      "source": "external",
+      "external_id": "QXfKHLvMDfA",
+      "download_url": "https://images.unsplash.com/photo-1549414279-656ada2e7d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHRyYXZlbGVyc3xlbnwwfDB8fHwxNzUzMDg5ODAwfDA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      "filename": "external_R6Xte0nacNw.jpg",
+      "file_path": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMwOTM3NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_R6Xte0nacNw",
+      "purpose": "external_image",
+      "description": "a grassy field with rocks and grass in the foreground",
+      "source": "external",
+      "external_id": "R6Xte0nacNw",
+      "download_url": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMwOTM3NTR8MA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      "filename": "external_FwMBVycB37E.jpg",
+      "file_path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMwODk3NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_FwMBVycB37E",
+      "purpose": "external_image",
+      "description": "a yurt in the mountains with a yellow door",
+      "source": "external",
+      "external_id": "FwMBVycB37E",
+      "download_url": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMwODk3NTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      "filename": "external_NRQV_hBF10M.jpg",
+      "file_path": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuYXR1cmUlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMwODk4ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_NRQV-hBF10M",
+      "purpose": "external_image",
+      "description": "body of water surrounded by trees",
+      "source": "external",
+      "external_id": "NRQV-hBF10M",
+      "download_url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuYXR1cmUlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMwODk4ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753099576221",
+    "status": "assets_collected"
+  }
+}

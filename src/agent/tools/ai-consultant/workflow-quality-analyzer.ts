@@ -14,7 +14,7 @@
 
 import { z } from 'zod';
 import { AgentEmailAnalyzer } from './agent-analyzer';
-import { initializeOpenAIAgents, runWithTracing, withSDKTrace } from '../../core/openai-agents-config';
+import { initializeOpenAIAgents, /* runWithTracing, */ withSDKTrace } from '../../core/openai-agents-config';
 import { AIConsultantRequest, QualityAnalysisResult } from './types';
 import { getLogger } from '../../../shared/utils/logger';
 import { recordToolUsage } from '../../utils/tracing-utils';
@@ -197,9 +197,9 @@ export async function workflowQualityAnalyzer(params: WorkflowQualityAnalyzerPar
       });
 
       // Prepare analysis request using AIConsultantRequest interface
-      const analysisRequest: AIConsultantRequest = {
+      const analysisRequest = {
         html_content: params.html_content,
-        mjml_source: params.mjml_source,
+        mjml_source: params.mjml_source || undefined,
         topic: params.topic,
         campaign_type: params.campaign_context.campaign_type,
         target_audience: params.campaign_context.target_audience,
@@ -208,9 +208,9 @@ export async function workflowQualityAnalyzer(params: WorkflowQualityAnalyzerPar
         assets_used: params.campaign_context.assets_used,
         assets_info: params.campaign_context.assets_used.map((asset: string) => ({
           filename: asset,
-          url: null,
-          type: null,
-          size: null
+          url: undefined,
+          type: undefined,
+          size: undefined
         })),
         
         // Context data
@@ -221,7 +221,7 @@ export async function workflowQualityAnalyzer(params: WorkflowQualityAnalyzerPar
         },
         
         // Session management
-        session_id: params.workflow_context.workflow_id,
+        session_id: params.workflow_context.workflow_id || undefined,
         iteration_count: params.workflow_context.iteration_count || 0,
         previous_analysis: undefined,
         
@@ -237,7 +237,7 @@ export async function workflowQualityAnalyzer(params: WorkflowQualityAnalyzerPar
 
       // Execute analysis with full tracing
       logger.info('🚀 [Workflow Quality Analyzer] Running agent analysis...');
-      const analysisResult = await analyzer.analyzeEmail(analysisRequest);
+      const analysisResult = await analyzer.analyzeEmail(analysisRequest as unknown as AIConsultantRequest);
 
       // Convert AgentEmailAnalyzer result to workflow-compatible format
       logger.info('🔄 [Workflow Quality Analyzer] Converting results to workflow format...');
@@ -345,7 +345,7 @@ function convertToWorkflowFormat(
 
   // Determine handoff recommendations
   const qualityGatePassed = analysisResult.overall_score >= params.quality_requirements.minimum_score;
-  const criticalIssues = qualityReport.issues_found.filter(issue => issue.severity === 'critical');
+  const criticalIssues = qualityReport.issues_found.filter((issue: any) => issue.severity === 'critical');
   const requiresManualReview = criticalIssues.length > 0 || analysisResult.overall_score < 50;
   
   const handoffRecommendations = {
@@ -356,7 +356,7 @@ function convertToWorkflowFormat(
       ['Address quality issues before proceeding', ...(analysisResult.recommendations || []).slice(0, 3).map((rec: any) => 
         typeof rec === 'string' ? rec : rec.title || rec.description || 'Quality improvement needed'
       )],
-    critical_fixes: criticalIssues.map(issue => issue.fix_suggestion),
+    critical_fixes: criticalIssues.map((issue: any) => issue.fix_suggestion),
     requires_manual_review: requiresManualReview
   };
 
@@ -401,7 +401,7 @@ function convertToWorkflowFormat(
  * Generate error result for failed analysis
  */
 function generateErrorResult(
-  params: WorkflowQualityAnalyzerParams,
+  _params: WorkflowQualityAnalyzerParams,
   errorMessage: string,
   traceId: string,
   startTime: number

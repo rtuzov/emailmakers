@@ -51,7 +51,7 @@ import * as path from 'path';
 // Using CAMPAIGN_STRUCTURE already imported above
 
 export class ProgressiveFileSaver {
-  private campaignId: string;
+  private _campaignId: string;
   private basePath: string;
 
   constructor(campaignId: string) {
@@ -356,7 +356,7 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
         console.log('✅ T4: Campaign ID получен из campaign state:', campaignId);
       }
     } catch (error) {
-      console.warn('⚠️ T4: Campaign state недоступен:', error.message);
+      console.warn('⚠️ T4: Campaign state недоступен:', error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error));
     }
     
     // Alternative: get from emailFolder parameter
@@ -529,7 +529,7 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
         operation: 'compile',
         duration: Date.now() - Date.now(), // Will be calculated by withToolTrace
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : 'Unknown error'
       });
       
       return handleToolError('render_mjml', error);
@@ -567,7 +567,7 @@ export async function generateMjmlWithProgressiveSaving(
     };
   } catch (error) {
     console.error('❌ Progressive MJML Generation failed:', error);
-    throw new Error(`Progressive MJML generation failed: ${error.message}`);
+    throw new Error(`Progressive MJML generation failed: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 
@@ -620,7 +620,7 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
     
   } catch (error) {
     console.error(`Failed to convert image to data URL: ${imagePath}`, error);
-    throw new Error(`Image conversion failed: ${error.message}`);
+    throw new Error(`Image conversion failed: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 
@@ -635,7 +635,7 @@ async function compileMjmlToHtml(mjmlContent: string): Promise<string> {
     
     const result = mjml.default(mjmlContent, {
       minify: false,
-      beautify: false,
+      // Removed deprecated 'beautify' option
       validationLevel: 'soft'
     });
     
@@ -646,6 +646,6 @@ async function compileMjmlToHtml(mjmlContent: string): Promise<string> {
     return result.html;
   } catch (error) {
     console.error('MJML compilation error:', error);
-    throw new Error(`MJML compiler not available: ${error.message}. Please install mjml package.`);
+    throw new Error(`MJML compiler not available: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}. Please install mjml package.`);
   }
 } 

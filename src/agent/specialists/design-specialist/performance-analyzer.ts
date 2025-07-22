@@ -27,7 +27,7 @@ export const analyzePerformance = tool({
     
     try {
       // Load data from design context if parameters are empty
-      const designContext = context?.designContext || {};
+      const designContext = (context?.context as any)?.designContext || {};
       
       let contentContext = params.content_context;
       let mjmlTemplate = params.mjml_template;
@@ -57,7 +57,7 @@ export const analyzePerformance = tool({
           assetManifest = manifestData.assetManifest || manifestData;
           console.log('📋 Loaded asset manifest from file system');
         } catch (error) {
-          console.warn('⚠️ Could not load asset manifest from file system:', error.message);
+          console.warn('⚠️ Could not load asset manifest from file system:', (error as Error).message);
         }
       }
       
@@ -74,38 +74,37 @@ export const analyzePerformance = tool({
           };
           console.log('📋 Loaded MJML template from file system');
         } catch (error) {
-          console.warn('⚠️ Could not load MJML template from file system:', error.message);
+          console.warn('⚠️ Could not load MJML template from file system:', (error as Error).message);
         }
       }
       
       // Calculate performance metrics - fix: ensure arrays exist before spreading
-      const images = Array.isArray(assetManifest.images) ? assetManifest.images : [];
-      const icons = Array.isArray(assetManifest.icons) ? assetManifest.icons : [];
+          const images = Array.isArray((assetManifest as any)?.assetManifest?.images) ? (assetManifest as any).assetManifest.images : [];
+    const icons = Array.isArray((assetManifest as any)?.assetManifest?.icons) ? (assetManifest as any).assetManifest.icons : [];
       const allAssets = [...images, ...icons];
       const totalAssetSize = allAssets.reduce((sum, asset) => sum + (asset.file_size || 0), 0);
-      const templateSize = mjmlTemplate.file_size || 0;
+      const templateSize = (mjmlTemplate as any).file_size || 0;
       const totalSize = totalAssetSize + templateSize;
       
       const performanceMetrics: PerformanceMetrics = {
-        total_size: totalSize,
-        template_size: templateSize,
-        asset_size: totalAssetSize,
-        load_time_estimate: Math.round(totalSize / 1024 / 10), // Rough estimate in seconds
-        optimization_score: Math.max(0, 100 - Math.round(totalSize / 1024 / 10)),
-        recommendations: []
+        html_size: templateSize,
+        total_assets_size: totalAssetSize,
+        estimated_load_time: Math.round(totalSize / 1024 / 10), // Rough estimate in seconds
+        optimization_score: Math.max(0, 100 - Math.round(totalSize / 1024 / 10))
       };
       
-      // Add recommendations based on analysis
+      // Generate recommendations as a separate variable
+      const recommendations = [];
       if (totalSize > 100000) {
-        performanceMetrics.recommendations.push('Consider reducing image sizes - total size exceeds 100KB');
+        recommendations.push('Consider reducing image sizes - total size exceeds 100KB');
       }
       
       if (allAssets.length > 10) {
-        performanceMetrics.recommendations.push('Consider reducing number of images for better performance');
+        recommendations.push('Consider reducing number of images for better performance');
       }
       
       if (performanceMetrics.optimization_score < 80) {
-        performanceMetrics.recommendations.push('Optimize images and reduce template complexity');
+        recommendations.push('Optimize images and reduce template complexity');
       }
       
       // Update design context
@@ -114,15 +113,15 @@ export const analyzePerformance = tool({
         trace_id: params.trace_id
       });
       
-      if (context) {
-        context.designContext = updatedDesignContext;
+      if (context && context.context) {
+        (context.context as any).designContext = updatedDesignContext;
       }
       
       console.log('✅ Performance analysis completed');
       console.log(`📊 Total size: ${(totalSize / 1024).toFixed(2)} KB`);
       console.log(`⚡ Optimization score: ${performanceMetrics.optimization_score}/100`);
       
-      return `Performance analysis completed! Total size: ${(totalSize / 1024).toFixed(2)} KB. Load time estimate: ${performanceMetrics.load_time_estimate}s. Optimization score: ${performanceMetrics.optimization_score}/100. Recommendations: ${performanceMetrics.recommendations.length}. Ready for preview generation.`;
+      return `Performance analysis completed! Total size: ${(totalSize / 1024).toFixed(2)} KB. Load time estimate: ${performanceMetrics.estimated_load_time}s. Optimization score: ${performanceMetrics.optimization_score}/100. Recommendations: ${recommendations.length}. Ready for preview generation.`;
       
     } catch (error) {
       console.error('❌ Performance analysis failed:', error);

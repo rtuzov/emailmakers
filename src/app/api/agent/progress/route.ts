@@ -287,7 +287,7 @@ function updateSimulatedProgress(progress: PipelineProgress) {
 
   // Update agent statuses based on timing
   progress.agents.forEach((agent, index) => {
-    const agentKeys = Object.keys(agentTimings) as Array<keyof typeof agentTimings>;
+    const agentKeys = (Object || {}).keys(agentTimings) as Array<keyof typeof agentTimings>;
     const agentKey = agentKeys[index];
     const agentThreshold = agentTimings[agentKey];
     const prevThreshold = index > 0 ? agentTimings[agentKeys[index - 1]] : 0;

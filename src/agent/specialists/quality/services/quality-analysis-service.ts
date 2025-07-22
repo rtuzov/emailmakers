@@ -309,7 +309,7 @@ export class QualityAnalysisService {
     let match;
     
     while ((match = ctaRegex.exec(html)) !== null) {
-      const text = match[1].replace(/<[^>]*>/g, '').trim();
+      const text = (match[1] || '').replace(/<[^>]*>/g, '').trim();
       if (text) {
         matches.push(text);
       }
@@ -323,11 +323,11 @@ export class QualityAnalysisService {
    */
   private extractURLs(html: string): string[] {
     const urlRegex = /href\s*=\s*["']([^"']+)["']/gi;
-    const urls = [];
+    const urls: string[] = [];
     let match;
     
     while ((match = urlRegex.exec(html)) !== null) {
-      urls.push(match[1]);
+      if (match[1]) urls.push(match[1]);
     }
     
     return urls;

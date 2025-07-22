@@ -13,7 +13,7 @@ import { RenderJobConfigSchema } from '@/domains/render-testing/entities/render-
 // Request schemas
 const CreateRenderJobSchema = z.object({
   htmlContent: z.string().min(1, 'HTML content is required'),
-  config: RenderJobConfigSchema,
+  _config: RenderJobConfigSchema,
   templateId: z.string().uuid().optional().nullable(),
   subject: z.string().optional().nullable(),
   preheader: z.string().optional().nullable(),
@@ -35,7 +35,7 @@ const RenderJobResponseSchema = z.object({
     currentStep: z.string(),
     estimatedTimeRemaining: z.number().optional().nullable()
   }),
-  config: RenderJobConfigSchema,
+  _config: RenderJobConfigSchema,
   templateId: z.string().optional().nullable(),
   subject: z.string().optional().nullable(),
   preheader: z.string().optional().nullable(),
@@ -64,7 +64,7 @@ const JobSummaryResponseSchema = z.object({
 // Initialize service (in real implementation, this would be dependency injected)
 // For now, we'll create a mock service for demo purposes
 const renderOrchestrationService = {
-  async createRenderJob(request: any) {
+  async createRenderJob(_request: any) {
     throw new Error('Service not fully implemented - demo mode');
   },
   async getUserRenderJobs(userId: string) {
@@ -76,7 +76,7 @@ const renderOrchestrationService = {
  * POST /api/render-testing/jobs
  * Create a new render testing job
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     // Get user ID from session/auth
     const userId = await getUserIdFromRequest(request);
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     const job = await renderOrchestrationService.createRenderJob({
       userId,
       htmlContent: validatedData.htmlContent || '<html><body>Test</body></html>',
-      config: validatedData.config || {
+      _config: validatedData.config || {
         clients: ['gmail', 'outlook'],
         viewports: [{ width: 600, height: 800, devicePixelRatio: 1, name: 'desktop' }],
         darkModeEnabled: false,
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
         currentStep: getStatusDisplayName(job.status),
         estimatedTimeRemaining: job.estimatedDuration
       },
-      config: job.config,
+      _config: job.config,
       templateId: job.templateId,
       subject: job.subject,
       preheader: job.preheader,
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
 
     if (error instanceof Error) {
       return NextResponse.json(
-        { error: error.message },
+        { error: error instanceof Error ? error.message : String(error) },
         { status: 400 }
       );
     }
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
  * GET /api/render-testing/jobs
  * List user's render testing jobs
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Get user ID from session/auth
     const userId = await getUserIdFromRequest(request);
@@ -236,7 +236,7 @@ export async function GET(request: NextRequest) {
  * Helper function to get user ID from request
  * In real implementation, this would extract from JWT token or session
  */
-async function getUserIdFromRequest(request: NextRequest): Promise<string | null> {
+async function getUserIdFromRequest(_request: NextRequest): Promise<string | null> {
   // Placeholder implementation
   // In real app, this would validate JWT token or session
   const authHeader = request.headers.get('authorization');

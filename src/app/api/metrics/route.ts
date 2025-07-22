@@ -5,7 +5,7 @@ import { logger } from '../../../agent/core/logger';
  * Prometheus metrics endpoint
  * GET /api/metrics
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const metrics = await logger.metrics();
     

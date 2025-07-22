@@ -227,7 +227,7 @@ export class FigmaService {
 
     // Extract color tokens from styles
     if (figmaFile.styles) {
-      for (const [styleId, style] of Object.entries(figmaFile.styles)) {
+      for (const [_styleId, style] of Object.entries(figmaFile.styles)) {
         if ((style as any).styleType === 'FILL') {
           const colorToken = await this.createColorToken(style, figmaFile);
           if (colorToken) colors.push(colorToken);
@@ -251,7 +251,7 @@ export class FigmaService {
   /**
    * Create color token with email compatibility analysis
    */
-  private async createColorToken(style: any, figmaFile: any): Promise<ColorToken | null> {
+  private async createColorToken(style: any, _figmaFile: any): Promise<ColorToken | null> {
     try {
       const paint = style.fills?.[0];
       if (!paint || paint.type !== 'SOLID') return null;
@@ -291,7 +291,7 @@ export class FigmaService {
   /**
    * Create typography token with web-safe alternatives
    */
-  private async createTypographyToken(style: any, figmaFile: any): Promise<TypographyToken | null> {
+  private async createTypographyToken(style: any, _figmaFile: any): Promise<TypographyToken | null> {
     try {
       const textStyle = style.textStyle;
       if (!textStyle) return null;
@@ -328,7 +328,7 @@ export class FigmaService {
     const components: FigmaComponent[] = [];
     
     if (figmaFile.componentSets) {
-      for (const [componentId, componentSet] of Object.entries(figmaFile.componentSets)) {
+      for (const [_componentId, componentSet] of Object.entries(figmaFile.componentSets)) {
         const emailComponent = await this.createEmailComponent(componentSet, figmaFile);
         if (emailComponent) components.push(emailComponent);
       }
@@ -340,7 +340,7 @@ export class FigmaService {
   /**
    * Create email-compatible component mapping
    */
-  private async createEmailComponent(componentSet: any, figmaFile: any): Promise<FigmaComponent | null> {
+  private async createEmailComponent(componentSet: any, _figmaFile: any): Promise<FigmaComponent | null> {
     try {
       const componentType = this.identifyComponentType(componentSet.name);
       const properties = await this.extractComponentProperties(componentSet);
@@ -475,7 +475,7 @@ export class FigmaService {
   private extractProjectId(figmaUrl: string): string {
     const match = figmaUrl.match(/figma\.com\/file\/([a-zA-Z0-9]+)/);
     if (!match) throw new Error('Invalid Figma URL');
-    return match[1];
+    return match[1]!;
   }
 
   private async fetchFigmaFile(projectId: string): Promise<any> {
@@ -520,7 +520,7 @@ export class FigmaService {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
-  private analyzeColorUsage(name: string, hex: string): ColorToken['usage'] {
+  private analyzeColorUsage(name: string, _hex: string): ColorToken['usage'] {
     const lowerName = name.toLowerCase();
     if (lowerName.includes('primary') || lowerName.includes('brand')) return 'primary';
     if (lowerName.includes('secondary')) return 'secondary';
@@ -583,7 +583,7 @@ export class FigmaService {
     return emailSafeFonts.some(safe => fontFamily.includes(safe));
   }
 
-  private validateColorForEmail(hexColor: string): boolean {
+  private validateColorForEmail(_hexColor: string): boolean {
     // Check if color is supported across email clients
     // Most colors are supported, but some specific combinations might not render well
     return true; // Simplified for now
@@ -610,7 +610,7 @@ export class FigmaService {
     return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
   }
 
-  private calculateContrastRatio(color1: string, color2: string): number {
+  private calculateContrastRatio(_color1: string, _color2: string): number {
     // Simplified contrast ratio calculation
     // In production, use proper WCAG contrast calculation
     return 4.5; // Placeholder
@@ -629,14 +629,16 @@ export class FigmaService {
   private async extractComponentProperties(componentSet: any): Promise<ComponentProperties> {
     // Extract properties from component set
     return {
-      width: componentSet.absoluteBoundingBox?.width,
-      height: componentSet.absoluteBoundingBox?.height,
-      backgroundColor: componentSet.backgroundColor ? this.rgbToHex(
-        componentSet.backgroundColor.r,
-        componentSet.backgroundColor.g,
-        componentSet.backgroundColor.b
-      ) : undefined,
-      borderRadius: componentSet.cornerRadius,
+      ...(componentSet.absoluteBoundingBox?.width ? { width: componentSet.absoluteBoundingBox.width } : {}),
+      ...(componentSet.absoluteBoundingBox?.height ? { height: componentSet.absoluteBoundingBox.height } : {}),
+      ...(componentSet.backgroundColor ? { 
+        backgroundColor: this.rgbToHex(
+          componentSet.backgroundColor.r,
+          componentSet.backgroundColor.g,
+          componentSet.backgroundColor.b
+        ) 
+      } : {}),
+      ...(componentSet.cornerRadius ? { borderRadius: componentSet.cornerRadius } : {}),
       padding: {
         top: componentSet.paddingTop || 0,
         right: componentSet.paddingRight || 0,
@@ -646,7 +648,7 @@ export class FigmaService {
     };
   }
 
-  private async extractComponentVariants(componentSet: any): Promise<ComponentVariant[]> {
+  private async extractComponentVariants(_componentSet: any): Promise<ComponentVariant[]> {
     // Extract component variants
     return []; // Simplified for now
   }
@@ -674,7 +676,7 @@ export class FigmaService {
     return designSystem;
   }
 
-  private async checkColorEmailCompatibility(hexColor: string): Promise<boolean> {
+  private async checkColorEmailCompatibility(_hexColor: string): Promise<boolean> {
     // Email color compatibility check
     return true; // Simplified
   }

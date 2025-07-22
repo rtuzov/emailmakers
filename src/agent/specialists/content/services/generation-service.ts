@@ -15,8 +15,8 @@ import {
   ContentVariant,
   ContentAnalysis,
   ContentInsights,
-  MarketingIntelligence,
-  ContentGeneratorResult,
+  // MarketingIntelligence, // unused import
+  // ContentGeneratorResult, // unused import
   ValidationResult,
   PerformanceMetrics,
   BaseContentService
@@ -355,7 +355,7 @@ export class GenerationService implements BaseContentService {
     return enhanced;
   }
 
-  private enhancePreheader(preheader: string, context: GenerationContext, params: ContentGeneratorParams): string {
+  private enhancePreheader(preheader: string, context: GenerationContext, _params: ContentGeneratorParams): string {
     // Адаптируем preheader под аудиторию
     const preferences = context.audience_insights.content_preferences;
     
@@ -379,7 +379,7 @@ export class GenerationService implements BaseContentService {
     return enhanced;
   }
 
-  private enhanceCallToAction(cta: string, context: GenerationContext, params: ContentGeneratorParams): string {
+  private enhanceCallToAction(cta: string, context: GenerationContext, _params: ContentGeneratorParams): string {
     // Усиливаем CTA в зависимости от срочности
     if (context.campaign_intelligence.urgency_context === 'high') {
       return `${cta} прямо сейчас!`;
@@ -388,7 +388,7 @@ export class GenerationService implements BaseContentService {
     return cta;
   }
 
-  private calculateConfidenceScore(content: ContentResult, params: ContentGeneratorParams): number {
+  private calculateConfidenceScore(_content: ContentResult, params: ContentGeneratorParams): number {
     let score = 70; // базовый уровень
 
     // Увеличиваем за наличие ценовых данных
@@ -429,7 +429,7 @@ export class GenerationService implements BaseContentService {
     };
   }
 
-  private compareContentVersions(original: string, optimized: ContentResult, params: ContentGeneratorParams): any {
+  private compareContentVersions(original: string, optimized: ContentResult, _params: ContentGeneratorParams): any {
     const originalScore = this.calculateContentScore(original);
     const optimizedScore = this.calculateContentScore(optimized.body);
     
@@ -442,18 +442,18 @@ export class GenerationService implements BaseContentService {
     };
   }
 
-  private createVariantParameters(params: ContentGeneratorParams, index: number, total: number): any {
+  private createVariantParameters(params: ContentGeneratorParams, index: number, _total: number): any {
     const focuses = ['tone', 'structure', 'pricing_emphasis', 'emotional_appeal'];
     const focus = focuses[index % focuses.length];
     
     return {
       focus,
-      tone_shift: this.getVariantTone(params.tone || 'friendly', index),
-      emphasis: this.getVariantEmphasis(focus)
+      tone_shift: this.getVariantTone(params.tone ?? 'friendly', index),
+      emphasis: this.getVariantEmphasis(focus ?? 'balanced')
     };
   }
 
-  private async generateContentVariant(baseContent: ContentResult, variantParams: any, originalParams: ContentGeneratorParams): Promise<ContentResult> {
+  private async generateContentVariant(baseContent: ContentResult, variantParams: any, _originalParams: ContentGeneratorParams): Promise<ContentResult> {
     // Создаем вариант с измененными параметрами
     return {
       ...baseContent,
@@ -463,11 +463,11 @@ export class GenerationService implements BaseContentService {
     };
   }
 
-  private calculateVariantScore(content: ContentResult, params: ContentGeneratorParams): number {
+  private calculateVariantScore(content: ContentResult, _params: ContentGeneratorParams): number {
     return this.calculateContentScore(content.body) + ContentUtils.calculateComplexityScore(content);
   }
 
-  private applyPersonalizationLayers(content: ContentResult, context: any, params: ContentGeneratorParams): ContentResult {
+  private applyPersonalizationLayers(content: ContentResult, context: any, _params: ContentGeneratorParams): ContentResult {
     return {
       ...content,
       subject: this.personalizeSubject(content.subject, context),
@@ -484,7 +484,7 @@ export class GenerationService implements BaseContentService {
     };
   }
 
-  private async generateContentInsights(content: string, params: ContentGeneratorParams): Promise<ContentInsights> {
+  private async generateContentInsights(_content: string, params: ContentGeneratorParams): Promise<ContentInsights> {
     return {
       tone_analysis: 'Дружелюбный и убедительный',
       audience_alignment: 85,
@@ -548,7 +548,7 @@ export class GenerationService implements BaseContentService {
   private calculateBrandAlignment(content: string, params: ContentGeneratorParams): number {
     let score = 70;
     
-    if (params.assets_context?.brand_elements) score += 15;
+    if ((params.assets_context as any)?.brand_elements) score += 15;
           if (content.includes('путешествие') || content.includes('авиабилет')) score += 15;
     
     return Math.min(score, 100);
@@ -582,7 +582,7 @@ export class GenerationService implements BaseContentService {
 
   private getVariantTone(baseTone: string, index: number): string {
     const tones = ['friendly', 'urgent', 'professional', 'casual'];
-    return tones[(tones.indexOf(baseTone) + index) % tones.length];
+    return tones[(tones.indexOf(baseTone) + index) % tones.length] ?? 'friendly';
   }
 
   private getVariantEmphasis(focus: string): string {
@@ -632,28 +632,12 @@ export class GenerationService implements BaseContentService {
     throw new Error('GenerationService.getDefaultContent: default content disabled by policy.');
   }
 
-  private getDefaultAnalysis(): ContentAnalysis {
-    return {
-      readability_score: 70,
-      sentiment_score: 60,
-      engagement_potential: 50,
-      brand_alignment: 60
-    };
+  private getDefaultAnalysis(): never {
+    throw new Error('GenerationService.getDefaultAnalysis: default analysis disabled by policy.');
   }
 
-  private getDefaultInsights(): ContentInsights {
-    return {
-      tone_analysis: 'Нейтральный',
-      audience_alignment: 50,
-      emotional_appeal: 'низкий',
-      call_to_action_strength: 50,
-      pricing_integration: 'отсутствует',
-      predicted_performance: {
-        open_rate_estimate: 15,
-        click_rate_estimate: 2.0,
-        conversion_potential: 'low'
-      }
-    };
+  private getDefaultInsights(): never {
+    throw new Error('GenerationService.getDefaultInsights: default insights disabled by policy.');
   }
 
   // ============ БАЗОВЫЕ МЕТОДЫ ИНТЕРФЕЙСА ============

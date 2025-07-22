@@ -10,7 +10,7 @@ import { MetricsService } from '../../../../shared/infrastructure/monitoring/met
  * POST /api/render-testing/advanced
  * Run comprehensive advanced testing on email template
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const body = await request.json();
     const { htmlContent, subject, fromEmail, options = {} } = body;
@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        data: results,
+        _data: results,
       });
 
     } finally {
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Advanced testing failed',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'
       },
       { status: 500 }
     );
@@ -218,7 +218,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      data: capabilities,
+      _data: capabilities,
     });
 
   } catch (error) {
@@ -227,7 +227,7 @@ export async function GET() {
     return NextResponse.json(
       { 
         error: 'Failed to get capabilities',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'
       },
       { status: 500 }
     );

@@ -575,7 +575,7 @@ export interface PricesResult {
 }
 
 export async function prices(params: PricesParams): Promise<PricesResult> {
-  const traceId = generateTraceId();
+  // const _traceId = generateTraceId(); // Currently unused
   
     const startTime = Date.now();
     console.log(`💰 Pricing Intelligence: Analyzing prices for "${params.product_name || 'general product'}"`);
@@ -589,7 +589,7 @@ export async function prices(params: PricesParams): Promise<PricesResult> {
       const competitors = params.competitors || [];
 
       // Simulate market data collection
-      const marketData = await collectMarketData(productName, category, marketRegion);
+      // const _marketData = await collectMarketData(productName, category, marketRegion); // Currently unused
       
       // Analyze competitor prices
       const competitorPrices = await analyzeCompetitorPrices(competitors, category);
@@ -744,7 +744,7 @@ function calculatePricingData(
  */
 function performMarketAnalysis(
   category: string,
-  marketRegion: string
+  _marketRegion: string
 ): PricesResult['market_analysis'] {
   
   // Simulate market analysis
@@ -772,7 +772,7 @@ function performMarketAnalysis(
 function generatePricingRecommendations(
   pricingData: PricesResult['pricing_data'],
   marketAnalysis: PricesResult['market_analysis'],
-  category: string
+  _category: string
 ): PricesResult['recommendations'] {
   
   const { average_price, market_position } = pricingData;

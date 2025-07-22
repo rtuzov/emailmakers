@@ -118,7 +118,7 @@ const renderOrchestrationService = {
  * GET /api/render-testing/clients
  * List available email clients with filtering options
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Parse query parameters
     const { searchParams } = new URL(request.url);
@@ -253,7 +253,7 @@ export async function GET(request: NextRequest) {
  * POST /api/render-testing/clients
  * Create a new email client configuration (admin only)
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     // Check admin privileges
     const isAdmin = await checkAdminPrivileges(request);
@@ -277,7 +277,7 @@ export async function POST(request: NextRequest) {
     ];
 
     // Return the first predefined client as example
-    const client = predefinedClients[0];
+    const client = (predefinedClients && predefinedClients[0] ? predefinedClients[0] : "");
     
     const response = {
       id: client.id,
@@ -332,7 +332,7 @@ export async function POST(request: NextRequest) {
 /**
  * Helper function to check admin privileges
  */
-async function checkAdminPrivileges(request: NextRequest): Promise<boolean> {
+async function checkAdminPrivileges(_request: NextRequest): Promise<boolean> {
   // Placeholder implementation
   // In real app, this would check user roles/permissions
   const authHeader = request.headers.get('authorization');

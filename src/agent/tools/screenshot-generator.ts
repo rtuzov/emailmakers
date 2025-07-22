@@ -8,7 +8,7 @@ export class ScreenshotGenerator {
     return '/assets/stub/screenshot.png';
   }
   
-  static async captureEmail(html: string, options?: any): Promise<string> {
+  static async captureEmail(_html: string, options?: any): Promise<string> {
     console.log('ScreenshotGenerator (stub): capturing email HTML');
     return '/assets/stub/email-screenshot.png';
   }

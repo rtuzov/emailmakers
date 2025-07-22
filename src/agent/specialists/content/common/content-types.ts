@@ -54,7 +54,7 @@ export const contentGeneratorSchema = z.object({
     max_length: z.number().nullable().optional(),
     accessibility_compliance: z.boolean().default(true)
   }).nullable().optional().describe('Content specifications'),
-  assets_context: z.any().nullable().optional().describe('Context for assets and images'),
+      assets_context: z.object({}).nullable().optional().describe('Context for assets and images'),
   campaign_context: z.object({
     campaign_type: z.string().nullable().optional(),
     seasonality: z.string().nullable().optional(),

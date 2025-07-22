@@ -10,11 +10,11 @@ import { SearchResults, type SearchResult } from '@/ui/components/search/search-
 import { TemplatePreviewModal } from '@/ui/components/templates/template-preview-modal'
 
 // Icons
-const _SearchIcon = () => (
-  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-)
+// const _SearchIcon = () => (
+//   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+//   </svg>
+// )
 
 const MailIcon = () => (
   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,8 +126,8 @@ export function TemplatesPage() {
   })
   const [availableCategories, setAvailableCategories] = useState<Array<{ value: string; label: string; count: number }>>([])
   const [availableTags, setAvailableTags] = useState<string[]>([])
-  const [sortBy, setSortBy] = useState('createdAt')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const [sortBy] = useState('createdAt')
+  const [sortOrder] = useState<'asc' | 'desc'>('desc')
   
   // Advanced filtering state
   const [selectedStatus, setSelectedStatus] = useState<'all' | 'published' | 'draft'>('all')
@@ -315,14 +315,14 @@ export function TemplatesPage() {
     setPagination(prev => ({ ...prev, page: newPage }))
   }
 
-  const _handleSortChange = (field: string) => {
-    if (field === sortBy) {
-      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortBy(field)
-      setSortOrder('desc')
-    }
-  }
+  // const _handleSortChange = (field: string) => {
+  //   if (field === sortBy) {
+  //     setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')
+  //   } else {
+  //     setSortBy(field)
+  //     setSortOrder('desc')
+  //   }
+  // }
 
   const refreshTemplates = () => {
     fetchTemplates()

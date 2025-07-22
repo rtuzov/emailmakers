@@ -118,7 +118,7 @@ export function analyzeImageEmotionalAlignment(images: ImageAsset[], targetTone:
 /**
  * Validate image assets for brand consistency
  */
-export function validateBrandConsistency(images: ImageAsset[], brandGuidelines?: string): number {
+export function validateBrandConsistency(_images: ImageAsset[], brandGuidelines?: string): number {
   // Mock validation - in real implementation would check against brand guidelines
   return brandGuidelines ? 90 : 75;
 }

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Environment Configuration Check
  * Validates all API keys and external service connections for Phase 8.2
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     console.log('🔍 Checking environment configuration...');
 
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error',
       message: 'Environment check failed'
     }, { status: 500 });
   }
@@ -127,7 +127,7 @@ async function checkApiKey(envVar: string, prefix: string, description: string) 
       return {
         status: 'error',
         description,
-        message: `API connection test failed: ${error.message}`
+        message: `API connection test failed: ${error instanceof Error ? error.message : String(error)}`
       };
     }
   }
@@ -149,7 +149,7 @@ async function checkEnvVar(envVar: string, description: string) {
   };
 }
 
-async function testOpenAIConnection(apiKey: string): Promise<boolean> {
+async function testOpenAIConnection(_apiKey: string): Promise<boolean> {
   try {
     // Simple connectivity test (we'll skip this if it causes issues)
     return true; // Assume configured if key exists
@@ -196,7 +196,7 @@ function generateRecommendations(envStatus: any): string[] {
   return recommendations;
 }
 
-function generateSetupInstructions(envStatus: any): any {
+function generateSetupInstructions(_envStatus: any): any {
   return {
     quick_setup: 'Run: node scripts/setup-env.js',
     manual_setup: {

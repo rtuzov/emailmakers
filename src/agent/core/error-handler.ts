@@ -83,7 +83,7 @@ export class ErrorHandler {
       timestamp,
       traceId: errorId,
       source,
-      stack: error.stack
+      stack: error.stack || ''
     };
     
     // Логируем ошибку
@@ -353,12 +353,25 @@ export class ErrorHandler {
       recommendations.push('System operating normally');
     }
     
-    return {
+    const result: {
+      status: 'healthy' | 'degraded' | 'critical';
+      critical_errors_count: number;
+      last_critical_error?: StandardError;
+      recommendations: string[];
+    } = {
       status,
       critical_errors_count: criticalErrors.length,
-      last_critical_error: criticalErrors[criticalErrors.length - 1],
       recommendations
     };
+    
+    if (criticalErrors.length > 0) {
+      const lastError = criticalErrors[criticalErrors.length - 1];
+      if (lastError) {
+        result.last_critical_error = lastError;
+      }
+    }
+    
+    return result;
   }
 
   /**

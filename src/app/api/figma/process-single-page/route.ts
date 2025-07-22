@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // import { processAllFigmaPages } from '@/agent/tools/figma-all-pages-processor';
 
 // Stub implementation
-async function processAllFigmaPages(params: any) {
+async function processAllFigmaPages(_params: any) {
   return { success: false, error: 'processAllFigmaPages not implemented' };
 }
 import { getUsageModel } from '../../../../shared/utils/model-config';
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       figmaUrl,
       targetPageId,
       outputDirectory: outputDirectory || 'auto-generated',
-      context: context || 'default'
+      _context: context || 'default'
     });
 
     // Модифицируем процессор для обработки только одной страницы
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: result.data,
+      _data: result.data,
       message: `Успешно обработана страница с ${result.data.processedAssets} ассетами`
     });
 
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        details: error instanceof Error ? error.message : String(error)
+        details: error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error)
       },
       { status: 500 }
     );
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 /**
  * Модифицированная версия процессора для обработки только одной страницы
  */
-async function processSinglePageOnly(params: {
+async function processSinglePageOnly(_params: {
   figmaUrl: string;
   outputDirectory?: string;
   targetPageId: string;
@@ -97,7 +97,7 @@ async function processSinglePageOnly(params: {
     
     // Stub implementation
     class TagOptimizationService {
-      static async optimize(params: any) {
+      static async optimize(_params: any) {
         return { success: false, error: 'TagOptimizationService not implemented' };
       }
     }
@@ -155,7 +155,7 @@ async function processSinglePageOnly(params: {
         processedAssets.push(processedAsset);
         
       } catch (error) {
-        console.error(`❌ Ошибка обработки компонента ${component.name}:`, error.message);
+        console.error(`❌ Ошибка обработки компонента ${component.name}:`, error instanceof Error ? error.message : String(error));
       }
     }
 
@@ -171,7 +171,7 @@ async function processSinglePageOnly(params: {
 
     return {
       success: true,
-      data: {
+      _data: {
         pageName: pageData.name,
         pageId: params.targetPageId,
         processedAssets: processedAssets.length,
@@ -195,7 +195,7 @@ async function processSinglePageOnly(params: {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error)
     };
   }
 }
@@ -206,7 +206,7 @@ function extractFigmaIds(figmaUrl: string): { fileId: string } {
   if (!urlMatch) {
     throw new Error('Неверный формат Figma URL');
   }
-  return { fileId: urlMatch[1] };
+  return { fileId: (urlMatch && urlMatch[1] ? urlMatch[1] : "") };
 }
 
 async function getFigmaPageStructure(token: string, fileId: string, nodeId: string) {
@@ -256,7 +256,7 @@ async function processComponent(
   fileId: string,
   component: any,
   outputDir: string,
-  context: any,
+  _context: any,
   tagDictionary: any,
   tagDictionaryManager: any,
   tagOptimizer: any
@@ -400,7 +400,7 @@ async function generatePageReport(
   processedAssets: any[],
   outputDir: string,
   pageName: string,
-  context: any
+  _context: any
 ): Promise<string> {
   
   const report = {
@@ -479,7 +479,7 @@ async function saveComponentImage(
 async function analyzeImageWithAI(
   imagePath: string,
   componentName: string,
-  context: any,
+  _context: any,
   openai: any
 ): Promise<any> {
   
@@ -538,7 +538,7 @@ ${contextPrompt}
       temperature: 0.3
     });
 
-    const content = response.choices[0]?.message?.content;
+    const content = response.choices && response.choices[0] ? response.choices[0].message?.content : null;
     if (!content) {
       throw new Error('Пустой ответ от OpenAI');
     }
@@ -549,7 +549,7 @@ ${contextPrompt}
       throw new Error('JSON не найден в ответе OpenAI');
     }
 
-    const analysis = JSON.parse(jsonMatch[0]);
+    const analysis = JSON.parse((jsonMatch && jsonMatch[0] ? jsonMatch[0] : ""));
     
     return {
       suggestedTags: analysis.suggestedTags || [],
@@ -561,8 +561,8 @@ ${contextPrompt}
     };
 
   } catch (error) {
-    console.error(`❌ AI анализ изображения ${componentName} не удался:`, error.message);
-    throw new Error(`❌ FigmaAPI: AI image analysis failed for ${componentName} - ${error.message}. No fallback analysis allowed.`);
+    console.error(`❌ AI анализ изображения ${componentName} не удался:`, error instanceof Error ? error.message : String(error));
+    throw new Error(`❌ FigmaAPI: AI image analysis failed for ${componentName} - ${error instanceof Error ? error.message : String(error)}. No fallback analysis allowed.`);
   }
 }
 
@@ -596,7 +596,7 @@ async function analyzeComponentVariants(
   fileId: string,
   component: any,
   outputDir: string,
-  context: any,
+  _context: any,
   tagDictionary: any,
   tagDictionaryManager: any,
   tagOptimizer: any,
@@ -730,7 +730,7 @@ function selectBestVariant(
   );
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
@@ -746,7 +746,7 @@ export async function GET(request: NextRequest) {
               figmaUrl: 'string (required) - URL Figma файла',
               targetPageId: 'string (required) - ID страницы для обработки',
               outputDirectory: 'string (optional) - Директория для результатов',
-              context: {
+              _context: {
                 campaign_type: 'urgent | newsletter | seasonal | promotional | informational',
                 content_theme: 'string - Тема контента',
                 target_audience: 'string - Целевая аудитория', 

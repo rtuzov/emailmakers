@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753099247817_wujx5szjse",
+  "name": "Поездка в Норвегию зимой",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители зимних путешествий",
+  "user_request": "создай кампанию для поездки в Норвегию зимой",
+  "created_at": "2025-07-21T12:00:47.818Z",
+  "status": "analysis completed",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-21T12:01:14.644Z",
+  "notes": "Completed comprehensive travel analysis for winter trips to Norway.",
+  "data": "All required insights and recommendations have been documented."
+}

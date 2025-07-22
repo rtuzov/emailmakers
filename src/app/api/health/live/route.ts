@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Simple liveness check for Kubernetes
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Basic liveness check - just ensure the service can respond
     const memoryUsage = process.memoryUsage();

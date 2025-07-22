@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '@/shared/infrastructure/database/connection';
-import { users, User as UserSchema, NewUser } from '@/shared/infrastructure/database/schema';
+import { users, NewUser } from '@/shared/infrastructure/database/schema'; // UserSchema unused
 import { User } from '../entities/user';
 
 export interface UserRepository {

@@ -142,7 +142,7 @@ export const enhancedAssetSelectorTool = tool({
       
     } catch (error) {
       console.error('❌ Enhanced Asset Selector error:', error);
-      throw new Error(`Enhanced Asset Selector failed: ${error.message}`);
+      throw new Error(`Enhanced Asset Selector failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 });
@@ -171,15 +171,15 @@ async function selectHeroAssets(assetManager: AssetManager, plan: AssetPlan): Pr
     if (figmaSearchResult.success && figmaSearchResult.assets.length > 0) {
       return figmaSearchResult.assets.slice(0, 1).map(asset => ({
         asset_id: `hero_${Date.now()}`,
-        filename: asset.fileName || 'hero_image.png',
-        url: asset.filePath || '',
+        filename: (asset || {}).fileName || 'hero_image.png',
+        url: (asset || {}).filePath || '',
         source: 'figma' as const,
         tags: heroReq.tags,
         metadata: {
           description: heroReq.description,
           priority: heroReq.priority,
           folder: 'unknown',
-          figma_tags: asset.tags || []
+          figma_tags: (asset || {}).tags || []
         }
       }));
     }
@@ -200,14 +200,14 @@ async function selectHeroAssets(assetManager: AssetManager, plan: AssetPlan): Pr
     if (externalSearchResult.success && externalSearchResult.assets.length > 0) {
       return externalSearchResult.assets.map(asset => ({
         asset_id: `hero_ext_${Date.now()}`,
-        filename: asset.fileName || 'hero_external.jpg',
-        url: asset.filePath || '',
+        filename: (asset || {}).fileName || 'hero_external.jpg',
+        url: (asset || {}).filePath || '',
         source: 'external' as const,
         tags: heroReq.tags,
         metadata: {
           description: heroReq.description,
           priority: heroReq.priority,
-          external_source: asset.source || 'internet'
+          external_source: (asset || {}).source || 'internet'
         }
       }));
     }
@@ -223,7 +223,7 @@ async function selectHeroAssets(assetManager: AssetManager, plan: AssetPlan): Pr
       throw error;
     }
     
-    throw new Error(`Hero asset selection failed: ${error}`);
+    throw new Error(`Hero asset selection failed: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -238,12 +238,12 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
   
   for (let i = 0; i < contentReqs.length; i++) {
     const req = contentReqs[i];
-    console.log(`📄 Processing content asset ${i + 1}:`, req.tags);
+    console.log(`📄 Processing content asset ${i + 1}:`, (req || {}).tags);
     
     try {
       // Поиск в Figma
       const figmaSearchResult = await assetManager.searchAssets({
-        tags: req.tags,
+        tags: (req || {}).tags,
         emotional_tone: 'positive',
         campaign_type: 'promotional',
         target_count: 2,
@@ -254,15 +254,15 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
         const asset = figmaSearchResult.assets[0];
         allContentAssets.push({
           asset_id: `content_${i}_${Date.now()}`,
-          filename: asset.fileName || `content_${i + 1}.png`,
-          url: asset.filePath || '',
+          filename: (asset || {}).fileName || `content_${i + 1}.png`,
+          url: (asset || {}).filePath || '',
           source: 'figma' as const,
-          placement: req.placement,
-          tags: req.tags,
+          placement: (req || {}).placement,
+          tags: (req || {}).tags,
           metadata: {
-            description: req.description,
+            description: (req || {}).description,
             folder: 'unknown',
-            figma_tags: asset.tags || []
+            figma_tags: (asset || {}).tags || []
           }
         });
         continue;
@@ -281,14 +281,14 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
         const asset = externalSearchResult.assets[0];
         allContentAssets.push({
           asset_id: `content_ext_${i}_${Date.now()}`,
-          filename: asset.fileName || `content_external_${i + 1}.jpg`,
-          url: asset.filePath || '',
+          filename: (asset || {}).fileName || `content_external_${i + 1}.jpg`,
+          url: (asset || {}).filePath || '',
           source: 'external' as const,
-          placement: req.placement,
-          tags: req.tags,
+          placement: (req || {}).placement,
+          tags: (req || {}).tags,
           metadata: {
-            description: req.description,
-            external_source: asset.source || 'internet'
+            description: (req || {}).description,
+            external_source: (asset || {}).source || 'internet'
           }
         });
       }
@@ -301,7 +301,7 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
         throw error;
       }
       
-      throw new Error(`Content asset selection failed for asset ${i + 1}: ${error}`);
+      throw new Error(`Content asset selection failed for asset ${i + 1}: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   
@@ -319,12 +319,12 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
   
   for (let i = 0; i < footerReqs.length; i++) {
     const req = footerReqs[i];
-    console.log(`🔗 Processing footer asset ${i + 1}:`, req.tags);
+    console.log(`🔗 Processing footer asset ${i + 1}:`, (req || {}).tags);
     
     try {
       // Поиск в Figma (приоритет иконкам и логотипам)
       const figmaSearchResult = await assetManager.searchAssets({
-        tags: req.tags,
+        tags: (req || {}).tags,
         emotional_tone: 'positive',
         campaign_type: 'promotional',
         target_count: 2,
@@ -335,22 +335,22 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
         const asset = figmaSearchResult.assets[0];
         allFooterAssets.push({
           asset_id: `footer_${i}_${Date.now()}`,
-          filename: asset.fileName || `footer_${i + 1}.png`,
-          url: asset.filePath || '',
+          filename: (asset || {}).fileName || `footer_${i + 1}.png`,
+          url: (asset || {}).filePath || '',
           source: 'figma' as const,
-          type: req.type,
-          tags: req.tags,
+          type: (req || {}).type,
+          tags: (req || {}).tags,
           metadata: {
-            description: req.description,
+            description: (req || {}).description,
             folder: 'unknown',
-            figma_tags: asset.tags || []
+            figma_tags: (asset || {}).tags || []
           }
         });
         continue;
       }
       
       // If no assets found, fail fast
-      throw new Error(`No footer assets found for ${req.type} with tags: ${req.tags.join(', ')}`);
+      throw new Error(`No footer assets found for ${(req || {}).type} with tags: ${(req || {}).tags.join(', ')}`);
       
     } catch (error) {
       console.error(`❌ Footer asset ${i + 1} selection failed:`, error);
@@ -360,7 +360,7 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
         throw error;
       }
       
-      throw new Error(`Footer asset selection failed for asset ${i + 1}: ${error}`);
+      throw new Error(`Footer asset selection failed for asset ${i + 1}: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   
@@ -381,8 +381,8 @@ function calculateDistribution(heroAssets: any[], contentAssets: any[], footerAs
 } {
   const allAssets = [...heroAssets, ...contentAssets, ...footerAssets];
   
-  const figmaCount = allAssets.filter(asset => asset.source === 'figma').length;
-  const externalCount = allAssets.filter(asset => asset.source === 'external').length;
+  const figmaCount = allAssets.filter(asset => (asset || {}).source === 'figma').length;
+  const externalCount = allAssets.filter(asset => (asset || {}).source === 'external').length;
   
   return {
     figma_count: figmaCount,
@@ -462,7 +462,7 @@ export const executeEnhancedAssetSelector = async (assetPlan: AssetPlan): Promis
       throw error;
     }
     
-    throw new Error(`Enhanced asset selector failed: ${error}`);
+    throw new Error(`Enhanced asset selector failed: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 export default enhancedAssetSelectorTool; 

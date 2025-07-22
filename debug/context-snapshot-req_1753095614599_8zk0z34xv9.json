@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753095614599_8zk0z34xv9",
+  "traceId": "api-1753095614598",
+  "timestamp": "2025-07-21T11:00:14.599Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753095614599",
+    "name": "Guatemala Autumn Travel",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Email-Makers-Test",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 85,
+      "enableDebugLogs": true
+    },
+    "correlationId": "corr_1753095614599_kuny5ydaj2",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "путешествие в Гватемала осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Guatemala Autumn Travel",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "enableDebugLogs": true,
+    "originalOptions": {
+      "traceId": "api-1753095614598",
+      "metadata": {
+        "campaignName": "Guatemala Autumn Travel",
+        "brand": "Kupibilet",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "enableDebugLogs": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Email-Makers-Test",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "enableDebugLogs": true
+      }
+    }
+  }
+}

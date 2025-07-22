@@ -12,7 +12,7 @@
  * - Delivery Specialist: Finalizes and saves campaign files
  */
 
-import { EmailCampaignOrchestrator, createEmailCampaignOrchestrator } from './specialists/specialist-agents';
+import { EmailCampaignOrchestrator } from './specialists/specialist-agents';
 
 /**
  * Main function for generating Kupibilet emails

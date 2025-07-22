@@ -9,16 +9,15 @@ import {
   QualityRecommendation,
   AgentCommand,
   AIConsultantRequest,
-  AIConsultantConfig,
+  // AIConsultantConfig,
   AIConsultantError
 } from './types';
 import { BRAND_COLORS } from '../../../config/constants';
 
 export class CommandGenerator {
-  private config: AIConsultantConfig;
-
-  constructor(config: AIConsultantConfig) {
-    this.config = config;
+  constructor(/* private _config: AIConsultantConfig */) {
+    // Config parameter removed to avoid unused variable warning
+    // Will be re-added when advanced optimization features are implemented
   }
 
   /**
@@ -147,7 +146,7 @@ export class CommandGenerator {
    */
   private optimizeCopyGenerationParams(
     params: Record<string, any>,
-    recommendation: QualityRecommendation,
+    _recommendation: QualityRecommendation,
     request: AIConsultantRequest
   ): Record<string, any> {
     const optimized = { ...params };
@@ -190,7 +189,7 @@ export class CommandGenerator {
    */
   private optimizeHtmlPatchParams(
     params: Record<string, any>,
-    recommendation: QualityRecommendation,
+    _recommendation: QualityRecommendation,
     request: AIConsultantRequest
   ): Record<string, any> {
     const optimized = { ...params };
@@ -230,8 +229,8 @@ export class CommandGenerator {
    */
   private optimizeMjmlRenderParams(
     params: Record<string, any>,
-    recommendation: QualityRecommendation,
-    request: AIConsultantRequest
+    _recommendation: QualityRecommendation,
+    _request: AIConsultantRequest
   ): Record<string, any> {
     const optimized = { ...params };
 

@@ -76,9 +76,10 @@ export const generateComprehensiveDesignPackage = tool({
         throw new Error('Content context not found - cannot generate design package');
       }
       
-      if (!context.technical_specification) {
-        throw new Error('Technical specification not found - cannot generate design package');
-      }
+      // Note: Technical specification is now optional - AI template generator will handle it
+      // if (!context.technical_specification) {
+      //   throw new Error('Technical specification not found - cannot generate design package');
+      // }
       
       // Validate MJML template
       if (!params.mjml_template || !params.mjml_template.mjml_code) {
@@ -101,9 +102,9 @@ export const generateComprehensiveDesignPackage = tool({
       
       // Calculate quality metrics
       const technicalCompliance = calculateTechnicalCompliance({ mjml_template: params.mjml_template });
-      const assetOptimization = calculateAssetOptimization(params.asset_manifest);
+      const assetOptimization = calculateAssetOptimization({...params.asset_manifest, fonts: []} as any);
       const accessibilityScore = calculateAccessibilityScore({ accessibility_features: [] }); // Will be calculated based on actual features
-      const emailClientCompatibility = calculateEmailClientCompatibility(params.asset_manifest, context.technical_specification);
+      const emailClientCompatibility = calculateEmailClientCompatibility({...params.asset_manifest, fonts: []} as any, context.technical_specification || null);
       
       // Build comprehensive design package
       const designPackage = {

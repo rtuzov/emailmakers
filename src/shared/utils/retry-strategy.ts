@@ -257,7 +257,7 @@ export class UnifiedRetryStrategy {
   /**
    * Стандартная логика определения retry
    */
-  private defaultShouldRetry(error: any, attempt: number): boolean {
+  private defaultShouldRetry(error: any, _attempt: number): boolean {
     // Не повторяем для ошибок валидации
     if (error?.status === 400 || error?.status === 401 || error?.status === 403) {
       return false;

@@ -204,7 +204,7 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
     
     if (searchResult.success && searchResult.assets.length > 0) {
       const selectedAsset = searchResult.assets[0]; // Take highest relevance score
-      console.log(`✅ AI-Selected Asset: ${selectedAsset.fileName} (relevance: ${selectedAsset.relevanceScore}, source: ${selectedAsset.source})`);
+      console.log(`✅ AI-Selected Asset: ${(selectedAsset || {}).fileName} (relevance: ${(selectedAsset || {}).relevanceScore}, source: ${(selectedAsset || {}).source})`);
       
       // Log the intelligent tag selection results
       if (searchResult.search_metadata.figma_tags_used.length > 0) {
@@ -214,14 +214,14 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
         console.log(`🌐 External sources: ${searchResult.search_metadata.external_sources_used.join(', ')}`);
       }
       
-      return selectedAsset.filePath;
+      return (selectedAsset || {}).filePath;
     }
     
     // ❌ FALLBACK POLICY: No fallback allowed - fail fast
     throw new Error(`selectFigmaAssetByTags: Enhanced AssetManager found no suitable assets for tags: ${searchTags.join(', ')} and type: ${imageType}`);
     
   } catch (error) {
-    console.error(`❌ AI Asset Selection Error: ${error.message}`);
+    console.error(`❌ AI Asset Selection Error: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error)}`);
     throw error;
   }
 }
@@ -269,7 +269,7 @@ export async function findFigmaAsset(basePath: string, assetName: string): Promi
         
         return null;
       } catch (error) {
-        console.warn(`Warning: Could not search directory ${dirPath}:`, error.message);
+        console.warn(`Warning: Could not search directory ${dirPath}:`, error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error));
         return null;
       }
     }

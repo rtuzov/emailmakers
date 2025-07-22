@@ -13,7 +13,7 @@ import { log } from '../../../core/agent-logger';
 import { getErrorMessage } from '../utils/error-handling';
 
 // Campaign context types 
-interface CampaignWorkflowContext {
+export interface CampaignWorkflowContext {
   campaignId?: string;
   campaignPath?: string;
   metadata?: any;
@@ -27,7 +27,7 @@ interface CampaignWorkflowContext {
   trace_id?: string | null;
 }
 
-interface ExtendedRunContext {
+export interface ExtendedRunContext {
   campaignContext?: CampaignWorkflowContext;
 }
 
@@ -50,7 +50,7 @@ export const createCampaignFolder = tool({
     brief: z.string().describe('Краткое описание кампании'),
     target_audience: z.string().describe('Целевая аудитория'),
     goals: z.string().describe('Цели кампании'),
-    trace_id: z.string().optional().describe('ID трассировки для отладки')
+    trace_id: z.string().nullable().describe('ID трассировки для отладки')
   }),
   
   async execute(params, context) {
@@ -180,8 +180,12 @@ export const updateCampaignMetadata = tool({
   name: 'updateCampaignMetadata',
   description: 'Обновляет метаданные кампании с новой информацией о прогрессе',
   parameters: z.object({
-    updates: z.record(z.any()).describe('Объект с обновлениями метаданных'),
-    trace_id: z.string().optional().describe('ID трассировки для отладки')
+    updates: z.object({
+      status: z.string().nullable(),
+      progress: z.string().nullable(),
+      notes: z.string().nullable()
+    }).nullable().describe('Объект с обновлениями метаданных'),
+    trace_id: z.string().nullable().describe('ID трассировки для отладки')
   }),
   
   async execute(params, context) {
@@ -224,14 +228,14 @@ export const updateCampaignMetadata = tool({
       const duration = Date.now() - startTime;
       log.info('ContentSpecialist', 'Campaign metadata updated', {
         campaign_id: campaignContext.campaignId,
-        updates: Object.keys(params.updates),
+        updates: Object.keys(params.updates || {}),
         duration,
         trace_id: params.trace_id
       });
       
       log.tool('updateCampaignMetadata', params, updatedMetadata, duration, true);
       
-      return `Метаданные кампании обновлены. Изменения: ${Object.keys(params.updates).join(', ')}. Время обновления: ${updatedMetadata.updated_at}`;
+      return `Метаданные кампании обновлены. Изменения: ${Object.keys(params.updates || {}).join(', ')}. Время обновления: ${updatedMetadata.updated_at}`;
       
     } catch (error: unknown) {
       const duration = Date.now() - startTime;

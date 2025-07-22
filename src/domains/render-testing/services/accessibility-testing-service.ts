@@ -58,7 +58,7 @@ export class AccessibilityTestingService {
       await page.setContent(htmlContent, { waitUntil: 'networkidle' });
 
       // Create axe builder for email testing
-      const axeBuilder = await this.configureAxeForEmail(page, options);
+      const _axeBuilder // Currently unused = await this.configureAxeForEmail(page, options);
 
       // Run accessibility tests
       const results = await this.runAccessibilityTests(page, options);

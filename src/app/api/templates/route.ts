@@ -239,7 +239,7 @@ export async function GET(request: NextRequest) {
       .where(whereClause);
     
     const total = totalResult[0]?.count || 0;
-    const totalPages = Math.ceil(total / limit);
+    const _totalPages // Currently unused = Math.ceil(total / limit);
     const offset = (page - 1) * limit;
 
     // Query templates with pagination

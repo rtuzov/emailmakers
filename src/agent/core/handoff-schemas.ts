@@ -50,7 +50,7 @@ export const DataCollectionContextSchema = z.object({
       travel_experience_quality: z.string().optional().describe('Overall travel experience quality')
     }).passthrough().describe('Destination analysis data'),
     saved_at: z.string().describe('Analysis timestamp')
-  }).nullable().describe('Destination analysis from data collection'),
+  }).optional().describe('Destination analysis from data collection'),
   
   market_intelligence: z.object({
     analysis_type: z.string().describe('Type of market analysis'),
@@ -61,7 +61,7 @@ export const DataCollectionContextSchema = z.object({
       booking_recommendations: z.string().optional().describe('Booking timing recommendations')
     }).passthrough().describe('Market intelligence data'),
     saved_at: z.string().describe('Analysis timestamp')
-  }).nullable().describe('Market intelligence from data collection'),
+  }).optional().describe('Market intelligence from data collection'),
   
   emotional_profile: z.object({
     analysis_type: z.string().describe('Type of emotional analysis'),
@@ -72,7 +72,7 @@ export const DataCollectionContextSchema = z.object({
       psychological_benefits: z.string().optional().describe('Psychological benefits sought')
     }).passthrough().describe('Emotional profile data'),
     saved_at: z.string().describe('Analysis timestamp')
-  }).nullable().describe('Emotional profile from data collection'),
+  }).optional().describe('Emotional profile from data collection'),
   
   consolidated_insights: z.object({
     actionable_insights: z.array(z.string()).describe('Actionable marketing insights'),
@@ -80,21 +80,47 @@ export const DataCollectionContextSchema = z.object({
     confidence_score: z.number().min(0).max(1).describe('Confidence in analysis'),
     analysis_timestamp: z.string().describe('Analysis timestamp'),
     saved_at: z.string().describe('Save timestamp')
-  }).nullable().describe('Consolidated insights from all data'),
+  }).optional().describe('Consolidated insights from all data'),
   
   travel_intelligence: z.object({
-    route_analysis: z.any().nullable().describe('Flight route analysis'),
-    pricing_trends: z.any().nullable().describe('Historical pricing trends'),
-    seasonal_patterns: z.any().nullable().describe('Seasonal travel patterns'),
-    booking_windows: z.any().nullable().describe('Optimal booking windows')
-  }).nullable().describe('Travel intelligence data'),
+    analysis_type: z.string().optional().describe('Type of travel intelligence analysis'),
+    data: z.object({
+      route_analysis: z.string().describe('Flight route analysis'),
+      pricing_trends: z.string().describe('Historical pricing trends'),
+      seasonal_patterns: z.string().describe('Seasonal travel patterns'),
+      booking_windows: z.string().describe('Optimal booking windows'),
+      destination_insights: z.object({
+        route_analysis: z.string().optional(),
+        seasonal_patterns: z.string().optional(),
+        climate: z.string().optional(),
+        culture: z.string().optional()
+      }).passthrough().optional().describe('Destination insights'),
+      market_insights: z.object({
+        pricing_trends: z.string().optional(),
+        booking_windows: z.string().optional(),
+        demand: z.string().optional(),
+        competition: z.string().optional()
+      }).passthrough().optional().describe('Market insights'),
+      trend_insights: z.object({
+        market_trends: z.string().optional(),
+        consumer_behavior: z.string().optional(),
+        competitive_landscape: z.string().optional(),
+        seasonal_factors: z.string().optional()
+      }).passthrough().optional().describe('Trend insights')
+    }).passthrough().describe('Travel intelligence data'),
+    saved_at: z.string().describe('Analysis timestamp')
+  }).optional().describe('Travel intelligence data'),
   
   trend_analysis: z.object({
-    market_trends: z.any().nullable().describe('Current market trends'),
-    consumer_behavior: z.any().nullable().describe('Consumer behavior patterns'),
-    competitive_landscape: z.any().nullable().describe('Competitive analysis'),
-    seasonal_factors: z.any().nullable().describe('Seasonal influence factors')
-  }).nullable().describe('Trend analysis data'),
+    analysis_type: z.string().optional().describe('Type of trend analysis'),
+    data: z.object({
+      market_trends: z.string().describe('Current market trends'),
+      consumer_behavior: z.string().describe('Consumer behavior patterns'),
+      competitive_landscape: z.string().describe('Competitive analysis'),
+      seasonal_factors: z.string().describe('Seasonal influence factors')
+    }).passthrough().describe('Trend analysis data'),
+    saved_at: z.string().describe('Analysis timestamp')
+  }).optional().describe('Trend analysis data'),
   
   collection_metadata: z.object({
     campaign_id: z.string().describe('Campaign identifier'),
@@ -102,8 +128,8 @@ export const DataCollectionContextSchema = z.object({
     data_sources: z.array(z.string()).describe('Sources of collected data'),
     collection_status: z.enum(['complete', 'partial', 'failed']).describe('Collection status'),
     data_quality_score: z.number().min(0).max(100).describe('Quality score of collected data')
-  }).describe('Data collection metadata')
-});
+  }).optional().describe('Data collection metadata')
+}).passthrough().describe('Data collection context');
 
 // ============================================================================
 // CONTENT SPECIALIST SCHEMAS
@@ -130,48 +156,73 @@ export const DateAnalysisSchema = z.object({
 });
 
 export const PricingAnalysisSchema = z.object({
-  best_price: z.number().describe('Best available price'),
-  min_price: z.number().describe('Minimum price found'),
-  max_price: z.number().describe('Maximum price found'),
-  average_price: z.number().describe('Average price across offers'),
-  currency: z.string().describe('Currency code (RUB, USD, EUR)'),
-  offers_count: z.number().describe('Number of offers found'),
-  recommended_dates: z.array(z.string()).describe('Recommended booking dates'),
+  best_price: z.number().optional().describe('Best available price'),
+  min_price: z.number().optional().describe('Minimum price found'),
+  max_price: z.number().optional().describe('Maximum price found'),
+  average_price: z.number().optional().describe('Average price across offers'),
+  currency: z.string().optional().describe('Currency code (RUB, USD, EUR)'),
+  offers_count: z.number().optional().describe('Number of offers found'),
+  recommended_dates: z.array(z.string()).optional().describe('Recommended booking dates'),
   route: z.object({
-    from: z.string().describe('Departure city'),
-    to: z.string().describe('Destination city'),
-    from_code: z.string().describe('Departure airport code'),
-    to_code: z.string().describe('Destination airport code')
-  }).describe('Flight route information'),
+    from: z.string().optional().describe('Departure city'),
+    to: z.string().optional().describe('Destination city'),
+    from_code: z.string().optional().describe('Departure airport code'),
+    to_code: z.string().optional().describe('Destination airport code')
+  }).optional().describe('Flight route information'),
   enhanced_features: z.object({
-    airport_conversion: z.record(z.any()).describe('Airport conversion data'),
-    csv_integration: z.string().describe('CSV integration status'),
-    api_source: z.string().describe('API source identifier')
-  }).describe('Enhanced pricing features')
-});
+    airport_conversion: z.record(z.unknown()).optional().describe('Airport conversion data'),
+    csv_integration: z.string().optional().describe('CSV integration status'),
+    api_source: z.string().optional().describe('API source identifier')
+  }).optional().describe('Enhanced pricing features'),
+  // Support comprehensive pricing format
+  comprehensive_pricing: z.object({
+    best_price_overall: z.number().optional(),
+    currency: z.string().optional()
+  }).optional().describe('Comprehensive pricing data')
+}).passthrough().describe('Pricing analysis data');
 
 export const AssetStrategySchema = z.object({
-  theme: z.string().describe('Campaign theme'),
-  visual_style: z.enum(['modern', 'classic', 'minimalist', 'vibrant', 'elegant']).describe('Visual style'),
-  color_palette: z.string().describe('Color scheme description'),
-  typography: z.string().describe('Typography guidelines'),
-  image_concepts: z.array(z.string()).describe('Image concept descriptions'),
-  layout_hierarchy: z.string().describe('Layout hierarchy guidelines'),
-  emotional_triggers: z.enum(['excitement', 'trust', 'urgency', 'relaxation', 'adventure']).describe('Target emotion'),
-  brand_consistency: z.string().describe('Brand consistency requirements')
-});
+  theme: z.string().optional().describe('Campaign theme'),
+  visual_style: z.enum(['modern', 'classic', 'minimalist', 'vibrant', 'elegant']).optional().describe('Visual style'),
+  color_palette: z.string().optional().describe('Color scheme description'),
+  typography: z.string().optional().describe('Typography guidelines'),
+  image_concepts: z.array(z.string()).optional().describe('Image concept descriptions'),
+  layout_hierarchy: z.string().optional().describe('Layout hierarchy guidelines'),
+  emotional_triggers: z.enum(['excitement', 'trust', 'urgency', 'relaxation', 'adventure']).optional().describe('Target emotion'),
+  brand_consistency: z.string().optional().describe('Brand consistency requirements'),
+  // Support actual generated structure
+  visual_direction: z.object({
+    primary_style: z.string().optional(),
+    color_scheme: z.string().optional()
+  }).optional().describe('Visual direction'),
+  content_strategy: z.object({
+    tone: z.string().optional(),
+    key_messages: z.array(z.string()).optional(),
+    emotional_triggers: z.array(z.string()).optional(),
+    call_to_action: z.object({
+      primary: z.string().optional()
+    }).optional()
+  }).optional().describe('Content strategy'),
+  asset_types: z.array(z.object({
+    type: z.string().optional(),
+    description: z.string().optional()
+  })).optional().describe('Asset types')
+}).passthrough().describe('Asset strategy data');
 
 export const GeneratedContentSchema = z.object({
-  subject: z.string().describe('Email subject line'),
-  preheader: z.string().describe('Email preheader text'),
-  body: z.string().describe('Main email body content'),
+  subject: z.string().optional().describe('Email subject line'),
+  preheader: z.string().optional().describe('Email preheader text'),
+  body: z.union([z.string(), z.object({}).passthrough()]).optional().describe('Main email body content - can be string or object'),
   cta: z.object({
-    primary: z.string().describe('Primary call-to-action text'),
-    secondary: z.string().describe('Secondary call-to-action text')
-  }).describe('Call-to-action elements'),
-  personalization_level: z.enum(['basic', 'advanced', 'premium']).describe('Personalization level'),
-  urgency_level: z.enum(['low', 'medium', 'high']).describe('Urgency level')
-});
+    primary: z.string().optional().describe('Primary call-to-action text'),
+    secondary: z.string().optional().describe('Secondary call-to-action text')
+  }).optional().describe('Call-to-action elements'),
+  personalization_level: z.enum(['basic', 'advanced', 'premium']).optional().describe('Personalization level'),
+  urgency_level: z.enum(['low', 'medium', 'high']).optional().describe('Urgency level'),
+  // Support actual generated structure
+  content: z.object({}).passthrough().optional().describe('Generated content object'),
+  metadata: z.object({}).passthrough().optional().describe('Content metadata')
+}).passthrough().describe('Generated content data');
 
 export const ContentContextSchema = z.object({
   campaign: CampaignMetadataSchema.optional().describe('Campaign metadata'),
@@ -358,7 +409,7 @@ export const QualityReportSchema = z.object({
 
 export const QualityContextSchema = z.object({
   design_context: DesignContextSchema.describe('Design specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results'),
   quality_report: QualityReportSchema.describe('Comprehensive quality analysis'),
   test_artifacts: z.object({
     screenshots: z.array(z.object({
@@ -464,7 +515,7 @@ export const DeliveryReportSchema = z.object({
 
 export const DeliveryContextSchema = z.object({
   quality_context: QualityContextSchema.describe('Quality specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results'),
   delivery_manifest: DeliveryManifestSchema.describe('Package manifest'),
   export_format: ExportFormatSchema.describe('Export configuration'),
   delivery_report: DeliveryReportSchema.describe('Final delivery report'),
@@ -489,7 +540,7 @@ export const BaseHandoffDataSchema = z.object({
 
 export const ContentToDesignHandoffSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Complete content specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results'),
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results'),
   original_content: z.object({
     user_request: z.string().describe('Original user request'),
     campaign_brief: z.string().optional().describe('Campaign brief'),
@@ -508,7 +559,7 @@ export const QualityToDeliveryHandoffSchema = BaseHandoffDataSchema.extend({
   content_context: ContentContextSchema.describe('Content specialist outputs'),
   design_context: DesignContextSchema.describe('Design specialist outputs'),
   quality_context: QualityContextSchema.describe('Complete quality specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results')
 });
 
 export const CompleteWorkflowContextSchema = BaseHandoffDataSchema.extend({
@@ -516,7 +567,7 @@ export const CompleteWorkflowContextSchema = BaseHandoffDataSchema.extend({
   design_context: DesignContextSchema.describe('Design specialist outputs'),
   quality_context: QualityContextSchema.describe('Quality specialist outputs'),
   delivery_context: DeliveryContextSchema.describe('Complete delivery specialist outputs'),
-  data_collection_context: DataCollectionContextSchema.describe('Raw data collection results')
+  data_collection_context: DataCollectionContextSchema.optional().describe('Raw data collection results')
 });
 
 // ============================================================================

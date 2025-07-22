@@ -38,19 +38,29 @@ export default function HandoffMonitoringUI({ className = '' }: HandoffMonitorin
         const toIndex = (fromIndex + 1) % agents.length;
         const status = statuses[Math.floor(Math.random() * statuses.length)] as HandoffEvent['status'];
         
-        return {
+        const event: HandoffEvent = {
           id: `handoff-${Date.now()}-${i}`,
           from_agent: agents[fromIndex] as string,
           to_agent: agents[toIndex] as string,
           timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
           status,
           data_type: dataTypes[Math.floor(Math.random() * dataTypes.length)] as HandoffEvent['data_type'],
-          duration_ms: status === 'completed' ? Math.floor(Math.random() * 5000) + 500 : undefined,
-          validation_score: status === 'completed' ? Math.floor(Math.random() * 20) + 80 : undefined,
           issues_count: Math.floor(Math.random() * 5),
           payload_size_kb: Math.floor(Math.random() * 50) + 10,
-          error_message: status === 'failed' ? 'Validation failed: Invalid data format' : undefined
         };
+        
+        // Add error_message only if status is failed
+        if (status === 'failed') {
+          event.error_message = 'Validation failed: Invalid data format';
+        }
+        
+        // Add optional properties conditionally
+        if (status === 'completed') {
+          event.duration_ms = Math.floor(Math.random() * 5000) + 500;
+          event.validation_score = Math.floor(Math.random() * 20) + 80;
+        }
+        
+        return event;
       }).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     };
 
@@ -229,7 +239,7 @@ export default function HandoffMonitoringUI({ className = '' }: HandoffMonitorin
           <div 
             key={event.id}
             className="bg-glass-primary rounded-xl border border-white/10 p-4 hover:bg-glass-surface transition-all duration-200 cursor-pointer"
-            onClick={() => setSelectedEvent(event)}
+            onClick={() => _setSelectedEvent(event)}
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-3">

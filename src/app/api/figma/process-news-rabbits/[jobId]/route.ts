@@ -24,7 +24,7 @@ const processingJobs = new Map<string, ProcessingJob>();
  * Возвращает статус конкретной задачи обработки
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { jobId: string } }
 ) {
   try {
@@ -100,7 +100,7 @@ export async function GET(
  * Отменяет задачу (если возможно) или удаляет из истории
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { jobId: string } }
 ) {
   try {

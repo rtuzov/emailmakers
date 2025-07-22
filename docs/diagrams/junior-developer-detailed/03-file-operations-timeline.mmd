@@ -1,0 +1,61 @@
+gantt
+    title Операции Чтения/Записи по Времени
+    dateFormat X
+    axisFormat %Ls
+    
+    section Data Collection (0-20s)
+    Создание папки кампании                    :milestone, 0, 2
+    Запись campaign-metadata.json              :2, 3
+    Запись README.md                           :2, 3
+    Запись requirements-analysis.json          :5, 8
+    Запись emotional-profile.json              :8, 12
+    Запись destination-analysis.json           :8, 12
+    Запись market-intelligence.json            :12, 15
+    Запись trend-analysis.json                 :12, 15
+    Запись outline-structure.json              :15, 18
+    Запись consolidated-insights.json          :18, 19
+    Запись data-to-content.json                :20, 20
+    
+    section Content (20-65s)
+    Чтение handoff файлов                      :20, 22
+    OpenAI API: генерация контента             :22, 35
+    Запись email-content.json                  :22, 35
+    Запись email-content.md                    :22, 35
+    Kupibilet API: данные о поездках           :35, 40
+    Запись pricing-analysis.json               :35, 40
+    Запись date-analysis.json                  :35, 40
+    OpenAI API: оптимизация                    :40, 50
+    OpenAI API: персонализация                 :52, 60
+    Запись content-to-design.json              :63, 65
+    
+    section Design (65-90s)
+    Чтение content handoff                     :65, 67
+    Запись design-brief-from-context.json      :67, 69
+    Запись email-template.mjml                 :75, 78
+    Internal AI: валидация дизайна             :84, 85
+    Запись email-template.html                 :86, 87
+    Запись styles.css                          :86, 87
+    Запись design-decisions.json               :86, 87
+    Запись design-to-quality.json              :88, 90
+    
+    section Quality (90-112s)
+    Чтение design handoff                      :90, 92
+    Чтение HTML/MJML файлов                    :90, 92
+    Тестирование email клиентов                :95, 100
+    Проверка доступности                       :100, 103
+    Валидация responsive дизайна               :103, 105
+    Тестирование dark mode                     :105, 107
+    Анализ производительности                  :107, 109
+    Запись quality-report.json                 :109, 110
+    Запись test-results.json                   :109, 110
+    Запись quality-to-delivery.json            :111, 112
+    
+    section Delivery (112-118s)
+    Чтение quality handoff                     :112, 113
+    Чтение всех assets                         :112, 113
+    Запись final-email-template.html           :113, 115
+    Запись template-package.zip                :113, 115
+    Запись campaign-complete.zip               :115, 117
+    Запись delivery-manifest.json              :115, 117
+    Обновление campaign-metadata.json          :117, 118
+    Обновление README.md                       :117, 118

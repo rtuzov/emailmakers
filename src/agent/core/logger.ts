@@ -9,7 +9,7 @@ import path from 'path';
  */
 class CoreLogger {
   private static instance: CoreLogger;
-  private logger = pino({ name: 'email-makers-agent', level: process.env.LOG_LEVEL || 'info' });
+  private logger = pino({ name: 'email-makers-agent', level: process.env.LOG_LEVEL || 'warn' });
 
   // Prometheus metrics
   private registry: Registry;

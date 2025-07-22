@@ -162,7 +162,7 @@ async function withRetry<T>(
     startTime
   };
   
-  let lastError: Error;
+  let lastError: Error = new Error('Unknown error');
   
   for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
     context.attempt = attempt;

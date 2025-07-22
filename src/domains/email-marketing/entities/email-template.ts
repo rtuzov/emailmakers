@@ -123,7 +123,7 @@ export class EmailTemplate {
   ): EmailTemplate {
     const metadata: TemplateMetadata = {
       id: EmailTemplate.generateStaticId(),
-      name: options.name,
+      ...(options.name ? { name: options.name } : {}),
       version: '1.0.0',
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -349,7 +349,7 @@ export class EmailTemplate {
     
     let match;
     while ((match = variablePattern.exec(this.html)) !== null) {
-      const variableName = match[1].trim();
+      const variableName = (match[1] || '').trim();
       if (!variables[variableName]) {
         variables[variableName] = {
           type: 'text',

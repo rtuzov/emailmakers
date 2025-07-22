@@ -1,0 +1,104 @@
+{
+  "requestId": "req_1752670188072_fl6o6lzfpg9",
+  "traceId": "api-1752670188072",
+  "timestamp": "2025-07-16T12:49:48.072Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1752670188072",
+    "name": "Осеннее путешествие в Японию",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "destination": "Япония",
+      "origin": "Москва",
+      "season": "осень",
+      "language": "ru",
+      "validationLevel": "standard",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1752670188072_9zn7gggnobs",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию для путешествия в Японию осенью. Нужны авиабилеты из Москвы в Токио на осенний период с акцентом на культуру и сакуру.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Осеннее путешествие в Японию",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Япония",
+    "origin": "Москва",
+    "season": "осень",
+    "originalOptions": {
+      "traceId": "api-1752670188072",
+      "metadata": {
+        "campaignName": "Осеннее путешествие в Японию",
+        "brand": "Kupibilet",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Япония",
+        "origin": "Москва",
+        "season": "осень"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "destination": "Япония",
+        "origin": "Москва",
+        "season": "осень",
+        "language": "ru",
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

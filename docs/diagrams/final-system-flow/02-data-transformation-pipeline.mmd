@@ -1,0 +1,48 @@
+graph LR
+    subgraph "📊 DATA EVOLUTION STAGES"
+        STAGE1["🌱 INITIAL<br/>2KB<br/>Brief Text"]
+        STAGE2["📋 ANALYSIS<br/>15KB<br/>+Requirements<br/>+Audience<br/>+Strategy"]
+        STAGE3["📝 CONTENT<br/>29KB<br/>+Email Content<br/>+Travel Data<br/>+Personalization"]
+        STAGE4["🎨 DESIGN<br/>40KB<br/>+MJML Template<br/>+Styling<br/>+Assets"]
+        STAGE5["✅ VALIDATED<br/>40KB<br/>+Quality Reports<br/>+Test Results"]
+        STAGE6["📦 DELIVERED<br/>40KB<br/>+Export Package<br/>+Final Assets"]
+    end
+    
+    subgraph "🔄 TRANSFORMATION DETAILS"
+        T1["📥 INPUT PROCESSING<br/>• Brief parsing<br/>• Requirement extraction<br/>• Audience analysis"]
+        T2["🤖 AI ENHANCEMENT<br/>• Content generation<br/>• Optimization<br/>• Personalization"]
+        T3["🎨 DESIGN APPLICATION<br/>• MJML generation<br/>• Brand application<br/>• Responsive design"]
+        T4["✅ QUALITY VALIDATION<br/>• Multi-client testing<br/>• Accessibility checks<br/>• Performance analysis"]
+        T5["📦 FINAL PACKAGING<br/>• Asset compilation<br/>• Export preparation<br/>• Delivery finalization"]
+    end
+    
+    STAGE1 --> T1
+    T1 --> STAGE2
+    STAGE2 --> T2
+    T2 --> STAGE3
+    STAGE3 --> T3
+    T3 --> STAGE4
+    STAGE4 --> T4
+    T4 --> STAGE5
+    STAGE5 --> T5
+    T5 --> STAGE6
+    
+    %% PERFORMANCE METRICS
+    PERF_M1["⏱️ TIME: 0-20s<br/>💾 SIZE: 2-15KB"]
+    PERF_M2["⏱️ TIME: 20-45s<br/>💾 SIZE: 15-29KB<br/>🤖 3 AI calls"]
+    PERF_M3["⏱️ TIME: 45-65s<br/>💾 SIZE: 29-40KB<br/>🎨 Design generation"]
+    PERF_M4["⏱️ TIME: 65-85s<br/>💾 SIZE: 40KB<br/>✅ Multi-validation"]
+    PERF_M5["⏱️ TIME: 85-98s<br/>💾 SIZE: 40KB<br/>📦 Final packaging"]
+    
+    STAGE2 -.-> PERF_M1
+    STAGE3 -.-> PERF_M2
+    STAGE4 -.-> PERF_M3
+    STAGE5 -.-> PERF_M4
+    STAGE6 -.-> PERF_M5
+    
+    style STAGE1 fill:#e8f5e8,stroke:#4caf50,color:black
+    style STAGE2 fill:#e3f2fd,stroke:#2196f3,color:black
+    style STAGE3 fill:#f3e5f5,stroke:#9c27b0,color:black
+    style STAGE4 fill:#fff3e0,stroke:#ff9800,color:black
+    style STAGE5 fill:#e8f5e8,stroke:#4caf50,color:black
+    style STAGE6 fill:#f1f8e9,stroke:#8bc34a,color:black

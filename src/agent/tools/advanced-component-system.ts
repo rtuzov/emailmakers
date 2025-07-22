@@ -93,7 +93,7 @@ export async function advancedComponentSystem(params: AdvancedComponentParams): 
     }
 
   } catch (error) {
-    return handleToolError('advanced_component_system', error);
+    return handleToolError('advanced_component_system', String(error));
   }
 }
 
@@ -117,7 +117,7 @@ async function renderAdvancedComponent(params: AdvancedComponentParams): Promise
       
       // Update analytics
       if (params.analytics_tracking) {
-        updateComponentAnalytics(params.component_type, {
+        updateComponentAnalytics(params.component_type || 'unknown', {
           render_time: 0, // Cache hit
           cache_hit: true
         });
@@ -142,10 +142,10 @@ async function renderAdvancedComponent(params: AdvancedComponentParams): Promise
   }
   
   // Calculate dynamic sizing
-  const dimensions = calculateDynamicSizing(params.component_type, params.sizing_context);
+  const dimensions = calculateDynamicSizing(params.component_type || 'default', params.sizing_context || undefined);
   
   // Render component with dynamic sizing
-  const html = await renderComponentWithSizing(params.component_type, params.props, dimensions);
+  const html = await renderComponentWithSizing(params.component_type || 'default', params.props, dimensions);
   
   const renderTime = Date.now() - startTime;
   
@@ -170,7 +170,7 @@ async function renderAdvancedComponent(params: AdvancedComponentParams): Promise
   
   // Update analytics
   if (params.analytics_tracking) {
-    updateComponentAnalytics(params.component_type, {
+    updateComponentAnalytics(params.component_type || 'unknown', {
       render_time: renderTime,
       cache_hit: false
     });
@@ -206,18 +206,26 @@ function calculateDynamicSizing(componentType: string, context?: SizingContext):
     social_proof: { width: 300, height: 80, scale: 1.0, density: 'standard' }
   };
   
-  let dimensions = baseSizes[componentType] || baseSizes.rabbit;
+  const baseDimensions: ComponentDimensions = baseSizes[componentType] || baseSizes.rabbit || { width: 120, height: 120, scale: 1.0, density: 'standard' };
   
-  if (!context) return dimensions;
+  if (!context) return baseDimensions;
+  
+  // Create a copy to avoid mutating the original
+  const dimensions: ComponentDimensions = { 
+    width: baseDimensions.width || 120,
+    height: baseDimensions.height || 120, 
+    scale: baseDimensions.scale || 1.0,
+    density: baseDimensions.density || 'standard'
+  };
   
   // Viewport-based scaling
   switch (context.viewportType) {
     case 'mobile':
-      dimensions.scale *= 0.8;
-      dimensions.width = Math.round(dimensions.width * 0.8);
+      dimensions.scale = (dimensions.scale || 1.0) * 0.8;
+      dimensions.width = Math.round((dimensions.width || 120) * 0.8);
       break;
     case 'tablet':
-      dimensions.scale *= 0.9;
+      dimensions.scale = (dimensions.scale || 1.0) * 0.9;
       break;
     case 'desktop':
       // Keep standard size
@@ -227,35 +235,35 @@ function calculateDynamicSizing(componentType: string, context?: SizingContext):
   // Content density adjustments
   switch (context.contentDensity) {
     case 'sparse':
-      dimensions.scale *= 1.2;
-      dimensions.width = Math.round(dimensions.width * 1.2);
-      dimensions.height = Math.round(dimensions.height * 1.2);
+      dimensions.scale = (dimensions.scale || 1.0) * 1.2;
+      dimensions.width = Math.round((dimensions.width || 120) * 1.2);
+      dimensions.height = Math.round((dimensions.height || 120) * 1.2);
       break;
     case 'dense':
-      dimensions.scale *= 0.8;
-      dimensions.width = Math.round(dimensions.width * 0.8);
-      dimensions.height = Math.round(dimensions.height * 0.8);
+      dimensions.scale = (dimensions.scale || 1.0) * 0.8;
+      dimensions.width = Math.round((dimensions.width || 120) * 0.8);
+      dimensions.height = Math.round((dimensions.height || 120) * 0.8);
       break;
   }
   
   // Position-based adjustments
   switch (context.componentPosition) {
     case 'header':
-      dimensions.scale *= 1.1;
+      dimensions.scale = (dimensions.scale || 1.0) * 1.1;
       break;
     case 'footer':
-      dimensions.scale *= 0.9;
+      dimensions.scale = (dimensions.scale || 1.0) * 0.9;
       break;
     case 'sidebar':
-      dimensions.width = Math.round(dimensions.width * 0.7);
+      dimensions.width = Math.round((dimensions.width || 120) * 0.7);
       break;
   }
   
   // Content length influence
   if (context.emailContentLength > 2000) {
-    dimensions.scale *= 0.9; // Smaller components for long emails
+    dimensions.scale = (dimensions.scale || 1.0) * 0.9; // Smaller components for long emails
   } else if (context.emailContentLength < 500) {
-    dimensions.scale *= 1.1; // Larger components for short emails
+    dimensions.scale = (dimensions.scale || 1.0) * 1.1; // Larger components for short emails
   }
   
   return dimensions;
@@ -328,7 +336,7 @@ function renderRabbitComponent(props: any, sizeStyles: string, dimensions: Compo
  */
 function renderIconComponent(props: any, sizeStyles: string, dimensions: ComponentDimensions): string {
   const iconType = props?.iconType || 'arrow';
-  const color = props?.color || '#007bff';
+  // const __color = props?.color || '#007bff'; // Currently unused
   const alt = props?.alt || `${iconType} icon`;
   
   return `
@@ -386,7 +394,7 @@ function renderButtonComponent(props: any, sizeStyles: string, dimensions: Compo
 /**
  * New Price Display Component
  */
-function renderPriceDisplayComponent(props: any, sizeStyles: string, dimensions: ComponentDimensions): string {
+function renderPriceDisplayComponent(props: any, sizeStyles: string, _dimensions: ComponentDimensions): string {
   const price = props?.price || '25,000';
   const currency = props?.currency || 'RUB';
   const label = props?.label || 'от';
@@ -513,8 +521,8 @@ function analyzeComponentPerformance(componentType?: string): ToolResult {
   
   const cacheStats = {
     total_entries: componentCache.size,
-    cache_hit_rate: analytics.reduce((sum, a) => sum + a.cache_hit_rate, 0) / analytics.length || 0,
-    average_render_time: analytics.reduce((sum, a) => sum + a.average_render_time, 0) / analytics.length || 0
+    cache_hit_rate: analytics.reduce((sum, a) => sum + (a?.cache_hit_rate || 0), 0) / analytics.length || 0,
+    average_render_time: analytics.reduce((sum, a) => sum + (a?.average_render_time || 0), 0) / analytics.length || 0
   };
   
   return {
@@ -524,8 +532,8 @@ function analyzeComponentPerformance(componentType?: string): ToolResult {
       cache_statistics: cacheStats,
       performance_summary: {
         total_components: analytics.length,
-        best_performing: analytics.sort((a, b) => b.performance_score - a.performance_score)[0]?.component_type,
-        optimization_opportunities: analytics.filter(a => a.performance_score < 70).map(a => a.component_type)
+        best_performing: analytics.sort((a, b) => (b?.performance_score || 0) - (a?.performance_score || 0))[0]?.component_type,
+        optimization_opportunities: analytics.filter(a => (a?.performance_score || 0) < 70).map(a => a?.component_type || 'unknown')
       }
     },
     // metadata: {

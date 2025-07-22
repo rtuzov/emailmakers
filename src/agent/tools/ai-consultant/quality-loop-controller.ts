@@ -7,11 +7,11 @@
 
 import { 
   AIConsultantRequest,
-  AIConsultantResponse,
+  // AIConsultantResponse,
   AIConsultantConfig,
   ImprovementIteration,
-  ExecutionResult,
-  QualityAnalysisResult,
+  // ExecutionResult,
+  // QualityAnalysisResult,
   ImprovementStatus,
   AIConsultantError
 } from './types';
@@ -68,7 +68,7 @@ export class QualityLoopController {
       // Initialize session
       const session: QualityLoopSession = {
         session_id,
-        user_id: request.user_id,
+        user_id: request.user_id || 'anonymous',
         email_topic: request.topic,
         initial_request: { ...request, session_id },
         iterations: [],
@@ -232,19 +232,21 @@ export class QualityLoopController {
       console.log(`⚙️ Executing iteration ${iterationNumber} for session ${session.session_id}`);
 
       // Prepare request for this iteration
+      const baseRequest = { ...session.initial_request };
       const iterationRequest: AIConsultantRequest = {
-        ...session.initial_request,
+        ...baseRequest,
         iteration_count: iterationNumber - 1, // 0-based for consultant
         improvement_history: session.iterations,
-        user_approvals: userApprovals
+        ...(userApprovals && { user_approvals: userApprovals })
       };
 
       // Get AI consultant response
       const consultantResponse = await this.consultant.consultOnQuality(iterationRequest);
       
       // Calculate scores
-      const initialScore = session.iterations.length > 0 
-        ? session.iterations[session.iterations.length - 1].final_score
+      const lastIteration = session.iterations.length > 0 ? session.iterations[session.iterations.length - 1] : null;
+      const initialScore = lastIteration 
+        ? lastIteration.final_score
         : consultantResponse.analysis.overall_score;
       
       const finalScore = consultantResponse.analysis.overall_score;
@@ -280,7 +282,7 @@ export class QualityLoopController {
         iteration_number: iterationNumber,
         timestamp: new Date(),
         initial_score: session.iterations.length > 0 
-          ? session.iterations[session.iterations.length - 1].final_score 
+          ? (session.iterations[session.iterations.length - 1]?.final_score || 0) 
           : 0,
         final_score: 0,
         score_improvement: 0,
@@ -381,8 +383,10 @@ export class QualityLoopController {
   private calculateTotalImprovement(session: QualityLoopSession): number {
     if (session.iterations.length === 0) return 0;
     
-    const firstScore = session.iterations[0].initial_score;
-    const lastScore = session.iterations[session.iterations.length - 1].final_score;
+    const firstIteration = session.iterations[0];
+    const lastIteration = session.iterations[session.iterations.length - 1];
+    const firstScore = firstIteration?.initial_score || 0;
+    const lastScore = lastIteration?.final_score || 0;
     return lastScore - firstScore;
   }
 
@@ -411,10 +415,10 @@ export class QualityLoopController {
     if (!lastIteration?.consultant_response) return 'general_improvement';
 
     const analysis = lastIteration.consultant_response.analysis;
-    const lowestDimension = Object.entries(analysis.dimension_scores)
+    const lowestDimension = (Object || {}).entries(analysis.dimension_scores)
       .sort(([,a], [,b]) => (a as number) - (b as number))[0];
 
-    return lowestDimension[0] as string;
+    return (lowestDimension || [])[0] as string;
   }
 
   /**
@@ -453,15 +457,15 @@ class QualityLoopAnalytics {
     quality_gate_pass_rate: 0
   };
 
-  recordSessionStart(session: QualityLoopSession): void {
+  recordSessionStart(_session: QualityLoopSession): void {
     this.metrics.total_sessions++;
   }
 
-  recordIteration(session: QualityLoopSession, iteration: ImprovementIteration): void {
+  recordIteration(_session: QualityLoopSession, _iteration: ImprovementIteration): void {
     // Analytics logic for iteration tracking
   }
 
-  recordSessionComplete(session: QualityLoopSession, reason: string): void {
+  recordSessionComplete(session: QualityLoopSession, _reason: string): void {
     this.sessions.push(session);
     
     if (session.success) {
@@ -474,12 +478,12 @@ class QualityLoopAnalytics {
   private updateMetrics(): void {
     if (this.sessions.length === 0) return;
 
-    this.metrics.average_iterations = this.sessions.reduce((sum, s) => sum + s.iterations.length, 0) / this.sessions.length;
-    this.metrics.average_improvement = this.sessions.reduce((sum, s) => sum + s.total_improvement, 0) / this.sessions.length;
+    this.metrics.average_iterations = this.sessions.reduce((sum, s) => sum + (s?.iterations.length || 0), 0) / this.sessions.length;
+    this.metrics.average_improvement = this.sessions.reduce((sum, s) => sum + (s?.total_improvement || 0), 0) / this.sessions.length;
     this.metrics.quality_gate_pass_rate = this.metrics.successful_sessions / this.metrics.total_sessions;
     
     const totalTime = this.sessions.reduce((sum, s) => {
-      return sum + (s.session_end ? s.session_end.getTime() - s.session_start.getTime() : 0);
+      return sum + (s?.session_end ? s.session_end.getTime() - s.session_start.getTime() : 0);
     }, 0);
     this.metrics.average_session_time = totalTime / this.sessions.length;
   }

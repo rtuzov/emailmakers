@@ -139,14 +139,14 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
             font_readability_score: 0
           },
           recommendations: ['Fix parameter validation errors'],
-          error: validationResult.error
+          error: validationResult.error || undefined
         };
 
         console.log(`❌ Accessibility failed: ${validationResult.error}`);
         return errorResult;
       }
 
-      let result: AccessibilityResult;
+      let _result: AccessibilityResult;
 
       switch (params.action) {
         case 'audit':
@@ -182,7 +182,7 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
           font_readability_score: 0
         },
         recommendations: ['Review error logs and fix issues'],
-        error: error instanceof Error ? error.message : 'Unknown error in accessibility operation'
+        error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error in accessibility operation'
       };
 
       const duration = Date.now() - startTime;
@@ -196,7 +196,7 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
 /**
  * Валидация параметров для операций с доступностью
  */
-function validateAccessibilityParams(params: AccessibilityParams): { valid: boolean; error?: string } {
+function validateAccessibilityParams(_params: AccessibilityParams): { valid: boolean; error?: string } {
   switch (params.action) {
     case 'audit':
     case 'validate':
@@ -269,7 +269,7 @@ async function auditAccessibility(params: AccessibilityParams): Promise<Accessib
 /**
  * Исправление проблем доступности
  */
-async function fixAccessibilityIssues(params: AccessibilityParams): Promise<AccessibilityResult> {
+async function fixAccessibilityIssues(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('🔧 Fixing accessibility issues');
   
   const targetHtml = params.target_html!;
@@ -324,7 +324,7 @@ async function fixAccessibilityIssues(params: AccessibilityParams): Promise<Acce
 /**
  * Валидация доступности после изменений
  */
-async function validateAccessibility(params: AccessibilityParams): Promise<AccessibilityResult> {
+async function validateAccessibility(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('✅ Validating accessibility compliance');
   
   const htmlContent = params.html_content!;
@@ -361,7 +361,7 @@ async function validateAccessibility(params: AccessibilityParams): Promise<Acces
 /**
  * Генерация подробного отчета о доступности
  */
-async function generateAccessibilityReport(params: AccessibilityParams): Promise<AccessibilityResult> {
+async function generateAccessibilityReport(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('📊 Generating accessibility report');
   
   const htmlContent = params.html_content!;
@@ -443,8 +443,8 @@ async function checkColorContrast(html: string): Promise<AccessibilityIssue[]> {
   let match;
   
   while ((match = colorRegex.exec(html)) !== null) {
-    const textColor = match[1].trim();
-    const bgColor = match[2].trim();
+    const textColor = (match && match[1] ? match[1] : "").trim();
+    const bgColor = (match && match[2] ? match[2] : "").trim();
     
     // Simplified contrast calculation (would use real algorithm in production)
     const contrastRatio = calculateContrastRatio(textColor, bgColor);
@@ -472,7 +472,7 @@ async function checkAltText(html: string): Promise<AccessibilityIssue[]> {
   let match;
   
   while ((match = imgRegex.exec(html)) !== null) {
-    const imgTag = match[0];
+    const imgTag = (match && match[0] ? match[0] : "");
     
     if (!imgTag.includes('alt=')) {
       issues.push({
@@ -509,7 +509,7 @@ async function checkSemanticMarkup(html: string): Promise<AccessibilityIssue[]> 
   let match;
   
   while ((match = headingRegex.exec(html)) !== null) {
-    headings.push(parseInt(match[1]));
+    headings.push(parseInt((match && match[1] ? match[1] : "")));
   }
   
   // Check heading hierarchy
@@ -596,8 +596,8 @@ async function checkFontSize(html: string): Promise<AccessibilityIssue[]> {
   let match;
   
   while ((match = fontSizeRegex.exec(html)) !== null) {
-    const size = parseFloat(match[1]);
-    const unit = match[2];
+    const size = parseFloat((match && match[1] ? match[1] : ""));
+    const unit = (match && match[2] ? match[2] : "");
     
     let isSmall = false;
     

@@ -111,7 +111,7 @@ export async function renderTest(params: RenderTestParams): Promise<RenderTestRe
       test_results: {
         client_results: [],
         overall_score: 0,
-        critical_issues: [error instanceof Error ? error.message : 'Unknown render testing error'],
+        critical_issues: [error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown render testing error'],
         recommendations: ['Fix render testing configuration', 'Verify email client testing setup']
       },
       test_metadata: {
@@ -120,7 +120,7 @@ export async function renderTest(params: RenderTestParams): Promise<RenderTestRe
         test_duration_ms: Date.now() - startTime,
         timestamp: new Date().toISOString()
       },
-      error: error instanceof Error ? error.message : 'Unknown render testing error'
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown render testing error'
     };
   }
 }
@@ -153,7 +153,7 @@ async function executeRealRenderTesting(params: RenderTestParams): Promise<any> 
       });
       
     } catch (error) {
-      throw new Error(`Failed to test ${client}: ${error.message}`);
+      throw new Error(`Failed to test ${client}: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   

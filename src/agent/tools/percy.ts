@@ -125,7 +125,7 @@ async function performPercyTesting(params: PercyParams, token: string): Promise<
 
 
 
-async function simulateScreenshotCapture(html: string, widths: number[]): Promise<void> {
+async function simulateScreenshotCapture(_html: string, widths: number[]): Promise<void> {
   // Simulate screenshot capture process
   for (const width of widths) {
     console.log(`📱 Capturing ${width}px width screenshot...`);

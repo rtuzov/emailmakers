@@ -5,15 +5,15 @@
  * Отвечает за загрузку email-шаблонов, активов и метаданных в S3
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-import { z } from 'zod';
-import { Agent, run } from '@openai/agents';
+// import fs from 'fs/promises';
+// import path from 'path';
+// import { z } from 'zod';
+import { Agent } from '@openai/agents';
 
-import { s3Upload, s3UploadSchema } from '../../../tools/simple/s3-upload';
+// import { s3Upload, s3UploadSchema } from '../../../tools/simple/s3-upload';
 // Note: fileOrganizerTool moved to useless/ - using direct file operations instead
 import { runWithTimeout } from '../../../utils/run-with-timeout';
-import { createAgentRunConfig } from '../../../utils/tracing-utils';
+// import { createAgentRunConfig } from '../../../utils/tracing-utils';
 import { getUsageModel } from '../../../../shared/utils/model-config';
 
 import {
@@ -44,12 +44,12 @@ export class UploadService {
       const assetFiles = this.prepareAssetFiles(input);
       
       // Создание локальной папки кампании
-      let localFolderPath: string | undefined;
+      // let _localFolderPath: string | undefined;
       if (input.campaign_context?.campaign_id) {
-        localFolderPath = await this.saveEmailToLocalFolder(
-          input.email_package,
-          input.campaign_context.campaign_id
-        );
+        // _localFolderPath = await this.saveEmailToLocalFolder(
+        //   input.email_package,
+        //   input.campaign_context.campaign_id
+        // );
       }
 
       // Настройка агента для загрузки в S3
@@ -173,6 +173,7 @@ export class UploadService {
   /**
    * Сохраняет email в локальную папку для резервирования
    */
+  /*
   private async saveEmailToLocalFolder(
     emailPackage: any,
     campaignId: string
@@ -216,6 +217,7 @@ export class UploadService {
       throw error;
     }
   }
+  */
 
   /**
    * Парсит результат загрузки
@@ -241,7 +243,7 @@ export class UploadService {
       console.error('❌ Error parsing upload result:', error);
       return {
         uploaded_files: [],
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         success: false
       };
     }
@@ -257,7 +259,7 @@ export class UploadService {
     error?: Error
   ): PerformanceMetrics {
     const totalSizeMB = this.calculateTotalSizeMB(assetFiles);
-    const throughputMbps = totalSizeMB > 0 ? (totalSizeMB * 8) / (uploadDuration / 1000) : 0;
+    // const _throughputMbps = totalSizeMB > 0 ? (totalSizeMB * 8) / (uploadDuration / 1000) : 0;
 
     return {
       task_duration_ms: uploadDuration,

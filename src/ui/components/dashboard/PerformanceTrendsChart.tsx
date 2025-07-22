@@ -79,15 +79,15 @@ export default function PerformanceTrendsChart({ className = '' }: PerformanceTr
     return names[agent] || agent;
   };
 
-  const _getAgentColor = (agent: string) => {
-    const colors: Record<string, string> = {
-      'content-specialist': 'kupibilet-primary',
-      'design-specialist': 'kupibilet-secondary',
-      'quality-specialist': 'kupibilet-accent',
-      'delivery-specialist': 'purple-400'
-    };
-    return colors[agent] || 'white';
-  };
+  // const _getAgentColor = (agent: string) => {
+  //   const colors: Record<string, string> = {
+  //     'content-specialist': 'kupibilet-primary',
+  //     'design-specialist': 'kupibilet-secondary',
+  //     'quality-specialist': 'kupibilet-accent',
+  //     'delivery-specialist': 'purple-400'
+  //   };
+  //   return colors[agent] || 'white';
+  // };
 
   const getMetricDisplayName = (metric: string) => {
     const names: Record<string, string> = {

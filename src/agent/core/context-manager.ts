@@ -53,9 +53,9 @@ export const AgentRunContextSchema = z.object({
   
   // Data flow context
   dataFlow: z.object({
-    previousResults: z.record(z.any()).nullable().describe('Results from previous specialists'),
-    handoffData: z.any().nullable().describe('Current handoff data being processed'),
-    persistentState: z.record(z.any()).describe('State that persists across all specialists'),
+    previousResults: z.record(z.unknown()).nullable().describe('Results from previous specialists'),
+    handoffData: z.record(z.unknown()).nullable().describe('Current handoff data being processed'),
+    persistentState: z.record(z.unknown()).describe('State that persists across all specialists'),
     correlationId: z.string().describe('Correlation ID for tracking data through pipeline'),
     handoffChain: z.array(z.string()).describe('Chain of specialist handoffs')
   }).describe('Data flow information'),
@@ -74,12 +74,12 @@ export const AgentRunContextSchema = z.object({
     logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info').describe('Logging level'),
     performanceTracking: z.boolean().default(true).describe('Enable performance tracking'),
     contextSnapshot: z.boolean().default(false).describe('Save context snapshots'),
-    additionalMetrics: z.record(z.any()).describe('Additional monitoring metrics')
+    additionalMetrics: z.record(z.unknown()).describe('Additional monitoring metrics')
   }).describe('Monitoring configuration'),
   
   // Extensibility
-  extensions: z.record(z.any()).describe('Custom extensions for specific use cases'),
-  metadata: z.record(z.any()).describe('Additional metadata')
+      extensions: z.record(z.unknown()).describe('Custom extensions for specific use cases'),
+    metadata: z.record(z.unknown()).describe('Additional metadata')
 });
 
 export type AgentRunContext = z.infer<typeof AgentRunContextSchema>;
@@ -126,26 +126,23 @@ export class ContextManager {
       correlationId
     });
 
-    // For API requests, allow automatic campaign creation
-    const isApiRequest = baseContext.execution?.apiRequest || false;
-    
     const enhancedContext: AgentRunContext = {
       requestId: this.generateRequestId(),
       traceId: baseContext.traceId || null,
       timestamp: new Date().toISOString(),
       
-      workflowType: baseContext.workflowType || (isApiRequest ? 'full-campaign' : 'partial'),
+      workflowType: baseContext.workflowType || 'full-campaign',
       currentPhase: baseContext.currentPhase || 'orchestration',
       totalPhases: baseContext.totalPhases || 5,
       phaseIndex: baseContext.phaseIndex || 0,
       
       campaign: {
-        id: baseContext.campaign?.id || (isApiRequest ? this.generateCampaignId() : (() => { throw new Error('❌ STRICT MODE: Campaign ID is required - no automatic generation allowed'); })()),
-        name: baseContext.campaign?.name || (isApiRequest ? 'API Generated Campaign' : (() => { throw new Error('❌ STRICT MODE: Campaign name is required - no fallback allowed'); })()),
-        path: baseContext.campaign?.path || (isApiRequest ? await this.createOrGetCampaignPath(baseContext.campaign?.id || this.generateCampaignId(), isApiRequest) : (() => { throw new Error('❌ STRICT MODE: Campaign path is required'); })()),
-        brand: baseContext.campaign?.brand || (isApiRequest ? 'API Brand' : (() => { throw new Error('❌ STRICT MODE: Brand is required - no fallback allowed'); })()),
+        id: baseContext.campaign?.id || (() => { throw new Error('❌ STRICT MODE: Campaign ID is required - no automatic generation allowed'); })(),
+        name: baseContext.campaign?.name || (() => { throw new Error('❌ STRICT MODE: Campaign name is required - no fallback allowed'); })(),
+        path: baseContext.campaign?.path || (baseContext.currentPhase === 'orchestration' ? '' : (() => { throw new Error('❌ STRICT MODE: Campaign path is required for specialists'); })()),
+        brand: baseContext.campaign?.brand || (() => { throw new Error('❌ STRICT MODE: Brand is required - no fallback allowed'); })(),
         language: baseContext.campaign?.language || 'ru',
-        type: baseContext.campaign?.type || (isApiRequest ? 'promotional' : (() => { throw new Error('❌ STRICT MODE: Campaign type is required - no fallback allowed'); })())
+        type: baseContext.campaign?.type || (() => { throw new Error('❌ STRICT MODE: Campaign type is required - no fallback allowed'); })()
       },
       
       execution: {
@@ -281,16 +278,11 @@ export class ContextManager {
       AgentRunContextSchema.parse(context);
       
       // Additional validation for campaign path
-      // Skip path validation for API requests - Orchestrator will create the campaign folder
-      if (context.campaign.path && !context.execution.apiRequest) {
+      if (context.campaign.path) {
         const pathExists = await CampaignPathResolver.validatePath(context.campaign.path);
         if (!pathExists) {
           throw new Error(`Campaign path does not exist: ${context.campaign.path}`);
         }
-      } else if (context.execution.apiRequest) {
-        debug.info('ContextManager', 'Skipping campaign path validation for API request - Orchestrator will create folder', {
-          campaignPath: context.campaign.path
-        });
       }
       
       debug.info('ContextManager', 'Context validation passed', {
@@ -354,26 +346,6 @@ export class ContextManager {
     }
   }
   
-  /**
-   * STRICT MODE: Do not create campaign paths automatically
-   * Test endpoints and context manager should not create new campaigns
-   */
-  private async createCampaignPath(campaignId?: string): Promise<string> {
-    if (!campaignId) {
-      throw new Error('❌ STRICT MODE: Campaign ID is required. Context manager cannot create new campaigns automatically.');
-    }
-    
-    const campaignPath = path.join(process.cwd(), 'campaigns', campaignId);
-    
-    // Verify campaign exists but don't create it
-    try {
-      await fs.access(campaignPath);
-      debug.info('ContextManager', 'Found existing campaign path', { campaignPath });
-      return campaignPath;
-    } catch (error) {
-      throw new Error(`❌ STRICT MODE: Campaign directory does not exist: ${campaignPath}. Use the main workflow to create campaigns first.`);
-    }
-  }
 
   private generateRequestId(): string {
     return `req_${Date.now()}_${Math.random().toString(36).substring(2)}`;
@@ -383,23 +355,7 @@ export class ContextManager {
     return `corr_${Date.now()}_${Math.random().toString(36).substring(2)}`;
   }
 
-  private generateCampaignId(): string {
-    return `camp_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-  }
-
-  private async createOrGetCampaignPath(campaignId: string, isApiRequest: boolean): Promise<string> {
-    if (isApiRequest) {
-      // For API requests, return placeholder path - Orchestrator will create the actual campaign
-      const placeholderPath = path.join(process.cwd(), 'campaigns', campaignId);
-      console.log(`🔍 DEBUG: API request - returning placeholder path for Orchestrator: ${campaignId}`);
-      console.log(`📋 Orchestrator will create the actual campaign folder`);
-      
-      // Don't create anything - let Orchestrator handle campaign creation
-      return placeholderPath;
-    } else {
-      return await this.createCampaignPath(campaignId);
-    }
-  }
+  // API campaign creation removed - only Orchestrator creates campaigns
   
   /**
    * Saves context snapshot for debugging

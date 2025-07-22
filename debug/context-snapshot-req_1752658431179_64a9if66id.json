@@ -1,0 +1,98 @@
+{
+  "requestId": "req_1752658431179_64a9if66id",
+  "traceId": "api-1752658431178",
+  "timestamp": "2025-07-16T09:33:51.179Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1752658431178",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "cultural_travel",
+      "season": "spring",
+      "destination": "Japan",
+      "language": "ru",
+      "tone": "poetic_inspiring"
+    },
+    "correlationId": "corr_1752658431178_c6gpl2m2b",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию \"Япония весной - время сакуры\". Включить информацию о цветении сакуры, лучших местах для наблюдения, традициях ханами.",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "cultural_travel",
+    "season": "spring",
+    "destination": "Japan",
+    "tone": "poetic_inspiring",
+    "originalOptions": {
+      "traceId": "api-1752658431178",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "cultural_travel",
+        "season": "spring",
+        "destination": "Japan",
+        "tone": "poetic_inspiring"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "cultural_travel",
+        "season": "spring",
+        "destination": "Japan",
+        "language": "ru",
+        "tone": "poetic_inspiring"
+      }
+    }
+  }
+}

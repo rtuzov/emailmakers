@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         results.figma_test = {
           success: false,
-          error: 'Figma tool implementation error: ' + error.message,
+          error: 'Figma tool implementation error: ' + error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error),
           data: { paths: [], assets: [] }
         };
       }
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         results.upload_test = {
           success: false,
-          error: 'Upload tool implementation not available: ' + error.message,
+          error: 'Upload tool implementation not available: ' + error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error),
           data: { html_url: null, mjml_url: null }
         };
       }
@@ -190,7 +190,7 @@ export async function POST(request: NextRequest) {
     console.error('❌ Test tools error:', error);
     return NextResponse.json({
       status: 'error',
-      error_message: error instanceof Error ? error.message : 'Unknown error occurred',
+      error_message: error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : 'Unknown error occurred',
       timestamp: new Date().toISOString()
     }, { status: 500 });
   }

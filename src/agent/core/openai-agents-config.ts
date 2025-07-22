@@ -20,7 +20,7 @@ const cfg = getConfig();
 class EmailMakersTraceProcessor {
   name = 'email-makers-trace-processor';
 
-  async onTraceStart(trace: any) {
+  async onTraceStart(_trace: any) {
     // Handle trace start
   }
 
@@ -29,11 +29,11 @@ class EmailMakersTraceProcessor {
     await this.process(trace);
   }
 
-  async onSpanStart(span: any) {
+  async onSpanStart(_span: any) {
     // Handle span start
   }
 
-  async onSpanEnd(span: any) {
+  async onSpanEnd(_span: any) {
     // Handle span end
   }
 

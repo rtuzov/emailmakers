@@ -93,7 +93,7 @@ export const contextProviderSchema = z.object({
 });
 
 export const dateIntelligenceSchema = z.object({
-  target_date: z.string().default(new Date().toISOString().split('T')[0]).describe('Target date for analysis (YYYY-MM-DD)'),
+  target_date: z.string().default(() => new Date().toISOString().split('T')[0] || new Date().toISOString().substring(0, 10)).describe('Target date for analysis (YYYY-MM-DD)'),
   analysis_type: z.enum(['seasonal', 'holiday', 'event', 'comprehensive']).default('comprehensive').describe('Type of date analysis to perform'),
   region: z.string().default('Russia').nullable().optional().describe('Geographic region for context'),
   industry: z.string().default('travel').nullable().optional().describe('Industry context for analysis')

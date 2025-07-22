@@ -176,7 +176,7 @@ export class ActionExecutor {
    */
   private async executeCommand(
     command: AgentCommand,
-    context: ExecutionContext
+    _context: ExecutionContext
   ): Promise<ExecutionResult> {
     const startTime = Date.now();
     const commandId = `${command.tool}_${startTime}`;
@@ -309,7 +309,7 @@ export class ActionExecutor {
       .map(rec => rec.id);
 
     return commands.filter((_, index) => 
-      index < autoRecIds.length && this.isSafeForAutoExecution(commands[index])
+      index < autoRecIds.length && commands[index] && this.isSafeForAutoExecution(commands[index])
     );
   }
 
@@ -325,7 +325,7 @@ export class ActionExecutor {
       .map(rec => rec.id);
 
     return commands.filter((_, index) => 
-      index < manualRecIds.length || !this.isSafeForAutoExecution(commands[index])
+      index < manualRecIds.length || (commands[index] && !this.isSafeForAutoExecution(commands[index]))
     );
   }
 

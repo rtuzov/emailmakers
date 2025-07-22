@@ -15,7 +15,7 @@ import {
   MultiDestinationPlan,
   DestinationPlan,
   LayoutType,
-  LAYOUT_TYPES,
+  // LAYOUT_TYPES, // Currently unused
   MULTI_DESTINATION_LIMITS
 } from '../../../../shared/types/multi-destination-types';
 
@@ -377,7 +377,7 @@ export class MultiDestinationLayoutService {
   /**
    * Выбор конкретного шаблона по layout типу
    */
-  private selectTemplateByLayout(layoutType: LayoutType, criteria: TemplateSelectionCriteria): string {
+  private selectTemplateByLayout(layoutType: LayoutType, _criteria: TemplateSelectionCriteria): string {
     const templates = this.templateMappings[layoutType];
     if (!templates || templates.length === 0) {
       throw new Error(`No templates available for layout type: ${layoutType}`);
@@ -385,7 +385,11 @@ export class MultiDestinationLayoutService {
     
     // Пока возвращаем первый доступный шаблон
     // В будущем можно добавить логику выбора на основе дополнительных критериев
-    return templates[0];
+    const selectedTemplate = templates[0];
+    if (!selectedTemplate) {
+      throw new Error(`Template selection failed for layout type: ${layoutType}`);
+    }
+    return selectedTemplate;
   }
 
   /**
@@ -393,8 +397,8 @@ export class MultiDestinationLayoutService {
    */
   private async analyzeTemplate(
     templateName: string,
-    plan: MultiDestinationPlan,
-    criteria: TemplateSelectionCriteria
+    _plan: MultiDestinationPlan,
+    _criteria: TemplateSelectionCriteria
   ): Promise<{ estimatedSize: number; complexity: 'low' | 'medium' | 'high' }> {
     // Базовые размеры шаблонов (примерные)
     const templateSizes: Record<string, number> = {
@@ -406,12 +410,12 @@ export class MultiDestinationLayoutService {
     const baseSize = templateSizes[templateName] || 18000;
     
     // Добавляем размер на основе количества направлений и сложности контента
-    const contentMultiplier = this.getContentSizeMultiplier(criteria);
+    const contentMultiplier = this.getContentSizeMultiplier(_criteria);
     const estimatedSize = Math.round(baseSize * contentMultiplier);
     
     return {
       estimatedSize,
-      complexity: this.assessTemplateComplexity(templateName, criteria)
+      complexity: this.assessTemplateComplexity(templateName, _criteria)
     };
   }
 
@@ -437,7 +441,7 @@ export class MultiDestinationLayoutService {
   /**
    * Оценка сложности рендеринга шаблона
    */
-  private assessTemplateComplexity(templateName: string, criteria: TemplateSelectionCriteria): 'low' | 'medium' | 'high' {
+  private assessTemplateComplexity(templateName: string, _criteria: TemplateSelectionCriteria): 'low' | 'medium' | 'high' {
     if (templateName.includes('compact')) return 'low';
     if (templateName.includes('grid')) return 'medium';
     if (templateName.includes('carousel')) return 'high';
@@ -516,7 +520,7 @@ export class MultiDestinationLayoutService {
     const compressionStrategy = this.getCompressionStrategy(performancePriority);
     
     const primaryImage = {
-      figmaUrl: destination.assets.primary_image.url,
+      ...(destination.assets.primary_image.url ? { figmaUrl: destination.assets.primary_image.url } : {}),
       dimensions: dimensions.primary,
       format: this.selectOptimalFormat(performancePriority),
       quality: this.getImageQuality(performancePriority),
@@ -641,16 +645,18 @@ export class MultiDestinationLayoutService {
   /**
    * Создание минимальных планов изображений (альтернативный способ)
    */
-  private createMinimalImagePlans(_: DestinationPlan[]): never {
+  /*
+  private __createMinimalImagePlans(_: DestinationPlan[]): never { // Currently unused
     throw new Error('createMinimalImagePlans is disabled by project policy.');
   }
+  */
 
   /**
    * Расчет responsive breakpoints
    */
   private calculateResponsiveBreakpoints(
     layoutType: LayoutType,
-    deviceTargets: ('mobile' | 'tablet' | 'desktop')[]
+    _deviceTargets: ('mobile' | 'tablet' | 'desktop')[]
   ): { mobile: number; tablet: number; desktop: number } {
     // Базовые breakpoints
     const base = { mobile: 768, tablet: 1024, desktop: 1200 };
@@ -737,7 +743,9 @@ export class MultiDestinationLayoutService {
   /**
    * Получение fallback шаблона
    */
-  private getFallbackTemplate(_destinationCount: number): never {
+  /*
+  private _getFallbackTemplate(_destinationCount: number): never { // Currently unused
     throw new Error('getFallbackTemplate is disabled by project policy.');
   }
+  */
 }

@@ -13,10 +13,10 @@ import {
   SupportedRegion,
   TravelSeason,
   SUPPORTED_REGIONS,
-  TRAVEL_SEASONS,
+  // TRAVEL_SEASONS,
   REGION_CHARACTERISTICS,
   multiDestinationPlanSchema,
-  destinationPlanSchema
+  // destinationPlanSchema
 } from '../../../../shared/types/multi-destination-types';
 import { ContentUtils } from '../common/content-utils';
 
@@ -46,7 +46,7 @@ export interface DestinationGenerationParams {
 
 export class DestinationAnalyzer {
   private config: DestinationAnalyzerConfig;
-  private performanceStart: number = 0;
+  // private _performanceStart: number = 0;
 
   constructor(config: DestinationAnalyzerConfig = {}) {
     this.config = {
@@ -63,7 +63,7 @@ export class DestinationAnalyzer {
    * Примеры: "Европа осенью", "Азия зимой", "теплые страны в январе"
    */
   async analyzeGeographicalScope(query: string): Promise<GeographicalScopeAnalysis> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`🌍 Analyzing geographical scope for query: "${query}"`);
@@ -80,8 +80,8 @@ export class DestinationAnalyzer {
       const suggestedDestinations = await this.generateDestinationOptions({
         query,
         region: detectedRegion,
-        season: seasonalHints[0],
-        maxDestinations: this.config.maxDestinations
+        season: seasonalHints[0] || 'year_round',
+        maxDestinations: this.config.maxDestinations || 5
       });
 
       // Шаг 4: Расчет уверенности
@@ -109,18 +109,8 @@ export class DestinationAnalyzer {
     } catch (error) {
       console.error('❌ Geographical scope analysis error:', error);
       
-      // Возвращаем базовый результат
-      return {
-        detected_region: 'europe',
-        suggested_destinations: await this.getDefaultDestinations('europe'),
-        confidence_score: 25,
-        analysis_metadata: {
-          query_processed: query,
-          keywords_extracted: [],
-          region_indicators: [],
-          seasonal_hints: []
-        }
-      };
+      // NO FALLBACK POLICY: Fail fast with clear error
+      throw new Error(`DestinationAnalyzer.analyzeGeographicalScope failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -128,7 +118,7 @@ export class DestinationAnalyzer {
    * Генерация опций направлений на основе параметров
    */
   async generateDestinationOptions(params: DestinationGenerationParams): Promise<DestinationPlan[]> {
-    this.performanceStart = Date.now();
+    // this._performanceStart = Date.now();
     
     try {
       console.log(`🎯 Generating destination options for: ${params.query}`);
@@ -158,8 +148,8 @@ export class DestinationAnalyzer {
     } catch (error) {
       console.error('❌ Destination generation error:', error);
       
-      // Возвращаем базовые направления
-      return await this.getDefaultDestinations(params.region || 'europe');
+      // NO FALLBACK POLICY: Fail fast with clear error
+      throw new Error(`DestinationAnalyzer.generateRecommendations failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -193,7 +183,7 @@ export class DestinationAnalyzer {
           target_season: context?.targetSeason || this.detectDominantSeason(destinations),
           target_region: this.detectDominantRegion(destinations),
           campaign_duration: {
-            start_date: new Date().toISOString().split('T')[0],
+            start_date: new Date().toISOString().split('T')[0]!,
             end_date: this.calculateCampaignEndDate(context?.targetSeason)
           },
           budget_range: context?.budgetRange || 'mid_range',
@@ -255,7 +245,7 @@ export class DestinationAnalyzer {
   /**
    * Определение индикаторов регионов
    */
-  private detectRegionIndicators(query: string, keywords: string[]): string[] {
+  private detectRegionIndicators(query: string, _keywords: string[]): string[] {
     const indicators: string[] = [];
     const lowerQuery = query.toLowerCase();
 
@@ -295,13 +285,13 @@ export class DestinationAnalyzer {
       }
     });
 
-    return [...new Set(indicators)]; // Убираем дубликаты
+    return Array.from(new Set(indicators)); // Убираем дубликаты
   }
 
   /**
    * Определение сезонных подсказок
    */
-  private detectSeasonalHints(query: string, keywords: string[]): TravelSeason[] {
+  private detectSeasonalHints(query: string, _keywords: string[]): TravelSeason[] {
     const hints: TravelSeason[] = [];
     const lowerQuery = query.toLowerCase();
 
@@ -325,7 +315,7 @@ export class DestinationAnalyzer {
   /**
    * Определение основного региона
    */
-  private determineRegion(indicators: string[], keywords: string[]): SupportedRegion {
+  private determineRegion(indicators: string[], _keywords: string[]): SupportedRegion {
     if (indicators.length === 0) {
       return 'europe'; // По умолчанию
     }
@@ -342,10 +332,10 @@ export class DestinationAnalyzer {
    * Расчет уверенности анализа
    */
   private calculateConfidenceScore(
-    region: SupportedRegion,
+    _region: SupportedRegion,
     indicators: string[],
     seasonalHints: TravelSeason[],
-    keywords: string[]
+    _keywords: string[]
   ): number {
     let score = 50; // Базовая уверенность
 
@@ -356,10 +346,10 @@ export class DestinationAnalyzer {
     if (seasonalHints.length > 0) score += 20;
     
     // +10 за количество ключевых слов
-    score += Math.min(keywords.length * 2, 20);
+    score += Math.min(_keywords.length * 2, 20);
     
     // -10 если слишком мало информации
-    if (keywords.length < 3) score -= 10;
+    if (_keywords.length < 3) score -= 10;
 
     return Math.max(25, Math.min(95, score));
   }
@@ -368,10 +358,10 @@ export class DestinationAnalyzer {
    * Генерация направлений с помощью AI (mock implementation)
    */
   private async generateDestinationsWithAI(
-    params: DestinationGenerationParams,
+    _params: DestinationGenerationParams,
     region: SupportedRegion,
     season: TravelSeason | undefined,
-    regionChar: any
+    _regionChar: any
   ): Promise<DestinationPlan[]> {
     // В реальной реализации здесь будет вызов AI модели
     console.log(`🤖 AI generating destinations for ${region} in ${season || 'any season'}`);
@@ -495,7 +485,7 @@ export class DestinationAnalyzer {
    */
   private prioritizeDestinations(
     destinations: DestinationPlan[],
-    params: DestinationGenerationParams
+    _params: DestinationGenerationParams
   ): DestinationPlan[] {
     return destinations.sort((a, b) => {
       // Сортируем по confidence_score в метаданных
@@ -503,18 +493,6 @@ export class DestinationAnalyzer {
       const scoreB = b.metadata.confidence_score || 0;
       return scoreB - scoreA;
     });
-  }
-
-  /**
-   * Получение направлений по умолчанию
-   */
-  private async getDefaultDestinations(region: SupportedRegion): Promise<DestinationPlan[]> {
-    return this.generateDestinationsWithAI(
-      { query: `destinations in ${region}`, region },
-      region,
-      undefined,
-      REGION_CHARACTERISTICS[region]
-    );
   }
 
   /**
@@ -536,7 +514,7 @@ export class DestinationAnalyzer {
   /**
    * Получение оптимальных месяцев для региона и сезона
    */
-  private getOptimalMonths(region: SupportedRegion, season?: TravelSeason): number[] {
+  private getOptimalMonths(_region: SupportedRegion, season?: TravelSeason): number[] {
     const seasonMonths: Record<TravelSeason, number[]> = {
       'spring': [3, 4, 5],
       'summer': [6, 7, 8],
@@ -566,13 +544,13 @@ export class DestinationAnalyzer {
     return regions[0];
   }
 
-  private calculateCampaignEndDate(season?: TravelSeason): string {
+  private calculateCampaignEndDate(_season?: TravelSeason): string {
     const date = new Date();
     date.setMonth(date.getMonth() + 3); // Кампания на 3 месяца
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split('T')[0]!;
   }
 
-  private createLayoutStructure(destinations: DestinationPlan[], layoutType: string): any {
+  private createLayoutStructure(destinations: DestinationPlan[], _layoutType: string): any {
     return {
       primary_destination_count: Math.min(destinations.length, 2),
       secondary_destination_count: Math.max(0, destinations.length - 2),
@@ -623,7 +601,7 @@ export class DestinationAnalyzer {
     };
   }
 
-  private generateValueProposition(destinations: DestinationPlan[], context: any): string {
+  private generateValueProposition(destinations: DestinationPlan[], _context: any): string {
     if (destinations.length <= 3) {
       return `Эксклюзивная подборка ${destinations.length} лучших направлений`;
     }
@@ -646,7 +624,7 @@ export class DestinationAnalyzer {
     return Math.round(avgConfidence);
   }
 
-  private generateWeatherDescription(dest: DestinationPlan, season?: TravelSeason): string {
+  private generateWeatherDescription(_dest: DestinationPlan, season?: TravelSeason): string {
     const seasonDescriptions: Record<TravelSeason, string> = {
       'spring': 'Мягкая весенняя погода',
       'summer': 'Теплое солнечное лето',
@@ -658,7 +636,7 @@ export class DestinationAnalyzer {
     return seasonDescriptions[season || 'year_round'];
   }
 
-  private generateSeasonalHighlights(dest: DestinationPlan, season?: TravelSeason): string[] {
+  private generateSeasonalHighlights(_dest: DestinationPlan, season?: TravelSeason): string[] {
     const highlights: Record<TravelSeason, string[]> = {
       'spring': ['Цветение садов', 'Комфортные прогулки'],
       'summer': ['Пляжный сезон', 'Фестивали на открытом воздухе'],

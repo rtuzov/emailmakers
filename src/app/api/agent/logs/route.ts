@@ -18,7 +18,7 @@ const metricsService = new MetricsService();
  * GET /api/agent/logs
  * Retrieve agent logs with filtering and analysis options
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action') || 'get_logs';
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
  * POST /api/agent/logs
  * Add log entries, start profiling, or perform other operations
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const body = await request.json();
     const { action } = body;

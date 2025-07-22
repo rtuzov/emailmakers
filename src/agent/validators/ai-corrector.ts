@@ -99,10 +99,10 @@ export class AICorrector {
       }
 
     } catch (error) {
-      console.error(`❌ AICorrector: Попытка ${currentAttempts + 1} не удалась:`, error.message);
+      console.error(`❌ AICorrector: Попытка ${currentAttempts + 1} не удалась:`, error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error));
       
       // Если это таймаут, возвращаем null немедленно
-      if (error.message.includes('таймаут')) {
+      if (error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error).includes('таймаут')) {
         console.error(`⏱️ AICorrector: Коррекция отменена из-за превышения времени выполнения`);
         this.correctionAttempts.delete(dataHash);
         return null;

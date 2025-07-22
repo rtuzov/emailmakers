@@ -9,7 +9,7 @@ import { OpenAI } from 'openai';
 import { 
   QualityAnalysisResult,
   QualityRecommendation,
-  AgentCommand,
+  // AgentCommand,
   AIConsultantRequest,
   AIConsultantConfig,
   AIConsultantError
@@ -17,14 +17,17 @@ import {
 import { BRAND_COLORS } from '../../../config/constants';
 
 export class RecommendationEngine {
-  private openai: OpenAI;
+  private _openai: OpenAI; // Reserved for future AI-powered recommendation enhancement
   private config: AIConsultantConfig;
 
   constructor(config: AIConsultantConfig) {
     this.config = config;
-    this.openai = new OpenAI({
+    this._openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
+    
+    // _openai will be used for future AI-powered recommendation enhancement
+    void this._openai; // Suppress unused variable warning
   }
 
   /**
@@ -383,7 +386,7 @@ export class RecommendationEngine {
    */
   private async generateBrandRecommendations(
     analysis: QualityAnalysisResult,
-    request: AIConsultantRequest
+    _request: AIConsultantRequest
   ): Promise<QualityRecommendation[]> {
     if (analysis.dimension_scores.brand_alignment >= 80) {
       return [];
@@ -469,6 +472,7 @@ export class RecommendationEngine {
   /**
    * Calculate recommendation impact score
    */
+  /*
   private calculateImpactScore(recommendation: QualityRecommendation): number {
     const priorityWeight = { critical: 1.0, high: 0.8, medium: 0.6, low: 0.4 };
     const complexityWeight = { simple: 1.0, moderate: 0.8, complex: 0.6 };
@@ -478,4 +482,5 @@ export class RecommendationEngine {
            complexityWeight[recommendation.execution_complexity] * 
            recommendation.confidence;
   }
+  */
 } 

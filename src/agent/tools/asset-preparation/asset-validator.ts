@@ -99,7 +99,7 @@ export const validateAssets = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ inputPath, validationRules, generateReport, fixIssues, context, trace_id }) => {
+  execute: async ({ inputPath, validationRules, generateReport, fixIssues, context: _context, trace_id }) => {
     console.log('\n✅ === ASSET VALIDATION STARTED ===');
     console.log(`📂 Input Path: ${inputPath}`);
     console.log(`🔧 Auto-fix Issues: ${fixIssues}`);
@@ -126,7 +126,7 @@ export const validateAssets = tool({
           if (result.valid) {
             console.log(`✅ Valid (${result.score}/100)`);
           } else {
-            console.log(`❌ Invalid (${result.score}/100) - ${result.issues.filter(i => i.severity === 'error').length} errors`);
+            console.log(`❌ Invalid (${result.score}/100) - ${result.issues.filter(i => (i || {}).severity === 'error').length} errors`);
           }
           
         } catch (error) {
@@ -200,7 +200,7 @@ export const validateEmailClientCompatibility = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ inputPath, emailClients, strictMode, context, trace_id }) => {
+  execute: async ({ inputPath, emailClients, strictMode, context: _context, trace_id }) => {
     console.log('\n📧 === EMAIL CLIENT COMPATIBILITY VALIDATION ===');
     console.log(`📂 Input Path: ${inputPath}`);
     console.log(`📧 Email Clients: ${emailClients.join(', ')}`);
@@ -217,7 +217,7 @@ export const validateEmailClientCompatibility = tool({
         const clientCompatibility = await validateClientCompatibility(assetPath, emailClients, strictMode);
         compatibilityResults.push(clientCompatibility);
         
-        const compatibleClients = Object.values(clientCompatibility.clients).filter(Boolean).length;
+        const compatibleClients = (Object || {}).values(clientCompatibility.clients).filter(Boolean).length;
         console.log(`✅ Compatible with ${compatibleClients}/${emailClients.length} clients`);
       }
       
@@ -262,7 +262,7 @@ export const validateAccessibility = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ inputPath, wcagLevel, checkContrast, checkAltText, context, trace_id }) => {
+  execute: async ({ inputPath, wcagLevel, checkContrast, checkAltText, context: _context, trace_id }) => {
     console.log('\n♿ === ACCESSIBILITY VALIDATION ===');
     console.log(`📂 Input Path: ${inputPath}`);
     console.log(`🎯 WCAG Level: ${wcagLevel}`);
@@ -368,7 +368,7 @@ async function validateAsset(assetPath: string, rules: any): Promise<ValidationR
   return {
     filename,
     path: assetPath,
-    valid: issues.filter(i => i.severity === 'error').length === 0,
+    valid: issues.filter(i => (i || {}).severity === 'error').length === 0,
     score: Math.max(0, score),
     issues,
     compliance,
@@ -376,7 +376,7 @@ async function validateAsset(assetPath: string, rules: any): Promise<ValidationR
   };
 }
 
-async function validateClientCompatibility(assetPath: string, emailClients: string[], strictMode: boolean): Promise<any> {
+async function validateClientCompatibility(assetPath: string, emailClients: string[], _strictMode: boolean): Promise<any> {
   const filename = path.basename(assetPath);
   const format = path.extname(assetPath).toLowerCase().substring(1);
   
@@ -443,7 +443,7 @@ async function validateClientCompatibility(assetPath: string, emailClients: stri
   };
 }
 
-async function validateAssetAccessibility(assetPath: string, wcagLevel: string, checkContrast: boolean, checkAltText: boolean): Promise<any> {
+async function validateAssetAccessibility(assetPath: string, wcagLevel: string, _checkContrast: boolean, checkAltText: boolean): Promise<any> {
   const filename = path.basename(assetPath);
   let score = 100;
   const issues: any[] = [];
@@ -480,26 +480,26 @@ function generateComplianceReport(issues: ValidationIssue[], rules: any): Compli
   const clientCompliance: Record<string, boolean> = {};
   
   emailClients.forEach((client: string) => {
-    clientCompliance[client] = issues.filter(i => i.severity === 'error').length === 0;
+    clientCompliance[client] = issues.filter(i => (i || {}).severity === 'error').length === 0;
   });
   
   const accessibility = {
-    wcag: issues.filter(i => i.type === 'contrast' || i.type === 'altText').length === 0,
-    altText: issues.filter(i => i.type === 'altText').length === 0,
-    contrast: issues.filter(i => i.type === 'contrast').length === 0,
-    colorBlindness: issues.filter(i => i.type === 'colorBlindness').length === 0
+    wcag: issues.filter(i => (i || {}).type === 'contrast' || (i || {}).type === 'altText').length === 0,
+    altText: issues.filter(i => (i || {}).type === 'altText').length === 0,
+    contrast: issues.filter(i => (i || {}).type === 'contrast').length === 0,
+    colorBlindness: issues.filter(i => (i || {}).type === 'colorBlindness').length === 0
   };
   
   const performance = {
-    fileSize: issues.filter(i => i.type === 'fileSize' && i.severity === 'error').length === 0,
+    fileSize: issues.filter(i => (i || {}).type === 'fileSize' && (i || {}).severity === 'error').length === 0,
     loadTime: true,
     compression: true
   };
   
   const complianceItems = [
-    ...Object.values(clientCompliance),
-    ...Object.values(accessibility),
-    ...Object.values(performance)
+    ...(Object || {}).values(clientCompliance),
+    ...(Object || {}).values(accessibility),
+    ...(Object || {}).values(performance)
   ];
   
   const overallCompliance = complianceItems.filter(Boolean).length / complianceItems.length * 100;
@@ -512,7 +512,7 @@ function generateComplianceReport(issues: ValidationIssue[], rules: any): Compli
   };
 }
 
-function generateRecommendations(issues: ValidationIssue[], format: string, fileSize: number): string[] {
+function generateRecommendations(_issues: ValidationIssue[], format: string, fileSize: number): string[] {
   const recommendations: string[] = [];
   
   if (fileSize > 100000) {
@@ -576,7 +576,7 @@ function generateCompatibilityReport(results: any[], emailClients: string[]): an
   });
   
   const averageCompatibility = Object.values(clientCompatibility).reduce((sum, val) => sum + val, 0) / emailClients.length;
-  const bestClient = Object.keys(clientCompatibility).reduce((a, b) => clientCompatibility[a] > clientCompatibility[b] ? a : b);
+  const bestClient = Object.keys(clientCompatibility).reduce((a, b) => clientCompatibility[a]! > clientCompatibility[b]! ? a : b);
   
   return {
     clientCompatibility,

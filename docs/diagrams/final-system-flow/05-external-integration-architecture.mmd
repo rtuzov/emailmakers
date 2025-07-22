@@ -1,0 +1,83 @@
+graph TD
+    subgraph "🏗️ SYSTEM CORE"
+        CORE["💻 EMAIL-MAKERS CORE<br/>47 Functions | 5 Specialists"]
+    end
+    
+    subgraph "🤖 AI INTEGRATIONS"
+        AI1["🧠 OpenAI GPT-4o-mini<br/>Content Generation<br/>Function: generate_email_content()"]
+        AI2["🔧 OpenAI GPT-4o-mini<br/>Content Optimization<br/>Function: optimize_content()"]
+        AI3["🎭 OpenAI GPT-4o-mini<br/>Personalization<br/>Function: personalize_content()"]
+        AI4["✅ Internal AI<br/>Design Validation<br/>Function: validate_design_ai()"]
+    end
+    
+    subgraph "🌐 EXTERNAL APIs"
+        EXT_API["✈️ Kupibilet API v2<br/>Travel Data Integration<br/>Function: integrate_travel_data()"]
+    end
+    
+    subgraph "💾 FILE SYSTEM"
+        FS1["📁 Campaign Folder<br/>Function: create_campaign_folder()"]
+        FS2["💾 Asset Storage<br/>Function: save_design_assets()"]
+        FS3["📦 Export Package<br/>Function: create_export_package()"]
+    end
+    
+    subgraph "🔄 DATA FLOW PATTERNS"
+        DF1["📥 INPUT PROCESSING<br/>Brief → Requirements"]
+        DF2["🤖 AI ENHANCEMENT<br/>Content → Optimized Content"]
+        DF3["🎨 DESIGN GENERATION<br/>Content → MJML Template"]
+        DF4["✅ VALIDATION<br/>Template → Validated Output"]
+        DF5["📦 PACKAGING<br/>Assets → Export Package"]
+    end
+    
+    %% CONNECTIONS
+    CORE --> AI1
+    CORE --> AI2
+    CORE --> AI3
+    CORE --> AI4
+    CORE --> EXT_API
+    CORE --> FS1
+    CORE --> FS2
+    CORE --> FS3
+    
+    %% DATA FLOW
+    DF1 --> DF2
+    DF2 --> DF3
+    DF3 --> DF4
+    DF4 --> DF5
+    
+    %% INTEGRATION DETAILS
+    AI1 -.-> DF2
+    AI2 -.-> DF2
+    AI3 -.-> DF2
+    EXT_API -.-> DF2
+    AI4 -.-> DF4
+    FS1 -.-> DF1
+    FS2 -.-> DF3
+    FS3 -.-> DF5
+    
+    %% PERFORMANCE METRICS
+    PERF_AI["⏱️ AI PROCESSING<br/>Total: 41-63s<br/>Calls: 3 sequential<br/>Optimization: Parallel execution"]
+    PERF_API["⏱️ API CALLS<br/>Total: 2-5s<br/>Calls: 1 per campaign<br/>Optimization: Response caching"]
+    PERF_FS["⏱️ FILE OPS<br/>Total: 5-10s<br/>Operations: 30+<br/>Optimization: Batch processing"]
+    
+    AI1 -.-> PERF_AI
+    EXT_API -.-> PERF_API
+    FS1 -.-> PERF_FS
+    
+    %% ERROR HANDLING
+    ERR_AI["❌ AI FAILURES<br/>• Rate limiting<br/>• Content quality<br/>• Response timeout"]
+    ERR_API["❌ API FAILURES<br/>• Service unavailable<br/>• Invalid responses<br/>• Network errors"]
+    ERR_FS["❌ FILE FAILURES<br/>• Permission denied<br/>• Storage full<br/>• Corruption errors"]
+    
+    AI1 -.-> ERR_AI
+    EXT_API -.-> ERR_API
+    FS1 -.-> ERR_FS
+    
+    style CORE fill:#2196f3,stroke:#1976d2,color:white,stroke-width:3px
+    style AI1 fill:#ff6b6b,stroke:#e55555,color:white
+    style AI2 fill:#ff6b6b,stroke:#e55555,color:white
+    style AI3 fill:#ff6b6b,stroke:#e55555,color:white
+    style AI4 fill:#4caf50,stroke:#45a049,color:white
+    style EXT_API fill:#ff9800,stroke:#f57c00,color:white
+    style FS1 fill:#9c27b0,stroke:#7b1fa2,color:white
+    style FS2 fill:#9c27b0,stroke:#7b1fa2,color:white
+    style FS3 fill:#9c27b0,stroke:#7b1fa2,color:white

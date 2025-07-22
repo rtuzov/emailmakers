@@ -490,7 +490,7 @@ export class HTMLValidationService {
    * Generate optimization suggestions
    */
   private generateOptimizations(
-    html: string, 
+    _html: string, 
     compliance: EmailComplianceResult, 
     sizeAnalysis: SizeAnalysis
   ): OptimizationSuggestion[] {

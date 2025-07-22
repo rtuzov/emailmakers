@@ -15,13 +15,8 @@ import {
   OPTIMIZATION_CONSTANTS,
   OptimizationType,
   OptimizationPriority,
-  ExpectedImpact,
-  OptimizationAction,
-  RollbackTrigger,
   OptimizationStatus,
-  AlertThresholds,
-  DynamicThresholds,
-  AgentType
+  DynamicThresholds
 } from './optimization-types';
 
 import { OptimizationAnalyzer } from './optimization-analyzer';
@@ -50,6 +45,10 @@ export class OptimizationEngine implements OptimizationEngineInterface {
   private optimizationHistory: OptimizationResult[] = [];
   private isRunning: boolean = false;
   private isInitialized: boolean = false;
+  
+  getInitializationStatus(): boolean {
+    return this.isInitialized;
+  }
   private lastSuccessfulAnalysis: SystemAnalysis | null = null;
 
   // Add throttling state
@@ -219,7 +218,7 @@ export class OptimizationEngine implements OptimizationEngineInterface {
       return finalRecommendations;
     } catch (error) {
       console.error('❌ Optimization generation failed:', error);
-      throw new Error(`Optimization generation failed: ${error.message}`);
+      throw new Error(`Optimization generation failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -269,10 +268,10 @@ export class OptimizationEngine implements OptimizationEngineInterface {
             goals_achieved: [],
             goals_missed: [recommendation.title],
             unexpected_benefits: [],
-            side_effects: [`Execution error: ${error.message}`],
+            side_effects: [`Execution error: ${error instanceof Error ? error.message : String(error)}`],
             overall_satisfaction_score: 0
           },
-          issues_encountered: [error.message],
+          issues_encountered: [error instanceof Error ? error.message : String(error)],
           rollback_triggered: false
         };
         
@@ -554,13 +553,13 @@ export class OptimizationEngine implements OptimizationEngineInterface {
 
   private generateHealthAssessment(
     currentState: MetricsSnapshot,
-    trends: any[],
+    _trends: any[],
     bottlenecks: any[],
-    errorPatterns: any[]
+    _errorPatterns: any[]
   ): string {
     const healthScore = currentState.system_metrics.system_health_score;
     const criticalBottlenecks = bottlenecks.filter(b => b.severity === 'critical').length;
-    const negativeTrends = trends.filter(t => t.trend_direction === 'down').length;
+    // const _negativeTrends = trends.filter(t => t.trend_direction === 'down').length;
 
     if (healthScore >= 90 && criticalBottlenecks === 0) {
       return 'Excellent - System performing optimally with no critical issues';
@@ -673,7 +672,7 @@ export class OptimizationEngine implements OptimizationEngineInterface {
     return null;
   }
 
-  private async generateThresholdRecommendations(analysis: SystemAnalysis): Promise<OptimizationRecommendation[]> {
+  private async generateThresholdRecommendations(_analysis: SystemAnalysis): Promise<OptimizationRecommendation[]> {
     const dynamicThresholds = await this.generateDynamicThresholds();
     const recommendations: OptimizationRecommendation[] = [];
 
@@ -966,13 +965,13 @@ export class OptimizationEngine implements OptimizationEngineInterface {
           side_effects: [],
           overall_satisfaction_score: 0
         },
-        issues_encountered: [error.message],
+        issues_encountered: [error instanceof Error ? error.message : String(error)],
         rollback_triggered: false
       };
     }
   }
 
-  private async checkRollbackTriggers(result: OptimizationResult): Promise<{ triggered: boolean; reason?: string }> {
+  private async checkRollbackTriggers(_result: OptimizationResult): Promise<{ triggered: boolean; reason?: string }> {
     // В реальной реализации здесь будет проверка rollback triggers
     // Пока что возвращаем false для всех
     return { triggered: false };

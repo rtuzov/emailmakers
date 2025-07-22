@@ -167,10 +167,10 @@ export class EmailTemplateGenerationService {
   ): Promise<GeneratedContent> {
     try {
       const content = await this.contentPipeline.processContentBrief(brief, {
-        priorityProvider: options.priorityProvider,
-        brandGuidelines: options.brandGuidelines,
-        targetAudience: options.targetAudience,
-        campaignType: options.campaignType
+        ...(options.priorityProvider ? { priorityProvider: options.priorityProvider } : {}),
+        ...(options.brandGuidelines ? { brandGuidelines: options.brandGuidelines } : {}),
+        ...(options.targetAudience ? { targetAudience: options.targetAudience } : {}),
+        ...(options.campaignType ? { campaignType: options.campaignType } : {})
       });
 
       await this.eventBus.emit('template.content.generated', { 
@@ -234,7 +234,7 @@ export class EmailTemplateGenerationService {
   private async processTemplate(
     content: GeneratedContent,
     designSystem: DesignSystem | null,
-    options: TemplateGenerationOptions,
+    _options: TemplateGenerationOptions,
     jobId: string
   ): Promise<EmailTemplate> {
     try {
@@ -347,7 +347,7 @@ export class EmailTemplateGenerationService {
    */
   private async validateTemplate(
     template: EmailTemplate,
-    options: TemplateGenerationOptions,
+    _options: TemplateGenerationOptions,
     jobId: string
   ): Promise<QualityReport> {
     try {
@@ -458,7 +458,7 @@ export class EmailTemplateGenerationService {
    */
   private async applyFix(
     template: EmailTemplate,
-    suggestion: any
+    _suggestion: any
   ): Promise<EmailTemplate> {
     // Implementation would depend on the type of fix
     // For now, return the original template
@@ -547,8 +547,8 @@ export class EmailTemplateGenerationService {
 export class ContentGenerationPipeline {
   constructor(
     private llmOrchestrator: LLMOrchestratorService,
-    private cacheService: CacheService,
-    private metricsService: MetricsService
+    private _cacheService: CacheService,
+    private _metricsService: MetricsService
   ) {}
 
   async processContentBrief(
@@ -612,7 +612,7 @@ export class ContentGenerationPipeline {
   }
 
   private async extractBrandContext(
-    brief: ContentBrief,
+    _brief: ContentBrief,
     brandGuidelines?: Record<string, any>
   ): Promise<Record<string, any>> {
     return {
@@ -656,7 +656,7 @@ export class ContentGenerationPipeline {
   private async generateSubjectLine(
     brief: ContentBrief,
     brandContext: Record<string, any>,
-    options: any
+    _options: any
   ): Promise<string> {
     const llmBrief = this.createLLMCompatibleBrief(brief, brandContext);
 
@@ -682,7 +682,7 @@ export class ContentGenerationPipeline {
   private async generateBodyContent(
     brief: ContentBrief,
     brandContext: Record<string, any>,
-    options: any
+    _options: any
   ): Promise<string> {
     const llmBrief = this.createLLMCompatibleBrief(brief, brandContext);
     const result = await this.llmOrchestrator.generateContent(llmBrief, {
@@ -707,7 +707,7 @@ export class ContentGenerationPipeline {
   private async generateCTA(
     brief: ContentBrief,
     brandContext: Record<string, any>,
-    options: any
+    _options: any
   ): Promise<string> {
     const llmBrief = this.createLLMCompatibleBrief(brief, brandContext);
     const result = await this.llmOrchestrator.generateContent(llmBrief, {
@@ -732,7 +732,7 @@ export class ContentGenerationPipeline {
   private async generatePreheader(
     brief: ContentBrief,
     brandContext: Record<string, any>,
-    options: any
+    _options: any
   ): Promise<string> {
     const llmBrief = this.createLLMCompatibleBrief(brief, brandContext);
     const result = await this.llmOrchestrator.generateContent(llmBrief, {

@@ -26,25 +26,25 @@ export const createDesignHandoff = tool({
       const contentContext = params.content_context;
       const designPackage = params.design_package;
       
-      // Try to get campaign path from OpenAI SDK context first (set by loadDesignContext)
-      let campaignPath = context?.designContext?.campaign_path;
+      // Try to get campaign path from context
+      let campaignPath = (context?.context as any)?.campaignContext?.campaignPath;
       
       if (!campaignPath) {
         // Try multiple ways to get campaign path from parameters
-        campaignPath = contentContext.campaign?.campaignPath || 
-                      contentContext.campaign?.path ||
-                      contentContext.campaignPath ||
-                      contentContext.campaign_path ||
-                      designPackage.campaign_path ||
-                      designPackage.campaignPath;
+        campaignPath = (contentContext as any).campaign?.campaignPath || 
+                      (contentContext as any).campaign?.path ||
+                      (contentContext as any).campaignPath ||
+                      (contentContext as any).campaign_path ||
+                      (designPackage as any).campaign_path ||
+                      (designPackage as any).campaignPath;
       }
       
       // If still no path, try to extract from any file paths in the context
       if (!campaignPath) {
         // Look for campaign path in design package deliverables
-        const mjmlPath = designPackage.deliverables?.mjml_template?.source_file;
-        const htmlPath = designPackage.deliverables?.mjml_template?.compiled_html;
-        const previewPath = designPackage.deliverables?.preview_files?.desktop_preview;
+        const mjmlPath = (designPackage as any).deliverables?.mjml_template?.source_file;
+        const htmlPath = (designPackage as any).deliverables?.mjml_template?.compiled_html;
+        const previewPath = (designPackage as any).deliverables?.preview_files?.desktop_preview;
         
         for (const filePath of [mjmlPath, htmlPath, previewPath]) {
           if (filePath && filePath.includes('/campaigns/')) {
@@ -58,15 +58,15 @@ export const createDesignHandoff = tool({
       }
       
       // If still no path, try to construct from campaign ID
-      if (!campaignPath && contentContext.campaign?.id) {
-        campaignPath = path.join(process.cwd(), 'campaigns', contentContext.campaign.id);
+      if (!campaignPath && (contentContext as any).campaign?.id) {
+        campaignPath = path.join(process.cwd(), 'campaigns', (contentContext as any).campaign.id);
       }
       
       if (!campaignPath) {
         console.error('❌ Campaign path not found in context. Available keys:', Object.keys(contentContext));
         console.error('❌ Design package keys:', Object.keys(designPackage));
         console.error('❌ SDK context keys:', context ? Object.keys(context) : 'No context');
-        console.error('❌ SDK designContext keys:', context?.designContext ? Object.keys(context.designContext) : 'No designContext');
+        console.error('❌ SDK context keys:', context?.context ? Object.keys(context.context) : 'No context');
         throw new Error(`Campaign path is missing from content context. Available context keys: ${Object.keys(contentContext).join(', ')}`);
       }
       
@@ -81,7 +81,7 @@ export const createDesignHandoff = tool({
         metadata: {
           handoff_type: 'design-to-qa',
           created_at: new Date().toISOString(),
-          campaign_id: contentContext.campaign?.id,
+          campaign_id: (contentContext as any).campaign?.id,
           source_specialist: 'Design Specialist',
           target_specialist: 'Quality Assurance Specialist',
           trace_id: params.trace_id
@@ -100,41 +100,41 @@ export const createDesignHandoff = tool({
         },
         
         design_context: {
-          campaign: contentContext.campaign,
+          campaign: (contentContext as any).campaign,
           design_package: designPackage,
           
           // Key deliverables for QA
           template_files: {
-            mjml_source: designPackage.deliverables?.mjml_template?.source_file,
-            html_output: designPackage.deliverables?.mjml_template?.compiled_html,
-            desktop_preview: designPackage.deliverables?.preview_files?.desktop_preview,
-            mobile_preview: designPackage.deliverables?.preview_files?.mobile_preview
+            mjml_source: (designPackage as any).deliverables?.mjml_template?.source_file,
+            html_output: (designPackage as any).deliverables?.mjml_template?.compiled_html,
+            desktop_preview: (designPackage as any).deliverables?.preview_files?.desktop_preview,
+            mobile_preview: (designPackage as any).deliverables?.preview_files?.mobile_preview
           },
           
           // Quality metrics for validation
           quality_targets: {
-            technical_compliance: designPackage.quality_metrics?.technical_compliance,
-            accessibility_score: designPackage.quality_metrics?.accessibility_score,
-            performance_score: designPackage.quality_metrics?.performance_score,
-            email_client_compatibility: designPackage.quality_metrics?.email_client_compatibility
+            technical_compliance: (designPackage as any).quality_metrics?.technical_compliance,
+            accessibility_score: (designPackage as any).quality_metrics?.accessibility_score,
+            performance_score: (designPackage as any).quality_metrics?.performance_score,
+            email_client_compatibility: (designPackage as any).quality_metrics?.email_client_compatibility
           },
           
           // Technical specifications
           technical_requirements: {
-            max_width: designPackage.technical_summary?.max_width,
-            layout_type: designPackage.technical_summary?.layout_type,
-            email_clients_supported: designPackage.technical_summary?.email_clients_supported,
-            total_size: designPackage.performance_analysis?.total_size,
-            load_time_estimate: designPackage.performance_analysis?.load_time_estimate
+            max_width: (designPackage as any).technical_summary?.max_width,
+            layout_type: (designPackage as any).technical_summary?.layout_type,
+            email_clients_supported: (designPackage as any).technical_summary?.email_clients_supported,
+            total_size: (designPackage as any).performance_analysis?.total_size,
+            load_time_estimate: (designPackage as any).performance_analysis?.load_time_estimate
           },
           
           // Asset information
           assets: {
-            total_count: designPackage.deliverables?.assets?.total_count,
-            images: designPackage.deliverables?.assets?.images,
-            icons: designPackage.deliverables?.assets?.icons,
-            total_size: designPackage.deliverables?.assets?.total_size,
-            optimization_rate: designPackage.deliverables?.assets?.optimization_rate
+            total_count: (designPackage as any).deliverables?.assets?.total_count,
+            images: (designPackage as any).deliverables?.assets?.images,
+            icons: (designPackage as any).deliverables?.assets?.icons,
+            total_size: (designPackage as any).deliverables?.assets?.total_size,
+            optimization_rate: (designPackage as any).deliverables?.assets?.optimization_rate
           }
         },
         

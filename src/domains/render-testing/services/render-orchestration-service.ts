@@ -117,7 +117,7 @@ export class RenderOrchestrationService {
     private renderEngineService: RenderEngineService,
     private queueService: QueueService,
     private notificationService: NotificationService,
-    private storageService: StorageService,
+    private _storageService: StorageService,
     private metricsService: MetricsService,
     private screenshotCaptureService: ScreenshotCaptureService,
     private accessibilityService: AccessibilityTestingService,
@@ -748,7 +748,7 @@ export class RenderOrchestrationService {
   /**
    * Perform basic render testing
    */
-  private async performBasicRenderTesting(jobData: any): Promise<{
+  private async performBasicRenderTesting(_jobData: any): Promise<{
     screenshots: Screenshot[];
     compatibilityScore: number;
     clientResults: Array<{

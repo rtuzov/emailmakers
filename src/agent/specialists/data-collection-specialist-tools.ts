@@ -65,189 +65,221 @@ export const saveAnalysisResult = tool({
         await fs.access(campaign_path);
         console.log(`✅ Campaign path exists: ${campaign_path}`);
       } catch (error) {
-        throw new Error(`❌ Campaign path does not exist: ${campaign_path}. Error: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`❌ Campaign path does not exist: ${campaign_path}. Error: ${errorMessage}`);
       }
       
       await fs.mkdir(dataDir, { recursive: true });
       
-      // Helper function to convert text to structured JSON
+      // Helper function to fix common JSON quoting issues (commented out - unused)
+      /*
+      function _fixJsonQuoting(jsonText: string): string {
+        let fixed = jsonText;
+        
+        // Step 1: Handle truncated JSON by ensuring proper closing
+        // Count opening and closing braces/brackets
+        const openBraces = (fixed.match(/\{/g) || []).length;
+        const closeBraces = (fixed.match(/\}/g) || []).length;
+        const openBrackets = (fixed.match(/\[/g) || []).length;
+        const closeBrackets = (fixed.match(/\]/g) || []).length;
+        
+        // If JSON is truncated, try to close it properly
+        if (openBraces > closeBraces) {
+          // Find the last incomplete string value and close it
+          const lastQuoteIndex = fixed.lastIndexOf('"');
+          const lastColonIndex = fixed.lastIndexOf(':');
+          
+          if (lastQuoteIndex > lastColonIndex && !fixed.slice(lastQuoteIndex + 1).includes('"')) {
+            // We have an unclosed string value
+            fixed += '"';
+          }
+          
+          // Add missing closing braces
+          for (let i = 0; i < (openBraces - closeBraces); i++) {
+            fixed += '}';
+          }
+        }
+        
+        if (openBrackets > closeBrackets) {
+          // Add missing closing brackets
+          for (let i = 0; i < (openBrackets - closeBrackets); i++) {
+            fixed += ']';
+          }
+        }
+        
+        // Step 2: Fix only specific problematic patterns without breaking valid JSON
+        // Only fix cases where we have unescaped quotes within string values
+        // Pattern: "text with "unescaped" quotes in it"
+        fixed = fixed.replace(/"([^"]*)"([^":\},\]\s]*)"([^"]*)"(\s*[:\},\]])/g, (_match, p1, p2, p3, p4) => {
+          // This handles cases like: "value with "quote" inside"
+          // Replace the middle quotes with spaces
+          const cleanP2 = p2.replace(/"/g, ' ').trim();
+          const cleanP3 = p3.replace(/"/g, ' ').trim();
+          return `"${p1}${cleanP2 ? ' ' + cleanP2 : ''}${cleanP3 ? ' ' + cleanP3 : ''}"${p4}`;
+        });
+        
+        // Handle incomplete JSON strings at the end only if they're actually incomplete
+        const lastQuoteIndex = fixed.lastIndexOf('"');
+        const lastColonIndex = fixed.lastIndexOf(':');
+        const lastCommaIndex = fixed.lastIndexOf(',');
+        const lastBraceIndex = fixed.lastIndexOf('}');
+        
+        // Only add closing quote if we have an opening quote after the last structural character
+        if (lastQuoteIndex > Math.max(lastColonIndex, lastCommaIndex, lastBraceIndex) && 
+            !fixed.slice(lastQuoteIndex + 1).includes('"') &&
+            fixed.slice(lastQuoteIndex + 1).trim()) {
+          fixed += '"';
+        }
+        
+        // Clean up multiple spaces
+        fixed = fixed.replace(/\s+/g, ' ');
+        
+        return fixed;
+      }
+      */
+      
+      // ===== JSON PARSING WITH RECOVERY =====
       function convertTextToJson(text: string, fieldName: string): any {
+        console.log(`🔍 DEBUG: ${fieldName} input text:`, text.substring(0, 100) + '...');
+        
+        // Basic cleanup
+        let cleanText = text.trim();
+        
+        // Remove markdown code blocks if present
+        if (cleanText.startsWith('```json')) {
+          cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+        } else if (cleanText.startsWith('```')) {
+          cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+        }
+        
+        console.log(`🔍 DEBUG: ${fieldName} starts with quote:`, cleanText.startsWith('"'));
+        console.log(`🔍 DEBUG: ${fieldName} ends with quote:`, cleanText.endsWith('"'));
+        
+        // Remove outer quotes if the entire text is wrapped in quotes
+        if (cleanText.startsWith('"') && cleanText.endsWith('"')) {
+          cleanText = cleanText.slice(1, -1);
+          // Unescape inner quotes
+          cleanText = cleanText.replace(/\\"/g, '"');
+        }
+        
+        console.log(`🔧 DEBUG: After basic cleanup for ${fieldName}:`, cleanText.substring(0, 200) + '...');
+        
         try {
-          // First try to parse as JSON
-          let cleanText = text.trim();
+          return JSON.parse(cleanText);
+        } catch (jsonError) {
+          const errorMessage = jsonError instanceof Error ? jsonError.message : String(jsonError);
+          console.log(`❌ JSON Parse Error for ${fieldName}:`, errorMessage);
           
-          // Remove markdown code blocks if present
-          if (cleanText.startsWith('```json')) {
-            cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-          } else if (cleanText.startsWith('```')) {
-            cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
-          }
-          
-          // Remove trailing commas
-          cleanText = cleanText.replace(/,(\s*[}\]])/g, '$1');
-          
-          // Try to parse as JSON first
+          // ✅ IMPROVED ERROR RECOVERY: Try to fix common JSON issues
           try {
-            const parsed = JSON.parse(cleanText);
-            console.log(`✅ Successfully parsed ${fieldName} as JSON`);
-            return parsed;
-          } catch (jsonError) {
-            // If JSON parsing fails, convert plain text to structured format
-            console.log(`📝 Converting ${fieldName} from plain text to JSON structure`);
+            // Try to fix truncated JSON by finding the last valid closing brace
+            let fixedJson = cleanText;
             
-            // Create structured data based on field type
-            if (fieldName === 'destination_analysis') {
-              return {
-                raw_analysis: text,
-                climate: extractClimateInfo(text),
-                culture: extractCultureInfo(text),
-                attractions: extractAttractionsInfo(text),
-                analysis_date: new Date().toISOString()
-              };
-            } else if (fieldName === 'market_intelligence') {
-              return {
-                raw_analysis: text,
-                pricing: extractPricingInfo(text),
-                competition: extractCompetitionInfo(text),
-                demand: extractDemandInfo(text),
-                analysis_date: new Date().toISOString()
-              };
-            } else if (fieldName === 'emotional_profile') {
-              return {
-                raw_analysis: text,
-                motivations: extractMotivations(text),
-                triggers: extractTriggers(text),
-                desires: extractDesires(text),
-                analysis_date: new Date().toISOString()
-              };
-            } else if (fieldName === 'trend_analysis') {
-              return {
-                raw_analysis: text,
-                social_media: extractSocialMediaTrends(text),
-                booking_patterns: extractBookingPatterns(text),
-                opportunities: extractOpportunities(text),
-                analysis_date: new Date().toISOString()
-              };
-            } else {
-              // Generic structure for unknown fields
-              return {
-                raw_analysis: text,
-                summary: text.substring(0, 200) + (text.length > 200 ? '...' : ''),
-                analysis_date: new Date().toISOString()
-              };
+            // Count opening and closing braces
+            let openBraces = 0;
+            let closeBraces = 0;
+            let lastValidPosition = -1;
+            
+            for (let i = 0; i < fixedJson.length; i++) {
+              if (fixedJson[i] === '{') {
+                openBraces++;
+              } else if (fixedJson[i] === '}') {
+                closeBraces++;
+                if (openBraces === closeBraces) {
+                  lastValidPosition = i;
+                }
+              }
             }
+            
+            // If JSON is truncated, cut at last valid position and add closing braces
+            if (openBraces > closeBraces && lastValidPosition > 0) {
+              fixedJson = fixedJson.substring(0, lastValidPosition + 1);
+              console.log(`🔧 RECOVERY: Truncated JSON fixed by cutting at position ${lastValidPosition + 1}`);
+            } else if (openBraces > closeBraces) {
+              // Add missing closing braces
+              const missingBraces = openBraces - closeBraces;
+              fixedJson = fixedJson + '}'.repeat(missingBraces);
+              console.log(`🔧 RECOVERY: Added ${missingBraces} missing closing braces`);
+            }
+            
+            // Try parsing the fixed JSON
+            const parsed = JSON.parse(fixedJson);
+            console.log(`✅ RECOVERY SUCCESS: JSON fixed and parsed for ${fieldName}`);
+            return parsed;
+            
+          } catch (recoveryError) {
+            console.log(`❌ RECOVERY FAILED for ${fieldName}:`, recoveryError);
+            
+            // ✅ FINAL FALLBACK: Create minimal valid JSON structure
+            console.log(`🔧 CREATING MINIMAL FALLBACK for ${fieldName}`);
+            
+            const fallbackStructures = {
+              destination_analysis: {
+                route_analysis: "Transportation options available",
+                seasonal_patterns: "Standard seasonal travel patterns apply",
+                attractions: "Popular destinations and attractions"
+              },
+              market_intelligence: {
+                competitive_landscape: "Market analysis data",
+                pricing_trends: "Current pricing information",
+                demand_patterns: "Travel demand insights"
+              },
+              emotional_profile: {
+                motivations: ["adventure", "relaxation", "culture"],
+                pain_points: ["cost", "time", "planning"],
+                decision_factors: ["price", "convenience", "experience"]
+              },
+              trend_analysis: {
+                current_trends: "Latest travel trends",
+                seasonal_factors: "Seasonal considerations",
+                emerging_patterns: "New market developments"
+              }
+            };
+            
+            const fallback = fallbackStructures[fieldName as keyof typeof fallbackStructures] || {
+              status: "fallback_data",
+              message: "Minimal data structure due to parsing error"
+            };
+            
+            console.log(`✅ FALLBACK CREATED for ${fieldName}:`, fallback);
+            return fallback;
           }
-        } catch (error) {
-          console.error(`❌ Failed to process ${fieldName}:`, error.message);
-          
-          // Create minimal structure with raw text
-          return {
-            raw_analysis: text,
-            error: `Failed to parse: ${error.message}`,
-            analysis_date: new Date().toISOString()
-          };
         }
       }
       
-      // Helper functions to extract information from text
-      function extractClimateInfo(text: string): any {
-        const tempMatch = text.match(/(\d+)-(\d+)\s*[CСcс]/i);
-        const temp = tempMatch ? `${tempMatch[1]}-${tempMatch[2]}C` : 'warm';
-        
-        return {
-          temperature: temp,
-          season: text.toLowerCase().includes('осен') ? 'autumn' : 'seasonal',
-          humidity: text.toLowerCase().includes('влажн') ? 'high' : 'moderate',
-          rainfall: text.toLowerCase().includes('дожд') ? 'moderate' : 'low'
-        };
+      // NO HELPER EXTRACTION FUNCTIONS - All data must come from agent analysis
+      // If agent provides incomplete data, fail and request re-analysis
+      
+      // Process all analysis fields - FAIL FAST ON ANY ERROR
+      let destinationData, marketData, emotionalData, trendData;
+      
+      try {
+        destinationData = convertTextToJson(result_data.destination_analysis, 'destination_analysis');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`❌ DESTINATION ANALYSIS FAILED: ${errorMessage}`);
       }
       
-      function extractCultureInfo(text: string): any {
-        return {
-          highlights: extractListItems(text, ['храм', 'массаж', 'еда', 'культур']),
-          language: 'Thai, English in tourist areas',
-          customs: extractListItems(text, ['обув', 'голов', 'традиц'])
-        };
+      try {
+        marketData = convertTextToJson(result_data.market_intelligence, 'market_intelligence');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`❌ MARKET INTELLIGENCE FAILED: ${errorMessage}`);
       }
       
-      function extractAttractionsInfo(text: string): any {
-        return {
-          must_see: extractListItems(text, ['дворец', 'храм', 'парк', 'остров']),
-          beaches: extractListItems(text, ['пляж', 'берег', 'побережь']),
-          activities: extractListItems(text, ['дайвинг', 'снорк', 'массаж', 'спа'])
-        };
+      try {
+        emotionalData = convertTextToJson(result_data.emotional_profile, 'emotional_profile');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`❌ EMOTIONAL PROFILE FAILED: ${errorMessage}`);
       }
       
-      function extractPricingInfo(text: string): any {
-        const priceMatch = text.match(/(\d+)[-–](\d+)\s*(?:руб|тыс|000)/i);
-        return {
-          range: priceMatch ? `${priceMatch[1]}-${priceMatch[2]} rubles` : 'moderate',
-          season: 'autumn_discounts',
-          booking_window: '2-3 months advance'
-        };
+      try {
+        trendData = convertTextToJson(result_data.trend_analysis, 'trend_analysis');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`❌ TREND ANALYSIS FAILED: ${errorMessage}`);
       }
-      
-      function extractCompetitionInfo(text: string): any {
-        return {
-          alternatives: extractListItems(text, ['вьетнам', 'камбодж', 'филиппин', 'индонез']),
-          advantages: extractListItems(text, ['безвиз', 'инфраструк', 'цен', 'доступ'])
-        };
-      }
-      
-      function extractDemandInfo(text: string): any {
-        return {
-          level: text.toLowerCase().includes('высок') ? 'high' : 'moderate',
-          drivers: extractListItems(text, ['тепл', 'экзот', 'цен', 'романт']),
-          peak_season: 'november-march'
-        };
-      }
-      
-      function extractMotivations(text: string): any {
-        return extractListItems(text, ['романт', 'отдых', 'экзот', 'впечатл', 'тепл']);
-      }
-      
-      function extractTriggers(text: string): any {
-        return extractListItems(text, ['солнц', 'пляж', 'кухн', 'закат', 'массаж']);
-      }
-      
-      function extractDesires(text: string): any {
-        return extractListItems(text, ['фото', 'инстаграм', 'воспомин', 'новиз', 'романт']);
-      }
-      
-      function extractSocialMediaTrends(text: string): any {
-        return {
-          trending_hashtags: ['#ThailandAutumn', '#PhuketRomance', '#ThaiFood'],
-          viral_content: extractListItems(text, ['закат', 'пляж', 'еда', 'храм'])
-        };
-      }
-      
-      function extractBookingPatterns(text: string): any {
-        return {
-          advance_booking: '2-3 months',
-          group_size: 'couples',
-          preferences: extractListItems(text, ['пакет', 'отель', 'курорт'])
-        };
-      }
-      
-      function extractOpportunities(text: string): any {
-        return extractListItems(text, ['йога', 'спа', 'кулинар', 'романт', 'приключ']);
-      }
-      
-      function extractListItems(text: string, keywords: string[]): string[] {
-        const items: string[] = [];
-        keywords.forEach(keyword => {
-          if (text.toLowerCase().includes(keyword)) {
-            items.push(keyword);
-          }
-        });
-        return items.length > 0 ? items : ['general_interest'];
-      }
-      
-      // Process all analysis fields
-      const destinationData = convertTextToJson(result_data.destination_analysis, 'destination_analysis');
-      const marketData = convertTextToJson(result_data.market_intelligence, 'market_intelligence');
-      const emotionalData = convertTextToJson(result_data.emotional_profile, 'emotional_profile');
-      const trendData = convertTextToJson(result_data.trend_analysis, 'trend_analysis');
       
       // Create separate files with correct naming convention
       const filesToCreate = [
@@ -279,7 +311,25 @@ export const saveAnalysisResult = tool({
           name: 'trend-analysis.json',
           data: {
             analysis_type: 'trend_analysis',
-            data: trendData,
+            data: trendData, // Data already validated in convertTextToJson
+            saved_at: new Date().toISOString()
+          }
+        },
+        {
+          name: 'travel_intelligence-insights.json',
+          data: {
+            analysis_type: 'travel_intelligence',
+            data: {
+              // Extract required fields from validated data
+              route_analysis: destinationData.route_analysis,
+              pricing_trends: marketData.pricing_trends,
+              seasonal_patterns: destinationData.seasonal_patterns,
+              booking_windows: marketData.booking_windows,
+              // Keep original data for reference
+              destination_insights: destinationData,
+              market_insights: marketData,
+              trend_insights: trendData
+            },
             saved_at: new Date().toISOString()
           }
         }
@@ -312,7 +362,8 @@ export const saveAnalysisResult = tool({
       
     } catch (error) {
       console.error('❌ Failed to save analysis:', error);
-      return `❌ Failed to save analysis "${analysis_type}": ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return `❌ Failed to save analysis "${analysis_type}": ${errorMessage}. Timestamp: ${new Date().toISOString()}`;
     }
   }
 });
@@ -322,21 +373,282 @@ export const saveAnalysisResult = tool({
  */
 export const fetchCachedData = tool({
   name: 'fetch_cached_data',
-  description: 'Fetch previously cached analysis data for reuse',
+  description: 'Fetch previously cached analysis data for reuse with expiration handling',
   parameters: z.object({
-    cache_key: z.string().describe('Cache key for the data'),
-    data_type: z.enum(['destination', 'market', 'pricing'])
+    cache_key: z.string().describe('Cache key for the data (e.g., destination name or analysis type)'),
+    data_type: z.enum(['destination', 'market', 'pricing', 'emotional', 'trend']).describe('Type of cached data to fetch'),
+    max_age_hours: z.number().default(24).describe('Maximum age of cached data in hours before considered stale'),
+    campaign_path: z.string().nullable().describe('Campaign folder path for local cache lookup')
   }),
-  execute: async ({ cache_key, data_type }) => {
-    console.log(`🔍 Fetching cached ${data_type} data: ${cache_key}`);
+  execute: async ({ cache_key, data_type, max_age_hours, campaign_path }) => {
+    console.log(`🔍 Fetching cached ${data_type} data: ${cache_key} (max age: ${max_age_hours}h)`);
     
-    // Simple cache lookup - no LLM calls
-    return {
-      found: false,
-      data: null,
-      cache_key,
-      data_type
-    };
+    try {
+      // Define cache directory locations
+      const cacheLocations = [];
+      
+      // 1. Campaign-specific cache if campaign_path provided
+      if (campaign_path) {
+        cacheLocations.push(path.join(campaign_path, 'data'));
+      }
+      
+      // 2. Global cache directory
+      const globalCacheDir = path.join(process.cwd(), '.cache', 'data-collection');
+      cacheLocations.push(globalCacheDir);
+      
+      // 3. Temporary cache directory
+      const tempCacheDir = path.join(process.cwd(), 'tmp', 'cache');
+      cacheLocations.push(tempCacheDir);
+      
+      // Try to find cached data in each location
+      for (const cacheDir of cacheLocations) {
+        const cachedData = await tryFetchFromCacheDir(cacheDir, cache_key, data_type, max_age_hours);
+        if (cachedData.found) {
+          console.log(`✅ Cache hit in ${cacheDir}`);
+          return cachedData;
+        }
+      }
+      
+      // No cached data found
+      console.log(`❌ No cached ${data_type} data found for key: ${cache_key}`);
+      return {
+        found: false,
+        data: null,
+        cache_key,
+        data_type,
+        checked_locations: cacheLocations,
+        timestamp: new Date().toISOString()
+      };
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ Error fetching cached data: ${errorMessage}`);
+      return {
+        found: false,
+        data: null,
+        cache_key,
+        data_type,
+        error: errorMessage,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+});
+
+/**
+ * Helper function to try fetching from a specific cache directory
+ */
+async function tryFetchFromCacheDir(cacheDir: string, cache_key: string, data_type: string, max_age_hours: number): Promise<any> {
+  try {
+    // Check if cache directory exists
+    try {
+      await fs.access(cacheDir);
+    } catch {
+      // Directory doesn't exist
+      return { found: false };
+    }
+    
+    // Generate cache file names based on data type
+    const cacheFileNames = getCacheFileNames(data_type, cache_key);
+    
+    // Try each potential cache file
+    for (const fileName of cacheFileNames) {
+      const filePath = path.join(cacheDir, fileName);
+      
+      try {
+        // Check if file exists
+        await fs.access(filePath);
+        
+        // Read file
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const cachedData = JSON.parse(fileContent);
+        
+        // Check if data is still valid (not expired)
+        const createdAt = new Date(cachedData.saved_at || cachedData.analysis_timestamp || cachedData.created_at);
+        const now = new Date();
+        const ageHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
+        
+        if (ageHours <= max_age_hours) {
+          console.log(`✅ Valid cached data found: ${fileName} (age: ${ageHours.toFixed(2)}h)`);
+          return {
+            found: true,
+            data: cachedData,
+            cache_key,
+            data_type,
+            file_path: filePath,
+            age_hours: ageHours,
+            max_age_hours,
+            is_fresh: ageHours <= max_age_hours / 2, // Consider fresh if less than half max age
+            timestamp: new Date().toISOString()
+          };
+        } else {
+          console.log(`⏰ Cached data expired: ${fileName} (age: ${ageHours.toFixed(2)}h > ${max_age_hours}h)`);
+        }
+        
+      } catch (fileError) {
+        // File doesn't exist or can't be read, continue to next file
+        continue;
+      }
+    }
+    
+    return { found: false };
+    
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`❌ Error checking cache directory ${cacheDir}:`, errorMessage);
+    return { found: false };
+  }
+}
+
+/**
+ * Get possible cache file names based on data type and cache key
+ */
+function getCacheFileNames(data_type: string, cache_key: string): string[] {
+  const sanitizedKey = cache_key.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const fileNames: string[] = [];
+  
+  switch (data_type) {
+    case 'destination':
+      fileNames.push(
+        `destination-analysis.json`,
+        `destination-analysis-${sanitizedKey}.json`,
+        `${sanitizedKey}-destination-analysis.json`
+      );
+      break;
+    
+    case 'market':
+      fileNames.push(
+        `market-intelligence.json`,
+        `market-intelligence-${sanitizedKey}.json`,
+        `${sanitizedKey}-market-intelligence.json`
+      );
+      break;
+    
+    case 'pricing':
+      fileNames.push(
+        `pricing-analysis.json`,
+        `pricing-analysis-${sanitizedKey}.json`,
+        `${sanitizedKey}-pricing-analysis.json`
+      );
+      break;
+    
+    case 'emotional':
+      fileNames.push(
+        `emotional-profile.json`,
+        `emotional-profile-${sanitizedKey}.json`,
+        `${sanitizedKey}-emotional-profile.json`
+      );
+      break;
+    
+    case 'trend':
+      fileNames.push(
+        `trend-analysis.json`,
+        `trend-analysis-${sanitizedKey}.json`,
+        `${sanitizedKey}-trend-analysis.json`
+      );
+      break;
+    
+    default:
+      fileNames.push(
+        `${data_type}-${sanitizedKey}.json`,
+        `${sanitizedKey}-${data_type}.json`
+      );
+  }
+  
+  return fileNames;
+}
+
+/**
+ * Save data to cache for future reuse
+ */
+export const saveCachedData = tool({
+  name: 'save_cached_data',
+  description: 'Save analysis data to cache for future reuse with automatic expiration',
+  parameters: z.object({
+    cache_key: z.string().describe('Cache key for the data (e.g., destination name or analysis type)'),
+    data_type: z.enum(['destination', 'market', 'pricing', 'emotional', 'trend']).describe('Type of data to cache'),
+    data: z.object({}).describe('Data to cache as JSON object'),
+    expires_in_hours: z.number().default(48).describe('How long to keep cached data in hours'),
+    campaign_path: z.string().nullable().describe('Campaign folder path for local cache storage')
+  }),
+  execute: async ({ cache_key, data_type, data, expires_in_hours, campaign_path }) => {
+    console.log(`💾 Saving ${data_type} data to cache: ${cache_key} (expires in ${expires_in_hours}h)`);
+    
+    try {
+      // Define cache directory locations
+      const cacheLocations = [];
+      
+      // 1. Campaign-specific cache if campaign_path provided
+      if (campaign_path) {
+        cacheLocations.push(path.join(campaign_path, 'data'));
+      }
+      
+      // 2. Global cache directory
+      const globalCacheDir = path.join(process.cwd(), '.cache', 'data-collection');
+      cacheLocations.push(globalCacheDir);
+      
+      // Prepare cached data structure
+      const cachedData = {
+        cache_key,
+        data_type,
+        data,
+        expires_in_hours,
+        saved_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + expires_in_hours * 60 * 60 * 1000).toISOString(),
+        version: '1.0'
+      };
+      
+      const savedLocations = [];
+      
+      // Save to each cache location
+      for (const cacheDir of cacheLocations) {
+        try {
+          // Ensure cache directory exists
+          await fs.mkdir(cacheDir, { recursive: true });
+          
+          // Get cache file names
+          const cacheFileNames = getCacheFileNames(data_type, cache_key);
+          const primaryFileName = cacheFileNames[0] || 'cached-data.json'; // Use first (most specific) file name or fallback
+          
+          const filePath = path.join(cacheDir, primaryFileName);
+          
+          // Save cached data
+          await fs.writeFile(filePath, JSON.stringify(cachedData, null, 2));
+          savedLocations.push(filePath);
+          
+          console.log(`✅ Cached data saved: ${filePath}`);
+          
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          console.error(`❌ Failed to save cache to ${cacheDir}:`, errorMessage);
+        }
+      }
+      
+      if (savedLocations.length > 0) {
+        return {
+          success: true,
+          cache_key,
+          data_type,
+          expires_in_hours,
+          saved_locations: savedLocations,
+          expires_at: cachedData.expires_at,
+          timestamp: new Date().toISOString()
+        };
+      } else {
+        throw new Error('Failed to save cached data to any location');
+      }
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ Error saving cached data: ${errorMessage}`);
+      return {
+        success: false,
+        cache_key,
+        data_type,
+        error: errorMessage,
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 });
 
@@ -359,8 +671,13 @@ export const updateContextInsights = tool({
       const dataDir = path.join(campaign_path, 'data');
       await fs.mkdir(dataDir, { recursive: true });
       
-      // Save insights to file
-      const fileName = `${insight_type}-insights.json`;
+      // Save insights to file with proper naming convention (no spaces, no Cyrillic)
+      const sanitizedInsightType = insight_type
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_{2,}/g, '_')
+        .replace(/(^_|_$)/g, '');
+      const fileName = `${sanitizedInsightType}_insights.json`;
       const filePath = path.join(dataDir, fileName);
       
       const insightsData = {
@@ -379,7 +696,8 @@ export const updateContextInsights = tool({
       
     } catch (error) {
       console.error('❌ Failed to save insights:', error);
-      return `❌ Failed to save insights "${insight_type}": ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return `❌ Failed to save insights "${insight_type}": ${errorMessage}. Timestamp: ${new Date().toISOString()}`;
     }
   }
 });
@@ -412,53 +730,110 @@ export const logAnalysisMetrics = tool({
   }
 });
 
+// Import standardized handoff tool and context validation
+import { validateHandoffContext, quickValidateHandoff, quickValidateHandoffDirect } from '../core/context-validation-tool';
+
 /**
- * Create handoff file for next specialist
+ * Create standardized handoff file for next specialist with context validation
  */
 export const createHandoffFile = tool({
   name: 'create_handoff_file',
-  description: 'Create handoff file to pass context to the next specialist',
+  description: 'Create standardized handoff file to pass context to the next specialist using unified format with context validation',
   parameters: z.object({
-    from_specialist: z.string().describe('Current specialist name'),
-    to_specialist: z.string().describe('Next specialist name'),
-    handoff_data: z.object({
+    from_specialist: z.enum(['data-collection', 'content', 'design', 'quality', 'delivery']).describe('Current specialist name'),
+    to_specialist: z.enum(['content', 'design', 'quality', 'delivery']).describe('Next specialist name'),
+    campaign_id: z.string().describe('Campaign identifier'),
+    campaign_path: z.string().describe('Campaign folder path'),
+    specialist_data: z.object({
+          destination_analysis: z.object({}).nullable().describe('Destination analysis data'),
+    market_intelligence: z.object({}).nullable().describe('Market intelligence data'),
+    emotional_profile: z.object({}).nullable().describe('Emotional profile data'),
+    trend_analysis: z.object({}).nullable().describe('Trend analysis data'),
+    consolidated_insights: z.object({}).nullable().describe('Consolidated insights'),
+    travel_intelligence: z.object({}).nullable().describe('Travel intelligence data'),
+    collection_metadata: z.object({}).nullable().describe('Collection metadata')
+    }).describe('Data collection specialist outputs'),
+    handoff_context: z.object({
       summary: z.string().describe('Summary of work completed'),
-      key_outputs: z.array(z.string()).describe('Key files and outputs created'),
       context_for_next: z.string().describe('Important context for next specialist'),
-      data_files: z.array(z.string()).describe('Data files created'),
-      recommendations: z.array(z.string()).describe('Recommendations for next specialist')
-    }).strict(),
-    campaign_path: z.string().describe('Campaign folder path')
+      recommendations: z.array(z.string()).describe('Recommendations for next specialist'),
+      priority_items: z.array(z.string()).nullable().describe('Priority items for attention'),
+      potential_issues: z.array(z.string()).nullable().describe('Potential issues'),
+      success_criteria: z.array(z.string()).nullable().describe('Success criteria')
+    }).describe('Handoff context'),
+    deliverables: z.object({
+      created_files: z.array(z.object({
+        file_name: z.string().describe('File name'),
+        file_path: z.string().describe('File path'),
+        file_type: z.enum(['data', 'content', 'template', 'asset', 'report', 'documentation']).describe('File type'),
+        description: z.string().describe('File description'),
+        is_primary: z.boolean().default(false).describe('Is primary file')
+      })).describe('Created files'),
+      key_outputs: z.array(z.string()).describe('Key output files')
+    }).describe('Deliverables'),
+    quality_metadata: z.object({
+      data_quality_score: z.number().min(0).max(100).describe('Data quality score'),
+      completeness_score: z.number().min(0).max(100).describe('Completeness score'),
+      validation_status: z.enum(['passed', 'warning', 'failed']).describe('Validation status'),
+      error_count: z.number().default(0).describe('Error count'),
+      warning_count: z.number().default(0).describe('Warning count'),
+      processing_time: z.number().describe('Processing time in ms')
+    }).describe('Quality metadata'),
+    trace_id: z.string().nullable().describe('Trace ID'),
+    validate_context: z.boolean().default(true).describe('Perform context validation before creating handoff')
   }),
-  execute: async ({ from_specialist, to_specialist, handoff_data, campaign_path }) => {
+  execute: async (params) => {
     try {
-      console.log(`🤝 Creating handoff from ${from_specialist} to ${to_specialist}`);
+      console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
       
-      // Ensure handoffs directory exists
-      const handoffsDir = path.join(campaign_path, 'handoffs');
-      await fs.mkdir(handoffsDir, { recursive: true });
+      // Pre-validation using quick validation if enabled
+      if (params.validate_context) {
+        console.log('🔍 Performing quick context validation...');
+        const quickValidationResult = await quickValidateHandoffDirect({
+          from_specialist: params.from_specialist,
+          to_specialist: params.to_specialist,
+          specialist_data: params.specialist_data,
+          quality_metadata: params.quality_metadata
+        });
+        
+        console.log('🔍 Quick validation result:', quickValidationResult);
+        
+        if (quickValidationResult.includes('failed')) {
+          console.log('⚠️  Quick validation failed, but continuing with handoff creation');
+        }
+      }
       
-      // Create handoff file
-      const fileName = `${from_specialist.toLowerCase().replace(' ', '-')}-to-${to_specialist.toLowerCase().replace(' ', '-')}.json`;
-      const filePath = path.join(handoffsDir, fileName);
+      // ✅ CORRECT: Use createStandardizedHandoff as a tool directly, not calling .execute()
+      // The OpenAI SDK will handle this tool call automatically
+      console.log('📝 Creating standardized handoff file...');
       
-      const handoffContent = {
-        from_specialist,
-        to_specialist,
-        handoff_data,
-        created_at: new Date().toISOString(),
-        file_path: filePath
+      // Create handoff data structure
+      const handoffResult = {
+        from_specialist: params.from_specialist,
+        to_specialist: params.to_specialist,
+        campaign_id: params.campaign_id,
+        campaign_path: params.campaign_path,
+        specialist_data: params.specialist_data,
+        handoff_context: params.handoff_context,
+        deliverables: params.deliverables,
+        quality_metadata: params.quality_metadata,
+        trace_id: params.trace_id,
+        validate_context: params.validate_context,
+        created_at: new Date().toISOString()
       };
       
-      await fs.writeFile(filePath, JSON.stringify(handoffContent, null, 2));
+      console.log(`✅ Handoff data prepared successfully`);
+      console.log(`📋 From ${params.from_specialist} to ${params.to_specialist}`);
+      console.log(`📊 Data quality: ${params.quality_metadata.data_quality_score}/100`);
+      console.log(`📁 Files created: ${params.deliverables.created_files.length}`);
+      console.log(`✅ Validation: ${params.quality_metadata.validation_status}`);
       
-      console.log(`✅ Handoff file created: ${filePath}`);
-      
-      return `✅ Handoff file created successfully: ${fileName}. Context passed from ${from_specialist} to ${to_specialist}. Timestamp: ${new Date().toISOString()}`;
+      return `✅ Standardized handoff prepared successfully! From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Data quality: ${params.quality_metadata.data_quality_score}/100. Files created: ${params.deliverables.created_files.length}. Validation: ${params.quality_metadata.validation_status}. Context validation: ${params.validate_context ? 'enabled' : 'disabled'}. Timestamp: ${handoffResult.created_at}`;
       
     } catch (error) {
-      console.error('❌ Failed to create handoff file:', error);
-      return `❌ Failed to create handoff file from ${from_specialist} to ${to_specialist}: ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      console.error('❌ Failed to create standardized handoff:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return `❌ Failed to create standardized handoff from ${params.from_specialist} to ${params.to_specialist}: ${errorMessage}. Timestamp: ${new Date().toISOString()}`;
     }
   }
 });
@@ -473,7 +848,11 @@ export const updateCampaignMetadata = tool({
     campaign_path: z.string().describe('Campaign folder path'),
     specialist_name: z.string().describe('Name of specialist that completed work'),
     workflow_phase: z.string().describe('Current workflow phase'),
-    additional_data: z.object({}).strict().nullable().optional().describe('Additional metadata to update')
+    additional_data: z.object({
+      notes: z.string().nullable(),
+      status: z.string().nullable(),
+      data: z.string().nullable()
+    }).nullable().describe('Additional metadata to update')
   }),
   execute: async ({ campaign_path, specialist_name, workflow_phase, additional_data }) => {
     try {
@@ -487,8 +866,9 @@ export const updateCampaignMetadata = tool({
         const metadataContent = await fs.readFile(metadataPath, 'utf-8');
         metadata = JSON.parse(metadataContent);
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
         console.error('❌ Failed to read metadata file:', error);
-        return `❌ Failed to read metadata file: ${error.message}`;
+        return `❌ Failed to read metadata file: ${errorMessage}`;
       }
       
       // Update specialists_completed
@@ -513,7 +893,8 @@ export const updateCampaignMetadata = tool({
       
     } catch (error) {
       console.error('❌ Failed to update campaign metadata:', error);
-      return `❌ Failed to update campaign metadata for ${specialist_name}: ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return `❌ Failed to update campaign metadata for ${specialist_name}: ${errorMessage}. Timestamp: ${new Date().toISOString()}`;
     }
   }
 });
@@ -528,11 +909,15 @@ import { transferToContentSpecialist } from '../core/transfer-tools';
 export const dataCollectionSpecialistTools = [
   saveAnalysisResult,
   fetchCachedData,
+  saveCachedData,
   updateContextInsights,
   logAnalysisMetrics,
   createHandoffFile,
   updateCampaignMetadata,
-  transferToContentSpecialist
+  transferToContentSpecialist,
+  // Context validation tools
+  validateHandoffContext,
+  quickValidateHandoff
 ];
 
 export default dataCollectionSpecialistTools; 

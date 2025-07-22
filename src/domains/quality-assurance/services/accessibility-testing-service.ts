@@ -231,7 +231,7 @@ export class AccessibilityTestingService {
         severity: 'serious',
         description: 'html element must have a lang attribute',
         element: 'html',
-        suggestion: 'Add lang attribute to html element (e.g., lang="en")',
+        suggestion: 'Add lang attribute to html element ((e || {}).g., lang="en")',
         wcagReference: 'WCAG 2.1 SC 3.1.1',
         impact: 'serious',
         xpath: '/html'
@@ -669,10 +669,10 @@ export class AccessibilityTestingService {
     altTextCoverage: number,
     semanticStructure: boolean
   ): AccessibilitySummary {
-    const criticalIssues = issues.filter(i => i.severity === 'critical').length;
-    const seriousIssues = issues.filter(i => i.severity === 'serious').length;
-    const moderateIssues = issues.filter(i => i.severity === 'moderate').length;
-    const minorIssues = issues.filter(i => i.severity === 'minor').length;
+    const criticalIssues = issues.filter(i => (i || {}).severity === 'critical').length;
+    const seriousIssues = issues.filter(i => (i || {}).severity === 'serious').length;
+    const moderateIssues = issues.filter(i => (i || {}).severity === 'moderate').length;
+    const minorIssues = issues.filter(i => (i || {}).severity === 'minor').length;
 
     const totalChecks = issues.length + contrastResults.length + 2; // +2 for alt text and semantic structure
     const passedChecks = contrastResults.filter(r => r.passed).length + 
@@ -707,10 +707,10 @@ export class AccessibilityTestingService {
     let score = 1.0;
 
     // Deduct points for issues
-    const criticalIssues = issues.filter(i => i.severity === 'critical').length;
-    const seriousIssues = issues.filter(i => i.severity === 'serious').length;
-    const moderateIssues = issues.filter(i => i.severity === 'moderate').length;
-    const minorIssues = issues.filter(i => i.severity === 'minor').length;
+    const criticalIssues = issues.filter(i => (i || {}).severity === 'critical').length;
+    const seriousIssues = issues.filter(i => (i || {}).severity === 'serious').length;
+    const moderateIssues = issues.filter(i => (i || {}).severity === 'moderate').length;
+    const minorIssues = issues.filter(i => (i || {}).severity === 'minor').length;
 
     score -= (criticalIssues * 0.3);
     score -= (seriousIssues * 0.2);
@@ -731,8 +731,8 @@ export class AccessibilityTestingService {
    * Determine WCAG compliance level
    */
   private determineWCAGLevel(score: number, issues: AccessibilityIssue[]): 'A' | 'AA' | 'AAA' | 'fail' {
-    const criticalIssues = issues.filter(i => i.severity === 'critical').length;
-    const seriousIssues = issues.filter(i => i.severity === 'serious').length;
+    const criticalIssues = issues.filter(i => (i || {}).severity === 'critical').length;
+    const seriousIssues = issues.filter(i => (i || {}).severity === 'serious').length;
     
     if (criticalIssues > 0 || score < 0.5) return 'fail';
     if (seriousIssues > 0 || score < 0.7) return 'A';
@@ -830,7 +830,7 @@ export class AccessibilityTestingService {
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/(i || {}).exec(hex);
     return result ? {
       r: parseInt(result[1], 16),
       g: parseInt(result[2], 16),
@@ -885,7 +885,7 @@ export class AccessibilityTestingService {
       'link-name': 'Ensure links have descriptive text, aria-label, or title attributes.',
       'color-contrast': 'Increase contrast between text and background colors to meet WCAG AA standards.',
       'heading-order': 'Use heading levels in logical order (h1, then h2, then h3, etc.).',
-      'html-has-lang': 'Add a lang attribute to the html element (e.g., <html lang="en">).',
+      'html-has-lang': 'Add a lang attribute to the html element ((e || {}).g., <html lang="en">).',
       'table-headers': 'Add table headers using <th> elements or scope attributes.'
     };
     

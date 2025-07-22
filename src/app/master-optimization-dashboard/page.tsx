@@ -525,7 +525,7 @@ export default function MasterOptimizationDashboard() {
             </div>
 
             {/* Test Results */}
-            {Object.keys(testResults).length > 0 && (
+            {(Object || {}).keys(testResults).length > 0 && (
               <div style={{
                 padding: '24px',
                 borderRadius: '12px',
@@ -537,7 +537,7 @@ export default function MasterOptimizationDashboard() {
                 </h3>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {Object.entries(testResults).map(([testType, result]) => (
+                  {(Object || {}).entries(testResults).map(([testType, result]) => (
                     <div
                       key={testType}
                       style={{

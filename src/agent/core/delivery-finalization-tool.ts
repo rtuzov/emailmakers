@@ -8,11 +8,6 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import {
-  DeliveryContext,
-  createHandoffMetadata,
-  validateHandoffData
-} from './handoff-schemas';
 
 import {
   buildDeliveryContextFromOutputs,
@@ -25,22 +20,22 @@ export const createFinalDeliveryPackage = tool({
   description: 'Create final delivery package with all campaign materials, reports, and export files',
   parameters: z.object({
     request: z.string().describe('Original user request'),
-    content_context: z.object({}).passthrough().describe('Content context from Content Specialist'),
-    design_context: z.object({}).passthrough().describe('Design context from Design Specialist'),
-    quality_context: z.object({}).passthrough().describe('Quality context from Quality Specialist'),
-    delivery_manifest: z.object({}).passthrough().describe('Delivery manifest with package contents'),
-    export_format: z.object({}).passthrough().describe('Export format configuration'),
-    delivery_report: z.object({}).passthrough().describe('Final delivery report'),
-    deployment_artifacts: z.object({}).passthrough().describe('Deployment artifacts organization'),
+    content_context: z.object({}).strict().describe('Content context from Content Specialist'),
+    design_context: z.object({}).strict().describe('Design context from Design Specialist'),
+    quality_context: z.object({}).strict().describe('Quality context from Quality Specialist'),
+    delivery_manifest: z.object({}).strict().describe('Delivery manifest with package contents'),
+    export_format: z.object({}).strict().describe('Export format configuration'),
+    delivery_report: z.object({}).strict().describe('Final delivery report'),
+    deployment_artifacts: z.object({}).strict().describe('Deployment artifacts organization'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, _context) => {
     console.log('\n🎯 === DELIVERY SPECIALIST FINALIZATION STARTED ===');
     console.log(`📋 Request: ${params.request.substring(0, 50)}...`);
-    console.log(`📦 Package Format: ${params.export_format.format}`);
-    console.log(`📁 Total Files: ${params.delivery_manifest.total_files}`);
-    console.log(`💾 Total Size: ${(Number(params.delivery_manifest.total_size) / 1024).toFixed(2)} KB`);
-    console.log(`🚀 Deployment Ready: ${params.delivery_report.deployment_ready}`);
+    console.log(`📦 Package Format: ${(params.export_format as any).format}`);
+    console.log(`📁 Total Files: ${(params.delivery_manifest as any).total_files}`);
+    console.log(`💾 Total Size: ${(Number((params.delivery_manifest as any).total_size) / 1024).toFixed(2)} KB`);
+    console.log(`🚀 Deployment Ready: ${(params.delivery_report as any).deployment_ready}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
     try {

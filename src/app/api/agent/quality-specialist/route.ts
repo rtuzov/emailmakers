@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     Please provide detailed analysis and recommendations.`;
 
     // Execute the agent
-    const result = await run(qualitySpecialistAgent, prompt);
+    const _result // Currently unused = await run(qualitySpecialistAgent, prompt);
     
     const executionTime = Date.now() - startTime;
 

@@ -48,11 +48,11 @@ export async function POST(request: NextRequest) {
       };
       console.log('✅ Content Specialist completed in', results.content.turns, 'turns');
     } catch (error) {
-      results.errors.push(`Content: ${error.message}`);
-      console.error('❌ Content Specialist failed:', error.message);
+      results.errors.push(`Content: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error)}`);
+      console.error('❌ Content Specialist failed:', error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error));
       
       // Try to get partial result if available
-      if (error.message.includes('Max turns')) {
+      if (error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error).includes('Max turns')) {
         console.log('⚠️ Content Specialist hit max turns - trying to extract partial result');
       }
     }
@@ -75,8 +75,8 @@ export async function POST(request: NextRequest) {
         };
         console.log('✅ Design Specialist completed');
       } catch (error) {
-        results.errors.push(`Design: ${error.message}`);
-        console.error('❌ Design Specialist failed:', error.message);
+        results.errors.push(`Design: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error)}`);
+        console.error('❌ Design Specialist failed:', error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error));
       }
     }
 
@@ -98,8 +98,8 @@ export async function POST(request: NextRequest) {
         };
         console.log('✅ Quality Specialist completed');
       } catch (error) {
-        results.errors.push(`Quality: ${error.message}`);
-        console.error('❌ Quality Specialist failed:', error.message);
+        results.errors.push(`Quality: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error)}`);
+        console.error('❌ Quality Specialist failed:', error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error));
       }
     }
 
@@ -121,8 +121,8 @@ export async function POST(request: NextRequest) {
         };
         console.log('✅ Delivery Specialist completed');
       } catch (error) {
-        results.errors.push(`Delivery: ${error.message}`);
-        console.error('❌ Delivery Specialist failed:', error.message);
+        results.errors.push(`Delivery: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error)}`);
+        console.error('❌ Delivery Specialist failed:', error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error));
       }
     }
 
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error) : String(error);
     
     console.error('❌ Full Email Generation failed:', errorMessage);
 

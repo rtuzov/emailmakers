@@ -312,10 +312,10 @@ export const validateAndCorrectHtml = tool({
  */
 async function enhanceEmailContentWithAI(
   html: string,
-  errors: ValidationError[],
-  templateRequirements: any,
-  technicalRequirements: any,
-  assetManifest: any,
+  _errors: ValidationError[],
+  _templateRequirements: any,
+  _technicalRequirements: any,
+  _assetManifest: any,
   contentContext: any
 ): Promise<{ enhancedHtml?: string; enhancementsMade: string[] }> {
   try {
@@ -496,13 +496,14 @@ ${html}
 /**
  * Correct HTML using AI with enhanced error handling
  */
-async function correctHtmlWithAI(
+/*
+async function _correctHtmlWithAI( // Currently unused
   html: string,
   errors: ValidationError[],
-  templateRequirements: any,
+  _templateRequirements: any,
   technicalRequirements: any,
-  assetManifest: any,
-  contentContext: any
+  _assetManifest: any,
+  _contentContext: any
 ): Promise<{ correctedHtml?: string; correctionsMade: string[] }> {
   try {
     // Check if OpenAI API key is available
@@ -582,7 +583,7 @@ Return ONLY the corrected HTML with all content preserved. Do not add explanatio
       correctionsMade.push('Added max-width constraints');
     }
     
-    if (correctedHtml.match(/style="[^"]*text-align/g)?.length > html.match(/style="[^"]*text-align/g)?.length) {
+    if ((correctedHtml.match(/style="[^"]*text-align/g)?.length || 0) > (html.match(/style="[^"]*text-align/g)?.length || 0)) {
       correctionsMade.push('Improved text alignment');
     }
     
@@ -602,6 +603,7 @@ Return ONLY the corrected HTML with all content preserved. Do not add explanatio
     return { correctionsMade: [] };
   }
 }
+*/
 
 /**
  * Load template requirements from campaign files
@@ -866,26 +868,28 @@ function validateAssetUsage(html: string, assetManifest: any): ValidationError[]
       const srcMatch = imgMatch.match(/src="([^"]*)"/);
       if (srcMatch) {
         const src = srcMatch[1];
-        const isExternal = src.startsWith('http');
+        const isExternal = src?.startsWith('http') || false;
         
         if (!isExternal) {
           // Check if local asset exists in manifest - fix: ensure images is an array
-          const assetExists = assetManifest.images && Array.isArray(assetManifest.images) && 
-            assetManifest.images.some((img: any) => {
+          const manifestData = assetManifest?.assetManifest || assetManifest;
+          const images = manifestData?.images || [];
+          const assetExists = Array.isArray(images) && 
+            images.some((img: any) => {
               // More flexible matching for local paths
               const imgPath = img.path || img.filename || '';
               const imgFilename = img.filename || path.basename(imgPath);
-              const srcBasename = path.basename(src);
+              const srcBasename = path.basename(src || '');
               
               return imgFilename === srcBasename || 
                      imgPath.includes(srcBasename) || 
-                     src.includes(imgFilename) ||
+                     (src && src.includes(imgFilename)) ||
                      imgPath.includes(src);
             });
           
           // 🎯 CRITICAL: Only flag as error if asset truly doesn't exist
           // Skip validation for local development paths that are valid
-          const isLocalDevPath = src.startsWith('/Users/') || src.startsWith('/home/') || src.startsWith('C:\\');
+          const isLocalDevPath = src && (src.startsWith('/Users/') || src.startsWith('/home/') || src.startsWith('C:\\'));
           
           if (!assetExists && !isLocalDevPath) {
             errors.push({
@@ -909,8 +913,8 @@ function validateAssetUsage(html: string, assetManifest: any): ValidationError[]
 function validateContentAlignment(html: string, contentContext: any): ValidationError[] {
   const errors: ValidationError[] = [];
   
-  // Check if key content elements are present
-  if (contentContext.generated_content) {
+  // SAFE: Check if contentContext exists and has generated_content
+  if (contentContext && contentContext.generated_content) {
     const content = contentContext.generated_content;
     
     if (content.subject && !html.includes(content.subject)) {
@@ -1016,9 +1020,9 @@ function validateAccessibility(html: string): ValidationWarning[] {
  */
 async function enhanceEmailDesignWithAI(
   html: string,
-  templateRequirements: any,
-  technicalRequirements: any,
-  assetManifest: any,
+  _templateRequirements: any,
+  _technicalRequirements: any,
+  _assetManifest: any,
   contentContext: any
 ): Promise<{ enhancedHtml?: string; enhancementsMade: string[] }> {
   
@@ -1087,12 +1091,13 @@ ${html}
     }
 
     // Limit prompt size to prevent API errors
-    const maxHtmlLength = 8000;
-    const truncatedHtml = html.length > maxHtmlLength ? 
-      html.substring(0, maxHtmlLength) + '\n<!-- ... truncated for API call ... -->' : 
-      html;
+    // const maxHtmlLength = 8000; // Currently unused
+    // const _truncatedHtml = html.length > maxHtmlLength ? 
+    //   html.substring(0, maxHtmlLength) + '\n<!-- ... truncated for API call ... -->' : 
+    //   html; // Currently unused
 
-    const limitedPrompt = `
+    /*
+    const __limitedPrompt = ` // Currently unused
 Fix the following HTML email template errors while maintaining the original design and functionality:
 
 CURRENT HTML (${html.length > maxHtmlLength ? 'truncated' : 'full'}):
@@ -1112,6 +1117,7 @@ CRITICAL INSTRUCTIONS:
 5. Return ONLY the corrected HTML, no explanations
 
 Return the corrected HTML:`;
+    */
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -1188,7 +1194,8 @@ Return the corrected HTML:`;
 /**
  * Save validation report to campaign files
  */
-async function saveEnhancementReport(campaignPath: string, validationResult: ValidationResult): Promise<void> {
+/*
+async function _saveEnhancementReport(campaignPath: string, validationResult: ValidationResult): Promise<void> { // Currently unused
   const reportPath = path.join(campaignPath, 'docs', 'html-enhancement-report.json');
   
   const report = {
@@ -1215,6 +1222,7 @@ async function saveEnhancementReport(campaignPath: string, validationResult: Val
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2));
   console.log(`📋 Enhancement report saved to: ${reportPath}`);
 }
+*/
 
 /**
  * Helper functions
@@ -1246,9 +1254,13 @@ function extractBrandRequirements(designBrief: any): any {
 function extractExpectedAssets(assetManifest: any): any[] {
   const expectedAssets = [];
   
+  // ✅ ИСПРАВЛЕНО: Правильная структура asset manifest
+  const manifestData = assetManifest?.assetManifest || assetManifest;
+  const images = manifestData?.images || [];
+  
   // Fix: Check if images is an array before trying to filter
-  if (assetManifest.images && Array.isArray(assetManifest.images)) {
-    expectedAssets.push(...assetManifest.images.filter((img: any) => img.purpose === 'hero' || img.purpose === 'required'));
+  if (Array.isArray(images)) {
+    expectedAssets.push(...images.filter((img: any) => img.purpose === 'hero' || img.purpose === 'required'));
   }
   
   return expectedAssets;

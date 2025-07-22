@@ -43,7 +43,7 @@ export interface FigmaFoldersResult {
 }
 
 export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFoldersResult> {
-  const startTime = Date.now();
+  const _startTime // Currently unused = Date.now();
   
   try {
     console.log('📁 Getting Figma folders information:', {

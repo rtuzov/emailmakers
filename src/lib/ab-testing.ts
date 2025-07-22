@@ -35,17 +35,17 @@ interface ABTestResult {
 }
 
 export class ABTestingService {
-  private static tests: Map<string, ABTest> = new Map()
-  private static userAssignments: Map<string, Map<string, string>> = new Map()
-  private static results: Map<string, ABTestResult> = new Map()
-  private static isEnabled = false // DISABLED
+  private static _tests: Map<string, ABTest> = new Map()
+  private static _userAssignments: Map<string, Map<string, string>> = new Map()
+  private static _results: Map<string, ABTestResult> = new Map()
+  private static _isEnabled = false // DISABLED (renamed to avoid unused warning)
 
   /**
    * Initialize A/B testing - DISABLED
    */
   static initialize() {
     console.log('🚫 A/B testing service is currently DISABLED')
-    this.isEnabled = false
+    this._isEnabled = false
     return
     
     // COMMENTED OUT - Original implementation
@@ -193,7 +193,7 @@ export class ABTestingService {
   /**
    * Assign user to a test variant - DISABLED
    */
-  static assignUserToVariant(testId: string, userId: string): ABTestVariant | null {
+  static assignUserToVariant(_testId: string, _userId: string): ABTestVariant | null {
     console.log('🚫 A/B testing is disabled - returning null variant')
     return null
   }
@@ -201,7 +201,7 @@ export class ABTestingService {
   /**
    * Get comprehensive email configuration - RETURNS DEFAULTS
    */
-  static getOptimizedEmailConfig(userId: string): {
+  static getOptimizedEmailConfig(_userId: string): {
     tone: string
     contentStyle: string
     subjectPrefix: string
@@ -232,7 +232,7 @@ export class ABTestingService {
   /**
    * Legacy method for backward compatibility - RETURNS DEFAULTS
    */
-  static getRecommendedEmailConfig(userId: string): {
+  static getRecommendedEmailConfig(_userId: string): {
     tone: string
     contentStyle: string
     subjectPrefix: string
@@ -244,13 +244,13 @@ export class ABTestingService {
     testVariants: string[]
     disabled: boolean
   } {
-    return this.getOptimizedEmailConfig(userId)
+    return this.getOptimizedEmailConfig(_userId)
   }
 
   /**
    * Track conversion - DISABLED
    */
-  static trackConversion(userId: string, testId: string) {
+  static trackConversion(_userId: string, _testId: string) {
     console.log('🚫 A/B testing disabled - conversion tracking skipped')
     return
   }
@@ -258,7 +258,7 @@ export class ABTestingService {
   /**
    * Get test results - RETURNS EMPTY
    */
-  static getTestResults(testId: string): ABTestResult | null {
+  static getTestResults(_testId: string): ABTestResult | null {
     console.log('🚫 A/B testing disabled - no test results available')
     return null
   }

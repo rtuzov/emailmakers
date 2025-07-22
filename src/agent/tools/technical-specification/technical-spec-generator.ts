@@ -622,7 +622,7 @@ export const validateTechnicalSpecification = tool({
     console.log(`📂 Specification Path: ${specificationPath}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
-    const rules = validationRules || {};
+    const _rules // Currently unused = validationRules || {};
     
     try {
       // Load specification
@@ -713,8 +713,8 @@ async function analyzeContentForTechnicalRequirements(contentContext: any): Prom
 
 async function generateDesignConstraints(
   contentContext: any,
-  designRequirements: any,
-  options: any
+  _designRequirements: any,
+  _options: any
 ): Promise<any> {
   const constraints = {
     layout: {
@@ -783,7 +783,7 @@ async function generateDesignConstraints(
 async function processAssetManifest(
   assetManifest: any,
   contentContext: any,
-  designConstraints: any
+  _designConstraints: any
 ): Promise<any> {
   const specifications = {
     manifest: {
@@ -882,7 +882,7 @@ async function processAssetManifest(
 }
 
 async function generateQualityCriteria(
-  contentContext: any,
+  _contentContext: any,
   qualityCriteria: any,
   emailClients: string[],
   options: any
@@ -936,7 +936,7 @@ async function generateQualityCriteria(
 
 async function generateEmailClientConstraints(
   emailClients: string[],
-  options: any
+  _options: any
 ): Promise<any[]> {
   const constraints = [];
   
@@ -1013,7 +1013,7 @@ async function generateEmailClientConstraints(
 }
 
 async function createTechnicalSpecification(
-  specificationId: string,
+  _specificationId: string,
   campaignId: string,
   contentAnalysis: any,
   designConstraints: any,
@@ -1169,7 +1169,7 @@ async function generateImplementationGuidance(
 ): Promise<any> {
   const complexity = specification.metadata.complexity || 'medium';
   const sectionsCount = specification.content.sections.length;
-  const assetsCount = specification.design.assets.manifest.images.length + specification.design.assets.manifest.icons.length;
+  const _assetsCount // Currently unused = specification.design.assets.manifest.images.length + specification.design.assets.manifest.icons.length;
   
   return {
     priority: sectionsCount > 5 ? 'high' : 'medium',
@@ -1232,7 +1232,7 @@ function generateRecommendations(specification: any, contentContext: any): strin
 function calculateSpecificationQualityScore(
   specification: any,
   validationResult: any,
-  contentContext: any
+  _contentContext: any
 ): any {
   const completeness = validationResult.errors.length === 0 ? 100 : Math.max(0, 100 - (validationResult.errors.length * 10));
   const consistency = calculateConsistencyScore(specification);

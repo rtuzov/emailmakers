@@ -105,7 +105,7 @@ export async function variantsCreate(params: VariantsCreateParams): Promise<Vari
         success_metrics: [],
         analysis_recommendations: ['Check error logs', 'Verify generation settings']
       },
-      error: error instanceof Error ? error.message : 'Unknown variants creation error'
+      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown variants creation error'
     };
   }
 }
@@ -142,7 +142,7 @@ async function generateSingleVariant(
     const result = { 
       success: false, 
       error: 'generateCopy tool removed - use consolidated content generator',
-      data: null
+      _data: null
     };
     
     if (!result.success || !result.data) {
@@ -281,7 +281,7 @@ function extractVariantContent(data: any): any {
   return content;
 }
 
-function analyzeChanges(content: any, params: VariantsCreateParams, strategy: any): string[] {
+function analyzeChanges(content: any, _params: VariantsCreateParams, strategy: any): string[] {
   const changes: string[] = [];
   
   if (strategy.tone !== 'friendly') {
@@ -309,7 +309,7 @@ function analyzeChanges(content: any, params: VariantsCreateParams, strategy: an
   return changes.length > 0 ? changes : ['Variant generated with alternative approach'];
 }
 
-function generateTestingSetup(params: VariantsCreateParams, variants: any[]): any {
+function generateTestingSetup(_params: VariantsCreateParams, variants: any[]): any {
   const testGoal = params.test_goal || 'click_rate';
   
   // Calculate recommended test duration

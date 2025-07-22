@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('❌ Test utils API error:', error);
     return NextResponse.json({
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error) : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -78,8 +78,8 @@ async function listCampaigns(): Promise<NextResponse> {
     const campaigns: CampaignInfo[] = [];
     
     for (const entry of entries) {
-      // Skip API campaigns and test campaigns
-      if (entry.startsWith('api_campaign_') || entry.includes('test_2024')) {
+      // Skip test campaigns only (API campaigns no longer created)
+      if (entry.includes('test_2024')) {
         continue;
       }
       
@@ -131,7 +131,7 @@ async function listCampaigns(): Promise<NextResponse> {
       latest: campaigns[0] || null
     });
   } catch (error) {
-    throw new Error(`Failed to list campaigns: ${error.message}`);
+    throw new Error(`Failed to list campaigns: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 
@@ -155,7 +155,7 @@ async function getLatestCampaign(): Promise<NextResponse> {
       campaign: data.latest
     });
   } catch (error) {
-    throw new Error(`Failed to get latest campaign: ${error.message}`);
+    throw new Error(`Failed to get latest campaign: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 
@@ -235,7 +235,7 @@ async function getCampaignInfo(campaignId: string): Promise<NextResponse> {
       campaign: info
     });
   } catch (error) {
-    throw new Error(`Failed to get campaign info: ${error.message}`);
+    throw new Error(`Failed to get campaign info: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 
@@ -366,7 +366,7 @@ async function loadSpecialistContext(campaignId: string, specialist: string): Pr
       message: `Context loaded for ${specialist} specialist from ${context.handoff_chain.length} previous handoffs`
     });
   } catch (error) {
-    throw new Error(`Failed to load specialist context: ${error.message}`);
+    throw new Error(`Failed to load specialist context: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
 

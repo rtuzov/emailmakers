@@ -3,7 +3,7 @@
  * Tests if finalization tools exist without importing registry
  */
 
-import { finalizeContentAndTransferToDesign } from './src/agent/core/content-finalization-tool';
+import { finalizeContentAndTransferToDesign } from './src/agent/core/specialist-finalization-tools';
 import { finalizeDesignAndTransferToQuality } from './src/agent/core/design-finalization-tool';
 import { finalizeQualityAndTransferToDelivery } from './src/agent/core/quality-finalization-tool';
 import { createFinalDeliveryPackage } from './src/agent/core/delivery-finalization-tool';

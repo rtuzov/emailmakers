@@ -15,14 +15,8 @@ import {
   OptimizationConfig,
   MetricsSnapshot,
   DynamicThresholds,
-  OptimizationStatus
+  // OptimizationStatus
 } from './optimization-types';
-import { 
-  getOptimizationConfig, 
-  validateOptimizationConfig, 
-  applyEnvironmentOverrides,
-  ProductionOptimizationConfig 
-} from '../../config/optimization-config';
 
 export interface OptimizationServiceConfig {
   // Основные настройки
@@ -71,13 +65,13 @@ export class OptimizationService extends EventEmitter {
   private static instance: OptimizationService | null = null;
   private static isInitializing: boolean = false;
   
-  private engine: OptimizationEngine;
-  private integration: OptimizationIntegration;
+  private engine!: OptimizationEngine;
+  private integration!: OptimizationIntegration;
   private config: OptimizationServiceConfig;
   
   private status: OptimizationServiceStatus;
   private isInitialized: boolean = false;
-  private analysisTimer?: NodeJS.Timeout;
+  private analysisTimer?: NodeJS.Timeout | undefined;
   private optimizationHistory: OptimizationResult[] = [];
   private pendingRecommendations: OptimizationRecommendation[] = [];
 
@@ -316,8 +310,9 @@ export class OptimizationService extends EventEmitter {
 
     } catch (error) {
       // Don't log throttling errors as they're expected
-      if (!error.message.includes('throttled') && 
-          !error.message.includes('already in progress')) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (!errorMessage.includes('throttled') && 
+          !errorMessage.includes('already in progress')) {
         console.error('❌ Failed to get recommendations:', error);
         this.emit('recommendations_failed', error);
       }
@@ -357,7 +352,7 @@ export class OptimizationService extends EventEmitter {
         this.emit('optimization_applied', result);
       }
 
-      return result;
+      return result!;
 
     } catch (error) {
       console.error(`❌ Failed to apply recommendation ${recommendationId}:`, error);
@@ -535,9 +530,9 @@ export class OptimizationService extends EventEmitter {
       this.emit('system_analysis_updated', analysis);
     });
 
-    this.integration.on('optimizations_applied', (results) => {
-      results.forEach(result => this.optimizationHistory.push(result));
-      this.status.total_optimizations_today += results.filter(r => r.status === 'completed').length;
+    this.integration.on('optimizations_applied', (results: OptimizationResult[]) => {
+      results.forEach((result: OptimizationResult) => this.optimizationHistory.push(result));
+      this.status.total_optimizations_today += results.filter((r: OptimizationResult) => r.status === 'completed').length;
       this.emit('automated_optimization_completed', results);
     });
 
@@ -551,29 +546,29 @@ export class OptimizationService extends EventEmitter {
     // Добавим при необходимости
   }
 
-  private async checkDependencies(): Promise<void> {
-    // Проверяем доступность ValidationMonitor, MetricsService и т.д.
-    // В реальной реализации здесь будут конкретные проверки
-    console.log('✅ All dependencies are available');
-  }
+  // private async _checkDependencies(): Promise<void> {
+  //   // Проверяем доступность ValidationMonitor, MetricsService и т.д.
+  //   // В реальной реализации здесь будут конкретные проверки
+  //   console.log('✅ All dependencies are available');
+  // }
 
-  private async performInitialAnalysis(): Promise<void> {
-    try {
-      console.log('🔍 Performing initial system analysis...');
-      
-      const analysis = await this.integration.performFullOptimizationAnalysis();
-      this.status.last_analysis = new Date().toISOString();
-      this.status.system_health_score = this.extractHealthScore(analysis);
+  // private async _performInitialAnalysis(): Promise<void> {
+  //   try {
+  //     console.log('🔍 Performing initial system analysis...');
+  //     
+  //     const analysis = await this.integration.performFullOptimizationAnalysis();
+  //     this.status.last_analysis = new Date().toISOString();
+  //     this.status.system_health_score = this.extractHealthScore(analysis);
 
-      // Получаем начальные рекомендации
-      await this.getRecommendations(true);
+  //     // Получаем начальные рекомендации
+  //     await this.getRecommendations(true);
 
-      console.log('✅ Initial analysis completed');
-    } catch (error) {
-      console.error('❌ Initial analysis failed:', error);
-      throw error;
-    }
-  }
+  //     console.log('✅ Initial analysis completed');
+  //   } catch (error) {
+  //     console.error('❌ Initial analysis failed:', error);
+  //     throw error;
+  //   }
+  // }
 
   private startPeriodicAnalysis(): void {
     if (this.analysisTimer) {
@@ -601,9 +596,10 @@ export class OptimizationService extends EventEmitter {
         }
       } catch (error) {
         // Don't log throttling errors as they're expected
-        if (!error.message.includes('throttled') && 
-            !error.message.includes('rate limit') && 
-            !error.message.includes('already in progress')) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (!errorMessage.includes('throttled') && 
+            !errorMessage.includes('rate limit') && 
+            !errorMessage.includes('already in progress')) {
           console.error('❌ Periodic analysis failed:', error);
         }
       }

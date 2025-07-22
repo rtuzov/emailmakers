@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753079196767_jbkq99420zd",
+  "traceId": "api-1753079196766",
+  "timestamp": "2025-07-21T06:26:36.767Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753079196766",
+    "name": "Guatemala Autumn Travel Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Email-Makers-Test",
+      "clientIp": "::1",
+      "validationLevel": "strict",
+      "qualityThreshold": 90,
+      "enableDebugLogs": true
+    },
+    "correlationId": "corr_1753079196767_5o9b32o5bfc",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "strict",
+    "requiresApproval": true,
+    "qualityThreshold": 90,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Откройте для себя магию Гватемалы этой осенью! Древние города майя, вулканы, колониальная архитектура Антигуа и озеро Атитлан. Идеальная погода для путешествий в октябре-ноябре. Бронируйте сейчас со скидкой до 25%!",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Guatemala Autumn Travel Campaign",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "strict",
+    "qualityThreshold": 90,
+    "enableDebugLogs": true,
+    "originalOptions": {
+      "traceId": "api-1753079196766",
+      "metadata": {
+        "campaignName": "Guatemala Autumn Travel Campaign",
+        "brand": "Kupibilet",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "strict",
+        "qualityThreshold": 90,
+        "enableDebugLogs": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Email-Makers-Test",
+        "clientIp": "::1",
+        "validationLevel": "strict",
+        "qualityThreshold": 90,
+        "enableDebugLogs": true
+      }
+    }
+  }
+}

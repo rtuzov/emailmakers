@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Возвращает детальный отчет о корректности структуры данных
  */
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const body = await request.json();
     const { output, originalInput, enableRetry = false } = body;
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
     - Handoff Ready: ${validationResult.handoff_ready ? 'YES' : 'NO'}
     - Mock Mode: Active (real validator disabled to prevent build errors)`;
 
-    console.log('📊 Validation result:', {
+    console.log('📊 Validation _result: ', {
       valid: validationResult.valid,
       errorsCount: validationResult.errors.length,
       warningsCount: validationResult.warnings.length,
@@ -183,12 +183,12 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Unknown validation error',
+        error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown validation error',
         valid: false,
         errors: ['Validation service failed'],
         warnings: [],
         handoff_ready: false,
-        report: `❌ Validation service failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+        report: `❌ Validation service failed: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`
       },
       { status: 500 }
     );

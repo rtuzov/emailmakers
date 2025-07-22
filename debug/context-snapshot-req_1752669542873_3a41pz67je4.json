@@ -1,0 +1,104 @@
+{
+  "requestId": "req_1752669542873_3a41pz67je4",
+  "traceId": "api-1752669542873",
+  "timestamp": "2025-07-16T12:39:02.873Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1752669542873",
+    "name": "Зимнее путешествие в Грецию",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "destination": "Греция",
+      "origin": "Москва",
+      "season": "зима",
+      "language": "ru",
+      "validationLevel": "standard",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1752669542873_bncqbgf4yjn",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию для путешествия в Грецию зимой. Нужны авиабилеты из Москвы в Афины на зимний период с акцентом на историю и культуру.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Зимнее путешествие в Грецию",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Греция",
+    "origin": "Москва",
+    "season": "зима",
+    "originalOptions": {
+      "traceId": "api-1752669542873",
+      "metadata": {
+        "campaignName": "Зимнее путешествие в Грецию",
+        "brand": "Kupibilet",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Греция",
+        "origin": "Москва",
+        "season": "зима"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "destination": "Греция",
+        "origin": "Москва",
+        "season": "зима",
+        "language": "ru",
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

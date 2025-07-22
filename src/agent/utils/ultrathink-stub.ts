@@ -1,6 +1,6 @@
 // Stub for UltraThink functionality - moved to useless
 export class UltraThinkEngine {
-  async analyze(input: any): Promise<any> {
+  async analyze(_input: any): Promise<any> {
     return { analysis: 'stub implementation' };
   }
 }

@@ -179,7 +179,7 @@ export async function qualityValidation(params: QualityValidationParams): Promis
 /**
  * Format validation result for agent consumption
  */
-function formatValidationResult(result: QualityValidationResponse, validationTime: number): string {
+function formatValidationResult(_result: QualityValidationResponse, validationTime: number): string {
   const { 
     overall_score, 
     quality_gate_passed, 
@@ -286,7 +286,7 @@ function formatErrorResult(error: any, validationTime: number): string {
   output += `⏱️ Validation Time: ${validationTime}ms\\n\\n`;
   
   output += `🚨 ERROR DETAILS\\n`;
-  output += `Message: ${error instanceof Error ? error.message : 'Unknown validation error'}\\n`;
+  output += `Message: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown validation error'}\\n`;
   
   if (error instanceof QualityValidationError) {
     output += `Code: ${error.code}\\n`;

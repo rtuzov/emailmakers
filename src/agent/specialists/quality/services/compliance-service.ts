@@ -74,7 +74,7 @@ export class ComplianceService {
         quality_report: qualityReport,
         compliance_status: complianceStatus,
         recommendations: {
-          next_agent: this.shouldProceedToOptimization(complianceStatus) ? 'delivery_specialist' : undefined,
+          ...(this.shouldProceedToOptimization(complianceStatus) ? { next_agent: 'delivery_specialist' as const } : {}),
           next_actions: this.generateComplianceActions(complianceStatus),
           critical_fixes: this.extractComplianceFixes(complianceResult),
           handoff_data: handoffData
@@ -194,7 +194,9 @@ Please use appropriate validation tools to perform comprehensive compliance chec
       const fixPattern = /fix[:\s]*(.*?)(?:\n|$)/gi;
       let match;
       while ((match = fixPattern.exec(complianceResult)) !== null) {
-        fixes.push(match[1].trim());
+        if (match[1]) {
+          fixes.push(match[1].trim());
+        }
       }
     } else if (complianceResult && typeof complianceResult === 'object') {
       if (Array.isArray(complianceResult.compliance_fixes)) {

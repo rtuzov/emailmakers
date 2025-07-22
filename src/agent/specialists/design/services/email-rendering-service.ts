@@ -6,7 +6,7 @@
  */
 
 // Direct tool imports to avoid architectural anti-pattern
-import { ExtractedContentPackage } from '../../../core/content-extractor';
+import { ExtractedContentPackage } from '../../content/utils/content-extractor';
 import { StandardAsset } from '../../../core/asset-manager';
 import {
   DesignSpecialistInputV2,
@@ -139,7 +139,7 @@ export class EmailRenderingService {
   ): Promise<TemplateDesign> {
     // Analyze content context
     const campaignContext = this.analyzeCampaignContext(content);
-    const briefText = this.extractBriefText(content);
+    // const _briefText = this.extractBriefText(content); // Currently unused
     
     // Simulate AI template generation
     const templateType = requirements?.template_type || this.determineTemplateType(content);
@@ -158,7 +158,7 @@ export class EmailRenderingService {
    * Generate template from context analysis
    */
   private generateTemplateFromContext(
-    content: ExtractedContentPackage,
+    _content: ExtractedContentPackage,
     requirements?: RenderingRequirements
   ): TemplateDesign {
     const templateType = requirements?.template_type || 'newsletter';
@@ -180,7 +180,7 @@ export class EmailRenderingService {
     input: DesignSpecialistInputV2,
     content: ExtractedContentPackage,
     assets: StandardAsset[],
-    templateDesign: TemplateDesign
+    _templateDesign: TemplateDesign
   ): RenderingParams {
     return {
       action: this.determineRenderingAction(input.rendering_requirements),
@@ -231,14 +231,14 @@ export class EmailRenderingService {
       }
       
       // Convert MJML result to RenderingResult format
-      return {
+      return ({
         success: true,
         html_content: mjmlResult.data.html,
         mjml_source: mjmlResult.data.mjml_source,
         inline_css: '', // MJML handles CSS inlining
         html_output: mjmlResult.data.html,
         css_output: '',
-        dark_mode_css: params.include_dark_mode ? this.generateDarkModeCSS() : undefined,
+        dark_mode_css: params.include_dark_mode ? this.generateDarkModeCSS() : undefined as string | undefined,
         design_artifacts: {
           performance_metrics: {
             css_rules_count: 10,
@@ -273,7 +273,7 @@ export class EmailRenderingService {
           accessibility_score: 80,
           cross_client_compatibility: 90
         }
-      };
+      } as any);
       
     } catch (error) {
       console.error('❌ Direct rendering failed:', error);
@@ -304,8 +304,8 @@ export class EmailRenderingService {
       <mj-column>
         ${assets.length > 0 ? `
         <mj-image 
-          src="${assets[0].filePath}" 
-          alt="${assets[0].fileName || 'Email image'}"
+          src="${assets[0]?.filePath || ''}" 
+          alt="${assets[0]?.fileName || 'Email image'}"
           width="600px"
           padding="0 0 20px 0"
         />
@@ -464,7 +464,7 @@ export class EmailRenderingService {
     return 'newsletter';
   }
 
-  private generateLayoutStructure(templateType: string, content: ExtractedContentPackage): any {
+  private generateLayoutStructure(templateType: string, _content: ExtractedContentPackage): any {
     const baseStructure = {
       header: {
         type: 'header' as const,

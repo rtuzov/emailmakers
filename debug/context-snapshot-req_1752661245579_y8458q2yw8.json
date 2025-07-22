@@ -1,0 +1,98 @@
+{
+  "requestId": "req_1752661245579_y8458q2yw8",
+  "traceId": "api-1752661245579",
+  "timestamp": "2025-07-16T10:20:45.579Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1752661245579",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "luxury_travel",
+      "season": "winter",
+      "destination": "Maldives",
+      "language": "ru",
+      "tone": "luxurious_inspiring"
+    },
+    "correlationId": "corr_1752661245579_4qgj3tyckgi",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию \"Мальдивы - тропический рай\". Включить информацию о коралловых рифах, подводном мире, водных вилах.",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "luxury_travel",
+    "season": "winter",
+    "destination": "Maldives",
+    "tone": "luxurious_inspiring",
+    "originalOptions": {
+      "traceId": "api-1752661245579",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "luxury_travel",
+        "season": "winter",
+        "destination": "Maldives",
+        "tone": "luxurious_inspiring"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "luxury_travel",
+        "season": "winter",
+        "destination": "Maldives",
+        "language": "ru",
+        "tone": "luxurious_inspiring"
+      }
+    }
+  }
+}

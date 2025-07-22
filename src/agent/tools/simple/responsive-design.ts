@@ -145,7 +145,7 @@ export async function responsiveDesign(params: ResponsiveDesignParams): Promise<
             client_compatibility_score: 0
           },
           recommendations: ['Fix parameter validation errors'],
-          error: validationResult.error
+          error: validationResult.error || undefined
         };
 
         console.log(`❌ Responsive Design failed: ${validationResult.error}`);
@@ -604,7 +604,7 @@ async function createResponsiveTemplate(
   };
 }
 
-function generateHtmlStructure(layoutType: string, contentBlocks: any[]): string {
+function generateHtmlStructure(_layoutType: string, contentBlocks: any[]): string {
   // Simplified HTML generation
   const blocks = contentBlocks.map(block => 
     `<div class="content-block ${block.type}">${block.content}</div>`
@@ -636,7 +636,7 @@ function generateHtmlStructure(layoutType: string, contentBlocks: any[]): string
 </html>`;
 }
 
-function generateCssRules(layoutType: string, targetDevices: string[], cssApproach: string): string {
+function generateCssRules(_layoutType: string, targetDevices: string[], cssApproach: string): string {
   return `
 .container { max-width: 600px; margin: 0 auto; }
 .content-block { padding: 20px; }

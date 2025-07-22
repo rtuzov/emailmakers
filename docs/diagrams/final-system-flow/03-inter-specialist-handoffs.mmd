@@ -1,0 +1,59 @@
+graph TD
+    subgraph "📊 DATA COLLECTION → CONTENT"
+        DCH["📤 DATA COLLECTION HANDOFF<br/>Function: prepare_handoff()"]
+        DCH_DATA["📋 HANDOFF DATA<br/>• Campaign ID<br/>• Requirements analysis<br/>• Target audience<br/>• Content strategy<br/>• Outline structure<br/>SIZE: 15KB"]
+        CSR["📥 CONTENT RECEIVE<br/>Function: receive_data_handoff()"]
+        DCH --> DCH_DATA --> CSR
+    end
+    
+    subgraph "📝 CONTENT → DESIGN"
+        CDH["📤 CONTENT HANDOFF<br/>Function: prepare_design_handoff()"]
+        CDH_DATA["📋 HANDOFF DATA<br/>• Generated content<br/>• Travel data integration<br/>• Mobile adaptations<br/>• Personalization rules<br/>• Content metadata<br/>SIZE: 29KB"]
+        DSR["📥 DESIGN RECEIVE<br/>Function: receive_content_handoff()"]
+        CDH --> CDH_DATA --> DSR
+    end
+    
+    subgraph "🎨 DESIGN → QUALITY"
+        DQH["📤 DESIGN HANDOFF<br/>Function: prepare_quality_handoff()"]
+        DQH_DATA["📋 HANDOFF DATA<br/>• MJML template<br/>• Design assets<br/>• Brand guidelines<br/>• Responsive rules<br/>• Dark mode configs<br/>SIZE: 40KB"]
+        QSR["📥 QUALITY RECEIVE<br/>Function: receive_design_handoff()"]
+        DQH --> DQH_DATA --> QSR
+    end
+    
+    subgraph "✅ QUALITY → DELIVERY"
+        QDH["📤 QUALITY HANDOFF<br/>Function: prepare_delivery_handoff()"]
+        QDH_DATA["📋 HANDOFF DATA<br/>• Validated template<br/>• Quality reports<br/>• Test results<br/>• Performance metrics<br/>• Compliance status<br/>SIZE: 40KB"]
+        DLR["📥 DELIVERY RECEIVE<br/>Function: receive_quality_handoff()"]
+        QDH --> QDH_DATA --> DLR
+    end
+    
+    %% VALIDATION POINTS
+    V1["🔍 VALIDATION<br/>validate_data_collection()"]
+    V2["🔍 VALIDATION<br/>Content completeness"]
+    V3["🔍 VALIDATION<br/>validate_design_ai()"]
+    V4["🔍 VALIDATION<br/>Multi-dimensional QA"]
+    
+    CSR --> V1
+    DSR --> V2
+    QSR --> V3
+    DLR --> V4
+    
+    %% ERROR HANDLING
+    ERR1["❌ ERROR RECOVERY<br/>Rollback to previous state"]
+    ERR2["❌ ERROR RECOVERY<br/>Content regeneration"]
+    ERR3["❌ ERROR RECOVERY<br/>Design iteration"]
+    ERR4["❌ ERROR RECOVERY<br/>Quality re-validation"]
+    
+    V1 -.-> ERR1
+    V2 -.-> ERR2
+    V3 -.-> ERR3
+    V4 -.-> ERR4
+    
+    style DCH fill:#4ecdc4,stroke:#45b7aa,color:white
+    style CDH fill:#45b7d1,stroke:#3a9bc1,color:white
+    style DQH fill:#96ceb4,stroke:#85b7a3,color:white
+    style QDH fill:#feca57,stroke:#fd9644,color:white
+    style DCH_DATA fill:#e8f8f5,stroke:#4ecdc4,color:black
+    style CDH_DATA fill:#e3f2fd,stroke:#45b7d1,color:black
+    style DQH_DATA fill:#f1f8e9,stroke:#96ceb4,color:black
+    style QDH_DATA fill:#fff8e1,stroke:#feca57,color:black

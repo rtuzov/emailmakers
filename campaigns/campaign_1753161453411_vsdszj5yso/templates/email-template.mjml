@@ -1,0 +1,81 @@
+<mjml>
+  <mj-head>
+    <mj-title>Откройте для себя Данию этим летом!</mj-title>
+    <mj-preview>Не упустите шанс на незабываемые воспоминания в Дании!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .header { background-color: #4BFF7E; color: #FFFFFF; }
+      .button-primary { background-color: #FF6240; color: #FFFFFF; }
+      .button-secondary { background-color: #4BFF7E; color: #2C3959; }
+      .highlight { background-color: #FF6240; color: #FFFFFF; padding: 10px; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center" css-class="header" font-size="24px" font-weight="bold">Откройте для себя Данию этим летом!</mj-text>
+        <mj-text align="center" font-size="14px">Не упустите шанс на незабываемые воспоминания в Дании!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Дорогие искатели приключений! Лето 2025 года приближается, и это идеальный момент, чтобы отправиться в Данию — страну утонченной культуры, потрясающих ландшафтов и безграничных возможностей для отдыха с близкими.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>Представьте, как вы гуляете по живописным улочкам Копенгагена, наслаждаетесь изысканными блюдами в уютных кафе и исследуете уникальную природу Дании. Ваши самые яркие воспоминания ждут вас! Выберите одну из наших оптимальных дат: 15, 22 августа или 5, 12, 19 сентября и получите специальные предложения по ценам от 16,383 до 27,169 RUB. Это время, когда мечты становятся реальностью!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="bold">Преимущества:</mj-text>
+        <mj-list>
+          <mj-list-item>Незабываемые впечатления с близкими.</mj-list-item>
+          <mj-list-item>Экологически чистый туризм, который поможет сохранить природу.</mj-list-item>
+          <mj-list-item>Конкурентные цены на авиабилеты в Данию!</mj-list-item>
+        </mj-list>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="highlight">Тысячи довольных путешественников уже сделали свой выбор! Присоединяйтесь к ним и создайте свои собственные незабываемые моменты.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="highlight">Только сейчас у вас есть шанс забронировать билеты по лучшим ценам! Количество мест ограничено — не упустите возможность!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="bold">Привет, [Имя]!</mj-text>
+        <mj-text>Рекомендуем посмотреть наши лучшие маршруты и отели в Дании.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-button css-class="button-primary" href="#">Забронируйте свой билет сейчас!</mj-button>
+        <mj-button css-class="button-secondary" href="#">Узнайте больше о Дании</mj-button>
+        <mj-button css-class="button-primary" href="#">Количество мест ограничено, действуйте быстро!</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#2C3959">© 2025 Kupibilet. Все права защищены. | Контактная информация: info@kupibilet.com</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image src="undefined" alt="Image 1" />
+        <mj-image src="undefined" alt="Image 2" />
+        <mj-image src="undefined" alt="Image 3" />
+        <mj-image src="undefined" alt="Image 4" />
+        <mj-image src="undefined" alt="Image 5" />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

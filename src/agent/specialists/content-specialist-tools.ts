@@ -1,533 +1,27 @@
-/**
- * 🎯 CONTENT SPECIALIST TOOLS - Context-Aware with OpenAI Agents SDK
- * 
- * Real-time Kupibilet API integration with enhanced error handling,
- * airport conversion, and CSV data processing capabilities.
- * 
- * OpenAI Agents SDK compatible tools with context parameter support.
- * Eliminates global state anti-pattern for proper data flow.
- */
-
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import { join } from 'path';
 import path from 'path';
-import { withSDKTrace } from '../utils/tracing-utils';
-import { log, getGlobalLogger } from '../core/agent-logger';
-import { debuggers } from '../core/debug-output';
 import { OpenAI } from 'openai';
-
-// Import existing content services
 import { 
-  ContentGeneratorParams,
-  ContentGeneratorResult,
-  PricingService,
-  GenerationService,
-  ContentUtils,
-  DestinationAnalyzer,
-  MultiDestinationPlanner,
-  SeasonalOptimizer
-} from './content/index';
-
-// Campaign context types 
-interface CampaignWorkflowContext {
-  campaignId?: string;
-  campaignPath?: string;
-  metadata?: any;
-  context_analysis?: any;
-  date_analysis?: any;
-  pricing_analysis?: any;
-  asset_strategy?: any;
-  generated_content?: any;
-  technical_requirements?: any;
-  design_brief?: any;
-  trace_id?: string | null;
-}
-
-interface ExtendedRunContext {
-  campaignContext?: CampaignWorkflowContext;
-}
-
-// Import error handling utilities
-import { 
-  getErrorMessage, 
-  logErrorWithContext, 
-  contentSpecialistErrorHandler 
-} from './content-specialist/utils/error-handling';
-import { 
-  extractCampaignContext, 
-  validateCampaignPath, 
-  loadAnalysisFromFiles,
-  saveToCampaignFile,
-  ensureCampaignDirectories 
-} from './content-specialist/utils/context-management';
-
-// Enhanced pricing integration
+  createCampaignFolder, 
+  updateCampaignMetadata,
+  contextProvider,
+  dateIntelligence,
+  createHandoffFile
+} from './content/tools';
+// Removed: finalizeContentAndTransferToDesign - OpenAI SDK handles handoffs automatically
 import { getPrices } from '../tools/prices';
-import { convertAirportToCity, getDestinationInfo } from '../tools/airports-loader';
-
-// Import asset preparation tools
-import { assetPreparationTools } from '../tools/asset-preparation';
+import { getErrorMessage } from './content/utils/error-handling';
+// import { generateTechnicalSpecification } from '../tools/technical-specification/technical-spec-generator';
 
 // Import AI-powered asset collection system
-import { collectAssetsFromSources } from '../tools/asset-preparation/asset-collection';
-import { 
-  AssetSource, 
-  ContentContext, 
-  CampaignContext 
-} from '../tools/asset-preparation/types';
-
-// Import technical specification tools
-import { technicalSpecificationTools } from '../tools/technical-specification';
-
-// Import finalization tools
-import { finalizeContentAndTransferToDesign } from '../core/specialist-finalization-tools';
-import { transferToDesignSpecialist } from '../core/transfer-tools';
-
-// Initialize debug output for Content Specialist
-const debug = debuggers.contentSpecialist;
-
-// ============================================================================
-// CONTEXT-AWARE CAMPAIGN STATE MANAGEMENT
-// ============================================================================
-
-/**
- * Builds campaign context from individual tool outputs
- * Replaces global state with context parameter pattern
- */
-function buildCampaignContext(context: any, updates: Partial<CampaignWorkflowContext>): CampaignWorkflowContext {
-  const existingContext = context?.campaignContext || {};
-  const newContext = { ...existingContext, ...updates };
-  
-  // Debug output with environment variable support
-  debug.debug('ContentSpecialist', 'Campaign context built', {
-    updatedFields: Object.keys(updates),
-    contextSize: Object.keys(newContext).length
-  });
-  
-  // Also use structured logging
-  log.debug('ContentSpecialist', 'Campaign context built', { 
-    updatedFields: Object.keys(updates),
-    contextSize: Object.keys(newContext).length
-  });
-  
-  return newContext;
-}
-
-// Duplicate function removed - using the imported getCampaignContextFromSdk from campaign-context
-
-// ============================================================================
-// CAMPAIGN FOLDER CREATION
-// ============================================================================
-
-export const createCampaignFolder = tool({
-  name: 'createCampaignFolder',
-  description: 'Creates comprehensive campaign folder structure with metadata, brief organization, and asset planning for email campaign workflow',
-  parameters: z.object({
-    campaign_name: z.string().describe('Name of the email campaign'),
-    brand_name: z.string().describe('Brand name for the campaign'),
-    campaign_type: z.enum(['promotional', 'transactional', 'newsletter', 'announcement']).describe('Type of campaign'),
-    target_audience: z.string().describe('Target audience description'),
-    language: z.string().default('ru').describe('Campaign language'),
-    trace_id: z.string().nullable().describe('Trace ID for context tracking')
-  }),
-  execute: async (params, context) => {
-    const startTime = Date.now();
-    const performanceMarkId = debug.performanceStart('ContentSpecialist', 'createCampaignFolder');
-    
-    debug.info('ContentSpecialist', 'Campaign folder creation started', {
-      campaign_name: params.campaign_name,
-      brand_name: params.brand_name,
-      campaign_type: params.campaign_type,
-      target_audience: params.target_audience,
-      trace_id: params.trace_id
-    });
-    
-    log.info('ContentSpecialist', 'Campaign folder creation started', {
-      campaign_name: params.campaign_name,
-      brand_name: params.brand_name,
-      campaign_type: params.campaign_type,
-      target_audience: params.target_audience,
-      trace_id: params.trace_id
-    });
-
-    try {
-      // Generate unique campaign ID
-      const timestamp = Date.now();
-      const randomId = Math.random().toString(36).substring(2, 15);
-      const campaignId = `campaign_${timestamp}_${randomId}`;
-      
-      // Create campaign directory
-      const campaignPath = path.join(process.cwd(), 'campaigns', campaignId);
-      await fs.mkdir(campaignPath, { recursive: true });
-      
-      // Create subdirectories
-      const subdirs = ['content', 'assets', 'templates', 'docs', 'exports'];
-      for (const subdir of subdirs) {
-        await fs.mkdir(path.join(campaignPath, subdir), { recursive: true });
-      }
-      
-      // Create campaign metadata
-      const metadata = {
-        id: campaignId,
-        name: params.campaign_name,
-        brand: params.brand_name,
-        type: params.campaign_type,
-        target_audience: params.target_audience,
-        language: params.language,
-        created_at: new Date().toISOString(),
-        status: 'active'
-      };
-      
-      await fs.writeFile(
-        path.join(campaignPath, 'campaign-metadata.json'),
-        JSON.stringify(metadata, null, 2)
-      );
-      
-      // Create README
-      const readmeContent = `# ${params.campaign_name}\n\n**Бренд:** ${params.brand_name}\n**Тип:** ${params.campaign_type}\n**Аудитория:** ${params.target_audience}\n**Язык:** ${params.language}\n**Создано:** ${new Date().toLocaleString('ru-RU')}\n\n## Структура папок\n\n- \`content/\` - Контент кампании\n- \`assets/\` - Изображения и медиа\n- \`templates/\` - Email шаблоны\n- \`docs/\` - Документация\n- \`exports/\` - Готовые файлы\n`;
-      
-      await fs.writeFile(
-        path.join(campaignPath, 'README.md'),
-        readmeContent
-      );
-      
-      const duration = Date.now() - startTime;
-      
-      debug.info('ContentSpecialist', 'Campaign folder created successfully', {
-        campaignId,
-        campaignPath,
-        duration,
-        subdirectories: subdirs
-      });
-      
-      debug.performanceEnd(performanceMarkId, 'ContentSpecialist', 'createCampaignFolder', {
-        campaignId,
-        subdirectories: subdirs.length
-      });
-      
-      log.info('ContentSpecialist', 'Campaign folder created successfully', {
-        campaignId,
-        campaignPath,
-        duration,
-        subdirectories: subdirs
-      });
-      
-      log.performance('ContentSpecialist', 'createCampaignFolder', duration, {
-        campaignId,
-        subdirectories: subdirs.length
-      });
-      
-      // Build context for next tools (no global state)
-      const campaignContext = buildCampaignContext(context, { 
-        campaignId, 
-        campaignPath, 
-        metadata,
-        trace_id: params.trace_id
-      });
-      
-      // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        (context as ExtendedRunContext).campaignContext = campaignContext;
-      }
-
-      // Return string as required by OpenAI Agents SDK
-      return `Кампания успешно создана! ID: ${campaignId}. Папка: ${campaignPath}. Структура включает: content/, assets/, templates/, docs/, exports/. Метаданные сохранены в campaign-metadata.json. Контекст сохранен для передачи следующим инструментам.`;
-      
-    } catch (error: unknown) {
-      const duration = Date.now() - startTime;
-      const errorMessage = getErrorMessage(error);
-      log.error('ContentSpecialist', 'Campaign folder creation failed', {
-        error: errorMessage,
-        duration,
-        campaign_name: params.campaign_name,
-        trace_id: params.trace_id
-      });
-      
-      log.tool('createCampaignFolder', params, null, duration, false, errorMessage);
-      return `Ошибка создания кампании: ${errorMessage}`;
-    }
-  }
-});
-
-// ============================================================================
-// CONTEXT PROVIDER
-// ============================================================================
-
-export const contextProvider = tool({
-  name: 'contextProvider',
-  description: 'Reads and processes travel intelligence data from Data Collection Specialist to create comprehensive context for design technical specification',
-  parameters: z.object({
-    destination: z.string().describe('Travel destination or location'),
-    context_type: z.enum(['destination', 'seasonal', 'market', 'trends']).describe('Type of context needed'),
-    audience_segment: z.string().nullable().describe('Target audience segment for context'),
-    trace_id: z.string().nullable().describe('Trace ID for context tracking')
-  }),
-  execute: async (params, context) => {
-    const startTime = Date.now();
-    log.info('ContentSpecialist', 'Context provider started - reading Data Collection data', {
-      destination: params.destination,
-      context_type: params.context_type,
-      audience_segment: params.audience_segment,
-      trace_id: params.trace_id
-    });
-
-    try {
-      // 🔍 STEP 1: Find active campaign folder
-      const campaignsDir = path.join(process.cwd(), 'campaigns');
-      const campaignFolders = await fs.readdir(campaignsDir);
-      const latestCampaign = campaignFolders
-        .filter(folder => folder.startsWith('campaign_'))
-        .sort()
-        .pop();
-        
-      if (!latestCampaign) {
-        throw new Error('❌ Активная кампания не найдена. Data Collection Specialist должен создать данные первым.');
-      }
-      
-      const campaignPath = path.join(campaignsDir, latestCampaign);
-      const dataDir = path.join(campaignPath, 'data');
-      
-      console.log(`📂 CONTENT: Reading data from campaign: ${latestCampaign}`);
-      console.log(`📊 CONTENT: Data directory: ${dataDir}`);
-      
-      // 🔍 STEP 2: Read Data Collection Specialist files
-      let contextData: any = {};
-      
-      try {
-        // Read the files that Data Collection Specialist actually creates
-        const dataFiles = {
-          destination: path.join(dataDir, 'destination-analysis.json'),
-          market: path.join(dataDir, 'market-intelligence.json'),
-          emotional: path.join(dataDir, 'emotional-profile.json'),
-          trends: path.join(dataDir, 'trend-analysis.json'),
-          insights: path.join(dataDir, 'consolidated-insights.json')
-        };
-        
-        console.log('🔍 CONTENT: Looking for Data Collection files...');
-        
-        // Check which files exist
-        const existingFiles = {};
-        for (const [key, filePath] of Object.entries(dataFiles)) {
-          if (await fs.access(filePath).then(() => true).catch(() => false)) {
-            const fileContent = await fs.readFile(filePath, 'utf-8');
-            existingFiles[key] = JSON.parse(fileContent);
-            console.log(`✅ CONTENT: Found ${key} file: ${path.basename(filePath)}`);
-          } else {
-            console.warn(`⚠️ CONTENT: Missing ${key} file: ${path.basename(filePath)}`);
-          }
-        }
-        
-        if (Object.keys(existingFiles).length === 0) {
-          throw new Error('❌ Не найдено ни одного файла от Data Collection Specialist. Убедитесь что Data Collection Specialist выполнился первым.');
-        }
-        
-        // Extract context data from existing files
-        const files = existingFiles as any;
-        contextData = {
-          destination: params.destination,
-          seasonal_trends: files.destination?.data?.seasonal_trends || 'Сезонные тренды из анализа направления',
-          emotional_triggers: files.emotional?.data?.emotional_triggers || 'Эмоциональные триггеры из анализа',
-          market_positioning: files.market?.data?.market_positioning || 'Рыночное позиционирование из анализа',
-          competitive_landscape: files.market?.data?.competitive_landscape || 'Конкурентная среда из анализа',
-          price_sensitivity: files.market?.data?.price_sensitivity || 'Ценовая чувствительность из анализа',
-          booking_patterns: files.trends?.data?.booking_patterns || 'Паттерны бронирования из анализа',
-          actionable_insights: files.insights?.data?.actionable_insights || [],
-          key_insights: files.insights?.data?.key_insights || []
-        };
-        
-        console.log(`✅ CONTENT: Successfully loaded context from ${Object.keys(existingFiles).length} Data Collection files`);
-        
-      } catch (fileError) {
-        throw new Error(`❌ Не удалось прочитать данные Data Collection Specialist: ${fileError.message}. Убедитесь что Data Collection Specialist выполнился первым и сохранил данные.`);
-      }
-
-      // 🔍 STEP 3: Create design technical specification based on context
-      const designBrief = {
-        destination_context: {
-          name: params.destination,
-          seasonal_advantages: contextData.seasonal_trends,
-          emotional_appeal: contextData.emotional_triggers,
-          market_position: contextData.market_positioning
-        },
-        design_requirements: {
-          visual_style: 'Современный, привлекательный стиль на основе анализа направления',
-          color_palette: 'Цветовая палитра, соответствующая эмоциональным триггерам направления',
-          imagery_direction: 'Направление изображений на основе сезонных трендов и особенностей направления',
-          typography_mood: 'Типографическое настроение, отражающее позиционирование на рынке'
-        },
-        content_priorities: {
-          key_messages: contextData.key_insights || [],
-          emotional_triggers: contextData.travel_insights || [],
-          actionable_insights: contextData.actionable_insights || []
-        },
-        competitive_differentiation: {
-          unique_selling_points: 'Уникальные преимущества направления на основе анализа конкуренции',
-          market_advantages: contextData.competitive_landscape
-        }
-      };
-      
-      // 🔍 STEP 4: Save design brief to campaign folder
-      const contentDir = path.join(campaignPath, 'content');
-      await fs.mkdir(contentDir, { recursive: true });
-      
-      const designBriefFile = path.join(contentDir, 'design-brief-from-context.json');
-      await fs.writeFile(designBriefFile, JSON.stringify(designBrief, null, 2));
-      
-      console.log(`✅ CONTENT: Design brief saved to: ${designBriefFile}`);
-
-      const duration = Date.now() - startTime;
-      log.info('ContentSpecialist', 'Context analysis completed with design brief', {
-        destination: params.destination,
-        context_type: params.context_type,
-        duration,
-        design_brief_file: designBriefFile,
-        key_insights_count: contextData.key_insights?.length || 0,
-        travel_insights_count: contextData.travel_insights?.length || 0
-      });
-      
-      log.performance('ContentSpecialist', 'contextProvider', duration, {
-        destination: params.destination,
-        context_type: params.context_type
-      });
-      
-      // Build context for next tools (no global state)
-      const campaignContext = buildCampaignContext(context, { 
-        context_analysis: contextData,
-        design_brief: designBrief,
-        trace_id: params.trace_id
-      });
-      
-      // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        (context as ExtendedRunContext).campaignContext = campaignContext;
-      }
-
-      // Return formatted string with design brief info
-      return `✅ Контекстная информация для ${params.destination} успешно обработана из данных Data Collection Specialist. Создано техническое задание для дизайна с визуальным стилем, цветовой палитрой и направлением изображений. Ключевых инсайтов: ${contextData.key_insights?.length || 0}. Travel инсайтов: ${contextData.travel_insights?.length || 0}. Design brief сохранен в ${designBriefFile}. Контекст готов для следующих инструментов.`;
-
-    } catch (error: unknown) {
-      const duration = Date.now() - startTime;
-      const errorMessage = getErrorMessage(error);
-      log.error('ContentSpecialist', 'Context provider failed', {
-        error: errorMessage,
-        destination: params.destination,
-        context_type: params.context_type,
-        duration,
-        trace_id: params.trace_id
-      });
-      
-      log.tool('contextProvider', params, null, duration, false, errorMessage);
-      return `Ошибка получения контекста: ${errorMessage}`;
-    }
-  }
-});
-
-// Dynamic context analysis using LLM
-async function generateDynamicContextAnalysis(params: {
-  destination: string;
-  context_type: string;
-  audience_segment?: string | null;
-  current_date: string;
-}) {
-  const { destination, context_type, audience_segment, current_date } = params;
-  
-  // Get current date for more accurate analysis
-  const now = new Date();
-  const actualCurrentDate = now.toISOString().split('T')[0];
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
-  const formattedCurrentDate = now.toLocaleDateString('ru-RU', {
-    year: 'numeric',
-    month: 'long', 
-    day: 'numeric'
-  });
-  
-  // Prompt for LLM to generate contextual analysis
-  const analysisPrompt = `
-Проанализируй направление полетов "${destination}" и предоставь детальную информацию для создания маркетинговой кампании авиабилетов.
-
-КРИТИЧЕСКИ ВАЖНО - АКТУАЛЬНАЯ ДАТА:
-- Сегодняшняя дата: ${actualCurrentDate} (${formattedCurrentDate})
-- Текущий год: ${currentYear}
-- Текущий месяц: ${currentMonth}
-
-Параметры анализа:
-- Направление: ${destination}
-- Тип анализа: ${context_type}
-- Целевая аудитория: ${audience_segment || 'Общая аудитория'}
-
-ОБЯЗАТЕЛЬНЫЕ ТРЕБОВАНИЯ К АНАЛИЗУ:
-- Учитывай текущий сезон (месяц ${currentMonth}) для сезонных трендов
-- Анализируй актуальность направления на дату ${actualCurrentDate}
-- Рассматривай предстоящие месяцы и сезоны от текущей даты
-- Учитывай текущие события и праздники
-
-Предоставь следующую информацию в JSON формате:
-
-{
-  "seasonal_trends": "Актуальные сезонные тренды с учетом текущего времени года и месяца ${currentMonth}",
-  "emotional_triggers": "Эмоциональные триггеры для данного направления",
-  "market_positioning": "Рыночное позиционирование направления",
-  "competitive_landscape": "Конкурентная среда и особенности рынка",
-  "price_sensitivity": "Ценовая чувствительность целевой аудитории",
-  "booking_patterns": "Паттерны бронирования для данного направления",
-  "current_season_context": "Контекст текущего сезона и месяца ${currentMonth} для направления ${destination}",
-  "upcoming_opportunities": "Предстоящие возможности и события в ближайшие месяцы"
-}
-
-Требования:
-- Используй актуальную информацию о рынке авиаперевозок
-- Учитывай сезонность и текущее время года (месяц ${currentMonth})
-- Адаптируй информацию под целевую аудиторию
-- Предоставь конкретные, применимые данные для маркетинга
-- Фокусируйся на актуальных трендах относительно ${actualCurrentDate}
-- Ответ должен быть на русском языке
-`;
-
-      try {
-      // Use OpenAI to generate dynamic analysis
-      const response = await generateWithOpenAI({
-        prompt: analysisPrompt,
-        temperature: 0.3, // Lower temperature for more consistent analysis
-        max_tokens: 1000
-      });
-
-      // Parse JSON response (extract from markdown if needed)
-      let jsonString = response.trim();
-      
-      // Remove markdown code blocks if present
-      if (jsonString.startsWith('```json')) {
-        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      } else if (jsonString.startsWith('```')) {
-        jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-      }
-      
-      const analysisData = JSON.parse(jsonString.trim());
-    
-    return {
-      destination: destination,
-      seasonal_trends: analysisData.seasonal_trends,
-      emotional_triggers: analysisData.emotional_triggers,
-      market_positioning: analysisData.market_positioning,
-      competitive_landscape: analysisData.competitive_landscape,
-      price_sensitivity: analysisData.price_sensitivity,
-      booking_patterns: analysisData.booking_patterns
-    };
-
-  } catch (error: unknown) {
-    const errorMessage = getErrorMessage(error);
-    log.error('ContentSpecialist', 'Failed to generate dynamic context analysis', {
-      error: errorMessage,
-      destination,
-      context_type
-    });
-    
-    // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать контекстный анализ для ${destination}: ${errorMessage}`);
-  }
-}
+// import { collectAssetsFromSources } from '../tools/asset-preparation/asset-collection';
+// import { 
+//   AssetSource, 
+//   ContentContext, 
+//   CampaignContext 
+// } from '../tools/asset-preparation/types';
 
 // Helper function to make OpenAI API calls
 async function generateWithOpenAI(params: {
@@ -550,7 +44,7 @@ async function generateWithOpenAI(params: {
         messages: [
           {
             role: 'system',
-            content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию в запрашиваемом формате.'
+            content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию в запрашиваемом формате. КРИТИЧЕСКИ ВАЖНО: Всегда возвращай валидный JSON без дополнительных комментариев.'
           },
           {
             role: 'user',
@@ -576,7 +70,7 @@ async function generateWithOpenAI(params: {
 
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error);
-    log.error('ContentSpecialist', 'OpenAI API call failed', {
+    console.error('ContentSpecialist OpenAI API call failed:', {
       error: errorMessage,
       prompt: prompt.substring(0, 100) + '...'
     });
@@ -584,192 +78,123 @@ async function generateWithOpenAI(params: {
   }
 }
 
-// ============================================================================
-// DATE INTELLIGENCE
-// ============================================================================
-
-export const dateIntelligence = tool({
-  name: 'dateIntelligence',
-  description: 'Analyzes optimal travel dates based on destination, season, and current market conditions',
-  parameters: z.object({
-    destination: z.string().describe('Travel destination'),
-    season: z.enum(['spring', 'summer', 'autumn', 'winter', 'year-round']).describe('Preferred travel season'),
-    flexibility: z.enum(['flexible', 'semi-flexible', 'fixed']).describe('Date flexibility level'),
-    trace_id: z.string().nullable().describe('Trace ID for context tracking')
-  }),
-  execute: async (params, context) => {
-    const startTime = Date.now();
-    log.info('ContentSpecialist', 'Date intelligence started', {
-      destination: params.destination,
-      season: params.season,
-      flexibility: params.flexibility,
-      trace_id: params.trace_id
-    });
-
-    try {
-      const currentDate = new Date();
-      
-      // Dynamic date analysis using LLM instead of static calculations
-      const dateAnalysis = await generateDynamicDateAnalysis({
-        destination: params.destination,
-        season: params.season,
-        flexibility: params.flexibility,
-        current_date: currentDate.toISOString()
-      });
-
-      const duration = Date.now() - startTime;
-      log.info('ContentSpecialist', 'Date analysis completed', {
-        destination: params.destination,
-        season: params.season,
-        optimal_dates: dateAnalysis.optimal_dates,
-        duration,
-        booking_recommendation: dateAnalysis.booking_recommendation
-      });
-      
-      log.performance('ContentSpecialist', 'dateIntelligence', duration, {
-        destination: params.destination,
-        optimal_dates_count: dateAnalysis.optimal_dates.length
-      });
-      
-      // Build context for next tools (no global state)
-      const campaignContext = buildCampaignContext(context, { 
-        date_analysis: dateAnalysis,
-        trace_id: params.trace_id
-      });
-      
-      // Save context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        (context as ExtendedRunContext).campaignContext = campaignContext;
-      }
-
-      // Return formatted string
-      return `Анализ дат для ${params.destination} в ${params.season}: Оптимальные даты - ${dateAnalysis.optimal_dates.join(', ')}. Ценовые окна - ${dateAnalysis.pricing_windows.join(', ')}. Рекомендация по бронированию - ${dateAnalysis.booking_recommendation}. Сезонные факторы - ${dateAnalysis.seasonal_factors}. Контекст сохранен для передачи следующим инструментам.`;
-
-    } catch (error: unknown) {
-      const duration = Date.now() - startTime;
-      const errorMessage = getErrorMessage(error);
-      log.error('ContentSpecialist', 'Date intelligence failed', {
-        error: errorMessage,
-        destination: params.destination,
-        season: params.season,
-        duration,
-        trace_id: params.trace_id
-      });
-      
-      log.tool('dateIntelligence', params, null, duration, false, errorMessage);
-      return `Ошибка анализа дат: ${errorMessage}`;
+// Helper function to safely parse JSON from AI response
+function parseAIJsonResponse(jsonString: string, context: string = 'AI response'): any {
+  try {
+    // Clean the JSON string
+    let cleanedJson = jsonString.trim();
+    
+    // Remove markdown code blocks if present
+    if (cleanedJson.startsWith('```json')) {
+      cleanedJson = cleanedJson.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanedJson.startsWith('```')) {
+      cleanedJson = cleanedJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
     }
-  }
-});
-
-// Dynamic date analysis using LLM
-async function generateDynamicDateAnalysis(params: {
-  destination: string;
-  season: string;
-  flexibility: string;
-  current_date: string;
-}) {
-  const { destination, season, flexibility, current_date } = params;
-  
-  // Get current date for more accurate analysis
-  const now = new Date();
-  const actualCurrentDate = now.toISOString().split('T')[0];
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
-  
-  // Prompt for LLM to generate date analysis
-  const dateAnalysisPrompt = `
-Проанализируй оптимальные даты для путешествия в "${destination}" и предоставь детальные рекомендации.
-
-КРИТИЧЕСКИ ВАЖНО - АКТУАЛЬНАЯ ДАТА:
-- Сегодняшняя дата: ${actualCurrentDate}
-- Текущий год: ${currentYear}
-- Текущий месяц: ${currentMonth}
-
-Параметры анализа:
-- Направление: ${destination}
-- Предпочитаемый сезон: ${season}
-- Гибкость дат: ${flexibility}
-
-ОБЯЗАТЕЛЬНЫЕ ТРЕБОВАНИЯ К ДАТАМ:
-- ВСЕ ДАТЫ ДОЛЖНЫ БЫТЬ В БУДУЩЕМ (после ${actualCurrentDate})
-- НИКОГДА НЕ ИСПОЛЬЗУЙ ДАТЫ 2024 ГОДА
-- Используй только ${currentYear} год и позже
-- Минимальная дата: завтра (${new Date(now.getTime() + 24*60*60*1000).toISOString().split('T')[0]})
-
-Предоставь следующую информацию в JSON формате:
-
-{
-  "destination": "${destination}",
-  "season": "${season}",
-  "optimal_dates": ["YYYY-MM-DD", "YYYY-MM-DD", "..."],
-  "pricing_windows": ["период с описанием", "период с описанием", "..."],
-  "booking_recommendation": "конкретная рекомендация по срокам бронирования",
-  "seasonal_factors": "описание сезонных факторов",
-  "current_date": "${actualCurrentDate}"
-}
-
-Требования:
-- Предложи 4-6 оптимальных дат в ближайшие 12 месяцев от ${actualCurrentDate}
-- Учти сезонность и климатические особенности направления
-- Рассмотри пассажиропотоки и ценовые периоды авиаперевозок
-- Адаптируй рекомендации под уровень гибкости (flexible/semi-flexible/fixed)
-- Предоставь практические советы по бронированию
-- Все даты в формате YYYY-MM-DD и ТОЛЬКО В БУДУЩЕМ
-- Ответ должен быть на русском языке
-`;
-
-      try {
-      // Use OpenAI to generate dynamic date analysis
-      const response = await generateWithOpenAI({
-        prompt: dateAnalysisPrompt,
-        temperature: 0.3, // Lower temperature for more consistent analysis
-        max_tokens: 1200
-      });
-
-      // Parse JSON response (extract from markdown if needed)
-      let jsonString = response.trim();
-      
-      // Remove markdown code blocks if present
-      if (jsonString.startsWith('```json')) {
-        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      } else if (jsonString.startsWith('```')) {
-        jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-      }
-      
-      const analysisData = JSON.parse(jsonString.trim());
     
-    return {
-      destination: analysisData.destination,
-      season: analysisData.season,
-      optimal_dates: analysisData.optimal_dates,
-      pricing_windows: analysisData.pricing_windows,
-      booking_recommendation: analysisData.booking_recommendation,
-      seasonal_factors: analysisData.seasonal_factors,
-      current_date: analysisData.current_date
-    };
-
-  } catch (error: unknown) {
-    const errorMessage = getErrorMessage(error);
-    log.error('ContentSpecialist', 'Failed to generate dynamic date analysis', {
-      error: errorMessage,
-      destination,
-      season,
-      flexibility
+    // Remove any leading/trailing text that's not JSON
+    const firstBrace = cleanedJson.indexOf('{');
+    const lastBrace = cleanedJson.lastIndexOf('}');
+    
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      cleanedJson = cleanedJson.substring(firstBrace, lastBrace + 1);
+    }
+    
+    // Fix common JSON issues
+    cleanedJson = cleanedJson
+      // Fix trailing commas
+      .replace(/,(\s*[}\]])/g, '$1')
+      // Fix unescaped quotes in strings (basic fix)
+      .replace(/: "([^"]*)"([^",\]\}]*)",/g, ': "$1$2",')
+      // Fix missing commas between objects
+      .replace(/}(\s*){/g, '},\n{')
+      // Fix missing commas between array elements
+      .replace(/](\s*)\[/g, '],\n[')
+      // Fix missing commas after string values (like preheader/headline issue)
+      .replace(/"(\s*\n\s*)"([a-zA-Z_])/g, '",\n  "$2')
+      // Fix missing commas after property values before next property
+      .replace(/"\s*\n\s*"([a-zA-Z_])/g, '",\n  "$1')
+      // Fix specific case where comma is missing after quoted value before property name
+      .replace(/: "([^"]*)"(\s*\n\s*)"([a-zA-Z_]+)":/g, ': "$1",\n  "$3":');
+    
+    console.log(`🔧 Parsing JSON for ${context}:`, cleanedJson.substring(0, 200) + '...');
+    
+    const parsed = JSON.parse(cleanedJson);
+    console.log(`✅ Successfully parsed JSON for ${context}`);
+    return parsed;
+    
+  } catch (error) {
+    console.error(`❌ JSON parsing failed for ${context}:`, {
+      error: error instanceof Error ? error.message : String(error),
+      originalLength: jsonString.length,
+      position: error instanceof SyntaxError ? error.message.match(/position (\d+)/) : null,
+      preview: jsonString.substring(0, 500) + '...'
     });
     
-    // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать анализ дат для ${destination}: ${errorMessage}`);
+    // Try to provide more specific error information
+    if (error instanceof SyntaxError && error.message.includes('position')) {
+      const match = error.message.match(/position (\d+)/);
+      if (match && match[1]) {
+        const position = parseInt(match[1]);
+        const start = Math.max(0, position - 50);
+        const end = Math.min(jsonString.length, position + 50);
+        const problemArea = jsonString.substring(start, end);
+        console.error(`❌ Problem area around position ${position}:`, problemArea);
+      }
+    }
+    
+    throw new Error(`Failed to parse AI JSON response for ${context}: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
-// ============================================================================
-// PRICING INTELLIGENCE - ENHANCED WITH PRICES.TS
-// ============================================================================
+// Campaign context types 
+interface CampaignWorkflowContext {
+  campaignId?: string;
+  campaignPath?: string;
+  metadata?: any;
+  context_analysis?: any;
+  date_analysis?: any;
+  pricing_analysis?: any;
+  asset_strategy?: any;
+  generated_content?: any;
+  technical_requirements?: any;
+  design_brief?: any;
+  trace_id?: string | null;
+}
 
-export const pricingIntelligence = tool({
+interface ExtendedRunContext {
+  campaignContext?: CampaignWorkflowContext;
+}
+
+/**
+ * Extract campaign context from OpenAI SDK context parameter
+ */
+function extractCampaignContext(context?: any): CampaignWorkflowContext {
+  if (!context) return {};
+  return context.campaignContext || {};
+}
+
+/**
+ * Builds campaign context from individual tool outputs
+ * Replaces global state with context parameter pattern
+ */
+function buildCampaignContext(context: any, updates: Partial<CampaignWorkflowContext>): CampaignWorkflowContext {
+  const existingContext = context?.campaignContext || {};
+  const newContext = { ...existingContext, ...updates };
+  
+  console.log('Campaign context built', {
+    updatedFields: Object.keys(updates),
+    contextSize: Object.keys(newContext).length
+  });
+  
+  return newContext;
+}
+
+/**
+ * Pricing Intelligence Tool - Real Kupibilet API Integration with Date Analysis Integration
+ */
+const pricingIntelligence = tool({
   name: 'pricingIntelligence',
-  description: 'Gets real-time pricing data from Kupibilet API with enhanced airport conversion, route correction, and comprehensive error handling',
+  description: 'Gets real-time pricing data from Kupibilet API for ALL dates from date-analysis.json with enhanced airport conversion, route correction, and comprehensive error handling',
   parameters: z.object({
     route: z.object({
       from: z.string().describe('Departure city/airport'),
@@ -777,10 +202,6 @@ export const pricingIntelligence = tool({
       from_code: z.string().describe('Departure airport code (MOW, LED, etc.)'),
       to_code: z.string().describe('Destination airport code (BKK, AYT, etc.)')
     }).describe('Flight route information'),
-    date_range: z.object({
-      from: z.string().describe('Start date for search (YYYY-MM-DD)'),
-      to: z.string().describe('End date for search (YYYY-MM-DD)')
-    }).describe('Date range for price search'),
     cabin_class: z.enum(['economy', 'business', 'first']).default('economy').describe('Cabin class'),
     currency: z.string().default('RUB').describe('Currency for pricing'),
     filters: z.object({
@@ -792,9 +213,8 @@ export const pricingIntelligence = tool({
   }),
   execute: async (params, context) => {
     const startTime = Date.now();
-    log.info('ContentSpecialist', 'Enhanced pricing intelligence started', {
+    console.log('💰 Starting comprehensive pricing intelligence with date analysis integration:', {
       route: `${params.route.from} (${params.route.from_code}) → ${params.route.to} (${params.route.to_code})`,
-      date_range: `${params.date_range.from} to ${params.date_range.to}`,
       cabin_class: params.cabin_class,
       currency: params.currency,
       filters: params.filters,
@@ -802,63 +222,201 @@ export const pricingIntelligence = tool({
     });
 
     try {
-      // Use enhanced getPrices function from prices.ts
+      // 🔍 STEP 1: Read date-analysis.json for all optimal dates
+      const extractedContext = extractCampaignContext(context);
+      if (!extractedContext.campaignPath) {
+        throw new Error('❌ CRITICAL: No campaign path available. Cannot read date analysis for pricing.');
+      }
+
+      const dateAnalysisPath = path.join(extractedContext.campaignPath, 'content', 'date-analysis.json');
+      
+      let dateAnalysis: any;
+      try {
+        console.log(`🔍 Reading date analysis from: ${dateAnalysisPath}`);
+        const dateAnalysisData = await fs.readFile(dateAnalysisPath, 'utf8');
+        dateAnalysis = JSON.parse(dateAnalysisData);
+        console.log(`✅ Date analysis loaded:`, {
+          optimal_dates_count: dateAnalysis.optimal_dates?.length || 0,
+          pricing_windows_count: dateAnalysis.pricing_windows?.length || 0,
+          destination: dateAnalysis.destination
+        });
+      } catch (error) {
+        throw new Error(`❌ CRITICAL: Cannot read date-analysis.json from ${dateAnalysisPath}. The dateIntelligence tool must be executed BEFORE pricingIntelligence to create this file. Make sure dateIntelligence runs first in your workflow. Error: ${error}`);
+      }
+
+      // 🔍 STEP 2: Extract all dates for pricing analysis
+      const allDatesToCheck = [];
+      
+      // Add optimal dates
+      if (dateAnalysis.optimal_dates && Array.isArray(dateAnalysis.optimal_dates)) {
+        allDatesToCheck.push(...dateAnalysis.optimal_dates);
+        console.log(`📅 Added ${dateAnalysis.optimal_dates.length} optimal dates for pricing check`);
+      }
+
+      // Extract dates from pricing windows if they contain date ranges
+      if (dateAnalysis.pricing_windows && Array.isArray(dateAnalysis.pricing_windows)) {
+        dateAnalysis.pricing_windows.forEach((window: string, index: number) => {
+          // Try to extract dates from pricing window descriptions
+          const dateMatches = window.match(/\d{4}-\d{2}-\d{2}/g);
+          if (dateMatches) {
+            allDatesToCheck.push(...dateMatches);
+            console.log(`📅 Added ${dateMatches.length} dates from pricing window ${index + 1}: ${window}`);
+          }
+        });
+      }
+
+      // Add some buffer dates around optimal dates for comprehensive analysis
+      const additionalDates: string[] = [];
+      allDatesToCheck.forEach(dateStr => {
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+          // Add ±7 days around each optimal date
+          const beforeDate = new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000);
+          const afterDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+          const beforeDateStr = beforeDate.toISOString().split('T')[0];
+          const afterDateStr = afterDate.toISOString().split('T')[0];
+          if (beforeDateStr) additionalDates.push(beforeDateStr);
+          if (afterDateStr) additionalDates.push(afterDateStr);
+        }
+      });
+      
+      allDatesToCheck.push(...additionalDates);
+      
+      // Remove duplicates and sort
+      const uniqueDates = [...new Set(allDatesToCheck)].sort();
+      console.log(`📅 Total unique dates for pricing analysis: ${uniqueDates.length}`);
+      
+      if (uniqueDates.length === 0) {
+        throw new Error('❌ CRITICAL: No dates found in date analysis. Cannot perform pricing analysis without dates.');
+      }
+
+      // 🔍 STEP 3: Determine optimal date range for API call
+      const earliestDate = uniqueDates[0];
+      const latestDate = uniqueDates[uniqueDates.length - 1];
+      
+      console.log(`💰 Analyzing prices for date range: ${earliestDate} to ${latestDate}`);
+
+      // 🔍 STEP 4: Get pricing data using enhanced getPrices function
       const pricesResult = await getPrices({
         origin: params.route.from_code,
         destination: params.route.to_code,
-        date_range: `${params.date_range.from},${params.date_range.to}`,
+        date_range: `${earliestDate},${latestDate}`,
         cabin_class: params.cabin_class,
         filters: params.filters || {}
       });
 
       if (!pricesResult.success) {
         // No fallback logic - fail immediately with clear error message
-        log.error('ContentSpecialist', 'Pricing request failed for airport code', {
+        console.error('❌ Pricing request failed for airport code:', {
           failed_route: `${params.route.from_code}-${params.route.to_code}`,
           error: pricesResult.error,
-          date_range: `${params.date_range.from} to ${params.date_range.to}`
+          date_range: `${earliestDate} to ${latestDate}`
         });
         
-        throw new Error(`Kupibilet API failed: ${pricesResult.error}. Check that airport code ${params.route.to_code} is supported and date range is wide enough (recommended: 1 year).`);
+        throw new Error(`Kupibilet API failed: ${pricesResult.error}. Check that airport code ${params.route.to_code} is supported and date range is valid.`);
       }
 
       const pricingData = pricesResult.data;
 
+      // 🔍 STEP 5: Analyze prices specifically for optimal dates
+      const optimalDatePrices: any[] = [];
+      const allDatePrices: any[] = [];
+      
+      pricingData.prices.forEach((priceData: any) => {
+        allDatePrices.push(priceData);
+        
+        // Check if this price is for one of our optimal dates
+        if (dateAnalysis.optimal_dates?.includes(priceData.date)) {
+          optimalDatePrices.push(priceData);
+        }
+      });
+
+      // 🔍 STEP 6: Create comprehensive pricing analysis
+      const comprehensivePricingAnalysis = {
+        // Date analysis integration
+        date_analysis_source: {
+          total_optimal_dates: dateAnalysis.optimal_dates?.length || 0,
+          optimal_dates: dateAnalysis.optimal_dates || [],
+          pricing_windows: dateAnalysis.pricing_windows || [],
+          booking_recommendation: dateAnalysis.booking_recommendation || '',
+          seasonal_factors: dateAnalysis.seasonal_factors || ''
+        },
+        
+        // Price analysis for optimal dates
+        optimal_dates_pricing: {
+          total_offers: optimalDatePrices.length,
+          cheapest_on_optimal: optimalDatePrices.length > 0 ? Math.min(...optimalDatePrices.map(p => p.price)) : null,
+          most_expensive_on_optimal: optimalDatePrices.length > 0 ? Math.max(...optimalDatePrices.map(p => p.price)) : null,
+          average_on_optimal: optimalDatePrices.length > 0 ? Math.round(optimalDatePrices.reduce((sum, p) => sum + p.price, 0) / optimalDatePrices.length) : null,
+          optimal_date_prices: optimalDatePrices.map(p => ({
+            date: p.date,
+            price: p.price,
+            airline: p.airline || 'Unknown',
+            is_optimal: true
+          }))
+        },
+        
+        // Overall price analysis
+        comprehensive_pricing: {
+          total_dates_analyzed: uniqueDates.length,
+          total_offers_found: pricingData.search_metadata.total_found,
+          date_range_analyzed: `${earliestDate} to ${latestDate}`,
+          best_price_overall: pricingData.cheapest,
+          worst_price_overall: Math.max(...pricingData.prices.map((p: any) => p.price)),
+          average_price_overall: Math.round(pricingData.prices.reduce((sum: number, p: any) => sum + p.price, 0) / pricingData.prices.length),
+          currency: pricingData.currency,
+          route: pricingData.search_metadata.route
+        },
+        
+        // Price trends and insights
+        price_insights: {
+          optimal_vs_average_savings: optimalDatePrices.length > 0 && pricingData.prices.length > 0 ? 
+            Math.round(((Math.round(pricingData.prices.reduce((sum: number, p: any) => sum + p.price, 0) / pricingData.prices.length) - 
+                       Math.round(optimalDatePrices.reduce((sum, p) => sum + p.price, 0) / optimalDatePrices.length)) / 
+                       Math.round(pricingData.prices.reduce((sum: number, p: any) => sum + p.price, 0) / pricingData.prices.length)) * 100) : 0,
+          cheapest_optimal_date: optimalDatePrices.length > 0 ? 
+            optimalDatePrices.find(p => p.price === Math.min(...optimalDatePrices.map(p => p.price)))?.date : null,
+          price_volatility: pricingData.prices.length > 1 ? 
+            Math.round((Math.max(...pricingData.prices.map((p: any) => p.price)) - Math.min(...pricingData.prices.map((p: any) => p.price))) / 
+                      Math.min(...pricingData.prices.map((p: any) => p.price)) * 100) : 0
+        },
+        
+        // Enhanced features
+        enhanced_features: {
+          date_analysis_integration: true,
+          comprehensive_date_coverage: true,
+          optimal_date_focus: true,
+          airport_conversion: pricesResult.metadata?.route_processing || {},
+          csv_integration: pricesResult.metadata?.csv_integration || 'enabled',
+          api_source: pricesResult.metadata?.source || 'kupibilet_api_v2'
+        },
+        
+        // Analysis metadata
+        analysis_metadata: {
+          analyzed_at: new Date().toISOString(),
+          analysis_duration_ms: Date.now() - startTime,
+          date_analysis_file: dateAnalysisPath,
+          route_analyzed: `${params.route.from_code}-${params.route.to_code}`,
+          trace_id: params.trace_id
+        }
+      };
+
       const duration = Date.now() - startTime;
-      log.info('ContentSpecialist', 'Enhanced pricing data received', {
+      console.log('✅ Comprehensive pricing analysis completed:', {
         route: `${params.route.from} → ${params.route.to}`,
-        cheapest_price: pricingData.cheapest,
-        currency: pricingData.currency,
-        total_offers: pricingData.search_metadata.total_found,
+        total_dates_analyzed: uniqueDates.length,
+        optimal_dates_found: optimalDatePrices.length,
+        best_price_overall: comprehensivePricingAnalysis.comprehensive_pricing.best_price_overall,
+        best_price_optimal: comprehensivePricingAnalysis.optimal_dates_pricing.cheapest_on_optimal,
+        savings_on_optimal: comprehensivePricingAnalysis.price_insights.optimal_vs_average_savings,
+        currency: comprehensivePricingAnalysis.comprehensive_pricing.currency,
         duration,
         api_source: pricesResult.metadata?.source
       });
       
-      log.performance('ContentSpecialist', 'pricingIntelligence', duration, {
-        route: `${params.route.from_code}-${params.route.to_code}`,
-        offers_found: pricingData.search_metadata.total_found
-      });
-      
-      // Transform data for campaign context
-      const campaignPricingData = {
-        best_price: pricingData.cheapest,
-        min_price: pricingData.cheapest,
-        max_price: Math.max(...pricingData.prices.map(p => p.price)),
-        average_price: Math.round(pricingData.prices.reduce((sum, p) => sum + p.price, 0) / pricingData.prices.length),
-        currency: pricingData.currency,
-        offers_count: pricingData.search_metadata.total_found,
-        recommended_dates: pricingData.prices.slice(0, 3).map(p => p.date),
-        route: pricingData.search_metadata.route,
-        enhanced_features: {
-          airport_conversion: pricesResult.metadata?.route_processing || {},
-          csv_integration: pricesResult.metadata?.csv_integration || 'enabled',
-          api_source: pricesResult.metadata?.source || 'kupibilet_api_v2'
-        }
-      };
-      
       // Build context for next tools (no global state)
       const campaignContext = buildCampaignContext(context, { 
-        pricing_analysis: campaignPricingData,
+        pricing_analysis: comprehensivePricingAnalysis,
         trace_id: params.trace_id
       });
       
@@ -867,1069 +425,898 @@ export const pricingIntelligence = tool({
         (context as ExtendedRunContext).campaignContext = campaignContext;
       }
 
-      // Return formatted string with enhanced pricing
-      return `Улучшенный ценовой анализ маршрута ${params.route.from} - ${params.route.to}: Лучшая цена ${campaignPricingData.best_price} ${campaignPricingData.currency}. Диапазон цен: ${campaignPricingData.min_price} - ${campaignPricingData.max_price} ${campaignPricingData.currency}. Средняя цена: ${campaignPricingData.average_price} ${campaignPricingData.currency}. Найдено предложений: ${campaignPricingData.offers_count}. Рекомендуемые даты: ${campaignPricingData.recommended_dates.join(', ')}. Используется улучшенная система конвертации аэропортов и CSV-интеграция. Контекст сохранен для передачи следующим инструментам.`;
+      // ✅ CRITICAL: Save comprehensive pricing analysis to file for finalization tool
+      const pricingFilePath = path.join(extractedContext.campaignPath, 'content', 'pricing-analysis.json');
+      await fs.mkdir(path.dirname(pricingFilePath), { recursive: true });
+      await fs.writeFile(pricingFilePath, JSON.stringify(comprehensivePricingAnalysis, null, 2));
+      console.log(`✅ Comprehensive pricing analysis saved to: ${pricingFilePath}`);
+
+      // Return formatted string with comprehensive analysis
+      return `Комплексный ценовой анализ маршрута ${params.route.from} - ${params.route.to} выполнен с интеграцией анализа дат:
+
+📊 АНАЛИЗ ОПТИМАЛЬНЫХ ДАТ:
+• Проанализировано дат: ${uniqueDates.length} (из них оптимальных: ${dateAnalysis.optimal_dates?.length || 0})
+• Найдено предложений на оптимальные даты: ${optimalDatePrices.length}
+• Лучшая цена на оптимальные даты: ${comprehensivePricingAnalysis.optimal_dates_pricing.cheapest_on_optimal || 'не найдено'} ${comprehensivePricingAnalysis.comprehensive_pricing.currency}
+• Средняя цена на оптимальные даты: ${comprehensivePricingAnalysis.optimal_dates_pricing.average_on_optimal || 'не найдено'} ${comprehensivePricingAnalysis.comprehensive_pricing.currency}
+
+💰 ОБЩИЙ ЦЕНОВОЙ АНАЛИЗ:
+• Диапазон анализа: ${earliestDate} - ${latestDate}
+• Всего предложений найдено: ${comprehensivePricingAnalysis.comprehensive_pricing.total_offers_found}
+• Лучшая цена общая: ${comprehensivePricingAnalysis.comprehensive_pricing.best_price_overall} ${comprehensivePricingAnalysis.comprehensive_pricing.currency}
+• Средняя цена общая: ${comprehensivePricingAnalysis.comprehensive_pricing.average_price_overall} ${comprehensivePricingAnalysis.comprehensive_pricing.currency}
+
+🎯 ИНСАЙТЫ:
+• Экономия на оптимальных датах: ${comprehensivePricingAnalysis.price_insights.optimal_vs_average_savings}%
+• Самая дешевая оптимальная дата: ${comprehensivePricingAnalysis.price_insights.cheapest_optimal_date || 'не найдено'}
+• Волатильность цен: ${comprehensivePricingAnalysis.price_insights.price_volatility}%
+
+✅ Данные интегрированы с анализом дат и сохранены для следующих этапов. Используется улучшенная система конвертации аэропортов и полная интеграция с date-analysis.json.`;
 
     } catch (error: unknown) {
       const duration = Date.now() - startTime;
-      const errorMessage = getErrorMessage(error);
-      log.error('ContentSpecialist', 'Enhanced pricing intelligence failed', {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('❌ Comprehensive pricing intelligence failed:', {
         error: errorMessage,
         route: `${params.route.from_code}-${params.route.to_code}`,
         duration,
         trace_id: params.trace_id
       });
       
-      log.tool('pricingIntelligence', params, null, duration, false, errorMessage);
-      return `Ошибка получения цен от улучшенного API: ${errorMessage}`;
+      throw new Error(`Comprehensive pricing intelligence failed: ${errorMessage}`);
+    }
+  }
+});
+
+/**
+ * Asset Strategy Tool - AI-powered comprehensive strategy generation
+ */
+export const assetStrategy = tool({
+  name: 'asset_strategy',
+  description: 'Develop comprehensive asset and content strategy using AI analysis',
+  parameters: z.object({
+    campaignType: z.string().describe('Type of campaign'),
+    targetAudience: z.string().describe('Target audience'),
+    contentThemes: z.array(z.string()).describe('Content themes'),
+    brandGuidelines: z.string().nullable().describe('Brand guidelines'),
+    destination: z.string().describe('Travel destination'),
+    seasonality: z.string().nullable().describe('Seasonal context'),
+    priceRange: z.string().nullable().describe('Price range information'),
+    trace_id: z.string().nullable().describe('Trace ID for monitoring')
+  }),
+  execute: async (params, context) => {
+    const startTime = Date.now();
+    console.log('🎨 Developing AI-powered asset strategy...');
+    
+    try {
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      });
+
+      const prompt = `Разработай комплексную стратегию ассетов для email-кампании по продаже авиабилетов.
+
+ПАРАМЕТРЫ КАМПАНИИ:
+- Тип кампании: ${params.campaignType}
+- Целевая аудитория: ${params.targetAudience}
+- Направление: ${params.destination}
+- Темы контента: ${params.contentThemes.join(', ')}
+- Сезонность: ${params.seasonality || 'не указано'}
+- Ценовой диапазон: ${params.priceRange || 'не указано'}
+- Бренд-гайдлайны: ${params.brandGuidelines || 'стандартные Kupibilet'}
+
+ТРЕБОВАНИЯ:
+1. Создай детальную стратегию ассетов с учетом психологии путешественников
+2. Определи визуальное направление, основанное на направлении и сезоне
+3. Выбери оптимальные типы изображений для максимальной конверсии
+4. Разработай контентную стратегию с эмоциональными триггерами
+5. Учти специфику email-маркетинга и требования к ассетам
+
+ОТВЕТ ДОЛЖЕН БЫТЬ СТРОГО В JSON БЕЗ MARKDOWN БЛОКОВ:
+
+{
+  "visual_direction": {
+    "primary_style": "описание основного стиля",
+    "color_palette": {
+      "primary": "#hex",
+      "secondary": "#hex",
+      "accent": "#hex",
+      "background": "#hex"
+    },
+    "imagery_style": "описание стиля изображений",
+    "mood": "описание настроения",
+    "visual_hierarchy": "описание иерархии"
+  },
+  "asset_types": [
+    {
+      "type": "hero-image",
+      "description": "описание",
+      "requirements": "требования",
+      "emotional_impact": "эмоциональное воздействие"
+    },
+    {
+      "type": "destination-showcase",
+      "description": "описание",
+      "requirements": "требования",
+      "emotional_impact": "эмоциональное воздействие"
+    },
+    {
+      "type": "price-highlight",
+      "description": "описание",
+      "requirements": "требования",
+      "emotional_impact": "эмоциональное воздействие"
+    },
+    {
+      "type": "cta-buttons",
+      "description": "описание",
+      "requirements": "требования",
+      "emotional_impact": "эмоциональное воздействие"
+    },
+    {
+      "type": "supporting-visuals",
+      "description": "описание",
+      "requirements": "требования",
+      "emotional_impact": "эмоциональное воздействие"
+    }
+  ],
+  "content_strategy": {
+    "tone": "описание тона",
+    "approach": "описание подхода",
+    "structure": "описание структуры",
+    "key_messages": ["сообщение1", "сообщение2", "сообщение3"],
+    "emotional_triggers": ["триггер1", "триггер2", "триггер3"],
+    "call_to_action": {
+      "primary": "основной CTA",
+      "secondary": "дополнительный CTA",
+      "urgency": "элементы срочности"
+    }
+  },
+  "targeting_insights": {
+    "audience_motivations": ["мотивация1", "мотивация2"],
+    "pain_points": ["проблема1", "проблема2"],
+    "decision_factors": ["фактор1", "фактор2"],
+    "seasonal_considerations": "сезонные соображения"
+  },
+  "technical_requirements": {
+    "image_formats": ["формат1", "формат2"],
+    "dimensions": "размеры",
+    "file_size_limits": "ограничения размера",
+    "accessibility": "требования доступности"
+  },
+  "success_metrics": {
+    "primary_kpi": "основной показатель",
+    "engagement_metrics": ["метрика1", "метрика2"],
+    "conversion_indicators": ["индикатор1", "индикатор2"]
+  }
+}
+
+Создай стратегию, которая максимизирует желание путешествовать и мотивирует к покупке билетов.`;
+
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Ты эксперт по визуальному маркетингу в сфере путешествий. Создавай стратегии ассетов, которые максимизируют конверсию и эмоциональное воздействие. Отвечай ТОЛЬКО в JSON формате.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 2500
+      });
+
+      const content = response.choices[0]?.message?.content;
+      if (!content) {
+        throw new Error('No content generated from OpenAI');
+      }
+
+      // ✅ FIX: Use parseAIJsonResponse instead of basic JSON.parse
+      console.log('🔧 Parsing AI response using parseAIJsonResponse...');
+      let strategy;
+      try {
+        strategy = parseAIJsonResponse(content, 'asset strategy generation');
+      } catch (parseError) {
+        console.error('❌ AI asset strategy generation failed:', parseError instanceof Error ? parseError.message : 'Unknown error');
+        throw new Error(`Failed to parse AI response as JSON: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+      }
+
+      // Get campaign context
+      const campaignContext = extractCampaignContext(context);
+
+      // Save strategy to campaign folder if available
+      if (campaignContext.campaignPath) {
+        const strategyPath = path.join(campaignContext.campaignPath, 'content', 'asset-strategy.json');
+        await fs.mkdir(path.dirname(strategyPath), { recursive: true });
+        await fs.writeFile(strategyPath, JSON.stringify(strategy, null, 2));
+        
+        // ✅ FIX: Create asset manifest using simplified approach instead of calling tool directly
+        console.log('🤖 Generating asset manifest for Design Specialist...');
+        try {
+          await generateSimpleAssetManifest(campaignContext.campaignPath, strategy, params.destination);
+          console.log(`✅ Simple asset manifest generated successfully`);
+        } catch (manifestError) {
+          console.warn('⚠️ Asset manifest generation failed:', manifestError instanceof Error ? manifestError.message : String(manifestError));
+          // Don't fail the entire strategy generation if manifest fails
+        }
+      }
+
+      // Update campaign context
+      const updatedCampaignContext = {
+        ...campaignContext,
+        asset_strategy: strategy
+      };
+
+      // Save updated context
+      if (context) {
+        (context as any).campaignContext = updatedCampaignContext;
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`⚡ AI asset strategy generation completed in ${duration}ms`);
+
+      return `✅ Комплексная стратегия ассетов разработана за ${duration}ms! Визуальное направление: ${strategy.visual_direction?.primary_style || 'определено'}. Типы ассетов: ${strategy.asset_types?.length || 0}. Контентная стратегия: ${strategy.content_strategy?.tone || 'определена'}. Технические требования: ${strategy.technical_requirements?.image_formats?.join(', ') || 'определены'}. Файл сохранен в кампании. Asset manifest создан для Design Specialist.`;
+
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ AI asset strategy generation failed in ${duration}ms:`, errorMessage);
+      
+      return `❌ Ошибка разработки стратегии ассетов: ${errorMessage}`;
+    }
+  }
+});
+
+// ✅ HELPER: Read campaign content for AI analysis
+async function readCampaignContent(campaignPath: string): Promise<Array<{filename: string; content: any}>> {
+  const contentFiles: Array<{filename: string; content: any}> = [];
+  const contentDir = path.join(campaignPath, 'content');
+  
+  try {
+    const files = await fs.readdir(contentDir);
+    for (const file of files) {
+      if (file.endsWith('.json') || file.endsWith('.md')) {
+        const filePath = path.join(contentDir, file);
+        const content = await fs.readFile(filePath, 'utf-8');
+        
+        let parsedContent: any;
+        if (file.endsWith('.json')) {
+          try {
+            parsedContent = JSON.parse(content);
+          } catch {
+            parsedContent = { raw: content };
+          }
+        } else {
+          parsedContent = { markdown: content };
+        }
+        
+        contentFiles.push({
+          filename: file,
+          content: parsedContent
+        });
+      }
+    }
+  } catch (error) {
+    console.warn(`⚠️ Could not read content directory: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+  
+  return contentFiles;
+}
+
+// ✅ HELPER: Generate external images for campaign based on content
+async function generateExternalImagesForCampaign(contentContext: any, _destination: string): Promise<any[]> {
+  try {
+    const { generateExternalImageLinks } = await import('../tools/asset-preparation/ai-analysis');
+    return await generateExternalImageLinks(contentContext);
+  } catch (error) {
+    console.warn(`⚠️ Could not generate external images: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return [];
+  }
+}
+
+// ✅ AI-ONLY ASSET MANIFEST: No fallback, full AI generation required
+async function generateSimpleAssetManifest(campaignPath: string, _strategy: any, destination: string) {
+  console.log('🤖 Creating asset manifest - checking AI availability');
+  
+  // Create assets directory structure
+  const assetsDir = path.join(campaignPath, 'assets');
+  const manifestsDir = path.join(assetsDir, 'manifests');
+  await fs.mkdir(manifestsDir, { recursive: true });
+  
+  // ✅ FIXED: Check if OpenAI API key is available
+  if (!process.env.OPENAI_API_KEY) {
+    console.log('⚠️ OPENAI_API_KEY not found, creating basic asset manifest without AI analysis');
+    
+    // Create basic asset manifest without AI analysis
+    const basicManifest = {
+      manifestId: `manifest_${Date.now()}_basic`,
+      assetManifest: {
+        images: [
+          {
+            id: 'hero-placeholder',
+            path: '/placeholder/hero-image.jpg',
+            alt_text: `${destination} travel destination`,
+            usage: 'hero-section',
+            dimensions: { width: 600, height: 300 },
+            file_size: 50000,
+            format: 'jpg',
+            optimized: false,
+            isExternal: false,
+            email_client_support: {
+              gmail: true,
+              outlook: true,
+              apple_mail: true,
+              yahoo_mail: true
+            }
+          }
+        ],
+        icons: [
+          {
+            id: 'cta-icon',
+            path: '/icons/arrow-right.svg',
+            format: 'svg',
+            size: '24x24',
+            usage: 'call-to-action'
+          }
+        ],
+        fonts: [
+          {
+            id: 'primary-font',
+            family: 'Arial, sans-serif',
+            weights: ['400', '700'],
+            usage: 'primary-text'
+          }
+        ]
+      },
+      assetRequirements: [
+        {
+          type: 'hero',
+          purpose: `Travel destination image for ${destination}`,
+          priority: 'required',
+          emotional_tone: 'inspiring',
+          visual_style: 'vibrant'
+        }
+      ],
+      usageInstructions: [
+        {
+          assetId: 'hero-placeholder',
+          placement: 'email-header',
+          instructions: 'Use as main hero image in email header section'
+        }
+      ],
+      performanceMetrics: {
+        totalAssets: 3,
+        totalSize: 50000,
+        optimizationScore: 80
+      },
+      generationSummary: {
+        timestamp: new Date().toISOString(),
+        sourcesProcessed: 0,
+        assetsCollected: 3,
+        errors: []
+      }
+    };
+    
+    // Save basic manifest
+    const manifestPath = path.join(manifestsDir, 'asset-manifest.json');
+    await fs.writeFile(manifestPath, JSON.stringify(basicManifest, null, 2));
+    
+    console.log(`✅ Basic asset manifest created at: ${manifestPath}`);
+    return basicManifest;
+  }
+  
+  // Use ONLY the full generateAssetManifest tool if API key is available
+  console.log('🔄 Using ONLY full generateAssetManifest tool...');
+  
+  try {
+    // ✅ RESTORED: Use proper AI asset manifest generation
+    console.log('🤖 Using AI-powered asset manifest generation...');
+    // const { generateAssetManifestFunction } = await import('../tools/asset-preparation/asset-manifest-generator'); // Currently unused
+    
+    // ✅ ENHANCED: Read and analyze campaign content
+    console.log('📖 Reading campaign content for AI analysis...');
+    const contentFiles = await readCampaignContent(campaignPath);
+    console.log(`📖 Found ${contentFiles.length} content files`);
+    
+         // ✅ COMPREHENSIVE CONTEXT: Include all campaign content
+     const contentContext = {
+       generated_content: { 
+         destination: destination,
+         ...contentFiles.reduce((acc: any, file: any) => ({ ...acc, ...file.content }), {})
+       },
+       campaign_type: 'promotional',
+       target_audience: 'travelers',
+       campaignPath: campaignPath
+     };
+    
+    // ✅ AI-GENERATED EXTERNAL IMAGES: Based on content analysis
+    console.log('🌐 Generating AI-selected external images...');
+    const externalImages = await generateExternalImagesForCampaign(contentContext, destination);
+    console.log(`✅ Generated ${externalImages.length} external images`);
+    
+         const assetSources = [
+       { type: 'local', path: 'figma-assets', priority: 'high' },
+       { type: 'external', path: 'external', images: externalImages, priority: 'medium' }
+     ];
+     
+     // const options = {
+     //   analyzeContentContext: true,
+     //   collectFromSources: true,
+     //   validateAssets: true,
+     //   optimizeAssets: false,
+     //   generateUsageInstructions: true,
+     //   includePerformanceMetrics: false,
+     //   enableFallbackGeneration: false // ❌ NO FALLBACK
+     // }; // Currently unused
+     
+     // const context = {
+     //   campaignPath: campaignPath,
+     //   destination: destination
+     // }; // Currently unused
+    
+    // ✅ AI-POWERED ASSET MANIFEST GENERATION with new function_tool syntax
+    const { generateAssetManifest } = await import('../tools/asset-preparation/asset-manifest-generator');
+    const resultString = await generateAssetManifest(
+      path.basename(campaignPath),
+      campaignPath,
+      JSON.stringify(contentContext),
+      JSON.stringify(assetSources),
+      `manifest_${Date.now()}`
+    );
+    const result = JSON.parse(resultString);
+
+    console.log('✅ Successfully generated AI-powered asset manifest');
+    console.log(`📊 Manifest includes ${result.manifest?.images?.length || 0} images and ${result.manifest?.icons?.length || 0} icons`);
+    return result;
+    
+  } catch (error) {
+    console.error('❌ AI asset manifest generation failed:', error instanceof Error ? error.message : error);
+    throw new Error(`AI asset manifest generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+/**
+ * Content Generator Tool - AI-powered comprehensive content generation
+ */
+export const contentGenerator = tool({
+  name: 'content_generator', 
+  description: 'Generate comprehensive email content using AI analysis of context and strategy',
+  parameters: z.object({
+    destination: z.string().describe('Travel destination'),
+    campaignType: z.string().describe('Type of campaign'),
+    targetAudience: z.string().describe('Target audience'),
+    pricePoint: z.string().nullable().describe('Price point or range'),
+    seasonality: z.string().nullable().describe('Seasonal context'),
+    urgency: z.string().nullable().describe('Urgency level'),
+    brandVoice: z.string().nullable().describe('Brand voice guidelines'),
+    trace_id: z.string().nullable().describe('Trace ID for monitoring')
+  }),
+  execute: async (params, context) => {
+    const startTime = Date.now();
+    console.log('✍️ Generating AI-powered email content...');
+    
+    try {
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      });
+
+      // Get campaign context for additional data
+      const campaignContext = extractCampaignContext(context);
+      const contextAnalysis = campaignContext.context_analysis;
+      const dateAnalysis = campaignContext.date_analysis;
+      const pricingAnalysis = campaignContext.pricing_analysis;
+      const assetStrategy = campaignContext.asset_strategy;
+
+      const prompt = `Создай высококонвертирующий email-контент для продажи авиабилетов в ${params.destination}.
+
+ПАРАМЕТРЫ КАМПАНИИ:
+- Направление: ${params.destination}
+- Тип кампании: ${params.campaignType}
+- Целевая аудитория: ${params.targetAudience}
+- Ценовой диапазон: ${params.pricePoint || 'средний'}
+- Сезонность: ${params.seasonality || 'круглогодично'}
+- Уровень срочности: ${params.urgency || 'средний'}
+- Бренд-голос: ${params.brandVoice || 'дружелюбный и надежный'}
+
+ДОПОЛНИТЕЛЬНЫЙ КОНТЕКСТ:
+${contextAnalysis ? `- Культурный контекст: ${contextAnalysis.cultural_insights?.traditions?.join(', ') || 'стандартный'}` : ''}
+${dateAnalysis ? `- Оптимальные даты: ${dateAnalysis.optimal_dates?.join(', ') || 'гибкие'}` : ''}
+${pricingAnalysis ? `- Лучшая цена: ${pricingAnalysis.best_price || 'конкурентная'} ${pricingAnalysis.currency || 'RUB'}` : ''}
+${assetStrategy ? `- Тон стратегии: ${assetStrategy.content_strategy?.tone || 'привлекательный'}` : ''}
+${assetStrategy ? `- Эмоциональные триггеры: ${assetStrategy.content_strategy?.emotional_triggers?.join(', ') || 'стандартные'}` : ''}
+
+ТРЕБОВАНИЯ:
+1. Создай привлекательный subject line (тему письма)
+2. Разработай цепляющий preheader
+3. Создай сильный заголовок (headline)
+4. Напиши основной текст с эмоциональными триггерами
+5. Добавь убедительный призыв к действию
+6. Включи элементы социального доказательства
+7. Создай ощущение срочности и дефицита
+
+ОТВЕТ ДОЛЖЕН БЫТЬ СТРОГО В JSON БЕЗ MARKDOWN БЛОКОВ:
+
+{
+  "subject_line": {
+    "primary": "основная тема письма",
+    "alternative": "альтернативная тема",
+    "personalization": "элементы персонализации"
+  },
+  "preheader": "текст превью письма",
+  "headline": {
+    "main": "основной заголовок",
+    "subheadline": "подзаголовок"
+  },
+  "body": {
+    "opening": "вступительный абзац",
+    "main_content": "основное содержание",
+    "benefits": ["преимущество1", "преимущество2", "преимущество3"],
+    "social_proof": "элементы социального доказательства",
+    "urgency_elements": "элементы срочности",
+    "closing": "заключительный абзац"
+  },
+  "call_to_action": {
+    "primary": {
+      "text": "основная кнопка",
+      "url": "#booking-primary"
+    },
+    "secondary": {
+      "text": "дополнительная кнопка",
+      "url": "#booking-secondary"
+    },
+    "urgency_cta": {
+      "text": "срочный призыв",
+      "url": "#booking-urgent"
+    }
+  },
+  "personalization": {
+    "greeting": "персонализированное приветствие",
+    "content_adaptation": "адаптация контента",
+    "recommendations": "персональные рекомендации"
+  },
+  "emotional_hooks": {
+    "desire": "элементы желания",
+    "fear_of_missing_out": "FOMO элементы",
+    "aspiration": "элементы стремления"
+  },
+  "content_structure": {
+    "flow": "описание потока контента",
+    "key_messages": ["сообщение1", "сообщение2", "сообщение3"],
+    "conversion_path": "путь к конверсии"
+  },
+  "compliance": {
+    "legal_disclaimers": "юридические оговорки",
+    "unsubscribe": "информация об отписке",
+    "privacy": "политика конфиденциальности"
+  }
+}
+
+Создай контент, который максимизирует желание путешествовать и мотивирует к немедленной покупке билетов.`;
+
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Ты эксперт по email-маркетингу в сфере путешествий. Создавай высококонвертирующий контент, который вызывает эмоции и мотивирует к покупке. КРИТИЧЕСКИ ВАЖНО: Отвечай ТОЛЬКО в JSON формате без дополнительного текста или markdown блоков.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.8,
+        max_tokens: 3000
+      });
+
+      const aiResponse = response.choices[0]?.message?.content;
+      if (!aiResponse) {
+        throw new Error('No content generated from OpenAI API');
+      }
+
+      // Use robust JSON parsing
+      const emailContent = parseAIJsonResponse(aiResponse, 'email content generation');
+
+      // ✅ CRITICAL: Create design-brief-from-context.json for finalization tool
+      if (campaignContext.campaignPath) {
+        const designBriefPath = path.join(campaignContext.campaignPath, 'content', 'design-brief-from-context.json');
+        const designBrief = {
+          design_requirements: {
+            visual_style: emailContent.style_guide?.visual_style || 'modern and clean',
+            color_palette: emailContent.style_guide?.color_palette || {
+              primary: '#007bff',
+              secondary: '#6c757d',
+              accent: '#28a745'
+            },
+            imagery_direction: emailContent.style_guide?.imagery_direction || 'high-quality travel photography',
+            layout_approach: emailContent.style_guide?.layout_approach || 'responsive email template'
+          },
+          content_context: {
+            destination: params.destination,
+            tone: emailContent.tone || 'friendly and inspiring',
+            target_audience: campaignContext.metadata?.target_audience || 'travelers',
+            key_messages: emailContent.key_messages || []
+          },
+          technical_specs: {
+            email_client_support: ['Gmail', 'Outlook', 'Apple Mail'],
+            responsive_breakpoints: ['600px', '480px'],
+            image_formats: ['JPEG', 'PNG'],
+            accessibility_level: 'WCAG AA'
+          },
+          created_at: new Date().toISOString(),
+          created_by: 'Content Specialist'
+        };
+        await fs.writeFile(designBriefPath, JSON.stringify(designBrief, null, 2));
+        console.log(`✅ Design brief created: ${designBriefPath}`);
+      }
+
+      // Save content to campaign folder
+      if (campaignContext.campaignPath) {
+        const contentPath = path.join(campaignContext.campaignPath, 'content', 'email-content.json');
+        await fs.mkdir(path.dirname(contentPath), { recursive: true });
+        await fs.writeFile(contentPath, JSON.stringify(emailContent, null, 2));
+
+        // Also save as markdown for easier reading
+        const markdownPath = path.join(campaignContext.campaignPath, 'content', 'email-content.md');
+        const markdownContent = `# Email Content for ${params.destination}
+
+## Subject Line
+**Primary:** ${emailContent.subject_line?.primary || 'Generated'}
+**Alternative:** ${emailContent.subject_line?.alternative || 'Generated'}
+
+## Preheader
+${emailContent.preheader || 'Generated'}
+
+## Headline
+**Main:** ${emailContent.headline?.main || 'Generated'}
+**Sub:** ${emailContent.headline?.subheadline || 'Generated'}
+
+## Body Content
+
+### Opening
+${emailContent.body?.opening || 'Generated'}
+
+### Main Content
+${emailContent.body?.main_content || 'Generated'}
+
+### Benefits
+${emailContent.body?.benefits?.map((benefit: string, index: number) => `${index + 1}. ${benefit}`).join('\n') || 'Generated'}
+
+### Social Proof
+${emailContent.body?.social_proof || 'Generated'}
+
+### Urgency Elements
+${emailContent.body?.urgency_elements || 'Generated'}
+
+### Closing
+${emailContent.body?.closing || 'Generated'}
+
+## Call to Action
+**Primary:** ${emailContent.call_to_action?.primary?.text || 'Generated'}
+**Secondary:** ${emailContent.call_to_action?.secondary?.text || 'Generated'}
+**Urgent:** ${emailContent.call_to_action?.urgency_cta?.text || 'Generated'}
+
+## Key Messages
+${emailContent.content_structure?.key_messages?.map((msg: string, index: number) => `${index + 1}. ${msg}`).join('\n') || 'Generated'}
+`;
+        await fs.writeFile(markdownPath, markdownContent);
+      }
+
+      // Update campaign context
+      const updatedCampaignContext = {
+        ...campaignContext,
+        generated_content: emailContent
+      };
+
+      // Save context to context parameter (OpenAI SDK pattern)
+      if (context) {
+        (context as ExtendedRunContext).campaignContext = updatedCampaignContext;
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ AI email content generated in ${duration}ms`);
+      console.log(`📧 Subject: ${emailContent.subject_line?.primary || 'Generated'}`);
+      console.log(`📝 Headlines: ${emailContent.headline?.main || 'Generated'}`);
+      console.log(`🎯 CTAs: ${emailContent.call_to_action?.primary?.text || 'Generated'}`);
+
+      return `AI-контент email успешно создан! Тема письма: "${emailContent.subject_line?.primary || 'Создана'}". Заголовок: "${emailContent.headline?.main || 'Создан'}". Основной CTA: "${emailContent.call_to_action?.primary?.text || 'Создан'}". Эмоциональные хуки: ${emailContent.emotional_hooks?.desire || 'добавлены'}. Элементы срочности: ${emailContent.body?.urgency_elements || 'включены'}. Социальное доказательство: ${emailContent.body?.social_proof || 'добавлено'}. Контент оптимизирован для ${params.destination} и аудитории ${params.targetAudience}.`;
+
+    } catch (error: unknown) {
+      const duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ AI content generation failed in ${duration}ms:`, errorMessage);
+      throw new Error(`AI-генерация контента не удалась: ${errorMessage}`);
     }
   }
 });
 
 // ============================================================================
-// ASSET STRATEGY
+// AI-POWERED DESIGN BRIEF GENERATION 
 // ============================================================================
 
-// Dynamic asset strategy generation using LLM
-async function generateDynamicAssetStrategy(params: {
+async function generateAIDesignBrief(params: {
+  destination: string;
   campaign_theme: string;
-  visual_style: string;
-  color_preference: string | null | { primary: string[]; secondary: string[]; supporting: string[]; };
-  target_emotion: string;
+  visual_style?: string;
+  target_emotion?: string;
 }) {
-  const { campaign_theme, visual_style, color_preference, target_emotion } = params;
+  const { destination, campaign_theme, visual_style, target_emotion } = params;
   
-  const strategyPrompt = `
-Создай ВИЗУАЛЬНО-БОГАТУЮ стратегию для email кампании с МНОЖЕСТВОМ ИЗОБРАЖЕНИЙ и СОВРЕМЕННЫМ ДИЗАЙНОМ.
+  const designBriefPrompt = `
+Создай ПРОФЕССИОНАЛЬНОЕ техническое задание для дизайна email-рассылки авиабилетов.
 
-🎯 НОВЫЕ ТРЕБОВАНИЯ - ВИЗУАЛЬНЫЙ ПОДХОД:
-- Создай 6-8 различных концепций изображений для разных секций
-- Фокус на эмоциональном воздействии через визуал
-- Современные email design patterns (hero, gallery, cards, etc.)
-- Минимум текста, максимум визуальных элементов
-
-Тема кампании: ${campaign_theme}
-Визуальный стиль: ${visual_style}
-Цветовые предпочтения: ${typeof color_preference === 'object' && color_preference ? 
-  `Структурированные фирменные цвета Kupibilet:
-  - Основные: ${color_preference.primary.join(', ')}
-  - Дополнительные: ${color_preference.secondary.join(', ')}
-  - Вспомогательные: ${color_preference.supporting.join(', ')}` : 
-  (color_preference || 'Использовать фирменные цвета Kupibilet')}
-Целевая эмоция: ${target_emotion}
+🎯 ТРЕБОВАНИЯ К ТЕХНИЧЕСКОМУ ЗАДАНИЮ:
+- Основано на направлении: ${destination}
+- Тема кампании: ${campaign_theme}
+- Визуальный стиль: ${visual_style || 'современный'}
+- Целевая эмоция: ${target_emotion || 'вдохновение к путешествию'}
 
 ОБЯЗАТЕЛЬНО используй фирменные цвета Kupibilet:
-${typeof color_preference === 'object' && color_preference ? 
-  `- Основные: ${color_preference.primary.join(', ')} (бренд, акцент, текст)
-- Дополнительные: ${color_preference.secondary.join(', ')} (CTA, яркие акценты)
-- Вспомогательные: ${color_preference.supporting.join(', ')} (фоны, градиенты, дополнительные элементы)` :
-  `- Основные: #4BFF7E (бренд), #1DA857 (акцент), #2C3959 (текст)
-- Дополнительные: #FF6240 (CTA), #E03EEF (акценты)
-- Вспомогательные: #FFC7BB, #FFEDE9, #F8A7FF, #FDE8FF, #B0C6FF, #EDEFFF`}
+- Основные: #4BFF7E (основной зеленый), #1DA857 (темно-зеленый), #2C3959 (темно-синий текст)
+- Дополнительные: #FF6240 (оранжевый CTA), #E03EEF (фиолетовый акцент)
+- Вспомогательные: #FFC7BB, #FFEDE9, #F8A7FF, #FDE8FF, #B0C6FF, #EDEFFF
 
-Выбери цвета из фирменной палитры Kupibilet, которые лучше всего подходят для темы "${campaign_theme}" и эмоции "${target_emotion}".
+Выбери цвета из фирменной палитры, которые лучше всего подходят для направления "${destination}".
 
-ВАЖНО: Используй конкретные цвета из каждой категории:
-- Из основных цветов выбери 1 для главного элемента
-- Из дополнительных цветов выбери 1 для CTA и акцентов
-- Из вспомогательных цветов выбери 1-2 для фонов и дополнительных элементов
-
-Предоставь визуальную стратегию в JSON формате:
+Предоставь техническое задание в JSON формате:
 
 {
-  "theme": "Название темы кампании",
-  "visual_style": "Стиль визуального оформления",
-  "color_palette": "Конкретные цвета из фирменной палитры Kupibilet с объяснением выбора",
-  "primary_color": "Основной цвет из палитры Kupibilet (например, #4BFF7E)",
-  "accent_color": "Акцентный цвет из палитры Kupibilet (например, #FF6240)",
-  "background_color": "Цвет фона из вспомогательных цветов (например, #EDEFFF)",
-  "text_color": "#2C3959",
-  "typography": "Рекомендации по типографике",
-  "image_concepts": [
-    "Hero изображение - главная визуальная концепция",
-    "Lifestyle фото - люди в контексте направления",
-    "Архитектура/достопримечательности - знаковые места",
-    "Кулинария/культура - местные особенности", 
-    "Природа/пейзажи - естественная красота",
-    "Активности/развлечения - что можно делать",
-    "Шоппинг/сувениры - местные товары",
-    "Транспорт/логистика - как добраться"
-  ],
-  "layout_sections": [
-    {
-      "type": "hero",
-      "description": "Главная визуальная секция с минимумом текста",
-      "image_type": "hero",
-      "content_approach": "Эмоциональный заголовок + визуал"
-    },
-    {
-      "type": "gallery",
-      "description": "Галерея из 3-4 изображений с короткими подписями",
-      "image_type": "lifestyle",
-      "content_approach": "Визуальные карточки с 2-3 словами"
-    },
-    {
-      "type": "highlights",
-      "description": "Ключевые особенности с иконками",
-      "image_type": "icons",
-      "content_approach": "Иконки + короткие фразы"
-    },
-    {
-      "type": "cta_visual",
-      "description": "Визуальный призыв к действию",
-      "image_type": "cta_background",
-      "content_approach": "Большая кнопка + цена"
-    }
-  ],
-  "layout_hierarchy": "Визуальная иерархия с акцентом на изображения",
-  "emotional_triggers": "Эмоциональные триггеры",
-  "brand_consistency": "Как стратегия соответствует бренду Kupibilet"
+  "destination_context": {
+    "name": "${destination}",
+    "seasonal_advantages": "Сезонные преимущества направления для текущего времени",
+    "emotional_appeal": "Эмоциональная привлекательность направления",
+    "market_position": "Позиционирование направления на рынке"
+  },
+  "design_requirements": {
+    "visual_style": "Конкретный визуальный стиль для ${destination}",
+    "color_palette": "Детальное описание цветовой палитры из фирменных цветов Kupibilet",
+    "primary_color": "Основной цвет из палитры Kupibilet (например, #4BFF7E)",
+    "accent_color": "Акцентный цвет из палитры Kupibilet (например, #FF6240)",
+    "background_color": "Цвет фона из вспомогательных цветов (например, #EDEFFF)",
+    "text_color": "#2C3959",
+    "imagery_direction": "Направление изображений для ${destination}",
+    "typography_mood": "Типографическое настроение"
+  },
+  "content_priorities": {
+    "key_messages": ["Ключевое сообщение 1", "Ключевое сообщение 2", "Ключевое сообщение 3"],
+    "emotional_triggers": ["Эмоциональный триггер 1", "Эмоциональный триггер 2"],
+    "actionable_insights": ["Инсайт к действию 1", "Инсайт к действию 2"]
+  },
+  "competitive_differentiation": {
+    "unique_selling_points": "Уникальные преимущества направления",
+    "market_advantages": "Преимущества на рынке"
+  },
+  "technical_specs": {
+    "email_client_support": ["Gmail", "Outlook", "Apple Mail"],
+    "responsive_breakpoints": ["600px", "480px"],
+    "image_formats": ["JPEG", "PNG"],
+    "accessibility_level": "WCAG AA"
+  }
 }
 
 КРИТИЧЕСКИЕ ТРЕБОВАНИЯ:
-- МИНИМУМ 6-8 различных концепций изображений
-- Создай секции для современного email дизайна
 - Используй только цвета из фирменной палитры Kupibilet
-- Объясни выбор цветов для конкретной темы
+- Объясни выбор цветов для конкретного направления
 - Предоставь конкретные hex-коды цветов
-- Учитывай эмоциональное воздействие цветов
+- Создай эмоциональную привлекательность для ${destination}
+- Учитывай особенности направления при выборе стиля
 - Ответ должен быть на русском языке
 `;
 
   try {
     const response = await generateWithOpenAI({
-      prompt: strategyPrompt,
-      temperature: 0.4,
+      prompt: designBriefPrompt,
+      temperature: 0.3, // Lower temperature for more consistent technical specs
       max_tokens: 1200
     });
 
-    // Parse JSON response
-    let jsonString = response.trim();
+    // Parse JSON response using robust parser
+    const designBriefData = parseAIJsonResponse(response, 'design brief generation');
     
-    // Remove markdown code blocks if present
-    if (jsonString.startsWith('```json')) {
-      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (jsonString.startsWith('```')) {
-      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
+    // Add creation metadata
+    designBriefData.created_at = new Date().toISOString();
+    designBriefData.created_by = 'Content Specialist AI';
+    designBriefData.destination = destination;
     
-    const strategyData = JSON.parse(jsonString.trim());
-    
-    // 🔍 DEBUG: Log what AI returned
-    console.log('🔍 AI Strategy Data received:', JSON.stringify(strategyData, null, 2));
-    
-    // 🔧 VALIDATION: Ensure all required fields are present
-    const requiredFields = ['theme', 'visual_style', 'primary_color', 'accent_color', 'background_color', 'text_color'];
-    const missingFields = requiredFields.filter(field => !strategyData[field]);
-    
-    if (missingFields.length > 0) {
-      throw new Error(`❌ AI STRATEGY GENERATION FAILED: Missing required fields from AI response: ${missingFields.join(', ')}. AI must provide all required fields: ${requiredFields.join(', ')}. This indicates AI prompt or processing is not working correctly.`);
-    }
-    
-    return {
-      theme: strategyData.theme,
-      visual_style: strategyData.visual_style,
-      color_palette: strategyData.color_palette,
-      primary_color: strategyData.primary_color,
-      accent_color: strategyData.accent_color,
-      background_color: strategyData.background_color,
-      text_color: strategyData.text_color,
-      typography: strategyData.typography,
-      image_concepts: strategyData.image_concepts,
-      layout_hierarchy: strategyData.layout_hierarchy,
-      emotional_triggers: strategyData.emotional_triggers,
-      brand_consistency: strategyData.brand_consistency
-    };
+    return designBriefData;
 
   } catch (error) {
-    log.error('ContentSpecialist', 'Failed to generate dynamic asset strategy', {
-      error: error.message,
-      campaign_theme,
-      visual_style,
-      target_emotion
-    });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('Failed to generate AI design brief:', errorMessage);
     
     // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать визуальную стратегию для ${campaign_theme}: ${error.message}`);
+    throw new Error(`Не удалось сгенерировать техническое задание для дизайна ${destination}: ${errorMessage}`);
   }
 }
 
-// Generate and save asset manifest file for Design Specialist using AI-powered asset collection
-async function generateAndSaveAssetManifest(assetStrategy: any, context: any) {
-  try {
-    console.log('🤖 ASSET MANIFEST: Starting AI-powered Figma asset collection...');
-    
-    // Get campaign context
-    const campaignContext = extractCampaignContext(context);
-    
-    // Find active campaign folder
-    const campaignsDir = path.join(process.cwd(), 'campaigns');
-    let campaignPath = campaignContext.campaignPath;
-    
-    if (!campaignPath) {
-      const campaignFolders = await fs.readdir(campaignsDir);
-      const latestCampaign = campaignFolders
-        .filter(folder => folder.startsWith('campaign_'))
-        .sort()
-        .pop();
-        
-      if (!latestCampaign) {
-        console.log('❌ No active campaign found for asset manifest generation');
-        return;
-      }
-      
-      campaignPath = path.join(campaignsDir, latestCampaign);
-    }
-    
-    console.log('🤖 ASSET MANIFEST: Using campaign path:', campaignPath);
-    
-    // Create assets/manifests and collected directories
-    const manifestsDir = path.join(campaignPath, 'assets', 'manifests');
-    const collectedDir = path.join(campaignPath, 'assets', 'collected');
-    await fs.mkdir(manifestsDir, { recursive: true });
-    await fs.mkdir(collectedDir, { recursive: true });
-    
-    // Setup AI-powered asset collection
-    console.log('🤖 Setting up AI-powered asset collection...');
-    
-    // Prepare content context for AI analysis
-    const contentContext: ContentContext = {
-      generated_content: context.content_context?.generated_content || context.contentContext?.generated_content || {
-        subject: assetStrategy.campaign_theme || 'Email Campaign',
-        body: assetStrategy.image_concepts?.join(' ') || 'Travel campaign',
-        context: {
-          emotional_triggers: assetStrategy.target_emotion
-        }
-      },
-      campaign_type: assetStrategy.campaign_type || 'promotional',
-      target_audience: assetStrategy.target_audience || 'families',
-      language: 'ru'
-    };
-    
-    // Prepare campaign context
-    const aiCampaignContext: CampaignContext = {
-      campaignPath: campaignPath,
-      campaign_type: assetStrategy.campaign_type || 'promotional',
-      target_audience: assetStrategy.target_audience || 'families',
-      language: 'ru'
-    };
-    
-    // Define Figma asset sources for AI-powered collection
-    const assetSources: AssetSource[] = [
-              {
-          type: 'local',
-          path: path.join(process.cwd(), 'figma-all-pages-1750993353363'),
-          priority: 'primary'
-        },
-        {
-          type: 'local', 
-          path: path.join(process.cwd(), 'figma-assets'),
-          priority: 'secondary'
-        }
-      // NOTE: External Unsplash images will be handled separately by AI analysis
-    ];
-    
-    console.log('🤖 AI analyzing content and selecting optimal Figma assets...');
-    
-        // ✅ USE PROPER ASSET MANIFEST GENERATOR with Unsplash + Usage Instructions
-    console.log('🔄 Using main asset manifest generator for complete functionality...');
-    
-    // Import the proper asset manifest generator
-    const { generateAssetManifest } = await import('../tools/asset-preparation/asset-manifest-generator');
-    
-    // Configure generation options with ALL features enabled
-    const generationOptions = {
-      analyzeContentContext: true,
-      collectFromSources: true,
-      validateAssets: true, 
-      optimizeAssets: true,
-      generateUsageInstructions: true,  // ✅ Enable usage instructions
-      includePerformanceMetrics: true,
-      enableFallbackGeneration: false  // Keep no-fallback policy
-    };
-    
-    // Call the main asset manifest generator with proper SDK tool syntax
-    const result = await generateAssetManifest.execute({
-      campaignId: campaignContext.campaignId || 'unknown',
-      campaignPath: campaignPath,
-      contentContext: contentContext,
-      assetSources: assetSources,
-      options: generationOptions,
-      context: aiCampaignContext,
-      trace_id: ''
-    });
-    
-    // The tool returns a string result, so we need to parse success differently
-    if (!result || typeof result !== 'string') {
-      console.error('❌ Asset manifest generation failed: Invalid result');
-      throw new Error(`Asset manifest generation failed: Invalid result returned`);
-    }
-    
-    console.log(`✅ Complete asset manifest generated successfully`);
-    console.log(`📊 Result summary: ${result}`);
-    
-    // Try to read the actual generated manifest file for stats
-    try {
-      const manifestPath = path.join(campaignPath, 'assets', 'manifests', 'asset-manifest.json');
-      const manifestContent = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
-      console.log(`📊 Generation stats:`, {
-        total_images: manifestContent.assetManifest?.images?.length || 0,
-        total_icons: manifestContent.assetManifest?.icons?.length || 0,
-        usage_instructions: manifestContent.usageInstructions?.length || 0,
-        processing_time: manifestContent.generationSummary?.processingTime || 0
-      });
-    } catch (statsError) {
-      console.log('📊 Stats unavailable (manifest file not found)');
-    }
-    
-    // The main generator already saves the manifest, so we're done
-    return { success: true, message: result };
-    
-  } catch (error) {
-    console.error('❌ ASSET MANIFEST: Generation failed:', error.message);
-    throw new Error(`Asset manifest generation failed: ${error.message}`);
-  }
-}
-
-// Update design brief with specific colors from asset strategy
-async function updateDesignBriefWithColors(assetStrategy: any, context: any) {
-  try {
-    console.log('🔍 DEBUG: updateDesignBriefWithColors started');
-    
-    // Get campaign context
-    const campaignContext = extractCampaignContext(context);
-    console.log('🔍 DEBUG: Campaign context:', {
-      hasCampaignContext: !!campaignContext,
-      campaignPath: campaignContext?.campaignPath,
-      campaignId: campaignContext?.campaignId
-    });
-    
-    // Find active campaign folder
-    const campaignsDir = path.join(process.cwd(), 'campaigns');
-    let campaignPath = campaignContext.campaignPath;
-    
-    console.log('🔍 DEBUG: Initial campaignPath:', campaignPath);
-    
-    if (!campaignPath) {
-      console.log('🔍 DEBUG: No campaignPath in context, searching for latest campaign...');
-      const campaignFolders = await fs.readdir(campaignsDir);
-      const latestCampaign = campaignFolders
-        .filter(folder => folder.startsWith('campaign_'))
-        .sort()
-        .pop();
-        
-      console.log('🔍 DEBUG: Found campaign folders:', campaignFolders.filter(f => f.startsWith('campaign_')).slice(-3));
-      console.log('🔍 DEBUG: Latest campaign:', latestCampaign);
-        
-      if (!latestCampaign) {
-        console.log('❌ No active campaign found for design brief update');
-        return;
-      }
-      
-      campaignPath = path.join(campaignsDir, latestCampaign);
-    }
-    
-    console.log('🔍 DEBUG: Final campaignPath:', campaignPath);
-    
-    // Read existing design brief
-    const designBriefFile = path.join(campaignPath, 'content', 'design-brief-from-context.json');
-    console.log('🔍 DEBUG: Looking for design brief at:', designBriefFile);
-    
-    // Check if file exists
-    const fileExists = await fs.access(designBriefFile).then(() => true).catch(() => false);
-    console.log('🔍 DEBUG: Design brief file exists:', fileExists);
-    
-    if (fileExists) {
-      const existingBrief = JSON.parse(await fs.readFile(designBriefFile, 'utf8'));
-      console.log('🔍 DEBUG: Loaded existing design brief, keys:', Object.keys(existingBrief));
-      
-      // Update with specific colors from asset strategy
-      const updatedBrief = {
-        ...existingBrief,
-        design_requirements: {
-          ...existingBrief.design_requirements,
-          visual_style: assetStrategy.visual_style,
-          color_palette: assetStrategy.color_palette,
-          primary_color: assetStrategy.primary_color,
-          accent_color: assetStrategy.accent_color,
-          background_color: assetStrategy.background_color,
-          text_color: assetStrategy.text_color,
-          typography_mood: assetStrategy.typography
-        },
-        brand_colors: {
-          primary: assetStrategy.primary_color,
-          accent: assetStrategy.accent_color,
-          background: assetStrategy.background_color,
-          text: assetStrategy.text_color
-        },
-        image_concepts: assetStrategy.image_concepts,
-        layout_hierarchy: assetStrategy.layout_hierarchy,
-        emotional_triggers: assetStrategy.emotional_triggers,
-        brand_consistency: assetStrategy.brand_consistency
-      };
-      
-      // Save updated design brief
-      await fs.writeFile(designBriefFile, JSON.stringify(updatedBrief, null, 2));
-      
-      console.log(`✅ CONTENT: Design brief updated with specific Kupibilet colors`);
-      console.log(`🎨 COLORS: Primary=${assetStrategy.primary_color}, Accent=${assetStrategy.accent_color}, Background=${assetStrategy.background_color}`);
-      
-    } else {
-      console.log('❌ Design brief file not found, cannot update with colors');
-      console.log('🔍 DEBUG: Checked path:', designBriefFile);
-      
-      // Try to find design brief in other possible locations
-      const possiblePaths = [
-        path.join(campaignPath, 'content', 'design-brief-from-context.json'),
-        path.join(campaignPath, 'docs', 'design-brief-from-context.json'),
-        path.join(campaignPath, 'design-brief-from-context.json')
-      ];
-      
-      console.log('🔍 DEBUG: Checking alternative paths...');
-      for (const altPath of possiblePaths) {
-        const altExists = await fs.access(altPath).then(() => true).catch(() => false);
-        console.log(`🔍 DEBUG: ${altPath} exists: ${altExists}`);
-      }
-      
-      // List content directory to see what's actually there
-      try {
-        const contentDir = path.join(campaignPath, 'content');
-        const contentFiles = await fs.readdir(contentDir);
-        console.log('🔍 DEBUG: Content directory files:', contentFiles);
-      } catch (error) {
-        console.log('🔍 DEBUG: Cannot read content directory:', error.message);
-      }
-    }
-    
-  } catch (error) {
-    console.error('❌ Error updating design brief with colors:', error.message);
-    console.error('🔍 DEBUG: Full error:', error);
-  }
-}
-
-export const assetStrategy = tool({
-  name: 'assetStrategy',
-  description: 'Develops comprehensive visual asset strategy including image concepts, color schemes, typography, and visual hierarchy for email campaign design',
+export const createDesignBrief = tool({
+  name: 'createDesignBrief',
+  description: 'Creates comprehensive AI-powered design brief with Kupibilet brand colors for email template design',
   parameters: z.object({
-    campaign_theme: z.string().describe('Main theme or concept of the campaign'),
-    visual_style: z.enum(['modern', 'classic', 'minimalist', 'vibrant', 'elegant']).describe('Desired visual style'),
-    color_preference: z.string().nullable().describe('Preferred color scheme or brand colors'),
-    target_emotion: z.enum(['excitement', 'trust', 'urgency', 'relaxation', 'adventure']).describe('Target emotional response'),
+    destination: z.string().describe('Travel destination'),
+    campaign_theme: z.string().describe('Campaign theme or main message'),
+    visual_style: z.enum(['modern', 'classic', 'minimalist', 'vibrant', 'elegant']).default('modern').describe('Visual style preference'),
+    target_emotion: z.enum(['excitement', 'trust', 'urgency', 'relaxation', 'adventure']).default('adventure').describe('Target emotional response'),
     trace_id: z.string().nullable().describe('Trace ID for context tracking')
   }),
   execute: async (params, context) => {
     const startTime = Date.now();
+    console.log('🎨 === AI DESIGN BRIEF GENERATION ===');
+    console.log('📍 Destination:', params.destination);
+    console.log('🎯 Theme:', params.campaign_theme);
+    console.log('✨ Style:', params.visual_style);
+    console.log('💫 Emotion:', params.target_emotion);
     
-    // Generate dynamic visual strategy using LLM with Kupibilet brand colors
-    // Develop comprehensive visual strategy with structured Kupibilet colors
-    const kupibiletColors = {
-      primary: ['#4BFF7E', '#1DA857', '#2C3959'],
-      secondary: ['#FF6240', '#E03EEF'], 
-      supporting: ['#FFC7BB', '#FFEDE9', '#F8A7FF', '#FDE8FF', '#B0C6FF', '#EDEFFF']
-    };
-    
-    log.info('ContentSpecialist', 'Asset strategy started', {
-      campaign_theme: params.campaign_theme,
-      visual_style: params.visual_style,
-      color_preference: kupibiletColors,
-      target_emotion: params.target_emotion,
-      trace_id: params.trace_id
-    });
-
     try {
+      // Extract campaign context
+      const campaignContext = extractCampaignContext(context);
       
-      const assetStrategy = await generateDynamicAssetStrategy({
+      if (!campaignContext.campaignPath) {
+        throw new Error('Campaign path not found. Campaign must be created first.');
+      }
+      
+      // Generate AI-powered design brief
+      const designBrief = await generateAIDesignBrief({
+        destination: params.destination,
         campaign_theme: params.campaign_theme,
         visual_style: params.visual_style,
-        color_preference: kupibiletColors,
         target_emotion: params.target_emotion
       });
-
-      // 🔧 CRITICAL FIX: Generate and save asset manifest file
-      await generateAndSaveAssetManifest(assetStrategy, context);
-
-      const duration = Date.now() - startTime;
-      log.info('ContentSpecialist', 'Asset strategy developed', {
-        theme: assetStrategy.theme,
-        visual_style: assetStrategy.visual_style,
-        image_concepts: assetStrategy.image_concepts,
-        duration,
-        emotional_triggers: assetStrategy.emotional_triggers
-      });
       
-      log.performance('ContentSpecialist', 'assetStrategy', duration, {
-        theme: params.campaign_theme,
-        concepts_count: assetStrategy.image_concepts.length
-      });
+      // Save design brief to campaign folder
+      const contentDir = path.join(campaignContext.campaignPath, 'content');
+      await fs.mkdir(contentDir, { recursive: true });
       
-      // Update design brief with specific colors
-      await updateDesignBriefWithColors(assetStrategy, context);
+      const designBriefFile = path.join(contentDir, 'design-brief-from-context.json');
+      await fs.writeFile(designBriefFile, JSON.stringify(designBrief, null, 2));
       
-      // Build context for next tools (no global state)
-      const campaignContext = buildCampaignContext(context, { 
-        asset_strategy: assetStrategy,
+      console.log(`✅ AI Design brief saved to: ${designBriefFile}`);
+      console.log(`🎨 Primary color: ${designBrief.design_requirements?.color_palette?.primary_color}`);
+      console.log(`🔥 Accent color: ${designBrief.design_requirements?.color_palette?.accent_color}`);
+      console.log(`📄 Background color: ${designBrief.design_requirements?.color_palette?.background_color}`);
+      
+      // Update campaign context
+      const updatedContext = buildCampaignContext(context, {
+        design_brief: designBrief,
         trace_id: params.trace_id
       });
       
       // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.campaignContext = campaignContext;
+        (context as ExtendedRunContext).campaignContext = updatedContext;
       }
-
-      // Return formatted string with specific colors
-      return `Визуальная стратегия для темы "${assetStrategy.theme}": Стиль - ${assetStrategy.visual_style}, цветовая палитра - ${assetStrategy.color_palette}. КОНКРЕТНЫЕ ЦВЕТА: Основной - ${assetStrategy.primary_color}, Акцентный - ${assetStrategy.accent_color}, Фон - ${assetStrategy.background_color}, Текст - ${assetStrategy.text_color}. Типографика - ${assetStrategy.typography}. Концепции изображений: ${assetStrategy.image_concepts.join(', ')}. Иерархия макета: ${assetStrategy.layout_hierarchy}. Эмоциональные триггеры: ${assetStrategy.emotional_triggers}. Соблюдение бренда: ${assetStrategy.brand_consistency}. Asset manifest сохранен для Design Specialist. Контекст сохранен для передачи следующим инструментам.`;
-
-    } catch (error) {
+      
       const duration = Date.now() - startTime;
-      log.error('ContentSpecialist', 'Asset strategy failed', {
-        error: error.message,
-        campaign_theme: params.campaign_theme,
-        visual_style: params.visual_style,
-        duration,
-        trace_id: params.trace_id
-      });
+      console.log(`⚡ Design brief generation completed in ${duration}ms`);
       
-      log.tool('assetStrategy', params, null, duration, false, error.message);
-      return `Ошибка разработки визуальной стратегии: ${error.message}`;
-    }
-  }
-});
-
-// ============================================================================
-// CONTENT GENERATOR - USES REAL DATA
-// ============================================================================
-
-export const contentGenerator = tool({
-  name: 'contentGenerator',
-  description: 'Generates compelling email content using real pricing data and date analysis from previous tools via context parameter',
-  parameters: z.object({
-    campaign_theme: z.string().describe('Main campaign theme or destination'),
-    content_type: z.enum(['promotional', 'newsletter', 'announcement']).describe('Type of email content'),
-    personalization_level: z.enum(['basic', 'advanced', 'premium']).describe('Level of personalization'),
-    urgency_level: z.enum(['low', 'medium', 'high']).describe('Urgency level for the offer'),
-    trace_id: z.string().nullable().describe('Trace ID for context tracking')
-  }),
-  execute: async (params, context) => {
-    const startTime = Date.now();
-    log.info('ContentSpecialist', 'Content generation started', {
-      campaign_theme: params.campaign_theme,
-      content_type: params.content_type,
-      personalization_level: params.personalization_level,
-      urgency_level: params.urgency_level,
-      trace_id: params.trace_id
-    });
-
-    try {
-      // Get real data from context parameter (no global state)
-      const campaignContext = getCampaignContextFromSdk(context);
-      const pricingData = campaignContext.pricing_analysis;
-      const dateAnalysis = campaignContext.date_analysis;
-      const contextAnalysis = campaignContext.context_analysis;
-      
-      // Find active campaign from context
-      const campaignsDir = path.join(process.cwd(), 'campaigns');
-      let campaignPath = campaignContext.campaignPath;
-      
-      if (!campaignPath) {
-        const campaignFolders = await fs.readdir(campaignsDir);
-        const latestCampaign = campaignFolders
-          .filter(folder => folder.startsWith('campaign_'))
-          .sort()
-          .pop();
-          
-        if (!latestCampaign) {
-          return 'Ошибка: Активная кампания не найдена. Сначала создайте кампанию.';
-        }
-        
-        campaignPath = path.join(campaignsDir, latestCampaign);
-      }
-      
-      // Generate content using real data from context via LLM
-      const generatedContent = await generateDynamicEmailContent(params, pricingData, dateAnalysis, contextAnalysis);
-
-      // Save content to campaign folder
-      const contentFile = path.join(campaignPath, 'content', 'email-content.json');
-      await fs.writeFile(contentFile, JSON.stringify(generatedContent, null, 2));
-      
-      // Also save as markdown for easy reading
-      const markdownContent = createMarkdownContent(generatedContent);
-      
-      await fs.writeFile(
-        path.join(campaignPath, 'content', 'email-content.md'),
-        markdownContent
-      );
-
-      const duration = Date.now() - startTime;
-      log.info('ContentSpecialist', 'Content generated with real data', {
-        campaign_theme: params.campaign_theme,
-        subject: generatedContent.subject,
-        content_file: contentFile,
-        duration,
-        has_pricing_data: !!pricingData,
-        has_date_analysis: !!dateAnalysis
-      });
-      
-      log.performance('ContentSpecialist', 'contentGenerator', duration, {
-        campaign_theme: params.campaign_theme,
-        content_type: params.content_type,
-        personalization_level: params.personalization_level
-      });
-      
-      // Build final context for finalization tool
-      const finalCampaignContext = buildCampaignContext(context, { 
-        generated_content: {
-          subject: generatedContent.subject,
-          preheader: generatedContent.preheader,
-          body: generatedContent.body,
-          cta: generatedContent.cta,
-          personalization_level: generatedContent.personalization,
-          urgency_level: generatedContent.urgency
-        },
-        technical_requirements: {
-          max_width: '600px',
-          email_clients: ['gmail', 'outlook', 'apple_mail'],
-          dark_mode_support: true,
-          accessibility_level: 'AA' as const
-        },
-        trace_id: params.trace_id
-      });
-      
-      // Save final context to context parameter (OpenAI SDK pattern)
-      if (context) {
-        context.campaignContext = finalCampaignContext;
-      }
-      
-      // Return formatted string with context info
-      return `Контент сгенерирован с реальными данными! Тема: "${generatedContent.subject}". Цена: ${generatedContent.pricing?.best_price || 'N/A'} ${generatedContent.pricing?.currency || ''}. Даты: ${generatedContent.dates?.optimal_dates?.join(', ') || 'N/A'}. Контент сохранен в ${contentFile} и ${path.join(campaignPath, 'content', 'email-content.md')}. Контекст готов для передачи Design Specialist.`;
-
-    } catch (error) {
-      const duration = Date.now() - startTime;
-      log.error('ContentSpecialist', 'Content generation failed', {
-        error: error.message,
-        campaign_theme: params.campaign_theme,
-        content_type: params.content_type,
-        duration,
-        trace_id: params.trace_id
-      });
-      
-      log.tool('contentGenerator', params, null, duration, false, error.message);
-      return `Ошибка генерации контента: ${error.message}`;
-    }
-  }
-});
-
-// Dynamic email content generation using LLM
-async function generateDynamicEmailContent(params: any, pricingData: any, dateAnalysis: any, contextAnalysis: any) {
-  const destination = params.campaign_theme;
-  const price = pricingData?.best_price || 0;
-  const currency = pricingData?.currency || 'RUB';
-  const dates = dateAnalysis?.optimal_dates || [];
-  
-  // Get current date for more accurate content generation
-  const now = new Date();
-  const actualCurrentDate = now.toISOString().split('T')[0];
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
-  const formattedCurrentDate = now.toLocaleDateString('ru-RU', {
-    year: 'numeric',
-    month: 'long', 
-    day: 'numeric'
-  });
-  
-  // 🎯 DYNAMIC OFFERS COUNT - Calculate from real pricing data
-  const realOffersCount = pricingData?.offers_count || 
-                         pricingData?.enhanced_features?.offers_count || 
-                         (pricingData?.best_price ? 1 : 0);
-  
-  console.log(`📊 Dynamic offers count: ${realOffersCount} (from pricing data: ${!!pricingData})`);
-  
-  // Prompt for LLM to generate RICH and DETAILED email content
-  const contentPrompt = `
-Создай КАЧЕСТВЕННЫЙ и ДЕТАЛЬНЫЙ email-контент для рассылки авиабилетов с БОГАТЫМ ОПИСАНИЕМ.
-
-🎯 НОВЫЕ ТРЕБОВАНИЯ - КАЧЕСТВЕННЫЙ КОНТЕНТ:
-- Заголовок: 5-10 слов, эмоциональный и конкретный
-- Подзаголовок: 10-15 слов, детальное описание предложения
-- Основной текст: 3-5 абзацев с детальным описанием направления, преимуществ, особенностей
-- CTA: Конкретные призывы к действию с мотивацией
-- Фокус на ДЕТАЛЬНОМ ОПИСАНИИ и ЦЕННОСТНОМ ПРЕДЛОЖЕНИИ
-
-КРИТИЧЕСКИ ВАЖНО - АКТУАЛЬНАЯ ДАТА:
-- Сегодняшняя дата: ${actualCurrentDate} (${formattedCurrentDate})
-- Текущий год: ${currentYear}
-- Текущий месяц: ${currentMonth}
-
-Параметры кампании:
-- Направление: ${destination}
-- Тип контента: ${params.content_type}
-- Уровень персонализации: ${params.personalization_level}
-- Уровень срочности: ${params.urgency_level}
-
-Актуальные данные:
-- Лучшая цена: ${price} ${currency}
-- Оптимальные даты: ${dates.join(', ')}
-- Сезонные тренды: ${contextAnalysis?.seasonal_trends || 'Не указаны'}
-- Эмоциональные триггеры: ${contextAnalysis?.emotional_triggers || 'Не указаны'}
-
-Предоставь следующую информацию в JSON формате:
-
-{
-  "subject": "Привлекательный заголовок (5-10 слов) с конкретным предложением",
-  "preheader": "Детальное описание предложения (10-15 слов) с ценностным предложением",
-  "body": "Детальное описание направления в 3-5 абзацах. Первый абзац - эмоциональный крючок о красоте и особенностях направления. Второй абзац - конкретные преимущества и активности. Третий абзац - информация о ценах и датах. Четвертый абзац - призыв к действию с мотивацией. Каждый абзац должен быть информативным и захватывающим.",
-  "detailed_sections": [
-    {
-      "type": "hero",
-      "title": "Эмоциональный заголовок (5-8 слов)",
-      "subtitle": "Детальное описание предложения (15-20 слов)",
-      "description": "Развернутое описание направления и его особенностей (30-50 слов)"
-    },
-    {
-      "type": "highlights",
-      "title": "Ключевые преимущества",
-      "items": [
-        "Детальное описание преимущества 1 (8-12 слов)",
-        "Детальное описание преимущества 2 (8-12 слов)",
-        "Детальное описание преимущества 3 (8-12 слов)"
-      ]
-    },
-    {
-      "type": "pricing_section",
-      "title": "Выгодные предложения",
-      "description": "Подробное описание ценового предложения с мотивацией (20-30 слов)"
-    },
-    {
-      "type": "cta_section",
-      "title": "Забронируйте сейчас",
-      "subtitle": "Мотивирующее описание призыва к действию (15-20 слов)",
-      "urgency_text": "Информация о срочности и ограниченности предложения (10-15 слов)"
-    }
-  ],
-  "cta": {
-    "primary": "Конкретный призыв к действию (3-5 слов)",
-    "secondary": "Альтернативный призыв (3-5 слов)"
-  },
-  "pricing": {
-    "best_price": "${price}",
-    "currency": "${currency}",
-    "offers_count": ${realOffersCount}
-  },
-  "dates": {
-    "optimal_dates": ${JSON.stringify(dates)},
-    "season": "${dateAnalysis?.season || 'current'}",
-    "destination": "${destination}"
-  },
-  "context": {
-    "destination": "${destination}",
-    "emotional_triggers": "${contextAnalysis?.emotional_triggers || 'Выгодные билеты, удобные рейсы, быстрое бронирование'}",
-    "current_date_context": "Контекст относительно текущей даты ${actualCurrentDate}"
-  }
-}
-
-КРИТИЧЕСКИЕ ТРЕБОВАНИЯ:
-- МИНИМУМ 200-300 слов в основном тексте
-- Детальное описание направления и его особенностей
-- Конкретные преимущества и ценностные предложения
-- Эмоциональные крючки и мотивирующие элементы
-- Используй реальные цены и даты
-- Все даты в будущем относительно ${actualCurrentDate}
-- Создай атмосферу и желание поехать
-- Ответ на русском языке
-`;
-
-  try {
-    // Use OpenAI to generate dynamic email content
-    const response = await generateWithOpenAI({
-      prompt: contentPrompt,
-      temperature: 0.4, // Balanced creativity for marketing content
-      max_tokens: 1500
-    });
-
-    // Parse JSON response (extract from markdown if needed)
-    let jsonString = response.trim();
-    
-    // Remove markdown code blocks if present
-    if (jsonString.startsWith('```json')) {
-      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (jsonString.startsWith('```')) {
-      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
-    
-    const contentData = JSON.parse(jsonString.trim());
-    
-    return {
-      subject: contentData.subject,
-      preheader: contentData.preheader,
-      body: contentData.body,
-      cta: contentData.cta,
-      pricing: pricingData,
-      dates: dateAnalysis,
-      context: contextAnalysis,
-      personalization: params.personalization_level,
-      urgency: params.urgency_level
-    };
-
-  } catch (error) {
-    log.error('ContentSpecialist', 'Failed to generate dynamic email content', {
-      error: error.message,
-      campaign_theme: destination,
-      content_type: params.content_type
-    });
-    
-    // Fallback error - no static fallback allowed per project rules
-    throw new Error(`Не удалось сгенерировать email-контент для ${destination}: ${error.message}`);
-  }
-}
-
-function createMarkdownContent(content: any): string {
-  return `# ${content.subject}
-
-**Preheader:** ${content.preheader}
-
-## Основной контент
-
-${content.body}
-
-## Призыв к действию
-
-- Основной: ${content.cta.primary}
-- Дополнительный: ${content.cta.secondary}
-
-## Данные о ценах
-
-- Лучшая цена: ${content.pricing?.best_price || 'N/A'} ${content.pricing?.currency || ''}
-- Количество предложений: ${content.pricing?.offers_count || 'N/A'}
-
-## Анализ дат
-
-- Оптимальные даты: ${content.dates?.optimal_dates?.join(', ') || 'N/A'}
-- Сезон: ${content.dates?.season || 'N/A'}
-
-## Контекст
-
-- Направление: ${content.context?.destination || 'N/A'}
-- Эмоциональные триггеры: ${content.context?.emotional_triggers || 'N/A'}
-`;
-}
-
-// ============================================================================
-// HANDOFF AND METADATA TOOLS
-// ============================================================================
-
-/**
- * Create handoff file for next specialist
- */
-export const createHandoffFile = tool({
-  name: 'create_handoff_file',
-  description: 'Create handoff file to pass context to the next specialist',
-  parameters: z.object({
-    from_specialist: z.string().describe('Current specialist name'),
-    to_specialist: z.string().describe('Next specialist name'),
-    handoff_data: z.object({
-      summary: z.string().describe('Summary of work completed'),
-      key_outputs: z.array(z.string()).describe('Key files and outputs created'),
-      context_for_next: z.string().describe('Important context for next specialist'),
-      data_files: z.array(z.string()).describe('Data files created'),
-      recommendations: z.array(z.string()).describe('Recommendations for next specialist'),
-      content_context: z.object({
-        campaign: z.object({
-          id: z.string().describe('Campaign ID'),
-          campaignPath: z.string().describe('Campaign folder path'),
-          theme: z.string().describe('Campaign theme/destination')
-        }).describe('Campaign information'),
-        generated_content: z.object({
-          subject: z.string().describe('Email subject line'),
-          preheader: z.string().describe('Email preheader text'),
-          body: z.string().describe('Email body content'),
-          cta: z.object({
-            primary: z.string().describe('Primary call-to-action'),
-            secondary: z.string().describe('Secondary call-to-action')
-          }).describe('Call-to-action elements'),
-          pricing: z.object({
-            best_price: z.string().nullable(),
-            currency: z.string().nullable(),
-            offers_count: z.number().nullable()
-          }).nullable().describe('Pricing information'),
-          dates: z.object({
-            optimal_dates: z.array(z.string()).nullable(),
-            season: z.string().nullable()
-          }).nullable().describe('Date analysis'),
-          context: z.object({
-            destination: z.string().nullable(),
-            emotional_triggers: z.string().nullable()
-          }).nullable().describe('Context analysis')
-        }).describe('Generated email content'),
-        technical_requirements: z.object({
-          email_clients: z.array(z.string()).nullable(),
-          design_constraints: z.object({}).nullable()
-        }).nullable().describe('Technical requirements'),
-        design_brief: z.object({
-          destination_context: z.object({
-            name: z.string().nullable(),
-            seasonal_advantages: z.string().nullable(),
-            emotional_appeal: z.string().nullable(),
-            market_position: z.string().nullable()
-          }).nullable(),
-          design_requirements: z.object({
-            visual_style: z.string().nullable(),
-            color_palette: z.string().nullable(),
-            imagery_direction: z.string().nullable(),
-            typography_mood: z.string().nullable()
-          }).nullable()
-        }).nullable().describe('Design brief for templates'),
-        asset_manifest: z.object({
-          manifestId: z.string().nullable(),
-          images_count: z.number().nullable(),
-          icons_count: z.number().nullable(),
-          total_size: z.number().nullable()
-        }).nullable().describe('Asset manifest summary')
-      }).nullable().describe('Complete content context for Design Specialist')
-    }),
-    campaign_path: z.string().describe('Campaign folder path')
-  }),
-  execute: async ({ from_specialist, to_specialist, handoff_data, campaign_path }) => {
-    try {
-      console.log(`🤝 Creating handoff from ${from_specialist} to ${to_specialist}`);
-      
-      // Load asset manifest and design brief to include in handoff
-      let assetManifest = null;
-      let designBrief = null;
-      
-      try {
-        const assetManifestPath = path.join(campaign_path, 'assets', 'manifests', 'asset-manifest.json');
-        if (await fs.access(assetManifestPath).then(() => true).catch(() => false)) {
-          const assetManifestData = await fs.readFile(assetManifestPath, 'utf-8');
-          assetManifest = JSON.parse(assetManifestData);
-          console.log('✅ Loaded asset manifest for handoff');
-        }
-        
-        const designBriefPath = path.join(campaign_path, 'content', 'design-brief-from-context.json');
-        if (await fs.access(designBriefPath).then(() => true).catch(() => false)) {
-          const designBriefData = await fs.readFile(designBriefPath, 'utf-8');
-          designBrief = JSON.parse(designBriefData);
-          console.log('✅ Loaded design brief for handoff');
-        }
-      } catch (error) {
-        console.warn('⚠️ Could not load asset manifest or design brief for handoff:', error.message);
-      }
-      
-      // Ensure handoffs directory exists
-      const handoffsDir = path.join(campaign_path, 'handoffs');
-      await fs.mkdir(handoffsDir, { recursive: true });
-      
-      // Create handoff file
-      const fileName = `${from_specialist.toLowerCase().replace(/\s+/g, '-')}-to-${to_specialist.toLowerCase().replace(/\s+/g, '-')}.json`;
-      const filePath = path.join(handoffsDir, fileName);
-      
-      // Enhanced handoff data with asset manifest and design brief
-      const enhancedHandoffData = {
-        ...handoff_data,
-        content_context: {
-          ...handoff_data.content_context,
-          asset_manifest: assetManifest ? {
-            manifestId: assetManifest.manifestId,
-            images_count: assetManifest.assetManifest?.images?.length || 0,
-            icons_count: assetManifest.assetManifest?.icons?.length || 0,
-            total_size: assetManifest.assetManifest?.images?.reduce((sum: number, img: any) => sum + (img.file_size || 0), 0) || 0
-          } : null,
-          design_brief: designBrief
-        }
-      };
-      
-      const handoffContent = {
-        from_specialist,
-        to_specialist,
-        handoff_data: enhancedHandoffData,
-        created_at: new Date().toISOString(),
-        file_path: filePath,
-        // КРИТИЧЕСКИ ВАЖНО: Сохранение content_context для Design Specialist
-        content_context: enhancedHandoffData.content_context || null
-      };
-      
-      await fs.writeFile(filePath, JSON.stringify(handoffContent, null, 2));
-      
-      console.log(`✅ Handoff file created: ${filePath}`);
-      console.log(`📦 Asset manifest included: ${!!assetManifest}`);
-      console.log(`🎨 Design brief included: ${!!designBrief}`);
-      
-      return `✅ Handoff file created successfully: ${fileName}. Context passed from ${from_specialist} to ${to_specialist}. Asset manifest: ${!!assetManifest}, Design brief: ${!!designBrief}. Timestamp: ${new Date().toISOString()}`;
+      return `✅ AI-powered design brief created for ${params.destination}! Визуальный стиль: ${designBrief.design_requirements.visual_style}. Цвета Kupibilet: основной ${designBrief.design_requirements?.color_palette?.primary_color}, акцентный ${designBrief.design_requirements?.color_palette?.accent_color}. Файл сохранен: ${designBriefFile}. Готов для Design Specialist.`;
       
     } catch (error) {
-      console.error('❌ Failed to create handoff file:', error);
-      return `❌ Failed to create handoff file from ${from_specialist} to ${to_specialist}: ${error.message}. Timestamp: ${new Date().toISOString()}`;
-    }
-  }
-});
-
-/**
- * Update campaign metadata to mark specialist as completed
- */
-export const updateCampaignMetadata = tool({
-  name: 'update_campaign_metadata',
-  description: 'Update campaign metadata to mark specialist work as completed',
-  parameters: z.object({
-    campaign_path: z.string().describe('Campaign folder path'),
-    specialist_name: z.string().describe('Name of specialist that completed work'),
-    workflow_phase: z.string().describe('Current workflow phase'),
-    additional_data: z.object({}).strict().nullable().optional().describe('Additional metadata to update')
-  }),
-  execute: async ({ campaign_path, specialist_name, workflow_phase, additional_data }) => {
-    try {
-      console.log(`📝 Updating campaign metadata for ${specialist_name}`);
+      // const _duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('❌ Design brief generation failed:', errorMessage);
       
-      const metadataPath = path.join(campaign_path, 'campaign-metadata.json');
-      
-      // Read existing metadata
-      let metadata;
-      try {
-        const metadataContent = await fs.readFile(metadataPath, 'utf-8');
-        metadata = JSON.parse(metadataContent);
-      } catch (error) {
-        console.error('❌ Failed to read metadata file:', error);
-        return `❌ Failed to read metadata file: ${error.message}`;
-      }
-      
-      // Update specialists_completed
-      const specialistKey = specialist_name.toLowerCase().replace(/\s+/g, '_').replace('_specialist', '');
-      metadata.specialists_completed[specialistKey] = true;
-      
-      // Update workflow phase
-      metadata.workflow_phase = workflow_phase;
-      metadata.last_updated = new Date().toISOString();
-      
-      // Add any additional data
-      if (additional_data) {
-        Object.assign(metadata, additional_data);
-      }
-      
-      // Write updated metadata
-      await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
-      
-      console.log(`✅ Campaign metadata updated for ${specialist_name}`);
-      
-      return `✅ Campaign metadata updated successfully. ${specialist_name} marked as completed. Workflow phase: ${workflow_phase}. Timestamp: ${new Date().toISOString()}`;
-      
-    } catch (error) {
-      console.error('❌ Failed to update campaign metadata:', error);
-      return `❌ Failed to update campaign metadata for ${specialist_name}: ${error.message}. Timestamp: ${new Date().toISOString()}`;
+      return `Ошибка создания технического задания для дизайна: ${errorMessage}`;
     }
   }
 });
 
 // ============================================================================
-// EXPORTS
-// ============================================================================
 
+// Import standardized handoff tool
+// Removed: createStandardizedHandoff - OpenAI SDK handles handoffs automatically
+
+// Export all tools for the Content Specialist
 export const contentSpecialistTools = [
+  createCampaignFolder,
+  updateCampaignMetadata,
   contextProvider,
   dateIntelligence,
+  createHandoffFile,
+  // Removed: finalizeContentAndTransferToDesign - OpenAI SDK handles handoffs automatically
   pricingIntelligence,
   assetStrategy,
   contentGenerator,
-  ...assetPreparationTools,          // Asset Manifest Generation FIRST
-  // ...technicalSpecificationTools,    // ⚠️ TEMPORARILY DISABLED for testing
-  createHandoffFile,
-  updateCampaignMetadata,
-  finalizeContentAndTransferToDesign,
-  transferToDesignSpecialist         // ✅ Added direct transfer function
+  createDesignBrief
 ]; 

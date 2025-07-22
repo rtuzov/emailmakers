@@ -37,7 +37,17 @@ interface ExtendedRunContext {
  */
 function extractCampaignContext(context?: any): CampaignWorkflowContext {
   if (!context) return {};
-  return context.campaignContext || {};
+  
+  // Extract campaign path from OpenAI Agent SDK context structure
+  const campaignPath = context.context?.campaign?.path || null;
+  
+  console.log(`🔍 DEBUG: extractCampaignContext - found campaignPath: ${campaignPath}`);
+  
+  return {
+    campaignPath,
+    // Use only the correct context structure
+    ...context.context?.campaign
+  };
 }
 
 /**
@@ -102,17 +112,37 @@ async function generateDynamicContextAnalysis(
       throw new Error('No content generated from OpenAI');
     }
 
-    // Try to parse JSON response
+    // Enhanced JSON parsing with markdown cleanup
     try {
-      return JSON.parse(content);
-    } catch {
-      // If JSON parsing fails, create structured response
-      return {
+      let jsonString = content.trim();
+      
+      // Remove markdown code blocks if present
+      if (jsonString.startsWith('```json')) {
+        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (jsonString.startsWith('```')) {
+        jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+      
+      // Remove any leading/trailing text that's not JSON
+      const jsonStart = jsonString.indexOf('{');
+      const jsonEnd = jsonString.lastIndexOf('}');
+      
+      if (jsonStart !== -1 && jsonEnd !== -1) {
+        jsonString = jsonString.substring(jsonStart, jsonEnd + 1);
+      }
+      
+      return JSON.parse(jsonString.trim());
+    } catch (parseError) {
+      // Log the actual response for debugging
+      log.error('ContentSpecialist', 'JSON parsing failed for context analysis', {
         destination,
         context_type: contextType,
-        raw_analysis: content,
-        generated_at: new Date().toISOString()
-      };
+        raw_response: content.substring(0, 500) + '...',
+        parse_error: parseError instanceof Error ? parseError.message : String(parseError)
+      });
+      
+      // NO FALLBACK POLICY: Fail fast with clear error
+      throw new Error(`Failed to parse OpenAI response as JSON for ${destination} context analysis. Response was not valid JSON format. Parse error: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
     }
 
   } catch (error: unknown) {
@@ -137,7 +167,7 @@ export const contextProvider = tool({
   parameters: z.object({
     destination: z.string().describe('Туристическое направление'),
     context_type: z.string().describe('Тип контекста (cultural, marketing, seasonal)'),
-    trace_id: z.string().optional().describe('ID трассировки для отладки')
+    trace_id: z.string().nullable().describe('ID трассировки для отладки')
   }),
   
   async execute(params, context) {
@@ -155,8 +185,13 @@ export const contextProvider = tool({
       
       // Save analysis to campaign folder if available
       if (campaignContext.campaignPath) {
-        const analysisPath = path.join(campaignContext.campaignPath, 'content', 'context-analysis.json');
+        const contentDir = path.join(campaignContext.campaignPath, 'content');
+        const analysisPath = path.join(contentDir, 'context-analysis.json');
+        
+        // Ensure content directory exists
+        await fs.mkdir(contentDir, { recursive: true });
         await fs.writeFile(analysisPath, JSON.stringify(contextAnalysis, null, 2));
+        console.log(`✅ Context analysis saved to: ${analysisPath}`);
       }
       
       // Update campaign context
@@ -213,50 +248,73 @@ async function generateDynamicDateAnalysis(
       apiKey: process.env.OPENAI_API_KEY
     });
 
-    const prompt = `Проанализируй оптимальные даты для путешествия в "${destination}" в сезон "${season}" с гибкостью "${flexibility}".
+    // Get current date for more accurate analysis
+    const now = new Date();
+    const actualCurrentDate = now.toISOString().split('T')[0];
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    
+    const prompt = `Проанализируй оптимальные даты для путешествия в "${destination}" и предоставь детальные рекомендации.
 
-Создай анализ в формате JSON:
+КРИТИЧЕСКИ ВАЖНО - АКТУАЛЬНАЯ ДАТА:
+- Сегодняшняя дата: ${actualCurrentDate}
+- Текущий год: ${currentYear}
+- Текущий месяц: ${currentMonth}
+
+Параметры анализа:
+- Направление: ${destination}
+- Предпочитаемый сезон: ${season}
+- Гибкость дат: ${flexibility}
+
+ОБЯЗАТЕЛЬНЫЕ ТРЕБОВАНИЯ К ДАТАМ:
+- ВСЕ ДАТЫ ДОЛЖНЫ БЫТЬ В БУДУЩЕМ (после ${actualCurrentDate})
+- Используй только ${currentYear} год и позже
+- Минимальная дата: завтра (${new Date(now.getTime() + 24*60*60*1000).toISOString().split('T')[0]})
+
+ВАЖНО: Ответ должен быть ТОЛЬКО в формате JSON без дополнительного текста или markdown блоков.
+
+Предоставь следующую информацию в JSON формате:
+
 {
   "destination": "${destination}",
   "season": "${season}",
   "flexibility": "${flexibility}",
-  "optimal_dates": ["дата1", "дата2", "дата3"],
-  "pricing_windows": {
-    "low_season": {
-      "months": ["месяц1", "месяц2"],
-      "price_level": "low|medium|high",
-      "description": "описание"
-    },
-    "high_season": {
-      "months": ["месяц1", "месяц2"],
-      "price_level": "low|medium|high",
-      "description": "описание"
-    }
-  },
+  "optimal_dates": ["YYYY-MM-DD", "YYYY-MM-DD", "YYYY-MM-DD"],
+  "pricing_windows": ["период с описанием", "период с описанием"],
+  "booking_recommendation": "конкретная рекомендация по срокам бронирования",
+  "seasonal_factors": "описание сезонных факторов",
+  "current_date": "${actualCurrentDate}",
   "weather_forecast": {
     "temperature_range": "XX-XX°C",
     "precipitation": "low|medium|high",
     "weather_description": "описание погоды"
   },
-  "booking_recommendation": {
-    "advance_booking": "1-2 месяца|2-3 месяца|3+ месяцев",
-    "best_booking_time": "описание лучшего времени",
-    "price_trends": "растущие|стабильные|падающие"
-  },
-  "seasonal_factors": {
-    "local_events": ["событие1", "событие2"],
-    "tourist_density": "low|medium|high",
-    "unique_experiences": ["опыт1", "опыт2"]
-  },
   "recommendations": ["рекомендация1", "рекомендация2"]
 }
 
-Используй актуальные знания о климате, туристических сезонах и ценовых трендах.`;
+Требования:
+- Предложи 4-6 оптимальных дат в ближайшие 12 месяцев от ${actualCurrentDate}
+- Учти сезонность и климатические особенности направления
+- Рассмотри пассажиропотоки и ценовые периоды авиаперевозок
+- Адаптируй рекомендации под уровень гибкости
+- Предоставь практические советы по бронированию
+- Все даты в формате YYYY-MM-DD и ТОЛЬКО В БУДУЩЕМ
+- Ответ должен быть на русском языке
+- НЕ ИСПОЛЬЗУЙ MARKDOWN БЛОКИ (\`\`\`json), только чистый JSON`;
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
+      messages: [
+        {
+          role: 'system',
+          content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию СТРОГО в запрашиваемом JSON формате без дополнительного текста или markdown блоков.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.3, // Lower temperature for more consistent JSON structure
       max_tokens: 1500
     });
 
@@ -265,18 +323,86 @@ async function generateDynamicDateAnalysis(
       throw new Error('No content generated from OpenAI');
     }
 
-    // Try to parse JSON response
+    // Enhanced JSON parsing with markdown cleanup
+    let jsonString = content.trim();
+    
+    // Remove markdown code blocks if present
+    if (jsonString.startsWith('```json')) {
+      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (jsonString.startsWith('```')) {
+      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    // Remove any leading/trailing text that's not JSON
+    const jsonStart = jsonString.indexOf('{');
+    const jsonEnd = jsonString.lastIndexOf('}');
+    
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      jsonString = jsonString.substring(jsonStart, jsonEnd + 1);
+    }
+    
     try {
-      return JSON.parse(content);
-    } catch {
-      // If JSON parsing fails, create structured response
-      return {
+      const parsedResult = JSON.parse(jsonString.trim());
+      
+      // 🔥 КРИТИЧЕСКАЯ ВАЛИДАЦИЯ ДАТ - ПРОГРАММНАЯ ПРОВЕРКА 
+      const currentDate = new Date();
+      const today = currentDate.toISOString().split('T')[0];
+      
+      console.log(`🔍 DEBUG: Date validation - Current date: ${today}`);
+      console.log(`🔍 DEBUG: Received optimal_dates from AI:`, parsedResult.optimal_dates);
+      
+      // Фильтруем только будущие даты
+      if (parsedResult.optimal_dates && Array.isArray(parsedResult.optimal_dates)) {
+        const futureDates = parsedResult.optimal_dates.filter((date: string) => {
+          const dateObj = new Date(date);
+          const isValid = dateObj > currentDate;
+          console.log(`🔍 DEBUG: Date ${date} - Valid future date: ${isValid}`);
+          return isValid;
+        });
+        
+        console.log(`🔍 DEBUG: Filtered future dates:`, futureDates);
+        
+        // Если нет будущих дат или их слишком мало, генерируем новые
+        if (futureDates.length < 3) {
+          console.log(`⚠️ WARNING: Too few future dates (${futureDates.length}), generating new ones...`);
+          
+          const newOptimalDates = [];
+          const baseDate = new Date(currentDate);
+          baseDate.setDate(baseDate.getDate() + 7); // Начинаем через неделю
+          
+          // Генерируем 5 дат с интервалом 2-3 недели
+          for (let i = 0; i < 5; i++) {
+            const newDate = new Date(baseDate);
+            newDate.setDate(newDate.getDate() + (i * 17)); // ~2.5 недели интервал
+            newOptimalDates.push(newDate.toISOString().split('T')[0]);
+          }
+          
+          console.log(`✅ Generated new future dates:`, newOptimalDates);
+          parsedResult.optimal_dates = newOptimalDates;
+          parsedResult.current_date = today;
+          parsedResult.date_validation_applied = true;
+        } else {
+          // Используем только будущие даты
+          parsedResult.optimal_dates = futureDates;
+          parsedResult.current_date = today;
+          parsedResult.date_validation_applied = true;
+        }
+      }
+      
+      return parsedResult;
+    } catch (parseError) {
+      // Log the actual response for debugging
+      log.error('ContentSpecialist', 'JSON parsing failed for date analysis', {
         destination,
         season,
         flexibility,
-        raw_analysis: content,
-        generated_at: new Date().toISOString()
-      };
+        raw_response: content.substring(0, 500) + '...',
+        cleaned_json: jsonString.substring(0, 500) + '...',
+        parse_error: parseError instanceof Error ? parseError.message : String(parseError)
+      });
+      
+      // NO FALLBACK POLICY: Fail fast with clear error
+      throw new Error(`Failed to parse OpenAI response as JSON for ${destination} date analysis. Response was not valid JSON format. Parse error: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
     }
 
   } catch (error: unknown) {
@@ -303,7 +429,7 @@ export const dateIntelligence = tool({
     destination: z.string().describe('Направление путешествия'),
     season: z.string().describe('Предпочитаемый сезон'),
     flexibility: z.string().describe('Гибкость дат (fixed, flexible, very_flexible)'),
-    trace_id: z.string().optional().describe('ID трассировки для отладки')
+    trace_id: z.string().nullable().describe('ID трассировки для отладки')
   }),
   
   async execute(params, context) {
@@ -322,8 +448,48 @@ export const dateIntelligence = tool({
       
       // Save analysis to campaign folder if available
       if (campaignContext.campaignPath) {
-        const analysisPath = path.join(campaignContext.campaignPath, 'content', 'date-analysis.json');
-        await fs.writeFile(analysisPath, JSON.stringify(dateAnalysis, null, 2));
+        const contentDir = path.join(campaignContext.campaignPath, 'content');
+        const analysisPath = path.join(contentDir, 'date-analysis.json');
+        
+        try {
+          // Campaign folder should already exist from orchestrator
+          // Just ensure content subdirectory exists 
+          await fs.mkdir(contentDir, { recursive: true });
+          console.log(`📁 Content directory ensured: ${contentDir}`);
+          
+          // Save with enhanced structure that finalization tool expects
+          const enhancedDateAnalysis = {
+            ...dateAnalysis,
+            // Ensure required fields exist for finalization tool
+            optimal_dates: dateAnalysis.optimal_dates || [],
+            seasonal_factors: dateAnalysis.seasonal_factors || {},
+            booking_trends: dateAnalysis.booking_recommendation || {},
+            saved_at: new Date().toISOString(),
+            campaign_path: campaignContext.campaignPath
+          };
+          
+          await fs.writeFile(analysisPath, JSON.stringify(enhancedDateAnalysis, null, 2));
+          console.log(`✅ Date analysis saved to: ${analysisPath}`);
+          
+          // Verify file was actually written
+          try {
+            const verifyData = await fs.readFile(analysisPath, 'utf8');
+            const parsed = JSON.parse(verifyData);
+            console.log(`✅ File verification successful. Keys: ${Object.keys(parsed).join(', ')}`);
+          } catch (verifyError) {
+            console.error(`❌ File verification failed: ${verifyError}`);
+          }
+          
+        } catch (saveError) {
+          console.error(`❌ Failed to save date analysis: ${saveError}`);
+          console.error(`❌ Campaign path: ${campaignContext.campaignPath}`);
+          console.error(`❌ Content dir: ${contentDir}`);
+          console.error(`❌ Analysis path: ${analysisPath}`);
+          throw new Error(`Failed to save date analysis to ${analysisPath}: ${getErrorMessage(saveError)}`);
+        }
+      } else {
+        console.error(`❌ No campaign path available for saving date analysis. Context:`, campaignContext);
+        throw new Error(`❌ CRITICAL ERROR: No campaign path available for saving date analysis. Date analysis is required for email generation. Campaign context keys: ${Object.keys(campaignContext)}`);
       }
       
       // Update campaign context
@@ -365,4 +531,4 @@ export const dateIntelligence = tool({
       return `Ошибка анализа дат: ${errorMessage}`;
     }
   }
-}); 
+});

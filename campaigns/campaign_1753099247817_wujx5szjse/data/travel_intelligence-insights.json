@@ -1,0 +1,29 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Fly to Oslo, then use trains or buses to explore the fjords and Northern Lights. Rental cars are also popular for flexible travel.",
+    "pricing_trends": "Winter accommodations in Norway can range from $100 to $300 per night depending on the location and season. Ski resorts may have higher rates during peak months.",
+    "seasonal_patterns": "Best time for winter travel is from December to March. Popular months include December for Christmas markets and February for ski resorts.",
+    "booking_windows": "Best time to book is 3 to 6 months in advance to secure the best rates. Average lead time is 4 months for winter trips.",
+    "destination_insights": {
+      "route_analysis": "Fly to Oslo, then use trains or buses to explore the fjords and Northern Lights. Rental cars are also popular for flexible travel.",
+      "seasonal_patterns": "Best time for winter travel is from December to March. Popular months include December for Christmas markets and February for ski resorts.",
+      "climate": "Winter temperatures can drop to -10°C (14°F) in the north, milder conditions in the south. Dress warmly and be prepared for snow and icy conditions.",
+      "culture": "Experience unique traditions like 'Russefeiring', Christmas celebrations, and the stunning Northern Lights. Local cuisine includes dishes like 'Raspeballer' and 'Kjøttkaker'.",
+      "attractions": "Visit the stunning fjords, Oslo's modern architecture, Bergen's historic wharf, and enjoy activities like dog sledding and snowshoeing."
+    },
+    "market_insights": {
+      "pricing_trends": "Winter accommodations in Norway can range from $100 to $300 per night depending on the location and season. Ski resorts may have higher rates during peak months.",
+      "booking_windows": "Best time to book is 3 to 6 months in advance to secure the best rates. Average lead time is 4 months for winter trips.",
+      "demand": "Demand peaks during Christmas and winter sports seasons. Off-peak months like January may have lower prices and crowds.",
+      "competition": "Alternatives include ski destinations in Sweden and Finland, which can attract visitors away from Norway during winter."
+    },
+    "trend_insights": {
+      "market_trends": "Increased interest in sustainable travel and experiences such as eco-friendly accommodations and local engagement.",
+      "consumer_behavior": "Travelers are increasingly looking for multi-activity packages that include sightseeing, outdoor adventures, and culinary experiences.",
+      "competitive_landscape": "Norway competes with Scandinavian neighbors; however, its winter scenery and experiences are highly valued. The focus on sustainable tourism sets it apart.",
+      "seasonal_factors": "Winter sports events and holiday festivities attract many visitors, however, January often sees fewer tourists due to post-holiday travel lull."
+    }
+  },
+  "saved_at": "2025-07-21T12:01:14.644Z"
+}

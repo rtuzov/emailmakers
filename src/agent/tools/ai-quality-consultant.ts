@@ -12,7 +12,7 @@ import {
   AIConsultantResponse,
   AIConsultantConfig,
   QualityAnalysisResult,
-  ImprovementIteration
+  // ImprovementIteration
 } from './ai-consultant/types';
 import { getValidatedUsageModel } from '../../shared/utils/model-config';
 import { AgentEmailAnalyzer } from './ai-consultant/agent-analyzer';
@@ -105,7 +105,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     try {
       await AgentEmailAnalyzer.initializeSDK();
     } catch (sdkError) {
-      console.warn('⚠️ T11: SDK already initialized or initialization failed:', sdkError.message);
+      console.warn('⚠️ T11: SDK already initialized or initialization failed:', (sdkError as Error).message);
     }
     
     // Получаем полный HTML если он сокращен
@@ -119,7 +119,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
         fullHtml = await fs.readFile(htmlPath, 'utf8');
         console.log(`✅ T11: Loaded full HTML from file: ${fullHtml.length} characters`);
       } catch (error) {
-        console.warn('⚠️ T11: Could not load full HTML from file, using provided HTML:', error.message);
+        console.warn('⚠️ T11: Could not load full HTML from file, using provided HTML:', error instanceof Error ? error.message : String(error));
         // Пытаемся восстановить HTML убрав маркер truncated
         fullHtml = params.html_content.replace('...[truncated]', '');
       }
@@ -145,12 +145,12 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
       html_content: fullHtml, // Используем полный HTML
       mjml_source: params.mjml_source || '',
       topic: params.topic,
-      target_audience: params.target_audience || undefined,
+      ...(params.target_audience ? { target_audience: params.target_audience } : {}),
       campaign_type: params.campaign_type,
       assets_used: {
         original_assets: params.assets_used?.original_assets || [],
         processed_assets: params.assets_used?.processed_assets || [],
-        sprite_metadata: params.assets_used?.sprite_metadata || undefined
+        ...(params.assets_used?.sprite_metadata ? { sprite_metadata: params.assets_used?.sprite_metadata } : {})
       },
       prices: params.prices ? {
         origin: params.prices.origin,
@@ -170,7 +170,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
         client_compatibility: params.render_test_results.client_compatibility,
         issues_found: params.render_test_results.issues_found
       } : undefined,
-      previous_analysis: params.previous_analysis ? {
+      ...(params.previous_analysis && { previous_analysis: {
         overall_score: params.previous_analysis.overall_score,
         quality_grade: params.previous_analysis.quality_grade,
         quality_gate_passed: params.previous_analysis.overall_score >= 70,
@@ -191,7 +191,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
         analysis_time: 0,
         confidence_level: 0.8,
         analyzed_elements: []
-      } : undefined,
+      }}),
       iteration_count: params.iteration_count,
       improvement_history: (params.improvement_history || []).map(item => ({
         iteration_number: item.iteration,
@@ -202,9 +202,7 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
         recommendations_applied: item.changes_made,
         execution_results: [],
         total_time: 0,
-        success: true,
-        error_message: undefined,
-        consultant_response: undefined
+        success: true
       }))
     };
     
@@ -215,7 +213,11 @@ export async function aiQualityConsultant(params: AIQualityConsultantParams) {
     
     // Добавляем скриншоты в запрос консультанта
     if (params.screenshots) {
-      consultantRequest.screenshots = params.screenshots;
+      consultantRequest.screenshots = {
+        ...(params.screenshots.desktop && { desktop: params.screenshots.desktop }),
+        ...(params.screenshots.mobile && { mobile: params.screenshots.mobile }),
+        ...(params.screenshots.tablet && { tablet: params.screenshots.tablet })
+      };
     }
     
     const consultation = await consultant.consultOnQuality(consultantRequest);

@@ -622,7 +622,7 @@ export async function GET(request: NextRequest) {
 /**
  * HEAD /api/health - Simple health check for load balancers
  */
-export async function HEAD(request: NextRequest) {
+export async function HEAD(_request: NextRequest) {
   try {
     const readiness = await healthCheckService.getReadiness();
     

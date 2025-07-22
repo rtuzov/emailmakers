@@ -119,7 +119,7 @@ export class AgentResponseUtils {
     taskType: string,
     error: string | Error,
     startTime: number,
-    agentType: string
+    _agentType: string
   ): BaseAgentOutput {
     return {
       success: false,

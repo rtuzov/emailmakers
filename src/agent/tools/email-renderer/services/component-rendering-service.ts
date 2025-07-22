@@ -507,7 +507,7 @@ export class ComponentRenderingService {
     `;
   }
   
-  private renderFooterComponent(contentData: any, props: any, brandGuidelines?: any): string {
+  private renderFooterComponent(_contentData: any, props: any, brandGuidelines?: any): string {
     const secondaryColor = brandGuidelines?.secondary_color || props.secondaryColor || '#6c757d';
     
     return `
@@ -592,7 +592,7 @@ export class ComponentRenderingService {
     `;
   }
   
-  private renderNewsletterComponent(contentData: any, props: any, brandGuidelines?: any): string {
+  private renderNewsletterComponent(_contentData: any, props: any, brandGuidelines?: any): string {
     const articles = props.articles || [
       { title: 'Article 1', summary: 'Article summary', url: '#' },
       { title: 'Article 2', summary: 'Article summary', url: '#' }
@@ -693,7 +693,7 @@ export class ComponentRenderingService {
     return recommendations;
   }
   
-  private generateSeasonalRecommendations(result: any, config?: SeasonalConfig): string[] {
+  private generateSeasonalRecommendations(_result: any, config?: SeasonalConfig): string[] {
     const recommendations = [];
     
     if (config?.include_animations) {
@@ -726,10 +726,10 @@ export class ComponentRenderingService {
   private async applyEnterpriseOptimizations(result: any, params: EmailRendererParams): Promise<any> { return result; }
   private async applyParallelRenderingOptimizations(result: any): Promise<any> { return result; }
   private async applyAccessibilityEnhancements(result: any): Promise<any> { return result; }
-  private getSeasonalColors(season: string): string[] { return ['#ff6b6b', '#4ecdc4']; }
-  private getSeasonalElements(season: string, context: string): string[] { return ['snowflakes', 'leaves']; }
-  private getSeasonalContentAdaptations(season: string): string[] { return ['seasonal_greetings']; }
-  private generateSeasonalMjml(params: EmailRendererParams, variant: any): string { return '<mjml></mjml>'; }
+  private getSeasonalColors(_season: string): string[] { return ['#ff6b6b', '#4ecdc4']; }
+  private getSeasonalElements(_season: string, context: string): string[] { return ['snowflakes', 'leaves']; }
+  private getSeasonalContentAdaptations(_season: string): string[] { return ['seasonal_greetings']; }
+  private generateSeasonalMjml(_params: EmailRendererParams, variant: any): string { return '<mjml></mjml>'; }
   private async applySeasonalStyling(mjml: string, variant: any): Promise<string> { return mjml; }
   private addSeasonalAnimations(html: string, variant: any): string { return html; }
   private async optimizeSeasonalAssets(result: any): Promise<any> { return result; }

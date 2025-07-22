@@ -103,8 +103,8 @@ export class ValidationMonitorStub {
    */
   getMetrics(): ValidationMetrics {
     const totalValidations = this.events.length;
-    const completedValidations = this.events.filter(e => e.type === 'validation_completed');
-    const failedValidations = this.events.filter(e => e.type === 'validation_failed');
+    const completedValidations = this.events.filter(e => (e || {}).type === 'validation_completed');
+    const failedValidations = this.events.filter(e => (e || {}).type === 'validation_failed');
     
     const successRate = totalValidations > 0 ? (completedValidations.length / totalValidations) * 100 : 0;
     

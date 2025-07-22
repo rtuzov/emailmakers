@@ -40,7 +40,7 @@ export class AuthenticationService {
   constructor(
     private userRepository: UserRepository,
     private sessionRepository: SessionRepository,
-    private encryptionService?: EncryptionService
+    private _encryptionService?: EncryptionService // Currently unused
   ) {}
 
   async register(registerData: RegisterRequest): Promise<AuthResult> {

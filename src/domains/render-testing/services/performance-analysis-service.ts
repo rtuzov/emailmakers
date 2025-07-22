@@ -286,7 +286,7 @@ export class PerformanceAnalysisService {
    */
   private analyzePerformanceIssues(
     metrics: PerformanceMetrics,
-    htmlContent: string,
+    _htmlContent: string,
     options: PerformanceTestOptions
   ): PerformanceIssue[] {
     const issues: PerformanceIssue[] = [];
@@ -357,7 +357,7 @@ export class PerformanceAnalysisService {
    */
   private generateOptimizationRecommendations(
     issues: PerformanceIssue[],
-    metrics: PerformanceMetrics
+    _metrics: PerformanceMetrics
   ): string[] {
     const optimizations: string[] = [];
 
@@ -433,7 +433,7 @@ export class PerformanceAnalysisService {
    * Calculate overall performance score
    */
   private calculatePerformanceScore(
-    metrics: PerformanceMetrics,
+    _metrics: PerformanceMetrics,
     issues: PerformanceIssue[],
     compatibility: any
   ): number {

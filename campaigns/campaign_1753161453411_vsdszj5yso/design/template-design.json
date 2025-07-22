@@ -1,0 +1,300 @@
+{
+  "template_id": "danish_summer_campaign_2025",
+  "template_name": "Летнее приключение в Дании",
+  "description": "Email шаблон для продвижения летних туров в Данию с акцентом на атмосферу приключений.",
+  "target_audience": "Путешественники и семейные пары, заинтересованные в летнем отдыхе",
+  "visual_concept": {
+    "style": "Современный, яркий и вдохновляющий стиль, который вызывает желание путешествовать.",
+    "mood": "Веселый, энергичный и приключенческий"
+  },
+  "layout": {
+    "type": "one-column",
+    "max_width": "600px",
+    "sections_count": "7",
+    "visual_hierarchy": "clear",
+    "spacing_system": "20px"
+  },
+  "sections": [
+    {
+      "position": "header",
+      "dimensions": {
+        "width": "100%",
+        "height": "80px",
+        "padding": "0"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "0"
+      }
+    },
+    {
+      "position": "hero",
+      "dimensions": {
+        "width": "100%",
+        "height": "300px",
+        "padding": "0"
+      },
+      "background": {
+        "image": {
+          "path": "HERO_IMAGE_PATH",
+          "description": "Панорама Копенгагена в летний день"
+        }
+      },
+      "content": {
+        "text": "<h1 style='color:#FFFFFF;'>Лето в Дании: ваши мечты о путешествии становятся реальностью!</h1>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "28px",
+        "font_weight": "bold",
+        "color": "#FFFFFF"
+      },
+      "spacing": {
+        "margin": "0"
+      }
+    },
+    {
+      "position": "content1",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "<p>Дорогие искатели приключений! Лето 2025 года приближается, и это идеальный момент, чтобы отправиться в Данию — страну утонченной культуры, потрясающих ландшафтов и безграничных возможностей для отдыха с близкими.</p>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "content2",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "<p>Представьте, как вы гуляете по живописным улочкам Копенгагена, наслаждаетесь изысканными блюдами в уютных кафе и исследуете уникальную природу Дании. Ваши самые яркие воспоминания ждут вас! Выберите одну из наших оптимальных дат: <strong>15, 22 августа или 5, 12, 19 сентября</strong> и получите специальные предложения по ценам от <strong>16,383 до 27,169 RUB</strong>. Это время, когда мечты становятся реальностью!</p>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "benefits",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "<ul><li>Незабываемые впечатления с близкими.</li><li>Экологически чистый туризм, который поможет сохранить природу.</li><li>Конкурентные цены на авиабилеты в Данию!</li></ul>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "social_proof",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "<p>Тысячи довольных путешественников уже сделали свой выбор! Присоединяйтесь к ним и создайте свои собственные незабываемые моменты.</p>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "urgency",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFC107"
+      },
+      "content": {
+        "text": "<p>Только сейчас у вас есть шанс забронировать билеты по лучшим ценам! Количество мест ограничено — не упустите возможность!</p>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "18px",
+        "font_weight": "bold",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "cta",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#009688"
+      },
+      "content": {
+        "text": "<a href='#' style='color:#FFFFFF; text-decoration:none; font-size:18px;'>Забронируйте свой билет сейчас!</a>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "18px",
+        "font_weight": "bold",
+        "color": "#FFFFFF"
+      },
+      "spacing": {
+        "margin": "20px 0"
+      }
+    },
+    {
+      "position": "footer",
+      "dimensions": {
+        "width": "100%",
+        "height": "80px",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "<p>Пусть это лето станет временем новых открытий и прекрасных воспоминаний. Не ждите, откройте для себя Данию уже сегодня!</p>",
+        "images": []
+      },
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#000000"
+      },
+      "spacing": {
+        "margin": "0"
+      }
+    }
+  ],
+  "components": {
+    "buttons": [
+      {
+        "text": "Забронируйте свой билет сейчас!",
+        "link": "#",
+        "style": {
+          "background_color": "#009688",
+          "color": "#FFFFFF",
+          "padding": "10px 20px",
+          "border_radius": "5px"
+        }
+      },
+      {
+        "text": "Узнайте больше о Дании",
+        "link": "#",
+        "style": {
+          "background_color": "#FFC107",
+          "color": "#000000",
+          "padding": "10px 20px",
+          "border_radius": "5px"
+        }
+      }
+    ]
+  },
+  "responsive": {
+    "breakpoints": {
+      "mobile": {
+        "max_width": "480px",
+        "adjustments": {
+          "font_size": "14px",
+          "padding": "10px",
+          "margin": "10px 0"
+        }
+      },
+      "tablet": {
+        "max_width": "768px",
+        "adjustments": {
+          "font_size": "16px",
+          "padding": "15px",
+          "margin": "15px 0"
+        }
+      }
+    }
+  },
+  "accessibility": {
+    "alt_texts": {
+      "hero_image": "Панорама Копенгагена в летний день"
+    },
+    "color_contrast": "AA",
+    "font_sizes": {
+      "minimum": "14px",
+      "default": "16px"
+    }
+  },
+  "email_client_optimizations": {
+    "outlook": "Используйте таблицы для верстки",
+    "gmail": "Гладкие шрифты и отсутствие фонов изображений в стилях",
+    "apple_mail": "Проверьте изображения на шрифты"
+  },
+  "performance": {
+    "size_targets": {
+      "max_size": "100KB",
+      "image_size_limit": "50KB"
+    },
+    "optimization": "Сжатие изображений формата JPEG и PNG"
+  },
+  "metadata": {
+    "generated_at": "2025-07-22T05:20:04.139Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-generation"
+  }
+}

@@ -46,8 +46,8 @@ export function isFormatSupportedByClients(format: string, emailClients: any[]):
  * Enhance asset manifest with technical specification constraints
  */
 export function enhanceAssetManifestWithTechSpec(assetManifest: AssetManifest, techSpec: any): AssetManifest {
-  const layoutConstraints = techSpec.specification?.design?.constraints?.layout || {};
-  const emailClients = techSpec.specification?.delivery?.emailClients || [];
+  const layoutConstraints = techSpec?.specification?.design?.constraints?.layout || {};
+  const emailClients = techSpec?.specification?.delivery?.emailClients || ['gmail', 'outlook', 'apple-mail'];
   const maxWidth = layoutConstraints.maxWidth || 600;
   
   // Clone the manifest to avoid mutation
@@ -90,11 +90,15 @@ export function enhanceAssetManifestWithTechSpec(assetManifest: AssetManifest, t
 /**
  * Generate asset usage instructions
  */
-export function generateAssetUsageInstructions(assetManifest: AssetManifest, contentContext: any): any[] {
-  const instructions = [];
+export function generateAssetUsageInstructions(assetManifest: AssetManifest, _contentContext: any): any[] {
+  const instructions: any[] = [];
+  
+  // ✅ ИСПРАВЛЕНО: Правильная структура asset manifest
+  const manifestData = (assetManifest as any)?.assetManifest || assetManifest;
   
   // Generate instructions for images
-  assetManifest.images.forEach((image: AssetImage) => {
+  const images = manifestData.images || [];
+  images.forEach((image: AssetImage) => {
     instructions.push({
       asset_id: image.id,
       asset_type: 'image',
@@ -115,7 +119,8 @@ export function generateAssetUsageInstructions(assetManifest: AssetManifest, con
   });
   
   // Generate instructions for icons
-  assetManifest.icons.forEach((icon: AssetIcon) => {
+  const icons = manifestData.icons || [];
+  icons.forEach((icon: AssetIcon) => {
     instructions.push({
       asset_id: icon.id,
       asset_type: 'icon',
@@ -236,12 +241,14 @@ export function calculateTechnicalCompliance(params: any): number {
 
 export function calculateAssetOptimization(assetManifest: AssetManifest): number {
   // Fix: Add null/undefined checks
-  if (!assetManifest || (!assetManifest.images && !assetManifest.icons)) {
+  // ✅ ИСПРАВЛЕНО: Правильная структура asset manifest
+  const manifestData = (assetManifest as any)?.assetManifest || assetManifest;
+  if (!manifestData || (!manifestData.images && !manifestData.icons)) {
     return 100; // Default score if no assets
   }
   
-  const images = assetManifest.images || [];
-  const icons = assetManifest.icons || [];
+  const images = manifestData.images || [];
+  const icons = manifestData.icons || [];
   const allAssets = [...images, ...icons];
   
   if (allAssets.length === 0) return 100;
@@ -269,9 +276,12 @@ export function calculateEmailClientCompatibility(assetManifest: AssetManifest, 
     return 85; // Default score if no data
   }
   
+  // ✅ ИСПРАВЛЕНО: Правильная структура asset manifest
+  const manifestData = (assetManifest as any)?.assetManifest || assetManifest;
+  
   const emailClients = techSpec.specification?.delivery?.emailClients || [];
-  const images = assetManifest.images || [];
-  const icons = assetManifest.icons || [];
+  const images = manifestData.images || [];
+  const icons = manifestData.icons || [];
   const allAssets = [...images, ...icons];
   
   if (allAssets.length === 0 || emailClients.length === 0) return 85;
@@ -281,7 +291,7 @@ export function calculateEmailClientCompatibility(assetManifest: AssetManifest, 
   
   allAssets.forEach(asset => {
     if (asset && asset.email_client_support) {
-      emailClients.forEach(client => {
+      emailClients.forEach((client: any) => {
         const clientName = client.client || client.name || client;
         if (asset.email_client_support && asset.email_client_support[clientName] !== undefined) {
           totalCompatibility += asset.email_client_support[clientName] ? 100 : 0;

@@ -10,7 +10,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import {
   validateHandoffData,
-  DesignToQualityHandoffSchema
+  DesignToQualityHandoffSchema,
+  ContentContextSchema
 } from './handoff-schemas';
 
 import {
@@ -35,7 +36,7 @@ export const finalizeDesignAndTransferToQuality = tool({
   description: 'Finalize all Design Specialist work and prepare comprehensive handoff to Quality Specialist with complete design package',
   parameters: z.object({
     request: z.string().describe('Original user request'),
-    content_context: z.object({}).strict().describe('Content context from previous specialist'),
+    content_context: ContentContextSchema.describe('Content context from previous specialist'),
     asset_manifest: z.object({}).strict().describe('Asset manifest with all prepared assets'),
     mjml_template: z.object({}).strict().describe('Generated MJML template'),
     design_decisions: z.object({}).strict().describe('Design decisions and rationale'),

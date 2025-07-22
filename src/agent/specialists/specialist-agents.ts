@@ -81,7 +81,7 @@ export const createCampaignFolderForOrchestrator = tool({
     user_request: z.string().describe('Original user request for context'),
     trace_id: z.string().nullable().describe('Trace ID for tracking')
   }),
-  execute: async (params) => {
+  execute: async (params, context) => {
     try {
       console.log('📁 ORCHESTRATOR: Creating campaign folder structure...');
       
@@ -196,6 +196,22 @@ ${params.user_request}
       console.log(`📂 Path: ${campaignPath}`);
       console.log(`📋 Subdirectories: ${subdirs.join(', ')}`);
       
+      // ✅ CRITICAL: Save campaign context to OpenAI SDK context parameter for specialists
+      if (context) {
+        (context as any).context = {
+          campaign: {
+            id: campaignId,
+            path: campaignPath,
+            name: correctedCampaignName,
+            brand: params.brand_name,
+            type: params.campaign_type,
+            language: 'ru'
+          }
+        };
+        console.log('💾 Campaign context saved to OpenAI SDK context for specialists');
+        console.log('🔗 Context structure:', JSON.stringify((context as any).context, null, 2));
+      }
+      
       return {
         campaign_id: campaignId,
         campaign_path: campaignPath,
@@ -206,7 +222,7 @@ ${params.user_request}
       
     } catch (error) {
       console.error('❌ ORCHESTRATOR: Failed to create campaign folder:', error);
-      throw new Error(`Campaign folder creation failed: ${error.message}`);
+      throw new Error(`Campaign folder creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 });
@@ -370,7 +386,7 @@ export class EmailCampaignOrchestrator {
       return {
         success: true,
         result: result.finalOutput,
-        traceId: config.traceId,
+        ...(config.traceId ? { traceId: config.traceId } : {}),
         metadata: {
           ...config.metadata,
           workflow_completed: true,
@@ -383,7 +399,7 @@ export class EmailCampaignOrchestrator {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
-        traceId: config.traceId,
+        ...(config.traceId ? { traceId: config.traceId } : {}),
         metadata: {
           ...config.metadata,
           workflow_failed: true,

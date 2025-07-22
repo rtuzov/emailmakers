@@ -22,6 +22,9 @@ export {
   createHandoffFile 
 } from './handoff-tools';
 
+// Content Finalization moved to core/specialist-finalization-tools.ts
+// Content Transfer moved to core/transfer-tools.ts
+
 // Types and utilities (will be added as we extract more modules)
 export type {
   CampaignWorkflowContext,

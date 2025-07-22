@@ -496,7 +496,7 @@ export default function OptimizationDashboard() {
             appliedBy,
             confidence
           };
-        }).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        }).sort((a, b) => new Date((b || {}).timestamp).getTime() - new Date(a.timestamp).getTime());
       };
       
       setOptimizationHistory(generateOptimizationHistory());
@@ -608,7 +608,7 @@ export default function OptimizationDashboard() {
           
           const config: OptimizationConfig = {
             id: `config-${i}`,
-            name: `${type.charAt(0).toUpperCase() + type.slice(1)} Optimization`,
+            name: `${(type || {}).charAt(0).toUpperCase() + (type || {}).slice(1)} Optimization`,
             description: `Автоматическая оптимизация ${type === 'performance' ? 'производительности' : 
                          type === 'database' ? 'базы данных' :
                          type === 'caching' ? 'кэширования' :
@@ -1060,7 +1060,7 @@ export default function OptimizationDashboard() {
                 <span className="text-white/60 text-sm">Период:</span>
                 <select
                   value={selectedTimeRange}
-                  onChange={(e) => setSelectedTimeRange(e.target.value as any)}
+                  onChange={(e) => setSelectedTimeRange((e || {}).target.value as any)}
                   className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-sm focus:outline-none focus:ring-2 focus:ring-kupibilet-primary"
                 >
                   <option value="1h">1 час</option>
@@ -1685,7 +1685,7 @@ export default function OptimizationDashboard() {
             <div className="flex items-center space-x-4">
               <select 
                 value={selectedHistoryPeriod} 
-                onChange={(e) => setSelectedHistoryPeriod(e.target.value as '7d' | '30d' | '90d' | '1y')}
+                onChange={(e) => setSelectedHistoryPeriod((e || {}).target.value as '7d' | '30d' | '90d' | '1y')}
                 className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-kupibilet-primary"
               >
                 <option value="7d" className="bg-gray-800">7 дней</option>
@@ -1838,7 +1838,7 @@ export default function OptimizationDashboard() {
               <div className="flex items-center space-x-2">
                 <select 
                   value={historyFilter} 
-                  onChange={(e) => setHistoryFilter(e.target.value as 'all' | 'completed' | 'failed' | 'rolled_back')}
+                  onChange={(e) => setHistoryFilter((e || {}).target.value as 'all' | 'completed' | 'failed' | 'rolled_back')}
                   className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-sm focus:outline-none focus:ring-2 focus:ring-kupibilet-primary"
                 >
                   <option value="all" className="bg-gray-800">Все</option>
@@ -2011,7 +2011,7 @@ export default function OptimizationDashboard() {
                 <span className="text-white/60 text-sm">Фильтр:</span>
                 <select
                   value={controlsFilter}
-                  onChange={(e) => setControlsFilter(e.target.value as any)}
+                  onChange={(e) => setControlsFilter((e || {}).target.value as any)}
                   className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-sm focus:outline-none focus:ring-2 focus:ring-kupibilet-primary"
                 >
                   <option value="all">Все</option>

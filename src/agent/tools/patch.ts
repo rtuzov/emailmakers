@@ -144,7 +144,7 @@ Please fix these issues while maintaining the original design and content. Retur
 
 function performBasicHtmlPatching(
   html: string,
-  issues: string[],
+  _issues: string[],
   patchType: string
 ): PatchResult {
   
@@ -283,7 +283,7 @@ RULES:
 - Maintain proper color contrast ratios`
   };
 
-  return patchTypePrompts[patchType] || patchTypePrompts.email_optimization;
+  return patchTypePrompts[patchType as keyof typeof patchTypePrompts] || patchTypePrompts.email_optimization;
 }
 
 function analyzeFixesApplied(original: string, patched: string, issues: string[]): string[] {

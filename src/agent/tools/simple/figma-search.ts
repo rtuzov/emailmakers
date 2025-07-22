@@ -59,7 +59,7 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
       target_count: params.target_count,
       diversity_mode: true,
       preferred_emotion: normalizedEmotion as "neutral" | "happy" | "angry" | "sad" | "confused" | undefined,
-      airline: params.airline || undefined,
+      ...(params.airline ? { airline: params.airline } : {}),
       use_local_only: true
     };
 

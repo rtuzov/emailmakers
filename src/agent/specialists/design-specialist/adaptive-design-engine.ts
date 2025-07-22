@@ -154,23 +154,23 @@ export interface ResponsiveSettings {
 export class AdaptiveDesignEngine {
   
   generateAdaptiveDesign(
-    analysis: ContentAnalysis, 
+    _analysis: ContentAnalysis, 
     personality: DesignPersonality, 
-    assets: any
+    _assets: any
   ): AdaptiveDesign {
     console.log('🎨 Generating adaptive design...');
     
     // Создаем структуру шаблона
-    const templateStructure = this.createTemplateStructure(analysis, personality);
+    const templateStructure = this.createTemplateStructure(_analysis, personality);
     
     // Генерируем визуальные компоненты
-    const visualComponents = this.generateVisualComponents(analysis, personality, assets);
+    const visualComponents = this.generateVisualComponents(_analysis, personality, _assets);
     
     // Адаптируем цвета
-    const adaptedColors = this.adaptColorSystem(personality.colorPalette, analysis);
+    const adaptedColors = this.adaptColorSystem(personality.colorPalette, _analysis);
     
     // Настраиваем типографику
-    const typography = this.createTypographySystem(analysis, personality);
+    const typography = this.createTypographySystem(_analysis, personality);
     
     // Настройки макета
     const layoutSettings = this.createLayoutSettings(personality);
@@ -179,7 +179,7 @@ export class AdaptiveDesignEngine {
     const animations = this.createAnimationSettings(personality);
     
     // Responsive настройки
-    const responsiveSettings = this.createResponsiveSettings(analysis);
+    const responsiveSettings = this.createResponsiveSettings(_analysis);
     
     return {
       templateStructure,
@@ -310,15 +310,15 @@ export class AdaptiveDesignEngine {
   }
 
   private generateVisualComponents(
-    analysis: ContentAnalysis, 
+    _analysis: ContentAnalysis, 
     personality: DesignPersonality, 
-    assets: any
+    _assets: any
   ): VisualComponent[] {
     const components: VisualComponent[] = [];
     
     // Генерируем компоненты из предложений
     personality.componentSuggestions.forEach((componentType, index) => {
-      const component = this.createVisualComponent(componentType, analysis, personality, index);
+      const component = this.createVisualComponent(componentType, _analysis, personality, index);
       if (component) {
         components.push(component);
       }
@@ -329,7 +329,7 @@ export class AdaptiveDesignEngine {
 
   private createVisualComponent(
     type: string, 
-    analysis: ContentAnalysis, 
+    _analysis: ContentAnalysis, 
     personality: DesignPersonality, 
     index: number
   ): VisualComponent | null {
@@ -444,7 +444,7 @@ export class AdaptiveDesignEngine {
     }
   }
 
-  private adaptColorSystem(basePalette: DesignPersonality['colorPalette'], analysis: ContentAnalysis): ColorSystem {
+  private adaptColorSystem(basePalette: DesignPersonality['colorPalette'], _analysis: ContentAnalysis): ColorSystem {
     return {
       primary: basePalette.primary,
       secondary: this.lightenColor(basePalette.primary, 20),
@@ -554,7 +554,7 @@ export class AdaptiveDesignEngine {
     };
   }
 
-  private createResponsiveSettings(analysis: ContentAnalysis): ResponsiveSettings {
+  private createResponsiveSettings(_analysis: ContentAnalysis): ResponsiveSettings {
     return {
       mobileFirst: true,
       fluidTypography: true,
@@ -590,14 +590,14 @@ export const generateAdaptiveDesign = tool({
   parameters: z.object({
     trace_id: z.string().describe('ID трассировки для отладки').default('design-trace')
   }),
-  execute: async (params, context) => {
+  execute: async (_params, context) => {
     console.log('\n🎨 === ADAPTIVE DESIGN ENGINE ===');
     
     try {
       // Проверяем наличие необходимых данных
-      const contentAnalysis = context?.designContext?.content_analysis;
-      const designPersonality = context?.designContext?.design_personality;
-      const assetManifest = context?.designContext?.asset_manifest;
+      const contentAnalysis = (context as any)?.designContext?.content_analysis;
+      const designPersonality = (context as any)?.designContext?.design_personality;
+      const assetManifest = (context as any)?.designContext?.asset_manifest;
       
       if (!contentAnalysis || !designPersonality) {
         throw new Error('Content analysis and design personality required. analyzeContentForDesign must be called first.');
@@ -623,8 +623,8 @@ export const generateAdaptiveDesign = tool({
       });
       
       // Сохраняем результат в контекст
-      if (context?.designContext) {
-        context.designContext.adaptive_design = adaptiveDesign;
+      if ((context as any)?.designContext) {
+        (context as any).designContext.adaptive_design = adaptiveDesign;
       }
       
       return `Adaptive design created successfully!

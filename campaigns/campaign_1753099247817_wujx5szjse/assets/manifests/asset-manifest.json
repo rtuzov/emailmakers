@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-21T12:02:04.219Z",
+  "campaign_id": "campaign_1753099247817_wujx5szjse",
+  "total_assets": 0,
+  "images": [],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 0,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753099324219",
+    "status": "no_assets_found"
+  }
+}

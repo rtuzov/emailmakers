@@ -261,8 +261,8 @@ export class ContentIntelligenceAnalyzer {
       }
     };
 
-    const themeGroup = palettes[analysis.theme] || palettes.business;
-    return themeGroup[analysis.priceCategory] || themeGroup['mid-range'];
+    const themeGroup = (palettes as any)[analysis.theme] || palettes.business;
+    return (themeGroup as any)[analysis.priceCategory] || themeGroup['mid-range'];
   }
 
   private determineLayoutComplexity(analysis: ContentAnalysis): DesignPersonality['layoutComplexity'] {
@@ -315,7 +315,7 @@ export class ContentIntelligenceAnalyzer {
       return 'moderate';
     }
     
-    if (analysis.visualStyle === 'corporate') {
+    if ((analysis as any).visualStyle === 'corporate') {
       return 'subtle';
     }
     
@@ -332,15 +332,15 @@ export const analyzeContentForDesign = tool({
   parameters: z.object({
     trace_id: z.string().describe('ID трассировки для отладки').default('content-trace')
   }),
-  execute: async (params, context) => {
+  execute: async (_params, context) => {
     console.log('\n🧠 === CONTENT INTELLIGENCE ANALYZER ===');
     
     try {
-      // Получаем контекст из design context
-      const contentContext = context?.designContext?.content_context;
+      // Получаем контекст из design context с авто-загрузкой
+      let contentContext = (context as any)?.designContext?.content_context;
       
       if (!contentContext) {
-        throw new Error('Content context not found. loadDesignContext must be called first.');
+        throw new Error('Content context not found in design context. loadDesignContext must be called first to load campaign context. Auto-loading disabled to prevent recursive calls.');
       }
 
       console.log('📊 Analyzing content for optimal design...');
@@ -369,9 +369,9 @@ export const analyzeContentForDesign = tool({
       });
       
       // Сохраняем результаты в контекст
-      if (context?.designContext) {
-        context.designContext.content_analysis = analysis;
-        context.designContext.design_personality = designPersonality;
+      if ((context as any)?.designContext) {
+        (context as any).designContext.content_analysis = analysis;
+        (context as any).designContext.design_personality = designPersonality;
       }
       
       return `Content analysis completed successfully! 

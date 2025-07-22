@@ -6,8 +6,8 @@
 import { tool, Agent, run } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import path from 'path';
-import { buildDesignContext } from './design-context';
+import * as path from 'path';
+import { buildDesignContext as _buildDesignContext } from './design-context';
 import { TemplateDesign } from './types';
 
 /**
@@ -45,55 +45,112 @@ async function generateAITemplateDesign(params: {
   designBrief: any;
   assetManifest: any;
   techSpec: any;
+  emailContent: any;      // ✅ Rich email content
+  pricingAnalysis: any;   // ✅ Real pricing data
+  assetStrategy: any;     // ✅ Visual direction
+  dateAnalysis: any;      // ✅ Timing context
   designRequirements: any;
+  traceId: string;
 }): Promise<TemplateDesign> {
-  const { contentContext, designBrief, assetManifest, techSpec, designRequirements } = params;
+  const { 
+    contentContext, 
+    designBrief, 
+    assetManifest, 
+    techSpec: _techSpec, 
+    emailContent,
+    pricingAnalysis,
+    assetStrategy,
+    dateAnalysis,
+    designRequirements: _designRequirements,
+    traceId 
+  } = params;
   
-  // Extract content for AI analysis - use proper paths for all data
-  const subject = contentContext.generated_content?.subject || contentContext.subject;
-  const body = contentContext.generated_content?.body || contentContext.body;
-  const preheader = contentContext.generated_content?.preheader;
+  // ✅ EXTRACT RICH CONTENT FROM LOADED FILES - PRIORITIZE REAL DATA
   
-  // Extract pricing information from multiple possible sources
-  const pricingData = contentContext.pricing_analysis || contentContext.pricing || contentContext.generated_content?.pricing;
-  const bestPrice = pricingData?.best_price || pricingData?.min_price;
-  const currency = pricingData?.currency || 'RUB';
-  const formattedPrice = bestPrice ? `${bestPrice} ${currency}` : 'Цена по запросу';
+  // Subject and preheader from email content (rich source)
+  const subject = emailContent?.subject_line?.primary || 
+                 contentContext.generated_content?.subject || 
+                 contentContext.subject || 
+                 'Email кампания';
   
-  // Extract CTA from content
-  const ctaData = contentContext.generated_content?.cta;
-  const primaryCTA = ctaData?.primary || 'Забронировать';
-  const secondaryCTA = ctaData?.secondary || 'Узнать больше';
+  const subjectAlternative = emailContent?.subject_line?.alternative;
+  const preheader = emailContent?.preheader || contentContext.generated_content?.preheader;
   
-  // Extract dates
-  const dateAnalysis = contentContext.date_analysis;
-  const optimalDates = dateAnalysis?.optimal_dates || [];
+  // Body content - use structured email content
+  const headline = emailContent?.headline?.main || 'Заголовок кампании';
+  const subheadline = emailContent?.headline?.subheadline;
+  const openingText = emailContent?.body?.opening;
+  const mainContent = emailContent?.body?.main_content;
+  const benefits = emailContent?.body?.benefits || [];
+  const socialProof = emailContent?.body?.social_proof;
+  const urgencyElements = emailContent?.body?.urgency_elements;
+  const closingText = emailContent?.body?.closing;
+  
+  // ✅ EXTRACT REAL PRICING DATA
+  const bestOfferPrice = pricingAnalysis?.overall_analysis?.best_offer?.price;
+  const cheapestPrice = pricingAnalysis?.overall_analysis?.price_range?.min;
+  const currency = pricingAnalysis?.overall_analysis?.currency || 'RUB';
+  const realPrice = bestOfferPrice || cheapestPrice || pricingAnalysis?.optimal_dates_pricing?.cheapest_on_optimal;
+  const formattedPrice = realPrice ? `${realPrice.toLocaleString('ru-RU')} ${currency}` : 'Цена по запросу';
+  
+  // ✅ EXTRACT CTA FROM EMAIL CONTENT
+  const primaryCTA = emailContent?.call_to_action?.primary?.text || 'Забронировать';
+  const secondaryCTA = emailContent?.call_to_action?.secondary?.text || 'Узнать больше';
+  
+  // ✅ EXTRACT DATES AND TIMING
+  const optimalDates = dateAnalysis?.optimal_dates || pricingAnalysis?.date_analysis_source?.optimal_dates || [];
   const formattedDates = optimalDates.slice(0, 3).join(', ');
+  const seasonalInfo = dateAnalysis?.seasonal_factors || pricingAnalysis?.date_analysis_source?.seasonal_factors;
   
-  // Extract destination info
-  const destination = contentContext.context_analysis?.destination || dateAnalysis?.destination || 'место назначения';
+  // ✅ EXTRACT DESTINATION INFO
+  const destination = dateAnalysis?.destination || 
+                     pricingAnalysis?.destination || 
+                     contentContext.context_analysis?.destination || 
+                     'место назначения';
   
-  // Extract brand colors with fallbacks
-  const primaryColor = designBrief.design_requirements?.primary_color || 
+  // ✅ EXTRACT EMOTIONAL HOOKS AND TRIGGERS
+  const emotionalHooks = emailContent?.emotional_hooks || {};
+  // Reconstruct body for backward compatibility
+  
+  // ✅ EXTRACT BRAND COLORS FROM ASSET STRATEGY (RICH SOURCE)
+  const primaryColor = assetStrategy?.visual_direction?.color_palette?.primary ||
+                      designBrief.design_requirements?.primary_color || 
                       designBrief.brand_colors?.primary || 
                       '#4BFF7E';
-  const accentColor = designBrief.design_requirements?.accent_color || 
+  const accentColor = assetStrategy?.visual_direction?.color_palette?.secondary ||
+                     assetStrategy?.visual_direction?.color_palette?.accent ||
+                     designBrief.design_requirements?.accent_color || 
                      designBrief.brand_colors?.accent || 
                      '#FF6240';
-  const backgroundColor = designBrief.design_requirements?.background_color || 
+  const backgroundColor = assetStrategy?.visual_direction?.color_palette?.background ||
+                         designBrief.design_requirements?.background_color || 
                          designBrief.brand_colors?.background || 
                          '#EDEFFF';
+                         
+  // ✅ EXTRACT VISUAL STYLE FROM ASSET STRATEGY
+  const visualStyle = assetStrategy?.visual_direction?.primary_style || 
+                     assetStrategy?.visual_direction?.mood ||
+                     designBrief.visual_style || 
+                     'modern';
   
   // Extract assets information - handle both local and external assets properly
-  const images = Array.isArray(assetManifest?.images) ? assetManifest.images : [];
-  const icons = Array.isArray(assetManifest?.icons) ? assetManifest.icons : [];
-  const allAssets = [...images, ...icons];
+  // ✅ ИСПРАВЛЕНО: Правильное извлечение из вложенной структуры assetManifest
+  const images = Array.isArray(assetManifest?.assetManifest?.images) ? assetManifest.assetManifest.images : [];
+  const icons = Array.isArray(assetManifest?.assetManifest?.icons) ? assetManifest.assetManifest.icons : [];
+  // const _allAssets = [...images, ...icons];
   
   console.log(`🔍 Processing assets: ${images.length} images, ${icons.length} icons`);
+  console.log(`📊 Asset manifest structure:`, {
+    hasAssetManifest: !!assetManifest,
+    hasNestedManifest: !!assetManifest?.assetManifest,
+    manifestKeys: assetManifest ? Object.keys(assetManifest) : [],
+    nestedKeys: assetManifest?.assetManifest ? Object.keys(assetManifest.assetManifest) : []
+  });
   
-  // Separate local and external images
-  const localImages = images.filter((img: any) => !img.isExternal);
-  const externalImages = images.filter((img: any) => img.isExternal);
+  // ✅ ИСПРАВЛЕНО: Добавлены проверки безопасности для массивов
+  // Separate local and external images with safe array operations
+  const localImages = Array.isArray(images) ? images.filter((img: any) => !img.isExternal) : [];
+  const externalImages = Array.isArray(images) ? images.filter((img: any) => img.isExternal) : [];
   const totalImages = images.length;
   
   console.log(`📊 Asset breakdown: ${localImages.length} local, ${externalImages.length} external images`);
@@ -101,375 +158,145 @@ async function generateAITemplateDesign(params: {
   // Find specific assets for template - prioritize external images for hero
   const heroAsset = externalImages[0] || localImages[0] || images[0];
   
+  // ✅ ИСПРАВЛЕНО: Безопасное создание contentAssets с проверками
   // Use remaining images for content sections
   const contentAssets = [
-    ...externalImages.slice(1),  // Use external images first
-    ...localImages.slice(heroAsset === localImages[0] ? 1 : 0)  // Then local images
+    ...(Array.isArray(externalImages) ? externalImages.slice(1) : []),  // Use external images first
+    ...(Array.isArray(localImages) ? localImages.slice(heroAsset === localImages[0] ? 1 : 0) : [])  // Then local images
   ].slice(0, 3);
   
-  console.log(`🎯 Selected hero asset: ${heroAsset?.filename || 'none'} (external: ${heroAsset?.isExternal})`);
-  console.log(`📷 Content assets: ${contentAssets.length} selected`);
+  // ✅ ИСПРАВЛЕНО: Дополнительная проверка что contentAssets является массивом
+  const safeContentAssets = Array.isArray(contentAssets) ? contentAssets : [];
+  
+  console.log(`🎯 Selected hero asset: ${heroAsset?.filename || 'REQUIRED'} (external: ${heroAsset?.isExternal})`);
+  console.log(`📷 Content assets: ${safeContentAssets.length} selected`);
 
   const templateDesignPrompt = `
-Проанализируй контент и создай детальный дизайн email шаблона, адаптированный под специфику кампании.
+Ты - эксперт по дизайну email-кампаний. Создай ДЕТАЛЬНЫЙ и КОНКРЕТНЫЙ дизайн-план email шаблона как ИНСТРУКЦИЯ ДЛЯ JUNIOR РАЗРАБОТЧИКА.
 
-🧠 АНАЛИЗ КОНТЕНТА:
+🔍 === ПОЛНЫЙ АНАЛИЗ КАМПАНИИ ===
 
-📧 КОНТЕКСТ КАМПАНИИ:
-Тема: ${subject}
-Preheader: ${preheader}
-Контент: ${body?.substring(0, 500)}...
-Цена: ${formattedPrice}
-Даты: ${formattedDates}
-Направление: ${destination}
-Основной CTA: ${primaryCTA}
-Дополнительный CTA: ${secondaryCTA}
+📧 ОСНОВНЫЕ ДАННЫЕ КАМПАНИИ:
+• Основная тема: "${subject}"
+• Альтернативная тема: "${subjectAlternative || 'не указана'}"
+• Preheader: "${preheader || 'не указан'}"
+• Направление: ${destination}
+• Реальная цена: ${formattedPrice}
+• Оптимальные даты: ${formattedDates || 'не указаны'}
 
-🎨 БАЗОВЫЕ ЦВЕТА БРЕНДА (можешь адаптировать):
-Основной цвет: ${primaryColor}
-Акцентный цвет: ${accentColor}
-Фон: ${backgroundColor}
-Стиль: ${designBrief.visual_style || 'modern'}
+🎯 СТРУКТУРИРОВАННЫЙ КОНТЕНТ:
+• Заголовок: "${headline}"
+• Подзаголовок: "${subheadline || 'не указан'}"
+• Текст открытия: "${openingText || 'не указан'}"
+• Основной контент: "${mainContent || 'не указан'}"
+• Преимущества (${benefits.length}): ${benefits.map((b: string) => `"${b}"`).join(', ')}
+• Социальное доказательство: "${socialProof || 'не указано'}"
+• Элементы срочности: "${urgencyElements || 'не указаны'}"
+• Текст закрытия: "${closingText || 'не указан'}"
 
-🖼️ ДОСТУПНЫЕ РЕСУРСЫ:
-Всего изображений: ${totalImages}
-Локальные изображения: ${localImages.length}
-Внешние изображения: ${externalImages.length}
-Иконки: ${icons.length}
+🎨 ВИЗУАЛЬНАЯ СТРАТЕГИЯ:
+• Стиль: "${visualStyle}"
+• Настроение: "${assetStrategy?.visual_direction?.mood || 'REQUIRED'}"
+• Основной цвет: ${primaryColor}
+• Акцентный цвет: ${accentColor}  
+• Фон: ${backgroundColor}
+• Типы ассетов: ${assetStrategy?.asset_types?.map((a: any) => a.type).join(', ') || 'REQUIRED'}
 
-Hero изображение: ${heroAsset?.filename || 'не найдено'} 
-- Путь: ${heroAsset?.path || heroAsset?.url || 'placeholder.jpg'}
-- Описание: ${heroAsset?.alt_text || heroAsset?.description || 'Hero image'}
-- Внешнее: ${heroAsset?.isExternal ? 'да' : 'нет'}
+🖼️ ДОСТУПНЫЕ АССЕТЫ (ТОЧНЫЕ ПУТИ):
+Всего изображений: ${totalImages} | Локальных: ${localImages.length} | Внешних: ${externalImages.length} | Иконок: ${icons.length}
 
-Контентные изображения (${contentAssets.length}):
-${contentAssets.map((asset, i) => 
-  `${i+1}. ${asset.filename} - ${asset.alt_text || asset.description} (внешнее: ${asset.isExternal ? 'да' : 'нет'})`
+HERO ИЗОБРАЖЕНИЕ:
+- Файл: ${heroAsset?.filename || 'REQUIRED'}
+- Путь: ${heroAsset?.path || heroAsset?.url || 'REQUIRED'}
+- Описание: "${heroAsset?.alt_text || heroAsset?.description || 'REQUIRED'}"
+- Тип: ${heroAsset?.isExternal ? 'Внешнее (используй URL)' : 'Локальное (используй путь)'}
+
+КОНТЕНТНЫЕ ИЗОБРАЖЕНИЯ:
+${safeContentAssets.map((asset, i) => 
+  `${i+1}. ${asset.filename || 'unnamed'}
+     Путь: ${asset.path || asset.url || 'REQUIRED'}
+     Описание: "${asset.alt_text || asset.description || 'REQUIRED'}"
+     Тип: ${asset.isExternal ? 'Внешнее' : 'Локальное'}`
 ).join('\n')}
 
-📱 ТЕХНИЧЕСКИЕ ТРЕБОВАНИЯ:
-Максимальная ширина: ${techSpec.specification?.design?.constraints?.layout?.maxWidth || 600}px
-Email клиенты: ${techSpec.specification?.delivery?.emailClients?.map((c: any) => c.client).join(', ') || 'gmail, outlook, apple-mail'}
+⚡ ЭМОЦИОНАЛЬНЫЕ ТРИГГЕРЫ:
+${Object.keys(emotionalHooks).length > 0 ? 
+  Object.entries(emotionalHooks).map(([key, value]) => `• ${key}: ${value}`).join('\n') : 
+  '• REQUIRED EMOTIONAL TRIGGERS'}
 
-🎯 ЗАДАЧА: СОЗДАЙ АДАПТИВНЫЙ ДИЗАЙН
+📅 СЕЗОННЫЙ КОНТЕКСТ:
+${seasonalInfo || 'REQUIRED SEASONAL INFO'}
 
-1. АНАЛИЗИРУЙ КОНТЕНТ:
-   - Определи тематику (путешествия, бизнес, акции, премиум)
-   - Оцени тон сообщения (формальный, дружелюбный, срочный)
-   - Выяви ключевые моменты для выделения
-   - Определи целевую аудиторию по стилю текста
+🎯 ЗАДАЧА: СОЗДАЙ ДЕТАЛЬНУЮ ИНСТРУКЦИЮ ДЛЯ JUNIOR РАЗРАБОТЧИКА
 
-2. ПОДБЕРИ ЦВЕТОВУЮ СХЕМУ:
-   - Для путешествий: теплые тропические или холодные горные тона
-   - Для бизнеса: корпоративные синие, серые, белые
-   - Для акций: яркие контрастные цвета
-   - Для премиум: элегантные темные с золотыми акцентами
-   - Адаптируй базовые цвета бренда под контекст
+ТРЕБОВАНИЯ К ДЕТАЛИЗАЦИИ:
+1. **ТОЧНЫЕ РАЗМЕРЫ**: Укажи конкретные размеры в пикселях для КАЖДОГО элемента
+2. **ТОЧНЫЕ ПОЗИЦИИ**: Опиши где ИМЕННО располагать каждый элемент
+3. **ТОЧНЫЕ ЦВЕТА**: Используй HEX коды для всех цветов
+4. **ТОЧНЫЕ ШРИФТЫ**: Укажи конкретные размеры шрифтов и веса
+5. **ТОЧНЫЕ АССЕТЫ**: Используй ТОЧНЫЕ пути из списка выше
+6. **ТОЧНЫЕ ОТСТУПЫ**: Укажи padding и margin в пикселях
+7. **ТОЧНЫЙ КОНТЕНТ**: Используй ВЕСЬ предоставленный контент, не сокращай
 
-3. ОПРЕДЕЛИ СТРУКТУРУ:
-   - Для коротких сообщений: компактная структура (5-6 секций)
-   - Для детальных: расширенная структура (8-10 секций)
-   - Адаптируй под тип кампании (промо, информационная, сезонная)
+СТРУКТУРА ОТВЕТА:
+1. ОПРЕДЕЛИ тип кампании (промо/инфо/премиум/срочность)
+2. ВЫБЕРИ цветовую схему под тематику
+3. СОЗДАЙ детальную структуру секций (7-10 секций)
+4. ДЛЯ КАЖДОЙ СЕКЦИИ укажи:
+   - ТОЧНОЕ положение (header/hero/content1/content2/cta/footer/etc.)
+   - ТОЧНЫЕ размеры блока (width, height, padding)
+   - ТОЧНЫЙ фон (цвет или изображение с путем)
+   - ТОЧНОЕ содержимое (какой текст, какие изображения)
+   - ТОЧНУЮ типографику (размер, вес, цвет шрифта)
+   - ТОЧНЫЕ отступы между элементами
+   - ТОЧНЫЕ пути к изображениям из списка выше
 
-4. ВЫБЕРИ ТИПОГРАФИКУ:
-   - Заголовки: размер зависит от важности
-   - Основной текст: читаемость для аудитории
-   - Эмодзи: соответственно тематике и аудитории
+КРИТИЧНО ВАЖНО:
+- Используй ВСЕ benefits из списка
+- Включи social proof и urgency elements  
+- Используй реальную цену ${formattedPrice}
+- Размести ВСЕ доступные изображения
+- Создай КОНКРЕТНЫЕ инструкции, не общие фразы
+- Укажи ТОЧНЫЕ HEX цвета для каждого элемента
+- Создай адаптивность для мобильных устройств
 
-ВАЖНЫЕ ТРЕБОВАНИЯ:
-1. Используй ТОЧНЫЕ пути к файлам из списка ассетов выше
-2. Для внешних изображений используй URL (поле path/url)
-3. Для локальных изображений используй локальный путь
-4. Используй РЕАЛЬНУЮ цену: ${formattedPrice}
-5. Используй РЕАЛЬНЫЕ CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
-6. Включи реальные даты: ${formattedDates}
-7. АДАПТИРУЙ дизайн под анализ контента
+📝 ДОПОЛНИТЕЛЬНЫЕ ТРЕБОВАНИЯ:
+- Используй реальные CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
+- Включи оптимальные даты: ${formattedDates}
+- Адаптируй дизайн под анализ контента и сезонность
+- Создавай инструкции для junior разработчика: конкретно, подробно, с точными размерами
 
-{
-  "template_id": "autumn_${destination.toLowerCase()}_campaign",
-  "template_name": "${subject}",
-  "description": "Email шаблон для ${destination} кампании с реальными ассетами и ценами",
-  "target_audience": "${contentContext.campaign?.target_audience || 'путешественники'}",
-  "visual_concept": "Современный дизайн с акцентом на ${destination} и осенний отдых",
-  
-  "layout": {
-    "type": "single-column",
-    "max_width": 600,
-    "sections_count": 5,
-    "visual_hierarchy": "Hero изображение → контент → цены → CTA → footer",
-    "spacing_system": {
-      "section_padding": "20px",
-      "content_padding": "15px",
-      "element_margin": "10px"
-    }
-  },
-  
-  "sections": [
-    {
-      "id": "header",
-      "type": "header",
-      "position": 1,
-      "content": {
-        "logo": {
-          "required": true,
-          "position": "center",
-          "size": "medium"
-        }
-      },
-      "styling": {
-        "background_color": "#ffffff",
-        "padding": "20px"
-      }
-    },
-    {
-      "id": "hero",
-      "type": "hero", 
-      "position": 2,
-      "content": {
-        "headline": "${subject}",
-        "subheadline": "${preheader}",
-        "hero_image": {
-          "required": true,
-          "source": "${heroAsset?.isExternal ? 'external' : 'local'}",
-          "position": "background",
-          "size": "full-width",
-          "asset_file": "${heroAsset?.path || heroAsset?.url || 'placeholder.jpg'}",
-          "alt_text": "${heroAsset?.alt_text || heroAsset?.description || 'Hero image'}"
-        },
-        "cta_button": {
-          "text": "${primaryCTA}",
-          "style": "primary",
-          "position": "center"
-        }
-      },
-      "styling": {
-        "background_color": "${backgroundColor}",
-        "text_color": "#333333",
-        "padding": "40px 20px",
-        "text_align": "center"
-      }
-    },
-    {
-      "id": "content",
-      "type": "content",
-      "position": 3,
-      "content": {
-        "text_blocks": [
-          {
-            "type": "paragraph",
-            "content": "${body?.substring(0, 200)}...",
-            "styling": "body-text"
-          }
-        ],
-        "images": {
-          "count": ${contentAssets.length},
-          "layout": "grid",
-          "sources": [${contentAssets.map(a => `"${a.isExternal ? 'external' : 'local'}"`).join(', ')}],
-          "asset_files": [
-            ${contentAssets.map(asset => 
-              `{
-                "file": "${asset.path || asset.url}",
-                "alt_text": "${asset.alt_text || asset.description}",
-                "usage": "${asset.usage || 'content'}",
-                "isExternal": ${asset.isExternal || false}
-              }`
-            ).join(',\n            ')}
-          ]
-        },
-        "pricing": {
-          "display": true,
-          "price": "${formattedPrice}",
-          "dates": "${formattedDates}",
-          "style": "highlight",
-          "position": "center"
-        }
-      },
-      "styling": {
-        "background_color": "#ffffff",
-        "padding": "30px 20px"
-      }
-    },
-    {
-      "id": "cta",
-      "type": "call-to-action",
-      "position": 4,
-      "content": {
-        "headline": "Не упустите шанс!",
-        "button": {
-          "text": "${primaryCTA} от ${formattedPrice}",
-          "style": "large-primary",
-          "background_color": "${accentColor}",
-          "text_color": "#ffffff"
-        },
-        "supporting_text": "Лучшие даты: ${formattedDates}"
-      },
-      "styling": {
-        "background_color": "${primaryColor}",
-        "text_color": "#ffffff",
-        "padding": "40px 20px",
-        "text_align": "center"
-      }
-    },
-    {
-      "id": "footer",
-      "type": "footer",
-      "position": 5,
-      "content": {
-        "social_links": {
-          "required": true,
-          "platforms": ["facebook", "instagram", "twitter"]
-        },
-        "contact_info": {
-          "required": true,
-          "elements": ["address", "phone", "email"]
-        },
-        "unsubscribe": {
-          "required": true,
-          "text": "Отписаться от рассылки"
-        }
-      },
-      "styling": {
-        "background_color": "#f8f9fa",
-        "text_color": "#666666",
-        "padding": "30px 20px",
-        "text_align": "center"
-      }
-    }
-  ],
-  
-  "components": [
-    {
-      "id": "primary_button",
-      "type": "button",
-      "styling": {
-        "background_color": "${accentColor}",
-        "text_color": "#ffffff",
-        "border_radius": "6px",
-        "padding": "12px 24px",
-        "font_weight": "600",
-        "font_size": "16px"
-      },
-      "hover_effects": {
-        "background_color": "${accentColor}dd"
-      }
-    },
-    {
-      "id": "price_card",
-      "type": "card",
-      "styling": {
-        "background_color": "#ffffff",
-        "border": "1px solid #e5e5e5",
-        "border_radius": "8px",
-        "padding": "20px",
-        "box_shadow": "0 2px 8px rgba(0,0,0,0.1)"
-      }
-    }
-  ],
-  
-  "responsive": {
-    "breakpoints": [
-      {
-        "name": "mobile",
-        "max_width": "480px",
-        "adjustments": {
-          "font_sizes": "уменьшить на 2px",
-          "padding": "уменьшить на 25%",
-          "images": "full-width",
-          "columns": "stack vertically"
-        }
-      },
-      {
-        "name": "tablet",
-        "max_width": "768px",
-        "adjustments": {
-          "font_sizes": "уменьшить на 1px",
-          "padding": "уменьшить на 15%"
-        }
-      }
-    ]
-  },
-  
-  "accessibility": {
-    "alt_texts": "Все изображения должны иметь описательные alt-тексты",
-    "color_contrast": "Минимум 4.5:1 для основного текста",
-    "font_sizes": "Минимум 14px для основного текста",
-    "link_styling": "Подчеркивание для всех ссылок"
-  },
-  
-  "email_client_optimizations": {
-    "outlook": {
-      "table_based_layout": true,
-      "conditional_comments": true,
-      "fallback_fonts": true
-    },
-    "gmail": {
-      "embedded_css": true,
-      "image_blocking": "учтено",
-      "clipping_prevention": true
-    },
-    "apple_mail": {
-      "dark_mode_support": true,
-      "retina_images": true
-    }
-  },
-  
-  "performance": {
-    "total_size_target": "под 100KB",
-    "image_optimization": "WebP с JPEG fallback",
-    "css_inlining": "критичные стили инлайн",
-    "loading_strategy": "прогрессивная загрузка"
-  }
-}
-
-ВАЖНО:
-- Создай уникальный и продуманный дизайн
-- Используй все доступные изображения эффективно
-- Учти особенности email клиентов
-- Обеспечь отличную читаемость на мобильных
-- Сделай дизайн конверсионно-ориентированным
-- Ответ должен быть валидным JSON БЕЗ markdown форматирования
+ВЕРНИ ДЕТАЛЬНЫЙ JSON с полной структурой template design согласно интерфейсу TemplateDesign.
 `;
 
+  // 🤖 CALL AI AGENT TO GENERATE TEMPLATE DESIGN
+  console.log('🎨 Calling AI to generate detailed template design...');
+  
+  const result = await run(templateDesignAgent, templateDesignPrompt);
+  
+  let templateDesign;
   try {
-    // Use OpenAI Agents SDK sub-agent for AI generation
-    const result = await run(templateDesignAgent, templateDesignPrompt);
+    // Parse AI response as JSON
+    const aiResponse = result.finalOutput?.trim() || '{}';
+    const cleanResponse = aiResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+        templateDesign = JSON.parse(cleanResponse);
     
-    // Parse JSON response
-    let jsonString = result.finalOutput.trim();
-    
-    // Remove markdown code blocks if present
-    if (jsonString.startsWith('```json')) {
-      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (jsonString.startsWith('```')) {
-      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
-    
-    const templateDesign = JSON.parse(jsonString.trim());
-    
-    // Add metadata
+    console.log('✅ AI generated template design successfully');
+  } catch (parseError) {
+    console.error('❌ AI Template Design generation failed:', parseError);
+    throw new Error(`Failed to generate template design: AI response could not be parsed. ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
+  }
+
+  // Add metadata to AI generated design
     templateDesign.metadata = {
       generated_at: new Date().toISOString(),
-      generated_by: 'AI Template Designer (OpenAI Agents SDK)',
+    generated_by: 'AI Template Designer (No Fallbacks)',
       campaign_id: contentContext.campaign?.id,
-      assets_used: {
-        total_images: totalImages,
-        local_images: localImages.length,
-        external_images: externalImages.length,
-        icons: assetManifest.icons.length
-      },
-      brand_colors: {
-        primary: primaryColor,
-        accent: accentColor,
-        background: backgroundColor
-      }
+    trace_id: traceId || 'NO_TRACE'
     };
     
     return templateDesign;
 
-  } catch (error) {
-    console.error('AI Template Design generation failed:', error);
-    throw new Error(`Failed to generate AI template design: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
 }
 
 /**
@@ -486,173 +313,169 @@ export const generateTemplateDesign = tool({
   execute: async (params, context) => {
     console.log('\n🎨 === AI TEMPLATE DESIGNER (OpenAI Agents SDK) ===');
     
-    // Load content context from OpenAI SDK context parameter - prioritize loaded context
+    // Load content context from OpenAI SDK context parameter
     let contentContext;
     
-    // Try to get content context from design context first (loaded by loadDesignContext)
-    if (context?.designContext?.content_context) {
-      contentContext = context.designContext.content_context;
+    if ((context as any)?.designContext?.content_context) {
+      contentContext = (context as any).designContext.content_context;
       console.log('✅ Using content context from design context (loaded by loadDesignContext)');
-    } else if (params.content_context && Object.keys(params.content_context).length > 0) {
-      contentContext = params.content_context;
-      console.log('⚠️ Using content context from parameters (fallback)');
-    } else if (context?.content_context) {
-      contentContext = context.content_context;
-      console.log('⚠️ Using content context from SDK context (fallback)');
-          } else if (context?.content_context) {
-        contentContext = context.content_context;
-      console.log('⚠️ Using contentContext from SDK context (fallback)');
     } else {
-      throw new Error('Content context not found in parameters or context. loadDesignContext must be called first to load campaign context.');
+      throw new Error('Content context not found in design context. loadDesignContext must be called first to load campaign context.');
     }
     
-    // Extract campaign path from content context or design context
-    let campaignPath;
-    if (contentContext.campaign?.campaignPath) {
-      campaignPath = contentContext.campaign.campaignPath;
-    } else if (context?.designContext?.campaign_path) {
-      campaignPath = context.designContext.campaign_path;
-    } else {
-      throw new Error('Campaign path is missing from content context. loadDesignContext must provide valid campaign path.');
+    // Get campaign path from design context (set by loadDesignContext)
+    const campaignPath = (context as any).designContext.campaign_path;
+    if (!campaignPath) {
+      throw new Error('Campaign path is missing from design context. loadDesignContext must provide valid campaign path.');
     }
     
-    console.log(`📋 Campaign: ${contentContext.campaign?.id || 'unknown'}`);
+    console.log(`📋 Campaign: ${contentContext.campaign?.id || 'REQUIRED_ID'}`);
     console.log(`📁 Campaign Path: ${campaignPath}`);
     console.log(`🎯 AI Template Design Generation using OpenAI Agents SDK`);
-    console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
+    console.log(`🔍 Trace ID: ${params.trace_id || 'NO_TRACE'}`);
 
     try {
-      // Get asset manifest from design context - REQUIRED
-      const assetManifest = context?.designContext?.asset_manifest;
-      
+      // Load asset manifest
+      const assetManifest = (context as any)?.designContext?.asset_manifest;
       if (!assetManifest) {
         throw new Error('Asset manifest not found in design context. processContentAssets must be completed before template design.');
       }
       
-      // Load design brief and technical specification
+      // Load comprehensive content files
       const designBriefPath = path.join(campaignPath, 'content', 'design-brief-from-context.json');
+      const emailContentPath = path.join(campaignPath, 'content', 'email-content.json');
+      const pricingAnalysisPath = path.join(campaignPath, 'content', 'pricing-analysis.json');
+      const assetStrategyPath = path.join(campaignPath, 'content', 'asset-strategy.json');
+      const dateAnalysisPath = path.join(campaignPath, 'content', 'date-analysis.json');
       const techSpecPath = path.join(campaignPath, 'docs', 'specifications', 'technical-specification.json');
       
-      console.log(`🔍 Looking for design brief at: ${designBriefPath}`);
-      console.log(`🔍 Looking for tech spec at: ${techSpecPath}`);
+      console.log('📋 Loading comprehensive campaign content for AI enrichment...');
       
-      // Check if design brief exists
+      // Load design brief
       let designBrief;
       try {
-        const designBriefExists = await fs.access(designBriefPath).then(() => true).catch(() => false);
-        console.log(`📋 Design brief exists: ${designBriefExists}`);
-        
-        if (designBriefExists) {
+        if (await fs.access(designBriefPath).then(() => true).catch(() => false)) {
           const designBriefContent = await fs.readFile(designBriefPath, 'utf8');
           designBrief = JSON.parse(designBriefContent);
           console.log('✅ Loaded design brief from file');
         } else {
-          console.log('⚠️ Design brief not found, creating fallback design brief');
-          // Create fallback design brief
-          designBrief = {
-            destination_context: {
-              name: contentContext.campaign?.destination || 'Thailand',
-              seasonal_advantages: 'Осенний сезон с комфортной погодой',
-              emotional_appeal: 'Приключения и отдых',
-              market_position: 'Популярное туристическое направление'
-            },
-            design_requirements: {
-              visual_style: 'Современный, привлекательный стиль',
-              color_palette: 'Яркие цвета Kupibilet',
-              primary_color: '#4BFF7E',
-              accent_color: '#1DA857', 
-              background_color: '#FFFFFF',
-              text_color: '#2C3959',
-              imagery_direction: 'Тропические пейзажи и культура',
-              typography_mood: 'Дружелюбный и современный'
-            },
-            content_priorities: {
-              key_messages: ['Отличные цены', 'Удобное бронирование'],
-              emotional_triggers: ['Приключения', 'Отдых'],
-              actionable_insights: ['Бронируйте сейчас', 'Ограниченное предложение']
-            }
-          };
+          throw new Error('Design brief file not found. All content files must be loaded before template design generation.');
         }
       } catch (error) {
-        console.error('❌ Error loading design brief:', error.message);
-        throw new Error(`Failed to load design brief: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('❌ Error loading design brief:', errorMessage);
+        throw new Error(`Design brief loading failed: ${errorMessage}`);
       }
       
-      // Check if technical specification exists
+      // Load email content
+      let emailContent;
+      try {
+        if (await fs.access(emailContentPath).then(() => true).catch(() => false)) {
+          const emailContentData = await fs.readFile(emailContentPath, 'utf8');
+          emailContent = JSON.parse(emailContentData);
+          console.log('✅ Loaded email content with rich details');
+        } else {
+          console.log('⚠️ Email content not found');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading email content:', error);
+      }
+
+      // Load pricing analysis
+      let pricingAnalysis;
+      try {
+        if (await fs.access(pricingAnalysisPath).then(() => true).catch(() => false)) {
+          const pricingData = await fs.readFile(pricingAnalysisPath, 'utf8');
+          pricingAnalysis = JSON.parse(pricingData);
+          console.log('✅ Loaded pricing analysis with cost details');
+        } else {
+          console.log('⚠️ Pricing analysis not found');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading pricing analysis:', error);
+      }
+
+      // Load asset strategy
+      let assetStrategy;
+      try {
+        if (await fs.access(assetStrategyPath).then(() => true).catch(() => false)) {
+          const assetStrategyData = await fs.readFile(assetStrategyPath, 'utf8');
+          assetStrategy = JSON.parse(assetStrategyData);
+          console.log('✅ Loaded asset strategy with visual direction');
+        } else {
+          console.log('⚠️ Asset strategy not found');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading asset strategy:', error);
+      }
+
+      // Load date analysis
+      let dateAnalysis;
+      try {
+        if (await fs.access(dateAnalysisPath).then(() => true).catch(() => false)) {
+          const dateAnalysisData = await fs.readFile(dateAnalysisPath, 'utf8');
+          dateAnalysis = JSON.parse(dateAnalysisData);
+          console.log('✅ Loaded date analysis with seasonal insights');
+        } else {
+          console.log('⚠️ Date analysis not found');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading date analysis:', error);
+      }
+
+      // Load technical specification
       let techSpec;
       try {
-        const techSpecExists = await fs.access(techSpecPath).then(() => true).catch(() => false);
-        console.log(`📋 Tech spec exists: ${techSpecExists}`);
-        
-        if (techSpecExists) {
-          const techSpecContent = await fs.readFile(techSpecPath, 'utf8');
-          techSpec = JSON.parse(techSpecContent);
-          console.log('✅ Loaded technical specification from file');
+        if (await fs.access(techSpecPath).then(() => true).catch(() => false)) {
+          const techSpecData = await fs.readFile(techSpecPath, 'utf8');
+          techSpec = JSON.parse(techSpecData);
+          console.log('✅ Loaded technical specification');
         } else {
-          console.log('⚠️ Technical specification not found, creating fallback tech spec');
-          // Create fallback technical specification
-          techSpec = {
-            email_specifications: {
-              max_width: '600px',
-              responsive_breakpoints: ['600px', '480px'],
-              supported_clients: ['Gmail', 'Outlook', 'Apple Mail'],
-              dark_mode_support: true
-            },
-            content_structure: {
-              header: 'Логотип и навигация',
-              hero_section: 'Главное предложение',
-              content_blocks: 'Детали предложения',
-              cta_section: 'Призыв к действию',
-              footer: 'Контакты и отписка'
-            },
-            performance_requirements: {
-              load_time: '<3 seconds',
-              file_size: '<100KB',
-              image_optimization: 'WebP with JPEG fallback'
-            }
-          };
-        }
-      } catch (error) {
-        console.error('❌ Error loading technical specification:', error.message);
-        throw new Error(`Failed to load technical specification: ${error.message}`);
+          console.log('⚠️ Technical specification not found');
       }
-      
-      console.log('✅ Design brief and technical specification loaded (with fallbacks if needed)');
+      } catch (error) {
+        console.error('⚠️ Error loading technical specification:', error);
+      }
 
-      // 🤖 GENERATE TEMPLATE DESIGN WITH AI using OpenAI Agents SDK
+      // Call AI generation with full context
       const templateDesign = await generateAITemplateDesign({
         contentContext,
         designBrief,
         assetManifest,
         techSpec,
-        designRequirements: params.design_requirements
+        emailContent,
+        pricingAnalysis,
+        assetStrategy,
+        dateAnalysis,
+        designRequirements: params.design_requirements,
+        traceId: params.trace_id || 'NO_TRACE'
       });
 
-      // Save template design to campaign
-      const templateDesignPath = path.join(campaignPath, 'design', 'template-design.json');
-      await fs.mkdir(path.dirname(templateDesignPath), { recursive: true });
+      // Save template design to file
+      const designDir = path.join(campaignPath, 'design');
+      await fs.mkdir(designDir, { recursive: true });
+      const templateDesignPath = path.join(designDir, 'template-design.json');
       await fs.writeFile(templateDesignPath, JSON.stringify(templateDesign, null, 2));
-      
-      console.log('✅ Template design saved to campaign');
+      console.log(`✅ Template design saved to: ${templateDesignPath}`);
 
-      // Update design context
-      const updatedDesignContext = buildDesignContext(context, {
+      // Update design context with template design
+      const updatedDesignContext = {
+        ...(context as any).designContext,
         template_design: templateDesign,
-        trace_id: params.trace_id
-      });
+        template_design_path: templateDesignPath
+      };
 
-      // Save context to context parameter (OpenAI SDK pattern)
       if (context) {
-        context.designContext = updatedDesignContext;
+        (context as any).designContext = updatedDesignContext;
       }
 
       console.log('✅ AI Template Design completed successfully (OpenAI Agents SDK)');
-      console.log(`📊 Sections: ${templateDesign.sections.length}`);
-      console.log(`🎨 Layout: ${templateDesign.layout.type}`);
-      console.log(`📱 Responsive: ${templateDesign.responsive.breakpoints.length} breakpoints`);
-      console.log(`🎯 Components: ${templateDesign.components.length} custom components`);
+      console.log(`📊 Sections: ${templateDesign.sections?.length || 0}`);
+      console.log(`🎨 Layout: ${templateDesign.layout?.type || 'undefined'}`);
+      console.log(`📱 Responsive: ${templateDesign.responsive?.breakpoints?.length || 0} breakpoints`);
+      console.log(`🎯 Components: ${templateDesign.components?.length || 0} custom components`);
 
-      return `AI Template Design completed successfully using OpenAI Agents SDK! Generated ${templateDesign.sections.length} sections with ${templateDesign.layout.type} layout. Responsive design with ${templateDesign.responsive.breakpoints.length} breakpoints. Created ${templateDesign.components.length} custom components. Visual hierarchy optimized for ${templateDesign.target_audience}. Design saved to: ${templateDesignPath}. Ready for MJML template generation.`;
+      return `AI Template Design completed successfully using OpenAI Agents SDK! Generated ${templateDesign.sections?.length || 0} sections with ${templateDesign.layout?.type || 'custom'} layout. Responsive design with ${templateDesign.responsive?.breakpoints?.length || 0} breakpoints. Created ${templateDesign.components?.length || 0} custom components. Visual hierarchy optimized for ${templateDesign.target_audience || 'target users'}. Design saved to: ${templateDesignPath}. Ready for MJML template generation.`;
 
     } catch (error) {
       console.error('❌ AI Template Design failed:', error);

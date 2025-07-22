@@ -94,7 +94,7 @@ export class DatabaseOptimizationService {
         duration: Date.now() - startTime,
         timestamp: Date.now(),
         cached: false,
-        rowCount: Array.isArray(result) ? result.length : undefined,
+        ...(Array.isArray(result) ? { rowCount: result.length } : {}),
       });
       
       return result;
@@ -226,18 +226,18 @@ export class DatabaseOptimizationService {
       if (!groups[metric.query]) {
         groups[metric.query] = { totalDuration: 0, count: 0 };
       }
-      groups[metric.query].totalDuration += metric.duration;
-      groups[metric.query].count += 1;
+      groups[metric.query]!.totalDuration += metric.duration;
+      groups[metric.query]!.count += 1;
       return groups;
     }, {} as Record<string, { totalDuration: number; count: number }>);
 
-    const topSlowQueries = Object.entries(queryGroups)
+    const topSlowQueries = (Object || {}).entries(queryGroups)
       .map(([query, stats]) => ({
         query,
         avgDuration: stats.totalDuration / stats.count,
         count: stats.count,
       }))
-      .sort((a, b) => b.avgDuration - a.avgDuration)
+      .sort((a, b) => (b || {}).avgDuration - a.avgDuration)
       .slice(0, 10);
 
     return {

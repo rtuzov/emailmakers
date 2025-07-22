@@ -29,30 +29,19 @@ export const generatePreviewFiles = tool({
       let mjmlTemplate;
       let campaignPath;
       
-      // Try to get content context from design context first (loaded by loadDesignContext)
-      if (context?.designContext?.content_context) {
-        contentContext = context.designContext.content_context;
-        campaignPath = context.designContext.campaign_path;
+      // Get content context from design context (loaded by loadDesignContext)
+      if ((context?.context as any)?.designContext?.content_context) {
+        contentContext = (context?.context as any)?.designContext?.content_context;
+        campaignPath = (context?.context as any)?.designContext?.campaign_path;
         console.log('✅ Using content context from design context (loaded by loadDesignContext)');
-      } else if (params.content_context && Object.keys(params.content_context).length > 0) {
-        contentContext = params.content_context;
-        campaignPath = contentContext.campaign?.campaignPath;
-        console.log('⚠️ Using content context from parameters (fallback)');
-      } else if (context?.content_context) {
-        contentContext = context.content_context;
-        campaignPath = contentContext.campaign?.campaignPath;
-        console.log('⚠️ Using content context from SDK context (fallback)');
       } else {
-        throw new Error('Content context not found in parameters or context. loadDesignContext must be called first to load campaign context.');
+        throw new Error('Content context not found in design context. loadDesignContext must be called first to load campaign context.');
       }
       
-      // Get MJML template from design context or parameters
-      if (context?.designContext?.mjml_template) {
-        mjmlTemplate = context.designContext.mjml_template;
+      // Get MJML template from design context  
+      if ((context?.context as any)?.designContext?.mjml_template) {
+        mjmlTemplate = (context?.context as any)?.designContext?.mjml_template;
         console.log('✅ Using MJML template from design context');
-      } else if (params.mjml_template && Object.keys(params.mjml_template).length > 0) {
-        mjmlTemplate = params.mjml_template;
-        console.log('⚠️ Using MJML template from parameters (fallback)');
       } else {
         throw new Error('MJML template not found in design context. generateMjmlTemplate must be completed first.');
       }
@@ -190,8 +179,8 @@ export const generatePreviewFiles = tool({
         trace_id: params.trace_id
       });
       
-      if (context) {
-        context.designContext = updatedDesignContext;
+      if (context && context.context) {
+        (context.context as any).designContext = updatedDesignContext;
       }
       
       console.log('✅ Preview files generated');

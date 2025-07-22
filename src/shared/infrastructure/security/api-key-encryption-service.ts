@@ -20,7 +20,7 @@ export class APIKeyEncryptionService {
   private static readonly algorithm = 'aes-256-gcm';
   private static readonly keyLength = 32;
   private static readonly ivLength = 16;
-  private static readonly tagLength = 16;
+  // private static readonly tagLength = 16; // Currently unused
   private static readonly saltLength = 16;
 
   /**
@@ -209,6 +209,9 @@ export class APIKeyEncryptionService {
   static verifyAPIKey(apiKey: string, hashedKey: string): boolean {
     try {
       const [saltHex, hashHex] = hashedKey.split(':');
+      if (!saltHex || !hashHex) {
+        return false;
+      }
       const salt = Buffer.from(saltHex, 'hex');
       const hash = Buffer.from(hashHex, 'hex');
       
