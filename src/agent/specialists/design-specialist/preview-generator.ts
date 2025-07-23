@@ -29,24 +29,64 @@ export const generatePreviewFiles = tool({
       let mjmlTemplate;
       let campaignPath;
       
-      // Get content context from design context
+      // Enhanced campaign path extraction with multiple fallback strategies
       if ((context?.context as any)?.designContext?.content_context) {
         contentContext = (context?.context as any)?.designContext?.content_context;
         campaignPath = (context?.context as any)?.designContext?.campaign_path;
         console.log('✅ Using content context from design context (loaded by loadDesignContext)');
       } else {
-        console.warn('⚠️ Content context not found in design context, attempting to load from handoff files...');
-        // Fallback: try to load from handoff files
-        if ((context as any)?.campaign?.path) {
-          const handoffDirectory = path.join((context as any)?.campaign?.path, 'handoffs');
-          const contextData = await loadContextFromHandoffFiles(handoffDirectory);
-          contentContext = contextData?.content_context;
-          campaignPath = (context as any)?.campaign?.path;
-          if (!contentContext) {
-            throw new Error('Content context not found in design context or handoff files. loadDesignContext must be called first.');
+        console.warn('⚠️ Content context not found in design context, attempting multiple fallback strategies...');
+        
+        // Strategy 1: Try from context campaign
+        campaignPath = (context as any)?.campaign?.path || 
+                      (context as any)?.campaign?.campaignPath ||
+                      (context as any)?.campaignContext?.campaignPath ||
+                      (context as any)?.agentInput?.context?.campaignPath;
+        
+        // Strategy 2: Try from context properties
+        if (!campaignPath) {
+          campaignPath = (context as any)?.campaignPath || 
+                        (context as any)?.campaign_path;
+        }
+        
+        // Strategy 3: Auto-detect latest campaign
+        if (!campaignPath) {
+          console.log('⚠️ Campaign path not in context, auto-detecting latest campaign...');
+          try {
+            const fs = await import('fs/promises');
+            const pathModule = await import('path');
+            const campaignsDir = pathModule.join(process.cwd(), 'campaigns');
+            const folders = await fs.readdir(campaignsDir);
+            
+            const latestCampaign = folders
+              .filter(folder => folder.startsWith('campaign_'))
+              .sort()
+              .pop();
+              
+            if (latestCampaign) {
+              campaignPath = pathModule.join(campaignsDir, latestCampaign);
+              console.log('✅ Auto-detected campaign path:', campaignPath);
+            }
+          } catch (error) {
+            console.error('❌ Auto-detection failed:', error);
+          }
+        }
+        
+        // Load content context if we have a path
+        if (campaignPath) {
+          try {
+            const contextData = await loadContextFromHandoffFiles(campaignPath);
+            contentContext = contextData?.content_context;
+            if (!contentContext) {
+              throw new Error('Content context not found in handoff files. loadDesignContext must be called first.');
+            }
+            console.log('✅ Loaded content context from handoff files via fallback strategy');
+          } catch (error) {
+            console.error('❌ Failed to load context from handoff files:', error);
+            throw new Error(`Failed to load content context: ${error instanceof Error ? error.message : 'Unknown error'}`);
           }
         } else {
-          throw new Error('Campaign path not available in context. Content context cannot be loaded.');
+          throw new Error('Campaign path could not be determined from any source. Ensure campaign context is properly passed.');
         }
       }
       

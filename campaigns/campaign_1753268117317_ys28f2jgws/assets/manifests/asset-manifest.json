@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-23T10:56:51.887Z",
+  "campaign_id": "campaign_1753268117317_ys28f2jgws",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_C4NLmGqMSQM.jpg",
+      "path": "https://images.unsplash.com/photo-1651535075305-614480988127?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjB3aGl0ZXdhc2hlZCUyMGJ1aWxkaW5ncyUyMHN1bnNldHxlbnwwfDB8fHwxNzUzMjc3MjA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1651535075305-614480988127?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjB3aGl0ZXdhc2hlZCUyMGJ1aWxkaW5ncyUyMHN1bnNldHxlbnwwfDB8fHwxNzUzMjc3MjA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_C4NLmGqMSQM",
+      "created": "2025-07-23T10:56:51.888Z",
+      "modified": "2025-07-23T10:56:51.888Z",
+      "tags": [],
+      "description": "a town on a hill",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_Nm7w3UdM8Uk.jpg",
+      "path": "https://images.unsplash.com/photo-1669956897929-f92da74b4842?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuZXclMjB6ZWFsYW5kJTIwZmpvcmRsYW5kJTIwbmF0aW9uYWwlMjBwYXJrfGVufDB8MHx8fDE3NTMyNzcyMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1669956897929-f92da74b4842?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuZXclMjB6ZWFsYW5kJTIwZmpvcmRsYW5kJTIwbmF0aW9uYWwlMjBwYXJrfGVufDB8MHx8fDE3NTMyNzcyMDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_Nm7w3UdM8Uk",
+      "created": "2025-07-23T10:56:51.888Z",
+      "modified": "2025-07-23T10:56:51.888Z",
+      "tags": [],
+      "description": "a body of water with mountains in the background",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_xKAo87w_MOY.jpg",
+      "path": "https://images.unsplash.com/photo-1660145879093-7e1effd0387f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMGNoZXJyeSUyMGJsb3Nzb21zJTIwdGVtcGxlc3xlbnwwfDB8fHwxNzUzMjc3MjA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1660145879093-7e1effd0387f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMGNoZXJyeSUyMGJsb3Nzb21zJTIwdGVtcGxlc3xlbnwwfDB8fHwxNzUzMjc3MjA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_xKAo87w_MOY",
+      "created": "2025-07-23T10:56:51.888Z",
+      "modified": "2025-07-23T10:56:51.888Z",
+      "tags": [],
+      "description": "a red bridge with pink flowers",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_LhVJaRPweJc.jpg",
+      "path": "https://images.unsplash.com/photo-1536237717235-0acadb345d8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxtYXJyYWtlY2glMjBzb3VrcyUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1MzI3NzIwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1536237717235-0acadb345d8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxtYXJyYWtlY2glMjBzb3VrcyUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1MzI3NzIwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_LhVJaRPweJc",
+      "created": "2025-07-23T10:56:51.888Z",
+      "modified": "2025-07-23T10:56:51.888Z",
+      "tags": [],
+      "description": "assorted-color textiles hanged beside concrete buildings",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_lQ_qlsC42Nw.jpg",
+      "path": "https://images.unsplash.com/photo-1585312685432-e907181fcd5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwZ2V5c2VycyUyMGFuZCUyMHdhdGVyZmFsbHN8ZW58MHwwfHx8MTc1MzI3NzIwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1585312685432-e907181fcd5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwZ2V5c2VycyUyMGFuZCUyMHdhdGVyZmFsbHN8ZW58MHwwfHx8MTc1MzI3NzIwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_lQ-qlsC42Nw",
+      "created": "2025-07-23T10:56:51.889Z",
+      "modified": "2025-07-23T10:56:51.889Z",
+      "tags": [],
+      "description": "brown mountain under white sky during daytime",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753268211883",
+    "status": "assets_collected"
+  }
+}

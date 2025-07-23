@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-23T10:43:23.793Z",
+  "campaign_id": "campaign_1753267309829_2h9cm8fmada",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_i9AmVEjT8VI.jpg",
+      "path": "https://images.unsplash.com/photo-1551279076-6887dee32c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBkZXN0aW5hdGlvbnN8ZW58MHwwfHx8MTc1MzE4Njc2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1551279076-6887dee32c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBkZXN0aW5hdGlvbnN8ZW58MHwwfHx8MTc1MzE4Njc2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_i9AmVEjT8VI",
+      "created": "2025-07-23T10:43:23.794Z",
+      "modified": "2025-07-23T10:43:23.794Z",
+      "tags": [],
+      "description": "brown painted house",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_QXfKHLvMDfA.jpg",
+      "path": "https://images.unsplash.com/photo-1549414279-656ada2e7d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHRyYXZlbGVyc3xlbnwwfDB8fHwxNzUzMjAwNTQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1549414279-656ada2e7d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHRyYXZlbGVyc3xlbnwwfDB8fHwxNzUzMjAwNTQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_QXfKHLvMDfA",
+      "created": "2025-07-23T10:43:23.794Z",
+      "modified": "2025-07-23T10:43:23.794Z",
+      "tags": [],
+      "description": "man in black crew neck t-shirt sitting on brown wicker chair",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_R6Xte0nacNw.jpg",
+      "path": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMxNzkyNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMxNzkyNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_R6Xte0nacNw",
+      "created": "2025-07-23T10:43:23.795Z",
+      "modified": "2025-07-23T10:43:23.795Z",
+      "tags": [],
+      "description": "a grassy field with rocks and grass in the foreground",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_FwMBVycB37E.jpg",
+      "path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_FwMBVycB37E",
+      "created": "2025-07-23T10:43:23.795Z",
+      "modified": "2025-07-23T10:43:23.795Z",
+      "tags": [],
+      "description": "a yurt in the mountains with a yellow door",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_pU4ch788VLc.jpg",
+      "path": "https://images.unsplash.com/photo-1694633810457-a5ef70e1066f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBpbnNwaXJhdGlvbnxlbnwwfDB8fHwxNzUzMTg2NzYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1694633810457-a5ef70e1066f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBpbnNwaXJhdGlvbnxlbnwwfDB8fHwxNzUzMTg2NzYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_pU4ch788VLc",
+      "created": "2025-07-23T10:43:23.795Z",
+      "modified": "2025-07-23T10:43:23.795Z",
+      "tags": [],
+      "description": "a man walking across a bridge over a river",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753267403792",
+    "status": "assets_collected"
+  }
+}

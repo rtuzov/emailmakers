@@ -173,7 +173,17 @@ export const createDesignHandoff = tool({
       
     } catch (error) {
       console.error('❌ Design handoff creation failed:', error);
-      throw error;
+      console.error('📋 Context diagnostic:', {
+        hasContentContext: !!params.content_context,
+        hasDesignPackage: !!params.design_package,
+        contentContextKeys: params.content_context ? Object.keys(params.content_context) : 'none',
+        designPackageKeys: params.design_package ? Object.keys(params.design_package) : 'none',
+        traceId: params.trace_id
+      });
+      
+      // Provide more detailed error message
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Design handoff creation failed: ${errorMessage}. Check context and package data completeness.`);
     }
   }
 }); 

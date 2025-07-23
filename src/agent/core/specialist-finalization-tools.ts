@@ -518,6 +518,25 @@ export const finalizeDesignAndTransferToQuality = tool({
       await fs.mkdir(path.dirname(handoffPath2), { recursive: true });
       await fs.writeFile(handoffPath2, JSON.stringify(handoffData, null, 2));
       
+      // ✅ UPDATE CAMPAIGN METADATA: Mark Design Specialist as completed
+      console.log('📝 Updating campaign metadata to mark Design Specialist as completed...');
+      const metadataPath = path.join(campaignPath, 'campaign-metadata.json');
+      try {
+        const metadataContent = await fs.readFile(metadataPath, 'utf-8');
+        const metadata = JSON.parse(metadataContent);
+        
+        // Update specialists_completed
+        metadata.specialists_completed.design = true;
+        metadata.workflow_phase = 'quality';
+        metadata.last_updated = new Date().toISOString();
+        
+        await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
+        console.log('✅ Campaign metadata updated - Design Specialist marked as completed');
+      } catch (metadataError) {
+        console.error('⚠️ Failed to update campaign metadata:', metadataError);
+        // Don't throw error - continue with handoff even if metadata update fails
+      }
+      
       // ✅ CORRECT: Return result and let OpenAI SDK handle handoff automatically
       console.log('🔄 Design finalization complete - OpenAI SDK will handle handoff to Quality Specialist');
       

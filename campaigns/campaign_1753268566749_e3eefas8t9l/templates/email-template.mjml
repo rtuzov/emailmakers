@@ -1,0 +1,88 @@
+<mjml>
+  <mj-head>
+    <mj-title>Гватемала от 67,684₽! Спецпредложение до 15 сентября</mj-title>
+    <mj-preview>Только до 15 сентября! Билеты в Гватемала от 67,684₽ - не упустите шанс!</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .highlight { background-color: #FF6240; color: #FFFFFF; padding: 10px; }
+      .benefits-list { list-style-type: none; padding-left: 0; }
+      .gallery img:hover { opacity: 0.8; transition: opacity 0.3s; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center" font-size="24px" font-weight="bold" color="#2C3959">🇬🇹 Гватемала от 67,684₽! Спецпредложение до 15 сентября</mj-text>
+        <mj-text align="center" color="#2C3959">Только до 15 сентября! Билеты в Гватемала от 67,684₽ - не упустите шанс!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-image width="550px" src="https://images.unsplash.com/photo-1714070702274-4b1c0cbfd437?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxqYXBhbiUyMGt5b3RvJTIwY2hlcnJ5JTIwYmxvc3NvbXN8ZW58MHwwfHx8MTc1MzI3NzY1Mnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Гватемала" />
+        <mj-text>Представьте себе, как вы исследуете древние руины и наслаждаетесь чудесами природы Гватемалы - уже совсем скоро это может стать реальностью!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="bold" font-size="20px" color="#2C3959">Галерея направления</mj-text>
+        <mj-group>
+          <mj-column width="150px">
+            <mj-image width="150px" src="https://images.unsplash.com/photo-1662486717731-293f2b6ebfa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxmcmFuY2UlMjBwcm92ZW5jZSUyMGxhdmVuZGVyJTIwZmllbGRzfGVufDB8MHx8fDE3NTMyNzc2NTN8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Поля лаванды" />
+            <mj-text align="center">Поля лаванды</mj-text>
+          </mj-column>
+          <mj-column width="150px">
+            <mj-image width="150px" src="https://images.unsplash.com/photo-1664912617977-9a3adda367b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxicmF6aWwlMjByaW8lMjBkZSUyMGphbmVpcm8lMjBzdWdhcmxvYWYlMjBtb3VudGFpbnxlbnwwfDB8fHwxNzUzMjc3NjUzfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Канатная дорога" />
+            <mj-text align="center">Канатная дорога</mj-text>
+          </mj-column>
+          <mj-column width="150px">
+            <mj-image width="150px" src="https://images.unsplash.com/photo-1635260980154-315c57168b12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzb3V0aCUyMGFmcmljYSUyMGNhcGUlMjB0b3duJTIwdGFibGUlMjBtb3VudGFpbnxlbnwwfDB8fHwxNzUzMjc3NjU0fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Скала у воды" />
+            <mj-text align="center">Скала у воды</mj-text>
+          </mj-column>
+        </mj-group>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="bold" font-size="20px" color="#2C3959">Преимущества:</mj-text>
+        <mj-text>
+          <ul css-class="benefits-list">
+            <li>💰 Экономия до 24,513₽ на билетах!</li>
+            <li>✈️ Прямые рейсы без пересадок из Москвы</li>
+            <li>🏨 Бесплатное бронирование отелей через наш сервис</li>
+            <li>📞 Поддержка 24/7 на русском языке</li>
+            <li>🔒 Гарантия лучшей цены - вернем разницу</li>
+            <li>🆓 Бесплатная отмена до 24 часов</li>
+          </ul>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="highlight">⏰ Осталось всего 12 мест по этой цене - забронируйте до 15 сентября!</mj-text>
+        <mj-text>Не упустите уникальную возможность создать незабываемые воспоминания. Путешествуйте с Kupibilet и откройте для себя Гватемала!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center" font-weight="bold">Привет, [Имя]! Специально для вас скидка 5% на Гватемала</mj-text>
+        <mj-button background-color="#4BFF7E" href="/booking/гватемала?utm_source=email&utm_campaign=special">Купить билеты за 67,684₽ ✈️</mj-button>
+        <mj-button background-color="#FF6240" href="/destinations/гватемала?promo=special25">Посмотреть все рейсы 🔍</mj-button>
+        <mj-button background-color="#FF6240" href="/deals/special-offers?destination=гватемала">⚡ Успеть забронировать до 15 сентября!</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text font-style="italic" color="#2C3959">★★★★★ 'Купили билеты через Kupibilet - сэкономили 12,000₽!' - Анна М., Москва.</mj-text>
+        <mj-text>🎯 За последний месяц 1,247 россиян выбрали Гватемала!</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center">© 2023 Kupibilet. Все права защищены. <br />Контакты: support@kupibilet.ru</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

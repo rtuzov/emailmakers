@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-23T11:07:28.511Z",
+  "ai_agent_used": "OpenAI Agents SDK - HTML Validation & Enhancement AI",
+  "originalErrors": 109,
+  "finalErrors": 109,
+  "warnings": 0,
+  "enhancementsMade": [
+    "Ошибка генерации - оставлен оригинальный HTML"
+  ],
+  "validationStatus": "INVALID",
+  "main_template_updated": true,
+  "processing_details": {
+    "original_size": 29953,
+    "enhanced_size": 29953,
+    "protection_reasons": [],
+    "validation_steps": [
+      "Basic HTML validation",
+      "AI enhancement generation",
+      "Size change analysis",
+      "Content integrity validation",
+      "Final validation check"
+    ]
+  },
+  "files": {
+    "original": "templates/email-template.html",
+    "enhanced_timestamped": "templates/email-template-enhanced-2025-07-23T11-07-28-507Z.html",
+    "enhanced_latest": "templates/email-template-enhanced-latest.html",
+    "comparison_report": "templates/enhancement-comparison-2025-07-23T11-07-28-507Z.json"
+  },
+  "file_sizes": {
+    "original": 29953,
+    "enhanced": 29953,
+    "difference": 0
+  }
+}

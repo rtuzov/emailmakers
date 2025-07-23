@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-07-23T11:07:28.510Z",
+  "files": {
+    "original_file": "email-template.html",
+    "enhanced_file": "email-template-enhanced-2025-07-23T11-07-28-507Z.html",
+    "latest_enhanced_file": "email-template-enhanced-latest.html"
+  },
+  "versions": {
+    "preferred": "unknown",
+    "original_size": 29953,
+    "optimized_size": 29953,
+    "preferred_size": 29953,
+    "size_change": {
+      "bytes": 0,
+      "percent": "0.00"
+    }
+  },
+  "enhancements": {
+    "made": [
+      "Ошибка генерации - оставлен оригинальный HTML"
+    ],
+    "warning_reasons": [],
+    "has_warnings": false
+  },
+  "validation_status": {
+    "original_errors": 109,
+    "enhanced_errors": 109,
+    "improvement": 0,
+    "original_warnings": 0,
+    "enhanced_warnings": 0,
+    "integrity_check": {}
+  },
+  "technical": {
+    "ai_agent_used": "OpenAI Agents SDK - HTML Validation & Enhancement AI",
+    "both_versions_saved": true,
+    "main_template_updated": true,
+    "processing_timestamp": "2025-07-23T11-07-28-507Z"
+  },
+  "summary": {
+    "status": "ENHANCED",
+    "preferred_version": "unknown",
+    "total_files_saved": 3,
+    "size_change_description": "Без изменений размера",
+    "validation_improvement": 0
+  }
+}

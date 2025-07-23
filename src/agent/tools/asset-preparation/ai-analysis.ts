@@ -59,13 +59,17 @@ Pricing Context:
 - Route: ${contentContext.generated_content?.pricing?.route || 'N/A'}
 
 INSTRUCTIONS: 
-1. Extract ANY destinations mentioned from the actual content
-2. Detect ANY season/weather references from the actual content
-3. Identify ANY emotional triggers from the actual content
-4. Determine visual style based on content tone and destination type
-5. Generate appropriate search tags based on detected themes
+1. Extract SPECIFIC destinations mentioned from the actual content (e.g., "Guatemala", "Maya temples", "Antigua")
+2. Detect SPECIFIC season/weather references from the actual content
+3. Identify SPECIFIC emotional triggers and activities from the actual content
+4. Generate DESTINATION-SPECIFIC search keywords (e.g., for Guatemala: "ancient maya temples", "tikal ruins", "guatemala volcanoes", "antigua colonial")
+5. Avoid generic terms - prefer specific landmarks and cultural elements
 
-Be adaptive - analyze the actual content and generate requirements based on what you find, not assumptions.
+EXAMPLE FOR GUATEMALA:
+- Generic BAD: "travel destination", "happy travelers"
+- Specific GOOD: "guatemala antigua colonial", "maya temple tikal", "guatemala volcanoes", "guatemalan culture"
+
+Be highly specific - use actual destination names, landmarks, and cultural elements mentioned in the content.
 
 Format as JSON:
 {
@@ -333,18 +337,25 @@ Campaign Context:
 - Campaign Type: ${contentContext.campaign_type || 'N/A'}
 - Target Audience: ${contentContext.target_audience || 'N/A'}
 
-Analyze the content and suggest 3-5 search terms for finding appropriate images.
+Analyze the content and suggest 3-5 DESTINATION-SPECIFIC search terms for finding appropriate images.
+
+CRITICAL: Be highly specific to the destination and avoid generic terms!
+
+EXAMPLES:
+- For Guatemala: "guatemala antigua colonial", "tikal maya ruins", "guatemala volcanoes", "guatemalan markets"
+- For Thailand: "thailand bangkok temples", "thai floating market", "thailand phi phi islands"
+- For Italy: "rome colosseum", "venice canals", "tuscany vineyards"
 
 Return JSON format:
 {
   "search_terms": [
     {
-      "query": "english search term for Unsplash",
+      "query": "highly specific english search term for destination landmarks/culture",
       "purpose": "hero|support|decoration|branding",
-      "description": "What this image should represent"
+      "description": "What this specific landmark/cultural element represents"
     }
   ],
-  "campaign_theme": "Overall theme description",
+  "campaign_theme": "Specific destination and cultural theme",
   "emotional_tone": "Target emotional response"
 }
 `;

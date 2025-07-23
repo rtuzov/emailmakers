@@ -410,17 +410,11 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
     console.log('⚠️ Layout was null, using fallback: single-column');
   }
 
-  // CRITICAL FIX: Ensure spacing_system is always present
+  // CRITICAL FIX: Generate spacing_system with AI if missing
   if (!templateDesign.layout.spacing_system) {
-    templateDesign.layout.spacing_system = {
-      "xs": "4px",
-      "sm": "8px", 
-      "md": "16px",
-      "lg": "24px",
-      "xl": "32px",
-      "2xl": "40px"
-    };
-    console.log('⚠️ Spacing system was missing, using fallback spacing system');
+    console.log('🤖 Spacing system was missing, generating with AI...');
+    templateDesign.layout.spacing_system = await generateSpacingSystemWithAI(templateDesign, contentContext);
+    console.log('✅ AI generated spacing system:', templateDesign.layout.spacing_system);
   }
 
   if (!templateDesign.sections || templateDesign.sections.length === 0) {
@@ -455,6 +449,70 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
     
     return templateDesign;
 
+}
+
+/**
+ * Generate spacing system using AI
+ */
+async function generateSpacingSystemWithAI(templateDesign: any, contentContext: any): Promise<any> {
+  try {
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+
+    const prompt = `Generate a spacing system for email template design based on the content context and visual style.
+
+Template Design Context:
+- Visual Theme: ${templateDesign.visual_concept?.theme || 'modern'}
+- Style: ${templateDesign.visual_concept?.style || 'clean'}
+- Layout Type: ${templateDesign.layout?.type || 'single-column'}
+- Content Type: ${contentContext.campaign_type || 'promotional'}
+
+Generate a spacing system that fits the design theme and provides good visual hierarchy.
+
+Return ONLY a JSON object with spacing values:
+{
+  "xs": "value",
+  "sm": "value", 
+  "md": "value",
+  "lg": "value",
+  "xl": "value",
+  "2xl": "value"
+}
+
+Use pixel values (e.g., "8px", "16px") appropriate for email design.`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert email designer. Generate appropriate spacing systems for email templates. Return only valid JSON.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.3,
+      max_tokens: 500
+    });
+
+    const aiResponse = response.choices[0]?.message?.content?.trim() || '';
+    
+    // Clean and parse JSON response
+    const cleanJson = aiResponse.replace(/```json\n?|```\n?/g, '').trim();
+    const spacingSystem = JSON.parse(cleanJson);
+    
+    console.log('🎨 AI generated spacing system successfully');
+    return spacingSystem;
+    
+  } catch (error) {
+    console.error('❌ AI spacing generation failed:', error);
+    
+    // NO FALLBACK ALLOWED - fail fast as requested
+    throw new Error(`AI spacing system generation failed: ${error instanceof Error ? error.message : 'AI unavailable'}. No fallback allowed per project rules.`);
+  }
 }
 
 /**

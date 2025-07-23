@@ -1,0 +1,61 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753268566749_e3eefas8t9l",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753268566749_e3eefas8t9l",
+  "specialist_data": {
+    "destination_analysis": {},
+    "market_intelligence": {},
+    "emotional_profile": {},
+    "trend_analysis": {},
+    "consolidated_insights": {},
+    "travel_intelligence": {},
+    "collection_metadata": {}
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive analysis of travel opportunities in Guatemala, focusing on cultural and natural highlights.",
+    "context_for_next": "Focus on creating engaging content that highlights the unique cultural and ecological aspects of Guatemala.",
+    "recommendations": [
+      "Utilize the identified destinations in email marketing.",
+      "Incorporate travelers' emotional motivations into promotional content.",
+      "Focus on eco-tourism and cultural experiences."
+    ],
+    "priority_items": [
+      "Highlight Antigua and its colonial architecture.",
+      "Showcase the natural beauty of Lake Atitlan.",
+      "Emphasize adventure opportunities in Tikal."
+    ],
+    "potential_issues": [
+      "Monitor competition from neighboring countries like Costa Rica.",
+      "Ensure accurate pricing information to maintain competitiveness."
+    ],
+    "success_criteria": [
+      "Campaign engagement metrics should improve by at least 20% after new content implementation."
+    ]
+  },
+  "deliverables": {
+    "created_files": [
+      {
+        "file_name": "Guatemala_Travel_Analysis_Report.json",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753268566749_e3eefas8t9l/data/Guatemala_Travel_Analysis_Report.json",
+        "file_type": "data",
+        "description": "Comprehensive analysis report for travel to Guatemala.",
+        "is_primary": true
+      }
+    ],
+    "key_outputs": [
+      "Guatemala_Travel_Analysis_Report.json"
+    ]
+  },
+  "quality_metadata": {
+    "data_quality_score": 95,
+    "completeness_score": 98,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 200
+  },
+  "trace_id": "",
+  "validate_context": true,
+  "created_at": "2025-07-23T11:03:22.779Z"
+}

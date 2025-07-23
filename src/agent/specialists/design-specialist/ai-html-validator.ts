@@ -243,21 +243,16 @@ ${problematicImages.map((img, _) => {
 
 КОНТЕКСТ: ${subject} | ${destination} | ${formattedPrice}
 
-🔒 КРИТИЧЕСКИЕ ТРЕБОВАНИЯ (НАРУШЕНИЕ = ОТКЛОНЕНИЕ):
-1. СОХРАНИ ВСЕ CSS СТИЛИ - не удаляй inline styles, классы или <style> блоки
-2. СОХРАНИ ВСЕ ТЕКСТОВОЕ СОДЕРЖИМОЕ - каждое слово, каждый символ
-3. СОХРАНИ ВСЕ ИЗОБРАЖЕНИЯ, атрибуты и пути
-4. СОХРАНИ ВСЕ ССЫЛКИ, кнопки и интерактивные элементы
-5. РАЗМЕР ФАЙЛА: результат должен быть 95-105% от оригинала (${htmlLength} символов)
-6. СОХРАНИ ВСЕ ТАБЛИЦЫ и их структуру
+⚡ БЫСТРЫЕ ИСПРАВЛЕНИЯ (ТОЛЬКО КРИТИЧНЫЕ):
+1. Исправь размеры изображений (width≥150px для галереи)
+2. Проверь CSS свойства на опечатки 
+3. Добавь fallback шрифты если отсутствуют
+4. Сохрани ВСЕ содержимое без изменений
 
-🚨 ИСПРАВЛЕНИЕ CSS ОШИБОК:
-1. ИСПРАВЬ НЕПРАВИЛЬНЫЕ CSS-СВОЙСТВА:
-   - ❌ "list-style-type: -" → ✅ "list-style-type: none"
+🚨 ОСНОВНЫЕ CSS ОШИБКИ:
    - ❌ "font-weight: 500px" → ✅ "font-weight: 500"
    - ❌ "margin: auto auto" → ✅ "margin: 0 auto"
    - ❌ "padding: 10 20" → ✅ "padding: 10px 20px"
-   - ❌ "color: transparentt" → ✅ "color: transparent"
 
 2. ДОБАВЬ FALLBACK ШРИФТЫ:
    - ❌ "font-family: 'Custom Font'" 
@@ -316,7 +311,12 @@ ${currentHtml}
       apiKey: process.env.OPENAI_API_KEY
     });
 
-    const response = await openai.chat.completions.create({
+    // Add timeout to prevent hanging
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('AI HTML validation timeout after 30 seconds')), 30000);
+    });
+    
+    const completionPromise = openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
@@ -353,7 +353,29 @@ ${currentHtml}
       temperature: 0.3
     });
     
-    const enhancedHtml = response.choices[0]?.message?.content?.trim() || '';
+    // Race between completion and timeout
+    const response = await Promise.race([completionPromise, timeoutPromise]);
+    
+    // Enhanced response validation
+    if (!response) {
+      throw new Error('No response received from OpenAI API');
+    }
+    
+    if (!response.choices || response.choices.length === 0) {
+      throw new Error('No choices returned from OpenAI API');
+    }
+    
+    if (!response.choices[0]?.message?.content) {
+      throw new Error('No content in OpenAI API response');
+    }
+    
+    const enhancedHtml = response.choices[0].message.content.trim();
+    
+    if (!enhancedHtml) {
+      throw new Error('Empty content returned from OpenAI API');
+    }
+    
+    console.log(`✅ AI response received: ${enhancedHtml.length} characters`);
     
     // 🔒 КРИТИЧЕСКАЯ ПРОВЕРКА: Защита от обрезания контента
     const originalLength = currentHtml.length;

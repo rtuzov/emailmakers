@@ -40,14 +40,24 @@ function getCampaignContextFromSdk(context: any): CampaignWorkflowContext {
     contextType: typeof context,
     hasWorkflowType: !!context?.workflowType,
     hasCampaign: !!context?.campaign,
-    campaignKeys: context?.campaign ? Object.keys(context.campaign) : []
+    campaignKeys: context?.campaign ? Object.keys(context.campaign) : [],
+    hasAgentInput: !!context?.agentInput,
+    agentInputKeys: context?.agentInput ? Object.keys(context.agentInput) : [],
+    hasContext: !!context?.context,
+    contextContextKeys: context?.context ? Object.keys(context.context) : []
   });
   
   // Try multiple possible context structures from OpenAI SDK
   let campaignContext: CampaignWorkflowContext = {};
   
-  // Method 1: Direct campaign context
-  if (context?.campaignContext) {
+  // Method 1: From agentInput (API calls)
+  if (context?.agentInput?.context?.campaignPath) {
+    campaignContext.campaignPath = context.agentInput.context.campaignPath;
+    campaignContext.campaignId = context.agentInput.context.campaignId;
+    console.log('🎯 Found campaign context via: agentInput.context');
+  }
+  // Method 2: Direct campaign context 
+  else if (context?.campaignContext) {
     campaignContext = context.campaignContext;
     console.log('🎯 Found campaign context via: campaignContext');
   }
@@ -120,7 +130,7 @@ This tool MUST be called first to:
     console.log('📁 === LOADING DESIGN CONTEXT ===');
     console.log('🔍 DEBUG: Received parameters:', { campaign_path: params.campaign_path, trace_id: params.trace_id });
     
-    // 🔍 ПОЛНОЕ ЛОГИРОВАНИЕ КОНТЕКСТА
+    // 🔍 УЛУЧШЕННОЕ ЛОГИРОВАНИЕ КОНТЕКСТА 
     console.log('\n🔍 === ПОЛНЫЙ КОНТЕКСТ DEBUG ===');
     console.log('📋 Весь context:', JSON.stringify(context, null, 2));
     console.log('📊 Context keys:', context ? Object.keys(context) : 'none');
@@ -129,8 +139,9 @@ This tool MUST be called first to:
       console.log('📁 context.context:', (context as any)?.context);
       console.log('📁 context.campaignContext:', (context as any)?.campaignContext);
       console.log('📁 context.campaign:', (context as any)?.campaign);
-      console.log('📁 context.dataFlow:', (context as any)?.dataFlow);
-      console.log('📁 context.usage:', (context as any)?.usage);
+      console.log('📁 context.agentInput:', (context as any)?.agentInput);
+      console.log('📁 context.apiCall:', (context as any)?.apiCall);
+      console.log('📁 context.requestId:', (context as any)?.requestId);
     }
     console.log('🔍 === КОНЕЦ ПОЛНОГО DEBUG ===\n');
     
@@ -191,14 +202,9 @@ This tool MUST be called first to:
         ...loadedContext
       };
       
-      // Ensure no circular references before storing
-      (context as any).designContext = JSON.parse(JSON.stringify(cleanDesignContext, (key, value) => {
-        // Remove any context references to prevent circular dependency
-        if (key === 'context' && typeof value === 'object' && value !== null) {
-          return undefined;
-        }
-        return value;
-      }));
+      // Ensure no circular references before storing using safe cloning
+      const safeDesignContext = createSafeClone(cleanDesignContext);
+      (context as any).designContext = safeDesignContext;
       
       console.log('✅ DESIGN: Context loaded successfully');
       console.log('📊 DESIGN: Content sections available:', Object.keys(loadedContext.content_context || {}));
@@ -223,6 +229,39 @@ This tool MUST be called first to:
 // ============================================================================
 // CONTEXT LOADING UTILITIES
 // ============================================================================
+
+/**
+ * Safe clone function to prevent circular JSON structures
+ */
+function createSafeClone(obj: any, visited = new WeakSet()): any {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  
+  if (visited.has(obj)) {
+    return '[Circular Reference]';
+  }
+  
+  visited.add(obj);
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => createSafeClone(item, visited));
+  }
+  
+  const cloned: any = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      // Skip context references to prevent circular dependencies
+      if (key === 'context' || key === 'designContext') {
+        continue;
+      }
+      cloned[key] = createSafeClone(obj[key], visited);
+    }
+  }
+  
+  visited.delete(obj);
+  return cloned;
+}
 
 /**
  * Simple helper function to build/update design context

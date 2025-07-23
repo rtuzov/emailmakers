@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-23T11:16:20.450Z",
+  "campaign_id": "campaign_1753269288824_imeop5vjo",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external__miilJvBcPY.jpg",
+      "path": "https://images.unsplash.com/photo-1563216225-425be0cbd18d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxwYXJpcyUyMGVpZmZlbCUyMHRvd2VyJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTMyNzgzNzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1563216225-425be0cbd18d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxwYXJpcyUyMGVpZmZlbCUyMHRvd2VyJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTMyNzgzNzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external__miilJvBcPY",
+      "created": "2025-07-23T11:16:20.451Z",
+      "modified": "2025-07-23T11:16:20.451Z",
+      "tags": [],
+      "description": "the sun is setting over the city of paris",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external__cTrOFIF12Q.jpg",
+      "path": "https://images.unsplash.com/photo-1575372587186-5012f8886b4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuZXclMjB5b3JrJTIwY2VudHJhbCUyMHBhcmslMjBhdXR1bW58ZW58MHwwfHx8MTc1MzI3ODM3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1575372587186-5012f8886b4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxuZXclMjB5b3JrJTIwY2VudHJhbCUyMHBhcmslMjBhdXR1bW58ZW58MHwwfHx8MTc1MzI3ODM3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_-cTrOFIF12Q",
+      "created": "2025-07-23T11:16:20.451Z",
+      "modified": "2025-07-23T11:16:20.451Z",
+      "tags": [],
+      "description": "people in park",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_8PqS_zlvXAQ.jpg",
+      "path": "https://images.unsplash.com/photo-1709654971337-b8f1937b2d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0b2t5byUyMHNoaWJ1eWElMjBjcm9zc2luZyUyMG5pZ2h0fGVufDB8MHx8fDE3NTMyNzgzNzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1709654971337-b8f1937b2d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0b2t5byUyMHNoaWJ1eWElMjBjcm9zc2luZyUyMG5pZ2h0fGVufDB8MHx8fDE3NTMyNzgzNzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_8PqS_zlvXAQ",
+      "created": "2025-07-23T11:16:20.451Z",
+      "modified": "2025-07-23T11:16:20.451Z",
+      "tags": [],
+      "description": "a city street filled with lots of traffic at night",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_bHXHBf1SGHc.jpg",
+      "path": "https://images.unsplash.com/photo-1662798305900-1d0e520cff87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzeWRuZXklMjBvcGVyYSUyMGhvdXNlJTIwaGFyYm9yJTIwdmlld3xlbnwwfDB8fHwxNzUzMjc4Mzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1662798305900-1d0e520cff87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzeWRuZXklMjBvcGVyYSUyMGhvdXNlJTIwaGFyYm9yJTIwdmlld3xlbnwwfDB8fHwxNzUzMjc4Mzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_bHXHBf1SGHc",
+      "created": "2025-07-23T11:16:20.451Z",
+      "modified": "2025-07-23T11:16:20.451Z",
+      "tags": [],
+      "description": "a group of people sitting at a table looking out at a large building",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_WGsyZpIo8qo.jpg",
+      "path": "https://images.unsplash.com/photo-1691929740289-0b53765a050d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjYXBlJTIwdG93biUyMHRhYmxlJTIwbW91bnRhaW4lMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzI3ODM3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1691929740289-0b53765a050d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjYXBlJTIwdG93biUyMHRhYmxlJTIwbW91bnRhaW4lMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzI3ODM3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_WGsyZpIo8qo",
+      "created": "2025-07-23T11:16:20.451Z",
+      "modified": "2025-07-23T11:16:20.451Z",
+      "tags": [],
+      "description": "a view of a city with mountains in the background",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753269380446",
+    "status": "assets_collected"
+  }
+}
