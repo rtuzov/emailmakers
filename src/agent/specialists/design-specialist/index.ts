@@ -33,8 +33,6 @@ import { generateComprehensiveDesignPackage } from './design-package-generator';
 import { createDesignHandoff } from './design-handoff';
 import { validateAndCorrectHtml } from './ai-html-validator';
 import { finalizeDesignAndTransferToQuality } from '../../core/specialist-finalization-tools';
-// Import transfer function
-import { transferToQualitySpecialist } from '../../core/transfer-tools';
 // Import ENHANCED V3 tools with AI agents
 import { analyzeContentForDesign } from './content-intelligence-analyzer';
 import { generateTemplateDesign as generateAdaptiveDesign } from './ai-template-designer';
@@ -57,8 +55,7 @@ export const designSpecialistTools = [
   analyzePerformance,            // Step 9: Performance analysis
   generateComprehensiveDesignPackage, // Step 10: Comprehensive package
   createDesignHandoff,           // Step 11: Create handoff for QA
-  finalizeDesignAndTransferToQuality, // Step 12: CRITICAL - Finalize context
-  transferToQualitySpecialist    // Step 13: CRITICAL - Transfer to Quality Specialist
+  finalizeDesignAndTransferToQuality // Step 12: CRITICAL - Finalize design context
 ];
 
 /**
@@ -78,8 +75,7 @@ export const designWorkflowSteps = [
   'analyzePerformance',          // Step 9: Performance analysis
   'generateComprehensiveDesignPackage', // Step 10: Comprehensive package
   'createDesignHandoff',         // Step 11: Create handoff for QA
-  'finalizeDesignAndTransferToQuality', // Step 12: CRITICAL - Finalize context
-  'transferToQualitySpecialist'  // Step 13: CRITICAL - Transfer to Quality Specialist
+  'finalizeDesignAndTransferToQuality'  // Step 12: CRITICAL - Finalize design context
 ];
 
 /**
@@ -99,6 +95,6 @@ export const designToolRegistry = {
   analyzePerformance,
   generateComprehensiveDesignPackage,
   createDesignHandoff,
-  finalizeDesignAndTransferToQuality,
-  transferToQualitySpecialist
+  createHandoffFile: createDesignHandoff, // Alias for backward compatibility
+  finalizeDesignAndTransferToQuality
 }; 

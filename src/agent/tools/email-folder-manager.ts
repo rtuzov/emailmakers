@@ -263,7 +263,7 @@ export default class EmailFolderManager {
     wasExisting: boolean;
   }> {
     // Добавляем или получаем ассет из общего хранилища
-    const { sharedPath, hash, wasExisting } = await AssetHashManager.addOrGetSharedAsset(
+    const { sharedPath: _sharedPath, hash, wasExisting } = await AssetHashManager.addOrGetSharedAsset(
       sourceFilePath,
       fileName
     );

@@ -12,9 +12,9 @@ import {
   HybridConfig,
   HybridRenderingPipeline,
   HybridRenderingStage,
-  OptimizationContext,
-  OptimizationResult,
-  EmailClient
+  // OptimizationContext,
+  OptimizationResult
+  // EmailClient // Currently unused
 } from '../types/email-renderer-types';
 
 export class OptimizationService {
@@ -22,7 +22,7 @@ export class OptimizationService {
   /**
    * Handle output optimization
    */
-  async handleOutputOptimization(_context: ServiceExecutionContext): Promise<EmailRendererResult> {
+  async handleOutputOptimization(context: ServiceExecutionContext): Promise<EmailRendererResult> {
     const { params, start_time } = context;
     
     try {
@@ -46,11 +46,11 @@ export class OptimizationService {
       return {
         success: true,
         action: 'optimize_output',
-        _data: {
+        data: {
           html: enhancedResult.optimized_html,
-          mjml: enhancedResult.optimized_mjml,
-          text_version: enhancedResult.text_version,
-          amp_version: enhancedResult.amp_version,
+          ...(enhancedResult.optimized_mjml && { mjml: enhancedResult.optimized_mjml }),
+          ...(enhancedResult.text_version && { text_version: enhancedResult.text_version }),
+          ...(enhancedResult.amp_version && { amp_version: enhancedResult.amp_version }),
           rendering_stats: {
             optimizations_performed: enhancedResult.optimizations_applied.length,
             size_reduction_percent: enhancedResult.performance_improvements.size_reduction_percent,
@@ -111,7 +111,7 @@ export class OptimizationService {
       return {
         success: true,
         action: 'render_hybrid',
-        _data: {
+        data: {
           html: optimizedResult.html,
           mjml: optimizedResult.mjml,
           text_version: optimizedResult.text_version,
@@ -167,7 +167,7 @@ export class OptimizationService {
   /**
    * Perform comprehensive optimization
    */
-  private async performComprehensiveOptimization(_params: EmailRendererParams): Promise<OptimizationResult> {
+  private async performComprehensiveOptimization(params: EmailRendererParams): Promise<OptimizationResult> {
     console.log('🔧 Performing comprehensive optimization...');
     
     // Get base HTML content
@@ -181,7 +181,8 @@ export class OptimizationService {
     }
     
     // Create optimization context
-    const _context: OptimizationContext = {
+    /*
+    const _optimizationContext: OptimizationContext = {
       html_content: baseHtml,
       mjml_content: baseMjml,
       target_clients: this.getTargetClients(params),
@@ -191,6 +192,7 @@ export class OptimizationService {
         min_accessibility_score: 80
       }
     };
+    */
     
     // Apply optimization stages
     let optimizedHtml = baseHtml;
@@ -252,7 +254,7 @@ export class OptimizationService {
   /**
    * Apply performance enhancements
    */
-  private async applyPerformanceEnhancements(_result: OptimizationResult, _params: EmailRendererParams): Promise<OptimizationResult> {
+  private async applyPerformanceEnhancements(result: OptimizationResult, params: EmailRendererParams): Promise<OptimizationResult> {
     let enhancedHtml = result.optimized_html;
     const additionalOptimizations: string[] = [];
     
@@ -270,22 +272,26 @@ export class OptimizationService {
     
     // Generate alternative formats
     const textVersion = this.generateTextVersion(enhancedHtml);
-    const ampVersion = params.rendering_options?.output_format === 'amp' ? 
-      await this.generateAmpVersion(enhancedHtml) : undefined;
-    
-    return {
+    const enhancedResult: OptimizationResult = {
       ...result,
       optimized_html: enhancedHtml,
       text_version: textVersion,
-      amp_version: ampVersion,
       optimizations_applied: [...result.optimizations_applied, ...additionalOptimizations]
     };
+    
+    // Add amp_version only if it exists
+    if (params.rendering_options?.output_format === 'amp') {
+      const ampVersion = await this.generateAmpVersion(enhancedHtml);
+      (enhancedResult as any).amp_version = ampVersion;
+    }
+    
+    return enhancedResult;
   }
   
   /**
    * Calculate optimization metrics
    */
-  private calculateOptimizationMetrics(_result: OptimizationResult, _params: EmailRendererParams) {
+  private calculateOptimizationMetrics(result: OptimizationResult, _params: EmailRendererParams) {
     const htmlSize = Buffer.byteLength(result.optimized_html, 'utf8');
     const estimatedLoadTime = this.calculateLoadTime(result.optimized_html);
     
@@ -323,12 +329,12 @@ export class OptimizationService {
    * Execute hybrid rendering pipeline
    */
   private async executeHybridPipeline(_params: EmailRendererParams): Promise<HybridRenderingPipeline> {
-    const config = params.hybrid_config!;
+    const config = _params.hybrid_config!;
     const stages: HybridRenderingStage[] = [];
     const startTime = Date.now();
     
     // Stage 1: Base template rendering
-    const baseStage = await this.executeBaseTemplateStage(config.base_template, params);
+    const baseStage = await this.executeBaseTemplateStage(config.base_template, _params);
     stages.push(baseStage);
     
     let currentData = baseStage.output_data;
@@ -339,7 +345,7 @@ export class OptimizationService {
     
     for (const enhancement of enhancementOrder) {
       if (this.isValidEnhancement(enhancement) && config.enhancements && config.enhancements.includes(enhancement as any)) {
-        const enhancementStage = await this.executeEnhancementStage(enhancement, currentData, params);
+        const enhancementStage = await this.executeEnhancementStage(enhancement, currentData, _params);
         stages.push(enhancementStage);
         
         if (enhancementStage.success) {
@@ -373,16 +379,16 @@ export class OptimizationService {
       
       switch (baseTemplate) {
         case 'mjml':
-          outputData = await this.renderMjmlBase(params);
+          outputData = await this.renderMjmlBase(_params);
           break;
         case 'react':
-          outputData = await this.renderReactBase(params);
+          outputData = await this.renderReactBase(_params);
           break;
         case 'advanced':
-          outputData = await this.renderAdvancedBase(params);
+          outputData = await this.renderAdvancedBase(_params);
           break;
         case 'seasonal':
-          outputData = await this.renderSeasonalBase(params);
+          outputData = await this.renderSeasonalBase(_params);
           break;
         default:
           throw new Error(`Unknown base template: ${baseTemplate}`);
@@ -391,7 +397,7 @@ export class OptimizationService {
       return {
         stage_name: `base_${baseTemplate}`,
         engine: this.getEngineForTemplate(baseTemplate),
-        input_data: params,
+        input_data: _params,
         output_data: outputData,
         execution_time_ms: Date.now() - stageStartTime,
         success: true
@@ -401,7 +407,7 @@ export class OptimizationService {
       return {
         stage_name: `base_${baseTemplate}`,
         engine: this.getEngineForTemplate(baseTemplate),
-        input_data: params,
+        input_data: _params,
         execution_time_ms: Date.now() - stageStartTime,
         success: false,
         error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'
@@ -425,16 +431,16 @@ export class OptimizationService {
       } else {
         switch (enhancement as 'seasonal_overlay' | 'advanced_components' | 'react_widgets' | 'mjml_structure') {
           case 'seasonal_overlay':
-            outputData = await this.addSeasonalOverlay(inputData, params);
+            outputData = await this.addSeasonalOverlay(inputData, _params);
             break;
           case 'advanced_components':
-            outputData = await this.addAdvancedComponents(inputData, params);
+            outputData = await this.addAdvancedComponents(inputData, _params);
             break;
           case 'react_widgets':
-            outputData = await this.addReactWidgets(inputData, params);
+            outputData = await this.addReactWidgets(inputData, _params);
             break;
           case 'mjml_structure':
-            outputData = await this.addMjmlStructure(inputData, params);
+            outputData = await this.addMjmlStructure(inputData, _params);
             break;
         }
       }
@@ -467,13 +473,13 @@ export class OptimizationService {
     const optimizations = [];
     
     // Apply cross-system optimizations
-    if (params.rendering_options?.inline_css) {
+    if (_params.rendering_options?.inline_css) {
       finalOutput.html = await this.inlineCSS(finalOutput.html);
       optimizations.push('css_inlined');
     }
     
     // Apply hybrid-specific optimizations
-    if (params.performance_config?.parallel_rendering) {
+    if (_params.performance_config?.parallel_rendering) {
       finalOutput = await this.optimizeHybridPerformance(finalOutput);
       optimizations.push('hybrid_performance_optimized');
     }
@@ -500,8 +506,9 @@ export class OptimizationService {
     return '<html><body><p>Default content</p></body></html>';
   }
   
+  /*
   private getTargetClients(_params: EmailRendererParams): EmailClient[] {
-    const clientOpt = params.rendering_options?.email_client_optimization;
+    const clientOpt = _params.rendering_options?.email_client_optimization;
     if (clientOpt === 'all') {
       return ['gmail', 'outlook', 'apple_mail', 'yahoo'];
     } else if (clientOpt && clientOpt !== 'universal') {
@@ -509,16 +516,17 @@ export class OptimizationService {
     }
     return ['gmail', 'outlook', 'apple_mail'];
   }
+  */
   
   private getClientCompatibility(_result: OptimizationResult): string[] {
     // Based on optimizations applied, determine client compatibility
     const compatibility = ['gmail', 'apple_mail'];
     
-    if (result.optimizations_applied.includes('client_optimized')) {
+    if (_result.optimizations_applied.includes('client_optimized')) {
       compatibility.push('outlook');
     }
     
-    if (result.optimizations_applied.includes('accessibility_improved')) {
+    if (_result.optimizations_applied.includes('accessibility_improved')) {
       compatibility.push('yahoo');
     }
     
@@ -528,10 +536,10 @@ export class OptimizationService {
   private calculateOptimizationAnalytics(startTime: number, _result: OptimizationResult, _params: EmailRendererParams) {
     return {
       execution_time: Date.now() - startTime,
-      rendering_complexity: Buffer.byteLength(result.optimized_html, 'utf8') / 1000,
-      cache_efficiency: params.performance_config?.cache_strategy === 'aggressive' ? 0.95 : 0.8,
+      rendering_complexity: Buffer.byteLength(_result.optimized_html, 'utf8') / 1000,
+      cache_efficiency: _params.performance_config?.cache_strategy === 'aggressive' ? 0.95 : 0.8,
       components_rendered: 1,
-      optimizations_performed: result.optimizations_applied.length
+      optimizations_performed: _result.optimizations_applied.length
     };
   }
   
@@ -539,7 +547,7 @@ export class OptimizationService {
     return {
       execution_time: Date.now() - startTime,
       rendering_complexity: pipeline.stages.length * 10,
-      cache_efficiency: params.performance_config?.cache_strategy === 'aggressive' ? 0.9 : 0.75,
+      cache_efficiency: _params.performance_config?.cache_strategy === 'aggressive' ? 0.9 : 0.75,
       components_rendered: pipeline.stages.length,
       optimizations_performed: pipeline.pipeline_metadata.optimizations_applied.length
     };
@@ -571,12 +579,12 @@ export class OptimizationService {
     let score = 100;
     
     // Deduct for large file size
-    const sizeKb = Buffer.byteLength(result.optimized_html, 'utf8') / 1024;
+    const sizeKb = Buffer.byteLength(_result.optimized_html, 'utf8') / 1024;
     if (sizeKb > 100) score -= 10;
     if (sizeKb > 200) score -= 20;
     
     // Add for optimizations applied
-    score += result.optimizations_applied.length * 5;
+    score += _result.optimizations_applied.length * 5;
     
     return Math.min(100, Math.max(0, score));
   }
@@ -624,7 +632,7 @@ export class OptimizationService {
   // Placeholder methods for various optimizations
   private async inlineCSS(html: string): Promise<string> { return html; }
   private minifyHTML(html: string): string { return html.replace(/\s+/g, ' ').trim(); }
-  private async optimizeForClient(html: string, client: string): Promise<string> { return html; }
+  private async optimizeForClient(html: string, _client: string): Promise<string> { return html; }
   private async improveAccessibility(html: string): Promise<string> { return html; }
   private async optimizeImages(html: string): Promise<string> { return html; }
   private async applyCachingOptimizations(html: string): Promise<string> { return html; }
@@ -632,12 +640,13 @@ export class OptimizationService {
   private generateTextVersion(html: string): string { return html.replace(/<[^>]*>/g, '').trim(); }
   private async generateAmpVersion(html: string): Promise<string> { return html; }
   private async renderMjmlBase(_params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
-  private async renderReactBase(params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
-  private async renderAdvancedBase(params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
-  private async renderSeasonalBase(params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
+  private async renderReactBase(_params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
+  private async renderAdvancedBase(_params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
+  private async renderSeasonalBase(_params: EmailRendererParams): Promise<any> { return { html: '<html></html>' }; }
   private async addSeasonalOverlay(data: any, _params: EmailRendererParams): Promise<any> { return data; }
-  private async addAdvancedComponents(_data: any, _params: EmailRendererParams): Promise<any> { return data; }
-  private async addReactWidgets(_data: any, _params: EmailRendererParams): Promise<any> { return data; }
-  private async addMjmlStructure(_data: any, _params: EmailRendererParams): Promise<any> { return data; }
+  private async addAdvancedComponents(_data: any, _params: EmailRendererParams): Promise<any> { return _data; }
+  private async addReactWidgets(_data: any, _params: EmailRendererParams): Promise<any> { return _data; }
+  private async addMjmlStructure(_data: any, _params: EmailRendererParams): Promise<any> { return _data; }
   private async optimizeHybridPerformance(output: any): Promise<any> { return output; }
+  
 } 

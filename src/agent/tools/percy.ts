@@ -80,7 +80,7 @@ export async function percySnap(params: any): Promise<ToolResult> {
       };
 
     } catch (percyError) {
-      throw new Error(`Percy testing failed: ${percyError.message}`);
+      throw new Error(`Percy testing failed: ${percyError instanceof Error ? percyError.message : String(percyError)}`);
     }
 
   } catch (error) {
@@ -88,7 +88,7 @@ export async function percySnap(params: any): Promise<ToolResult> {
   }
 }
 
-async function performPercyTesting(params: PercyParams, token: string): Promise<PercyResult> {
+async function performPercyTesting(params: PercyParams, _token: string): Promise<PercyResult> {
   // For this implementation, we'll simulate Percy testing
   // In production, this would use Percy SDK or API
   
@@ -162,7 +162,7 @@ function analyzeEmailLayout(html: string): {
   // 3. Width constraints (600-640px for email)
   const widthMatch = html.match(/width="(\d+)"/);
   if (widthMatch) {
-    const width = parseInt(widthMatch[1]);
+    const width = parseInt(widthMatch[1] || '0');
     if (width > 640) {
       issues.push(`Table width ${width}px exceeds email-safe limit of 640px`);
       score -= 0.15;

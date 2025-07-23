@@ -422,6 +422,8 @@ export class HTMLValidationService {
       
       properties.forEach(property => {
         const [prop] = property.split(':').map(p => p.trim());
+        if (!prop) return; // Skip if property name is empty
+        
         totalProperties++;
         
         if (this.emailFriendlyCSS.has(prop) || !this.unsupportedCSS.has(prop)) {
@@ -619,7 +621,7 @@ export class HTMLValidationService {
     if (metaCharset) return metaCharset;
     if (metaHttpEquiv) {
       const charsetMatch = metaHttpEquiv.match(/charset=([^;]+)/i);
-      return charsetMatch ? charsetMatch[1] : 'unknown';
+      return charsetMatch ? charsetMatch[1] || 'unknown' : 'unknown';
     }
     return 'unknown';
   }

@@ -216,16 +216,16 @@ export class Screenshot {
   get viewport(): ScreenshotData['viewport'] { return this.data.viewport; }
   get darkMode(): boolean { return this.data.darkMode; }
   get status(): ScreenshotStatusType { return this.data.status; }
-  get imageMetadata(): ImageMetadata | undefined { return this.data.imageMetadata; }
+  get imageMetadata(): ImageMetadata | undefined { return this.data.imageMetadata ?? undefined; }
   get storageInfo(): StorageInfo | undefined { return this.data.storageInfo; }
   get captureConfig(): ScreenshotData['captureConfig'] { return this.data.captureConfig; }
   get comparisonResults(): ComparisonResult[] { return this.data.comparisonResults; }
-  get processingTime(): number | undefined { return this.data.processingTime; }
-  get errorMessage(): string | undefined { return this.data.errorMessage; }
+  get processingTime(): number | undefined { return this.data.processingTime ?? undefined; }
+  get errorMessage(): string | undefined { return this.data.errorMessage ?? undefined; }
   get retryCount(): number { return this.data.retryCount; }
   get maxRetries(): number { return this.data.maxRetries; }
-  get capturedAt(): Date | undefined { return this.data.capturedAt; }
-  get processedAt(): Date | undefined { return this.data.processedAt; }
+  get capturedAt(): Date | undefined { return this.data.capturedAt ?? undefined; }
+  get processedAt(): Date | undefined { return this.data.processedAt ?? undefined; }
   get createdAt(): Date { return this.data.createdAt; }
   get updatedAt(): Date { return this.data.updatedAt; }
 
@@ -401,7 +401,7 @@ export class Screenshot {
    * Get thumbnail URL
    */
   getThumbnailUrl(): string | undefined {
-    return this.data.storageInfo?.thumbnailUrl;
+    return this.data.storageInfo?.thumbnailUrl ?? undefined;
   }
 
   /**

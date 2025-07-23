@@ -7,8 +7,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { 
-  createOptimizationService, 
-  OptimizationService 
+  createOptimizationService 
+  // OptimizationService 
 } from '../../../../agent/optimization';
 
 // Test implementations using the full optimization service

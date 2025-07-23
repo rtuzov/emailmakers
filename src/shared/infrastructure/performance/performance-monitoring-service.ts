@@ -97,7 +97,7 @@ export class PerformanceMonitoringService {
       memoryUsage: process.memoryUsage(),
       cpuUsage: process.cpuUsage(),
       timestamp: Date.now(),
-      ...(options || {}),
+      ...(_options || {}),
     };
 
     this.recordMetrics(metrics);

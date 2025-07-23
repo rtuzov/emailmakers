@@ -244,7 +244,7 @@ export default function DashboardContentV2() {
   };
 
   // Используем новый hook для безопасной загрузки данных
-  const { data: metrics, loading: isLoading, error, isClient } = useClientData(
+  const { data: metrics, loading: isLoading, error, isClient: _isClient } = useClientData(
     fetchDashboardData,
     // Fallback data для предотвращения hydration errors
     {
@@ -277,7 +277,8 @@ export default function DashboardContentV2() {
     return num.toLocaleString();
   };
 
-  const formatUptime = (uptime: number): string => {
+  /*
+  const _formatUptime = (uptime: number): string => {
     const hours = Math.floor(uptime / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
     const remainingHours = hours % 24;
@@ -287,6 +288,7 @@ export default function DashboardContentV2() {
     }
     return `${hours}h`;
   };
+  */
 
   const getStatusColor = (status: string): string => {
     switch (status) {

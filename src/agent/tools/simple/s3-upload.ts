@@ -102,7 +102,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
         },
         upload_metadata: {
           upload_duration: Date.now() - startTime,
-          compression_ratio: compressionRatio,
+          ...(compressionRatio && { compression_ratio: compressionRatio }),
           security_scan: securityScan,
           access_info: {}
         },
@@ -145,7 +145,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
         },
         upload_metadata: {
           upload_duration: Date.now() - startTime,
-          compression_ratio: compressionRatio,
+          ...(compressionRatio && { compression_ratio: compressionRatio }),
           security_scan: securityScan,
           access_info: {}
         },
@@ -171,7 +171,7 @@ export async function s3Upload(params: S3UploadParams): Promise<S3UploadResult> 
       },
       upload_metadata: {
         upload_duration: uploadDuration,
-        compression_ratio: compressionRatio,
+        ...(compressionRatio && { compression_ratio: compressionRatio }),
         security_scan: securityScan,
         access_info: accessInfo
       }

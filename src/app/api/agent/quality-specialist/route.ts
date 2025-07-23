@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { qualitySpecialistAgent } from '@/agent/core/tool-registry';
+// import { qualitySpecialistAgent } from '@/agent/core/tool-registry';
 import { QualitySpecialistInput } from '@/agent/specialists/quality/types/quality-types';
 
 export async function POST(request: NextRequest) {
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       task_type = 'quality_analysis',
       email_package,
       quality_requirements,
-      testing_criteria,
+      // _testing_criteria,
       workflow_context
     } = body;
 
@@ -38,25 +38,25 @@ export async function POST(request: NextRequest) {
     const startTime = Date.now();
     
     // Import and use the agent runner
-    const { run } = await import('@openai/agents');
+    // const { run } = await import('@openai/agents');
     
     // Create prompt for the agent
-    const prompt = `Analyze this email for quality:
-    
-    Task Type: ${agentInput.task_type}
-    HTML Content: ${agentInput.email_package?.html_content || 'No HTML provided'}
-    Topic: ${agentInput.email_package?.subject || 'No topic provided'}
-    
-    Use the workflow_quality_analyzer tool to perform comprehensive analysis with 5 specialized agents.
-    
-    Quality Requirements:
-    - Minimum score: ${quality_requirements?.min_score || 70}
-    - Iteration count: ${workflow_context?.iteration_count || 0}
-    
-    Please provide detailed analysis and recommendations.`;
+    // const prompt = `Analyze this email for quality:
+    //
+    // Task Type: ${agentInput.task_type}
+    // HTML Content: ${agentInput.email_package?.html_content || 'No HTML provided'}
+    // Topic: ${agentInput.email_package?.subject || 'No topic provided'}
+    //
+    // Use the workflow_quality_analyzer tool to perform comprehensive analysis with 5 specialized agents.
+    //
+    // Quality Requirements:
+    // - Minimum score: ${quality_requirements?.min_score || 70}
+    // - Iteration count: ${workflow_context?.iteration_count || 0}
+    //
+    // Please provide detailed analysis and recommendations.`;
 
     // Execute the agent
-    const _result // Currently unused = await run(qualitySpecialistAgent, prompt);
+    // const _result // Currently unused = await run(qualitySpecialistAgent, prompt);
     
     const executionTime = Date.now() - startTime;
 

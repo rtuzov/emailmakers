@@ -18,7 +18,39 @@ const templateDesignAgent = new Agent({
   name: 'Template Design AI',
   instructions: `Ты эксперт по email дизайну и верстке. Создавай профессиональные email шаблоны с учетом всех технических требований.
 
-ТВОЯ ЗАДАЧА: Создать детальный дизайн email шаблона в формате JSON.
+ТВОЯ ЗАДАЧА: Создать детальный дизайн email шаблона в формате JSON с АВТОМАТИЧЕСКИМ ВНЕДРЕНИЕМ ЛУЧШИХ ПРАКТИК.
+
+🚀 АВТОМАТИЧЕСКИЕ УЛУЧШЕНИЯ ДЛЯ ВНЕДРЕНИЯ:
+
+1. 📸 ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ:
+   - Создавай секцию gallery с grid-layout для множественных изображений
+   - Используй ВСЕ доступные изображения (5+), не только 1-2
+   - Добавляй hover-эффекты и подписи к изображениям
+
+2. 📐 ОПТИМИЗАЦИЯ СТРУКТУРЫ:
+   - Уменьшай количество вложенных элементов (цель: <600 строк HTML)
+   - Объединяй секции с похожим контентом
+   - Используй компактные блоки benefits вместо длинных списков
+
+3. 🎨 УЛУЧШЕННАЯ ТИПОГРАФИКА:
+   - Добавляй visual hierarchy с 4-5 уровнями размеров шрифтов
+   - Используй gradient backgrounds для важных секций
+   - Добавляй text shadows и современные эффекты
+
+4. 📱 АДАПТИВНОСТЬ:
+   - Создавай 3+ breakpoints (mobile/tablet/desktop)
+   - Добавляй touch-friendly кнопки (min 44px)
+   - Responsive images с srcset
+
+5. 🎯 CTA ОПТИМИЗАЦИЯ:
+   - Размещай primary CTA в fold (верхняя часть)
+   - Добавляй multiple CTA с разными стилями
+   - Включай urgency indicators рядом с кнопками
+
+6. 💎 МИКРОИНТЕРАКЦИИ:
+   - Добавляй hover states для всех кнопок
+   - Transition effects для плавности
+   - Loading states для кнопок
 
 ВСЕГДА возвращай ТОЛЬКО валидный JSON без дополнительных комментариев или markdown форматирования.
 
@@ -26,12 +58,13 @@ const templateDesignAgent = new Agent({
 - template_id, template_name, description
 - target_audience, visual_concept
 - layout (type, max_width, sections_count, visual_hierarchy, spacing_system)
-- sections (массив с header, hero, content, cta, footer)
-- components (кнопки, карточки и т.д.)
+- sections (массив с header, hero, gallery, content, cta, footer)
+- components (кнопки, карточки, галерея)
 - responsive (breakpoints с adjustments)
 - accessibility (alt_texts, color_contrast, font_sizes)
 - email_client_optimizations (outlook, gmail, apple_mail)
 - performance (size targets, optimization)
+- improvements_applied (список автоматически внедренных улучшений)
 
 Используй предоставленный контекст для создания уникального и продуманного дизайна.`,
   model: 'gpt-4o-mini'
@@ -134,23 +167,30 @@ async function generateAITemplateDesign(params: {
                      'modern';
   
   // Extract assets information - handle both local and external assets properly
-  // ✅ ИСПРАВЛЕНО: Правильное извлечение из вложенной структуры assetManifest
-  const images = Array.isArray(assetManifest?.assetManifest?.images) ? assetManifest.assetManifest.images : [];
-  const icons = Array.isArray(assetManifest?.assetManifest?.icons) ? assetManifest.assetManifest.icons : [];
-  // const _allAssets = [...images, ...icons];
+  // ✅ ИСПРАВЛЕНО: Поддержка прямой и вложенной структуры assetManifest
+  const images = Array.isArray(assetManifest?.images) ? assetManifest.images : 
+                 Array.isArray(assetManifest?.assetManifest?.images) ? assetManifest.assetManifest.images : [];
+  const icons = Array.isArray(assetManifest?.icons) ? assetManifest.icons :
+                Array.isArray(assetManifest?.assetManifest?.icons) ? assetManifest.assetManifest.icons : [];
   
   console.log(`🔍 Processing assets: ${images.length} images, ${icons.length} icons`);
   console.log(`📊 Asset manifest structure:`, {
     hasAssetManifest: !!assetManifest,
+    hasDirectImages: !!assetManifest?.images,
     hasNestedManifest: !!assetManifest?.assetManifest,
+    hasNestedImages: !!assetManifest?.assetManifest?.images,
     manifestKeys: assetManifest ? Object.keys(assetManifest) : [],
     nestedKeys: assetManifest?.assetManifest ? Object.keys(assetManifest.assetManifest) : []
   });
   
   // ✅ ИСПРАВЛЕНО: Добавлены проверки безопасности для массивов
   // Separate local and external images with safe array operations
-  const localImages = Array.isArray(images) ? images.filter((img: any) => !img.isExternal) : [];
-  const externalImages = Array.isArray(images) ? images.filter((img: any) => img.isExternal) : [];
+  const localImages = Array.isArray(images) ? images.filter((img: any) => 
+    img.purpose !== 'external_image' && !img.isExternal && !img.path?.startsWith('http')
+  ) : [];
+  const externalImages = Array.isArray(images) ? images.filter((img: any) => 
+    img.purpose === 'external_image' || img.isExternal || img.path?.startsWith('http')
+  ) : [];
   const totalImages = images.length;
   
   console.log(`📊 Asset breakdown: ${localImages.length} local, ${externalImages.length} external images`);
@@ -251,14 +291,28 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
    - ТОЧНЫЕ отступы между элементами
    - ТОЧНЫЕ пути к изображениям из списка выше
 
+🚀 УЛУЧШЕНИЯ ДЛЯ ВНЕДРЕНИЯ:
+
+1. 📸 ИЗОБРАЖЕНИЯ: 
+   - Используй ВСЕ ${totalImages || 0} доступных изображений
+   - Создай секцию gallery если изображений >2
+
+2. 📐 СТРУКТУРА:
+   - Оптимизируй для HTML <600 строк  
+   - Компактные benefits блоки
+
+3. 🎯 CTA:
+   - Primary: "${primaryCTA}"
+   - Secondary: "${secondaryCTA}"
+
 КРИТИЧНО ВАЖНО:
-- Используй ВСЕ benefits из списка
-- Включи social proof и urgency elements  
+- Используй ВСЕ benefits из списка в компактном формате
+- Включи social proof и urgency elements с визуальными индикаторами
 - Используй реальную цену ${formattedPrice}
-- Размести ВСЕ доступные изображения
-- Создай КОНКРЕТНЫЕ инструкции, не общие фразы
+- Размести ВСЕ ${totalImages || 0} изображений в gallery секции
+- Создай конкретные размеры для оптимизации (цель <600 строк HTML)
 - Укажи ТОЧНЫЕ HEX цвета для каждого элемента
-- Создай адаптивность для мобильных устройств
+- Добавь improvements_applied массив с внедренными улучшениями
 
 📝 ДОПОЛНИТЕЛЬНЫЕ ТРЕБОВАНИЯ:
 - Используй реальные CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
@@ -267,24 +321,101 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
 - Создавай инструкции для junior разработчика: конкретно, подробно, с точными размерами
 
 ВЕРНИ ДЕТАЛЬНЫЙ JSON с полной структурой template design согласно интерфейсу TemplateDesign.
+
+🚨 ОБЯЗАТЕЛЬНЫЕ ПОЛЯ (НЕ МОГУТ БЫТЬ NULL):
+{
+  "template_name": "guatemala_autumn_2025", // ОБЯЗАТЕЛЬНО - уникальное имя
+  "layout": {
+    "type": "single-column", // ОБЯЗАТЕЛЬНО - single-column/multi-column/grid
+    "max_width": 600,
+    "responsive_breakpoints": ["600px", "480px"]
+  },
+  "sections": [...], // ОБЯЗАТЕЛЬНО - минимум 7 секций
+  "components": [...], // ОБЯЗАТЕЛЬНО - минимум 5 компонентов
+  "visual_concept": {
+    "theme": "travel_adventure", // ОБЯЗАТЕЛЬНО
+    "style": "modern_clean", // ОБЯЗАТЕЛЬНО  
+    "mood": "exciting_trustworthy" // ОБЯЗАТЕЛЬНО
+  },
+  "target_audience": "travelers_families", // ОБЯЗАТЕЛЬНО
+  "improvements_applied": [
+    "gallery_integration",
+    "structure_optimization", 
+    "cta_enhancement"
+  ] // ОБЯЗАТЕЛЬНО - список примененных улучшений
+}
+
+ПРОВЕРЬ что ВСЕ обязательные поля заполнены ПЕРЕД отправкой ответа!
 `;
 
-  // 🤖 CALL AI AGENT TO GENERATE TEMPLATE DESIGN
+  // 🤖 CALL AI AGENT TO GENERATE TEMPLATE DESIGN WITH TIMEOUT
   console.log('🎨 Calling AI to generate detailed template design...');
+  console.log('📏 Template prompt length:', templateDesignPrompt.length, 'characters');
   
-  const result = await run(templateDesignAgent, templateDesignPrompt);
+  // Add timeout to prevent hanging
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('AI Template Design generation timed out after 60 seconds')), 60000);
+  });
+  
+  const result = await Promise.race([
+    run(templateDesignAgent, templateDesignPrompt),
+    timeoutPromise
+  ]) as any;
   
   let templateDesign;
   try {
-    // Parse AI response as JSON
+    // Parse AI response as JSON with enhanced validation
     const aiResponse = result.finalOutput?.trim() || '{}';
-    const cleanResponse = aiResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-        templateDesign = JSON.parse(cleanResponse);
+    console.log('🔍 DEBUG: AI response length:', aiResponse.length);
+    console.log('🔍 DEBUG: AI response preview:', aiResponse.substring(0, 200) + '...');
     
+    const cleanResponse = aiResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    console.log('🔍 DEBUG: Cleaned response preview:', cleanResponse.substring(0, 200) + '...');
+    
+    templateDesign = JSON.parse(cleanResponse);
     console.log('✅ AI generated template design successfully');
+    console.log('🔍 DEBUG: Template name in response:', templateDesign?.template_name);
+    console.log('🔍 DEBUG: Layout type in response:', templateDesign?.layout?.type);
   } catch (parseError) {
     console.error('❌ AI Template Design generation failed:', parseError);
     throw new Error(`Failed to generate template design: AI response could not be parsed. ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
+  }
+
+  // 🚨 CRITICAL VALIDATION: Check required fields
+  if (!templateDesign.template_name || templateDesign.template_name === null) {
+    templateDesign.template_name = `guatemala_template_${Date.now()}`;
+    console.log('⚠️ Template name was null, using fallback:', templateDesign.template_name);
+  }
+
+  if (!templateDesign.layout || !templateDesign.layout.type || templateDesign.layout.type === null) {
+    templateDesign.layout = {
+      type: 'single-column',
+      max_width: 600,
+      responsive_breakpoints: ['600px', '480px']
+    };
+    console.log('⚠️ Layout was null, using fallback: single-column');
+  }
+
+  if (!templateDesign.sections || templateDesign.sections.length === 0) {
+    throw new Error('AI Template Design failed: sections array is empty or null. AI must provide at least 7 sections.');
+  }
+
+  if (!templateDesign.components || templateDesign.components.length === 0) {
+    throw new Error('AI Template Design failed: components array is empty or null. AI must provide at least 5 components.');
+  }
+
+  if (!templateDesign.visual_concept || !templateDesign.visual_concept.theme) {
+    templateDesign.visual_concept = {
+      theme: 'travel_adventure',
+      style: 'modern_clean',
+      mood: 'exciting_trustworthy'
+    };
+    console.log('⚠️ Visual concept was null, using fallback');
+  }
+
+  if (!templateDesign.target_audience || templateDesign.target_audience === null) {
+    templateDesign.target_audience = 'travelers_families';
+    console.log('⚠️ Target audience was null, using fallback');
   }
 
   // Add metadata to AI generated design
@@ -472,10 +603,13 @@ export const generateTemplateDesign = tool({
       console.log('✅ AI Template Design completed successfully (OpenAI Agents SDK)');
       console.log(`📊 Sections: ${templateDesign.sections?.length || 0}`);
       console.log(`🎨 Layout: ${templateDesign.layout?.type || 'undefined'}`);
-      console.log(`📱 Responsive: ${templateDesign.responsive?.breakpoints?.length || 0} breakpoints`);
-      console.log(`🎯 Components: ${templateDesign.components?.length || 0} custom components`);
+      console.log(`📱 Responsive: ${Object.keys(templateDesign.responsive?.breakpoints || {}).length} breakpoints`);
+      const componentsCount = Array.isArray(templateDesign.components) 
+        ? templateDesign.components.length 
+        : Object.keys(templateDesign.components || {}).length;
+      console.log(`🎯 Components: ${componentsCount} custom components`);
 
-      return `AI Template Design completed successfully using OpenAI Agents SDK! Generated ${templateDesign.sections?.length || 0} sections with ${templateDesign.layout?.type || 'custom'} layout. Responsive design with ${templateDesign.responsive?.breakpoints?.length || 0} breakpoints. Created ${templateDesign.components?.length || 0} custom components. Visual hierarchy optimized for ${templateDesign.target_audience || 'target users'}. Design saved to: ${templateDesignPath}. Ready for MJML template generation.`;
+      return `AI Template Design completed successfully using OpenAI Agents SDK! Generated ${templateDesign.sections?.length || 0} sections with ${templateDesign.layout?.type || 'custom'} layout. Responsive design with ${Object.keys(templateDesign.responsive?.breakpoints || {}).length} breakpoints. Created ${componentsCount} custom components. Visual hierarchy optimized for ${templateDesign.target_audience || 'target users'}. Design saved to: ${templateDesignPath}. Ready for MJML template generation.`;
 
     } catch (error) {
       console.error('❌ AI Template Design failed:', error);

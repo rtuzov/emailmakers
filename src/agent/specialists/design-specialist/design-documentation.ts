@@ -16,25 +16,39 @@ import { DesignDecisions } from './types';
  */
 export const readTechnicalSpecification = tool({
   name: 'readTechnicalSpecification',
-  description: 'Load technical specification from campaign directory to understand design constraints and requirements',
+  description: 'Read technical specification from Content Specialist output files',
   parameters: z.object({
-    handoff_directory: z.string().describe('Directory containing handoff files from Content Specialist'),
+    handoff_directory: z.string().describe('Campaign handoff directory path (will be auto-corrected if invalid)'),
   }),
-  execute: async (params) => {
+  execute: async (params, context) => {
     try {
-      console.log(`📋 Reading technical specification from: ${params.handoff_directory}`);
+      // ✅ ИСПРАВЛЕНО: Получаем правильный путь кампании из context
+      let handoffDirectory = params.handoff_directory;
+      
+      // Защита от неправильных путей сгенерированных SDK
+      if (handoffDirectory === 'docs' || handoffDirectory === 'package' || handoffDirectory === 'handoffs' || !handoffDirectory.includes('campaigns/')) {
+        const campaignPath = (context?.context as any)?.designContext?.campaign_path;
+        if (campaignPath) {
+          handoffDirectory = path.join(campaignPath, 'handoffs');
+          console.log(`🔧 ИСПРАВЛЕНО: SDK передал неправильный путь "${params.handoff_directory}", использую правильный: ${handoffDirectory}`);
+        } else {
+          throw new Error('Campaign path not available in design context. loadDesignContext must be called first.');
+        }
+      }
+      
+      console.log(`📋 Reading technical specification from: ${handoffDirectory}`);
       
       // First try to load context from handoff files
-      const context = await loadDesignContextFromHandoffDirectory(params.handoff_directory);
+      const context_data = await loadDesignContextFromHandoffDirectory(handoffDirectory);
       
-      let technicalSpec = context.technical_spec;
+      let technicalSpec = context_data.technical_spec;
       
       // If not found in handoff files, try to load from docs/specifications
       if (!technicalSpec) {
         console.log(`📋 Technical specification not found in handoff files, trying docs/specifications...`);
         
         // Get campaign directory from handoff directory
-        const campaignDir = path.dirname(params.handoff_directory);
+        const campaignDir = path.dirname(handoffDirectory);
         const specsPath = path.join(campaignDir, 'docs', 'specifications', 'technical-specification.json');
         
         try {
@@ -145,7 +159,7 @@ export const documentDesignDecisions = tool({
   name: 'documentDesignDecisions',
   description: 'Document design decisions and rationale for the email template design process',
   parameters: z.object({
-    handoff_directory: z.string().describe('Directory containing handoff files'),
+    handoff_directory: z.string().describe('Campaign handoff directory path (will be auto-corrected if invalid)'),
     design_decisions: z.object({
       layout_choice: z.string().describe('Chosen layout approach and rationale'),
       color_strategy: z.string().describe('Color usage strategy and accessibility considerations'),
@@ -157,15 +171,29 @@ export const documentDesignDecisions = tool({
       client_compatibility: z.string().describe('Email client compatibility decisions')
     }).describe('Design decisions object with detailed rationale for each aspect')
   }),
-  execute: async (params) => {
+  execute: async (params, context) => {
     try {
-      console.log(`📝 Documenting design decisions for: ${params.handoff_directory}`);
+      // ✅ ИСПРАВЛЕНО: Получаем правильный путь кампании из context
+      let handoffDirectory = params.handoff_directory;
+      
+      // Защита от неправильных путей сгенерированных SDK
+      if (handoffDirectory === 'docs' || handoffDirectory === 'package' || handoffDirectory === 'handoffs' || !handoffDirectory.includes('campaigns/')) {
+        const campaignPath = (context?.context as any)?.designContext?.campaign_path;
+        if (campaignPath) {
+          handoffDirectory = path.join(campaignPath, 'handoffs');
+          console.log(`🔧 ИСПРАВЛЕНО: SDK передал неправильный путь "${params.handoff_directory}", использую правильный: ${handoffDirectory}`);
+        } else {
+          throw new Error('Campaign path not available in design context. loadDesignContext must be called first.');
+        }
+      }
+      
+      console.log(`📝 Documenting design decisions for: ${handoffDirectory}`);
       
       // Load context to validate handoff directory
-      const context = await loadDesignContextFromHandoffDirectory(params.handoff_directory);
+      const context_data = await loadDesignContextFromHandoffDirectory(handoffDirectory);
       
       // Validate required context
-      if (!context.content_context) {
+      if (!context_data.content_context) {
         throw new Error('Content context not found - cannot document design decisions');
       }
       
@@ -202,14 +230,14 @@ export const documentDesignDecisions = tool({
       };
       
       // Save design decisions to handoff directory
-      const decisionsPath = path.join(params.handoff_directory, 'design-decisions.json');
+      const decisionsPath = path.join(handoffDirectory, 'design-decisions.json');
       await fs.writeFile(decisionsPath, JSON.stringify(designDecisions, null, 2));
       
       console.log(`✅ Design decisions documented successfully!`);
       console.log(`📁 Saved to: ${decisionsPath}`);
       
       // Log design decisions summary
-      console.log(`🎨 Visual Style: ${context.content_context.asset_strategy?.visual_style}`);
+      console.log(`🎨 Visual Style: ${context_data.content_context.asset_strategy?.visual_style}`);
       console.log(`📐 Layout: ${params.design_decisions.layout_choice.substring(0, 50)}...`);
       console.log(`🎨 Colors: ${params.design_decisions.color_strategy.substring(0, 50)}...`);
       console.log(`📝 Typography: ${params.design_decisions.typography_decisions.substring(0, 50)}...`);

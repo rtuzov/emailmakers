@@ -58,16 +58,17 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
     });
 
     // Map copy_type to content_type for the copy tool
-    const contentTypeMap = {
-      'subject': 'subject_line',
-      'preheader': 'preheader', 
-      'cta': 'call_to_action',
-      'headline': 'body_text',
-      'description': 'body_text'
-    };
+    // const contentTypeMap = {
+    //   'subject': 'subject_line',
+    //   'preheader': 'preheader', 
+    //   'cta': 'call_to_action',
+    //   'headline': 'body_text',
+    //   'description': 'body_text'
+    // };
 
     // Build specialized generation parameters with simplified schema
-    const copyParams = {
+    /*
+    const copyParams = { // Currently unused
       topic: params.base_content,
       content_type: contentTypeMap[params.copy_type] as any,
       tone: params.style_preferences.tone,
@@ -85,6 +86,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
       style_preferences: params.style_preferences,
       max_characters: params.max_characters
     };
+    */
 
     // Generate copy using existing tool
     // generateCopy removed - using mock data for now
@@ -120,7 +122,7 @@ export async function copyGenerate(params: CopyGenerateParams): Promise<CopyGene
     }
 
     // Extract copy based on type
-    const generatedText = extractCopyByType(result.data || {}, params.copy_type);
+    const generatedText = extractCopyByType(result._data || {}, params.copy_type);
     
     // Generate alternatives if possible
     const alternatives = generateAlternatives(generatedText, params);
@@ -202,24 +204,24 @@ function generateAlternatives(primaryCopy: string, _params: CopyGenerateParams):
   const alternatives: string[] = [];
   
   // Simple alternative generation based on copy type and style
-  if (params.copy_type === 'subject') {
+  if (_params.copy_type === 'subject') {
     alternatives.push(
       primaryCopy.replace(/!/g, ''),
       `🎯 ${primaryCopy}`,
       primaryCopy.replace(/\.$/, '!')
     );
-  } else if (params.copy_type === 'cta') {
+  } else if (_params.copy_type === 'cta') {
     const urgentVariants = ['Забронировать сейчас', 'Купить билеты', 'Получить предложение'];
     const friendlyVariants = ['Посмотреть варианты', 'Узнать подробности', 'Выбрать билеты'];
     
-    const variants = params.style_preferences.emotional_appeal === 'urgency' ? urgentVariants : friendlyVariants;
+    const variants = _params.style_preferences.emotional_appeal === 'urgency' ? urgentVariants : friendlyVariants;
     alternatives.push(...variants.filter(v => v !== primaryCopy).slice(0, 2));
   }
   
   return alternatives.filter(alt => alt && alt !== primaryCopy);
 }
 
-function analyzeCopyQuality(copy: string, _params: CopyGenerateParams): any {
+function analyzeCopyQuality(copy: string, params: CopyGenerateParams): any {
   const lowerCopy = copy.toLowerCase();
   
   // Style score based on tone matching
@@ -228,12 +230,13 @@ function analyzeCopyQuality(copy: string, _params: CopyGenerateParams): any {
     professional: ['услуга', 'качество', 'профессионально', 'надежно'],
     friendly: ['приглашаем', 'рады', 'вместе', 'для вас'],
     urgent: ['скидка', 'спешите', 'ограниченное время', 'осталось'],
+    casual: ['привет', 'привлекательно', 'легко', 'просто'],
     luxury: ['премиум', 'эксклюзивно', 'роскошь', 'vip'],
     family: ['семья', 'дети', 'вместе', 'семейный']
   };
   
   const expectedKeywords = toneKeywords[params.style_preferences.tone] || [];
-  const foundKeywords = expectedKeywords.filter(keyword => lowerCopy.includes(keyword));
+  const foundKeywords = expectedKeywords.filter((keyword: string) => lowerCopy.includes(keyword));
   styleScore += (foundKeywords.length / expectedKeywords.length) * 20;
 
   // Readability score (simple heuristic)

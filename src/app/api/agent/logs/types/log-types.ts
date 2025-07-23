@@ -234,8 +234,8 @@ export interface Alert {
 export interface LogFilters {
   level?: string;
   limit?: number;
-  since?: string | null;
-  tool?: string | null;
+  since?: string;
+  tool?: string;
   agent?: string;
   traceId?: string;
   startTime?: string;

@@ -495,9 +495,9 @@ export default function MasterOptimizationDashboard() {
                     <div style={{ 
                       marginTop: '8px', 
                       fontSize: '12px', 
-                      color: testResults[test.type].success ? '#4BFF7E' : '#FF6240' 
+                      color: testResults[test.type]?.success ? '#4BFF7E' : '#FF6240' 
                     }}>
-                      {testResults[test.type].success ? '✅ Успешно' : '❌ Ошибка'}
+                      {testResults[test.type]?.success ? '✅ Успешно' : '❌ Ошибка'}
                     </div>
                   )}
                 </button>

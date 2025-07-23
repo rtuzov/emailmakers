@@ -3,13 +3,10 @@ import { handleToolErrorUnified } from '../core/error-handler';
 import { logger } from '../core/logger';
 import { recordToolUsage, tracedAsync } from '../utils/tracing-utils';
 
-// Import file path constants
-import { 
-  CAMPAIGN_STRUCTURE, 
-  FILE_NAMES, 
-  EmailFilePaths, 
-  FileValidator 
-} from '../../shared/constants/file-paths';
+// Import file path constants (commented out - unused)
+// import { 
+//   EmailFilePaths
+// } from '../../shared/constants/file-paths';
 
 // Import EmailFolder type
 import { EmailFolder } from './email-renderer/types/email-renderer-types';
@@ -51,11 +48,11 @@ import * as path from 'path';
 // Using CAMPAIGN_STRUCTURE already imported above
 
 export class ProgressiveFileSaver {
-  private _campaignId: string;
+  // private _campaignId: string;
   private basePath: string;
 
   constructor(campaignId: string) {
-    this.campaignId = campaignId;
+    // this._campaignId = campaignId;
     this.basePath = path.resolve(process.cwd(), 'mails', campaignId);
   }
 
@@ -418,11 +415,11 @@ export async function renderMjml(params: MjmlParams): Promise<ToolResult> {
       logger.addTraceStep(traceId, {
         tool: 'render_mjml',
         action: 'mjml_compilation_failed',
-        error: compilationError.message
+        error: compilationError instanceof Error ? compilationError.message : String(compilationError)
       });
       
       await logger.endTrace(traceId, undefined, compilationError);
-      throw new Error(`MJML compilation failed: ${compilationError.message}`);
+      throw new Error(`MJML compilation failed: ${compilationError instanceof Error ? compilationError.message : String(compilationError)}`);
     }
     
     // 📁 STEP 3: Сохранить Final HTML после конвертации
@@ -575,7 +572,8 @@ export async function generateMjmlWithProgressiveSaving(
 
 
 
-async function convertImageToDataUrl(imagePath: string): Promise<string> {
+/*
+async function _convertImageToDataUrl(imagePath: string): Promise<string> { // Currently unused
   try {
     const fs = await import('fs/promises');
     const path = await import('path');
@@ -623,6 +621,7 @@ async function convertImageToDataUrl(imagePath: string): Promise<string> {
     throw new Error(`Image conversion failed: ${error instanceof Error ? error instanceof Error ? error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error) : String(error) : String(error)}`);
   }
 }
+*/
 
 async function compileMjmlToHtml(mjmlContent: string): Promise<string> {
   try {

@@ -16,11 +16,11 @@ function handleToolError(toolName: string, error: any): ToolResult {
   return handleToolErrorUnified(toolName, error);
 }
 
-interface DiffParams {
-  original_html: string;
-  modified_html: string;
-  tolerance?: number;
-}
+// interface DiffParams {
+//   original_html: string;
+//   modified_html: string;
+//   tolerance?: number;
+// }
 
 interface DiffResult {
   has_changes: boolean;

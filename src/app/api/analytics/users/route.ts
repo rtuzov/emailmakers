@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/shared/infrastructure/database/connection';
 import { users, email_templates, sessions, api_keys, content_briefs } from '@/shared/infrastructure/database/schema';
-import { count, eq, and, gte, lte, desc, sql, between } from 'drizzle-orm';
+import { count, eq, and, gte, lte, desc, sql /* , between */ } from 'drizzle-orm';
 
 export interface UserAnalytics {
   overview: {

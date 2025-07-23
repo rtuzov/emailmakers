@@ -214,7 +214,7 @@ export async function selectFigmaAssetByTags(searchTags: string[], imageType: st
         console.log(`🌐 External sources: ${searchResult.search_metadata.external_sources_used.join(', ')}`);
       }
       
-      return (selectedAsset || {}).filePath;
+      return (selectedAsset?.filePath) || null;
     }
     
     // ❌ FALLBACK POLICY: No fallback allowed - fail fast

@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Agent, run } from '@openai/agents';
+import { /* Agent, */ run } from '@openai/agents';
 import { generateTraceId } from '../../../agent/utils/tracing-utils';
 import { createSpecialistAgents } from '../../../agent/specialists/specialist-agents';
 
@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
     console.log('✅ All specialists created');
 
     const results = {
-      content: null,
-      design: null,
-      quality: null,
-      delivery: null,
-      errors: []
+      content: null as any,
+      design: null as any,
+      quality: null as any,
+      delivery: null as any,
+      errors: [] as string[]
     };
 
     // Step 1: Content Specialist

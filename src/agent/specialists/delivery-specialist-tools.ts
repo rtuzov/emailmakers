@@ -130,7 +130,7 @@ export const packageCampaignFiles = tool({
         designContext: params.quality_context?.designContext,
         qualityContext: params.quality_context,
         delivery_manifest: deliveryManifest,
-        trace_id: params.trace_id || 'default'
+        trace_id: params.trace_id || (() => { throw new Error('trace_id is required') })()
       });
 
       console.log('✅ Campaign files packaged');
@@ -230,7 +230,7 @@ export const generateExportFormats = tool({
       // Update delivery context
       const deliveryContext = buildDeliveryContext(context, {
         export_formats: exportFormats,
-        trace_id: params.trace_id || 'default'
+        trace_id: params.trace_id || (() => { throw new Error('trace_id is required') })()
       });
 
       console.log('✅ Export formats generated');
@@ -388,7 +388,7 @@ export const deliverCampaignFinal = tool({
           zip_package: zipPath,
           delivery_report_path: path.join(exportsPath, 'delivery-report.json')
         },
-        trace_id: params.trace_id || 'default'
+        trace_id: params.trace_id || (() => { throw new Error('trace_id is required') })()
       });
 
       // Save delivery report

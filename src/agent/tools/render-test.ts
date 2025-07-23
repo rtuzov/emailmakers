@@ -7,22 +7,24 @@
 
 import { z } from 'zod';
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-handler';
-import { logger } from '../core/logger';
+// import { handleToolErrorUnified } from '../core/error-handler';
+// import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import
-interface ToolResult {
-  success: boolean;
-  data?: any;
-  error?: string;
-  metadata?: Record<string, any>;
-}
+// interface ToolResult {
+//   success: boolean;
+//   data?: any;
+//   error?: string;
+//   metadata?: Record<string, any>;
+// }
 
 // Local error handling function
-function handleToolError(toolName: string, error: any): ToolResult {
+/*
+function handleToolError(toolName: string, error: any): ToolResult { // Currently unused
   logger.error(`Tool ${toolName} failed`, { error });
   return handleToolErrorUnified(toolName, error);
 }
+*/
 
 export const renderTestSchema = z.object({
   html: z.string().describe('HTML content to test'),
@@ -160,7 +162,9 @@ async function executeRealRenderTesting(params: RenderTestParams): Promise<any> 
   // Вычисляем общий результат
   const overallScore = clientResults.reduce((sum, result) => sum + result.compatibility_score, 0) / clientResults.length;
   const allIssues = clientResults.flatMap(result => result.issues_found);
-  const criticalIssues = allIssues.filter(issue => issue.includes('critical') || issue.includes('blocking'));
+  const criticalIssues = allIssues.filter((issue: any) => 
+    typeof issue === 'string' && (issue.includes('critical') || issue.includes('blocking'))
+  );
   
   return {
     client_results: clientResults,

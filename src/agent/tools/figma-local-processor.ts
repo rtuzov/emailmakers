@@ -60,7 +60,7 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       return {
         success: false,
         error: `Figma assets directory not found: ${basePath}`,
-        _data: { metadata: {} }
+        data: { metadata: {} }
       };
     }
 
@@ -92,7 +92,7 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
       return {
         success: false,
         error: 'No assets found in Figma directory',
-        _data: { metadata: {} }
+        data: { metadata: {} }
       };
     }
 
@@ -126,14 +126,14 @@ export async function getLocalFigmaAssets(params: LocalFigmaSearchParams): Promi
 
     return {
       success: true,
-      _data: { metadata }
+      data: { metadata }
     };
     
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error during asset search',
-      _data: { metadata: {} }
+      error: error instanceof Error ? error.message : String(error),
+      data: { metadata: {} }
     };
   }
 }
@@ -164,9 +164,9 @@ async function findAllAssetsWithAITags(basePath: string): Promise<LocalFigmaAsse
 /**
  * Legacy function for backward compatibility
  */
-async function findAllAssets(basePath: string): Promise<LocalFigmaAsset[]> {
-  return findAllAssetsWithAITags(basePath);
-}
+// async function _findAllAssets(_basePath: string): Promise<LocalFigmaAsset[]> {
+//   return findAllAssetsWithAITags(_basePath);
+// }
 
 /**
  * Поиск ассетов в конкретной папке с AI-тегами
@@ -255,7 +255,7 @@ function generateDescription(fileName: string, folderName: string): string {
 /**
  * Определение эмоционального тона
  */
-function determineEmotionalTone(fileName: string, folderName: string): string {
+function determineEmotionalTone(fileName: string, _folderName: string): string {
   const fileNameLower = fileName.toLowerCase();
   
   if (fileNameLower.includes('счастлив') || fileNameLower.includes('радост')) return 'happy';
@@ -352,11 +352,11 @@ function calculateAssetRelevanceScore(asset: LocalFigmaAsset, searchTags: string
 /**
  * Применение контекстных фильтров
  */
-function applyContextFilters(assets: LocalFigmaAsset[], _context: LocalFigmaSearchParams['context']): LocalFigmaAsset[] {
+function applyContextFilters(assets: LocalFigmaAsset[], context: LocalFigmaSearchParams['context']): LocalFigmaAsset[] {
   let filtered = [...assets];
   
   // Фильтр по предпочитаемой эмоции
-  if (context.preferred_emotion) {
+  if (context?.preferred_emotion) {
     const emotionFiltered = filtered.filter(asset => 
       asset.metadata.aiAnalysis?.emotionalTone === context.preferred_emotion
     );
@@ -366,10 +366,10 @@ function applyContextFilters(assets: LocalFigmaAsset[], _context: LocalFigmaSear
   }
   
   // Фильтр по авиакомпании
-  if (context.airline) {
+  if (context?.airline) {
     const airlineFiltered = filtered.filter(asset => 
-      asset.metadata.description.toLowerCase().includes(context.airline.toLowerCase()) ||
-      asset.fileName.toLowerCase().includes(context.airline.toLowerCase())
+      asset.metadata.description.toLowerCase().includes(context.airline?.toLowerCase() || '') ||
+      asset.fileName.toLowerCase().includes(context.airline?.toLowerCase() || '')
     );
     if (airlineFiltered.length > 0) {
       filtered = airlineFiltered;

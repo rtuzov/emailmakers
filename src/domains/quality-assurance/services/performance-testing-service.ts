@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { minify } from 'html-minifier-terser';
+// import { minify } from 'html-minifier-terser';
 
 export interface PerformanceResult {
   renderTime: number; // estimated ms
@@ -437,14 +437,16 @@ export class PerformanceTestingService {
         const [prop, value] = property.split(':').map(p => p.trim());
         totalCSSProperties++;
         
-        if (this.emailFriendlyCSS.has(prop)) {
+        const safeProp = prop || 'unknown-property';
+        
+        if (this.emailFriendlyCSS.has(safeProp)) {
           emailCompatibleProperties++;
-        } else if (this.unsupportedCSS.has(prop)) {
+        } else if (this.unsupportedCSS.has(safeProp)) {
           unsupportedProperties.push({
-            property: prop,
-            value: value || '',
+            property: safeProp,
+            value: value ?? '',
             element: (element as any).tagName?.toLowerCase() || 'unknown',
-            suggestion: this.getCSSAlternative(prop)
+            suggestion: this.getCSSAlternative(safeProp)
           });
         } else {
           emailCompatibleProperties++; // Assume neutral properties are okay
@@ -665,7 +667,7 @@ export class PerformanceTestingService {
       const style = $el.attr('style') || '';
       const fontSizeMatch = style.match(/font-size:\s*(\d+)px/);
       
-      if (fontSizeMatch) {
+      if (fontSizeMatch && fontSizeMatch[1]) {
         const fontSize = parseInt(fontSizeMatch[1]);
         if (fontSize < 14) {
           readableTextSize = false;
@@ -717,8 +719,8 @@ export class PerformanceTestingService {
     
     const totalElements = $('*').length;
     const images = $('img').length;
-    const _links // Currently unused = $('a').length;
-    const _tables // Currently unused = $('table').length;
+    // const _links = $('a').length; // Currently unused
+    // const _tables = $('table').length; // Currently unused
     
     // Critical elements that affect rendering
     const criticalElements = $('table, img, style, [style]').length;
@@ -974,7 +976,7 @@ export class PerformanceTestingService {
     return currentFormat; // Keep current if no clear optimization
   }
 
-  private calculateImageSavings(current: string, suggested: string, size: number): string {
+  private calculateImageSavings(current: string, suggested: string, _size: number): string {
     if (current === suggested) return '0%';
     
     const savings = current === 'PNG' && suggested === 'JPEG' ? 0.3 : 0.1;

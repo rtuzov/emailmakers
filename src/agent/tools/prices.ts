@@ -39,8 +39,8 @@ function handleToolError(toolName: string, error: any): ToolResult {
   logger.error(`Tool ${toolName} failed`, { error });
   return handleToolErrorUnified(toolName, error);
 }
-import { convertAirportToCity, getDestinationInfo } from './airports-loader';
-import { generateTraceId } from '../utils/tracing-utils';
+import { getDestinationInfo } from './airports-loader';
+// import { convertAirportToCity, generateTraceId } - currently unused
 
 interface FlightPricesParams {
   origin: string;
@@ -70,33 +70,33 @@ interface KupibiletApiRequest {
   };
 }
 
-interface KupibiletApiResponse {
-  solutions?: Array<{
-    price: {
-      amount: number;
-      currency: string;
-    };
-    departure_date: string;
-    arrival_date?: string;
-    airline?: string;
-    flight_number?: string;
-    duration?: number;
-    stops?: number;
-  }>;
-  flights?: Array<{
-    price: number;
-    departure_date: string;
-    arrival_date?: string;
-    airline?: string;
-    flight_number?: string;
-    duration?: number;
-    stops?: number;
-  }>;
-  min_price?: number;
-  currency?: string;
-  search_id?: string;
-  status?: string;
-}
+// interface KupibiletApiResponse {
+//   solutions?: Array<{
+//     price: {
+//       amount: number;
+//       currency: string;
+//     };
+//     departure_date: string;
+//     arrival_date?: string;
+//     airline?: string;
+//     flight_number?: string;
+//     duration?: number;
+//     stops?: number;
+//   }>;
+//   flights?: Array<{
+//     price: number;
+//     departure_date: string;
+//     arrival_date?: string;
+//     airline?: string;
+//     flight_number?: string;
+//     duration?: number;
+//     stops?: number;
+//   }>;
+//   min_price?: number;
+//   currency?: string;
+//   search_id?: string;
+//   status?: string;
+// }
 
 interface FlightPricesResult {
   prices: PriceInfo[];
@@ -181,14 +181,14 @@ export async function getPrices(params: FlightPricesParams): Promise<ToolResult>
     
     // Генерация умного диапазона дат если не указан или пустой
     const dateRange = (params.date_range && params.date_range.trim() !== '') ? params.date_range : generateSmartDateRange();
-    const [fromDate, toDate] = dateRange.split(',');
+    const [fromDate, toDate] = dateRange.split(',').map(date => date?.trim() || '');
 
     // Подготовка запроса к API
     const apiRequest = buildApiRequest({
       origin,
       destination,
-      fromDate,
-      toDate,
+      fromDate: fromDate || '',
+      toDate: toDate || '',
       cabinClass: params.cabin_class || 'economy',
       filters: params.filters || {}
     });
@@ -452,7 +452,7 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
     console.log(`🎯 Processing ${responseData.solutions.length} solutions from API`);
     
     // Обрабатываем реальные данные о решениях
-    const prices: PriceInfo[] = responseData.solutions.map((solution: any, index: number) => ({
+    const prices: PriceInfo[] = responseData.solutions.map((solution: any, _index: number) => ({
       origin: request.departure,
       destination: request.arrival,
       price: Math.round((solution.price?.amount || 0) / 100), // Конвертируем копейки в рубли
@@ -488,7 +488,7 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
     console.log(`🎯 Processing ${responseData.flights.length} flights from API (legacy format)`);
     
     // Обрабатываем реальные данные о рейсах
-    const prices: PriceInfo[] = responseData.flights.map((flight: any, index: number) => ({
+    const prices: PriceInfo[] = responseData.flights.map((flight: any, _index: number) => ({
       origin: request.departure,
       destination: request.arrival,
       price: flight.price || flight.amount || 0,
@@ -582,7 +582,7 @@ export async function prices(params: PricesParams): Promise<PricesResult> {
 
     try {
       // Default configuration
-      const productName = params.product_name || 'General Product';
+      // const _productName = params.product_name || 'General Product'; // Currently unused
       const category = params.category || 'General';
       const marketRegion = params.market_region || 'Global';
       const currency = params.currency || 'USD';
@@ -653,7 +653,8 @@ export async function prices(params: PricesParams): Promise<PricesResult> {
 /**
  * Сбор рыночных данных
  */
-async function collectMarketData(
+/*
+async function _collectMarketData( // Currently unused
   productName: string,
   category: string,
   marketRegion: string
@@ -668,6 +669,7 @@ async function collectMarketData(
     dataPoints: Math.floor(Math.random() * 100) + 50
   };
 }
+*/
 
 /**
  * Анализ цен конкурентов
@@ -752,9 +754,9 @@ function performMarketAnalysis(
   const volatilities = ['low', 'medium', 'high'] as const;
   const demandLevels = ['low', 'medium', 'high'] as const;
 
-  const trend = trends[Math.floor(Math.random() * trends.length)];
-  const volatility = volatilities[Math.floor(Math.random() * volatilities.length)];
-  const demandLevel = demandLevels[Math.floor(Math.random() * demandLevels.length)];
+  const trend = trends[Math.floor(Math.random() * trends.length)] || 'stable';
+  const volatility = volatilities[Math.floor(Math.random() * volatilities.length)] || 'medium';
+  const demandLevel = demandLevels[Math.floor(Math.random() * demandLevels.length)] || 'medium';
 
   const seasonalFactors = getSeasonalFactors(category);
 

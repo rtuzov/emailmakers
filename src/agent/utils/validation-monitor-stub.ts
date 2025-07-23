@@ -111,7 +111,7 @@ export class ValidationMonitorStub {
     // Mock average duration
     const averageDuration = 250 + Math.random() * 500; // 250-750ms
     
-    const lastValidation = this.events.length > 0 ? this.events[this.events.length - 1].timestamp : null;
+    const lastValidation = this.events.length > 0 ? this.events[this.events.length - 1]?.timestamp ?? null : null;
 
     return {
       total_validations: totalValidations,
@@ -140,7 +140,7 @@ export class ValidationMonitorStub {
   /**
    * Validate a component or service
    */
-  async validateComponent(componentName: string, validationData: any): Promise<boolean> {
+  async validateComponent(componentName: string, _validationData: any): Promise<boolean> {
     const startTime = Date.now();
     
     this.logEvent({

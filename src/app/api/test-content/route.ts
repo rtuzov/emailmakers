@@ -3,8 +3,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Agent, run } from '@openai/agents';
-import { generateTraceId, addTraceContext } from '../../../agent/utils/tracing-utils';
+import { run } from '@openai/agents';
+import { generateTraceId } from '../../../agent/utils/tracing-utils';
 import { createSpecialistAgents } from '../../../agent/specialists/specialist-agents';
 
 export async function POST(request: NextRequest) {

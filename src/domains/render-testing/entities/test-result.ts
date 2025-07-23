@@ -299,13 +299,13 @@ export class TestResult {
   get overallScore(): number { return this.data.overallScore; }
   get clientResults(): ClientTestResult[] { return this.data.clientResults; }
   get accessibilityResult(): AccessibilityResult | undefined { return this.data.accessibilityResult; }
-  get performanceResult(): PerformanceResult | undefined { return this.data.performanceResult; }
-  get spamResult(): SpamResult | undefined { return this.data.spamResult; }
+  get performanceResult(): PerformanceResult | undefined { return this.data.performanceResult ?? undefined; }
+  get spamResult(): SpamResult | undefined { return this.data.spamResult ?? undefined; }
   get summary(): TestResultData['summary'] { return this.data.summary; }
   get metadata(): TestResultData['metadata'] { return this.data.metadata; }
   get createdAt(): Date { return this.data.createdAt; }
   get updatedAt(): Date { return this.data.updatedAt; }
-  get completedAt(): Date | undefined { return this.data.completedAt; }
+  get completedAt(): Date | undefined { return this.data.completedAt ?? undefined; }
 
   /**
    * Business logic methods

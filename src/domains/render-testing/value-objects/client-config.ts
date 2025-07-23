@@ -30,7 +30,7 @@ export class Viewport {
   get height(): number { return this.data.height; }
   get devicePixelRatio(): number { return this.data.devicePixelRatio; }
   get name(): string { return this.data.name; }
-  get description(): string | undefined { return this.data.description; }
+  get description(): string | undefined { return this.data.description ?? undefined; }
 
   /**
    * Get viewport area in pixels
@@ -135,8 +135,8 @@ export class ClientCapabilities {
   get animations(): boolean { return this.data.animations; }
   get interactiveElements(): boolean { return this.data.interactiveElements; }
   get customProperties(): boolean { return this.data.customProperties; }
-  get maxEmailWidth(): number | undefined { return this.data.maxEmailWidth; }
-  get maxEmailHeight(): number | undefined { return this.data.maxEmailHeight; }
+  get maxEmailWidth(): number | undefined { return this.data.maxEmailWidth ?? undefined; }
+  get maxEmailHeight(): number | undefined { return this.data.maxEmailHeight ?? undefined; }
   get imageFormats(): string[] { return this.data.imageFormats; }
   get videoSupport(): boolean { return this.data.videoSupport; }
   get accessibilityFeatures(): boolean { return this.data.accessibilityFeatures; }
@@ -267,12 +267,12 @@ export class TestConfig {
 
   get enabled(): boolean { return this.data.enabled; }
   get priority(): number { return this.data.priority; }
-  get timeout(): number | undefined { return this.data.timeout; }
+  get timeout(): number | undefined { return this.data.timeout ?? undefined; }
   get retries(): number { return this.data.retries; }
   get screenshotDelay(): number { return this.data.screenshotDelay; }
   get loadWaitTime(): number { return this.data.loadWaitTime; }
-  get customUserAgent(): string | undefined { return this.data.customUserAgent; }
-  get customHeaders(): Record<string, string> | undefined { return this.data.customHeaders; }
+  get customUserAgent(): string | undefined { return this.data.customUserAgent || undefined; }
+  get customHeaders(): Record<string, string> | undefined { return this.data.customHeaders || undefined; }
   get darkModeTest(): boolean { return this.data.darkModeTest; }
   get viewports(): ViewportData[] { return this.data.viewports; }
 
@@ -418,12 +418,12 @@ export class AutomationConfig {
   }
 
   get workerType(): 'docker' | 'vm' | 'browser' { return this.data.workerType; }
-  get containerImage(): string | undefined { return this.data.containerImage; }
-  get vmTemplate(): string | undefined { return this.data.vmTemplate; }
+  get containerImage(): string | undefined { return this.data.containerImage ?? undefined; }
+  get vmTemplate(): string | undefined { return this.data.vmTemplate ?? undefined; }
   get browserConfig(): AutomationConfigData['browserConfig'] { return this.data.browserConfig; }
-  get setupCommands(): string[] | undefined { return this.data.setupCommands; }
-  get teardownCommands(): string[] | undefined { return this.data.teardownCommands; }
-  get environment(): Record<string, string> | undefined { return this.data.environment; }
+  get setupCommands(): string[] | undefined { return this.data.setupCommands ?? undefined; }
+  get teardownCommands(): string[] | undefined { return this.data.teardownCommands ?? undefined; }
+  get environment(): Record<string, string> | undefined { return this.data.environment ?? undefined; }
   get resourceLimits(): AutomationConfigData['resourceLimits'] { return this.data.resourceLimits; }
 
   /**
@@ -458,7 +458,7 @@ export class AutomationConfig {
    * Get browser type
    */
   getBrowser(): string | undefined {
-    return this.data.browserConfig?.browser;
+    return this.data.browserConfig?.browser ?? undefined;
   }
 
   /**

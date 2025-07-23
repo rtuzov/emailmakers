@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { validationMonitor } from '../utils/validation-monitor-stub';
-import { generateTraceId } from '../utils/tracing-utils';
+// import { generateTraceId } from '../utils/tracing-utils'; // Currently unused
 import {
-  HandoffDataUnion,
+  // HandoffDataUnion, // Currently unused
   HandoffValidationResult,
   HandoffValidationError,
   CorrectionSuggestion,
@@ -34,10 +34,10 @@ export interface AICorrector {
 
 export class HandoffValidator {
   private static instance: HandoffValidator;
-  private aiCorrector?: AICorrector;
+  private aiCorrector?: AICorrector | undefined;
   private monitor: typeof validationMonitor;
 
-  private constructor(aiCorrector?: AICorrector) {
+  private constructor(aiCorrector?: AICorrector | undefined) {
     this.aiCorrector = aiCorrector;
     this.monitor = validationMonitor;
   }
@@ -559,7 +559,7 @@ export class HandoffValidator {
     }));
   }
 
-  private getContentToDesignSuggestion(field: string, errorType: string): string {
+  private getContentToDesignSuggestion(field: string, _errorType: string): string {
     const suggestions: Record<string, string> = {
       'content_package.complete_content.subject': 'Subject должен быть 1-100 символов',
       'content_package.complete_content.preheader': 'Preheader должен быть 1-150 символов',
@@ -572,7 +572,7 @@ export class HandoffValidator {
     return suggestions[field] || `Исправьте поле ${field} согласно требованиям`;
   }
 
-  private getDesignToQualitySuggestion(field: string, errorType: string): string {
+  private getDesignToQualitySuggestion(field: string, _errorType: string): string {
     const suggestions: Record<string, string> = {
       'email_package.html_content': 'HTML контент должен быть корректным и >100 символов',
       'rendering_metadata.file_size_bytes': 'Размер файла должен быть ≤100KB (102400 байт)',
@@ -583,7 +583,7 @@ export class HandoffValidator {
     return suggestions[field] || `Оптимизируйте поле ${field}`;
   }
 
-  private getQualityToDeliverySuggestion(field: string, errorType: string): string {
+  private getQualityToDeliverySuggestion(field: string, _errorType: string): string {
     const suggestions: Record<string, string> = {
       'quality_package.quality_score': 'Quality score должен быть ≥70 баллов',
       'test_results.email_client_compatibility.compatibility_score': 'Совместимость должна быть ≥95%',
@@ -594,7 +594,7 @@ export class HandoffValidator {
     return suggestions[field] || `Улучшите показатели поля ${field}`;
   }
 
-  private generateContentToDesignPrompt(field: string, errorType: string, data: any): string {
+  private generateContentToDesignPrompt(field: string, _errorType: string, data: any): string {
     return `ИСПРАВИТЬ КОНТЕНТ: Поле "${field}" не соответствует требованиям. 
 Создайте корректный контент для email рассылки с учетом:
 - Subject: 1-100 символов, привлекательный
@@ -605,7 +605,7 @@ export class HandoffValidator {
 Верните ТОЛЬКО исправленные данные в JSON формате.`;
   }
 
-  private generateDesignToQualityPrompt(field: string, errorType: string, data: any): string {
+  private generateDesignToQualityPrompt(field: string, _errorType: string, _data: any): string {
     return `ОПТИМИЗИРОВАТЬ ДИЗАЙН: Поле "${field}" превышает лимиты. 
 Оптимизируйте:
 - HTML: корректный, валидный, <100KB
@@ -616,7 +616,7 @@ export class HandoffValidator {
 Верните ТОЛЬКО оптимизированные данные в JSON формате.`;
   }
 
-  private generateQualityToDeliveryPrompt(field: string, errorType: string, data: any): string {
+  private generateQualityToDeliveryPrompt(field: string, _errorType: string, _data: any): string {
     return `УЛУЧШИТЬ КАЧЕСТВО: Поле "${field}" не соответствует стандартам качества.
 Требования:
 - Quality score ≥70 баллов

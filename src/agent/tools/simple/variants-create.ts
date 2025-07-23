@@ -117,26 +117,26 @@ async function generateSingleVariant(
 ): Promise<any | null> {
   try {
     // Build generation parameters based on strategy
-    const copyParams = {
-      topic: params.base_content,
-      content_type: 'complete_campaign' as const,
-      tone: strategy.tone,
-      language: 'ru' as const,
-      target_audience: 'travelers',
-      campaign_context: {
-        campaign_type: 'promotional' as const,
-        urgency_level: strategy.urgency_level
-      },
-      style_preferences: {
-        length: strategy.length,
-        emotional_appeal: strategy.emotional_appeal
-      },
-      prices: {
-        prices: [],
-        currency: 'RUB',
-        cheapest: 0
-      }
-    };
+    // const copyParams = {
+    //   topic: params.base_content,
+    //   content_type: 'complete_campaign' as const,
+    //   tone: strategy.tone,
+    //   language: 'ru' as const,
+    //   target_audience: 'travelers',
+    //   campaign_context: {
+    //     campaign_type: 'promotional' as const,
+    //     urgency_level: strategy.urgency_level
+    //   },
+    //   style_preferences: {
+    //     length: strategy.length,
+    //     emotional_appeal: strategy.emotional_appeal
+    //   },
+    //   prices: {
+    //     prices: [],
+    //     currency: 'RUB',
+    //     cheapest: 0
+    //   }
+    // };
 
     // generateCopy removed - using mock data for now
     const result = { 
@@ -145,11 +145,11 @@ async function generateSingleVariant(
       _data: null
     };
     
-    if (!result.success || !result.data) {
+    if (!result.success || !result._data) {
       return null;
     }
 
-    const content = extractVariantContent(result.data || {});
+    const content = extractVariantContent(result._data || {});
     const changesMade = analyzeChanges(content, params, strategy);
 
     return {
@@ -281,7 +281,7 @@ function extractVariantContent(data: any): any {
   return content;
 }
 
-function analyzeChanges(content: any, _params: VariantsCreateParams, strategy: any): string[] {
+function analyzeChanges(_content: any, _params: VariantsCreateParams, strategy: any): string[] {
   const changes: string[] = [];
   
   if (strategy.tone !== 'friendly') {
@@ -310,7 +310,7 @@ function analyzeChanges(content: any, _params: VariantsCreateParams, strategy: a
 }
 
 function generateTestingSetup(_params: VariantsCreateParams, variants: any[]): any {
-  const testGoal = params.test_goal || 'click_rate';
+  const testGoal = _params.test_goal || 'click_rate';
   
   // Calculate recommended test duration
   const testDurationDays = variants.length <= 2 ? 7 : 14;

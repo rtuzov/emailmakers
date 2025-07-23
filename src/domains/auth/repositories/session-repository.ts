@@ -19,6 +19,10 @@ export class DrizzleSessionRepository implements SessionRepository {
       expires_at: sessionData.expires_at,
     }).returning();
 
+    if (!createdSession) {
+      throw new Error('Failed to create session');
+    }
+
     return createdSession;
   }
 

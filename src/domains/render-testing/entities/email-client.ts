@@ -216,7 +216,7 @@ export class EmailClient {
       throw new Error('At least one viewport must be configured');
     }
 
-    if (this.data.marketShare !== undefined && 
+    if (this.data.marketShare !== undefined && this.data.marketShare !== null && 
         (this.data.marketShare < 0 || this.data.marketShare > 100)) {
       throw new Error('Market share must be between 0 and 100');
     }
@@ -227,17 +227,17 @@ export class EmailClient {
   get name(): string { return this.data.name; }
   get displayName(): string { return this.data.displayName; }
   get vendor(): string { return this.data.vendor; }
-  get version(): string | undefined { return this.data.version; }
+  get version(): string | undefined { return this.data.version ?? undefined; }
   get type(): ClientTypeType { return this.data.type; }
   get platform(): PlatformType { return this.data.platform; }
   get renderingEngine(): RenderingEngineType { return this.data.renderingEngine; }
-  get marketShare(): number | undefined { return this.data.marketShare; }
+  get marketShare(): number | undefined { return this.data.marketShare ?? undefined; }
   get capabilities(): ClientCapabilities { return this.data.capabilities; }
   get testConfig(): ClientTestConfig { return this.data.testConfig; }
   get automationConfig(): EmailClientData['automationConfig'] { return this.data.automationConfig; }
   get isActive(): boolean { return this.data.isActive; }
   get tags(): string[] { return this.data.tags; }
-  get notes(): string | undefined { return this.data.notes; }
+  get notes(): string | undefined { return this.data.notes ?? undefined; }
   get createdAt(): Date { return this.data.createdAt; }
   get updatedAt(): Date { return this.data.updatedAt; }
 
@@ -264,7 +264,13 @@ export class EmailClient {
    */
   getDefaultViewport(): ViewportConfig {
     const defaultViewport = this.data.testConfig.viewports.find(v => v.isDefault);
-    return defaultViewport || this.data.testConfig.viewports[0];
+    return defaultViewport ?? this.data.testConfig.viewports[0] ?? {
+      name: 'default',
+      width: 1200,
+      height: 800,
+      devicePixelRatio: 1,
+      isDefault: true
+    };
   }
 
   /**
@@ -322,7 +328,7 @@ export class EmailClient {
    */
   isHighPriority(): boolean {
     return this.data.testConfig.priority >= 8 || 
-           (this.data.marketShare !== undefined && this.data.marketShare >= 20);
+           (this.data.marketShare !== undefined && this.data.marketShare !== null && this.data.marketShare >= 20);
   }
 
   /**

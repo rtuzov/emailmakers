@@ -2,7 +2,7 @@ import {
   AgentLog, 
   LogFilters, 
   SearchConfig, 
-  AnalysisConfig,
+  // AnalysisConfig,
   Bottleneck 
 } from '../types/log-types';
 
@@ -304,8 +304,12 @@ export class AnalyticsService {
       const hour = date.getHours().toString().padStart(2, '0');
       const day = date.toISOString().split('T')[0];
       
-      hourlyDistribution[hour] = (hourlyDistribution[hour] || 0) + 1;
-      dailyDistribution[day] = (dailyDistribution[day] || 0) + 1;
+      if (hour !== undefined) {
+        hourlyDistribution[hour] = (hourlyDistribution[hour] || 0) + 1;
+      }
+      if (day !== undefined) {
+        dailyDistribution[day] = (dailyDistribution[day] || 0) + 1;
+      }
     }
     
     return {

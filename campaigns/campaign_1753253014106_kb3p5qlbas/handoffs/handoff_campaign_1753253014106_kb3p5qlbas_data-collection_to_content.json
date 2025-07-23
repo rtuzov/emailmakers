@@ -1,0 +1,50 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753253014106_kb3p5qlbas",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753253014106_kb3p5qlbas",
+  "specialist_data": {
+    "destination_analysis": null,
+    "market_intelligence": null,
+    "emotional_profile": null,
+    "trend_analysis": null,
+    "consolidated_insights": null,
+    "travel_intelligence": null,
+    "collection_metadata": null
+  },
+  "handoff_context": {
+    "summary": "Conducted comprehensive travel analysis for Guatemala, covering destination insights, market intelligence, emotional profiles, and trend analysis.",
+    "context_for_next": "Next specialist should focus on creating content that emphasizes the eco-tourism and cultural richness of Guatemala.",
+    "recommendations": [
+      "Create targeted campaigns focusing on eco-tourism and cultural experiences.",
+      "Utilize social media channels to reach younger demographics interested in unique travel stories."
+    ],
+    "priority_items": [
+      "Incorporate actionable insights into content strategy.",
+      "Ensure content aligns with key tourism dates and peak booking times."
+    ],
+    "potential_issues": [
+      "Monitor competition to adjust strategies accordingly.",
+      "Be prepared for possible fluctuations in travel demand during the rainy season."
+    ],
+    "success_criteria": [
+      "Increased engagement rates on promotional content.",
+      "Higher conversion rates for bookings to Guatemala."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": []
+  },
+  "quality_metadata": {
+    "data_quality_score": 90,
+    "completeness_score": 95,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 200
+  },
+  "trace_id": "",
+  "validate_context": true,
+  "created_at": "2025-07-23T06:44:01.012Z"
+}

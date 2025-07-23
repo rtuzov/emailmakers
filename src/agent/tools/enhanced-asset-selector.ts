@@ -243,7 +243,7 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
     try {
       // Поиск в Figma
       const figmaSearchResult = await assetManager.searchAssets({
-        tags: (req || {}).tags,
+        tags: (req || {}).tags || [],
         emotional_tone: 'positive',
         campaign_type: 'promotional',
         target_count: 2,
@@ -258,7 +258,7 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
           url: (asset || {}).filePath || '',
           source: 'figma' as const,
           placement: (req || {}).placement,
-          tags: (req || {}).tags,
+          tags: (req || {}).tags || [],
           metadata: {
             description: (req || {}).description,
             folder: 'unknown',
@@ -285,7 +285,7 @@ async function selectContentAssets(assetManager: AssetManager, plan: AssetPlan):
           url: (asset || {}).filePath || '',
           source: 'external' as const,
           placement: (req || {}).placement,
-          tags: (req || {}).tags,
+          tags: (req || {}).tags || [],
           metadata: {
             description: (req || {}).description,
             external_source: (asset || {}).source || 'internet'
@@ -324,7 +324,7 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
     try {
       // Поиск в Figma (приоритет иконкам и логотипам)
       const figmaSearchResult = await assetManager.searchAssets({
-        tags: (req || {}).tags,
+        tags: (req || {}).tags || [],
         emotional_tone: 'positive',
         campaign_type: 'promotional',
         target_count: 2,
@@ -339,7 +339,7 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
           url: (asset || {}).filePath || '',
           source: 'figma' as const,
           type: (req || {}).type,
-          tags: (req || {}).tags,
+          tags: (req || {}).tags || [],
           metadata: {
             description: (req || {}).description,
             folder: 'unknown',
@@ -350,7 +350,7 @@ async function selectFooterAssets(assetManager: AssetManager, plan: AssetPlan): 
       }
       
       // If no assets found, fail fast
-      throw new Error(`No footer assets found for ${(req || {}).type} with tags: ${(req || {}).tags.join(', ')}`);
+      throw new Error(`No footer assets found for ${(req || {}).type || 'unknown'} with tags: ${((req || {}).tags || []).join(', ')}`);
       
     } catch (error) {
       console.error(`❌ Footer asset ${i + 1} selection failed:`, error);

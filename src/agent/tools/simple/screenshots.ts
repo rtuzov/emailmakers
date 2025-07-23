@@ -448,7 +448,7 @@ function generateAnalysisRecommendations(differences: any[], consistencyScore: n
 async function createDeliveryPackage(
   screenshots: any[],
   analysis: any,
-  outputSettings?: any
+  _outputSettings?: any
 ): Promise<any> {
   try {
     const individualFiles = screenshots.map(s => s.image_path || s.image_url);

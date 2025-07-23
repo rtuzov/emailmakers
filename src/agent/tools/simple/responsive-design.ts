@@ -145,7 +145,7 @@ export async function responsiveDesign(params: ResponsiveDesignParams): Promise<
             client_compatibility_score: 0
           },
           recommendations: ['Fix parameter validation errors'],
-          error: validationResult.error || undefined
+          ...(validationResult.error && { error: validationResult.error })
         };
 
         console.log(`❌ Responsive Design failed: ${validationResult.error}`);
@@ -375,7 +375,7 @@ function extractBreakpoints(mediaQueries: string[]): Array<{ width: number; type
   mediaQueries.forEach(query => {
     const widthMatch = query.match(/max-width:\s*(\d+)px|min-width:\s*(\d+)px/);
     if (widthMatch) {
-      const width = parseInt(widthMatch[1] || widthMatch[2]);
+      const width = parseInt(widthMatch[1] || widthMatch[2] || '0');
       const type = widthMatch[1] ? 'max-width' : 'min-width';
       const rulesCount = (query.match(/\{[^{}]*\}/g) || []).length;
       
@@ -502,7 +502,7 @@ async function applyBasicOptimizations(html: string, changes: any[]): Promise<st
   return optimizedHtml;
 }
 
-async function applyStandardOptimizations(html: string, changes: any[], preserveLayout: boolean): Promise<string> {
+async function applyStandardOptimizations(html: string, changes: any[], _preserveLayout: boolean): Promise<string> {
   let optimizedHtml = await applyBasicOptimizations(html, changes);
   
   // Add basic media queries for mobile
@@ -636,7 +636,7 @@ function generateHtmlStructure(_layoutType: string, contentBlocks: any[]): strin
 </html>`;
 }
 
-function generateCssRules(_layoutType: string, targetDevices: string[], cssApproach: string): string {
+function generateCssRules(_layoutType: string, _targetDevices: string[], _cssApproach: string): string {
   return `
 .container { max-width: 600px; margin: 0 auto; }
 .content-block { padding: 20px; }
@@ -668,7 +668,7 @@ function generateMediaQueries(targetDevices: string[], breakpoints: any): string
   return mediaQueries;
 }
 
-function generateTemplateRecommendations(layoutType: string, targetDevices: string[], metrics: any): string[] {
+function generateTemplateRecommendations(layoutType: string, targetDevices: string[], _metrics: any): string[] {
   return [
     `Generated ${layoutType} layout for ${targetDevices.join(', ')} devices`,
     'Test template across target email clients',

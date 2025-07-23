@@ -80,10 +80,12 @@ export async function getCurrentDate(params: DateParams = {}): Promise<ToolResul
     const suggestedRanges = generateContextualRanges(searchStartDate, monthsAhead, params.campaign_context);
     
     const result: DateResult = {
-      today,
-      search_start: searchStart,
-      search_end: searchEnd,
-      suggested_ranges: suggestedRanges,
+      today: today || new Date().toISOString().split('T')[0]!,
+      search_start: searchStart || new Date().toISOString().split('T')[0]!,
+      search_end: searchEnd || new Date().toISOString().split('T')[0]!,
+      suggested_ranges: suggestedRanges.filter((range): range is { from: string; to: string; period: string; reasoning: string } => 
+        Boolean(range.from && range.to && range.period && range.reasoning)
+      ),
       intelligent_selection: {
         primary_range: dateSelection.primary_range,
         campaign_factors: dateSelection.factors_considered
@@ -226,8 +228,8 @@ function generatePrimaryRange(currentDate: Date, daysAhead: number, monthsAhead:
   let reasoning = `Оптимальный период с ${daysAhead} дней от сегодня на ${monthsAhead} месяцев вперед`;
   
   return {
-    from: startDate.toISOString().split('T')[0],
-    to: endDate.toISOString().split('T')[0],
+    from: startDate.toISOString().split('T')[0] || startDate.toISOString().substring(0, 10),
+    to: endDate.toISOString().split('T')[0] || endDate.toISOString().substring(0, 10),
     reasoning
   };
 }
@@ -356,8 +358,8 @@ function getNearestOptimalRange(startDate: Date) {
   nearEnd.setDate(startDate.getDate() + 14);
   
   return {
-    from: nearStart.toISOString().split('T')[0],
-    to: nearEnd.toISOString().split('T')[0],
+    from: nearStart.toISOString().split('T')[0] || nearStart.toISOString().substring(0, 10),
+    to: nearEnd.toISOString().split('T')[0] || nearEnd.toISOString().substring(0, 10),
     period: 'Ближайшие 2 недели',
     reasoning: 'Оптимально для быстрого бронирования'
   };
@@ -380,8 +382,8 @@ function getUpcomingWeekend(fromDate: Date): { from: string; to: string; period:
   sunday.setDate(friday.getDate() + 2);
   
   return {
-    from: friday.toISOString().split('T')[0],
-    to: sunday.toISOString().split('T')[0],
+    from: friday.toISOString().split('T')[0] || friday.toISOString().substring(0, 10),
+    to: sunday.toISOString().split('T')[0] || sunday.toISOString().substring(0, 10),
     period: 'Ближайшие выходные'
   };
 }
@@ -394,8 +396,8 @@ function getNextWeekRange(startDate: Date) {
   nextWeekEnd.setDate(nextWeekStart.getDate() + 7);
   
   return {
-    from: nextWeekStart.toISOString().split('T')[0],
-    to: nextWeekEnd.toISOString().split('T')[0],
+    from: nextWeekStart.toISOString().split('T')[0] || nextWeekStart.toISOString().substring(0, 10),
+    to: nextWeekEnd.toISOString().split('T')[0] || nextWeekEnd.toISOString().substring(0, 10),
     period: 'Следующая неделя',
     reasoning: 'Быстрое бронирование'
   };
@@ -417,8 +419,8 @@ function getSeasonalRanges(startDate: Date, topic?: string) {
     // Если сейчас еще лето, планируем на осень
     if (currentMonth < 8) {
       ranges.push({
-        from: autumnStart.toISOString().split('T')[0],
-        to: autumnEnd.toISOString().split('T')[0],
+        from: autumnStart.toISOString().split('T')[0] || autumnStart.toISOString().substring(0, 10),
+        to: autumnEnd.toISOString().split('T')[0] || autumnEnd.toISOString().substring(0, 10),
         period: 'Осенний сезон',
         reasoning: 'Оптимальное время для осенних путешествий (сентябрь-ноябрь)'
       });
@@ -427,8 +429,8 @@ function getSeasonalRanges(startDate: Date, topic?: string) {
       const nearStart = new Date(startDate);
       nearStart.setDate(startDate.getDate() + 7);
       ranges.push({
-        from: nearStart.toISOString().split('T')[0],
-        to: autumnEnd.toISOString().split('T')[0],
+        from: nearStart.toISOString().split('T')[0] || nearStart.toISOString().substring(0, 10),
+        to: autumnEnd.toISOString().split('T')[0] || autumnEnd.toISOString().substring(0, 10),
         period: 'Оставшаяся осень',
         reasoning: 'Текущий осенний период'
       });
@@ -440,8 +442,8 @@ function getSeasonalRanges(startDate: Date, topic?: string) {
     const summerStart = new Date(startDate.getFullYear(), 5, 1); // Июнь
     const summerEnd = new Date(startDate.getFullYear(), 7, 31); // Август
     ranges.push({
-      from: summerStart.toISOString().split('T')[0],
-      to: summerEnd.toISOString().split('T')[0],
+      from: summerStart.toISOString().split('T')[0] || summerStart.toISOString().substring(0, 10),
+      to: summerEnd.toISOString().split('T')[0] || summerEnd.toISOString().substring(0, 10),
       period: 'Летний сезон',
       reasoning: 'Оптимальное время для летнего отдыха'
     });
@@ -452,8 +454,8 @@ function getSeasonalRanges(startDate: Date, topic?: string) {
     const nyStart = new Date(startDate.getFullYear(), 11, 28); // 28 декабря
     const nyEnd = new Date(startDate.getFullYear() + 1, 0, 8); // 8 января
     ranges.push({
-      from: nyStart.toISOString().split('T')[0],
-      to: nyEnd.toISOString().split('T')[0],
+      from: nyStart.toISOString().split('T')[0] || nyStart.toISOString().substring(0, 10),
+      to: nyEnd.toISOString().split('T')[0] || nyEnd.toISOString().substring(0, 10),
       period: 'Новогодние праздники',
       reasoning: 'Популярное время для путешествий'
     });
@@ -462,7 +464,7 @@ function getSeasonalRanges(startDate: Date, topic?: string) {
   return ranges;
 }
 
-function getStandardRanges(startDate: Date, monthsAhead: number) {
+function getStandardRanges(startDate: Date, _monthsAhead: number) {
   const ranges = [];
   
   // Следующий месяц
@@ -474,8 +476,8 @@ function getStandardRanges(startDate: Date, monthsAhead: number) {
   nextMonthEnd.setDate(0);
   
   ranges.push({
-    from: nextMonth.toISOString().split('T')[0],
-    to: nextMonthEnd.toISOString().split('T')[0],
+    from: nextMonth.toISOString().split('T')[0] || nextMonth.toISOString().substring(0, 10),
+    to: nextMonthEnd.toISOString().split('T')[0] || nextMonthEnd.toISOString().substring(0, 10),
     period: 'Следующий месяц',
     reasoning: 'Стандартный период планирования'
   });
@@ -489,8 +491,8 @@ function getStandardRanges(startDate: Date, monthsAhead: number) {
   twoMonthsEnd.setDate(0);
   
   ranges.push({
-    from: twoMonthsAhead.toISOString().split('T')[0],
-    to: twoMonthsEnd.toISOString().split('T')[0],
+    from: twoMonthsAhead.toISOString().split('T')[0] || twoMonthsAhead.toISOString().substring(0, 10),
+    to: twoMonthsEnd.toISOString().split('T')[0] || twoMonthsEnd.toISOString().substring(0, 10),
     period: 'Через 2 месяца',
     reasoning: 'Заблаговременное планирование'
   });

@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 // import { processAllFigmaPages } from '@/agent/tools/figma-all-pages-processor';
 
 // Stub implementation
-async function processAllFigmaPages(_params: any) {
-  return { success: false, error: 'processAllFigmaPages not implemented' };
-}
+// async function processAllFigmaPages(_params: any) {
+//   return { success: false, error: 'processAllFigmaPages not implemented' };
+// }
 import { getUsageModel } from '../../../../shared/utils/model-config';
 
 export async function POST(request: NextRequest) {
@@ -81,7 +81,7 @@ async function processSinglePageOnly(_params: {
   figmaUrl: string;
   outputDirectory?: string;
   targetPageId: string;
-  context?: any;
+  _context?: any;
 }) {
   try {
     // Импортируем необходимые функции из all-pages-processor
@@ -111,15 +111,15 @@ async function processSinglePageOnly(_params: {
     }
 
     // Извлекаем данные из Figma URL
-    const { fileId } = extractFigmaIds(params.figmaUrl);
+    const { fileId } = extractFigmaIds(_params.figmaUrl);
     
     // Получаем конкретную страницу из Figma файла
-    const pageData = await getFigmaPageStructure(figmaToken, fileId, params.targetPageId);
+    const pageData = await getFigmaPageStructure(figmaToken, fileId, _params.targetPageId);
     
     console.log(`📄 Обрабатываем страницу: "${pageData.name}"`);
 
     // Создаем директорию для результатов
-    const outputDir = params.outputDirectory || path.join(process.cwd(), `figma-single-page-${Date.now()}`);
+    const outputDir = _params.outputDirectory || path.join(process.cwd(), `figma-single-page-${Date.now()}`);
     await fs.mkdir(outputDir, { recursive: true });
 
     console.log(`📁 Создана папка: ${outputDir}`);
@@ -146,7 +146,7 @@ async function processSinglePageOnly(_params: {
           fileId,
           component,
           outputDir,
-          params.context,
+          _params._context,
           tagDictionary,
           tagDictionaryManager,
           tagOptimizer
@@ -167,13 +167,13 @@ async function processSinglePageOnly(_params: {
     await tagDictionaryManager.exportForAgent(tagDictionary, agentExportPath);
 
     // Генерируем отчет для страницы
-    await generatePageReport(processedAssets, outputDir, pageData.name, params.context);
+    await generatePageReport(processedAssets, outputDir, pageData.name, _params._context);
 
     return {
       success: true,
       _data: {
         pageName: pageData.name,
-        pageId: params.targetPageId,
+        pageId: _params.targetPageId,
         processedAssets: processedAssets.length,
         totalComponents: components.length,
         outputDirectory: outputDir,
@@ -188,7 +188,7 @@ async function processSinglePageOnly(_params: {
         tool: 'figma-single-page-processor',
         timestamp: new Date().toISOString(),
         figmaFile: fileId,
-        targetPageId: params.targetPageId
+        targetPageId: _params.targetPageId
       }
     };
 
@@ -262,8 +262,8 @@ async function processComponent(
   tagOptimizer: any
 ) {
   const OpenAI = (await import('openai')).default;
-  const path = await import('path');
-  const fs = await import('fs/promises');
+  // const path = await import('path');
+  // const fs = await import('fs/promises');
   
   // Initialize OpenAI
   const openai = new OpenAI({
@@ -273,7 +273,7 @@ async function processComponent(
   // Если это COMPONENT_SET с вариантами, обрабатываем каждый вариант отдельно
   if (component.type === 'COMPONENT_SET' && component.children) {
     console.log(`🎨 Анализируем варианты для "${component.name}"`);
-    const variants = await analyzeComponentVariants(token, fileId, component, outputDir, context, tagDictionary, tagDictionaryManager, tagOptimizer, openai);
+    const variants = await analyzeComponentVariants(token, fileId, component, outputDir, _context, tagDictionary, tagDictionaryManager, tagOptimizer, openai);
     
     return {
       id: component.id,
@@ -281,7 +281,7 @@ async function processComponent(
       newName: component.name,
       tags: [],
       variants,
-      selectedVariant: selectBestVariant(variants, context),
+      selectedVariant: selectBestVariant(variants, _context),
       filePath: '',
       metadata: {
         figmaNodeId: component.id,
@@ -314,7 +314,7 @@ async function processComponent(
   const aiAnalysis = await analyzeImageWithAI(
     mainImagePath,
     component.name,
-    context,
+    _context,
     openai
   );
 
@@ -403,10 +403,14 @@ async function generatePageReport(
   _context: any
 ): Promise<string> {
   
+  // Import modules that are needed in this function scope
+  const path = await import('path');
+  const fs = await import('fs/promises');
+  
   const report = {
     pageName,
     timestamp: new Date().toISOString(),
-    context,
+    context: _context,
     summary: {
       totalAssets: processedAssets.length,
       assetsWithVariants: processedAssets.filter(a => a.metadata.hasVariants).length,
@@ -424,9 +428,6 @@ async function generatePageReport(
     }))
   };
 
-  const path = await import('path');
-  const fs = await import('fs/promises');
-  
   const reportPath = path.join(outputDir, 'page-processing-report.json');
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2));
   
@@ -467,6 +468,7 @@ async function saveComponentImage(
     ? `${sanitizeFileName(componentName)}-${suffix}.png`
     : `${sanitizeFileName(componentName)}.png`;
   
+  // Import modules needed in this function scope
   const path = await import('path');
   const fs = await import('fs/promises');
   
@@ -489,8 +491,8 @@ async function analyzeImageWithAI(
     const base64Image = imageBuffer.toString('base64');
     
          let contextPrompt = '';
-     if (context?.variant_info) {
-       contextPrompt += `${context.variant_info}. Название варианта: "${context.variant_name}".`;
+     if (_context?.variant_info) {
+       contextPrompt += `${_context.variant_info}. Название варианта: "${_context.variant_name}".`;
      }
 
     const response = await openai.chat.completions.create({
@@ -570,6 +572,7 @@ ${contextPrompt}
 // All components must be processed through AI analysis
 
 async function renameImageFile(oldPath: string, newName: string): Promise<string> {
+  // Import modules needed in this function scope
   const path = await import('path');
   const fs = await import('fs/promises');
   
@@ -640,7 +643,7 @@ async function analyzeComponentVariants(
 
          // Улучшенный анализ для вариантов с более детальным контекстом
      const variantContext = {
-       ...context,
+       ..._context,
        variant_info: `Вариант ${i + 1} из ${component.children.length} компонента "${component.name}"`,
        variant_name: child.name
      };
@@ -721,7 +724,7 @@ async function analyzeComponentVariants(
 
 function selectBestVariant(
   variants: any[],
-  context?: any
+  _context?: any
 ): any | undefined {
   if (variants.length === 0) return undefined;
   
@@ -732,7 +735,7 @@ function selectBestVariant(
 
 export async function GET(_request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(_request.url);
     const action = searchParams.get('action');
 
     if (action === 'info') {

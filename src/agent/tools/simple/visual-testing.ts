@@ -190,7 +190,7 @@ export async function visualTesting(params: VisualTestingParams): Promise<Visual
       const result: VisualTestingResult = {
         success: true,
         test_results: testResults,
-        comparison_results: comparisonResults.length > 0 ? comparisonResults : undefined,
+        ...(comparisonResults.length > 0 && { comparison_results: comparisonResults }),
         summary: {
           total_tests: totalTests,
           passed_tests: passedTests,
@@ -471,7 +471,7 @@ async function runVisualComparison(
     test_case: screenshotPath,
     diff_percentage: Math.round(diffPercentage * 100) / 100,
     differences_found: differencesFound,
-    diff_image_url: diffImageUrl,
+    ...(diffImageUrl && { diff_image_url: diffImageUrl }),
     similarity_score: similarityScore
   };
 }

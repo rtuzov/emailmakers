@@ -3,7 +3,7 @@ import { performanceMonitor } from '@/shared/infrastructure/performance/performa
 import { db } from '@/shared/infrastructure/database/connection';
 import { email_templates } from '@/shared/infrastructure/database/schema';
 import { workerNodes } from '@/shared/infrastructure/database/render-testing-schema';
-import { count, eq, and, gte, lte, inArray, sql } from 'drizzle-orm';
+import { count, eq, and, gte, lte, inArray /* , sql */ } from 'drizzle-orm';
 
 export interface DashboardMetrics {
   systemStats: {

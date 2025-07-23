@@ -201,15 +201,15 @@ export class AssetHashManager {
     return {
       totalAssets: assets.length,
       totalSizeBytes,
-      oldestAsset: sortedByDate[0].fileName,
-      newestAsset: sortedByDate[sortedByDate.length - 1].fileName
+      oldestAsset: sortedByDate[0]?.fileName ?? 'unknown',
+      newestAsset: sortedByDate[sortedByDate.length - 1]?.fileName ?? 'unknown'
     };
   }
   
   /**
    * Получает относительный URL для ассета
    */
-  static getAssetUrl(hash: string, campaignId: string): string {
+  static getAssetUrl(hash: string, _campaignId: string): string {
     return `../shared-assets/${hash}`;
   }
   

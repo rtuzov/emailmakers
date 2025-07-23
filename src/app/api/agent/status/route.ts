@@ -463,7 +463,7 @@ async function testAgent(agentId: string, testData?: any) {
   }
 }
 
-async function testContentSpecialist(testData?: any) {
+async function testContentSpecialist(_testData?: any) {
   // Simulate content generation test
   await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
   
@@ -481,7 +481,7 @@ async function testContentSpecialist(testData?: any) {
   };
 }
 
-async function testDesignSpecialist(testData?: any) {
+async function testDesignSpecialist(_testData?: any) {
   // Simulate design processing test
   await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 2500));
   
@@ -499,7 +499,7 @@ async function testDesignSpecialist(testData?: any) {
   };
 }
 
-async function testQualitySpecialist(testData?: any) {
+async function testQualitySpecialist(_testData?: any) {
   // Simulate quality testing
   await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
   
@@ -518,7 +518,7 @@ async function testQualitySpecialist(testData?: any) {
   };
 }
 
-async function testDeliverySpecialist(testData?: any) {
+async function testDeliverySpecialist(_testData?: any) {
   // Simulate delivery testing  
   await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 1800));
   

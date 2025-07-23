@@ -204,6 +204,31 @@ export class VisualComponentLibrary {
     </mj-section>`;
   }
 
+  /**
+   * Модернизированная CTA кнопка с URL
+   */
+  generateModernCTAWithURL(cta: string, url: string, analysis: ContentAnalysis, colors: any): string {
+    const buttonStyle = this.getCTAStyle(analysis, colors);
+    
+    return `
+    <mj-section padding="30px 20px" css-class="cta-section">
+      <mj-column>
+        <mj-button 
+          background-color="${buttonStyle.background}"
+          color="${buttonStyle.textColor}"
+          border-radius="${buttonStyle.borderRadius}"
+          font-size="${buttonStyle.fontSize}"
+          font-weight="${buttonStyle.fontWeight}"
+          inner-padding="${buttonStyle.padding}"
+          css-class="${buttonStyle.cssClass}"
+          href="${url}"
+        >
+          ${cta}
+        </mj-button>
+      </mj-column>
+    </mj-section>`;
+  }
+
   // Утилиты
   private getOfferText(urgencyLevel: string, _campaignType: string): string {
     const texts = {
@@ -374,6 +399,9 @@ export class EnhancedMjmlGenerator {
         case 'header':
           sections += this.generateHeaderSection(contentContext, adaptiveDesign);
           break;
+        case 'gallery':
+          sections += this.generateGallerySection(assets, analysis, adaptiveDesign);
+          break;
         case 'hero':
           sections += this.generateHeroSection(contentContext, adaptiveDesign, assets, analysis);
           break;
@@ -403,18 +431,29 @@ export class EnhancedMjmlGenerator {
           break;
         case 'cta':
           // Защитная проверка для поля cta с несколькими возможными путями
-          let ctaText;
+          let ctaText, ctaUrl;
           
-          if (contentContext.cta && contentContext.cta.primary) {
-            ctaText = contentContext.cta.primary;
+          // Проверяем call_to_action сначала (новый формат)
+          if (contentContext.call_to_action?.primary) {
+            ctaText = contentContext.call_to_action.primary.text || contentContext.call_to_action.primary;
+            ctaUrl = contentContext.call_to_action.primary.url || '#';
+          } else if (contentContext.generated_content?.call_to_action?.primary) {
+            ctaText = contentContext.generated_content.call_to_action.primary.text || contentContext.generated_content.call_to_action.primary;
+            ctaUrl = contentContext.generated_content.call_to_action.primary.url || '#';
+          } else if (contentContext.cta?.primary) {
+            ctaText = contentContext.cta.primary.text || contentContext.cta.primary;
+            ctaUrl = contentContext.cta.primary.url || '#';
           } else if (contentContext.generated_content?.cta?.primary) {
-            ctaText = contentContext.generated_content.cta.primary;
+            ctaText = contentContext.generated_content.cta.primary.text || contentContext.generated_content.cta.primary;
+            ctaUrl = contentContext.generated_content.cta.primary.url || '#';
           } else {
             ctaText = 'Забронировать сейчас';
-            console.warn('⚠️ contentContext.cta.primary не найден ни в одном из возможных путей, используем fallback:', ctaText);
+            ctaUrl = '#';
+            console.warn('⚠️ contentContext CTA не найден в ни одном из путей, используем fallback:', { ctaText, ctaUrl });
           }
           
-          sections += this.componentLibrary.generateModernCTA(ctaText, analysis, adaptiveDesign.adaptedColors);
+          console.log('✅ Enhanced MJML CTA extracted:', { ctaText, ctaUrl });
+          sections += this.componentLibrary.generateModernCTAWithURL(ctaText, ctaUrl, analysis, adaptiveDesign.adaptedColors);
           break;
         case 'footer':
           sections += this.generateFooterSection(adaptiveDesign);
@@ -594,6 +633,165 @@ export class EnhancedMjmlGenerator {
 
   private splitContentIntoParagraphs(content: string): string[] {
     return content.split('\n\n').filter(p => p.trim().length > 0);
+  }
+
+  /**
+   * 📸 НОВОЕ УЛУЧШЕНИЕ: Генерация галереи изображений
+   */
+  private generateGallerySection(assets: any, _analysis: ContentAnalysis, adaptiveDesign: AdaptiveDesign): string {
+    if (!assets?.images || assets.images.length <= 1) {
+      return ''; // Пропускаем галерею если изображений мало
+    }
+
+    const galleryImages = assets.images.slice(1); // Все кроме hero изображения
+    const columns = Math.min(3, galleryImages.length); // Максимум 3 колонки
+    const columnWidth = `${Math.floor(100 / columns)}%`;
+
+    let galleryContent = `
+    <mj-section padding="20px" css-class="gallery-section">
+      <mj-column width="100%">
+        <mj-text 
+          align="center" 
+          font-size="24px" 
+          font-weight="bold" 
+          color="${adaptiveDesign.adaptedColors.text.primary}"
+          padding="0 0 20px 0"
+        >
+          🖼️ Галерея направления
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section padding="10px" css-class="gallery-grid">
+      <mj-group>`;
+
+    // Генерируем колонки с изображениями
+    galleryImages.forEach((image: any, index: number) => {
+      galleryContent += `
+        <mj-column width="${columnWidth}">
+          <mj-image 
+            src="${image.url || image.path}" 
+            alt="${image.alt_text || `Галерея изображение ${index + 1}`}"
+            width="180px"
+            padding="5px"
+            border-radius="8px"
+            css-class="gallery-image"
+          />
+          <mj-text 
+            align="center" 
+            font-size="12px" 
+            color="${adaptiveDesign.adaptedColors.text.secondary}"
+            padding="5px 0 15px 0"
+          >
+            ${image.description || image.alt_text || `Изображение ${index + 1}`}
+          </mj-text>
+        </mj-column>`;
+    });
+
+    galleryContent += `
+      </mj-group>
+    </mj-section>`;
+
+    return galleryContent;
+  }
+
+  /**
+   * 📐 УЛУЧШЕНИЕ: Компактная секция benefits
+   */
+  // @ts-expect-error: Method is defined for future use
+  private _generateCompactBenefitsSection(benefits: string[], adaptiveDesign: AdaptiveDesign): string {
+    if (!benefits || benefits.length === 0) return '';
+
+    // Разбиваем benefits на группы по 2-3 для компактности
+    const benefitGroups = [];
+    for (let i = 0; i < benefits.length; i += 2) {
+      benefitGroups.push(benefits.slice(i, i + 2));
+    }
+
+    let benefitsContent = `
+    <mj-section padding="20px" css-class="benefits-compact">
+      <mj-column width="100%">
+        <mj-text 
+          align="center" 
+          font-size="22px" 
+          font-weight="bold" 
+          color="${adaptiveDesign.adaptedColors.text.primary}"
+          padding="0 0 15px 0"
+        >
+          💎 Ваши преимущества
+        </mj-text>
+      </mj-column>
+    </mj-section>`;
+
+    benefitGroups.forEach(group => {
+      benefitsContent += `
+      <mj-section padding="5px 20px" css-class="benefits-row">
+        <mj-group>`;
+      
+      group.forEach(benefit => {
+        benefitsContent += `
+          <mj-column width="50%">
+            <mj-text 
+              font-size="14px" 
+              color="${adaptiveDesign.adaptedColors.text.primary}"
+              padding="5px"
+              css-class="benefit-item"
+            >
+              ${benefit}
+            </mj-text>
+          </mj-column>`;
+      });
+
+      benefitsContent += `
+        </mj-group>
+      </mj-section>`;
+    });
+
+    return benefitsContent;
+  }
+
+  /**
+   * 🎯 УЛУЧШЕНИЕ: Multiple CTA стратегия
+   */
+  // @ts-expect-error: Method is defined for future use
+  private _generateMultipleCTASection(
+    primaryCTA: string, 
+    secondaryCTA: string, 
+    primaryUrl: string, 
+    secondaryUrl: string,
+    adaptiveDesign: AdaptiveDesign
+  ): string {
+    return `
+    <mj-section padding="20px" css-class="multiple-cta">
+      <mj-column width="60%">
+        <mj-button
+          background-color="${adaptiveDesign.adaptedColors.cta.primary}"
+          color="${adaptiveDesign.adaptedColors.cta.text}"
+          border-radius="8px"
+          font-size="18px"
+          font-weight="bold"
+          inner-padding="15px 25px"
+          href="${primaryUrl}"
+          css-class="primary-cta"
+        >
+          ${primaryCTA}
+        </mj-button>
+      </mj-column>
+      <mj-column width="40%">
+        <mj-button
+          background-color="transparent"
+          color="${adaptiveDesign.adaptedColors.cta.primary}"
+          border="2px solid ${adaptiveDesign.adaptedColors.cta.primary}"
+          border-radius="8px"
+          font-size="16px"
+          inner-padding="13px 20px"
+          href="${secondaryUrl}"
+          css-class="secondary-cta"
+        >
+          ${secondaryCTA}
+        </mj-button>
+      </mj-column>
+    </mj-section>`;
   }
 }
 

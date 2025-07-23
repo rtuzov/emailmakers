@@ -3,7 +3,7 @@ import { User } from '../entities/user';
 import { UserRepository } from '../repositories/user-repository';
 import { SessionRepository } from '../repositories/session-repository';
 import { PasswordService } from './password-service';
-import { EncryptionService } from '@/shared/utils/encryption/encryption-service';
+// import { EncryptionService } from '@/shared/utils/encryption/encryption-service'; // Currently unused
 import { RegisterRequest, LoginRequest } from '@/shared/utils/validation/auth-schemas';
 
 export class AuthError extends Error {
@@ -40,7 +40,7 @@ export class AuthenticationService {
   constructor(
     private userRepository: UserRepository,
     private sessionRepository: SessionRepository,
-    private _encryptionService?: EncryptionService // Currently unused
+    // private _encryptionService?: EncryptionService // Currently unused
   ) {}
 
   async register(registerData: RegisterRequest): Promise<AuthResult> {

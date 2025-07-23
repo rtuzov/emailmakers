@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
-import { AxeResults, run as axeRun } from 'axe-core';
+// import { AxeResults } from 'axe-core'; // Currently unused
+// import { run as axeRun } from 'axe-core'; // Currently unused
 
 export interface AccessibilityResult {
   wcagLevel: 'A' | 'AA' | 'AAA' | 'fail';
@@ -181,7 +182,7 @@ export class AccessibilityTestingService {
     const headings = $('h1, h2, h3, h4, h5, h6').toArray();
     let lastLevel = 0;
     
-    headings.forEach((heading, index) => {
+    headings.forEach((heading) => {
       const $heading = $(heading);
       const level = parseInt((heading as any).tagName?.substring(1) || '1');
       
@@ -202,7 +203,7 @@ export class AccessibilityTestingService {
     });
 
     // Check for links without accessible names
-    const linksWithoutText = $('a').filter((i, el) => {
+    const linksWithoutText = $('a').filter((_i, el) => {
       const $link = $(el);
       const text = $link.text().trim();
       const ariaLabel = $link.attr('aria-label');
@@ -231,7 +232,7 @@ export class AccessibilityTestingService {
         severity: 'serious',
         description: 'html element must have a lang attribute',
         element: 'html',
-        suggestion: 'Add lang attribute to html element ((e || {}).g., lang="en")',
+        suggestion: 'Add lang attribute to html element (e.g., lang="en")',
         wcagReference: 'WCAG 2.1 SC 3.1.1',
         impact: 'serious',
         xpath: '/html'
@@ -240,7 +241,7 @@ export class AccessibilityTestingService {
 
     // Check for tables without headers
     const tables = $('table');
-    tables.each((i, table) => {
+    tables.each((_i, table) => {
       const $table = $(table);
       const hasHeaders = $table.find('th, thead').length > 0;
       const hasScope = $table.find('[scope]').length > 0;
@@ -272,11 +273,11 @@ export class AccessibilityTestingService {
     const results: ContrastResult[] = [];
 
     // Analyze all text elements
-    const textElements = $('p, h1, h2, h3, h4, h5, h6, span, div, td, th, li, a, strong, em, small').filter((i, el) => {
+    const textElements = $('p, h1, h2, h3, h4, h5, h6, span, div, td, th, li, a, strong, em, small').filter((_i, el) => {
       return $(el).text().trim().length > 0;
     });
 
-    textElements.each((i, element) => {
+    textElements.each((_i, element) => {
       const $el = $(element);
       const text = $el.text().trim();
       
@@ -473,7 +474,7 @@ export class AccessibilityTestingService {
     
     let accessibleElements = 0;
     
-    interactiveElements.each((i, element) => {
+    interactiveElements.each((_i, element) => {
       const $el = $(element);
       const tagName = (element as any).tagName?.toLowerCase() || 'unknown';
       
@@ -578,7 +579,7 @@ export class AccessibilityTestingService {
     let focusOrder = true;
     if (focusableCount > 0) {
       const tabindexValues: number[] = [];
-      focusableElements.each((i, el) => {
+      focusableElements.each((_i, el) => {
         const tabindex = parseInt($(el).attr('tabindex') || '0');
         tabindexValues.push(tabindex);
       });
@@ -586,7 +587,7 @@ export class AccessibilityTestingService {
       // Check if tabindex values are in logical order
       const positiveTabindexes = tabindexValues.filter(val => val > 0).sort((a, b) => a - b);
       const hasLogicalOrder = positiveTabindexes.length === 0 || 
-        positiveTabindexes.every((val, i) => i === 0 || val >= positiveTabindexes[i - 1]);
+        positiveTabindexes.every((val, i) => i === 0 || val >= (positiveTabindexes[i - 1] || 0));
       
       if (hasLogicalOrder) score += 25;
     } else {
@@ -600,7 +601,7 @@ export class AccessibilityTestingService {
 
     // Check for skip links (not typically needed in emails)
     maxScore += 25;
-    const skipLinks = $('a[href^="#"]').filter((i, el) => {
+    const skipLinks = $('a[href^="#"]').filter((_i, el) => {
       const text = $(el).text().toLowerCase();
       return text.includes('skip') || text.includes('jump');
     });
@@ -622,7 +623,8 @@ export class AccessibilityTestingService {
   /**
    * Compile accessibility issues from various tests
    */
-  private compileAccessibilityIssues(axeResults: AxeResults, contrastResults: ContrastResult[]): AccessibilityIssue[] {
+  /*
+  private _compileAccessibilityIssues(axeResults: AxeResults, _contrastResults: ContrastResult[]): AccessibilityIssue[] {
     const issues: AccessibilityIssue[] = [];
 
     // Add axe violations
@@ -659,6 +661,7 @@ export class AccessibilityTestingService {
 
     return issues;
   }
+  */
 
   /**
    * Generate accessibility summary
@@ -744,7 +747,7 @@ export class AccessibilityTestingService {
   private getTextColor($el: cheerio.Cheerio): string | null {
     const style = $el.attr('style') || '';
     const colorMatch = style.match(/color:\s*([^;]+)/i);
-    return colorMatch ? colorMatch[1].trim() : '#000000'; // Default to black
+    return colorMatch ? colorMatch[1]?.trim() || null : '#000000'; // Default to black
   }
 
   private getBackgroundColor($el: cheerio.Cheerio): string | null {
@@ -752,7 +755,7 @@ export class AccessibilityTestingService {
     const bgMatch = style.match(/background(?:-color)?:\s*([^;]+)/i);
     
     if (bgMatch) {
-      return bgMatch[1].trim();
+      return bgMatch[1]?.trim() || null;
     }
     
     // Check parent elements for background
@@ -760,7 +763,7 @@ export class AccessibilityTestingService {
     while (parent.length > 0) {
       const parentStyle = parent.attr('style') || '';
       const parentBgMatch = parentStyle.match(/background(?:-color)?:\s*([^;]+)/i);
-      if (parentBgMatch) {
+      if (parentBgMatch && parentBgMatch[1]) {
         return parentBgMatch[1].trim();
       }
       parent = parent.parent();
@@ -772,13 +775,13 @@ export class AccessibilityTestingService {
   private getFontSize($el: cheerio.Cheerio): number {
     const style = $el.attr('style') || '';
     const sizeMatch = style.match(/font-size:\s*(\d+)px/i);
-    return sizeMatch ? parseInt(sizeMatch[1]) : 16; // Default to 16px
+    return sizeMatch ? parseInt(sizeMatch[1] || '16') : 16; // Default to 16px
   }
 
   private getFontWeight($el: cheerio.Cheerio): string {
     const style = $el.attr('style') || '';
     const weightMatch = style.match(/font-weight:\s*([^;]+)/i);
-    return weightMatch ? weightMatch[1].trim() : 'normal';
+    return weightMatch && weightMatch[1] ? weightMatch[1].trim() : 'normal';
   }
 
   private isLargeText(fontSize: number, fontWeight: string): boolean {
@@ -830,20 +833,20 @@ export class AccessibilityTestingService {
   }
 
   private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/(i || {}).exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
+      r: parseInt(result[1] || '0', 16),
+      g: parseInt(result[2] || '0', 16),
+      b: parseInt(result[3] || '0', 16)
     } : null;
   }
 
   private parseRgb(rgb: string): { r: number; g: number; b: number } | null {
     const match = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
     return match ? {
-      r: parseInt(match[1]),
-      g: parseInt(match[2]),
-      b: parseInt(match[3])
+      r: parseInt(match[1] || '0'),
+      g: parseInt(match[2] || '0'),
+      b: parseInt(match[3] || '0')
     } : null;
   }
 
@@ -869,6 +872,7 @@ export class AccessibilityTestingService {
     return `//${tagName}`;
   }
 
+  /*
   private mapAxeImpactToSeverity(impact: string): 'minor' | 'moderate' | 'serious' | 'critical' {
     switch (impact) {
       case 'critical': return 'critical';
@@ -885,7 +889,7 @@ export class AccessibilityTestingService {
       'link-name': 'Ensure links have descriptive text, aria-label, or title attributes.',
       'color-contrast': 'Increase contrast between text and background colors to meet WCAG AA standards.',
       'heading-order': 'Use heading levels in logical order (h1, then h2, then h3, etc.).',
-      'html-has-lang': 'Add a lang attribute to the html element ((e || {}).g., <html lang="en">).',
+      'html-has-lang': 'Add a lang attribute to the html element (e.g., <html lang="en">).',
       'table-headers': 'Add table headers using <th> elements or scope attributes.'
     };
     
@@ -904,4 +908,5 @@ export class AccessibilityTestingService {
     
     return references[ruleId] || 'WCAG 2.1 AA';
   }
+  */
 } 

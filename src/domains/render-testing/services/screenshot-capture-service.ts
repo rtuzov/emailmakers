@@ -1,6 +1,7 @@
 import { Browser, Page, chromium, firefox, webkit } from 'playwright';
-import puppeteer from 'puppeteer';
-import { Screenshot, ScreenshotStatus, ImageMetadata, StorageInfo } from '../entities/screenshot';
+// import puppeteer from 'puppeteer'; // Currently unused
+import { Screenshot, /* ImageMetadata, */ StorageInfo } from '../entities/screenshot';
+// import { ScreenshotStatus } from '../entities/screenshot'; // Currently unused
 import { EmailClient } from '../entities/email-client';
 import { RenderJob } from '../entities/render-job';
 import { StorageService } from '../../../shared/infrastructure/storage/storage-service';
@@ -179,8 +180,6 @@ export class ScreenshotCaptureService {
    * Capture screenshots for a specific email client
    */
   async captureClientScreenshots(job: RenderJob, client: EmailClient): Promise<Screenshot[]> {
-    const _screenshots // Currently unused: Screenshot[] = [];
-    
     // Create screenshot entities for each viewport and theme combination
     const screenshotEntities = this.createScreenshotEntities(job, client);
     
@@ -359,20 +358,24 @@ export class ScreenshotCaptureService {
           }
 
           // Capture screenshot
-          const imageBuffer = await this.browserDriver.takeScreenshot({
+          const screenshotOptions: any = {
             fullPage: screenshot.captureConfig.fullPage,
-            clip: screenshot.captureConfig.clip ? {
+            omitBackground: screenshot.captureConfig.omitBackground,
+            format: screenshot.captureConfig.encoding === 'base64' ? 'png' : 'png',
+            delay: 0
+          };
+          
+          if (screenshot.captureConfig.clip) {
+            screenshotOptions.clip = {
               x: screenshot.captureConfig.clip.x || 0,
               y: screenshot.captureConfig.clip.y || 0,
               width: screenshot.captureConfig.clip.width || 800,
               height: screenshot.captureConfig.clip.height || 600
-            } : undefined,
-            omitBackground: screenshot.captureConfig.omitBackground,
-            format: screenshot.captureConfig.encoding === 'base64' ? 'png' : 'png',
-            delay: 0
-          });
+            };
+          }
+          
+          const imageBuffer = await this.browserDriver.takeScreenshot(screenshotOptions);
 
-          const _metadata // Currently unused = await this.analyzeImageBuffer(imageBuffer);
           const result: CaptureResult = {
             clientId: screenshot.clientId,
             screenshots: [],
@@ -513,17 +516,16 @@ export class ScreenshotCaptureService {
    * Capture screenshot in container
    */
   private async captureScreenshotInContainer(
-    containerId: string,
+    _containerId: string,
     screenshot: Screenshot,
-    htmlContent: string
+    _htmlContent: string
   ): Promise<CaptureResult> {
     // Execute capture command in container
-    const captureCommand = this.buildContainerCaptureCommand(screenshot, htmlContent);
-    const result = await this.containerManager.executeCommand(containerId, captureCommand);
+    // const _captureCommand = this.buildContainerCaptureCommand(screenshot, htmlContent); // Currently unused
+    // const _result = await this.containerManager.executeCommand(containerId, captureCommand); // Currently unused
     
     // Parse result and extract image data
-    const imageData = JSON.parse(result);
-    const _imageBuffer // Currently unused = Buffer.from(imageData.image, 'base64');
+    // const _imageData = JSON.parse(result); // Currently unused
 
     return {
       clientId: screenshot.clientId,
@@ -542,17 +544,16 @@ export class ScreenshotCaptureService {
    * Capture screenshot in VM
    */
   private async captureScreenshotInVM(
-    vmId: string,
+    _vmId: string,
     screenshot: Screenshot,
-    htmlContent: string
+    _htmlContent2: string
   ): Promise<CaptureResult> {
     // Execute capture command in VM
-    const captureCommand = this.buildVMCaptureCommand(screenshot, htmlContent);
-    const result = await this.vmManager.executeCommand(vmId, captureCommand);
+    // const _captureCommand2 = this.buildVMCaptureCommand(screenshot, htmlContent); // Currently unused
+    // const _result2 = await this.vmManager.executeCommand(vmId, captureCommand); // Currently unused
     
     // Parse result and extract image data
-    const imageData = JSON.parse(result);
-    const _imageBuffer // Currently unused = Buffer.from(imageData.image, 'base64');
+    // const _imageData = JSON.parse(result); // Currently unused
 
     return {
       clientId: screenshot.clientId,
@@ -570,7 +571,8 @@ export class ScreenshotCaptureService {
   /**
    * Analyze image buffer to extract metadata
    */
-  private async analyzeImageBuffer(buffer: Buffer): Promise<ImageMetadata> {
+  /*
+  private async _analyzeImageBuffer(buffer: Buffer): Promise<ImageMetadata> {
     // Use image analysis library (sharp, jimp, etc.)
     // This is a simplified implementation
     return {
@@ -581,6 +583,7 @@ export class ScreenshotCaptureService {
       hasAlpha: true
     };
   }
+  */
 
   /**
    * Create temporary email preview URL
@@ -594,16 +597,20 @@ export class ScreenshotCaptureService {
   /**
    * Build container capture command
    */
-  private buildContainerCaptureCommand(screenshot: Screenshot, htmlContent: string): string {
+  /*
+  private _buildContainerCaptureCommand(screenshot: Screenshot, _htmlContent: string): string {
     return `capture-email --viewport ${screenshot.viewport.width}x${screenshot.viewport.height} --dark-mode ${screenshot.darkMode} --format png`;
   }
+  */
 
   /**
    * Build VM capture command
    */
-  private buildVMCaptureCommand(screenshot: Screenshot, htmlContent: string): string {
+  /*
+  private _buildVMCaptureCommand(screenshot: Screenshot, _htmlContent: string): string {
     return `capture-email.exe --viewport ${screenshot.viewport.width}x${screenshot.viewport.height} --dark-mode ${screenshot.darkMode} --format png`;
   }
+  */
 
   /**
    * Sleep utility
@@ -732,11 +739,13 @@ export class ScreenshotCaptureService {
           
           lightModeResult = {
             url: uploadResult.url,
-            cdnUrl: uploadResult.cdnUrl,
-            thumbnails: uploadResult.thumbnails?.map(t => ({
-              size: `${t.size.width}x${t.size.height}`,
-              url: t.url,
-            })),
+            ...(uploadResult.cdnUrl && { cdnUrl: uploadResult.cdnUrl }),
+            ...(uploadResult.thumbnails && { 
+              thumbnails: uploadResult.thumbnails.map(t => ({
+                size: `${t.size.width}x${t.size.height}`,
+                url: t.url,
+              }))
+            }),
           };
         }
 
@@ -762,19 +771,21 @@ export class ScreenshotCaptureService {
             
             darkModeResult = {
               url: uploadResult.url,
-              cdnUrl: uploadResult.cdnUrl,
-              thumbnails: uploadResult.thumbnails?.map(t => ({
-                size: `${t.size.width}x${t.size.height}`,
-                url: t.url,
-              })),
+              ...(uploadResult.cdnUrl && { cdnUrl: uploadResult.cdnUrl }),
+              ...(uploadResult.thumbnails && { 
+                thumbnails: uploadResult.thumbnails.map(t => ({
+                  size: `${t.size.width}x${t.size.height}`,
+                  url: t.url,
+                }))
+              }),
             };
           }
         }
 
         screenshots.push({
           viewport: viewport.name,
-          lightMode: lightModeResult,
-          darkMode: darkModeResult,
+          ...(lightModeResult && { lightMode: lightModeResult }),
+          ...(darkModeResult && { darkMode: darkModeResult }),
         });
 
       } finally {
@@ -1022,7 +1033,7 @@ export class ScreenshotCaptureService {
   }> {
     const browsers = [];
     
-    for (const [key, instance] of this.browsers) {
+    for (const [_key, instance] of this.browsers) {
       browsers.push({
         type: instance.type,
         version: instance.version,

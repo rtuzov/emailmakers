@@ -184,12 +184,21 @@ This tool MUST be called first to:
       // Load context from handoff files
       const loadedContext = await loadContextFromHandoffFiles(campaignPath);
       
-      // Store in context for other tools
-      (context as any).designContext = {
+      // Store in context for other tools - PREVENT CIRCULAR REFERENCES
+      const cleanDesignContext = {
         campaign_path: campaignPath,
         trace_id: params.trace_id,
         ...loadedContext
       };
+      
+      // Ensure no circular references before storing
+      (context as any).designContext = JSON.parse(JSON.stringify(cleanDesignContext, (key, value) => {
+        // Remove any context references to prevent circular dependency
+        if (key === 'context' && typeof value === 'object' && value !== null) {
+          return undefined;
+        }
+        return value;
+      }));
       
       console.log('✅ DESIGN: Context loaded successfully');
       console.log('📊 DESIGN: Content sections available:', Object.keys(loadedContext.content_context || {}));
@@ -299,7 +308,7 @@ export async function loadContextFromHandoffFiles(campaignPath: string): Promise
     try {
       assetManifest = JSON.parse(await fs.readFile(assetManifestPath, 'utf-8'));
       console.log('✅ Asset manifest loaded successfully from:', assetManifestPath);
-      console.log(`📊 Asset manifest contains: ${assetManifest.assetManifest?.images?.length || 0} images, ${assetManifest.assetManifest?.icons?.length || 0} icons`);
+      console.log(`📊 Asset manifest contains: ${assetManifest?.images?.length || 0} images, ${assetManifest?.icons?.length || 0} icons`);
     } catch (error) {
       console.log(`⚠️ Asset manifest file not found at: ${assetManifestPath}`);
       console.log('⚠️ Asset manifest will not be available for asset processing');

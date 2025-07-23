@@ -19,6 +19,9 @@ export class DrizzleUserRepository implements UserRepository {
       updated_at: new Date(),
     }).returning();
 
+    if (!createdUser) {
+      throw new Error('Failed to create user');
+    }
     return User.fromSchema(createdUser);
   }
 

@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
       target_audience,
       origin,
       destination,
-      campaign_context
+      // _campaign_context
     } = validatedRequest;
 
     console.log('🧠 ContentSpecialist API called (OpenAI Agents SDK v2):', { 
@@ -162,7 +162,7 @@ Please execute the content workflow and provide comprehensive results.`;
       execution_time: executionTime,
       confidence_score: result.analytics?.confidence_score || 0,
       hasResults: !!result.results,
-      next_agent: result.recommendations?.next_agent || 'none'
+      next_agent: (result as any).recommendations?.next_agent || 'none'
     });
 
     // Return modern structured response following OpenAI Agents SDK patterns
@@ -170,7 +170,7 @@ Please execute the content workflow and provide comprehensive results.`;
       success: result.success,
       task_type: result.task_type,
       results: result.results,
-      recommendations: result.recommendations,
+      recommendations: (result as any).recommendations,
       analytics: {
         ...result.analytics,
         execution_time: executionTime,

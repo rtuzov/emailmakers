@@ -15,13 +15,13 @@ interface CampaignInfo {
   hasExports?: boolean;
 }
 
-interface HandoffData {
-  from_specialist: string;
-  to_specialist: string;
-  handoff_data: any;
-  created_at: string;
-  file_path: string;
-}
+// interface HandoffData {
+//   from_specialist: string;
+//   to_specialist: string;
+//   handoff_data: any;
+//   created_at: string;
+//   file_path: string;
+// }
 
 /**
  * GET /api/agent/test/utils
@@ -87,7 +87,7 @@ async function listCampaigns(): Promise<NextResponse> {
       const match = entry.match(/campaign_(\d+)_/);
       if (!match) continue;
       
-      const timestamp = parseInt(match[1]);
+      const timestamp = parseInt(match[1] || '0');
       const campaignPath = path.join(campaignsDir, entry);
       
       try {

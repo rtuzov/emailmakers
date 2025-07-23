@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Возвращает детальный отчет о корректности структуры данных
  */
 
-export async function POST(_request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { output, originalInput, enableRetry = false } = body;
@@ -38,63 +38,63 @@ export async function POST(_request: NextRequest) {
     // Выполняем валидацию с повторными запросами если включено
     if (enableRetry && originalInput) {
       // Создаем mock retry callback для демонстрации
-      const mockRetryCallback = async (prompt: string, attempt: number) => {
-        console.log(`🔄 Mock retry attempt ${attempt} with prompt length: ${prompt.length}`);
+      // const _mockRetryCallback = async (prompt: string, attempt: number) => {
+//         console.log(`🔄 Mock retry attempt ${attempt} with prompt length: ${prompt.length}`);
         
-        // В реальной реализации здесь был бы вызов к LLM
-        // Для демонстрации возвращаем улучшенную версию исходного output
-        const improvedOutput = {
-          ...output,
-          success: true,
-          results: {
-            ...output.results,
-            content_data: output.results?.content_data || {
-              complete_content: {
-                subject: "Исправленная тема письма",
-                preheader: "Исправленный preheader",
-                body: "Исправленное содержимое письма с достаточной длиной для валидации",
-                cta: "Исправленный CTA",
-                language: "ru"
-              }
-            }
-          },
-          recommendations: {
-            ...output.recommendations,
-            next_agent: "design_specialist",
-            next_actions: ["Apply content to templates", "Generate design"],
-            handoff_data: {
-              content_package: {
-                content: {
-                  subject: "Исправленная тема письма",
-                  preheader: "Исправленный preheader", 
-                  body: "Исправленное содержимое письма с достаточной длиной для валидации",
-                  cta: "Исправленный CTA",
-                  language: "ru"
-                }
-              },
-              design_requirements: {
-                style: "modern",
-                color_scheme: "warm",
-                imagery_focus: "travel",
-                layout_priority: "mobile_first"
-              },
-              brand_guidelines: {
-                visual_style: "modern",
-                color_palette: ["#2B5CE6", "#FF6B6B"],
-                typography: "readable"
-              }
-            }
-          },
-          analytics: {
-            execution_time: 1000,
-            operations_performed: 1,
-            confidence_score: 85,
-            agent_efficiency: 90
-          }
-        };
-        
-        return improvedOutput;
-      };
+//         // В реальной реализации здесь был бы вызов к LLM
+//         // Для демонстрации возвращаем улучшенную версию исходного output
+//         const improvedOutput = {
+//           ...output,
+//           success: true,
+//           results: {
+//             ...output.results,
+//             content_data: output.results?.content_data || {
+//               complete_content: {
+//                 subject: "Исправленная тема письма",
+//                 preheader: "Исправленный preheader",
+//                 body: "Исправленное содержимое письма с достаточной длиной для валидации",
+//                 cta: "Исправленный CTA",
+//                 language: "ru"
+//               }
+//             }
+//           },
+//           recommendations: {
+//             ...output.recommendations,
+//             next_agent: "design_specialist",
+//             next_actions: ["Apply content to templates", "Generate design"],
+//             handoff_data: {
+//               content_package: {
+//                 content: {
+//                   subject: "Исправленная тема письма",
+//                   preheader: "Исправленный preheader", 
+//                   body: "Исправленное содержимое письма с достаточной длиной для валидации",
+//                   cta: "Исправленный CTA",
+//                   language: "ru"
+//                 }
+//               },
+//               design_requirements: {
+//                 style: "modern",
+//                 color_scheme: "warm",
+//                 imagery_focus: "travel",
+//                 layout_priority: "mobile_first"
+//               },
+//               brand_guidelines: {
+//                 visual_style: "modern",
+//                 color_palette: ["#2B5CE6", "#FF6B6B"],
+//                 typography: "readable"
+//               }
+//             }
+//           },
+//           analytics: {
+//             execution_time: 1000,
+//             operations_performed: 1,
+//             confidence_score: 85,
+//             agent_efficiency: 90
+//           }
+//         };
+//         
+//         return improvedOutput;
+//       };
 
       // Mock validation result with retry
       validationResult = {

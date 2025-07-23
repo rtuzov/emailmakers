@@ -187,14 +187,14 @@ export async function POST(request: NextRequest) {
     if (agentIndex !== -1) {
       progress.agents[agentIndex] = {
         ...progress.agents[agentIndex],
-        status: status || progress.agents[agentIndex].status,
-        progress_percentage: progress_percentage !== undefined ? progress_percentage : progress.agents[agentIndex].progress_percentage,
+        status: status || progress.agents[agentIndex]?.status,
+        progress_percentage: progress_percentage !== undefined ? progress_percentage : progress.agents[agentIndex]?.progress_percentage,
         current_operation,
         confidence_score,
         error,
         start_time: (progress.agents[agentIndex] as AgentProgress).start_time || (status === 'in_progress' ? Date.now() : undefined),
         end_time: status === 'completed' || status === 'failed' ? Date.now() : undefined
-      };
+      } as AgentProgress;
     }
 
     // Update overall progress
@@ -260,13 +260,18 @@ function updateSimulatedProgress(progress: PipelineProgress) {
     ];
     
     progress.status = 'failed';
-    progress.error = failureReasons[Math.floor(Math.random() * failureReasons.length)];
+    const failureReason = failureReasons[Math.floor(Math.random() * failureReasons.length)];
+    if (failureReason) {
+      progress.error = failureReason;
+    }
     
     // Mark current agent as failed
     const currentAgent = progress.agents.find(a => a.status === 'in_progress');
     if (currentAgent) {
       currentAgent.status = 'failed';
-      currentAgent.error = progress.error;
+      if (progress.error) {
+        currentAgent.error = progress.error;
+      }
     }
     
     return;
@@ -287,10 +292,11 @@ function updateSimulatedProgress(progress: PipelineProgress) {
 
   // Update agent statuses based on timing
   progress.agents.forEach((agent, index) => {
-    const agentKeys = (Object || {}).keys(agentTimings) as Array<keyof typeof agentTimings>;
+    const agentKeys = Object.keys(agentTimings) as Array<keyof typeof agentTimings>;
     const agentKey = agentKeys[index];
-    const agentThreshold = agentTimings[agentKey];
-    const prevThreshold = index > 0 ? agentTimings[agentKeys[index - 1]] : 0;
+    const agentThreshold = agentKey ? agentTimings[agentKey] : 0;
+    const prevAgentKey = index > 0 ? agentKeys[index - 1] : null;
+    const prevThreshold = prevAgentKey ? agentTimings[prevAgentKey] : 0;
 
     if (progressRatio >= agentThreshold) {
       // Agent completed

@@ -120,7 +120,7 @@ export async function GET(
     }
 
     // Generate safe filename with enhanced security
-    const safeName = (template || {}).name
+    const safeName = (template?.name || 'template')
       .replace(/[^a-zA-Z0-9\-_\s]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .replace(/script|javascript|vbscript|onload|onerror|onclick/gi, '') // Remove dangerous keywords
@@ -130,7 +130,7 @@ export async function GET(
       .substring(0, 50); // Limit length to prevent filesystem issues
     
     // Fallback to UUID if name becomes empty after sanitization
-    const fileName = safeName || `template-${(template || {}).id.split('-')[0]}`;
+    const fileName = safeName || `template-${template?.id?.split('-')[0] || 'unknown'}`;
     const timestamp = new Date().toISOString().split('T')[0];
 
     const queryTime = Date.now() - startTime;
@@ -331,7 +331,7 @@ export async function POST(
     const generatedContent = (template || {}).generated_content as any;
 
     // Generate safe filename with enhanced security
-    const baseFileName = (template || {}).name
+    const baseFileName = (template?.name || 'template')
       .replace(/[^a-zA-Z0-9\-_\s]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .replace(/script|javascript|vbscript|onload|onerror|onclick/gi, '') // Remove dangerous keywords
@@ -341,7 +341,7 @@ export async function POST(
       .substring(0, 50); // Limit length to prevent filesystem issues
     
     // Fallback to UUID if name becomes empty after sanitization
-    const sanitizedName = baseFileName || `template-${(template || {}).id.split('-')[0]}`;
+    const sanitizedName = baseFileName || `template-${template?.id?.split('-')[0] || 'unknown'}`;
     const safeName = (filename_prefix ? filename_prefix + '-' : '') + sanitizedName;
     const timestamp = new Date().toISOString().split('T')[0];
 

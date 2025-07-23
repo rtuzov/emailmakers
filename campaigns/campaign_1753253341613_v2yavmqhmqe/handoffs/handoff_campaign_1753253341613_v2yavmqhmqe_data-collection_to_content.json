@@ -1,0 +1,51 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753253341613_v2yavmqhmqe",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753253341613_v2yavmqhmqe",
+  "specialist_data": {
+    "destination_analysis": null,
+    "market_intelligence": null,
+    "emotional_profile": null,
+    "trend_analysis": null,
+    "consolidated_insights": null,
+    "travel_intelligence": null,
+    "collection_metadata": null
+  },
+  "handoff_context": {
+    "summary": "Comprehensive travel intelligence collected for Guatemala during winter.",
+    "context_for_next": "Focus on exploiting eco-tourism and cultural experiences in content creation.",
+    "recommendations": [
+      "Create content around accessibility and travel packages.",
+      "Emphasize nature and cultural experiences in marketing materials."
+    ],
+    "priority_items": [
+      "Ensure timely delivery of digital content before peak booking season.",
+      "Monitor social media trends for ongoing interest."
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Content reflects comprehensive analysis and marketing insights."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "market_intelligence",
+      "emotional_profile",
+      "trend_analysis"
+    ]
+  },
+  "quality_metadata": {
+    "data_quality_score": 95,
+    "completeness_score": 95,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1500
+  },
+  "trace_id": "",
+  "validate_context": true,
+  "created_at": "2025-07-23T06:49:26.751Z"
+}

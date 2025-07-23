@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/shared/infrastructure/database/connection';
-import { email_templates, users } from '@/shared/infrastructure/database/schema';
-import { eq, like, and, desc, asc, count, or, ilike, sql, gte, lte, between } from 'drizzle-orm';
+import { email_templates } from '@/shared/infrastructure/database/schema';
+import { eq, and, desc, asc, count, or, ilike, sql } from 'drizzle-orm';
 
 /**
  * GET /api/templates
@@ -239,7 +239,7 @@ export async function GET(request: NextRequest) {
       .where(whereClause);
     
     const total = totalResult[0]?.count || 0;
-    const _totalPages // Currently unused = Math.ceil(total / limit);
+    // const _totalPages = Math.ceil(total / limit);
     const offset = (page - 1) * limit;
 
     // Query templates with pagination
@@ -266,29 +266,34 @@ export async function GET(request: NextRequest) {
       .offset(offset);
 
     // Transform database results to Template interface
-    const paginatedTemplates: Template[] = dbTemplates.map(dbTemplate => ({
-      id: dbTemplate.id,
-      name: dbTemplate.name,
-      category: 'general', // Default category since not in schema yet
-      description: dbTemplate.description || '',
-      thumbnail: '/api/placeholder/400/300',
-      createdAt: dbTemplate.created_at.toISOString(),
-      updatedAt: dbTemplate.updated_at?.toISOString(),
-      status: (dbTemplate.status as 'published' | 'draft') || 'draft',
-      qualityScore: dbTemplate.quality_score || undefined,
-      agentGenerated: true, // Default for now
-      userId: dbTemplate.user_id,
-      // Include database-specific fields
-      briefText: dbTemplate.brief_text,
-      generatedContent: dbTemplate.generated_content,
-      mjmlCode: dbTemplate.mjml_code,
-      htmlOutput: dbTemplate.html_output,
-      designTokens: dbTemplate.design_tokens,
-      // Mock additional fields for now
-      openRate: Math.random() * 100,
-      clickRate: Math.random() * 50,
-      tags: ['database', 'generated'],
-    }));
+    const paginatedTemplates: Template[] = dbTemplates.map(dbTemplate => {
+      const template: Template = {
+        id: dbTemplate.id,
+        name: dbTemplate.name,
+        category: 'general', // Default category since not in schema yet
+        description: dbTemplate.description || '',
+        thumbnail: '/api/placeholder/400/300',
+        createdAt: dbTemplate.created_at.toISOString(),
+        status: (dbTemplate.status as 'published' | 'draft') || 'draft',
+        agentGenerated: true, // Default for now
+        userId: dbTemplate.user_id,
+        ...(dbTemplate.html_output && { htmlOutput: dbTemplate.html_output }),
+        designTokens: dbTemplate.design_tokens,
+        openRate: Math.random() * 100,
+        clickRate: Math.random() * 50,
+        tags: ['database', 'generated'],
+      };
+      
+      // Add optional properties only if they have values
+      if (dbTemplate.updated_at) {
+        template.updatedAt = dbTemplate.updated_at.toISOString();
+      }
+      if (dbTemplate.quality_score !== null) {
+        template.qualityScore = dbTemplate.quality_score;
+      }
+      
+      return template;
+    });
 
     // No fallback to mock data - return empty results if database has no templates
     let finalTemplates = paginatedTemplates;

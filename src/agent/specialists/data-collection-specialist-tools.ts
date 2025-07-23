@@ -145,6 +145,9 @@ export const saveAnalysisResult = tool({
         // Basic cleanup
         let cleanText = text.trim();
         
+        // ✅ НОВОЕ: Удаляем управляющие символы которые вызывают "Bad control character"
+        cleanText = cleanText.replace(/[\x00-\x1F\x7F]/g, ''); // Удаляем все управляющие символы
+        
         // Remove markdown code blocks if present
         if (cleanText.startsWith('```json')) {
           cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
@@ -161,6 +164,14 @@ export const saveAnalysisResult = tool({
           // Unescape inner quotes
           cleanText = cleanText.replace(/\\"/g, '"');
         }
+        
+        // ✅ ДОПОЛНИТЕЛЬНАЯ ОЧИСТКА: Исправляем частые проблемы JSON
+        cleanText = cleanText
+          .replace(/[\n\r\t]/g, ' ')  // Заменяем переносы строк и табы на пробелы
+          .replace(/\s+/g, ' ')       // Схлопываем множественные пробелы
+          .replace(/,\s*}/g, '}')     // Убираем trailing запятые
+          .replace(/,\s*]/g, ']')     // Убираем trailing запятые в массивах
+          .trim();
         
         console.log(`🔧 DEBUG: After basic cleanup for ${fieldName}:`, cleanText.substring(0, 200) + '...');
         
@@ -784,7 +795,18 @@ export const createHandoffFile = tool({
   }),
   execute: async (params) => {
     try {
-      console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
+      // 🛡️ PROTECTION: Check if handoff already exists to prevent duplicates
+      const handoffId = `${params.campaign_id}_${params.from_specialist}_to_${params.to_specialist}`;
+      const existingHandoffPath = path.join(params.campaign_path, 'handoffs', `handoff_${handoffId}.json`);
+      
+      try {
+        await fs.access(existingHandoffPath);
+        console.log(`⚠️ Handoff already exists: ${handoffId}, skipping duplicate creation`);
+        return `✅ Handoff already exists from ${params.from_specialist} to ${params.to_specialist}. Skipping duplicate creation.`;
+      } catch {
+        // File doesn't exist, continue with creation
+        console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
+      }
       
       // Pre-validation using quick validation if enabled
       if (params.validate_context) {
@@ -822,11 +844,17 @@ export const createHandoffFile = tool({
         created_at: new Date().toISOString()
       };
       
+      // Save handoff file to disk  
+      const handoffFilePath = path.join(params.campaign_path, 'handoffs', `handoff_${handoffId}.json`);
+      
+      await fs.writeFile(handoffFilePath, JSON.stringify(handoffResult, null, 2), 'utf-8');
+      
       console.log(`✅ Handoff data prepared successfully`);
       console.log(`📋 From ${params.from_specialist} to ${params.to_specialist}`);
       console.log(`📊 Data quality: ${params.quality_metadata.data_quality_score}/100`);
       console.log(`📁 Files created: ${params.deliverables.created_files.length}`);
       console.log(`✅ Validation: ${params.quality_metadata.validation_status}`);
+      console.log(`💾 Handoff saved to: ${handoffFilePath}`);
       
       return `✅ Standardized handoff prepared successfully! From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Data quality: ${params.quality_metadata.data_quality_score}/100. Files created: ${params.deliverables.created_files.length}. Validation: ${params.quality_metadata.validation_status}. Context validation: ${params.validate_context ? 'enabled' : 'disabled'}. Timestamp: ${handoffResult.created_at}`;
       
@@ -856,9 +884,22 @@ export const updateCampaignMetadata = tool({
   }),
   execute: async ({ campaign_path, specialist_name, workflow_phase, additional_data }) => {
     try {
-      console.log(`📝 Updating campaign metadata for ${specialist_name}`);
-      
+      // 🛡️ PROTECTION: Check if metadata already updated to prevent duplicates
       const metadataPath = path.join(campaign_path, 'campaign-metadata.json');
+      
+      try {
+        const existingContent = await fs.readFile(metadataPath, 'utf-8');
+        const metadata = JSON.parse(existingContent);
+        
+        if (metadata.specialists_completed && metadata.specialists_completed.includes(specialist_name)) {
+          console.log(`⚠️ Metadata already updated for ${specialist_name}, skipping duplicate`);
+          return `✅ Campaign metadata already updated for ${specialist_name}. Skipping duplicate update.`;
+        }
+      } catch {
+        // File doesn't exist or error reading, continue with update
+      }
+      
+      console.log(`📝 Updating campaign metadata for ${specialist_name}`);
       
       // Read existing metadata
       let metadata;
@@ -903,9 +944,6 @@ export const updateCampaignMetadata = tool({
 // TOOL REGISTRY
 // ============================================================================
 
-// Import transfer function
-import { transferToContentSpecialist } from '../core/transfer-tools';
-
 export const dataCollectionSpecialistTools = [
   saveAnalysisResult,
   fetchCachedData,
@@ -914,7 +952,6 @@ export const dataCollectionSpecialistTools = [
   logAnalysisMetrics,
   createHandoffFile,
   updateCampaignMetadata,
-  transferToContentSpecialist,
   // Context validation tools
   validateHandoffContext,
   quickValidateHandoff

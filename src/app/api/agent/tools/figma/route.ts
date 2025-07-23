@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const {
       tags = [],
       context = {},
-      require_diversity = true,
+      // _require_diversity = true,
       max_results = 5
     } = body;
 

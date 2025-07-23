@@ -1,5 +1,5 @@
 import { Agent, run } from '@openai/agents';
-import { z } from 'zod';
+// import { z } from 'zod';
 import {
   CorrectionSuggestion,
   AGENT_CONSTANTS
@@ -238,13 +238,13 @@ TIMEOUT: You have 10 seconds maximum to complete the correction.`;
   /**
    * 🔍 ПАРСИНГ ОТВЕТА AI
    */
-  private parseAIResponse(response: any, handoffType: HandoffType): any {
+  private parseAIResponse(response: any, _handoffType: HandoffType): any {
     const content = typeof response === 'string' ? response : JSON.stringify(response);
     try {
       // Поиск JSON в ответе
       const jsonMatch = content.match(/```json\s*(\{[\s\S]*?\})\s*```/);
       if (jsonMatch) {
-        return JSON.parse(jsonMatch[1]);
+        return JSON.parse(jsonMatch[1] || '{}');
       }
 
       // Попытка парсинга всего контента как JSON

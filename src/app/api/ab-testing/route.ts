@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import ABTestingService from '../../../lib/ab-testing'
+// import ABTestingService from '../../../lib/ab-testing'
 
 // A/B TESTING API - TEMPORARILY DISABLED
 // This API has been disabled as requested by the user
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { action, userId, testId, data } = body
+    const { action, userId, testId } = body
 
     // Return disabled status for all POST requests
     return NextResponse.json({

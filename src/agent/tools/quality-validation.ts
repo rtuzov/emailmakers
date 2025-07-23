@@ -14,15 +14,15 @@
 // import { validateEmailQuality } from '../tools/validators/quality-validation';
 
 // Temporary types for compatibility
-interface QualityValidationRequest {
-  html_content: string;
-  mjml_source: string;
-  topic: string;
-  assets_used: any;
-  campaign_metadata: any;
-  original_request: any;
-  render_test_results?: any;
-}
+// interface QualityValidationRequest {
+//   html_content: string;
+//   mjml_source: string;
+//   topic: string;
+//   assets_used: any;
+//   campaign_metadata: any;
+//   original_request: any;
+//   render_test_results?: any;
+// }
 
 interface QualityValidationResponse {
   overall_score: number;
@@ -35,17 +35,17 @@ interface QualityValidationResponse {
   recommendations: string[];
 }
 
-class QualityValidationError extends Error {
-  public code?: string;
-  public details?: any;
-  
-  constructor(message: string, code?: string, details?: any) {
-    super(message);
-    this.name = 'QualityValidationError';
-    this.code = code;
-    this.details = details;
-  }
-}
+// class QualityValidationError extends Error {
+//   public code?: string;
+//   public details?: any;
+//   
+//   constructor(message: string, code?: string, details?: any) {
+//     super(message);
+//     this.name = 'QualityValidationError';
+//     this.code = code;
+//     this.details = details;
+//   }
+// }
 
 /**
  * Quality validation tool parameters interface
@@ -105,7 +105,8 @@ export async function qualityValidation(params: QualityValidationParams): Promis
     console.log(`🖼️ T11 Quality Validation: Assets: ${params.assets_used.original_assets.length} original, ${params.assets_used.processed_assets.length} processed`);
     
     // Convert agent parameters to validation request format
-    const validationRequest: QualityValidationRequest = {
+    /*
+    const _validationRequest: QualityValidationRequest = { // Currently unused
       html_content: params.html_content,
       mjml_source: params.mjml_source,
       topic: params.topic,
@@ -135,6 +136,7 @@ export async function qualityValidation(params: QualityValidationParams): Promis
       },
       render_test_results: params.render_test_results || undefined
     };
+    */
     
     // TODO: Заменить на qualitySpecialistAgent из tool-registry.ts
     // Validators перемещены в useless/
@@ -189,7 +191,7 @@ function formatValidationResult(_result: QualityValidationResponse, validationTi
     coherence_validation,
     critical_issues,
     recommendations
-  } = result;
+  } = _result;
   
   let output = `🔍 T11 QUALITY VALIDATION RESULTS\\n`;
   output += `⏱️ Validation Time: ${validationTime}ms\\n\\n`;
@@ -210,7 +212,7 @@ function formatValidationResult(_result: QualityValidationResponse, validationTi
   // Critical Issues (if any)
   if (critical_issues.length > 0) {
     output += `🚨 CRITICAL ISSUES (${critical_issues.length})\\n`;
-    critical_issues.forEach((issue, index) => {
+    critical_issues.forEach((issue: any, index: number) => {
       output += `${index + 1}. ${issue}\\n`;
     });
     output += `\\n`;
@@ -236,7 +238,7 @@ function formatValidationResult(_result: QualityValidationResponse, validationTi
   // Image findings
   if (image_analysis.images_analyzed.length > 0) {
     const avgRelevance = Math.round(
-      image_analysis.images_analyzed.reduce((sum, img) => sum + img.relevance_score, 0) / 
+      image_analysis.images_analyzed.reduce((sum: number, img: any) => sum + img.relevance_score, 0) / 
       image_analysis.images_analyzed.length
     );
     output += `Images: ${image_analysis.images_analyzed.length} analyzed, avg relevance ${avgRelevance}%\\n`;
@@ -281,7 +283,8 @@ function formatValidationResult(_result: QualityValidationResponse, validationTi
 /**
  * Format error result for agent consumption
  */
-function formatErrorResult(error: any, validationTime: number): string {
+/*
+function _formatErrorResult(error: any, validationTime: number): string { // Currently unused
   let output = `❌ T11 QUALITY VALIDATION ERROR\\n`;
   output += `⏱️ Validation Time: ${validationTime}ms\\n\\n`;
   
@@ -300,22 +303,27 @@ function formatErrorResult(error: any, validationTime: number): string {
   
   return output;
 }
+*/
 
 /**
  * Estimate word count from text content
  */
-function estimateWordCount(text: string): number {
+/*
+function _estimateWordCount(text: string): number { // Currently unused
   return text.split(/\s+/).filter(word => word.length > 0).length;
 }
+*/
 
 /**
  * Extract text content from HTML for analysis
  */
-function extractTextFromHTML(html: string): string {
+/*
+function _extractTextFromHTML(html: string): string { // Currently unused
   return html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-} 
+}
+*/ 

@@ -34,8 +34,8 @@ export class LogService {
       timestamp: new Date().toISOString(),
       level: level as 'info' | 'warn' | 'error',
       message,
-      agent,
-      tool,
+      ...(agent && { agent }),
+      ...(tool && { tool }),
       traceId,
       details
     };
@@ -49,7 +49,7 @@ export class LogService {
         message,
         level: 'error',
         agent: agent || 'unknown',
-        tool,
+        ...(tool && { tool }),
         timestamp: logEntry.timestamp,
         context: details
       });
@@ -104,7 +104,7 @@ export class LogService {
       logs: limitedLogs,
       total_count: allLogs.length,
       filtered_count: filteredLogs.length,
-      trace_id: traceId,
+      ...(traceId && { trace_id: traceId }),
       timestamp: new Date().toISOString()
     };
   }
@@ -250,12 +250,15 @@ export class LogService {
     const now = Date.now();
     
     for (let i = 0; i < 20; i++) {
+      const selectedAgent = agents[Math.floor(Math.random() * agents.length)];
+      const selectedTool = tools[Math.floor(Math.random() * tools.length)];
+      
       logs.push({
         timestamp: new Date(now - (i * 60000)).toISOString(), // 1 minute intervals
-        level: levels[Math.floor(Math.random() * levels.length)],
-        message: messages[Math.floor(Math.random() * messages.length)],
-        agent: agents[Math.floor(Math.random() * agents.length)],
-        tool: tools[Math.floor(Math.random() * tools.length)],
+        level: levels[Math.floor(Math.random() * levels.length)] || 'info',
+        message: messages[Math.floor(Math.random() * messages.length)] || 'Default log message',
+        ...(selectedAgent && { agent: selectedAgent }),
+        ...(selectedTool && { tool: selectedTool }),
         traceId,
         details: {
           duration: Math.floor(Math.random() * 5000),

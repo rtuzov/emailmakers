@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as path from 'path';
+// import * as path from 'path';
 
 // @ts-nocheck
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     console.log(`🎨 Context:`, context);
 
     // Mock variant splitting to avoid build errors
-    const _fullPath // Currently unused = path.resolve(process.cwd(), assetPath);
+    // const _fullPath = path.resolve(process.cwd(), assetPath);
     
     const result = {
       success: true,

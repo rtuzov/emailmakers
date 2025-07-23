@@ -95,7 +95,7 @@ async function performHtmlPatching(
     return patchedResult;
     
   } catch (apiError) {
-    console.warn('GPT-4o mini patching failed, using basic patching:', apiError.message);
+    console.warn('GPT-4o mini patching failed, using basic patching:', apiError instanceof Error ? apiError.message : String(apiError));
     return performBasicHtmlPatching(html, issues, patchType);
   }
 }
@@ -201,7 +201,7 @@ function performBasicHtmlPatching(
     if (styleMatch) {
       const css = styleMatch[1];
       // Simple CSS inlining for critical styles
-      patchedHtml = inlineCriticalCss(patchedHtml, css);
+      patchedHtml = inlineCriticalCss(patchedHtml, css || '');
       fixesApplied.push('Inlined critical CSS for performance');
     }
   }

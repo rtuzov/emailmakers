@@ -1,4 +1,4 @@
-import { simpleParser } from 'mailparser';
+// import { simpleParser } from 'mailparser'; // Currently unused
 import { MetricsService } from '../../../shared/infrastructure/monitoring/metrics-service';
 
 export interface SpamRule {
@@ -208,14 +208,14 @@ export class SpamAnalysisService {
     const links = linkMatches.map(match => {
       const urlMatch = match.match(/href\s*=\s*["']([^"']+)["']/i);
       return urlMatch ? urlMatch[1] : '';
-    }).filter(url => url);
+    }).filter((url): url is string => Boolean(url));
 
     // Extract images
     const imageMatches = htmlContent.match(/src\s*=\s*["']([^"']+)["']/gi) || [];
     const images = imageMatches.map(match => {
       const srcMatch = match.match(/src\s*=\s*["']([^"']+)["']/i);
       return srcMatch ? srcMatch[1] : '';
-    }).filter(src => src && (src.includes('.jpg') || src.includes('.png') || src.includes('.gif') || src.includes('.webp')));
+    }).filter((src): src is string => Boolean(src) && typeof src === 'string' && (src.includes('.jpg') || src.includes('.png') || src.includes('.gif') || src.includes('.webp')));
 
     return {
       html: htmlContent,

@@ -219,7 +219,7 @@ export async function PUT(
         .limit(1);
 
       if (currentTemplate.length > 0) {
-        const currentContent = (currentTemplate[0].generated_content as any) || {};
+        const currentContent = (currentTemplate[0]?.generated_content as any) || {};
         
         updateData.generated_content = {
           ...currentContent,
@@ -262,9 +262,9 @@ export async function PUT(
       {
         success: true,
         data: {
-          id: result[0].id,
-          name: result[0].name,
-          updated_at: result[0].updated_at,
+          id: result[0]?.id,
+          name: result[0]?.name,
+          updated_at: result[0]?.updated_at,
           content_updated: Boolean(html_content || mjml_code),
           metadata_updated: Boolean(subject_line || preheader_text),
         },

@@ -19,12 +19,26 @@ export const processContentAssets = tool({
   name: 'processContentAssets',
   description: 'Process and optimize content assets for email template integration',
   parameters: z.object({
-    handoff_directory: z.string().describe('Directory containing handoff files from Content Specialist'),
-    optimization_level: z.enum(['basic', 'standard', 'high']).describe('Asset optimization level - must be specified explicitly'),
+    handoff_directory: z.string().describe('Campaign handoff directory path (will be auto-corrected if invalid)'),
+    optimization_level: z.enum(['basic', 'standard', 'aggressive']).describe('Asset optimization level - no default allowed')
   }),
-  execute: async (params, _context) => {
+  execute: async (params, context) => {
     try {
-      console.log(`🎨 Processing content assets from: ${params.handoff_directory}`);
+      // ✅ ИСПРАВЛЕНО: Получаем правильный путь кампании из context
+      let handoffDirectory = params.handoff_directory;
+      
+      // Защита от неправильных путей сгенерированных SDK
+      if (handoffDirectory === 'docs' || handoffDirectory === 'package' || handoffDirectory === 'handoffs' || !handoffDirectory.includes('campaigns/')) {
+        const campaignPath = (context?.context as any)?.designContext?.campaign_path;
+        if (campaignPath) {
+          handoffDirectory = path.join(campaignPath, 'handoffs');
+          console.log(`🔧 ИСПРАВЛЕНО: SDK передал неправильный путь "${params.handoff_directory}", использую правильный: ${handoffDirectory}`);
+        } else {
+          throw new Error('Campaign path not available in design context. loadDesignContext must be called first.');
+        }
+      }
+      
+      console.log(`🎨 Processing content assets from: ${handoffDirectory}`);
       console.log(`🔧 Optimization level: ${params.optimization_level}`);
       
       // Validate optimization level is provided
@@ -33,7 +47,7 @@ export const processContentAssets = tool({
       }
       
       // Extract campaign path from handoff directory
-      let campaignPath = params.handoff_directory;
+      let campaignPath = handoffDirectory;
       if (campaignPath.endsWith('/handoffs/') || campaignPath.endsWith('/handoffs')) {
         campaignPath = campaignPath.replace(/\/handoffs\/?$/, '');
       } else if (campaignPath.endsWith('/assets/') || campaignPath.endsWith('/assets')) {
@@ -42,17 +56,17 @@ export const processContentAssets = tool({
       }
       
       // Load context from handoff files
-      const context = await loadContextFromHandoffFiles(campaignPath);
+      const context_data = await loadContextFromHandoffFiles(campaignPath);
       
       // Validate required context
-      if (!context.content_context) {
+      if (!context_data.content_context) {
         throw new Error('Content context not found in handoff files');
       }
       
       // Technical specification check removed - not required for asset processing
       
       // Extract asset manifest from context
-      const assetManifestData = context.asset_manifest;
+      const assetManifestData = context_data.asset_manifest;
       if (!assetManifestData) {
         throw new Error('Asset manifest not found in context');
       }
@@ -89,13 +103,13 @@ export const processContentAssets = tool({
       };
       
       // Enhance with technical specification
-      const enhancedManifest = enhanceAssetManifestWithTechSpec(combinedAssetManifest, context.technical_specification || {});
+      const enhancedManifest = enhanceAssetManifestWithTechSpec(combinedAssetManifest, context_data.technical_specification || {});
       
       // Generate asset usage instructions
-      const usageInstructions = generateAssetUsageInstructions(enhancedManifest, context.content_context);
+      const usageInstructions = generateAssetUsageInstructions(enhancedManifest, context_data.content_context);
       
       // Save processed asset manifest
-      const manifestPath = path.join(params.handoff_directory, 'processed-assets.json');
+      const manifestPath = path.join(handoffDirectory, 'processed-assets.json');
       const assetData = {
         manifest: enhancedManifest,
         usage_instructions: usageInstructions,
@@ -110,11 +124,11 @@ export const processContentAssets = tool({
       await fs.writeFile(manifestPath, JSON.stringify(assetData, null, 2));
       
       // ✅ UPDATE DESIGN CONTEXT WITH PROCESSED ASSET MANIFEST
-      if (context) {
-        if (!(context as any).designContext) {
-          (context as any).designContext = {};
+      if (context_data) {
+        if (!(context_data as any).designContext) {
+          (context_data as any).designContext = {};
         }
-        (context as any).designContext.asset_manifest = enhancedManifest;
+        (context_data as any).designContext.asset_manifest = enhancedManifest;
         console.log('✅ Asset manifest saved to design context for next tools');
       }
       
@@ -141,26 +155,36 @@ async function processLocalAssets(assetManifest: any, optimizationLevel: string)
   
   // Process local images
   for (const image of assetManifest.images) {
-    if (!image.isExternal && image.path) {
+    // Improved logic: check if it's truly local (not a URL and not explicitly external)
+    const isExternalUrl = image.path && (image.path.startsWith('http://') || image.path.startsWith('https://'));
+    const isMarkedExternal = image.isExternal === true;
+    
+    if (!isExternalUrl && !isMarkedExternal && image.path) {
       try {
+        console.log(`📸 Processing local image: ${image.path}`);
         const processedImage = await processLocalImage(image, optimizationLevel);
         processedImages.push(processedImage);
       } catch (error) {
-        console.warn(`⚠️ Failed to process local image ${image.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        throw new Error(`Failed to process local image ${image.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.warn(`⚠️ Failed to process local image ${image.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(`Failed to process local image ${image.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
   
   // Process local icons
   for (const icon of assetManifest.icons) {
-    if (!icon.isExternal && icon.path) {
+    // Improved logic: check if it's truly local (not a URL and not explicitly external)
+    const isExternalUrl = icon.path && (icon.path.startsWith('http://') || icon.path.startsWith('https://'));
+    const isMarkedExternal = icon.isExternal === true;
+    
+    if (!isExternalUrl && !isMarkedExternal && icon.path) {
       try {
+        console.log(`🎯 Processing local icon: ${icon.path}`);
         const processedIcon = await processLocalIcon(icon, optimizationLevel);
         processedIcons.push(processedIcon);
       } catch (error) {
-        console.warn(`⚠️ Failed to process local icon ${icon.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        throw new Error(`Failed to process local icon ${icon.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.warn(`⚠️ Failed to process local icon ${icon.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(`Failed to process local icon ${icon.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
@@ -181,26 +205,38 @@ async function processExternalAssets(assetManifest: any, optimizationLevel: stri
   
   // Process external images
   for (const image of assetManifest.images) {
-    if (image.isExternal && image.url) {
+    // Improved logic: check if it's truly external (URL or explicitly marked external)
+    const isExternalUrl = image.path && (image.path.startsWith('http://') || image.path.startsWith('https://'));
+    const isMarkedExternal = image.isExternal === true;
+    const hasExternalUrl = image.url && (image.url.startsWith('http://') || image.url.startsWith('https://'));
+    
+    if (isExternalUrl || isMarkedExternal || hasExternalUrl) {
       try {
+        console.log(`🌐 Processing external image: ${image.url || image.path || image.id}`);
         const processedImage = await processExternalImage(image, optimizationLevel);
         processedImages.push(processedImage);
       } catch (error) {
-        console.warn(`⚠️ Failed to process external image ${image.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        throw new Error(`Failed to process external image ${image.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.warn(`⚠️ Failed to process external image ${image.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(`Failed to process external image ${image.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
   
   // Process external icons
   for (const icon of assetManifest.icons) {
-    if (icon.isExternal && icon.url) {
+    // Improved logic: check if it's truly external (URL or explicitly marked external)
+    const isExternalUrl = icon.path && (icon.path.startsWith('http://') || icon.path.startsWith('https://'));
+    const isMarkedExternal = icon.isExternal === true;
+    const hasExternalUrl = icon.url && (icon.url.startsWith('http://') || icon.url.startsWith('https://'));
+    
+    if (isExternalUrl || isMarkedExternal || hasExternalUrl) {
       try {
+        console.log(`🌐 Processing external icon: ${icon.url || icon.path || icon.id}`);
         const processedIcon = await processExternalIcon(icon, optimizationLevel);
         processedIcons.push(processedIcon);
       } catch (error) {
-        console.warn(`⚠️ Failed to process external icon ${icon.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        throw new Error(`Failed to process external icon ${icon.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.warn(`⚠️ Failed to process external icon ${icon.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        throw new Error(`Failed to process external icon ${icon.id || 'undefined'}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
   }
@@ -216,7 +252,13 @@ async function processExternalAssets(assetManifest: any, optimizationLevel: stri
  * Process individual local image
  */
 async function processLocalImage(image: any, optimizationLevel: string): Promise<any> {
-  // Validate image path exists
+  // Check if this is actually an external URL
+  if (image.path && (image.path.startsWith('http://') || image.path.startsWith('https://'))) {
+    // This is actually an external image, process it as such
+    return await processExternalImage(image, optimizationLevel);
+  }
+  
+  // Validate image path exists for actual local files
   if (!await fs.access(image.path).then(() => true).catch(() => false)) {
     throw new Error(`Local image file not found: ${image.path}`);
   }
@@ -238,7 +280,13 @@ async function processLocalImage(image: any, optimizationLevel: string): Promise
  * Process individual local icon
  */
 async function processLocalIcon(icon: any, optimizationLevel: string): Promise<any> {
-  // Validate icon path exists
+  // Check if this is actually an external URL
+  if (icon.path && (icon.path.startsWith('http://') || icon.path.startsWith('https://'))) {
+    // This is actually an external icon, process it as such
+    return await processExternalIcon(icon, optimizationLevel);
+  }
+  
+  // Validate icon path exists for actual local files
   if (!await fs.access(icon.path).then(() => true).catch(() => false)) {
     throw new Error(`Local icon file not found: ${icon.path}`);
   }
@@ -260,13 +308,17 @@ async function processLocalIcon(icon: any, optimizationLevel: string): Promise<a
  * Process individual external image
  */
 async function processExternalImage(image: any, _optimizationLevel: string): Promise<any> {
+  // ✅ ИСПРАВЛЕНО: Проверяем и url и path для внешних изображений
+  const imageUrl = image.url || image.path || image.file_path;
+  
   // Validate URL is accessible
-  if (!image.url || !image.url.startsWith('http')) {
-    throw new Error(`Invalid external image URL: ${image.url}`);
+  if (!imageUrl || (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://'))) {
+    throw new Error(`Invalid external image URL: ${imageUrl}`);
   }
   
   return {
     ...image,
+    url: imageUrl, // ✅ ДОБАВЛЕНО: нормализуем URL в поле url
     processed: true,
     optimized: false, // External images are not optimized locally
     optimization_applied: 'external_url_validation',
@@ -279,13 +331,17 @@ async function processExternalImage(image: any, _optimizationLevel: string): Pro
  * Process individual external icon
  */
 async function processExternalIcon(icon: any, _optimizationLevel: string): Promise<any> {
+  // ✅ ИСПРАВЛЕНО: Проверяем и url и path для внешних иконок
+  const iconUrl = icon.url || icon.path || icon.file_path;
+  
   // Validate URL is accessible
-  if (!icon.url || !icon.url.startsWith('http')) {
-    throw new Error(`Invalid external icon URL: ${icon.url}`);
+  if (!iconUrl || (!iconUrl.startsWith('http://') && !iconUrl.startsWith('https://'))) {
+    throw new Error(`Invalid external icon URL: ${iconUrl}`);
   }
   
   return {
     ...icon,
+    url: iconUrl, // ✅ ДОБАВЛЕНО: нормализуем URL в поле url
     processed: true,
     optimized: false, // External icons are not optimized locally
     optimization_applied: 'external_url_validation',
@@ -303,7 +359,7 @@ function getOptimizationForLevel(level: string): string {
       return 'format_conversion';
     case 'standard':
       return 'format_conversion_and_compression';
-    case 'high':
+    case 'aggressive':
       return 'format_conversion_compression_and_resizing';
     default:
       throw new Error(`Invalid optimization level: ${level}`);

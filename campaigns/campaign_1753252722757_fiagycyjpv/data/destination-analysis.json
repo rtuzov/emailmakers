@@ -1,0 +1,24 @@
+{
+  "analysis_type": "destination_analysis",
+  "data": {
+    "route_analysis": "Guatemala can be accessed via La Aurora International Airport. Transportation options include shuttles, buses, and domestic flights to key cities like Antigua, Flores, and Quetzaltenango.",
+    "seasonal_patterns": [
+      {
+        "month": "December",
+        "description": "Festivities like Christmas and New Year celebrations occur, attracting tourists and locals alike."
+      },
+      {
+        "month": "January",
+        "description": "Perfect time for outdoor exploration with clear skies and pleasant weather."
+      },
+      {
+        "month": "February",
+        "description": "Lively cultural festivals and the last chance to catch the dry season."
+      }
+    ],
+    "climate": "The climate in winter is mild with average temperatures between 16-24°C (60-75°F). Dry season is ideal for outdoor activities.",
+    "culture": "Guatemala boasts a rich Mayan heritage with colorful markets, traditional festivals, and ancient ruins like Tikal and Chichen Itza.",
+    "attractions": "Key attractions include Antigua's colonial architecture, Lake Atitlán, and the ancient ruins of Tikal."
+  },
+  "saved_at": "2025-07-23T06:39:16.964Z"
+}

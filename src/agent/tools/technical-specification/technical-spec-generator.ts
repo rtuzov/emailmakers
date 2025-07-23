@@ -520,7 +520,7 @@ export const generateTechnicalSpecification = tool({
       
       // Step 8: Generate implementation guidance
       console.log('📖 Generating implementation guidance...');
-      const implementationGuidance = generationOptions.generateImplementationGuide 
+      const implementationGuidance = (generationOptions as any).generateImplementationGuide 
         ? await generateImplementationGuidance(technicalSpec, contentContext)
         : getDefaultImplementationGuidance();
       
@@ -566,7 +566,7 @@ export const generateTechnicalSpecification = tool({
       );
       
       // Save implementation guide
-      if (generationOptions.generateImplementationGuide) {
+      if ((generationOptions as any).generateImplementationGuide) {
         await fs.writeFile(
           path.join(specDir, 'implementation-guide.md'),
           await generateImplementationGuideDocument(implementationGuidance, technicalSpec)
@@ -617,12 +617,12 @@ export const validateTechnicalSpecification = tool({
     }).nullable().describe('Workflow context'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
-  execute: async ({ specificationPath, validationRules, context, trace_id }) => {
+  execute: async ({ specificationPath, validationRules: _validationRules, context: _context, trace_id }) => {
     console.log('\\n✅ === TECHNICAL SPECIFICATION VALIDATION STARTED ===');
     console.log(`📂 Specification Path: ${specificationPath}`);
     console.log(`🔍 Trace ID: ${trace_id || 'none'}`);
     
-    const _rules // Currently unused = validationRules || {};
+    // const _rules = validationRules || {};
     
     try {
       // Load specification
@@ -666,11 +666,11 @@ export const validateTechnicalSpecification = tool({
 
 async function analyzeContentForTechnicalRequirements(contentContext: any): Promise<any> {
   const requirements = {
-    complexity: 'medium',
-    sectionsNeeded: [],
+    complexity: 'medium' as string,
+    sectionsNeeded: [] as Array<{ id: string; type: string; required: boolean }>,
     personalizationRequired: false,
     dynamicContentRequired: false,
-    interactivityLevel: 'basic'
+    interactivityLevel: 'basic' as string
   };
   
   // Analyze generated content
@@ -700,10 +700,7 @@ async function analyzeContentForTechnicalRequirements(contentContext: any): Prom
       requirements.sectionsNeeded.push({
         id: 'products',
         type: 'product',
-        required: true,
-        metadata: {
-          productCount: contentContext.pricing_analysis.products.length
-        }
+        required: true
       });
     }
   }
@@ -787,11 +784,11 @@ async function processAssetManifest(
 ): Promise<any> {
   const specifications = {
     manifest: {
-      images: [],
-      icons: [],
-      fonts: []
+      images: [] as Array<any>,
+      icons: [] as Array<any>,
+      fonts: [] as Array<{ family: string; weights: string[]; fallbacks: string[]; usage: string }>
     },
-    requirements: []
+    requirements: [] as Array<any>
   };
   
   // Process existing asset manifest
@@ -1169,7 +1166,7 @@ async function generateImplementationGuidance(
 ): Promise<any> {
   const complexity = specification.metadata.complexity || 'medium';
   const sectionsCount = specification.content.sections.length;
-  const _assetsCount // Currently unused = specification.design.assets.manifest.images.length + specification.design.assets.manifest.icons.length;
+  // const _assetsCount = specification.design.assets.manifest.images.length + specification.design.assets.manifest.icons.length;
   
   return {
     priority: sectionsCount > 5 ? 'high' : 'medium',
@@ -1210,7 +1207,7 @@ function generateRisks(specification: any): string[] {
   return risks;
 }
 
-function generateRecommendations(specification: any, contentContext: any): string[] {
+function generateRecommendations(specification: any, _contentContext: any): string[] {
   const recommendations = [];
   
   recommendations.push('Use table-based layout for maximum compatibility');

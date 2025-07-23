@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { RenderOrchestrationService } from '@/domains/render-testing/services/render-orchestration-service';
+import { NextResponse } from 'next/server';
+// import { NextRequest } from 'next/server'; // Currently unused
+// import { z } from 'zod'; // Currently unused
+// import { RenderOrchestrationService } from '@/domains/render-testing/services/render-orchestration-service'; // Currently unused
 
 /**
  * API Routes for Individual Render Testing Jobs
@@ -11,12 +12,13 @@ import { RenderOrchestrationService } from '@/domains/render-testing/services/re
  */
 
 // Request schemas
-const JobIdSchema = z.string().uuid();
+// const JobIdSchema = z.string().uuid(); // Currently unused
 
-const RetryJobSchema = z.object({
-  priority: z.number().min(1).max(5).optional().nullable()
-});
+// const RetryJobSchema = z.object({
+//   priority: z.number().min(1).max(5).optional().nullable()
+// }); // Currently unused
 
+/*
 // Response schemas
 const JobDetailsResponseSchema = z.object({
   job: z.object({
@@ -156,11 +158,12 @@ const JobDetailsResponseSchema = z.object({
 
 // Initialize service (in real implementation, this would be dependency injected)
 // For now, we'll create a mock service for demo purposes
-const renderOrchestrationService = {
-  async getRenderJobWithResults(jobId: string) {
+/*
+const renderOrchestrationService = { // Currently unused
+  async getRenderJobWithResults(_jobId: string) {
     return null; // Return null for demo
   },
-  async getRenderJobProgress(jobId: string) {
+  async getRenderJobProgress(_jobId: string) {
     // Return a proper Progress object structure
     return {
       _data: { completed: 0, total: 100 },
@@ -176,10 +179,10 @@ const renderOrchestrationService = {
       details: {}
     };
   },
-  async cancelRenderJob(jobId: string, userId: string) {
+  async cancelRenderJob(_jobId: string, _userId: string) {
     throw new Error('Service not fully implemented - demo mode');
   },
-  async retryRenderJob(jobId: string, userId: string) {
+  async retryRenderJob(_jobId: string, _userId: string) {
     throw new Error('Service not fully implemented - demo mode');
   }
 };
@@ -190,11 +193,11 @@ const renderOrchestrationService = {
  */
 export async function GET(
   _request: Request,
-  { params }: { _params: { jobId: string } }
+  { _params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
-    const { jobId } = params;
+    const { jobId } = _params;
     return NextResponse.json({
       id: jobId,
       status: 'pending',
@@ -222,11 +225,11 @@ export async function GET(
  */
 export async function DELETE(
   _request: Request,
-  { params }: { _params: { jobId: string } }
+  { _params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
-    const { jobId } = params;
+    const { jobId } = _params;
     return NextResponse.json({
       message: 'Job cancelled successfully (demo mode)',
       jobId: jobId
@@ -246,11 +249,11 @@ export async function DELETE(
  */
 export async function POST(
   _request: Request,
-  { params }: { _params: { jobId: string } }
+  { _params }: { _params: { jobId: string } }
 ) {
   try {
     // For demo purposes, return a simple response
-    const { jobId } = params;
+    const { jobId } = _params;
     return NextResponse.json({
       message: 'Job retried successfully (demo mode)',
       id: jobId + '-retry',
@@ -267,36 +270,8 @@ export async function POST(
   }
 }
 
-/**
- * Helper function to get user ID from request
- * In real implementation, this would extract from JWT token or session
- */
-async function getUserIdFromRequest(_request: NextRequest): Promise<string | null> {
-  // Placeholder implementation
-  // In real app, this would validate JWT token or session
-  const authHeader = request.headers.get('authorization');
-  if (!authHeader?.startsWith('Bearer ')) {
-    return null;
-  }
+// Helper functions commented out to fix TypeScript errors
+// getUserIdFromRequest and getStatusDisplayName are not used
 
-  // Mock user ID extraction
-  return 'user-123'; // Would be extracted from actual token
-}
 
-/**
- * Helper function to get display name for status
- */
-function getStatusDisplayName(status: string): string {
-  const statusMap: Record<string, string> = {
-    'pending': 'Pending',
-    'queued': 'Queued',
-    'processing': 'Processing',
-    'capturing': 'Capturing Screenshots',
-    'analyzing': 'Analyzing Results',
-    'completed': 'Completed',
-    'failed': 'Failed',
-    'cancelled': 'Cancelled'
-  };
 
-  return statusMap[status] || status;
-} 

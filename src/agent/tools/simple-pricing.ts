@@ -106,6 +106,7 @@ function generateRoutePrices(origin: string, destination: string) {
   
   for (let i = 0; i < variations.length; i++) {
     const variation = variations[i];
+    if (variation === undefined) continue;
     const price = Math.round(basePrice * variation);
     const date = getRandomFutureDate();
     
@@ -124,7 +125,7 @@ function generateRoutePrices(origin: string, destination: string) {
     });
   }
 
-  const cheapest = Math.min(...prices.map(p => (p || {}).price));
+  const cheapest = Math.min(...prices.map(p => (p && p.price) || 0));
   const popularity = routeBasePrices[routeKey] ? 'high' : 'medium';
 
   return {
@@ -140,7 +141,8 @@ function generateRoutePrices(origin: string, destination: string) {
 function getRandomFutureDate(): string {
   const today = new Date();
   const futureDate = new Date(today.getTime() + Math.random() * 90 * 24 * 60 * 60 * 1000); // До 90 дней вперед
-  return futureDate.toISOString().split('T')[0];
+  const dateStr = futureDate.toISOString().split('T')[0];
+  return dateStr || futureDate.toISOString().substring(0, 10);
 }
 
 /**
@@ -157,7 +159,8 @@ function getRandomAirline(): string {
     'Azur Air',
     'Smartavia'
   ];
-  return airlines[Math.floor(Math.random() * airlines.length)];
+  const airline = airlines[Math.floor(Math.random() * airlines.length)];
+  return airline || 'Аэрофлот';
 }
 
 /**
@@ -167,7 +170,7 @@ function getRandomDuration(origin: string, destination: string): number {
   // Базовая продолжительность в минутах для разных типов маршрутов
   const shortHaul = 120 + Math.random() * 60; // 2-3 часа
   const mediumHaul = 180 + Math.random() * 120; // 3-5 часов
-  const _longHaul // Currently unused = 300 + Math.random() * 180; // 5-8 часов
+  // const _longHaul = 300 + Math.random() * 180; // 5-8 часов (Currently unused)
 
   // Определяем тип маршрута по коду аэропорта
   if (origin.startsWith('MOW') || origin.startsWith('LED')) {

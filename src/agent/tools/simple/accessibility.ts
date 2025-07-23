@@ -25,7 +25,7 @@ export interface AccessibilityParams {
   
   // For reporting
   include_recommendations?: boolean;
-  output_format?: 'json' | 'html' | 'text';
+  output__format?: 'json' | 'html' | 'text';
   
   // Email-specific options
   email_clients?: Array<'gmail' | 'outlook' | 'apple_mail' | 'yahoo' | 'thunderbird'>;
@@ -87,7 +87,7 @@ export interface AccessibilityResult {
     testing_checklist: string[];
   };
   
-  performance_metrics: {
+  performance__metrics: {
     accessibility_score: number;
     contrast_ratio_avg: number;
     semantic_elements_count: number;
@@ -131,7 +131,7 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
         const errorResult: AccessibilityResult = {
           success: false,
           action_performed: params.action,
-          performance_metrics: {
+          performance__metrics: {
             accessibility_score: 0,
             contrast_ratio_avg: 0,
             semantic_elements_count: 0,
@@ -139,7 +139,7 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
             font_readability_score: 0
           },
           recommendations: ['Fix parameter validation errors'],
-          error: validationResult.error || undefined
+          ...(validationResult.error && { error: validationResult.error })
         };
 
         console.log(`❌ Accessibility failed: ${validationResult.error}`);
@@ -150,16 +150,16 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
 
       switch (params.action) {
         case 'audit':
-          result = await auditAccessibility(params);
+          _result = await auditAccessibility(params);
           break;
         case 'fix':
-          result = await fixAccessibilityIssues(params);
+          _result = await fixAccessibilityIssues(params);
           break;
         case 'validate':
-          result = await validateAccessibility(params);
+          _result = await validateAccessibility(params);
           break;
         case 'report':
-          result = await generateAccessibilityReport(params);
+          _result = await generateAccessibilityReport(params);
           break;
         default:
           throw new Error(`Unknown action: ${params.action}`);
@@ -168,13 +168,13 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
       const duration = Date.now() - startTime;
       console.log(`✅ Accessibility ${params.action} completed in ${duration}ms`);
       
-      return result;
+      return _result;
 
     } catch (error) {
       const errorResult: AccessibilityResult = {
         success: false,
         action_performed: params.action,
-        performance_metrics: {
+        performance__metrics: {
           accessibility_score: 0,
           contrast_ratio_avg: 0,
           semantic_elements_count: 0,
@@ -197,20 +197,20 @@ export async function accessibility(params: AccessibilityParams): Promise<Access
  * Валидация параметров для операций с доступностью
  */
 function validateAccessibilityParams(_params: AccessibilityParams): { valid: boolean; error?: string } {
-  switch (params.action) {
+  switch (_params.action) {
     case 'audit':
     case 'validate':
-      if (!params.html_content) {
+      if (!_params.html_content) {
         return { valid: false, error: 'HTML content required for accessibility audit/validation' };
       }
       break;
     case 'fix':
-      if (!params.target_html) {
+      if (!_params.target_html) {
         return { valid: false, error: 'Target HTML required for accessibility fixes' };
       }
       break;
     case 'report':
-      if (!params.html_content) {
+      if (!_params.html_content) {
         return { valid: false, error: 'HTML content required for accessibility report' };
       }
       break;
@@ -225,13 +225,13 @@ async function auditAccessibility(params: AccessibilityParams): Promise<Accessib
   console.log('🔍 Auditing accessibility compliance');
   
   const htmlContent = params.html_content!;
-  const wcagLevel = params.wcag_level || 'AA';
+  const _wcagLevel = params.wcag_level || 'AA';
   const checkCategories = params.check_categories || [
     'color_contrast', 'alt_text', 'semantic_markup', 'keyboard_navigation', 'screen_reader', 'font_size'
   ];
   
   // Perform comprehensive accessibility audit
-  const auditResults = await performAccessibilityAudit(htmlContent, wcagLevel, checkCategories);
+  const _auditResults = await performAccessibilityAudit(htmlContent, _wcagLevel, checkCategories);
   
   // Check email client specific issues
   const clientIssues = await checkEmailClientAccessibility(htmlContent, params.email_clients || []);
@@ -239,19 +239,19 @@ async function auditAccessibility(params: AccessibilityParams): Promise<Accessib
   // Test dark mode if requested
   if (params.test_dark_mode) {
     const darkModeIssues = await testDarkModeAccessibility(htmlContent);
-    auditResults.issues_by_category.color_contrast.push(...darkModeIssues);
+    _auditResults.issues_by_category.color_contrast?.push(...darkModeIssues);
   }
   
-  const performanceMetrics = calculateAccessibilityMetrics(auditResults);
-  const recommendations = generateAuditRecommendations(auditResults, wcagLevel);
+  const performanceMetrics = calculateAccessibilityMetrics(_auditResults);
+  const recommendations = generateAuditRecommendations(_auditResults, _wcagLevel);
   
   return {
     success: true,
     action_performed: 'audit',
     audit_results: {
       overall_score: performanceMetrics.accessibility_score,
-      wcag_compliance: calculateWCAGCompliance(auditResults, wcagLevel),
-      issues_by_category: auditResults.issues_by_category as {
+      wcag_compliance: calculateWCAGCompliance(_auditResults, _wcagLevel),
+      issues_by_category: _auditResults.issues_by_category as {
         color_contrast: AccessibilityIssue[];
         alt_text: AccessibilityIssue[];
         semantic_markup: AccessibilityIssue[];
@@ -261,7 +261,7 @@ async function auditAccessibility(params: AccessibilityParams): Promise<Accessib
       },
       client_specific_issues: clientIssues
     },
-    performance_metrics: performanceMetrics,
+    performance__metrics: performanceMetrics,
     recommendations
   };
 }
@@ -272,12 +272,12 @@ async function auditAccessibility(params: AccessibilityParams): Promise<Accessib
 async function fixAccessibilityIssues(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('🔧 Fixing accessibility issues');
   
-  const targetHtml = params.target_html!;
-  const autoFixLevel = params.auto_fix_level || 'standard';
-  const preserveDesign = params.preserve_design !== false;
+  const targetHtml = _params.target_html!;
+  const autoFixLevel = _params.auto_fix_level || 'standard';
+  const _preserveDesign = _params.preserve_design !== false;
   
   // First audit to identify issues
-  const auditResults = await performAccessibilityAudit(targetHtml, 'AA', [
+  const _auditResults = await performAccessibilityAudit(targetHtml, 'AA', [
     'color_contrast', 'alt_text', 'semantic_markup', 'font_size'
   ]);
   
@@ -285,30 +285,32 @@ async function fixAccessibilityIssues(_params: AccessibilityParams): Promise<Acc
   const appliedFixes: AccessibilityResult['applied_fixes'] = [];
   
   // Apply fixes based on level and issues found
-  for (const category of Object.keys(auditResults.issues_by_category)) {
-    const issues = auditResults.issues_by_category[category as keyof typeof auditResults.issues_by_category];
+  for (const category of Object.keys(_auditResults.issues_by_category)) {
+    const issues = _auditResults.issues_by_category[category as keyof typeof _auditResults.issues_by_category];
     
-    for (const issue of issues) {
-      if (issue.auto_fixable && shouldApplyFix(issue, autoFixLevel)) {
-        const fixResult = await applyAccessibilityFix(fixedHtml, issue, preserveDesign);
-        
-        if (fixResult.success) {
-          fixedHtml = fixResult.fixedHtml;
-          appliedFixes.push({
-            type: issue.type,
-            description: fixResult.description,
-            before: fixResult.before,
-            after: fixResult.after,
-            impact: issue.severity === 'critical' ? 'high' : issue.severity === 'high' ? 'medium' : 'low',
-            wcag_criteria: issue.wcag_criteria
-          });
-          console.log(`✅ Fixed ${issue.type}: ${issue.description}`);
+    if (issues) {
+      for (const issue of issues) {
+        if (issue.auto_fixable && shouldApplyFix(issue, autoFixLevel)) {
+          const fixResult = await applyAccessibilityFix(fixedHtml, issue, _preserveDesign);
+          
+          if (fixResult.success) {
+            fixedHtml = fixResult.fixedHtml;
+            appliedFixes.push({
+              type: issue.type,
+              description: fixResult.description,
+              before: fixResult.before,
+              after: fixResult.after,
+              impact: issue.severity === 'critical' ? 'high' : issue.severity === 'high' ? 'medium' : 'low',
+              wcag_criteria: issue.wcag_criteria
+            });
+            console.log(`✅ Fixed ${issue.type}: ${issue.description}`);
+          }
         }
       }
     }
   }
   
-  const performanceMetrics = calculateAccessibilityMetrics(auditResults);
+  const performanceMetrics = calculateAccessibilityMetrics(_auditResults);
   const recommendations = generateFixRecommendations(appliedFixes, performanceMetrics);
   
   return {
@@ -316,7 +318,7 @@ async function fixAccessibilityIssues(_params: AccessibilityParams): Promise<Acc
     action_performed: 'fix',
     fixed_html: fixedHtml,
     applied_fixes: appliedFixes,
-    performance_metrics: performanceMetrics,
+    performance__metrics: performanceMetrics,
     recommendations
   };
 }
@@ -327,33 +329,33 @@ async function fixAccessibilityIssues(_params: AccessibilityParams): Promise<Acc
 async function validateAccessibility(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('✅ Validating accessibility compliance');
   
-  const htmlContent = params.html_content!;
-  const wcagLevel = params.wcag_level || 'AA';
+  const htmlContent = _params.html_content!;
+  const _wcagLevel = _params.wcag_level || 'AA';
   
-  const auditResults = await performAccessibilityAudit(htmlContent, wcagLevel, [
+  const _auditResults = await performAccessibilityAudit(htmlContent, _wcagLevel, [
     'color_contrast', 'alt_text', 'semantic_markup', 'keyboard_navigation', 'screen_reader', 'font_size'
   ]);
   
-  const totalIssues = Object.values(auditResults.issues_by_category).flat().length;
-  const criticalIssues = Object.values(auditResults.issues_by_category).flat()
+  const _totalIssues = Object.values(_auditResults.issues_by_category).flat().length;
+  const criticalIssues = Object.values(_auditResults.issues_by_category).flat()
     .filter(issue => issue.severity === 'critical').length;
   
   const validationSummary = {
-    total_issues: totalIssues,
+    total_issues: _totalIssues,
     critical_issues: criticalIssues,
     resolved_issues: 0, // Would compare with previous audit
-    remaining_issues: totalIssues,
+    remaining_issues: _totalIssues,
     compliance_improved: criticalIssues === 0
   };
   
-  const performanceMetrics = calculateAccessibilityMetrics(auditResults);
+  const performanceMetrics = calculateAccessibilityMetrics(_auditResults);
   const recommendations = generateValidationRecommendations(validationSummary, performanceMetrics);
   
   return {
     success: true,
     action_performed: 'validate',
     validation_summary: validationSummary,
-    performance_metrics: performanceMetrics,
+    performance__metrics: performanceMetrics,
     recommendations
   };
 }
@@ -364,23 +366,23 @@ async function validateAccessibility(_params: AccessibilityParams): Promise<Acce
 async function generateAccessibilityReport(_params: AccessibilityParams): Promise<AccessibilityResult> {
   console.log('📊 Generating accessibility report');
   
-  const htmlContent = params.html_content!;
-  const includeRecommendations = params.include_recommendations !== false;
-  const outputFormat = params.output_format || 'json';
+  const htmlContent = _params.html_content!;
+  const includeRecommendations = _params.include_recommendations !== false;
+  const outputFormat = _params.output__format || 'json';
   
-  const auditResults = await performAccessibilityAudit(htmlContent, 'AA', [
+  const _auditResults = await performAccessibilityAudit(htmlContent, 'AA', [
     'color_contrast', 'alt_text', 'semantic_markup', 'keyboard_navigation', 'screen_reader', 'font_size'
   ]);
   
-  const detailedReport = await createDetailedReport(auditResults, includeRecommendations, outputFormat);
-  const performanceMetrics = calculateAccessibilityMetrics(auditResults);
-  const recommendations = generateReportRecommendations(auditResults, performanceMetrics);
+  const detailedReport = await createDetailedReport(_auditResults, includeRecommendations, outputFormat);
+  const performanceMetrics = calculateAccessibilityMetrics(_auditResults);
+  const recommendations = generateReportRecommendations(_auditResults, performanceMetrics);
   
   return {
     success: true,
     action_performed: 'report',
     detailed_report: detailedReport,
-    performance_metrics: performanceMetrics,
+    performance__metrics: performanceMetrics,
     recommendations
   };
 }
@@ -389,7 +391,7 @@ async function generateAccessibilityReport(_params: AccessibilityParams): Promis
 
 async function performAccessibilityAudit(
   html: string, 
-  wcagLevel: string, 
+  _wcagLevel: string, 
   categories: string[]
 ): Promise<{ issues_by_category: Record<string, AccessibilityIssue[]> }> {
   
@@ -509,12 +511,17 @@ async function checkSemanticMarkup(html: string): Promise<AccessibilityIssue[]> 
   let match;
   
   while ((match = headingRegex.exec(html)) !== null) {
-    headings.push(parseInt((match && match[1] ? match[1] : "")));
+    if (match[1]) {
+      const level = parseInt(match[1]);
+      if (!isNaN(level)) {
+        headings.push(level);
+      }
+    }
   }
   
   // Check heading hierarchy
   for (let i = 1; i < headings.length; i++) {
-    if (headings[i] > headings[i-1] + 1) {
+    if ((headings[i] ?? 0) > (headings[i-1] ?? 0) + 1) {
       issues.push({
         type: 'heading_hierarchy',
         severity: 'medium',
@@ -621,7 +628,7 @@ async function checkFontSize(html: string): Promise<AccessibilityIssue[]> {
   return issues;
 }
 
-function calculateContrastRatio(color1: string, color2: string): number {
+function calculateContrastRatio(_color1: string, _color2: string): number {
   // Simplified contrast calculation - would use proper algorithm in production
   return 4.5 + Math.random() * 3; // Simulate contrast ratio between 4.5-7.5
 }
@@ -672,8 +679,8 @@ async function testDarkModeAccessibility(html: string): Promise<AccessibilityIss
   return issues;
 }
 
-function calculateWCAGCompliance(auditResults: any, wcagLevel: string): any {
-  const allIssues = Object.values(auditResults.issues_by_category).flat();
+function calculateWCAGCompliance(_auditResults: any, _wcagLevel: string): any {
+  const allIssues = Object.values(_auditResults.issues_by_category).flat();
   const criticalIssues = allIssues.filter((issue: any) => issue.severity === 'critical');
   const highIssues = allIssues.filter((issue: any) => issue.severity === 'high');
   
@@ -684,9 +691,9 @@ function calculateWCAGCompliance(auditResults: any, wcagLevel: string): any {
   };
 }
 
-function calculateAccessibilityMetrics(auditResults: any): any {
-  const allIssues = Object.values(auditResults.issues_by_category).flat();
-  const totalIssues = allIssues.length;
+function calculateAccessibilityMetrics(_auditResults: any): any {
+  const allIssues = Object.values(_auditResults.issues_by_category).flat();
+  // const _totalIssues = allIssues.length; // Currently unused
   
   // Calculate score based on issues (simplified)
   let score = 100;
@@ -721,7 +728,7 @@ function shouldApplyFix(issue: AccessibilityIssue, level: string): boolean {
   }
 }
 
-async function applyAccessibilityFix(html: string, issue: AccessibilityIssue, preserveDesign: boolean): Promise<any> {
+async function applyAccessibilityFix(html: string, issue: AccessibilityIssue, _preserveDesign: boolean): Promise<any> {
   // Simplified fix application
   let fixedHtml = html;
   let description = '';
@@ -756,9 +763,9 @@ async function applyAccessibilityFix(html: string, issue: AccessibilityIssue, pr
   };
 }
 
-function generateAuditRecommendations(auditResults: any, wcagLevel: string): string[] {
+function generateAuditRecommendations(_auditResults: any, _wcagLevel: string): string[] {
   const recommendations: string[] = [];
-  const allIssues = Object.values(auditResults.issues_by_category).flat();
+  const allIssues = Object.values(_auditResults.issues_by_category).flat();
   
   if (allIssues.length === 0) {
     recommendations.push('Excellent! No accessibility issues found');
@@ -774,14 +781,14 @@ function generateAuditRecommendations(auditResults: any, wcagLevel: string): str
   return recommendations;
 }
 
-function generateFixRecommendations(fixes: any[], metrics: any): string[] {
+function generateFixRecommendations(fixes: any[], _metrics: any): string[] {
   const recommendations: string[] = [];
   
   if (fixes.length > 0) {
     recommendations.push(`Applied ${fixes.length} accessibility fixes`);
   }
   
-  if (metrics.accessibility_score < 80) {
+  if (_metrics.accessibility_score < 80) {
     recommendations.push('Additional manual review recommended for full compliance');
   }
   
@@ -790,7 +797,7 @@ function generateFixRecommendations(fixes: any[], metrics: any): string[] {
   return recommendations;
 }
 
-function generateValidationRecommendations(summary: any, metrics: any): string[] {
+function generateValidationRecommendations(summary: any, _metrics: any): string[] {
   const recommendations: string[] = [];
   
   if (summary.critical_issues === 0) {
@@ -799,14 +806,14 @@ function generateValidationRecommendations(summary: any, metrics: any): string[]
     recommendations.push(`${summary.critical_issues} critical issues need immediate attention`);
   }
   
-  if (metrics.accessibility_score >= 90) {
+  if (_metrics.accessibility_score >= 90) {
     recommendations.push('Excellent accessibility score achieved');
   }
   
   return recommendations;
 }
 
-function generateReportRecommendations(auditResults: any, metrics: any): string[] {
+function generateReportRecommendations(_auditResults: any, _metrics: any): string[] {
   return [
     'Review detailed accessibility report',
     'Prioritize critical and high severity issues',
@@ -815,8 +822,8 @@ function generateReportRecommendations(auditResults: any, metrics: any): string[
   ];
 }
 
-async function createDetailedReport(auditResults: any, includeRecommendations: boolean, format: string): Promise<any> {
-  const allIssues = Object.values(auditResults.issues_by_category).flat();
+async function createDetailedReport(_auditResults: any, includeRecommendations: boolean, _format: string): Promise<any> {
+  const allIssues = Object.values(_auditResults.issues_by_category).flat();
   
   return {
     executive_summary: `Found ${allIssues.length} accessibility issues across multiple categories`,

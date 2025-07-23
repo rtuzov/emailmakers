@@ -114,18 +114,18 @@ export class MjmlCompilationService {
       if (result.errors && result.errors.length > 0) {
         console.warn('⚠️ MJML Compilation warnings:', result.errors);
         // Only fail if there are actual errors, not warnings
-        const actualErrors = result.errors.filter(err => 
-          (err as any).level === 'error' || err.formattedMessage?.includes('error')
+        const actualErrors = result.errors.filter((err: any) => 
+          err.level === 'error' || err.formattedMessage?.includes('error')
         );
         if (actualErrors.length > 0) {
-          throw new Error(`MJML validation errors: ${actualErrors.map(e => (e || {}).message).join(', ')}`);
+          throw new Error(`MJML validation errors: ${actualErrors.map((e: any) => e?.message).join(', ')}`);
         }
       }
       
       console.log('✅ MJML Compilation: Successfully compiled to HTML');
       return {
         html: result.html,
-        errors: result.errors?.map(err => err.message) || []
+        errors: result.errors?.map((err: any) => err.message) || []
       };
     } catch (error) {
       console.error('❌ MJML Compilation failed:', error);
@@ -137,16 +137,6 @@ export class MjmlCompilationService {
   /**
    * Escape XML special characters to prevent MJML parsing errors
    */
-  private escapeXml(text: string): string {
-    if (!text || typeof text !== 'string') return '';
-    
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
-  }
 
   /**
    * Копирует изображения из MJML в папку письма с поддержкой внешних изображений
@@ -163,12 +153,12 @@ export class MjmlCompilationService {
         try {
           let actualImagePath = imagePath;
           let fileName = '';
-          let _isExternal // Currently unused = false;
+          // let _isExternal = false; // Currently unused
           
           // 🌐 CHECK FOR EXTERNAL URLS FIRST
           if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
             console.log(`🌐 External image detected: ${imagePath}`);
-            isExternal = true;
+            // _isExternal = true; // Currently unused
             fileName = imagePath.split('/').pop() || `external_${Date.now()}.jpg`;
             // For external images, we keep the URL as-is (no copying needed)
             copiedImages.push(imagePath);
@@ -180,9 +170,9 @@ export class MjmlCompilationService {
           if (imagePath.includes('{{FIGMA_ASSET_URL:')) {
             const tokenMatch = imagePath.match(/\{\{FIGMA_ASSET_URL:([^}]+)\}\}/);
             if (tokenMatch) {
-              fileName = tokenMatch[1];
+              fileName = tokenMatch[1] || `unknown_asset_${Date.now()}`;
               // Ищем файл в папке Figma assets
-              actualImagePath = await this.resolveFigmaAssetPath(fileName);
+              actualImagePath = await this.resolveFigmaAssetPath(fileName) || '';
               if (!actualImagePath) {
                 console.warn(`⚠️ Could not resolve Figma asset: ${fileName}`);
                 continue;
@@ -190,7 +180,7 @@ export class MjmlCompilationService {
             }
           } else {
             // Получаем имя файла из обычного пути
-            fileName = imagePath.split('/').pop() || '';
+            fileName = imagePath.split('/').pop() || `unknown_file_${Date.now()}`;
           }
           
           if (!fileName) continue;
@@ -348,7 +338,7 @@ export class MjmlCompilationService {
   /**
    * Обновляет пути изображений в HTML на локальные ассеты с поддержкой внешних изображений
    */
-  private updateImagePathsInHtml(html: string, copiedImages: string[]): string {
+  private updateImagePathsInHtml(html: string, _copiedImages: string[]): string {
     let updatedHtml = html;
     
     // Извлекаем пути изображений из HTML (они могут отличаться от MJML после компиляции)
@@ -359,26 +349,28 @@ export class MjmlCompilationService {
       const originalPath = match[1];
       
       // 🌐 KEEP EXTERNAL URLS AS-IS - they should work directly in email clients
-      if ((originalPath || {}).startsWith('http://') || (originalPath || {}).startsWith('https://')) {
+      if (typeof originalPath === 'string' && (originalPath.startsWith('http://') || originalPath.startsWith('https://'))) {
         console.log(`🌐 External image kept in HTML: ${originalPath}`);
         continue;
       }
       
       // Пропускаем data: URLs
-      if ((originalPath || {}).startsWith('data:')) {
+      if (typeof originalPath === 'string' && originalPath.startsWith('data:')) {
         continue;
       }
       
       // 📁 HANDLE LOCAL IMAGES - update paths to local assets
       // Получаем имя файла из оригинального пути
-      const fileName = (originalPath || {}).split('/').pop();
+      const fileName = typeof originalPath === 'string' ? originalPath.split('/').pop() : undefined;
       if (!fileName) continue;
       
       // Создаем новый локальный путь относительно HTML файла
       const newPath = `./assets/${fileName}`;
       
       // Заменяем путь в HTML
-      updatedHtml = updatedHtml.replace(originalPath, newPath);
+      if (typeof originalPath === 'string' && typeof newPath === 'string') {
+        updatedHtml = updatedHtml.replace(originalPath, newPath);
+      }
       
       console.log(`🔄 Updated local image path: ${originalPath} -> ${newPath}`);
     }

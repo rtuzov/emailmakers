@@ -1,0 +1,29 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Direct flights from major cities, local transport via buses and shuttles.",
+    "pricing_trends": "Moderate pricing with increases during holiday seasons. Average cost for a week is around $800 including flights, accommodation, and activities.",
+    "seasonal_patterns": "In winter, tourists tend to flock to cultural events and festival celebrations.",
+    "booking_windows": "Best to book 3-6 months in advance for winter trips to secure lower prices.",
+    "destination_insights": {
+      "route_analysis": "Direct flights from major cities, local transport via buses and shuttles.",
+      "seasonal_patterns": "In winter, tourists tend to flock to cultural events and festival celebrations.",
+      "climate": "Temperatures range from 10°C to 25°C, with dry and sunny days ideal for exploration.",
+      "culture": "Rich Mayan heritage, vibrant festivals such as Día de los Muertos. Attractions include ancient ruins and colonial towns.",
+      "attractions": "Tikal National Park, Lake Atitlán, Antigua, and the volcanoes."
+    },
+    "market_insights": {
+      "pricing_trends": "Moderate pricing with increases during holiday seasons. Average cost for a week is around $800 including flights, accommodation, and activities.",
+      "booking_windows": "Best to book 3-6 months in advance for winter trips to secure lower prices.",
+      "demand": "High demand is expected, particularly for eco-tourism and cultural experiences.",
+      "competition": "Competitors include Costa Rica, Mexico, and Belize."
+    },
+    "trend_insights": {
+      "market_trends": "Growing interest in eco-friendly travels and cultural immersion experiences.",
+      "consumer_behavior": "Travelers are increasingly seeking personalized experiences and unique local activities.",
+      "competitive_landscape": "Strong competition from neighboring countries but a unique offering due to diverse attractions in Guatemala.",
+      "seasonal_factors": "Winter attracts tourists looking for sun, cultural activities, and holiday experiences."
+    }
+  },
+  "saved_at": "2025-07-22T13:37:52.705Z"
+}

@@ -383,7 +383,7 @@ export class QualityAssuranceService {
     recommendations: string[];
     criticalIssues: string[];
   }> {
-    const _startTime // Currently unused = Date.now();
+    // const _startTime = Date.now(); // Currently unused
     
     try {
       // Run all enhanced validations in parallel

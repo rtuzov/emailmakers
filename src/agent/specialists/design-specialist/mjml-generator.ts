@@ -10,6 +10,7 @@ import path from 'path';
 import { buildDesignContext } from './design-context';
 import { MjmlTemplate } from './types';
 import { OpenAI } from 'openai';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 /**
  * OpenAI Client for MJML Generation
@@ -65,6 +66,23 @@ const MJML_GENERATION_INSTRUCTIONS = `Ты эксперт по созданию 
    - Оптимизируй для различных email клиентов
    - Учитывай ограничения Outlook и Gmail
 
+🚨 CSS ТРЕБОВАНИЯ:
+1. ПРАВИЛЬНЫЕ CSS СВОЙСТВА:
+   ✅ "list-style-type: none" (НЕ "list-style-type: -")
+   ✅ "font-weight: 500" (НЕ "font-weight: 500px")
+   ✅ "margin: 0 auto" (НЕ "margin: auto auto")
+   ✅ "padding: 10px 20px" (НЕ "padding: 10 20")
+
+2. ОБЯЗАТЕЛЬНЫЕ FALLBACK ШРИФТЫ:
+   ✅ "font-family: 'Inter', Arial, sans-serif"
+   ✅ "font-family: Georgia, 'Times New Roman', serif"
+   ❌ "font-family: 'Custom Font'" (без fallback)
+
+3. ВАЛИДНЫЕ CSS ЗНАЧЕНИЯ:
+   - Всегда указывай единицы измерения (px, em, rem, %)
+   - Используй валидные значения цветов (#hex, rgb(), названия)
+   - Проверяй правописание CSS свойств
+
 ТРЕБОВАНИЯ К MJML:
 - Используй ТОЛЬКО валидные MJML теги
 - НЕ вкладывай <mj-section> внутрь <mj-section>
@@ -73,8 +91,43 @@ const MJML_GENERATION_INSTRUCTIONS = `Ты эксперт по созданию 
 - Используй все предоставленные изображения
 - Создавай современный и читаемый дизайн
 - Учитывай email клиенты (Outlook, Gmail, Apple Mail)
+- Используй ПРАВИЛЬНЫЕ CSS свойства
 
-ВАЖНО: Анализируй каждый случай индивидуально и создавай уникальный дизайн!`;
+ВАЖНО: Анализируй каждый случай индивидуально и создавай уникальный дизайн с ВАЛИДНЫМ CSS!`;
+
+/**
+ * Validate and fix common MJML errors
+ */
+function validateAndFixMjml(mjmlContent: string): string {
+  // Remove invalid MJML elements
+  mjmlContent = mjmlContent.replace(/<mj-list[^>]*>/g, '');
+  mjmlContent = mjmlContent.replace(/<\/mj-list>/g, '');
+  mjmlContent = mjmlContent.replace(/<mj-list-item[^>]*>/g, '');
+  mjmlContent = mjmlContent.replace(/<\/mj-list-item>/g, '');
+  
+  // Replace invalid class attributes with css-class
+  mjmlContent = mjmlContent.replace(/\s+class="([^"]*)"/g, ' css-class="$1"');
+  mjmlContent = mjmlContent.replace(/\s+class='([^']*)'/g, ' css-class=\'$1\'');
+  
+  // Fix common MJML element issues
+  mjmlContent = mjmlContent.replace(/<mj-list[^>]*>[\s\S]*?<\/mj-list>/g, (match) => {
+    // Extract list items and convert to mj-text with HTML list
+    const listItems = match.match(/<mj-list-item[^>]*>([\s\S]*?)<\/mj-list-item>/g);
+    if (listItems) {
+      const htmlList = '<ul>' + 
+        listItems.map(item => {
+          const content = item.replace(/<\/?mj-list-item[^>]*>/g, '');
+          return `<li>${content}</li>`;
+        }).join('') + 
+        '</ul>';
+      return `<mj-text>${htmlList}</mj-text>`;
+    }
+    return '';
+  });
+  
+  console.log('✅ MJML validation and fixing completed');
+  return mjmlContent;
+}
 
 /**
  * Compile MJML to HTML and save to campaign
@@ -138,6 +191,7 @@ async function generateDynamicMjmlTemplate(params: {
     bodyFont: string;
     typography: any;
   };
+  trace_id?: string | null;
 }): Promise<any> {
   const { contentContext, designBrief: _designBrief, assetManifest, templateDesign, colors, layout } = params;
   
@@ -271,18 +325,23 @@ async function generateDynamicMjmlTemplate(params: {
   
   // 🌐 PROCESS IMAGES WITH EXTERNAL URL SUPPORT
   const processedImages = images.map((image: any, index: number) => {
-    const imageUrl = image.isExternal ? image.url : image.path;
-    const altText = image.alt_text || `Image ${index + 1}`;
+    // ✅ ИСПРАВЛЕНО: Используем правильные поля из манифеста
+    const isExternal = image.purpose === 'external_image' || image.isExternal || (image.path && image.path.startsWith('http'));
+    const imageUrl = image.path || image.file_path || image.url;
+    const altText = image.description || image.alt_text || `Image ${index + 1}`;
     
-    console.log(`📸 Processing image ${index + 1}: ${image.isExternal ? 'EXTERNAL' : 'LOCAL'} - ${imageUrl}`);
+    console.log(`📸 Processing image ${index + 1}: ${isExternal ? 'EXTERNAL' : 'LOCAL'} - ${imageUrl}`);
     
     return {
       url: imageUrl,
       alt_text: altText,
-      isExternal: image.isExternal || false,
-      usage: image.usage || 'general'
+      isExternal: isExternal,
+      usage: image.usage || 'general',
+      description: image.description || altText
     };
   });
+  
+  console.log(`🖼️  Found ${processedImages.length} images for MJML template`);
   
   // const _heroImage = processedImages[0]; // Currently unused
   // const _galleryImages = processedImages.slice(1, 4); // Currently unused
@@ -320,8 +379,10 @@ async function generateDynamicMjmlTemplate(params: {
   if (templateDesign) {
     console.log('🎯 Using AI Template Design for enhanced MJML generation');
     
+    // Set default template_name if not provided
     if (!templateDesign.template_name) {
-      throw new Error('Template design must have a template_name');
+      templateDesign.template_name = `template_${Date.now()}`;
+      console.log('⚠️ Template name missing, using default:', templateDesign.template_name);
     }
     
     if (!templateDesign.layout || !templateDesign.layout.type) {
@@ -345,8 +406,10 @@ async function generateDynamicMjmlTemplate(params: {
 
 СЕКЦИИ:
 ${templateDesign.sections.map((section: any, index: number) => 
-  `${index + 1}. ${section.type}: ${section.content ? Object.keys(section.content).join(', ') : 'базовый контент'}`
+  `${index + 1}. ${section.name || section.type}: базовый контент`
 ).join('\n')}
+
+📸 ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (если >2 изображений):
 
 КОМПОНЕНТЫ:
 ${templateDesign.components.map((comp: any) => 
@@ -428,20 +491,39 @@ ${structuredContent.benefits.map((benefit: string, index: number) => `${index + 
 
 🔗 ПРИЗЫВЫ К ДЕЙСТВИЮ:
 - Основной: "${structuredContent.call_to_action.primary?.text || cta?.primary?.text || 'Узнать больше'}"
+  URL: "${structuredContent.call_to_action.primary?.url || cta?.primary?.url || '#'}"
 - Дополнительный: "${structuredContent.call_to_action.secondary?.text || cta?.secondary?.text || ''}"
+  URL: "${structuredContent.call_to_action.secondary?.url || cta?.secondary?.url || '#'}"
 - Срочный: "${structuredContent.call_to_action.urgency_cta?.text || cta?.urgency_cta?.text || ''}"
+  URL: "${structuredContent.call_to_action.urgency_cta?.url || cta?.urgency_cta?.url || '#'}"
 
-💰 ЦЕНОВАЯ ИНФОРМАЦИЯ:
-- Цена: ${pricing?.best_price || pricing?.cheapest_on_optimal || pricing?.comprehensive_pricing?.best_price_overall || 'Не указана'} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
-- Средняя цена: ${pricing?.optimal_dates_pricing?.average_on_optimal || ''} ${pricing?.currency || ''}
+💰 ЦЕНОВАЯ ИНФОРМАЦИЯ (используй для конкретных преимуществ):
+- Текущая цена: ${pricing?.best_price || pricing?.cheapest_on_optimal || pricing?.comprehensive_pricing?.best_price_overall || 'Не указана'} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
+- Средняя цена: ${pricing?.optimal_dates_pricing?.average_on_optimal || pricing?.comprehensive_pricing?.average_price_overall || ''} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
+- Экономия: Рассчитай на основе разности средней и текущей цены
 - Лучшая дата: ${pricing?.price_insights?.cheapest_optimal_date || ''}
+- Всего предложений: ${pricing?.comprehensive_pricing?.total_offers_found || ''}
+- Диапазон цен: ${pricing?.comprehensive_pricing?.best_price_overall || ''} - ${pricing?.comprehensive_pricing?.worst_price_overall || ''} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
 
 🏢 БРЕНД: ${colors.primary ? 'Kupibilet' : 'Не указан'}
 
-ДОСТУПНЫЕ ИЗОБРАЖЕНИЯ (${processedImages.length} изображений):
+ДОСТУПНЫЕ ИЗОБРАЖЕНИЯ (${processedImages.length} изображений) - ИСПОЛЬЗУЙ ВСЕ:
 ${processedImages.map((img: any, index: number) => 
-  `${index + 1}. ${img.url} - ${img.alt_text}`
+  `${index + 1}. ${img.url} - ${img.alt_text} (${img.description})`
 ).join('\n')}
+
+🖼️ ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (НОВОЕ УЛУЧШЕНИЕ):
+- Создай отдельную секцию "gallery" после hero
+- Используй <mj-group> для создания сетки изображений (2-3 колонки)
+- Каждое изображение в <mj-column> с подписью
+- Добавь hover-эффекты через CSS
+- Адаптивная сетка: мобайл=1 колонка, планшет=2, десктоп=3
+
+ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ ИЗОБРАЖЕНИЙ:
+- Изображение #1: Hero изображение (полная ширина)
+- Изображения #2-${processedImages.length}: Галерея изображений (сетка)
+- Все изображения должны быть использованы в галерее
+- Добавляй alt-текст и подписи к каждому изображению
 
 БАЗОВЫЕ ЦВЕТА БРЕНДА (можешь адаптировать):
 - Основной: ${colors.primary}
@@ -455,11 +537,42 @@ ${processedImages.map((img: any, index: number) =>
 
 🎨 ЗАДАЧА: СОЗДАЙ СТРУКТУРИРОВАННЫЙ EMAIL С ПОЛНЫМ ИСПОЛЬЗОВАНИЕМ КОНТЕНТА
 
-1. СОЗДАЙ СТРУКТУРУ НА ОСНОВЕ ДАННЫХ:
+КРИТИЧЕСКИ ВАЖНО - MJML ПРАВИЛА ВАЛИДАЦИИ:
+❌ ЗАПРЕЩЕННЫЕ ЭЛЕМЕНТЫ (НЕ ИСПОЛЬЗУЙ):
+- <mj-list> и <mj-list-item> - не существуют в MJML
+- Атрибут class="" - недопустим в MJML элементах
+
+✅ РАЗРЕШЕННЫЕ ЭЛЕМЕНТЫ MJML:
+- <mj-section>, <mj-column>, <mj-text>, <mj-button>
+- <mj-image>, <mj-divider>, <mj-spacer>
+- <mj-group>, <mj-wrapper>, <mj-hero>
+
+✅ ДЛЯ СПИСКОВ ИСПОЛЬЗУЙ:
+- <mj-text> с HTML списками: <ul><li>элемент</li></ul>
+- Или отдельные <mj-text> блоки с иконками/номерами
+
+✅ ДЛЯ СТИЛИЗАЦИИ ИСПОЛЬЗУЙ:
+- css-class вместо class
+- Inline стили: background-color, color, font-size, padding
+- MJML атрибуты: width, padding, align, background-color
+
+🚀 АВТОМАТИЧЕСКИЕ УЛУЧШЕНИЯ В MJML (ОБЯЗАТЕЛЬНО):
+
+1. 📸 СТРУКТУРА С ГАЛЕРЕЕЙ:
    - Header с заголовком и превью
-   - Hero секция с открытием
-   - Content секция с основной частью
-   - Benefits секция с ВИЗУАЛЬНЫМ списком преимуществ (используй <mj-list> или bullet points)
+   - Hero секция с открытием (изображение #1)
+   - Gallery секция с сеткой остальных изображений
+   - Benefits секция в компактном формате
+   - Multiple CTA секции
+   - Social proof с visual indicators
+   - Footer оптимизированный
+
+2. 📐 ОПТИМИЗАЦИЯ РАЗМЕРА:
+   - Объединяй похожие секции в одну
+   - Используй <mj-group> для компактности
+   - Минимизируй лишние <mj-spacer>
+   - Цель: генерировать <600 строк финального HTML
+   - Benefits секция с HTML списком в <mj-text>
    - Social Proof секция с выделенной цитатой
    - Urgency секция с элементами срочности
    - Emotional hooks как отдельные выделенные блоки
@@ -467,7 +580,7 @@ ${processedImages.map((img: any, index: number) =>
    - Footer с compliance информацией
 
 2. ОБЯЗАТЕЛЬНО ИСПОЛЬЗУЙ ВСЕ СТРУКТУРИРОВАННЫЕ ДАННЫЕ:
-   ✅ Создай отдельную секцию для каждого преимущества с иконками
+   ✅ Создай отдельную секцию для каждого преимущества с HTML списком
    ✅ Выдели социальное доказательство в отдельный блок с кавычками
    ✅ Добавь элементы срочности как яркие баннеры
    ✅ Используй эмоциональные хуки как highlighted секции
@@ -481,20 +594,28 @@ ${processedImages.map((img: any, index: number) =>
    - Для акций: яркие контрастные цвета
    - Используй градиенты для emotional hooks
 
-4. СТРУКТУРА MJML (ОБЯЗАТЕЛЬНО):
+4. СТРУКТУРА MJML (СТРОГО ВАЛИДНАЯ):
    - Используй <mjml><mj-head> и <mj-body>
    - Создай отдельные <mj-section> для каждого блока
    - Hero секция с opening текстом
+   - Gallery секция с grid изображений (если есть >2 изображений)
    - Main content секция с основной частью  
-   - Benefits секция с визуальным списком
+   - Benefits секция с HTML списком в <mj-text>
    - Social proof секция с выделенной цитатой
    - Urgency секция с элементами срочности
+
+5. 📸 ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (если >2 изображений):
+   - Создай секцию после hero с заголовком "Галерея направления"
+   - Используй <mj-group> с <mj-column> для каждого изображения
+   - Ширина колонок: 33% для 3 изображений, 50% для 2 изображений
+   - Добавь подписи под каждым изображением через <mj-text>
    - Emotional hooks как highlighted блоки
    - Multiple CTA секции (primary, secondary, urgency)
    - Footer с compliance информацией
 
 5. СОЗДАЙ ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ:
-   - CTA кнопки: стиль зависит от срочности
+   - CTA кнопки: используй РЕАЛЬНЫЕ URLs из section "ПРИЗЫВЫ К ДЕЙСТВИЮ" (НЕ href="#")
+   - Кнопки: используй только MJML атрибуты (НЕ class)
    - Элементы доверия: под специфику бренда
    - Социальные доказательства: под контекст
 
@@ -523,7 +644,10 @@ ${processedImages.map((img: any, index: number) =>
 4. КАЖДАЯ <mj-section> должна содержать <mj-column>
 5. Используй ВСЕ ${processedImages.length} изображений через <mj-image>
 6. Включи ВЕСЬ текст из body (не сокращай!)
-7. Создай кнопку CTA через <mj-button>
+7. Создай кнопки CTA через <mj-button> с РЕАЛЬНЫМИ URLs:
+   - Основная кнопка: используй URL из "Основной" CTA
+   - Дополнительная кнопка: используй URL из "Дополнительный" CTA  
+   - Срочная кнопка: используй URL из "Срочный" CTA
 8. Добавь футер с контактной информацией
 
 ВАЖНО: 
@@ -535,6 +659,7 @@ ${processedImages.map((img: any, index: number) =>
 - Каждая секция должна иметь <mj-column>
 - Включи ВСЕ изображения
 - Не сокращай текст!
+- ОБЯЗАТЕЛЬНО используй реальные URLs в href атрибутах кнопок
 
 ВЕРНИ ТОЛЬКО MJML КОД БЕЗ ОБЪЯСНЕНИЙ И БЕЗ MARKDOWN ФОРМАТИРОВАНИЯ:
 `;
@@ -551,6 +676,10 @@ ${processedImages.map((img: any, index: number) =>
     console.log(`🔄 AI generation attempt ${attempts}/${maxAttempts}`);
     
     try {
+      // 🔍 DEBUG: Log template prompt length and structure
+      console.log(`🔍 Template prompt length: ${templatePrompt.length} characters`);
+      console.log(`🔍 Template prompt preview: ${templatePrompt.substring(0, 200)}...`);
+      
       // Call OpenAI API directly - integrated with main workflow
       const response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
@@ -568,45 +697,59 @@ ${processedImages.map((img: any, index: number) =>
         max_tokens: 4000
       });
       
-      // Extract and clean up the response
-      mjmlCode = response.choices[0]?.message?.content?.trim() || '';
+      // ✅ ИСПРАВЛЕНО: Правильное получение MJML контента от OpenAI API
+      let mjmlContent = response.choices?.[0]?.message?.content;
       
-      // Remove markdown code blocks if present
-      if (mjmlCode.startsWith('```mjml')) {
-        mjmlCode = mjmlCode.replace(/^```mjml\s*/, '').replace(/\s*```$/, '');
-      } else if (mjmlCode.startsWith('```xml')) {
-        mjmlCode = mjmlCode.replace(/^```xml\s*/, '').replace(/\s*```$/, '');
-      } else if (mjmlCode.startsWith('```')) {
-        mjmlCode = mjmlCode.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      if (!mjmlContent || typeof mjmlContent !== 'string') {
+        throw new Error(`AI failed to generate MJML template. Response: ${JSON.stringify(response.choices?.[0]?.message || 'No message')}`);
       }
+      
+      logToFile('info', `Raw AI MJML generated: ${mjmlContent.length} characters`, 'DesignSpecialist-MJML', params.trace_id || undefined);
+      
+      // ✅ ДОБАВЛЕНО: Валидация и исправление MJML
+      mjmlContent = validateAndFixMjml(mjmlContent);
+      
+      // Извлекаем только MJML код если он в блоке кода
+      const mjmlMatch = mjmlContent.match(/```mjml\n([\s\S]*?)\n```/) || 
+                       mjmlContent.match(/```\n([\s\S]*?)\n```/) ||
+                       mjmlContent.match(/<mjml[^>]*>[\s\S]*<\/mjml>/);
+      
+      if (mjmlMatch) {
+        mjmlContent = mjmlMatch[1] || mjmlMatch[0];
+        mjmlContent = mjmlContent.trim();
+      }
+      
+      logToFile('info', `Processed MJML: ${mjmlContent.length} characters`, 'DesignSpecialist-MJML', params.trace_id || undefined);
       
       // Validate MJML structure
       const validationErrors = [];
       
-      if (!mjmlCode.includes('<mjml>') || !mjmlCode.includes('</mjml>')) {
+      if (!mjmlContent.includes('<mjml>') || !mjmlContent.includes('</mjml>')) {
         validationErrors.push('Missing required <mjml> tags');
       }
       
-      if (!mjmlCode.includes('<mj-head>') || !mjmlCode.includes('<mj-body>')) {
+      if (!mjmlContent.includes('<mj-head>') || !mjmlContent.includes('<mj-body>')) {
         validationErrors.push('Missing required <mj-head> or <mj-body> sections');
       }
       
-      if (!mjmlCode.includes('<mj-section>')) {
+      if (!mjmlContent.includes('<mj-section>')) {
         validationErrors.push('Missing required <mj-section> tags');
       }
       
-      if (!mjmlCode.includes('<mj-column>')) {
+      if (!mjmlContent.includes('<mj-column>')) {
         validationErrors.push('Missing required <mj-column> tags');
       }
       
       // Check for basic content (handle subject as string or object)
       const subjectText = typeof subject === 'string' ? subject : ((subject as any)?.text || (subject as any)?.value || String(subject || ''));
-      if (subjectText && !mjmlCode.includes(subjectText.substring(0, 10))) {
+      if (subjectText && !mjmlContent.includes(subjectText.substring(0, 10))) {
         validationErrors.push('Subject not found in generated MJML');
       }
       
       if (validationErrors.length === 0) {
         console.log('✅ MJML template generated successfully using AI');
+        mjmlCode = mjmlContent; // ✅ ДОБАВЛЕНО: присваиваем валидный контент
+        logToFile('info', `MJML template generated successfully: ${mjmlCode.length} characters`, 'DesignSpecialist-MJML', params.trace_id || undefined);
         break;
       } else {
         console.log(`❌ Validation failed (attempt ${attempts}): ${validationErrors.join(', ')}`);
@@ -813,7 +956,8 @@ export const generateMjmlTemplate = tool({
         templateDesign,
         assetManifest,
         colors,
-        layout
+        layout,
+        trace_id: params.trace_id || null
       });
 
       // Save MJML template to campaign
@@ -843,11 +987,19 @@ export const generateMjmlTemplate = tool({
       console.log(`🎨 HTML size: ${mjmlTemplate.file_size} bytes`);
       console.log(`📱 Email client optimized: ${mjmlTemplate.technical_compliance.email_client_optimized ? 'Yes' : 'No'}`);
 
+      // ✅ LOG TO CAMPAIGN
+      logToFile('info', `MJML Template generated successfully: ${mjmlTemplate.source.length} characters, HTML: ${mjmlTemplate.file_size} bytes`, 'DesignSpecialist-MJML', params.trace_id || undefined);
+      logToFile('info', `Email client optimized: ${mjmlTemplate.technical_compliance.email_client_optimized ? 'Yes' : 'No'}`, 'DesignSpecialist-MJML', params.trace_id || undefined);
+
       return `MJML Template generated successfully! Template size: ${mjmlTemplate.source.length} characters. HTML file size: ${mjmlTemplate.file_size} bytes. Email client optimization: ${mjmlTemplate.technical_compliance.email_client_optimized ? 'enabled' : 'disabled'}. Layout: ${mjmlTemplate.specifications_used.layout}. Typography: ${mjmlTemplate.specifications_used.typography}.`;
 
     } catch (error) {
-      console.error('❌ MJML Template generation failed:', error);
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : 'No stack trace';
+      console.error('❌ MJML Template generation failed:', errorMessage);
+      console.error('❌ Error stack:', errorStack);
+      console.error('❌ Error object:', error);
+      throw new Error(`MJML Template generation failed: ${errorMessage}`);
     }
   }
 }); 

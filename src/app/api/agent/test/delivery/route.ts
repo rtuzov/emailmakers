@@ -340,13 +340,13 @@ export async function GET(request: NextRequest) {
 function extractDeliveryOutputs(result: any) {
   const outputs = {
     summary: 'Campaign delivery completed',
-    packageSize: null,
-    filesIncluded: [],
-    deploymentStatus: null,
-    qualityValidation: null,
-    deliveryPath: null,
-    previewUrls: [],
-    documentation: []
+    packageSize: null as string | null,
+    filesIncluded: [] as string[],
+    deploymentStatus: null as string | null,
+    qualityValidation: null as string | null,
+    deliveryPath: null as string | null,
+    previewUrls: [] as string[],
+    documentation: [] as string[]
   };
 
   try {

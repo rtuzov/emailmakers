@@ -249,11 +249,12 @@ export class CacheService {
    */
   private evictLRU(count: number): void {
     const entries = Array.from(this.localCache.entries())
-      .sort(([, a], [, b]) => a.lastAccessed - (b?.lastAccessed || 0));
+      .sort(([, a], [, b]) => (a?.lastAccessed || 0) - (b?.lastAccessed || 0));
 
     for (let i = 0; i < Math.min(count, entries.length); i++) {
-      if (entries[i]) {
-        this.localCache.delete(entries[i][0]);
+      const entry = entries[i];
+      if (entry) {
+        this.localCache.delete(entry[0]);
       }
     }
   }
@@ -263,11 +264,12 @@ export class CacheService {
    */
   private evictLFU(count: number): void {
     const entries = Array.from(this.localCache.entries())
-      .sort(([, a], [, b]) => a.accessCount - (b?.accessCount || 0));
+      .sort(([, a], [, b]) => (a?.accessCount || 0) - (b?.accessCount || 0));
 
     for (let i = 0; i < Math.min(count, entries.length); i++) {
-      if (entries[i]) {
-        this.localCache.delete(entries[i][0]);
+      const entry = entries[i];
+      if (entry) {
+        this.localCache.delete(entry[0]);
       }
     }
   }

@@ -156,19 +156,19 @@ export class RenderJob {
   // Getters
   get id(): string { return this.data.id; }
   get userId(): string { return this.data.userId; }
-  get templateId(): string | undefined { return this.data.templateId; }
+  get templateId(): string | undefined { return this.data.templateId ?? undefined; }
   get htmlContent(): string { return this.data.htmlContent; }
-  get subject(): string | undefined { return this.data.subject; }
-  get preheader(): string | undefined { return this.data.preheader; }
+  get subject(): string | undefined { return this.data.subject ?? undefined; }
+  get preheader(): string | undefined { return this.data.preheader ?? undefined; }
   get config(): RenderJobConfig { return this.data.config; }
   get status(): RenderJobStatusType { return this.data.status; }
   get priority(): JobPriorityType { return this.data.priority as JobPriorityType; }
   get progress(): number { return this.data.progress; }
-  get startedAt(): Date | undefined { return this.data.startedAt; }
-  get completedAt(): Date | undefined { return this.data.completedAt; }
-  get errorMessage(): string | undefined { return this.data.errorMessage; }
-  get estimatedDuration(): number | undefined { return this.data.estimatedDuration; }
-  get actualDuration(): number | undefined { return this.data.actualDuration; }
+  get startedAt(): Date | undefined { return this.data.startedAt ?? undefined; }
+  get completedAt(): Date | undefined { return this.data.completedAt ?? undefined; }
+  get errorMessage(): string | undefined { return this.data.errorMessage ?? undefined; }
+  get estimatedDuration(): number | undefined { return this.data.estimatedDuration ?? undefined; }
+  get actualDuration(): number | undefined { return this.data.actualDuration ?? undefined; }
   get createdAt(): Date { return this.data.createdAt; }
   get updatedAt(): Date { return this.data.updatedAt; }
 

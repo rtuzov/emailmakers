@@ -465,9 +465,9 @@ export default function OptimizationDashboard() {
         
         return Array.from({ length: 25 }, (_, i) => {
           const timestamp = new Date(Date.now() - (i * 2 + Math.random() * 8) * 24 * 60 * 60 * 1000);
-          const type = types[Math.floor(Math.random() * types.length)];
-          const status = statuses[Math.floor(Math.random() * statuses.length)];
-          const appliedBy = appliedByOptions[Math.floor(Math.random() * appliedByOptions.length)];
+          const type = types[Math.floor(Math.random() * types.length)] || 'performance';
+          const status = statuses[Math.floor(Math.random() * statuses.length)] || 'completed';
+          const appliedBy = appliedByOptions[Math.floor(Math.random() * appliedByOptions.length)] || 'system';
           const confidence = 0.75 + Math.random() * 0.25;
           
           return {
@@ -496,7 +496,7 @@ export default function OptimizationDashboard() {
             appliedBy,
             confidence
           };
-        }).sort((a, b) => new Date((b || {}).timestamp).getTime() - new Date(a.timestamp).getTime());
+        }).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       };
       
       setOptimizationHistory(generateOptimizationHistory());
@@ -516,15 +516,18 @@ export default function OptimizationDashboard() {
 
       const generateAnomalies = () => {
         const anomalyCount = Math.floor(Math.random() * 4);
+        const descriptions = [
+          'Необычный всплеск нагрузки на базу данных',
+          'Аномальное время отклика API',
+          'Неожиданное увеличение использования памяти',
+          'Периодические таймауты соединений'
+        ];
+        const severities = ['low', 'medium', 'high'] as const;
+        
         return Array.from({ length: anomalyCount }, (_, i) => ({
           timestamp: new Date(Date.now() - (i + 1) * 3 * 24 * 60 * 60 * 1000).toISOString(),
-          description: [
-            'Необычный всплеск нагрузки на базу данных',
-            'Аномальное время отклика API',
-            'Неожиданное увеличение использования памяти',
-            'Периодические таймауты соединений'
-          ][i % 4],
-          severity: (['low', 'medium', 'high'] as const)[Math.floor(Math.random() * 3)]
+          description: descriptions[i % descriptions.length] || 'Аномальная активность',
+          severity: severities[Math.floor(Math.random() * severities.length)] || 'medium'
         }));
       };
 
@@ -555,8 +558,8 @@ export default function OptimizationDashboard() {
         const trends: ('positive' | 'negative' | 'neutral')[] = ['positive', 'positive', 'neutral', 'negative'];
         
         return Array.from({ length: 8 }, (_, i) => {
-          const category = categories[i % categories.length];
-          const trend = trends[i % trends.length];
+          const category = categories[i % categories.length] || 'performance';
+          const trend = trends[i % trends.length] || 'positive';
           const timeframes = ['За последние 7 дней', 'За последние 30 дней', 'За последние 3 месяца'];
           
           return {
@@ -570,7 +573,7 @@ export default function OptimizationDashboard() {
                         category === 'efficiency' ? 'Эффективность использования ресурсов значительно улучшилась' :
                         category === 'cost' ? 'Затраты на инфраструктуру снижены при сохранении качества сервиса' :
                         'Количество инцидентов и время восстановления сервисов улучшилось',
-            timeframe: timeframes[i % timeframes.length],
+            timeframe: timeframes[i % timeframes.length] || 'За последние 7 дней',
             impact: trend === 'positive' ? 8 + Math.random() * 15 :
                    trend === 'negative' ? -(2 + Math.random() * 8) :
                    -1 + Math.random() * 2,
@@ -600,10 +603,10 @@ export default function OptimizationDashboard() {
         const riskLevels: Array<OptimizationControl['riskLevel']> = ['low', 'medium', 'high'];
         
         return Array.from({ length: 12 }, (_, i) => {
-          const type = controlTypes[i % controlTypes.length];
-          const priority = priorities[Math.floor(Math.random() * priorities.length)];
-          const status = i < 2 ? 'running' : statuses[Math.floor(Math.random() * statuses.length)];
-          const riskLevel = riskLevels[Math.floor(Math.random() * riskLevels.length)];
+          const type = controlTypes[i % controlTypes.length] || 'performance';
+          const priority = priorities[Math.floor(Math.random() * priorities.length)] || 'medium';
+          const status = i < 2 ? 'running' : statuses[Math.floor(Math.random() * statuses.length)] || 'idle';
+          const riskLevel = riskLevels[Math.floor(Math.random() * riskLevels.length)] || 'low';
           const enabled = Math.random() > 0.2; // 80% enabled
           
           const config: OptimizationConfig = {
@@ -626,7 +629,7 @@ export default function OptimizationDashboard() {
             },
             schedule: {
               enabled: Math.random() > 0.3,
-              frequency: (['hourly', 'daily', 'weekly', 'monthly'] as const)[Math.floor(Math.random() * 4)],
+              frequency: (['hourly', 'daily', 'weekly', 'monthly'] as const)[Math.floor(Math.random() * 4)] || 'daily',
               time: `${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
               timezone: 'Europe/Moscow'
             },
@@ -1435,7 +1438,7 @@ export default function OptimizationDashboard() {
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-white mb-4">Анализ по категориям</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {recommendationCategories.map((category, index) => (
+                  {recommendationCategories.map((category, _index) => (
                     <div key={category.category} className="bg-white/5 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-white/80 capitalize text-sm">{category.category}</span>

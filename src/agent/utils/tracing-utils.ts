@@ -111,7 +111,7 @@ export function createAPIRunConfig(
 export async function withSDKTrace<T>(
   workflowName: string,
   executeFunction: () => Promise<T>,
-  metadata?: TraceMetadata
+  _metadata?: TraceMetadata
 ): Promise<T> {
   try {
     // withTrace() принимает только workflow name и function
@@ -130,7 +130,7 @@ export async function withToolExecution<T>(
   toolName: string,
   functionName: string,
   executeFunction: () => Promise<T>,
-  metadata?: { inputs?: any; [key: string]: any }
+  _metadata?: { inputs?: any; [key: string]: any }
 ): Promise<T> {
   const spanName = `${toolName}.${functionName}`;
   console.log(`🔧 Executing tool function: ${spanName}`);
@@ -153,7 +153,7 @@ export async function withToolExecution<T>(
 export async function withOperationTrace<T>(
   operationName: string,
   executeFunction: () => Promise<T>,
-  metadata?: { operation_type?: string; [key: string]: any }
+  _metadata?: { operation_type?: string; [key: string]: any }
 ): Promise<T> {
   return withSDKTrace(operationName, executeFunction);
 }
@@ -284,13 +284,13 @@ export async function executeWithRetry<T>(
   delayMs: number = 1000,
   operation: string = 'operation'
 ): Promise<T> {
-  let lastError: Error;
+  let lastError: Error | undefined;
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
-      lastError = error as Error;
+      lastError = error instanceof Error ? error : new Error(String(error));
       console.warn(`⚠️ ${operation} failed (attempt ${attempt}/${maxRetries}):`, error);
       
       if (attempt < maxRetries) {
@@ -299,7 +299,7 @@ export async function executeWithRetry<T>(
     }
   }
   
-  throw new Error(`${operation} failed after ${maxRetries} attempts: ${lastError.message}`);
+  throw new Error(`${operation} failed after ${maxRetries} attempts: ${lastError?.message || 'Unknown error'}`);
 }
 
 /**

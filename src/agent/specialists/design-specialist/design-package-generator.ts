@@ -16,42 +16,28 @@ import { calculateTechnicalCompliance, calculateAssetOptimization, calculateAcce
  */
 export const generateComprehensiveDesignPackage = tool({
   name: 'generateComprehensiveDesignPackage',
-  description: 'Generate comprehensive design package with all artifacts for Quality Assurance Specialist review',
+  description: 'Generate comprehensive design package with quality metrics and validation',
   parameters: z.object({
-    handoff_directory: z.string().describe('Directory containing handoff files'),
+    handoff_directory: z.string().describe('Campaign handoff directory path (will be auto-corrected if invalid)'),
     mjml_template: z.object({
-      mjml_code: z.string().describe('Generated MJML code'),
+      mjml_code: z.string().describe('MJML template code'),
       specifications_used: z.object({
-        layout: z.string().describe('Layout specification used'),
-        typography: z.string().describe('Typography specification used'),
-        colors: z.string().describe('Color scheme specification used'),
-        components: z.string().describe('Component specifications used')
-      }).describe('Specifications used in template generation'),
-      validation_status: z.string().describe('Template validation status'),
+        layout: z.object({}).describe('Layout specifications'),
+        typography: z.object({}).describe('Typography specifications'),
+        colors: z.object({}).describe('Color specifications'),
+        components: z.object({}).describe('Component specifications')
+      }).describe('Specifications used in template'),
+      validation_status: z.object({}).describe('Template validation results'),
       file_path: z.string().describe('Path to MJML template file')
-    }).describe('Generated MJML template data'),
+    }).describe('MJML template object'),
     asset_manifest: z.object({
-      images: z.array(z.object({
-        id: z.string(),
-        path: z.string(),
-        original_path: z.string(),
-        optimization_applied: z.string(),
-        size_reduction: z.number(),
-        alt_text: z.string()
-      })).describe('Processed images with optimization details'),
-      icons: z.array(z.object({
-        id: z.string(),
-        path: z.string(),
-        format: z.string(),
-        size: z.string()
-      })).describe('Processed icons'),
-      total_size: z.number().describe('Total asset size in bytes'),
-      optimization_summary: z.string().describe('Asset optimization summary')
-    }).describe('Asset manifest with optimization details'),
+      images: z.array(z.object({}).strict()).describe('Array of image assets'),
+      icons: z.array(z.object({}).strict()).describe('Array of icon assets')
+    }).describe('Asset manifest object'),
     preview_files: z.object({
       desktop_preview: z.string().describe('Path to desktop preview file'),
       mobile_preview: z.string().describe('Path to mobile preview file')
-    }).describe('Generated preview files'),
+    }).describe('Preview files object'),
     performance_metrics: z.object({
       load_time: z.number().describe('Estimated load time in milliseconds'),
       file_size: z.number().describe('Total file size in bytes'),
@@ -59,25 +45,39 @@ export const generateComprehensiveDesignPackage = tool({
       accessibility_score: z.number().describe('Accessibility score percentage')
     }).describe('Performance analysis metrics')
   }),
-  execute: async (params) => {
+  execute: async (params, context) => {
     try {
-      console.log(`📦 Generating comprehensive design package for: ${params.handoff_directory}`);
+      // ✅ ИСПРАВЛЕНО: Получаем правильный путь кампании из context
+      let handoffDirectory = params.handoff_directory;
+      
+      // Защита от неправильных путей сгенерированных SDK
+      if (handoffDirectory === 'docs' || handoffDirectory === 'package' || handoffDirectory === 'handoffs' || !handoffDirectory.includes('campaigns/')) {
+        const campaignPath = (context?.context as any)?.designContext?.campaign_path;
+        if (campaignPath) {
+          handoffDirectory = path.join(campaignPath, 'handoffs');
+          console.log(`🔧 ИСПРАВЛЕНО: SDK передал неправильный путь "${params.handoff_directory}", использую правильный: ${handoffDirectory}`);
+        } else {
+          throw new Error('Campaign path not available in design context. loadDesignContext must be called first.');
+        }
+      }
+      
+      console.log(`📦 Generating comprehensive design package for: ${handoffDirectory}`);
       
       // Load context to validate handoff directory
-      const context = await loadDesignContextFromHandoffDirectory(params.handoff_directory);
+      const context_data = await loadDesignContextFromHandoffDirectory(handoffDirectory);
       
       // Validate that context was loaded successfully
-      if (!context) {
+      if (!context_data) {
         throw new Error('Failed to load design context - context is null or undefined');
       }
       
       // Validate required context
-      if (!context.content_context) {
+      if (!context_data.content_context) {
         throw new Error('Content context not found - cannot generate design package');
       }
       
       // Note: Technical specification is now optional - AI template generator will handle it
-      // if (!context.technical_specification) {
+      // if (!context_data.technical_specification) {
       //   throw new Error('Technical specification not found - cannot generate design package');
       // }
       
@@ -104,13 +104,13 @@ export const generateComprehensiveDesignPackage = tool({
       const technicalCompliance = calculateTechnicalCompliance({ mjml_template: params.mjml_template });
       const assetOptimization = calculateAssetOptimization({...params.asset_manifest, fonts: []} as any);
       const accessibilityScore = calculateAccessibilityScore({ accessibility_features: [] }); // Will be calculated based on actual features
-      const emailClientCompatibility = calculateEmailClientCompatibility({...params.asset_manifest, fonts: []} as any, context.technical_specification || null);
+      const emailClientCompatibility = calculateEmailClientCompatibility({...params.asset_manifest, fonts: []} as any, context_data.technical_specification || null);
       
       // Build comprehensive design package
       const designPackage = {
         package_info: {
           generated_at: new Date().toISOString(),
-          campaign_id: context.campaign?.id || context.content_context?.campaign_id,
+          campaign_id: context_data.campaign?.id || context_data.content_context?.campaign_id,
           design_specialist_version: '2.0.0',
           package_type: 'comprehensive_design_review'
         },
@@ -125,9 +125,9 @@ export const generateComprehensiveDesignPackage = tool({
         asset_summary: {
           total_images: params.asset_manifest.images.length,
           total_icons: params.asset_manifest.icons.length,
-          total_size_kb: Math.round(params.asset_manifest.total_size / 1024),
-          optimization_applied: params.asset_manifest.optimization_summary,
-          images_with_alt_text: params.asset_manifest.images.filter(img => img.alt_text).length
+          total_size_kb: Math.round((params.asset_manifest as any).total_size / 1024 || 0),
+          optimization_applied: (params.asset_manifest as any).optimization_summary || 'None',
+          images_with_alt_text: params.asset_manifest.images.filter((img: any) => img.alt_text).length
         },
         quality_metrics: {
           technical_compliance: technicalCompliance,
@@ -148,8 +148,8 @@ export const generateComprehensiveDesignPackage = tool({
         },
         qa_checklist: {
           template_validation: params.mjml_template.validation_status === 'valid',
-          asset_optimization: params.asset_manifest.optimization_summary.includes('optimized'),
-          accessibility_compliance: params.asset_manifest.images.every(img => img.alt_text),
+          asset_optimization: ((params.asset_manifest as any).optimization_summary || '').includes('optimized'),
+          accessibility_compliance: params.asset_manifest.images.every((img: any) => img.alt_text),
           preview_generation: true,
           performance_analysis: true
         },
@@ -163,7 +163,7 @@ export const generateComprehensiveDesignPackage = tool({
       };
       
       // Save design package to handoff directory
-      const packagePath = path.join(params.handoff_directory, 'design-package.json');
+      const packagePath = path.join(handoffDirectory, 'design-package.json');
       await fs.writeFile(packagePath, JSON.stringify(designPackage, null, 2));
       
       console.log(`✅ Design package generated successfully!`);

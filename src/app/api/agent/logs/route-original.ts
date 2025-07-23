@@ -24,14 +24,14 @@ interface AgentLog {
   details?: any;
 }
 
-interface LogsResponse {
-  success: boolean;
-  logs: AgentLog[];
-  total_count: number;
-  filtered_count: number;
-  trace_id?: string;
-  timestamp: string;
-}
+// interface LogsResponse {
+//   success: boolean;
+//   logs: AgentLog[];
+//   total_count: number;
+//   filtered_count: number;
+//   trace_id?: string;
+//   timestamp: string;
+// }
 
 // Phase 3.3.6: Performance Debugging Interfaces
 interface PerformanceProfile {
@@ -58,7 +58,7 @@ interface ProfilingConfig {
   include_cpu?: boolean;
   include_network?: boolean;
   include_call_stack?: boolean;
-  filters?: {
+  _filters?: {
     min_duration_ms?: number;
     operation_types?: string[];
   };
@@ -204,7 +204,7 @@ const debugSessions = new Map<string, DebugSession>();
  */
 export async function GET(_request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(_request.url);
     const traceId = searchParams.get('traceId');
     const limit = parseInt(searchParams.get('limit') || '50');
     const level = searchParams.get('level') || 'all';
@@ -263,10 +263,10 @@ export async function GET(_request: NextRequest) {
         array.findIndex(l => l.timestamp === log.timestamp && l.message === log.message) === index
       );
       
-      logs = uniqueLogs;
+      logs = uniqueLogs as AgentLog[];
     }
 
-    // Apply enhanced filters
+    // Apply enhanced _filters
     let filteredLogs = logs;
     const originalCount = logs.length;
 
@@ -422,7 +422,7 @@ export async function GET(_request: NextRequest) {
           performance_stats: performanceStats
         },
         traces: await getActiveTraces(),
-        filters_applied: {
+        _filters_applied: {
           level,
           agent,
           tool,
@@ -478,29 +478,29 @@ export async function GET(_request: NextRequest) {
  */
 export async function POST(_request: NextRequest) {
   try {
-    const body = await request.json();
-    const { action, traceId, level, message, agent, tool, details, filters } = body;
+    const body = await _request.json();
+    const { action, traceId, level, message, agent, tool, details, _filters } = body;
     
-    console.log('🔧 Enhanced log action:', { action, traceId, filters });
+    console.log('🔧 Enhanced log action:', { action, traceId, _filters });
     
     // Handle different actions
     switch (action) {
       case 'add':
         return await addLogEntry({ traceId, level, message, agent, tool, details });
       case 'clear':
-        return await clearLogs(filters);
+        return await clearLogs(_filters);
       case 'export':
-        return await exportFilteredLogs(filters, body.format || 'json');
+        return await exportFilteredLogs(_filters, body.format || 'json');
       case 'search':
         return await performAdvancedSearch(body.searchConfig);
       case 'analyze':
-        return await analyzeLogPatterns(filters);
+        return await analyzeLogPatterns(_filters);
       case 'archive':
-        return await archiveLogs(filters);
+        return await archiveLogs(_filters);
       case 'track_error':
         return await trackError(body.errorData);
       case 'get_alerts':
-        return await getActiveAlerts(filters);
+        return await getActiveAlerts(_filters);
       case 'create_alert':
         return await createAlert(body.alertConfig);
       case 'update_alert':
@@ -519,7 +519,7 @@ export async function POST(_request: NextRequest) {
       case 'get_performance_metrics':
         return await getPerformanceMetrics(body.metricsConfig);
       case 'debug_agent':
-        return await debugAgent(body.agentId, body.debugConfig);
+        return await debugAgent(body._agentId, body.debugConfig);
       case 'get_debug_session':
         return await getDebugSession(body.sessionId);
       case 'trace_execution':
@@ -554,7 +554,7 @@ async function addLogEntry(_params: {
   tool?: string;
   details?: any;
 }) {
-  const { traceId, level, message, agent, tool, details } = params;
+  const { traceId, level, message, agent, tool, details } = _params;
 
   if (!traceId || !level || !message) {
     return NextResponse.json({
@@ -568,8 +568,8 @@ async function addLogEntry(_params: {
     timestamp: new Date().toISOString(),
     level: level as 'info' | 'warn' | 'error',
     message,
-    agent,
-    tool,
+    ...(agent && { agent }),
+    ...(tool && { tool }),
     traceId,
     details
   };
@@ -596,37 +596,37 @@ async function addLogEntry(_params: {
 }
 
 // Enhanced log management functions
-async function clearLogs(filters?: any) {
+async function clearLogs(_filters?: any) {
   try {
     let clearedCount = 0;
     
-    if (filters?.traceId) {
+    if (_filters?.traceId) {
       // Clear specific trace
-      if (logsStore.has(filters.traceId)) {
-        clearedCount = logsStore.get(filters.traceId)?.length || 0;
-        logsStore.delete(filters.traceId);
+      if (logsStore.has(_filters.traceId)) {
+        clearedCount = logsStore.get(_filters.traceId)?.length || 0;
+        logsStore.delete(_filters.traceId);
       }
-    } else if (filters?.level || filters?.agent || filters?.timeRange) {
+    } else if (_filters?.level || _filters?.agent || _filters?.timeRange) {
       // Clear filtered logs
-      for (const [traceId, logs] of logsStore.entries()) {
+      for (const [_traceId, logs] of logsStore.entries()) {
         const filteredLogs = logs.filter(log => {
-          if (filters.level && log.level !== filters.level) return true;
-          if (filters.agent && log.agent !== filters.agent) return true;
-          if (filters.timeRange?.since && new Date(log.timestamp) < new Date(filters.timeRange.since)) return true;
-          if (filters.timeRange?.until && new Date(log.timestamp) > new Date(filters.timeRange.until)) return true;
+          if (_filters.level && log.level !== _filters.level) return true;
+          if (_filters.agent && log.agent !== _filters.agent) return true;
+          if (_filters.timeRange?.since && new Date(log.timestamp) < new Date(_filters.timeRange.since)) return true;
+          if (_filters.timeRange?.until && new Date(log.timestamp) > new Date(_filters.timeRange.until)) return true;
           return false;
         });
         
         clearedCount += logs.length - filteredLogs.length;
         if (filteredLogs.length === 0) {
-          logsStore.delete(traceId);
+          logsStore.delete(_traceId);
         } else {
-          logsStore.set(traceId, filteredLogs);
+          logsStore.set(_traceId, filteredLogs);
         }
       }
     } else {
       // Clear all logs
-      for (const [traceId, logs] of logsStore.entries()) {
+      for (const [_traceId, logs] of logsStore.entries()) {
         clearedCount += logs.length;
       }
       logsStore.clear();
@@ -644,9 +644,9 @@ async function clearLogs(filters?: any) {
   }
 }
 
-async function exportFilteredLogs(filters: any, format: string = 'json') {
+async function exportFilteredLogs(_filters: any, format: string = 'json') {
   try {
-    // Get all logs and apply filters
+    // Get all logs and apply _filters
     const allLogs = Array.from(logsStore.values()).flat();
     const systemLogs = await getSystemLogs();
     const combinedLogs = [...allLogs, ...systemLogs.map(log => ({
@@ -663,19 +663,19 @@ async function exportFilteredLogs(filters: any, format: string = 'json') {
       }
     }))];
     
-    // Apply filters (simplified version)
+    // Apply _filters (simplified version)
     let filteredLogs = combinedLogs;
     
-    if (filters?.level && filters.level !== 'all') {
-      filteredLogs = filteredLogs.filter(log => log.level === filters.level);
+    if (_filters?.level && _filters.level !== 'all') {
+      filteredLogs = filteredLogs.filter(log => log.level === _filters.level);
     }
     
-    if (filters?.agent) {
-      filteredLogs = filteredLogs.filter(log => log.agent === filters.agent);
+    if (_filters?.agent) {
+      filteredLogs = filteredLogs.filter(log => log.agent === _filters.agent);
     }
     
-    if (filters?.timeRange?.since) {
-      const sinceDate = new Date(filters.timeRange.since);
+    if (_filters?.timeRange?.since) {
+      const sinceDate = new Date(_filters.timeRange.since);
       filteredLogs = filteredLogs.filter(log => new Date(log.timestamp) >= sinceDate);
     }
     
@@ -688,7 +688,7 @@ async function exportFilteredLogs(filters: any, format: string = 'json') {
       exported_count: filteredLogs.length,
       filename,
       download_url: `/api/agent/logs/download?file=${filename}`,
-      filters_applied: filters,
+      _filters_applied: _filters,
       timestamp: new Date().toISOString()
     });
     
@@ -753,12 +753,12 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
       message: errorData.message || 'Unknown error',
       level: errorData.level || 'error',
       agent: errorData.agent || 'unknown',
-      tool: errorData.tool,
+      ...(errorData.tool && { tool: errorData.tool }),
       timestamp: now,
-      _context: errorData.context,
-      stackTrace: errorData.stackTrace,
-      userId: errorData.userId,
-      sessionId: errorData.sessionId,
+      ...(errorData.context !== undefined && { context: errorData.context }),
+      ...(errorData.stackTrace && { stackTrace: errorData.stackTrace }),
+      ...(errorData.userId && { userId: errorData.userId }),
+      ...(errorData.sessionId && { sessionId: errorData.sessionId }),
       frequency: 1
     };
 
@@ -766,15 +766,18 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
     const agentErrors = errorStore.get(error.agent) || [];
     
     // Check for duplicate error (same message within last 5 minutes)
-    const recentErrors = agentErrors.filter(e => 
-      e.message === error instanceof Error ? error.message : String(error) && 
+    const recentErrors = agentErrors.filter((e: any) => 
+      e.message === error.message && 
       (new Date().getTime() - new Date(e.timestamp).getTime()) < 5 * 60 * 1000
     );
     
     if (recentErrors.length > 0) {
       // Update frequency of existing error
-      (recentErrors && recentErrors[0] ? recentErrors[0] : "").frequency = ((recentErrors && recentErrors[0] ? recentErrors[0] : "").frequency || 1) + 1;
-      (recentErrors && recentErrors[0] ? recentErrors[0] : "").timestamp = now;
+      const firstError = recentErrors[0];
+      if (firstError) {
+        firstError.frequency = (firstError.frequency || 1) + 1;
+        firstError.timestamp = now;
+      }
     } else {
       // Add new error
       agentErrors.push(error);
@@ -803,22 +806,22 @@ async function trackError(errorData: Partial<ErrorTrackingData>) {
 }
 
 // Alert management functions
-async function getActiveAlerts(filters?: any) {
+async function getActiveAlerts(_filters?: any) {
   try {
     const allAlerts = Array.from(alertStore.values());
     
     let filteredAlerts = allAlerts;
     
-    if (filters?.status) {
-      filteredAlerts = filteredAlerts.filter(alert => alert.status === filters.status);
+    if (_filters?.status) {
+      filteredAlerts = filteredAlerts.filter(alert => alert.status === _filters.status);
     }
     
-    if (filters?.type) {
-      filteredAlerts = filteredAlerts.filter(alert => alert.type === filters.type);
+    if (_filters?.type) {
+      filteredAlerts = filteredAlerts.filter(alert => alert.type === _filters.type);
     }
     
-    if (filters?.enabled !== undefined) {
-      filteredAlerts = filteredAlerts.filter(alert => alert.enabled === filters.enabled);
+    if (_filters?.enabled !== undefined) {
+      filteredAlerts = filteredAlerts.filter(alert => alert.enabled === _filters.enabled);
     }
 
     // Get alert statistics
@@ -1082,7 +1085,7 @@ async function performAdvancedSearch(searchConfig: any) {
     // Perform text search
     if (query) {
       searchResults = searchResults.filter(log => {
-        const searchableText = searchFields.map(field => {
+        const searchableText = searchFields.map((field: any) => {
           switch (field) {
             case 'message': return log.message;
             case 'agent': return log.agent;
@@ -1144,7 +1147,7 @@ async function performAdvancedSearch(searchConfig: any) {
   }
 }
 
-async function analyzeLogPatterns(filters: any) {
+async function analyzeLogPatterns(_filters: any) {
   try {
     // Get filtered logs
     const allLogs = Array.from(logsStore.values()).flat();
@@ -1186,7 +1189,7 @@ async function analyzeLogPatterns(filters: any) {
   }
 }
 
-async function archiveLogs(filters: any) {
+async function archiveLogs(_filters: any) {
   try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const archiveName = `logs-archive-${timestamp}`;
@@ -1196,8 +1199,8 @@ async function archiveLogs(filters: any) {
     let archivedCount = 0;
     
     for (const [traceId, logs] of logsStore.entries()) {
-      if (filters?.olderThan) {
-        const cutoffDate = new Date(filters.olderThan);
+      if (_filters?.olderThan) {
+        const cutoffDate = new Date(_filters.olderThan);
         const oldLogs = logs.filter(log => new Date(log.timestamp) < cutoffDate);
         archivedCount += oldLogs.length;
         
@@ -1227,135 +1230,135 @@ async function archiveLogs(filters: any) {
 
 // Legacy helper functions (maintained for backward compatibility)
 
-async function getAgentLogs(filters: {
-  level: string;
-  limit: number;
-  since?: string | null;
-  tool?: string | null;
-}) {
-  try {
-    // Try to read from log files in temp directory
-    const tempDir = path.join(process.cwd(), 'temp');
-    const logFiles = await fs.readdir(tempDir).catch(() => [] as string[]);
-    
-    const agentLogFiles = logFiles.filter(file => 
-      file.startsWith('agent-') && file.endsWith('.log')
-    );
+// async function getAgentLogs(__filters: {
+//   level: string;
+//   limit: number;
+//   since?: string | null;
+//   tool?: string | null;
+// }) {
+//   try {
+//     // Try to read from log files in temp directory
+//     const tempDir = path.join(process.cwd(), 'temp');
+//     const logFiles = await fs.readdir(tempDir).catch(() => [] as string[]);
+//     
+//     const agentLogFiles = logFiles.filter(file => 
+//       file.startsWith('agent-') && file.endsWith('.log')
+//     );
+// 
+//     let allLogs: any[] = [];
+// 
+//     // Read from log files
+//     for (const logFile of agentLogFiles) {
+//       try {
+//         const logPath = path.join(tempDir, logFile);
+//         const logContent = await fs.readFile(logPath, 'utf-8');
+//         const logs = logContent.split('\n')
+//           .filter(line => line.trim())
+//           .map(line => {
+//             try {
+//               return JSON.parse(line);
+//             } catch {
+//               return { 
+//                 level: 'info', 
+//                 msg: line, 
+//                 timestamp: new Date().toISOString(),
+//                 source: 'raw'
+//               };
+//             }
+//           });
+//         allLogs.push(...logs);
+//       } catch (error) {
+//         console.warn(`Failed to read log file ${logFile}:`, error);
+//       }
+//     }
 
-    let allLogs: any[] = [];
+//     // Apply _filters
+//     let filteredLogs = allLogs;
+// 
+//     if (_filters.level && _filters.level !== 'all') {
+//       const levelPriority = { debug: 0, info: 1, warn: 2, error: 3 };
+//       const minLevel = levelPriority[_filters.level as keyof typeof levelPriority] || 1;
+//       filteredLogs = filteredLogs.filter(log => {
+//         const logLevel = levelPriority[log.level as keyof typeof levelPriority] || 1;
+//         return logLevel >= minLevel;
+//       });
+//     }
 
-    // Read from log files
-    for (const logFile of agentLogFiles) {
-      try {
-        const logPath = path.join(tempDir, logFile);
-        const logContent = await fs.readFile(logPath, 'utf-8');
-        const logs = logContent.split('\n')
-          .filter(line => line.trim())
-          .map(line => {
-            try {
-              return JSON.parse(line);
-            } catch {
-              return { 
-                level: 'info', 
-                msg: line, 
-                timestamp: new Date().toISOString(),
-                source: 'raw'
-              };
-            }
-          });
-        allLogs.push(...logs);
-      } catch (error) {
-        console.warn(`Failed to read log file ${logFile}:`, error);
-      }
-    }
+//     if (_filters.since) {
+//       const sinceDate = new Date(_filters.since);
+//       filteredLogs = filteredLogs.filter(log => 
+//         new Date(log.timestamp || log.time) >= sinceDate
+//       );
+//     }
 
-    // Apply filters
-    let filteredLogs = allLogs;
+//     if (_filters.tool) {
+//       filteredLogs = filteredLogs.filter(log => 
+//         log.tool === _filters.tool || 
+//         log.msg?.includes(_filters.tool) ||
+//         log.context?.tool === _filters.tool
+//       );
+//     }
 
-    if (filters.level && filters.level !== 'all') {
-      const levelPriority = { debug: 0, info: 1, warn: 2, error: 3 };
-      const minLevel = levelPriority[filters.level as keyof typeof levelPriority] || 1;
-      filteredLogs = filteredLogs.filter(log => {
-        const logLevel = levelPriority[log.level as keyof typeof levelPriority] || 1;
-        return logLevel >= minLevel;
-      });
-    }
+//     // Sort by timestamp (newest first) and limit
+//     filteredLogs.sort((a, b) => 
+//       new Date(b.timestamp || b.time).getTime() - 
+//       new Date(a.timestamp || a.time).getTime()
+//     );
+// 
+//     return filteredLogs.slice(0, _filters.limit);
 
-    if (filters.since) {
-      const sinceDate = new Date(filters.since);
-      filteredLogs = filteredLogs.filter(log => 
-        new Date(log.timestamp || log.time) >= sinceDate
-      );
-    }
+//   } catch (error) {
+//     console.warn('Failed to read agent logs from files:', error);
+//     return [];
+//   }
+// }
 
-    if (filters.tool) {
-      filteredLogs = filteredLogs.filter(log => 
-        log.tool === filters.tool || 
-        log.msg?.includes(filters.tool) ||
-        log.context?.tool === filters.tool
-      );
-    }
-
-    // Sort by timestamp (newest first) and limit
-    filteredLogs.sort((a, b) => 
-      new Date(b.timestamp || b.time).getTime() - 
-      new Date(a.timestamp || a.time).getTime()
-    );
-
-    return filteredLogs.slice(0, filters.limit);
-
-  } catch (error) {
-    console.warn('Failed to read agent logs from files:', error);
-    return [];
-  }
-}
-
-async function getAgentMetrics() {
-  try {
-    // Mock metrics to avoid logger import
-    const metricsText = `# Mock metrics - real logger disabled to prevent build errors
-api_requests_total{agent="content-specialist"} 42
-api_requests_total{agent="design-specialist"} 38
-api_requests_total{agent="quality-specialist"} 25
-api_requests_total{agent="delivery-specialist"} 19
-response_time_seconds{agent="content-specialist"} 1.2
-response_time_seconds{agent="design-specialist"} 2.1
-response_time_seconds{agent="quality-specialist"} 0.8
-response_time_seconds{agent="delivery-specialist"} 1.5`;
-    
-    // Parse Prometheus metrics to structured format
-    const lines = metricsText.split('\n').filter(line => 
-      line && !line.startsWith('#')
-    );
-
-    const metrics: Record<string, any> = {};
-    
-    for (const line of lines) {
-      const [metricPart, value] = line.split(' ');
-      if (metricPart && value) {
-        const [name, labelsStr] = metricPart.includes('{') 
-          ? metricPart.split('{')
-          : [metricPart, ''];
-        
-        if (!metrics[name]) {
-          metrics[name] = [];
-        }
-        
-        const labels = labelsStr ? parsePrometheusLabels(labelsStr.replace('}', '')) : {};
-        metrics[name].push({
-          labels,
-          value: parseFloat(value),
-          timestamp: new Date().toISOString()
-        });
-      }
-    }
-
-    return metrics;
-  } catch (error) {
-    console.warn('Failed to get agent metrics:', error);
-    return {};
-  }
-}
+// async function _getAgentMetrics() {
+//   try {
+//     // Mock metrics to avoid logger import
+//     const metricsText = `# Mock metrics - real logger disabled to prevent build errors
+// api_requests_total{agent="content-specialist"} 42
+// api_requests_total{agent="design-specialist"} 38
+// api_requests_total{agent="quality-specialist"} 25
+// api_requests_total{agent="delivery-specialist"} 19
+// response_time_seconds{agent="content-specialist"} 1.2
+// response_time_seconds{agent="design-specialist"} 2.1
+// response_time_seconds{agent="quality-specialist"} 0.8
+// response_time_seconds{agent="delivery-specialist"} 1.5`;
+//     
+//     // Parse Prometheus metrics to structured format
+//     const lines = metricsText.split('\n').filter(line => 
+//       line && !line.startsWith('#')
+//     );
+// 
+//     const metrics: Record<string, any> = {};
+//     
+//     for (const line of lines) {
+//       const [metricPart, value] = line.split(' ');
+//       if (metricPart && value) {
+//         const [name, labelsStr] = metricPart.includes('{') 
+//           ? metricPart.split('{')
+//           : [metricPart, ''];
+//         
+//         if (!metrics[name]) {
+//           metrics[name] = [];
+//         }
+//         
+//         const labels = labelsStr ? parsePrometheusLabels(labelsStr.replace('}', '')) : {};
+//         metrics[name].push({
+//           labels,
+//           value: parseFloat(value),
+//           timestamp: new Date().toISOString()
+//         });
+//       }
+//     }
+// 
+//     return metrics;
+//   } catch (error) {
+//     console.warn('Failed to get agent metrics:', error);
+//     return {};
+//   }
+// }
 
 async function getActiveTraces() {
   try {
@@ -1415,30 +1418,31 @@ function getTimeRange(logs: any[]) {
   timestamps.sort((a, b) => a.getTime() - b.getTime());
   
   return {
-    start: (timestamps && timestamps[0] ? timestamps[0] : "").toISOString(),
-    end: timestamps[timestamps.length - 1].toISOString(),
-    duration: timestamps[timestamps.length - 1].getTime() - (timestamps && timestamps[0] ? timestamps[0] : "").getTime()
+    start: (timestamps?.[0] || new Date()).toISOString(),
+    end: (timestamps?.[timestamps.length - 1] || new Date()).toISOString(),
+    duration: (timestamps?.[timestamps.length - 1]?.getTime() || 0) - (timestamps?.[0]?.getTime() || 0)
   };
 }
 
-function parsePrometheusLabels(labelsStr: string): Record<string, string> {
-  const labels: Record<string, string> = {};
-  const pairs = labelsStr.split(',');
+// function parsePrometheusLabels(labelsStr: string): Record<string, string> {
+//   const labels: Record<string, string> = {};
+//   const pairs = labelsStr.split(',');
   
-  for (const pair of pairs) {
-    const [key, value] = pair.split('=');
-    if (key && value) {
-      labels[key.trim()] = value.replace(/"/g, '').trim();
-    }
-  }
+//   for (const pair of pairs) {
+//     const [key, value] = pair.split('=');
+//     if (key && value) {
+//       labels[key.trim()] = value.replace(/"/g, '').trim();
+//     }
+//   }
   
-  return labels;
-}
+//   return labels;
+// }
 
-function formatLogsAsText(response: any): string {
+/*
+function _formatLogsAsText(response: any): string {
   let output = `=== AGENT LOGS REPORT ===\n`;
   output += `Generated: ${response.timestamp}\n`;
-  output += `Filters: ${JSON.stringify(response.filters)}\n`;
+  output += `Filters: ${JSON.stringify(response._filters)}\n`;
   output += `Total logs: ${response.data.summary.total_logs}\n\n`;
 
   // Log levels summary
@@ -1468,8 +1472,10 @@ function formatLogsAsText(response: any): string {
 
   return output;
 }
+*/
 
-async function clearAgentLogs() {
+/*
+async function _clearAgentLogs() {
   try {
     const tempDir = path.join(process.cwd(), 'temp');
     const files = await fs.readdir(tempDir).catch(() => [] as string[]);
@@ -1493,8 +1499,10 @@ async function clearAgentLogs() {
     throw new Error(`Failed to clear logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
+*/
 
-async function setLogLevel(level: string) {
+/*
+async function _setLogLevel(level: string) {
   // This would typically update the logger configuration
   // For now, we'll just return the requested level
   const validLevels = ['debug', 'info', 'warn', 'error'];
@@ -1507,8 +1515,10 @@ async function setLogLevel(level: string) {
   
   return { message: `Log level set to ${level}` };
 }
+*/
 
-async function exportLogs(format: string) {
+/*
+async function _exportLogs(format: string) {
   try {
     const logs = await getAgentLogs({ level: 'debug', limit: 10000, since: null, tool: null });
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -1536,6 +1546,7 @@ async function exportLogs(format: string) {
     throw new Error(`Failed to export logs: ${error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error'}`);
   }
 }
+*/
 
 // Функция для чтения реальных логов из файловой системы
 async function getSystemLogs(): Promise<LogEntry[]> {
@@ -1646,8 +1657,9 @@ async function getSystemLogs(): Promise<LogEntry[]> {
   return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
 
+/*
 // Функция для получения системных метрик
-async function getSystemMetrics() {
+async function _getSystemMetrics() {
   const logs = await getSystemLogs();
   
   const logLevels = logs.reduce((acc, log) => {
@@ -1677,6 +1689,7 @@ async function getSystemMetrics() {
     }
   };
 }
+*/
 
 function generateSampleLogs(traceId: string): AgentLog[] {
   const now = Date.now();
@@ -1833,8 +1846,8 @@ function formatLogsAsAdvancedText(response: any): string {
   
   // Filters Applied
   output += `=== FILTERS APPLIED ===\n`;
-  const filters = response.data.filters_applied;
-  Object.entries(filters).forEach(([key, value]) => {
+  const _filters = response.data._filters_applied;
+  Object.entries(_filters).forEach(([key, value]) => {
     if (value && value !== 'all') {
       output += `${key}: ${JSON.stringify(value)}\n`;
     }
@@ -1946,8 +1959,16 @@ function getTemporalPatterns(logs: any[]) {
   return {
     hourly_distribution: hourCounts,
     daily_distribution: dayOfWeekCounts,
-    peak_hour: Object.entries(hourCounts).reduce((a, b) => hourCounts[parseInt((a && a[0] ? a[0] : ""))] > hourCounts[parseInt((b && b[0] ? b[0] : ""))] ? a : b)[0],
-    peak_day: Object.entries(dayOfWeekCounts).reduce((a, b) => dayOfWeekCounts[parseInt((a && a[0] ? a[0] : ""))] > dayOfWeekCounts[parseInt((b && b[0] ? b[0] : ""))] ? a : b)[0]
+    peak_hour: Object.entries(hourCounts).reduce((a, b) => {
+      const aValue = hourCounts[parseInt(a?.[0] || "0")] || 0;
+      const bValue = hourCounts[parseInt(b?.[0] || "0")] || 0;
+      return aValue > bValue ? a : b;
+    })?.[0] || "0",
+    peak_day: Object.entries(dayOfWeekCounts).reduce((a, b) => {
+      const aValue = dayOfWeekCounts[parseInt(a?.[0] || "0")] || 0;
+      const bValue = dayOfWeekCounts[parseInt(b?.[0] || "0")] || 0;
+      return aValue > bValue ? a : b;
+    })?.[0] || "0"
   };
 }
 
@@ -2290,10 +2311,10 @@ async function getProfilingData(profilingId: string) {
  */
 async function analyzeAgentPerformance(analysisConfig: any) {
   try {
-    const { agent_id, time_period_hours = 24 } = analysisConfig;
+    const { agent_id, _time_period_hours = 24 } = analysisConfig;
     
     // Get relevant logs for analysis
-    const cutoffTime = new Date(Date.now() - time_period_hours * 60 * 60 * 1000);
+    const cutoffTime = new Date(Date.now() - _time_period_hours * 60 * 60 * 1000);
     const allLogs = Array.from(logsStore.values()).flat();
     const agentLogs = allLogs.filter(log => 
       (log.agent === agent_id || log.tool === agent_id) &&
@@ -2317,7 +2338,7 @@ async function analyzeAgentPerformance(analysisConfig: any) {
         executionTimes[Math.floor(executionTimes.length * 0.99)] : 0,
       error_rate_percent: agentLogs.length > 0 ? 
         (errorLogs.length / agentLogs.length) * 100 : 0,
-      throughput_per_minute: agentLogs.length / (time_period_hours * 60),
+      throughput_per_minute: agentLogs.length / (_time_period_hours * 60),
       memory_efficiency_score: 85 + Math.random() * 10, // Simulated
       cpu_efficiency_score: 80 + Math.random() * 15 // Simulated
     };
@@ -2364,27 +2385,27 @@ async function analyzeAgentPerformance(analysisConfig: any) {
  */
 async function getPerformanceMetrics(metricsConfig: any) {
   try {
-    const { agent_ids = [], time_period_hours = 24, metrics_types = ['all'] } = metricsConfig;
+    const { agent_ids = [], _time_period_hours = 24, /* __metrics_types = ['all'] */ } = metricsConfig;
     
-    const cutoffTime = new Date(Date.now() - time_period_hours * 60 * 60 * 1000);
+    const cutoffTime = new Date(Date.now() - _time_period_hours * 60 * 60 * 1000);
     const allLogs = Array.from(logsStore.values()).flat();
     
     const metricsData: any = {};
 
     // Get metrics for each agent
-    for (const agentId of agent_ids.length > 0 ? agent_ids : ['content-specialist', 'design-specialist', 'quality-specialist', 'delivery-specialist']) {
+    for (const _agentId of agent_ids.length > 0 ? agent_ids : ['content-specialist', 'design-specialist', 'quality-specialist', 'delivery-specialist']) {
       const agentLogs = allLogs.filter(log => 
-        (log.agent === agentId || log.tool === agentId) &&
+        (log.agent === _agentId || log.tool === _agentId) &&
         new Date(log.timestamp) >= cutoffTime
       );
 
-      metricsData[agentId] = {
+      metricsData[_agentId] = {
         total_operations: agentLogs.length,
         error_count: agentLogs.filter(log => log.level === 'error').length,
         warning_count: agentLogs.filter(log => log.level === 'warn').length,
         avg_response_time: calculateAverageResponseTime(agentLogs),
         last_activity: agentLogs.length > 0 ? 
-          agentLogs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0].timestamp : null,
+          agentLogs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0]?.timestamp || null : null,
         health_score: calculateAgentHealthScore(agentLogs)
       };
     }
@@ -2395,7 +2416,7 @@ async function getPerformanceMetrics(metricsConfig: any) {
       time_period: {
         start: cutoffTime.toISOString(),
         end: new Date().toISOString(),
-        hours: time_period_hours
+        hours: _time_period_hours
       },
       timestamp: new Date().toISOString()
     });
@@ -2412,13 +2433,13 @@ async function getPerformanceMetrics(metricsConfig: any) {
 /**
  * Start debugging session for an agent
  */
-async function debugAgent(agentId: string, debugConfig: any) {
+async function debugAgent(_agentId: string, debugConfig: any) {
   try {
     const sessionId = `debug_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     const debugSession: DebugSession = {
       id: sessionId,
-      agent_id: agentId,
+      agent_id: _agentId,
       created_at: new Date().toISOString(),
       status: 'active',
       breakpoints: debugConfig.breakpoints || [],
@@ -2433,7 +2454,7 @@ async function debugAgent(agentId: string, debugConfig: any) {
       success: true,
       debug_session_started: true,
       session_id: sessionId,
-      agent_id: agentId,
+      agent_id: _agentId,
       _config: debugConfig,
       timestamp: new Date().toISOString()
     });
@@ -2530,7 +2551,7 @@ async function traceAgentExecution(traceConfig: any) {
  */
 async function analyzeMemoryUsage(analysisConfig: any) {
   try {
-    const { agent_id, time_period_hours = 1 } = analysisConfig;
+    const { agent_id, /* __time_period_hours = 1 */ } = analysisConfig;
     
     // Get memory data from profiling sessions
     const memoryAnalysis = {
@@ -2539,9 +2560,18 @@ async function analyzeMemoryUsage(analysisConfig: any) {
       memory_trends: {
         heap_growth_rate_mb_per_hour: Math.random() * 10 - 5, // Simulated
         gc_frequency_per_hour: Math.floor(Math.random() * 20),
-        memory_leak_indicators: []
+        memory_leak_indicators: [] as Array<{
+          type: string;
+          severity: string;
+          description: string;
+        }>
       },
-      recommendations: []
+      recommendations: [] as Array<{
+        category: string;
+        priority: string;
+        description: string;
+        implementation: string;
+      }>
     };
 
     // Check for potential memory leaks
@@ -2714,9 +2744,9 @@ async function detectPerformanceBottlenecks(profile: PerformanceProfile): Promis
   
   // Analyze memory snapshots for leaks
   if (profile.data.memory_snapshots.length > 2) {
-    const first = profile.data.memory_snapshots && profile.data.memory_snapshots[0] ? profile.data.memory_snapshots[0] : null;
+    const first = profile.data.memory_snapshots[0];
     const last = profile.data.memory_snapshots[profile.data.memory_snapshots.length - 1];
-    const memoryGrowth = last.heap_used_mb - first.heap_used_mb;
+    const memoryGrowth = first && last ? last.heap_used_mb - first.heap_used_mb : 0;
     
     if (memoryGrowth > 50) { // More than 50MB growth
       bottlenecks.push({
@@ -2793,7 +2823,7 @@ function generatePerformanceRecommendations(metrics: any): PerformanceRecommenda
   return recommendations;
 }
 
-async function detectAgentBottlenecks(agentId: string, logs: any[]): Promise<Bottleneck[]> {
+async function detectAgentBottlenecks(_agentId: string, logs: any[]): Promise<Bottleneck[]> {
   const bottlenecks: Bottleneck[] = [];
   
   // Analyze logs for bottlenecks

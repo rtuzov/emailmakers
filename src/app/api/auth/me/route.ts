@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { /* NextRequest, */ NextResponse } from 'next/server';
 import { requireAuth, AuthenticatedRequest } from '@/api/middleware/auth-middleware';
 
 async function getMeHandler(request: AuthenticatedRequest): Promise<NextResponse> {

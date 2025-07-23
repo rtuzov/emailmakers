@@ -24,7 +24,7 @@ function handleToolError(toolName: string, error: any): ToolResult {
   return handleToolErrorUnified(toolName, error);
 }
 import { randomUUID } from 'crypto';
-import { generateTraceId } from '../utils/tracing-utils';
+// import { generateTraceId } from '../utils/tracing-utils';
 
 interface UploadParams {
   html: string; // Может быть сокращенным с ...[truncated]
@@ -49,7 +49,7 @@ interface UploadResult {
  * Upload final email assets to S3 and provide public URLs
  */
 export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
-  const _traceId // Currently unused = generateTraceId();
+  // const _traceId = generateTraceId();
   
     try {
       console.log('T9: Uploading files to S3');
@@ -108,7 +108,7 @@ export async function uploadToS3(params: UploadParams): Promise<ToolResult> {
       };
 
     } catch (s3Error) {
-      console.warn('S3 upload failed, using local URLs:', s3Error.message);
+      console.warn('S3 upload failed, using local URLs:', s3Error instanceof Error ? s3Error.message : String(s3Error));
       return await generateLocalUrls(params);
     }
 
@@ -147,7 +147,7 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
 
   return {
     html_url: htmlUrl,
-    mjml_url: mjmlUrl,
+    ...(mjmlUrl && { mjml_url: mjmlUrl }),
     asset_urls: assetUrls,
     total_size_kb: Math.round(totalSize * 10) / 10,
     upload_summary: `Uploaded ${1 + (mjmlUrl ? 1 : 0) + assetUrls.length} files (${totalSize.toFixed(1)}KB total)`
@@ -157,7 +157,7 @@ async function performS3Upload(params: UploadParams, bucket: string): Promise<Up
 async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
   try {
     // Use EmailFolderManager to create proper campaign structure
-    const _campaignId // Currently unused = params.campaign_id || `auto_${Date.now()}`;
+    // const _campaignId = params.campaign_id || `auto_${Date.now()}`;;
     const emailFolder = await EmailFolderManager.createEmailFolder(
       `Auto Campaign ${new Date().toISOString()}`,
       'auto-generated'
@@ -184,7 +184,7 @@ async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
 
     const result: UploadResult = {
       html_url: htmlUrl,
-      mjml_url: mjmlUrl,
+      ...(mjmlUrl && { mjml_url: mjmlUrl }),
       asset_urls: assetUrls,
       total_size_kb: Math.round(totalSize * 10) / 10,
       upload_summary: `Generated ${1 + (mjmlUrl ? 1 : 0) + assetUrls.length} local URLs (${totalSize.toFixed(1)}KB total) using shared assets`
@@ -217,9 +217,9 @@ async function generateLocalUrls(params: UploadParams): Promise<ToolResult> {
 }
 
 // Removed generateLocalUrlsFallback: fallback logic disabled. Any attempt to call the old function will now throw.
-function generateLocalUrlsFallback(_: UploadParams): never {
-  throw new Error('generateLocalUrlsFallback is disabled by project policy.');
-}
+// function generateLocalUrlsFallback(_: UploadParams): never {
+//   throw new Error('generateLocalUrlsFallback is disabled by project policy.');
+// }
 
 async function saveToLocalWithSharedAssets(params: UploadParams, emailFolder: any): Promise<void> {
   try {
@@ -366,9 +366,9 @@ async function saveToLocal(params: UploadParams, campaignId: string): Promise<vo
  * ❌ FALLBACK POLICY: Providing substitute assets is forbidden.
  * Any invocation of this function now results in an immediate failure.
  */
-function findFallbackAsset(_filename: string): never {
-  throw new Error('findFallbackAsset is disabled by project policy – required asset missing.');
-}
+// function findFallbackAsset(_filename: string): never {
+//   throw new Error('findFallbackAsset is disabled by project policy – required asset missing.');
+// }
 
 /**
  * Utility function to create public URLs for generated content

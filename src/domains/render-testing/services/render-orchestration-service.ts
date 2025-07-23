@@ -4,9 +4,9 @@ import { EmailClient } from '../entities/email-client';
 import { Screenshot } from '../entities/screenshot';
 import { RenderStatus } from '../value-objects/render-status';
 import { Progress } from '../value-objects/render-status';
-import { JobPriority } from '../value-objects/render-status';
-import { QueueService, QueueJobData, QueueJobResult } from '../../../shared/infrastructure/queue/queue-service';
-import { StorageService } from '../../../shared/infrastructure/storage/storage-service';
+// import { JobPriority } from '../value-objects/render-status';
+import { QueueService, QueueJobData /* , QueueJobResult */ } from '../../../shared/infrastructure/queue/queue-service';
+// import { StorageService } from '../../../shared/infrastructure/storage/storage-service'; // Currently unused
 import { MetricsService } from '../../../shared/infrastructure/monitoring/metrics-service';
 import { ScreenshotCaptureService } from './screenshot-capture-service';
 import { AccessibilityTestingService, AccessibilityResult } from './accessibility-testing-service';
@@ -117,7 +117,7 @@ export class RenderOrchestrationService {
     private renderEngineService: RenderEngineService,
     private queueService: QueueService,
     private notificationService: NotificationService,
-    private _storageService: StorageService,
+    // private _storageService: StorageService, // Currently unused
     private metricsService: MetricsService,
     private screenshotCaptureService: ScreenshotCaptureService,
     private accessibilityService: AccessibilityTestingService,
@@ -155,10 +155,10 @@ export class RenderOrchestrationService {
         userId: request.userId,
         htmlContent: request.htmlContent,
         config: request.config,
-        templateId: request.templateId,
-        subject: request.subject,
-        preheader: request.preheader,
-        priority: request.priority as JobPriorityType
+        ...(request.templateId !== undefined && { templateId: request.templateId }),
+        ...(request.subject !== undefined && { subject: request.subject }),
+        ...(request.preheader !== undefined && { preheader: request.preheader }),
+        ...(request.priority !== undefined && { priority: request.priority as JobPriorityType })
       });
 
       // Estimate duration based on client configurations
@@ -194,7 +194,7 @@ export class RenderOrchestrationService {
         },
         metadata: {
           userId: request.userId,
-          templateId: request.templateId,
+          ...(request.templateId && { templateId: request.templateId }),
           createdAt: new Date(),
         },
       };
@@ -252,7 +252,7 @@ export class RenderOrchestrationService {
         screenshots: basicResults.screenshots,
         compatibilityScore,
         clientResults: basicResults.clientResults,
-        advancedResults,
+        ...(advancedResults !== undefined && { advancedResults }),
         metadata: {
           totalTime,
           timestamp: new Date(),
@@ -391,15 +391,16 @@ export class RenderOrchestrationService {
           await this.renderEngineService.getJobProgress(job.id) :
           Progress.completed();
 
+        const estimatedCompletion = this.calculateEstimatedCompletion(job, progress);
         return {
           id: job.id,
-          status: job.status,
+          status: job.status as string,
           progress,
           overallScore: result?.overallScore || 0,
           clientCount: job.config.clients.length,
           screenshotCount: screenshots.length,
           createdAt: job.createdAt,
-          estimatedCompletion: this.calculateEstimatedCompletion(job, progress)
+          ...(estimatedCompletion && { estimatedCompletion })
         };
       })
     );
@@ -461,10 +462,10 @@ export class RenderOrchestrationService {
       userId: job.userId,
       htmlContent: job.htmlContent,
       config: job.config,
-      templateId: job.templateId,
-      subject: job.subject,
-      preheader: job.preheader,
-      priority: job.priority
+      ...(job.templateId && { templateId: job.templateId }),
+      ...(job.subject && { subject: job.subject }),
+      ...(job.preheader && { preheader: job.preheader }),
+      ...(job.priority !== undefined && { priority: job.priority })
     };
 
     return await this.createRenderJob(retryRequest);
@@ -605,7 +606,7 @@ export class RenderOrchestrationService {
   /**
    * Calculate estimated duration for job
    */
-  private calculateEstimatedDuration(clients: EmailClient[], config: RenderJobConfig): number {
+  private calculateEstimatedDuration(clients: EmailClient[], _config: RenderJobConfig): number {
     let totalDuration = 0;
 
     for (const client of clients) {
@@ -635,7 +636,8 @@ export class RenderOrchestrationService {
   /**
    * Validate render job configuration
    */
-  private async validateRenderJobConfig(config: RenderJobConfig): Promise<void> {
+  /*
+  private async _validateRenderJobConfig(config: RenderJobConfig): Promise<void> {
     // Validate clients exist
     const clients = await this.emailClientRepository.findByIds(config.clients);
     if (clients.length !== config.clients.length) {
@@ -657,6 +659,7 @@ export class RenderOrchestrationService {
       throw new Error('Screenshot quality must be between 60 and 100');
     }
   }
+  */
 
   private mapJobPriorityToQueuePriority(priority: JobPriorityType): 'low' | 'normal' | 'high' | 'urgent' {
     // Handle both string and enum types
@@ -676,7 +679,8 @@ export class RenderOrchestrationService {
     }
   }
 
-  private calculateCompatibilityScore(result: any): number {
+  /*
+  private _calculateCompatibilityScore(result: any): number {
     if (!result.success) {
       return 0;
     }
@@ -696,6 +700,7 @@ export class RenderOrchestrationService {
     
     return Math.max(0, Math.min(100, score));
   }
+  */
 
   /**
    * Get queue status for a job using new queue service

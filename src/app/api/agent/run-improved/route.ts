@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { task_type, input, context = {}, threadId } = body;
+    const { task_type, input, context = {}, /* _threadId */ } = body;
 
     console.log('\n🚀 === AGENT EXECUTION STARTED (FIXED JSON PARSING) ===');
     console.log(`📋 Task Type: ${task_type}`);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/shared/infrastructure/database/connection';
 import { email_templates } from '@/shared/infrastructure/database/schema';
-import { eq, like, and, desc, asc, count, or, ilike, sql, gte, lte } from 'drizzle-orm';
+import { eq, and, desc, asc, count, or, ilike, gte, lte } from 'drizzle-orm';
 import { 
   parseSearchQuery, 
   calculateRelevanceScore, 
@@ -331,15 +331,15 @@ async function searchInDatabase(
       description: dbTemplate.description || '',
       thumbnail: '/api/placeholder/400/300',
       createdAt: dbTemplate.created_at.toISOString(),
-      updatedAt: dbTemplate.updated_at?.toISOString(),
+      ...(dbTemplate.updated_at && { updatedAt: dbTemplate.updated_at.toISOString() }),
       status: (dbTemplate.status as 'published' | 'draft') || 'draft',
-      qualityScore: dbTemplate.quality_score || undefined,
+      ...(dbTemplate.quality_score && { qualityScore: dbTemplate.quality_score }),
       agentGenerated: true,
       userId: dbTemplate.user_id,
       briefText: dbTemplate.brief_text,
       generatedContent: dbTemplate.generated_content,
-      mjmlCode: dbTemplate.mjml_code,
-      htmlOutput: dbTemplate.html_output,
+      ...(dbTemplate.mjml_code && { mjmlCode: dbTemplate.mjml_code }),
+      ...(dbTemplate.html_output && { htmlOutput: dbTemplate.html_output }),
       designTokens: dbTemplate.design_tokens,
       openRate: Math.random() * 100,
       clickRate: Math.random() * 50,

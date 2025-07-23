@@ -35,17 +35,18 @@ interface ABTestResult {
 }
 
 export class ABTestingService {
-  private static _tests: Map<string, ABTest> = new Map()
-  private static _userAssignments: Map<string, Map<string, string>> = new Map()
-  private static _results: Map<string, ABTestResult> = new Map()
-  private static _isEnabled = false // DISABLED (renamed to avoid unused warning)
+  // DISABLED SERVICE - All static properties kept for potential future use
+  // private static _tests: Map<string, ABTest> = new Map() // Currently unused - disabled
+  // private static _userAssignments: Map<string, Map<string, string>> = new Map() // Currently unused - disabled  
+  // private static _results: Map<string, ABTestResult> = new Map() // Currently unused - disabled
+  // private static _isEnabled = false // DISABLED
 
   /**
    * Initialize A/B testing - DISABLED
    */
   static initialize() {
     console.log('🚫 A/B testing service is currently DISABLED')
-    this._isEnabled = false
+    // this._isEnabled = false // DISABLED
     return
     
     // COMMENTED OUT - Original implementation

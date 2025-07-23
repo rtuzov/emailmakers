@@ -27,47 +27,47 @@ const ListJobsQuerySchema = z.object({
 });
 
 // Response schemas
-const RenderJobResponseSchema = z.object({
-  id: z.string(),
-  status: z.string(),
-  progress: z.object({
-    percentage: z.number(),
-    currentStep: z.string(),
-    estimatedTimeRemaining: z.number().optional().nullable()
-  }),
-  _config: RenderJobConfigSchema,
-  templateId: z.string().optional().nullable(),
-  subject: z.string().optional().nullable(),
-  preheader: z.string().optional().nullable(),
-  priority: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  estimatedDuration: z.number().optional().nullable(),
-  actualDuration: z.number().optional().nullable()
-});
+// const RenderJobResponseSchema = z.object({
+//   id: z.string(),
+//   status: z.string(),
+//   progress: z.object({
+//     percentage: z.number(),
+//     currentStep: z.string(),
+//     estimatedTimeRemaining: z.number().optional().nullable()
+//   }),
+//   _config: RenderJobConfigSchema,
+//   templateId: z.string().optional().nullable(),
+//   subject: z.string().optional().nullable(),
+//   preheader: z.string().optional().nullable(),
+//   priority: z.number(),
+//   createdAt: z.string(),
+//   updatedAt: z.string(),
+//   estimatedDuration: z.number().optional().nullable(),
+//   actualDuration: z.number().optional().nullable()
+// });
 
-const JobSummaryResponseSchema = z.object({
-  id: z.string(),
-  status: z.string(),
-  progress: z.object({
-    percentage: z.number(),
-    currentStep: z.string(),
-    estimatedTimeRemaining: z.number().optional().nullable()
-  }),
-  overallScore: z.number(),
-  clientCount: z.number(),
-  screenshotCount: z.number(),
-  createdAt: z.string(),
-  estimatedCompletion: z.string().optional().nullable()
-});
+// const JobSummaryResponseSchema = z.object({
+//   id: z.string(),
+//   status: z.string(),
+//   progress: z.object({
+//     percentage: z.number(),
+//     currentStep: z.string(),
+//     estimatedTimeRemaining: z.number().optional().nullable()
+//   }),
+//   overallScore: z.number(),
+//   clientCount: z.number(),
+//   screenshotCount: z.number(),
+//   createdAt: z.string(),
+//   estimatedCompletion: z.string().optional().nullable()
+// });
 
 // Initialize service (in real implementation, this would be dependency injected)
 // For now, we'll create a mock service for demo purposes
 const renderOrchestrationService = {
-  async createRenderJob(_request: any) {
+  async createRenderJob(___request: any) {
     throw new Error('Service not fully implemented - demo mode');
   },
-  async getUserRenderJobs(userId: string) {
+  async getUserRenderJobs(_userId: string) {
     return []; // Return empty array for demo
   }
 } as Pick<RenderOrchestrationService, 'createRenderJob' | 'getUserRenderJobs'>;
@@ -76,10 +76,10 @@ const renderOrchestrationService = {
  * POST /api/render-testing/jobs
  * Create a new render testing job
  */
-export async function POST(_request: NextRequest) {
+export async function POST(___request: NextRequest) {
   try {
     // Get user ID from session/auth
-    const userId = await getUserIdFromRequest(request);
+    const userId = await getUserIdFromRequest(__request);
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -87,8 +87,8 @@ export async function POST(_request: NextRequest) {
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
+    // Parse and validate __request body
+    const body = await __request.json();
     const validatedData = CreateRenderJobSchema.parse(body);
 
     // Create render job
@@ -156,10 +156,10 @@ export async function POST(_request: NextRequest) {
  * GET /api/render-testing/jobs
  * List user's render testing jobs
  */
-export async function GET(_request: NextRequest) {
+export async function GET(___request: NextRequest) {
   try {
     // Get user ID from session/auth
-    const userId = await getUserIdFromRequest(request);
+    const userId = await getUserIdFromRequest(__request);
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -168,7 +168,7 @@ export async function GET(_request: NextRequest) {
     }
 
     // Parse query parameters
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(__request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
     const validatedQuery = ListJobsQuerySchema.parse(queryParams);
 
@@ -233,13 +233,13 @@ export async function GET(_request: NextRequest) {
 }
 
 /**
- * Helper function to get user ID from request
+ * Helper function to get user ID from __request
  * In real implementation, this would extract from JWT token or session
  */
-async function getUserIdFromRequest(_request: NextRequest): Promise<string | null> {
+async function getUserIdFromRequest(___request: NextRequest): Promise<string | null> {
   // Placeholder implementation
   // In real app, this would validate JWT token or session
-  const authHeader = request.headers.get('authorization');
+  const authHeader = __request.headers.get('authorization');
   if (!authHeader?.startsWith('Bearer ')) {
     return null;
   }
@@ -269,23 +269,23 @@ function getStatusDisplayName(status: string): string {
 /**
  * Error response helper
  */
-function createErrorResponse(message: string, status: number = 400) {
-  return NextResponse.json({ error: message }, { status });
-}
+// function createErrorResponse(message: string, status: number = 400) {
+//   return NextResponse.json({ error: message }, { status });
+// }
 
 /**
  * Validation error response helper
  */
-function createValidationErrorResponse(errors: z.ZodError) {
-  return NextResponse.json(
-    {
-      error: 'Validation error',
-      details: errors.errors.map(err => ({
-        field: err.path.join('.'),
-        message: err.message,
-        code: err.code
-      }))
-    },
-    { status: 400 }
-  );
-} 
+// function createValidationErrorResponse(errors: z.ZodError) {
+//   return NextResponse.json(
+//     {
+//       error: 'Validation error',
+//       details: errors.errors.map(err => ({
+//         field: err.path.join('.'),
+//         message: err.message,
+//         code: err.code
+//       }))
+//     },
+//     { status: 400 }
+//   );
+// } 

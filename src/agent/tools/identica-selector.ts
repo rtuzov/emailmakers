@@ -1,6 +1,6 @@
 // Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-handler';
-import { logger } from '../core/logger';
+// import { handleToolErrorUnified } from '../core/error-handler';
+// import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import
 interface ToolResult {
@@ -11,10 +11,10 @@ interface ToolResult {
 }
 
 // Local error handling function
-function handleToolError(toolName: string, error: any): ToolResult {
-  logger.error(`Tool ${toolName} failed`, { error });
-  return handleToolErrorUnified(toolName, error);
-}
+// function _handleToolError(_toolName: string, _error: any): ToolResult {
+//   logger.error(`Tool ${_toolName} failed`, { error: _error });
+//   return handleToolErrorUnified(_toolName, _error);
+// }
 import * as path from 'path';
 import * as fs from 'fs/promises';
 
@@ -192,9 +192,9 @@ function selectBestAssets(assets: IdenticaAsset[], params: IdenticaSelectionPara
     const logos = scoredAssets.filter(item => 
       item.asset.tags.includes('логотип') || item.asset.tags.includes('брендинг')
     );
-    if (logos.length > 0) {
+    if (logos.length > 0 && logos[0]) {
       selected.push(logos[0].asset);
-      logos[0].asset.tags.forEach(tag => usedTags.add(tag));
+      logos[0].asset?.tags?.forEach(tag => usedTags.add(tag));
     }
   }
   
@@ -203,9 +203,9 @@ function selectBestAssets(assets: IdenticaAsset[], params: IdenticaSelectionPara
     const premiumAssets = scoredAssets.filter(item => 
       item.asset.tags.includes('премиум') && !selected.includes(item.asset)
     );
-    if (premiumAssets.length > 0) {
+    if (premiumAssets.length > 0 && premiumAssets[0]) {
       selected.push(premiumAssets[0].asset);
-      premiumAssets[0].asset.tags.forEach(tag => usedTags.add(tag));
+      premiumAssets[0].asset?.tags?.forEach(tag => usedTags.add(tag));
     }
   }
   
@@ -334,7 +334,7 @@ function calculateSelectionConfidence(assets: IdenticaAsset[], params: IdenticaS
   
   const avgConfidence = assets.reduce((sum, asset) => sum + asset.confidence, 0) / assets.length;
   const targetCount = params.target_count;
-  const countPenalty = assets.length < targetCount ? 0.8 : 1.0;
+  const countPenalty = assets.length < (targetCount || 0) ? 0.8 : 1.0;
   
   return Math.min(0.95, avgConfidence * countPenalty);
 }

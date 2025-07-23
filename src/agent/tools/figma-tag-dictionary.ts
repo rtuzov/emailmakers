@@ -2,12 +2,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 // Define ToolResult locally to avoid circular dependency
-interface ToolResult {
-  success: boolean;
-  data?: any;
-  error?: string;
-  metadata?: Record<string, any>;
-}
+// interface ToolResult {
+//   success: boolean;
+//   data?: any;
+//   error?: string;
+//   metadata?: Record<string, any>;
+// }
 
 /**
  * Интерфейс для записи в словаре тегов

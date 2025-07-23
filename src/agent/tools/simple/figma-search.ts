@@ -58,8 +58,8 @@ export async function figmaSearch(params: FigmaSearchParams): Promise<FigmaSearc
       emotional_tone: normalizedTone as "positive" | "neutral" | "urgent" | "friendly",
       target_count: params.target_count,
       diversity_mode: true,
-      preferred_emotion: normalizedEmotion as "neutral" | "happy" | "angry" | "sad" | "confused" | undefined,
-      ...(params.airline ? { airline: params.airline } : {}),
+      ...(normalizedEmotion && { preferred_emotion: normalizedEmotion as "neutral" | "happy" | "angry" | "sad" | "confused" }),
+      ...(params.airline && { airline: params.airline }),
       use_local_only: true
     };
 

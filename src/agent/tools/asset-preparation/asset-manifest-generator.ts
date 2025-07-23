@@ -3,6 +3,7 @@ import * as path from 'path';
 import type {
   AssetItem
 } from './types';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 interface AssetManifest {
   version: string;
@@ -34,8 +35,8 @@ export async function generateAssetManifest(
   trace_id: string
 ): Promise<string> {
   console.log('\n📋 === SIMPLIFIED ASSET MANIFEST GENERATION ===');
-  console.log(`📋 Campaign: ${campaignId}`);
-  console.log(`📁 Campaign Path: ${campaignPath}`);
+    console.log(`📋 Campaign: ${campaignId}`);
+    console.log(`📁 Campaign Path: ${campaignPath}`);
   console.log(`🔍 Trace ID: ${trace_id}`);
   
   try {
@@ -244,6 +245,9 @@ export async function generateAssetManifest(
     
     console.log(`✅ Asset manifest saved: ${manifestPath}`);
     console.log(`📊 Manifest includes ${manifest.images.length} images and ${manifest.icons.length} icons`);
+    
+    // ✅ LOG TO CAMPAIGN
+    logToFile('info', `Asset manifest created with ${manifest.total_assets} total assets (${manifest.images.length} images, ${manifest.icons.length} icons)`, 'AssetManifestGenerator', trace_id);
     
     return JSON.stringify({
       success: true,

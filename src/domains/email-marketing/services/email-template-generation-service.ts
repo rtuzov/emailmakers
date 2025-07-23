@@ -547,8 +547,8 @@ export class EmailTemplateGenerationService {
 export class ContentGenerationPipeline {
   constructor(
     private llmOrchestrator: LLMOrchestratorService,
-    private _cacheService: CacheService,
-    private _metricsService: MetricsService
+    // private _cacheService: CacheService, // Currently unused
+    // private _metricsService: MetricsService // Currently unused
   ) {}
 
   async processContentBrief(

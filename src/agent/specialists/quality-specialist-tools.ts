@@ -236,9 +236,12 @@ export const loadDesignPackage = tool({
         metadataData = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
         console.log('✅ Package metadata loaded from design-context.json');
       } catch {
-        console.log('⚠️ Package metadata not found, using defaults');
+        if (!params.packageId) {
+          throw new Error('Package metadata not found and packageId is required');
+        }
+        console.log('⚠️ Package metadata not found, creating minimal metadata');
         metadataData = {
-          package_id: params.packageId || 'default',
+          package_id: params.packageId,
           quality_indicators: {},
           readiness_status: {},
           performance_metrics: {}
@@ -2391,9 +2394,6 @@ function runClientSpecificTests(clientName: string, mjmlTemplate: any, images: a
 // EXPORTS
 // ============================================================================
 
-// Import transfer function
-import { transferToDeliverySpecialist } from '../core/transfer-tools';
-
 export const qualitySpecialistTools = [
   loadDesignPackage,
   validateDesignPackageIntegrity,
@@ -2403,6 +2403,5 @@ export const qualitySpecialistTools = [
   analyzeEmailPerformance,
   generateQualityReport,
   createHandoffFile,
-  finalizeQualityAndTransferToDelivery,
-  transferToDeliverySpecialist
+  finalizeQualityAndTransferToDelivery
 ];

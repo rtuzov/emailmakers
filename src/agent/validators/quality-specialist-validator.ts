@@ -134,14 +134,19 @@ export class QualitySpecialistValidator {
         errors.filter(e => e.severity === 'critical' || e.severity === 'major') :
         errors.filter(e => e.severity === 'critical');
       
-      return {
+      const result: HandoffValidationResult = {
         isValid: criticalErrors.length === 0,
         errors: criticalErrors,
         warnings: warnings.concat(errors.filter(e => !criticalErrors.includes(e)).map(e => e.message)),
         correctionSuggestions: correctionSuggestions,
-        validatedData: criticalErrors.length === 0 ? typedData : undefined,
         validationDuration: Date.now() - startTime
       };
+      
+      if (criticalErrors.length === 0) {
+        result.validatedData = typedData;
+      }
+      
+      return result;
       
     } catch (error) {
       if (error instanceof z.ZodError) {

@@ -43,7 +43,7 @@ export interface FigmaFoldersResult {
 }
 
 export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFoldersResult> {
-  const _startTime // Currently unused = Date.now();
+  // const _startTime = Date.now(); // Currently unused
   
   try {
     console.log('📁 Getting Figma folders information:', {
@@ -69,7 +69,7 @@ export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFol
     }
 
     // Transform and filter folders
-    let folders = Object.entries(result.data.folders).map(([name, folder]: [string, any]) => ({
+    let folders = Object.entries((result.data && 'folders' in result.data && result.data.folders) ? result.data.folders : {}).map(([name, folder]: [string, any]) => ({
       name: name,
       priority: folder.priority,
       description: folder.description,
@@ -126,7 +126,7 @@ export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFol
   }
 }
 
-function generateFolderRecommendations(folders: any[], params: FigmaFoldersParams): string[] {
+function generateFolderRecommendations(folders: any[], _params: FigmaFoldersParams): string[] {
   const recommendations: string[] = [];
 
   if (folders.length === 0) {

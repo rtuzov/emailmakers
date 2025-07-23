@@ -406,7 +406,9 @@ export class MJMLProcessorService {
     // Apply client-specific CSS rules
     let clientOptimizedCSS = css;
     for (const client of targetClients) {
-      clientOptimizedCSS = await this.optimizeCSSForClient(clientOptimizedCSS, client);
+      if (client && typeof client === 'object') {
+        clientOptimizedCSS = await this.optimizeCSSForClient(clientOptimizedCSS, client);
+      }
     }
 
     // Inline CSS using juice with custom options
@@ -551,7 +553,7 @@ export class MJMLProcessorService {
 
   private extractCSS(html: string): string {
     const cssMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-    return cssMatch ? cssMatch[1] : '';
+    return cssMatch && cssMatch[1] ? cssMatch[1] : '';
   }
 
   // Client-specific optimization methods
@@ -1013,9 +1015,9 @@ class DarkModeProcessor {
     }
 
     // Apply color mappings to inline styles
-    for (const [lightColor, darkColor] of Object.entries(config.colorMappings)) {
-      const _colorRegex // Currently unused = new RegExp(`color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
-      const _bgColorRegex // Currently unused = new RegExp(`background-color:\\s*${lightColor.replace('#', '\\#')}`, 'gi');
+    for (const [_lightColor, _darkColor] of Object.entries(config.colorMappings)) {
+      // const _colorRegex = new RegExp(`color:\\s*${_lightColor.replace('#', '\\#')}`, 'gi'); // Currently unused
+      // const _bgColorRegex = new RegExp(`background-color:\\s*${_lightColor.replace('#', '\\#')}`, 'gi'); // Currently unused
       
       // Note: This is a simplified approach. Production would need more sophisticated parsing
       // to avoid conflicts with existing dark mode styles
@@ -1099,7 +1101,7 @@ class PerformanceOptimizer {
     });
   }
 
-  private async reduceSizeToTarget(html: string, targetSize: number): Promise<string> {
+  private async reduceSizeToTarget(html: string, _targetSize: number): Promise<string> {
     // Implement size reduction strategies
     // This is a placeholder - production would implement sophisticated size reduction
     return html;

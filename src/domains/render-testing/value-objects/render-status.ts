@@ -306,8 +306,8 @@ export class Progress {
   get currentStep(): string { return this.data.currentStep; }
   get totalSteps(): number { return this.data.totalSteps; }
   get completedSteps(): number { return this.data.completedSteps; }
-  get estimatedTimeRemaining(): number | undefined { return this.data.estimatedTimeRemaining; }
-  get details(): string | undefined { return this.data.details; }
+  get estimatedTimeRemaining(): number | undefined { return this.data.estimatedTimeRemaining ?? undefined; }
+  get details(): string | undefined { return this.data.details ?? undefined; }
 
   /**
    * Check if progress is complete

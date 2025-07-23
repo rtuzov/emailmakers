@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AccessibilityTestingService } from '../../../../domains/render-testing/services/accessibility-testing-service';
 import { PerformanceAnalysisService } from '../../../../domains/render-testing/services/performance-analysis-service';
 import { SpamAnalysisService } from '../../../../domains/render-testing/services/spam-analysis-service';
-import { ScreenshotCaptureService } from '../../../../domains/render-testing/services/screenshot-capture-service';
-import { StorageService } from '../../../../shared/infrastructure/storage/storage-service';
+// import { ScreenshotCaptureService } from '../../../../domains/render-testing/services/screenshot-capture-service';
+// import { StorageService } from '../../../../shared/infrastructure/storage/storage-service';
 import { MetricsService } from '../../../../shared/infrastructure/monitoring/metrics-service';
 
 /**
  * POST /api/render-testing/advanced
  * Run comprehensive advanced testing on email template
  */
-export async function POST(_request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { htmlContent, subject, fromEmail, options = {} } = body;
@@ -25,60 +25,60 @@ export async function POST(_request: NextRequest) {
 
     // Initialize services
     const metricsService = new MetricsService();
-    const storageConfig = {
-      provider: 'local' as const,
-      basePath: '/tmp/storage',
-      maxFileSize: 10 * 1024 * 1024,
-      allowedTypes: ['image/png', 'image/jpeg', 'text/html']
-    };
-    const storageService = new StorageService({
-      provider: 's3',
-      s3: {
-        region: process.env.AWS_REGION || 'us-east-1',
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-        bucket: process.env.S3_BUCKET || 'email-makers-storage'
-      }
-    }, metricsService);
+    // const storageConfig = {
+    //   provider: 'local' as const,
+    //   basePath: '/tmp/storage',
+    //   maxFileSize: 10 * 1024 * 1024,
+    //   allowedTypes: ['image/png', 'image/jpeg', 'text/html']
+    // };
+    // const storageService = new StorageService({
+    //   provider: 's3',
+    //   s3: {
+    //     region: process.env.AWS_REGION || 'us-east-1',
+    //     accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+    //     bucket: process.env.S3_BUCKET || 'email-makers-storage'
+    //   }
+    // }, metricsService);
     
     // Mock dependencies for screenshot service
-    const mockBrowserDriver = {
-      navigate: async () => {},
-      setViewport: async () => {},
-      setDarkMode: async () => {},
-      waitForLoad: async () => {},
-      takeScreenshot: async () => Buffer.alloc(0),
-      cleanup: async () => {}
-    };
-    const mockStorageProvider = {
-      upload: async () => ({ url: '', key: '', size: 0 }),
-      generateThumbnail: async () => Buffer.alloc(0),
-      delete: async () => {},
-      getSignedUrl: async () => ''
-    };
-    const mockContainerManager = {
-      createContainer: async () => '',
-      startContainer: async () => {},
-      stopContainer: async () => {},
-      removeContainer: async () => {},
-      executeCommand: async () => ''
-    };
-    const mockVMManager = {
-      createVM: async () => '',
-      startVM: async () => {},
-      stopVM: async () => {},
-      removeVM: async () => {},
-      executeCommand: async () => ''
-    };
+    // const mockBrowserDriver = {
+    //   navigate: async () => {},
+    //   setViewport: async () => {},
+    //   setDarkMode: async () => {},
+    //   waitForLoad: async () => {},
+    //   takeScreenshot: async () => Buffer.alloc(0),
+    //   cleanup: async () => {}
+    // };
+    // const mockStorageProvider = {
+    //   upload: async () => ({ url: '', key: '', size: 0 }),
+    //   generateThumbnail: async () => Buffer.alloc(0),
+    //   delete: async () => {},
+    //   getSignedUrl: async () => ''
+    // };
+    // const mockContainerManager = {
+    //   createContainer: async () => '',
+    //   startContainer: async () => {},
+    //   stopContainer: async () => {},
+    //   removeContainer: async () => {},
+    //   executeCommand: async () => ''
+    // };
+    // const mockVMManager = {
+    //   createVM: async () => '',
+    //   startVM: async () => {},
+    //   stopVM: async () => {},
+    //   removeVM: async () => {},
+    //   executeCommand: async () => ''
+    // };
     
-    const screenshotService = new ScreenshotCaptureService(
-      storageService, 
-      metricsService,
-      mockBrowserDriver,
-      mockStorageProvider,
-      mockContainerManager,
-      mockVMManager
-    );
+    // const screenshotService = new ScreenshotCaptureService(
+    //   storageService, 
+    //   metricsService,
+    //   mockBrowserDriver,
+    //   mockStorageProvider,
+    //   mockContainerManager,
+    //   mockVMManager
+    // );
     const accessibilityService = new AccessibilityTestingService(metricsService);
     const performanceService = new PerformanceAnalysisService(metricsService);
     const spamService = new SpamAnalysisService(metricsService);

@@ -64,17 +64,50 @@ Orchestrator → Campaign Folder → Data Collection → Content → Design → 
 - Заменяет все статические захардкоженные данные на AI-анализ
 - Передает богатый контекст в Content Specialist через handoff
 
-**Content Specialist получает данные от Data Collection и передает дальше:**
-- Использует собранные LLM-данные вместо статических функций
+**3. Content Specialist - ТРЕТИЙ в цепочке:**
+- Автоматический handoff из Data Collection Specialist через OpenAI SDK
+- **ПЕРЕДАЙ КОНКРЕТНЫЙ ЗАПРОС**: 
+  ```
+  "Generate compelling email content for [topic] using the collected data. 
+  Campaign folder: [campaign_path]
+  Available data: context analysis, pricing data, trend analysis, emotional profiling.
+  Create subject line, body content, CTAs, and technical specifications."
+  ```
+- Content Specialist использует собранные LLM-данные из папки data/
+- Сохраняет контент в папку content/ кампании
 - Завершает через `finalizeContentAndTransferToDesign()`
 
-**Design Specialist получает данные через campaign context:**
+**4. Design Specialist - ЧЕТВЕРТЫЙ в цепочке:**
+- Автоматический handoff из Content Specialist через OpenAI SDK
+- **ПЕРЕДАЙ КОНКРЕТНЫЙ ЗАПРОС**:
+  ```
+  "Create MJML email template using generated content.
+  Campaign folder: [campaign_path]
+  Available content: subject, body, CTAs, design brief, technical specs.
+  Generate responsive MJML, enhance with adaptive design, process assets."
+  ```
 - Завершает через `finalizeDesignAndTransferToQuality()`
 
-**Quality Specialist получает данные через campaign context:**
+**5. Quality Specialist - ПЯТЫЙ в цепочке:**
+- `transfer_to_Quality_Specialist()` - **ВЫЗЫВАЙ ПОСЛЕ Design**
+- **ПЕРЕДАЙ КОНКРЕТНЫЙ ЗАПРОС**:
+  ```
+  "Validate and test email templates for quality assurance.
+  Campaign folder: [campaign_path]
+  Available templates: MJML, HTML files, assets.
+  Run cross-client tests, accessibility checks, performance optimization."
+  ```
 - Завершает через `finalizeQualityAndTransferToDelivery()`
 
-**Delivery Specialist завершает workflow:**
+**6. Delivery Specialist - ФИНАЛЬНЫЙ в цепочке:**
+- `transfer_to_Delivery_Specialist()` - **ВЫЗЫВАЙ ПОСЛЕ Quality**
+- **ПЕРЕДАЙ КОНКРЕТНЫЙ ЗАПРОС**:
+  ```
+  "Package and deliver final email campaign.
+  Campaign folder: [campaign_path]
+  Available outputs: validated templates, assets, documentation.
+  Create ZIP package, delivery instructions, deployment guide."
+  ```
 - Финализирует через `createFinalDeliveryPackage()`
 
 ### ❌ СТАРАЯ СИСТЕМА (НЕ ИСПОЛЬЗУЙ - DEPRECATED)
@@ -92,5 +125,5 @@ Orchestrator → Campaign Folder → Data Collection → Content → Design → 
 - Используй finalization tools для передачи данных через campaign folder structure
 - Контекст поддерживает непрерывность LLM-данных в воркфлоу
 
-**ПОМНИ**: Не говори - ДЕЛАЙ! Вызывай `transfer_to_Data_Collection_Specialist()`!
+**ПОМНИ**: Не говори - ДЕЛАЙ! Создай папку кампании через `createCampaignFolderForOrchestrator()`, затем OpenAI SDK автоматически передаст управление Data Collection Specialist!
 

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { tool } from '@openai/agents';
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import EmailFolderManager, { EmailFolder } from './email-folder-manager';
+import EmailFolderManager from './email-folder-manager';
 import { campaignState } from '../core/campaign-state';
 
 // Schema for final email delivery
@@ -150,7 +150,7 @@ export const finalEmailDelivery = tool({
         campaign_id: params.campaign_id,
         final_html_path: finalHtmlPath,
         assets_included: assetsIncluded,
-        zip_path: zipPath,
+        ...(zipPath && { zip_path: zipPath }),
         total_size_kb: totalSizeKb,
         ready_for_sending: true,
         summary: `✅ Email ready for sending! HTML: ${Math.round(htmlStats.size / 1024 * 100) / 100}KB, Assets: ${assetsIncluded.length}, Total: ${totalSizeKb}KB`
@@ -182,7 +182,7 @@ function createCompleteEmailHtml(bodyHtml: string, subject: string, preheader: s
   let emailBody = bodyHtml;
   if (bodyHtml.includes('<body>') && bodyHtml.includes('</body>')) {
     const bodyMatch = bodyHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-    if (bodyMatch) {
+    if (bodyMatch && bodyMatch[1]) {
       emailBody = bodyMatch[1];
     }
   }

@@ -20,7 +20,7 @@ const metricsService = new MetricsService();
  */
 export async function GET(_request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(_request.url);
     const action = searchParams.get('action') || 'get_logs';
 
     switch (action) {
@@ -69,7 +69,7 @@ export async function GET(_request: NextRequest) {
  */
 export async function POST(_request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await _request.json();
     const { action } = body;
 
     switch (action) {
@@ -113,12 +113,12 @@ export async function POST(_request: NextRequest) {
 
 async function handleGetLogs(searchParams: URLSearchParams) {
   const filters: LogFilters = {
-    level: searchParams.get('level') || undefined,
     limit: parseInt(searchParams.get('limit') || '100'),
-    since: searchParams.get('since'),
-    tool: searchParams.get('tool'),
-    agent: searchParams.get('agent') || undefined,
-    traceId: searchParams.get('traceId') || undefined
+    ...(searchParams.get('since') && { since: searchParams.get('since')! }),
+    ...(searchParams.get('tool') && { tool: searchParams.get('tool')! }),
+    ...(searchParams.get('level') && { level: searchParams.get('level')! }),
+    ...(searchParams.get('agent') && { agent: searchParams.get('agent')! }),
+    ...(searchParams.get('traceId') && { traceId: searchParams.get('traceId')! })
   };
 
   const response = await logService.getAgentLogs(filters);
@@ -131,9 +131,9 @@ async function handleGetMetrics(searchParams: URLSearchParams) {
   const metricTypes = searchParams.get('metric_types')?.split(',') || undefined;
 
   const metrics = await metricsService.getPerformanceMetrics({
-    agent_id: agentId,
+    ...(agentId && { agent_id: agentId }),
     time_window_minutes: timeWindowMinutes,
-    metric_types: metricTypes
+    ...(metricTypes && { metric_types: metricTypes })
   });
 
   return NextResponse.json(metrics);
@@ -172,11 +172,11 @@ async function handleSearch(searchParams: URLSearchParams) {
 
 async function handleAnalyze(searchParams: URLSearchParams) {
   const filters: LogFilters = {
-    level: searchParams.get('level') || undefined,
-    agent: searchParams.get('agent') || undefined,
-    tool: searchParams.get('tool') || undefined,
-    startTime: searchParams.get('start_time') || undefined,
-    endTime: searchParams.get('end_time') || undefined
+    ...(searchParams.get('level') && { level: searchParams.get('level')! }),
+    ...(searchParams.get('agent') && { agent: searchParams.get('agent')! }),
+    ...(searchParams.get('tool') && { tool: searchParams.get('tool')! }),
+    ...(searchParams.get('start_time') && { startTime: searchParams.get('start_time')! }),
+    ...(searchParams.get('end_time') && { endTime: searchParams.get('end_time')! })
   };
 
   const patterns = await analyticsService.analyzeLogPatterns(filters);
@@ -186,9 +186,9 @@ async function handleAnalyze(searchParams: URLSearchParams) {
 async function handleExport(searchParams: URLSearchParams) {
   const format = searchParams.get('format') || 'json';
   const filters: LogFilters = {
-    level: searchParams.get('level') || undefined,
-    agent: searchParams.get('agent') || undefined,
-    tool: searchParams.get('tool') || undefined
+    ...(searchParams.get('level') && { level: searchParams.get('level')! }),
+    ...(searchParams.get('agent') && { agent: searchParams.get('agent')! }),
+    ...(searchParams.get('tool') && { tool: searchParams.get('tool')! })
   };
 
   const exportData = await logService.exportFilteredLogs(filters, format);
@@ -206,11 +206,13 @@ async function handleExport(searchParams: URLSearchParams) {
 
 async function handlePerformanceAnalysis(searchParams: URLSearchParams) {
   const analysisConfig: AnalysisConfig = {
-    agent_id: searchParams.get('agent_id') || undefined,
-    time_range: searchParams.get('start_time') && searchParams.get('end_time') ? {
-      start: searchParams.get('start_time')!,
-      end: searchParams.get('end_time')!
-    } : undefined,
+    ...(searchParams.get('agent_id') && { agent_id: searchParams.get('agent_id')! }),
+    ...(searchParams.get('start_time') && searchParams.get('end_time') && {
+      time_range: {
+        start: searchParams.get('start_time')!,
+        end: searchParams.get('end_time')!
+      }
+    }),
     include_trends: searchParams.get('include_trends') !== 'false',
     include_recommendations: searchParams.get('include_recommendations') !== 'false'
   };
@@ -221,11 +223,13 @@ async function handlePerformanceAnalysis(searchParams: URLSearchParams) {
 
 async function handleBottlenecks(searchParams: URLSearchParams) {
   const detectionConfig = {
-    agent_id: searchParams.get('agent_id') || undefined,
-    time_range: searchParams.get('start_time') && searchParams.get('end_time') ? {
-      start: searchParams.get('start_time')!,
-      end: searchParams.get('end_time')!
-    } : undefined,
+    ...(searchParams.get('agent_id') && { agent_id: searchParams.get('agent_id')! }),
+    ...(searchParams.get('start_time') && searchParams.get('end_time') && {
+      time_range: {
+        start: searchParams.get('start_time')!,
+        end: searchParams.get('end_time')!
+      }
+    }),
     severity_threshold: (searchParams.get('severity') as 'low' | 'medium' | 'high' | 'critical') || 'medium'
   };
 

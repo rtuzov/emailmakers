@@ -286,13 +286,13 @@ export async function GET(request: NextRequest) {
 function extractQualityOutputs(result: any) {
   const outputs = {
     summary: 'Quality analysis completed',
-    qualityScore: null,
-    validationResults: [],
-    compatibilityMatrix: null,
-    performanceMetrics: null,
-    accessibilityAudit: null,
-    recommendations: [],
-    files: []
+    qualityScore: null as number | null,
+    validationResults: [] as string[],
+    compatibilityMatrix: null as string | null,
+    performanceMetrics: null as string | null,
+    accessibilityAudit: null as string | null,
+    recommendations: [] as string[],
+    files: [] as string[]
   };
 
   try {

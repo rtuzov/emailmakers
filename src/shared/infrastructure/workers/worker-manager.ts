@@ -30,20 +30,16 @@ export interface WorkerStats {
 export class WorkerManager {
   private workers: Map<string, WorkerInstance> = new Map();
   private queueService: QueueService;
-  private storageService: StorageService;
-  private metricsService: MetricsService;
   private screenshotCaptureService: ScreenshotCaptureService;
   private emailClients: Map<string, EmailClient> = new Map();
   
   constructor(
     queueService: QueueService,
-    storageService: StorageService,
-    metricsService: MetricsService,
+    _storageService: StorageService, // Currently unused but kept for future use
+    _metricsService: MetricsService, // Currently unused but kept for future use
     screenshotCaptureService: ScreenshotCaptureService
   ) {
     this.queueService = queueService;
-    this.storageService = storageService;
-    this.metricsService = metricsService;
     this.screenshotCaptureService = screenshotCaptureService;
     
     // Initialize email clients (in production, this would be loaded from database)
@@ -213,8 +209,6 @@ export class WorkerManager {
     const worker = new WorkerInstance(
       config,
       this.queueService,
-      this.storageService,
-      this.metricsService,
       this.screenshotCaptureService,
       this.emailClients
     );
@@ -314,8 +308,8 @@ class WorkerInstance {
   constructor(
     config: WorkerConfig,
     private queueService: QueueService,
-    private _storageService: StorageService, // Marked as private for future use
-    private _metricsService: MetricsService, // Marked as private for future use
+    // private _storageService: StorageService, // Currently unused
+    // private _metricsService: MetricsService, // Currently unused
     private screenshotCaptureService: ScreenshotCaptureService,
     private emailClients: Map<string, EmailClient>
   ) {

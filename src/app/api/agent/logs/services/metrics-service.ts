@@ -208,7 +208,7 @@ export class MetricsService {
   /**
    * Debug agent execution
    */
-  async debugAgent(agentId: string, debugConfig: {
+  async debugAgent(agentId: string, _debugConfig: {
     enable_breakpoints?: boolean;
     watch_variables?: string[];
     log_level?: 'trace' | 'debug' | 'info';
@@ -500,8 +500,8 @@ export class MetricsService {
     if (executionTimes.length === 0) return 0;
     
     const timeSpan = executionTimes.length > 1 ? 
-      new Date(executionTimes[executionTimes.length - 1].timestamp).getTime() - 
-      new Date(executionTimes[0].timestamp).getTime() : 60000;
+      new Date(executionTimes[executionTimes.length - 1]?.timestamp ?? new Date()).getTime() - 
+      new Date(executionTimes[0]?.timestamp ?? new Date()).getTime() : 60000;
     
     return (executionTimes.length / timeSpan) * 60000; // Operations per minute
   }
@@ -708,12 +708,12 @@ export class MetricsService {
     }
   }
 
-  private aggregateErrorRates(profiles: PerformanceProfile[], aggregation: string): number {
+  private aggregateErrorRates(profiles: PerformanceProfile[], _aggregation: string): number {
     const allExecutions = profiles.flatMap(p => (p || {}).data.execution_times);
     return this.calculateErrorRate(allExecutions);
   }
 
-  private aggregateThroughput(profiles: PerformanceProfile[], aggregation: string): number {
+  private aggregateThroughput(profiles: PerformanceProfile[], _aggregation: string): number {
     const allExecutions = profiles.flatMap(p => (p || {}).data.execution_times);
     return this.calculateThroughput(allExecutions);
   }

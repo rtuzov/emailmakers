@@ -3,12 +3,12 @@
  */
 
 export class ScreenshotGenerator {
-  static async generateScreenshot(url: string, options?: any): Promise<string> {
+  static async generateScreenshot(url: string, _options?: any): Promise<string> {
     console.log('ScreenshotGenerator (stub): generating screenshot for', url);
     return '/assets/stub/screenshot.png';
   }
   
-  static async captureEmail(_html: string, options?: any): Promise<string> {
+  static async captureEmail(_html: string, _options?: any): Promise<string> {
     console.log('ScreenshotGenerator (stub): capturing email HTML');
     return '/assets/stub/email-screenshot.png';
   }

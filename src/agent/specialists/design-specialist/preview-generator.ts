@@ -7,7 +7,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { buildDesignContext } from './design-context';
+import { buildDesignContext, loadContextFromHandoffFiles } from './design-context';
 
 /**
  * Generate preview files for email template
@@ -29,13 +29,25 @@ export const generatePreviewFiles = tool({
       let mjmlTemplate;
       let campaignPath;
       
-      // Get content context from design context (loaded by loadDesignContext)
+      // Get content context from design context
       if ((context?.context as any)?.designContext?.content_context) {
         contentContext = (context?.context as any)?.designContext?.content_context;
         campaignPath = (context?.context as any)?.designContext?.campaign_path;
         console.log('✅ Using content context from design context (loaded by loadDesignContext)');
       } else {
-        throw new Error('Content context not found in design context. loadDesignContext must be called first to load campaign context.');
+        console.warn('⚠️ Content context not found in design context, attempting to load from handoff files...');
+        // Fallback: try to load from handoff files
+        if ((context?.context as any)?.campaignPath) {
+          const handoffDirectory = path.join((context?.context as any)?.campaignPath, 'handoffs');
+          const contextData = await loadContextFromHandoffFiles(handoffDirectory);
+          contentContext = contextData?.content_context;
+          campaignPath = (context?.context as any)?.campaignPath;
+          if (!contentContext) {
+            throw new Error('Content context not found in design context or handoff files. loadDesignContext must be called first.');
+          }
+        } else {
+          throw new Error('Campaign path not available in context. Content context cannot be loaded.');
+        }
       }
       
       // Get MJML template from design context  
@@ -43,20 +55,33 @@ export const generatePreviewFiles = tool({
         mjmlTemplate = (context?.context as any)?.designContext?.mjml_template;
         console.log('✅ Using MJML template from design context');
       } else {
-        throw new Error('MJML template not found in design context. generateMjmlTemplate must be completed first.');
+        console.warn('⚠️ MJML template not found in design context, attempting to load from file...');
+        // Fallback: try to load from file
+        if (campaignPath) {
+          const mjmlPath = path.join(campaignPath, 'templates', 'email-template.mjml');
+          const htmlPath = path.join(campaignPath, 'templates', 'email-template.html');
+          try {
+            const mjmlSource = await fs.readFile(mjmlPath, 'utf8');
+            const htmlContent = await fs.readFile(htmlPath, 'utf8');
+            mjmlTemplate = {
+              source: mjmlSource,
+              html_content: htmlContent,
+              mjml_path: mjmlPath,
+              html_path: htmlPath
+            };
+            console.log('✅ MJML template loaded from file');
+          } catch (error) {
+            throw new Error('MJML template not found in design context or file system. generateMjmlTemplate must be completed first.');
+          }
+        } else {
+          throw new Error('Campaign path not available. MJML template cannot be loaded.');
+        }
       }
       
-      // 🔧 LOAD HTML CONTENT FROM COMPILED FILE IF NOT AVAILABLE IN TEMPLATE
+      // Get HTML content from MJML template
       let htmlContent = mjmlTemplate.html_content;
       if (!htmlContent) {
-        try {
-          const htmlTemplatePath = path.join(campaignPath, 'templates', 'email-template.html');
-          htmlContent = await fs.readFile(htmlTemplatePath, 'utf8');
-          console.log('✅ Loaded HTML content from compiled file');
-        } catch (error) {
-          console.warn('⚠️ Could not load HTML content from file:', error);
-          htmlContent = 'HTML content not available - template may not be compiled yet';
-        }
+        throw new Error('HTML content not available - MJML template must be compiled first');
       }
       
       if (!campaignPath) {
@@ -190,8 +215,12 @@ export const generatePreviewFiles = tool({
       return `Preview files generated successfully! Desktop preview: ${desktopPreviewPath}. Mobile preview: ${mobilePreviewPath}. Previews ready for review and testing.`;
       
     } catch (error) {
-      console.error('❌ Preview generation failed:', error);
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : 'No stack trace';
+      console.error('❌ Preview generation failed:', errorMessage);
+      console.error('❌ Error stack:', errorStack);
+      console.error('❌ Error object:', error);
+      throw new Error(`Preview generation failed: ${errorMessage}`);
     }
   }
 }); 

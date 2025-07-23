@@ -90,6 +90,7 @@ export default function AgentLogsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshInterval] = useState(10);
   const [levelFilter, setLevelFilter] = useState<string>('all');
   const [toolFilter, setToolFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,11 +108,11 @@ export default function AgentLogsPage() {
 
   // Phase 3.3.6: Performance debugging state
   const [showPerformanceTools, setShowPerformanceTools] = useState(false);
-  const [_profilingData, setProfilingData] = useState<any>(null);
+  // const [_profilingData, setProfilingData] = useState<any>(null);
   const [performanceAnalysis, setPerformanceAnalysis] = useState<any>(null);
   const [activeProfiles, setActiveProfiles] = useState<any[]>([]);
   const [debugSessions, setDebugSessions] = useState<any[]>([]);
-  const [showProfilingModal, setShowProfilingModal] = useState(false);
+  // const [showProfilingModal, setShowProfilingModal] = useState(false);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<string>('content-specialist');
 
@@ -419,10 +420,13 @@ export default function AgentLogsPage() {
         fetchAlerts();
         fetchActiveProfiles();
         fetchDebugSessions();
-      }, 10000); // Refresh every 10 seconds
+      }, refreshInterval * 1000);
+      
       return () => clearInterval(interval);
     }
-  }, [autoRefresh, levelFilter, toolFilter, limit, since]);
+    
+    return undefined;
+  }, [autoRefresh, refreshInterval, levelFilter, toolFilter, limit, since]);
 
   // Manual refresh
   const handleRefresh = () => {
@@ -632,7 +636,7 @@ export default function AgentLogsPage() {
                   >
                     <option value="all">Все агенты</option>
                     {availableTools.map(tool => (
-                      <option key={tool} value={tool}>{getToolDisplayName(tool)}</option>
+                      <option key={tool} value={tool}>{getToolDisplayName(tool || '')}</option>
                     ))}
                   </select>
                 </div>

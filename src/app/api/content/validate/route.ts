@@ -56,8 +56,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       case 'figma_url':
         brief = ContentBrief.fromFigmaURL(
           validatedData.content,
-          validatedData.title,
-          validatedData.description,
+          validatedData.title || undefined,
+          validatedData.description || undefined,
           {
             brandGuidelines: validatedData.brandGuidelines ? {
               tone: validatedData.brandGuidelines.tone || 'professional',
@@ -87,15 +87,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       case 'json':
         brief = ContentBrief.fromJSON(
           validatedData.content,
-          validatedData.title,
-          validatedData.description
+          validatedData.title || undefined,
+          validatedData.description || undefined
         );
         break;
       case 'text':
         brief = ContentBrief.fromText(
           validatedData.content,
-          validatedData.title,
-          validatedData.description,
+          validatedData.title || undefined,
+          validatedData.description || undefined,
           {
             brandGuidelines: validatedData.brandGuidelines ? {
               tone: validatedData.brandGuidelines.tone || 'professional',

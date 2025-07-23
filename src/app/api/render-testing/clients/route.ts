@@ -20,83 +20,83 @@ const ListClientsQuerySchema = z.object({
 });
 
 // Response schemas
-const EmailClientResponseSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  displayName: z.string(),
-  vendor: z.string(),
-  version: z.string().optional().nullable(),
-  type: z.string(),
-  platform: z.string(),
-  renderingEngine: z.string(),
-  marketShare: z.number().optional().nullable(),
-  capabilities: z.object({
-    darkMode: z.boolean(),
-    responsiveDesign: z.boolean(),
-    css3Support: z.boolean(),
-    webFonts: z.boolean(),
-    backgroundImages: z.boolean(),
-    mediaQueries: z.boolean(),
-    flexbox: z.boolean(),
-    grid: z.boolean(),
-    animations: z.boolean(),
-    interactiveElements: z.boolean(),
-    customProperties: z.boolean(),
-    maxEmailWidth: z.number().optional().nullable(),
-    maxEmailHeight: z.number().optional().nullable(),
-    imageFormats: z.array(z.string()),
-    videoSupport: z.boolean(),
-    accessibilityFeatures: z.boolean()
-  }),
-  testConfig: z.object({
-    enabled: z.boolean(),
-    priority: z.number(),
-    timeout: z.number(),
-    retries: z.number(),
-    screenshotDelay: z.number(),
-    loadWaitTime: z.number(),
-    darkModeTest: z.boolean(),
-    viewports: z.array(z.object({
-      width: z.number(),
-      height: z.number(),
-      devicePixelRatio: z.number(),
-      name: z.string(),
-      isDefault: z.boolean()
-    }))
-  }),
-  automationConfig: z.object({
-    workerType: z.string(),
-    containerImage: z.string().optional().nullable(),
-    vmTemplate: z.string().optional().nullable(),
-    browserConfig: z.object({
-      browser: z.string().optional().nullable(),
-      headless: z.boolean(),
-      args: z.array(z.string()).optional().nullable()
-    }).optional().nullable()
-  }),
-  isActive: z.boolean(),
-  tags: z.array(z.string()),
-  compatibilityScore: z.number(),
-  estimatedDuration: z.number(),
-  supportsDarkMode: z.boolean(),
-  isHighPriority: z.boolean(),
-  createdAt: z.string(),
-  updatedAt: z.string()
-});
+// const EmailClientResponseSchema = z.object({
+//   id: z.string(),
+//   name: z.string(),
+//   displayName: z.string(),
+//   vendor: z.string(),
+//   version: z.string().optional().nullable(),
+//   type: z.string(),
+//   platform: z.string(),
+//   renderingEngine: z.string(),
+//   marketShare: z.number().optional().nullable(),
+//   capabilities: z.object({
+//     darkMode: z.boolean(),
+//     responsiveDesign: z.boolean(),
+//     css3Support: z.boolean(),
+//     webFonts: z.boolean(),
+//     backgroundImages: z.boolean(),
+//     mediaQueries: z.boolean(),
+//     flexbox: z.boolean(),
+//     grid: z.boolean(),
+//     animations: z.boolean(),
+//     interactiveElements: z.boolean(),
+//     customProperties: z.boolean(),
+//     maxEmailWidth: z.number().optional().nullable(),
+//     maxEmailHeight: z.number().optional().nullable(),
+//     imageFormats: z.array(z.string()),
+//     videoSupport: z.boolean(),
+//     accessibilityFeatures: z.boolean()
+//   }),
+//   testConfig: z.object({
+//     enabled: z.boolean(),
+//     priority: z.number(),
+//     timeout: z.number(),
+//     retries: z.number(),
+//     screenshotDelay: z.number(),
+//     loadWaitTime: z.number(),
+//     darkModeTest: z.boolean(),
+//     viewports: z.array(z.object({
+//       width: z.number(),
+//       height: z.number(),
+//       devicePixelRatio: z.number(),
+//       name: z.string(),
+//       isDefault: z.boolean()
+//     }))
+//   }),
+//   automationConfig: z.object({
+//     workerType: z.string(),
+//     containerImage: z.string().optional().nullable(),
+//     vmTemplate: z.string().optional().nullable(),
+//     browserConfig: z.object({
+//       browser: z.string().optional().nullable(),
+//       headless: z.boolean(),
+//       args: z.array(z.string()).optional().nullable()
+//     }).optional().nullable()
+//   }),
+//   isActive: z.boolean(),
+//   tags: z.array(z.string()),
+//   compatibilityScore: z.number(),
+//   estimatedDuration: z.number(),
+//   supportsDarkMode: z.boolean(),
+//   isHighPriority: z.boolean(),
+//   createdAt: z.string(),
+//   updatedAt: z.string()
+// });
 
-const ClientSummaryResponseSchema = z.object({
-  id: z.string(),
-  displayName: z.string(),
-  type: z.string(),
-  platform: z.string(),
-  vendor: z.string(),
-  compatibilityScore: z.number(),
-  isActive: z.boolean(),
-  supportsDarkMode: z.boolean(),
-  estimatedDuration: z.number(),
-  marketShare: z.number().optional().nullable(),
-  tags: z.array(z.string())
-});
+// const ClientSummaryResponseSchema = z.object({
+//   id: z.string(),
+//   displayName: z.string(),
+//   type: z.string(),
+//   platform: z.string(),
+//   vendor: z.string(),
+//   compatibilityScore: z.number(),
+//   isActive: z.boolean(),
+//   supportsDarkMode: z.boolean(),
+//   estimatedDuration: z.number(),
+//   marketShare: z.number().optional().nullable(),
+//   tags: z.array(z.string())
+// });
 
 // Initialize service (in real implementation, this would be dependency injected)
 // For now, we'll create a mock service that returns predefined clients
@@ -121,7 +121,7 @@ const renderOrchestrationService = {
 export async function GET(_request: NextRequest) {
   try {
     // Parse query parameters
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(_request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
     const validatedQuery = ListClientsQuerySchema.parse(queryParams);
 
@@ -256,7 +256,7 @@ export async function GET(_request: NextRequest) {
 export async function POST(_request: NextRequest) {
   try {
     // Check admin privileges
-    const isAdmin = await checkAdminPrivileges(request);
+    const isAdmin = await checkAdminPrivileges(_request);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Admin privileges required' },
@@ -265,7 +265,7 @@ export async function POST(_request: NextRequest) {
     }
 
     // Parse request body
-    const body = await request.json();
+    // const _body = await request.json();
     
     // For demo purposes, we'll return predefined clients
     // In real implementation, this would validate and save new client config
@@ -277,7 +277,11 @@ export async function POST(_request: NextRequest) {
     ];
 
     // Return the first predefined client as example
-    const client = (predefinedClients && predefinedClients[0] ? predefinedClients[0] : "");
+    const client = (predefinedClients && predefinedClients[0] ? predefinedClients[0] : null);
+    
+    if (!client) {
+      return NextResponse.json({ error: 'No client found' }, { status: 404 });
+    }
     
     const response = {
       id: client.id,
@@ -335,8 +339,8 @@ export async function POST(_request: NextRequest) {
 async function checkAdminPrivileges(_request: NextRequest): Promise<boolean> {
   // Placeholder implementation
   // In real app, this would check user roles/permissions
-  const authHeader = request.headers.get('authorization');
-  const adminToken = request.headers.get('x-admin-token');
+  // const _authHeader = request.headers.get('authorization');
+  const adminToken = _request.headers.get('x-admin-token');
   
   // Mock admin check
   return adminToken === 'admin-secret-token';
@@ -345,56 +349,56 @@ async function checkAdminPrivileges(_request: NextRequest): Promise<boolean> {
 /**
  * Helper function to get client capabilities summary
  */
-function getCapabilitiesSummary(clients: any[]) {
-  const capabilities = [
-    'darkMode',
-    'responsiveDesign',
-    'css3Support',
-    'webFonts',
-    'backgroundImages',
-    'mediaQueries',
-    'flexbox',
-    'grid',
-    'animations',
-    'interactiveElements',
-    'customProperties',
-    'videoSupport',
-    'accessibilityFeatures'
-  ];
-
-  const summary: Record<string, number> = {};
-
-  capabilities.forEach(capability => {
-    summary[capability] = clients.filter(client => 
-      client.capabilities[capability]
-    ).length;
-  });
-
-  return summary;
-}
+// function getCapabilitiesSummary(clients: any[]) {
+//   const capabilities = [
+//     'darkMode',
+//     'responsiveDesign',
+//     'css3Support',
+//     'webFonts',
+//     'backgroundImages',
+//     'mediaQueries',
+//     'flexbox',
+//     'grid',
+//     'animations',
+//     'interactiveElements',
+//     'customProperties',
+//     'videoSupport',
+//     'accessibilityFeatures'
+//   ];
+//
+//   const summary: Record<string, number> = {};
+//
+//   capabilities.forEach(capability => {
+//     summary[capability] = clients.filter(client => 
+//       client.capabilities[capability]
+//     ).length;
+//   });
+//
+//   return summary;
+// }
 
 /**
  * Helper function to get platform distribution
  */
-function getPlatformDistribution(clients: any[]) {
-  const platforms: Record<string, number> = {};
-
-  clients.forEach(client => {
-    platforms[client.platform] = (platforms[client.platform] || 0) + 1;
-  });
-
-  return platforms;
-}
+// function getPlatformDistribution(clients: any[]) {
+//   const platforms: Record<string, number> = {};
+//
+//   clients.forEach(client => {
+//     platforms[client.platform] = (platforms[client.platform] || 0) + 1;
+//   });
+//
+//   return platforms;
+// }
 
 /**
  * Helper function to get vendor distribution
  */
-function getVendorDistribution(clients: any[]) {
-  const vendors: Record<string, number> = {};
-
-  clients.forEach(client => {
-    vendors[client.vendor] = (vendors[client.vendor] || 0) + 1;
-  });
-
-  return vendors;
-} 
+// function getVendorDistribution(clients: any[]) {
+//   const vendors: Record<string, number> = {};
+//
+//   clients.forEach(client => {
+//     vendors[client.vendor] = (vendors[client.vendor] || 0) + 1;
+//   });
+//
+//   return vendors;
+// } 

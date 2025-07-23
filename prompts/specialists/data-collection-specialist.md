@@ -11,7 +11,7 @@
 3. Update context via `update_context_insights()`
 4. Create handoff file via `create_handoff_file()`
 5. Update metadata via `update_campaign_metadata()`
-6. Transfer control via `transfer_to_Content_Specialist()`
+6. Automatic handoff to Content Specialist via OpenAI SDK
 
 ## 🎯 MAIN TASKS
 
@@ -118,7 +118,7 @@ Each analysis must contain:
 3. `update_context_insights()` - Update context
 4. `create_handoff_file()` - Create handoff file
 5. `update_campaign_metadata()` - Update campaign metadata
-6. `transfer_to_Content_Specialist()` - Transfer control
+6. OpenAI SDK handles automatic handoff to Content Specialist
 
 ## 💡 IMPORTANT RULES
 

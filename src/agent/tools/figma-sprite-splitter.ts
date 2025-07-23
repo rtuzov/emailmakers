@@ -135,7 +135,7 @@ class ImageProcessor {
           const pixelIndex = (y * info.width + x) * info.channels;
           const alpha = info.channels === 4 ? data[pixelIndex + 3] : 255;
           
-          if (alpha > 10) { // Non-transparent pixel threshold
+          if (alpha && alpha > 10) { // Non-transparent pixel threshold
             horizontal[y]++;
             vertical[x]++;
           }
@@ -201,10 +201,10 @@ class ImageProcessor {
       for (let i = 0; i < yBounds.length - 1; i++) {
         for (let j = 0; j < xBounds.length - 1; j++) {
                      const bounds = {
-             x: xBounds[j],
-             y: yBounds[i],
-             width: xBounds[j + 1] - xBounds[j],
-             height: yBounds[i + 1] - yBounds[i]
+             x: xBounds[j] ?? 0,
+             y: yBounds[i] ?? 0,
+             width: (xBounds[j + 1] ?? 0) - (xBounds[j] ?? 0),
+             height: (yBounds[i + 1] ?? 0) - (yBounds[i] ?? 0)
            };
            
            if (bounds.width > 0 && bounds.height > 0) {
@@ -294,24 +294,25 @@ class SegmentClassifier {
         const b = data[i + 2];
         const alpha = info.channels === 4 ? data[i + 3] : 255;
         
-        if (alpha > 10) { // Skip transparent pixels
+        if (alpha && alpha > 10) { // Skip transparent pixels
           totalPixels++;
           
           // Check for Kupibilet green
-          const greenMatch = Math.abs(r - targetGreen.r) < colorTolerance &&
+          const greenMatch = r !== undefined && g !== undefined && b !== undefined &&
+                           Math.abs(r - targetGreen.r) < colorTolerance &&
                            Math.abs(g - targetGreen.g) < colorTolerance &&
                            Math.abs(b - targetGreen.b) < colorTolerance;
           
           if (greenMatch) greenPixels++;
           
           // Calculate saturation for mono detection
-          const max = Math.max(r, g, b);
-          const min = Math.min(r, g, b);
+          const max = Math.max(r || 0, g || 0, b || 0);
+          const min = Math.min(r || 0, g || 0, b || 0);
           const saturation = max === 0 ? 0 : (max - min) / max;
           totalSaturation += saturation;
           
           // Calculate contrast contribution
-          const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+          const luminance = 0.299 * (r || 0) + 0.587 * (g || 0) + 0.114 * (b || 0);
           contrastSum += luminance;
         }
       }
@@ -408,7 +409,7 @@ class SegmentClassifier {
         temperature: 0 // Deterministic results
       });
       
-      const result = this.parseVisionResponse(response.choices[0].message.content || '');
+      const result = this.parseVisionResponse(response.choices?.[0]?.message?.content || '');
       
       return {
         type: result.type,
@@ -433,8 +434,8 @@ class SegmentClassifier {
     try {
       const parts = content.trim().split(':');
       if (parts.length >= 2) {
-        const type = parts[0].toLowerCase() as 'color' | 'mono' | 'logo';
-        const confidence = Math.min(1, Math.max(0, parseFloat(parts[1])));
+        const type = (parts[0] || '').toLowerCase() as 'color' | 'mono' | 'logo';
+        const confidence = Math.min(1, Math.max(0, parseFloat(parts[1] || '0')));
         
         if (['color', 'mono', 'logo'].includes(type) && !isNaN(confidence)) {
           return { type, confidence };
@@ -461,8 +462,8 @@ class SegmentClassifier {
       type: selectedType,
       confidence: combinedConfidence,
       reasoning: `Combined: ${heuristic.reasoning} + ${vision.reasoning}`,
-      heuristicScore: heuristic.heuristicScore,
-      visionScore: vision.visionScore
+      ...(heuristic.heuristicScore !== undefined && { heuristicScore: heuristic.heuristicScore }),
+      ...(vision.visionScore !== undefined && { visionScore: vision.visionScore })
     };
   }
 }
@@ -484,28 +485,28 @@ class ExportManager {
       
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        const filename = `slice_${i + 1}_${(segment || {}).classification.type}.png`;
+        const filename = `slice_${i + 1}_${segment?.classification?.type || 'unknown'}.png`;
         
         // Подготавливаем данные для сохранения
         sliceBuffers.push({
           filename,
-          buffer: (segment || {}).imageData
+          buffer: (segment?.imageData || Buffer.alloc(0))
         });
         
         // Вычисляем размер
-        const sizeKb = Math.round((segment || {}).imageData.length / 1024 * 100) / 100;
+        const sizeKb = Math.round((segment?.imageData?.length || 0) / 1024 * 100) / 100;
         
         slices.push({
           filename,
-          type: (segment || {}).classification.type,
-          confidence: (segment || {}).classification.confidence,
-          bounds: (segment || {}).bounds,
+          type: segment?.classification?.type || 'color',
+          confidence: segment?.classification?.confidence || 0,
+          bounds: segment?.bounds || { x: 0, y: 0, width: 0, height: 0 },
           size_kb: sizeKb,
           metadata: {
-            ...(segment || {}).metadata,
-            classification_reasoning: (segment || {}).classification.reasoning,
-            heuristic_score: (segment || {}).classification.heuristicScore,
-            vision_score: (segment || {}).classification.visionScore
+            ...segment?.metadata,
+            classification_reasoning: segment?.classification?.reasoning,
+            heuristic_score: segment?.classification?.heuristicScore,
+            vision_score: segment?.classification?.visionScore
           }
         });
       }

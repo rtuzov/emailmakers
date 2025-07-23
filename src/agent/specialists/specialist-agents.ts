@@ -18,14 +18,9 @@ import {
   getRegistryStatistics
 } from '../core/tool-registry';
 import { promises as fs } from 'fs';
+import { initializeCampaignLogging, logToFile } from '../../shared/utils/campaign-logger';
 import path from 'path';
-import {
-  transferToDataCollectionSpecialist,
-  transferToContentSpecialist,
-  transferToDesignSpecialist,
-  transferToQualitySpecialist,
-  transferToDeliverySpecialist
-} from '../core/transfer-tools';
+// Transfer tools no longer needed - using automatic handoffs via OpenAI SDK
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { commonTools } from '../core/common-tools';
@@ -68,7 +63,7 @@ export function getEmailWorkflowSequence() {
 /**
  * Campaign Folder Creation Tool for Orchestrator
  */
-export { transferToDataCollectionSpecialist } from '../core/transfer-tools';
+// No longer exporting transfer tools - using automatic handoffs
 
 export const createCampaignFolderForOrchestrator = tool({
   name: 'create_campaign_folder',
@@ -196,6 +191,20 @@ ${params.user_request}
       console.log(`📂 Path: ${campaignPath}`);
       console.log(`📋 Subdirectories: ${subdirs.join(', ')}`);
       
+      // ✅ INITIALIZE CAMPAIGN LOGGING
+      try {
+        await initializeCampaignLogging(campaignPath, campaignId);
+        logToFile('info', `Campaign ${campaignId} initialized successfully`, 'Orchestrator', params.trace_id || undefined);
+        logToFile('info', `Campaign name: ${correctedCampaignName}`, 'Orchestrator', params.trace_id || undefined);
+        logToFile('info', `Brand: ${params.brand_name}`, 'Orchestrator', params.trace_id || undefined);
+        logToFile('info', `Target audience: ${params.target_audience}`, 'Orchestrator', params.trace_id || undefined);
+        logToFile('info', `User request: ${params.user_request}`, 'Orchestrator', params.trace_id || undefined);
+        console.log('📋 Campaign logging initialized successfully');
+      } catch (loggingError) {
+        console.error('⚠️ Failed to initialize campaign logging:', loggingError);
+        // Don't fail the whole process if logging fails
+      }
+      
       // ✅ CRITICAL: Save campaign context to OpenAI SDK context parameter for specialists
       if (context) {
         (context as any).context = {
@@ -282,11 +291,6 @@ export async function createEmailCampaignOrchestrator() {
   
   const orchestratorTools = [
     createCampaignFolderForOrchestrator,
-    transferToDataCollectionSpecialist,
-    transferToContentSpecialist,
-    transferToDesignSpecialist,
-    transferToQualitySpecialist,
-    transferToDeliverySpecialist,
     ...commonTools
   ];
   
@@ -296,13 +300,7 @@ export async function createEmailCampaignOrchestrator() {
     instructions: instructions,
     handoffDescription: 'I orchestrate the entire email campaign workflow by coordinating between specialized agents for data collection, content generation, design creation, quality assurance, and delivery.',
     tools: orchestratorTools,
-    handoffs: [
-      dataCollectionSpecialistAgent,
-      contentSpecialistAgent,
-      designSpecialistAgent,
-      qualitySpecialistAgent,
-      deliverySpecialistAgent
-    ]
+    handoffs: [dataCollectionSpecialistAgent]
   });
 
   console.log('✅ Email Campaign Orchestrator created with transfer functions and handoffs');

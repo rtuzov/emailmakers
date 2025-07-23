@@ -33,6 +33,7 @@ import {
   getContextManager
   // type AgentRunContext 
 } from './core/context-manager';
+import { finalizeCampaignLogging, logToFile } from '../shared/utils/campaign-logger';
 
 // ============================================================================
 // MAIN EMAIL-MAKERS AGENT CLASS
@@ -107,7 +108,7 @@ export class EmailMakersAgent {
           mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
           apiRequest: options?.metadata?.apiRequest || false,
           directSpecialistRun: !!options?.specialist,
-          maxTurns: options?.specialist ? 8 : 25,
+          maxTurns: options?.specialist ? 8 : 35, // ✅ УВЕЛИЧЕНО: с 25 до 35 для сложных workflow
           timeout: null,
           retryAttempt: 0
         },
@@ -179,10 +180,29 @@ export class EmailMakersAgent {
       });
 
       console.log(`✅ Full workflow completed via ${workflowType}`);
+      
+      // ✅ FINALIZE CAMPAIGN LOGGING
+      try {
+        await finalizeCampaignLogging();
+        console.log('📋 Campaign logging finalized successfully');
+      } catch (loggingError) {
+        console.error('⚠️ Failed to finalize campaign logging:', loggingError);
+        // Don't fail the whole process if logging fails
+      }
+      
       return result;
       
     } catch (error) {
       console.error('❌ Agent processing error:', error);
+      
+      // ✅ FINALIZE LOGGING EVEN ON ERROR
+      try {
+        logToFile('error', `Agent processing failed: ${error instanceof Error ? error.message : String(error)}`, 'MainAgent');
+        await finalizeCampaignLogging();
+      } catch (loggingError) {
+        console.error('⚠️ Failed to finalize campaign logging on error:', loggingError);
+      }
+      
       throw error;
     }
   }

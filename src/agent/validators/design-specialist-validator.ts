@@ -115,14 +115,19 @@ export class DesignSpecialistValidator {
         correctionSuggestions.push(...emailValidation.suggestions);
       }
       
-      return {
+      const result: HandoffValidationResult = {
         isValid: errors.length === 0,
         errors: errors.filter(e => (e || {}).severity === 'critical'),
         warnings: warnings.concat(errors.filter(e => (e || {}).severity !== 'critical').map(e => (e || {}).message)),
         correctionSuggestions: correctionSuggestions,
-        validatedData: errors.length === 0 ? typedData : undefined,
         validationDuration: Date.now() - startTime
       };
+      
+      if (errors.length === 0) {
+        result.validatedData = typedData;
+      }
+      
+      return result;
       
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -550,12 +555,12 @@ export class DesignSpecialistValidator {
     // Проверка максимальной ширины (600-640px для email)
     const widthPattern = /width\s*:\s*(\d+)px/gi;
     let match;
-    let _hasValidWidth // Currently unused = false;
+    // let _hasValidWidth = false;
     
     while ((match = widthPattern.exec(htmlContent)) !== null) {
-      const width = parseInt(match[1]);
+      const width = parseInt(match[1] || '0');
       if (width <= 640) {
-        hasValidWidth = true;
+        // hasValidWidth = true;
       }
       if (width > 640) {
         errors.push({
@@ -611,7 +616,7 @@ export class DesignSpecialistValidator {
 
   private findUnclosedTags(html: string): string[] {
     const openTags: string[] = [];
-    const _unclosedTags // Currently unused: string[] = [];
+    // const _unclosedTags: string[] = [];
     
     // Простая проверка основных тегов
     const tagRegex = /<\/?(\w+)[^>]*>/g;
@@ -620,7 +625,7 @@ export class DesignSpecialistValidator {
     const selfClosingTags = ['img', 'br', 'hr', 'meta', 'link', 'input'];
     
     while ((match = tagRegex.exec(html)) !== null) {
-      const tag = match[1].toLowerCase();
+      const tag = match[1]?.toLowerCase() ?? '';
       const isClosing = match[0].startsWith('</');
       const isSelfClosing = selfClosingTags.includes(tag) || match[0].endsWith('/>');
       

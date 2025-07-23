@@ -13,7 +13,7 @@
  * - Comprehensive tracing and analytics
  */
 
-import { z } from 'zod';
+// import { z } from 'zod'; // Currently unused
 import { tool } from '@openai/agents';
 import { recordToolUsage } from '../utils/tracing-utils';
 
@@ -104,7 +104,7 @@ export const emailRendererV2 = tool({
       const context: ServiceExecutionContext = {
         params,
         start_time: startTime,
-        email_folder: emailFolder,
+        ...(emailFolder && { email_folder: emailFolder }),
         trace_id: generateTraceId()
       };
 
@@ -361,7 +361,7 @@ function generateTraceId(): string {
 
 // Export for backward compatibility
 export async function emailRenderer(params: EmailRendererParams): Promise<EmailRendererResult> {
-  const _startTime // Currently unused = Date.now();
+  // const _startTime = Date.now(); // Currently unused
   
   try {
     // Record tool usage for analytics
