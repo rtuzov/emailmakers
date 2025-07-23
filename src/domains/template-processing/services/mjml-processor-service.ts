@@ -406,7 +406,7 @@ export class MJMLProcessorService {
     // Apply client-specific CSS rules
     let clientOptimizedCSS = css;
     for (const client of targetClients) {
-      if (client && typeof client === 'object') {
+      if (client && typeof client === 'string') {
         clientOptimizedCSS = await this.optimizeCSSForClient(clientOptimizedCSS, client);
       }
     }
