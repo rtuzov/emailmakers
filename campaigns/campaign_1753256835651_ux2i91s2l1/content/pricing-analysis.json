@@ -1,0 +1,95 @@
+{
+  "date_analysis_source": {
+    "total_optimal_dates": 5,
+    "optimal_dates": [
+      "2025-09-15",
+      "2025-09-22",
+      "2025-10-05",
+      "2025-10-12",
+      "2025-11-01"
+    ],
+    "pricing_windows": [
+      "период с 2025-09-01 по 2025-09-30 - низкие цены из-за начала сезона",
+      "период с 2025-10-01 по 2025-11-30 - умеренные цены с возможными акциями"
+    ],
+    "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен.",
+    "seasonal_factors": "Осень в Гватемале характеризуется умеренными температурами и низким уровнем осадков, что делает это время идеальным для путешествий."
+  },
+  "optimal_dates_pricing": {
+    "total_offers": 5,
+    "cheapest_on_optimal": 67684,
+    "most_expensive_on_optimal": 121368,
+    "average_on_optimal": 92197,
+    "optimal_date_prices": [
+      {
+        "date": "2025-09-15",
+        "price": 121368,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-22",
+        "price": 120705,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-10-05",
+        "price": 67684,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-10-12",
+        "price": 69229,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-11-01",
+        "price": 81999,
+        "airline": "Unknown",
+        "is_optimal": true
+      }
+    ]
+  },
+  "comprehensive_pricing": {
+    "total_dates_analyzed": 22,
+    "total_offers_found": 102,
+    "date_range_analyzed": "2025-08-25 to 2025-12-07",
+    "best_price_overall": 57899,
+    "worst_price_overall": 124646,
+    "average_price_overall": 80459,
+    "currency": "RUB",
+    "route": "MOW → GUA"
+  },
+  "price_insights": {
+    "optimal_vs_average_savings": -15,
+    "cheapest_optimal_date": "2025-10-05",
+    "price_volatility": 115
+  },
+  "enhanced_features": {
+    "date_analysis_integration": true,
+    "comprehensive_date_coverage": true,
+    "optimal_date_focus": true,
+    "airport_conversion": {
+      "originInfo": null,
+      "destinationInfo": {
+        "originalCode": "GUA",
+        "finalCode": "GUA",
+        "countryCode": "GT",
+        "isInternational": true,
+        "wasConverted": false
+      }
+    },
+    "csv_integration": "enabled",
+    "api_source": "kupibilet_api_v2"
+  },
+  "analysis_metadata": {
+    "analyzed_at": "2025-07-23T07:48:18.686Z",
+    "analysis_duration_ms": 1038,
+    "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753256835651_ux2i91s2l1/content/date-analysis.json",
+    "route_analyzed": "MOW-GUA",
+    "trace_id": ""
+  }
+}

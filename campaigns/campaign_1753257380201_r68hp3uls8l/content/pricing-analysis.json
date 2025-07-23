@@ -1,0 +1,95 @@
+{
+  "date_analysis_source": {
+    "total_optimal_dates": 5,
+    "optimal_dates": [
+      "2025-11-15",
+      "2025-12-01",
+      "2025-12-15",
+      "2026-01-10",
+      "2026-02-05"
+    ],
+    "pricing_windows": [
+      "период с 2025-11-01 по 2025-12-15: низкие цены из-за начала туристического сезона",
+      "период с 2026-01-05 по 2026-02-15: средние цены, высокий пассажиропоток"
+    ],
+    "booking_recommendation": "Рекомендуется бронировать билеты за 2-3 месяца до вылета для получения лучших цен.",
+    "seasonal_factors": "Зима в Бангкоке характеризуется сухой и прохладной погодой, что делает это время года наиболее привлекательным для туристов."
+  },
+  "optimal_dates_pricing": {
+    "total_offers": 5,
+    "cheapest_on_optimal": 25186,
+    "most_expensive_on_optimal": 35078,
+    "average_on_optimal": 28613,
+    "optimal_date_prices": [
+      {
+        "date": "2025-11-15",
+        "price": 25528,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-12-01",
+        "price": 31843,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-12-15",
+        "price": 35078,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2026-01-10",
+        "price": 25186,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2026-02-05",
+        "price": 25432,
+        "airline": "Unknown",
+        "is_optimal": true
+      }
+    ]
+  },
+  "comprehensive_pricing": {
+    "total_dates_analyzed": 22,
+    "total_offers_found": 121,
+    "date_range_analyzed": "2025-10-25 to 2026-02-22",
+    "best_price_overall": 24798,
+    "worst_price_overall": 51644,
+    "average_price_overall": 28299,
+    "currency": "RUB",
+    "route": "MOW → BKK"
+  },
+  "price_insights": {
+    "optimal_vs_average_savings": -1,
+    "cheapest_optimal_date": "2026-01-10",
+    "price_volatility": 108
+  },
+  "enhanced_features": {
+    "date_analysis_integration": true,
+    "comprehensive_date_coverage": true,
+    "optimal_date_focus": true,
+    "airport_conversion": {
+      "originInfo": null,
+      "destinationInfo": {
+        "originalCode": "BKK",
+        "finalCode": "BKK",
+        "countryCode": "TH",
+        "isInternational": true,
+        "wasConverted": false
+      }
+    },
+    "csv_integration": "enabled",
+    "api_source": "kupibilet_api_v2"
+  },
+  "analysis_metadata": {
+    "analyzed_at": "2025-07-23T07:57:03.660Z",
+    "analysis_duration_ms": 722,
+    "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753257380201_r68hp3uls8l/content/date-analysis.json",
+    "route_analyzed": "MOW-BKK",
+    "trace_id": "campaign_1753257380201_r68hp3uls8l"
+  }
+}

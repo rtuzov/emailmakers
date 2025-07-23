@@ -216,7 +216,7 @@ export class EmailClient {
       throw new Error('At least one viewport must be configured');
     }
 
-    if (this.data.marketShare !== undefined && this.data.marketShare !== null && 
+    if (this.data.marketShare != null && 
         (this.data.marketShare < 0 || this.data.marketShare > 100)) {
       throw new Error('Market share must be between 0 and 100');
     }
@@ -328,7 +328,7 @@ export class EmailClient {
    */
   isHighPriority(): boolean {
     return this.data.testConfig.priority >= 8 || 
-           (this.data.marketShare !== undefined && this.data.marketShare !== null && this.data.marketShare >= 20);
+           (this.data.marketShare != null && this.data.marketShare >= 20);
   }
 
   /**

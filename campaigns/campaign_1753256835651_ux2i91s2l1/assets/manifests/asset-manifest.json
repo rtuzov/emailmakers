@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-23T07:48:50.346Z",
+  "campaign_id": "campaign_1753256835651_ux2i91s2l1",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_lIm5RtGPrQs.jpg",
+      "path": "https://images.unsplash.com/photo-1565639828644-ff8e088ebfa8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBhZHZlbnR1cmV8ZW58MHwwfHx8MTc1MzE3NzU3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1565639828644-ff8e088ebfa8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBhZHZlbnR1cmV8ZW58MHwwfHx8MTc1MzE3NzU3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_lIm5RtGPrQs",
+      "created": "2025-07-23T07:48:50.347Z",
+      "modified": "2025-07-23T07:48:50.347Z",
+      "tags": [],
+      "description": "parachute bag",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_M84bYZnCMQg.jpg",
+      "path": "https://images.unsplash.com/photo-1486912500284-6f2462ba07ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMyNjE4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1486912500284-6f2462ba07ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMyNjE4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_M84bYZnCMQg",
+      "created": "2025-07-23T07:48:50.347Z",
+      "modified": "2025-07-23T07:48:50.347Z",
+      "tags": [],
+      "description": "sun set over the horizon",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_FwMBVycB37E.jpg",
+      "path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_FwMBVycB37E",
+      "created": "2025-07-23T07:48:50.347Z",
+      "modified": "2025-07-23T07:48:50.347Z",
+      "tags": [],
+      "description": "a yurt in the mountains with a yellow door",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_UmV2wr_Vbq8.jpg",
+      "path": "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWxpbmclMjB3aXRoJTIwZnJpZW5kc3xlbnwwfDB8fHwxNzUzMjYyMTE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWxpbmclMjB3aXRoJTIwZnJpZW5kc3xlbnwwfDB8fHwxNzUzMjYyMTE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_UmV2wr-Vbq8",
+      "created": "2025-07-23T07:48:50.347Z",
+      "modified": "2025-07-23T07:48:50.347Z",
+      "tags": [],
+      "description": "low-angle photography of two men playing beside two women",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_R6Xte0nacNw.jpg",
+      "path": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMxNzkyNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1707058766055-81b3498b6dbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMxNzkyNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_R6Xte0nacNw",
+      "created": "2025-07-23T07:48:50.347Z",
+      "modified": "2025-07-23T07:48:50.347Z",
+      "tags": [],
+      "description": "a grassy field with rocks and grass in the foreground",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753256930343",
+    "status": "assets_collected"
+  }
+}

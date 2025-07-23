@@ -1,0 +1,309 @@
+{
+  "template_name": "guatemala_autumn_2025",
+  "layout": {
+    "type": "single-column",
+    "max_width": 600,
+    "responsive_breakpoints": [
+      "600px",
+      "480px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "header",
+      "size": {
+        "width": 600,
+        "height": 60,
+        "padding": "10px 20px"
+      },
+      "background": {
+        "color": "#FF6F20"
+      },
+      "content": {
+        "text": "🌎 Откройте для себя магию Гватемалы этой осенью!",
+        "typography": {
+          "font_size": "20px",
+          "font_weight": "bold",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    {
+      "position": "hero",
+      "size": {
+        "width": 600,
+        "height": 300,
+        "padding": "0"
+      },
+      "background": {
+        "image": "https://images.unsplash.com/photo-1565639828644-ff8e088ebfa8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBhZHZlbnR1cmV8ZW58MHwwfHx8MTc1MzE3NzU3M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      "content": {
+        "text": "Специальные предложения на авиабилеты в Гватемалу от 67,684₽! Успейте до 30 ноября!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    {
+      "position": "content1",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "text": "Представьте, как вы исследуете древние руины майя и наслаждаетесь живописными пейзажами Гватемалы уже через месяц. Это ваше время для приключений!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "content2",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "text": "Осень в Гватемале — это идеальное время для путешествий. Мы предлагаем уникальные билеты по цене от 67,684₽! Успейте забронировать на даты: 15 и 22 сентября, 5 и 12 октября, а также 1 ноября. У нас всего 102 варианта на выбор, и они быстро заканчиваются!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "benefits",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "list": [
+          "💰 Экономия до 24,513₽ на билетах!",
+          "✈️ Прямые рейсы без пересадок из Москвы",
+          "🏨 Бесплатное бронирование отелей через наш сервис",
+          "📞 Поддержка 24/7 на русском языке",
+          "🔒 Гарантия лучшей цены - если найдете дешевле, вернем разницу",
+          "🆓 Бесплатная отмена бронирования до 24 часов"
+        ],
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "social_proof",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "text": "★★★★★ 'Купили билеты через Kupibilet - сэкономили 12,000₽!' - Анна М., Москва. За последний месяц 1,247 россиян купили билеты в Гватемалу!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "italic",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "urgency",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFD700"
+      },
+      "content": {
+        "text": "⏰ Осталось всего 12 мест по этой цене до 30 ноября! Не упустите ваш шанс!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "bold",
+          "color": "#FF0000"
+        }
+      }
+    },
+    {
+      "position": "closing",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "text": "Забудьте о рутине и дайте себе возможность увидеть мир. Забронируйте вашу поездку в Гватемалу уже сегодня!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "gallery",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#F5F5F5"
+      },
+      "content": {
+        "images": [
+          {
+            "path": "https://images.unsplash.com/photo-1486912500284-6f2462ba07ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWUlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMyNjE4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "sun set over the horizon"
+          },
+          {
+            "path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "a yurt in the mountains with a yellow door"
+          },
+          {
+            "path": "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWxpbmclMjB3aXRoJTIwZnJpZW5kc3xlbnwwfDB8fHwxNzUzMjYyMTE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "low-angle photography of two men playing beside two women"
+          }
+        ],
+        "typography": {
+          "font_size": "14px",
+          "font_weight": "normal",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "cta",
+      "size": {
+        "width": 600,
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFD700"
+      },
+      "content": {
+        "buttons": [
+          {
+            "text": "Купить билеты за 67,684₽ ✈️",
+            "link": "https://buytickets.com",
+            "size": {
+              "width": 200,
+              "height": 50
+            },
+            "typography": {
+              "font_size": "18px",
+              "font_weight": "bold",
+              "color": "#FFFFFF"
+            }
+          },
+          {
+            "text": "Посмотреть все рейсы 🔍",
+            "link": "https://allflights.com",
+            "size": {
+              "width": 200,
+              "height": 50
+            },
+            "typography": {
+              "font_size": "18px",
+              "font_weight": "bold",
+              "color": "#FFFFFF"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "position": "footer",
+      "size": {
+        "width": 600,
+        "height": 60,
+        "padding": "10px 20px"
+      },
+      "background": {
+        "color": "#FF6F20"
+      },
+      "content": {
+        "text": "© 2025 Путешествия. Все права защищены.",
+        "typography": {
+          "font_size": "12px",
+          "font_weight": "normal",
+          "color": "#FFFFFF"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "content": "Купить билеты за 67,684₽ ✈️",
+      "link": "https://buytickets.com"
+    },
+    {
+      "type": "button",
+      "content": "Посмотреть все рейсы 🔍",
+      "link": "https://allflights.com"
+    },
+    {
+      "type": "gallery",
+      "images": [
+        {
+          "path": "https://images.unsplash.com/photo-1486912500284-6f2462ba07ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWUlMjBsYW5kc2NhcGVzfGVufDB8MHx8fDE3NTMyNjE4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "sun set over the horizon"
+        },
+        {
+          "path": "https://images.unsplash.com/photo-1695554477492-303aacd40561?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzfGVufDB8MHx8fDE3NTMxODc2Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "a yurt in the mountains with a yellow door"
+        },
+        {
+          "path": "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWxpbmclMjB3aXRoJTIwZnJpZW5kc3xlbnwwfDB8fHwxNzUzMjYyMTE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "low-angle photography of two men playing beside two women"
+        }
+      ]
+    }
+  ],
+  "visual_concept": {
+    "theme": "travel_adventure",
+    "style": "modern_clean",
+    "mood": "exciting_trustworthy"
+  },
+  "target_audience": "travelers_families",
+  "improvements_applied": [
+    "gallery_integration",
+    "structure_optimization",
+    "cta_enhancement"
+  ],
+  "metadata": {
+    "generated_at": "2025-07-23T07:50:38.421Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "NO_TRACE"
+  }
+}

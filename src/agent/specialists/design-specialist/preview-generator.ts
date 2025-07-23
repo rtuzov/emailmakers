@@ -37,11 +37,11 @@ export const generatePreviewFiles = tool({
       } else {
         console.warn('⚠️ Content context not found in design context, attempting to load from handoff files...');
         // Fallback: try to load from handoff files
-        if ((context?.context as any)?.campaignPath) {
-          const handoffDirectory = path.join((context?.context as any)?.campaignPath, 'handoffs');
+        if ((context as any)?.campaign?.path) {
+          const handoffDirectory = path.join((context as any)?.campaign?.path, 'handoffs');
           const contextData = await loadContextFromHandoffFiles(handoffDirectory);
           contentContext = contextData?.content_context;
-          campaignPath = (context?.context as any)?.campaignPath;
+          campaignPath = (context as any)?.campaign?.path;
           if (!contentContext) {
             throw new Error('Content context not found in design context or handoff files. loadDesignContext must be called first.');
           }
@@ -219,7 +219,7 @@ export const generatePreviewFiles = tool({
       const errorStack = error instanceof Error ? error.stack : 'No stack trace';
       console.error('❌ Preview generation failed:', errorMessage);
       console.error('❌ Error stack:', errorStack);
-      console.error('❌ Error object:', error);
+      console.error('❌ Preview generation error:', error?.message || error?.toString() || 'Unknown error');
       throw new Error(`Preview generation failed: ${errorMessage}`);
     }
   }

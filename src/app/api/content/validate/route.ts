@@ -67,7 +67,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
             } : undefined,
             targetAudience: validatedData.targetAudience ? {
-              demographics: validatedData.targetAudience.demographics || {},
+              demographics: {
+                ageRange: validatedData.targetAudience.demographics?.ageRange ?? undefined,
+                gender: validatedData.targetAudience.demographics?.gender ?? undefined,
+                location: validatedData.targetAudience.demographics?.location ?? undefined,
+                income: validatedData.targetAudience.demographics?.income ?? undefined,
+                education: validatedData.targetAudience.demographics?.education ?? undefined
+              },
               psychographics: {
                 interests: validatedData.targetAudience.psychographics?.interests || [],
                 values: validatedData.targetAudience.psychographics?.values || [],
@@ -75,8 +81,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 painPoints: validatedData.targetAudience.psychographics?.painPoints || []
               },
               behavior: {
-                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory,
-                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel,
+                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory ?? undefined,
+                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel ?? undefined,
                 preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
                 deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
               }
@@ -105,7 +111,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
             } : undefined,
             targetAudience: validatedData.targetAudience ? {
-              demographics: validatedData.targetAudience.demographics || {},
+              demographics: {
+                ageRange: validatedData.targetAudience.demographics?.ageRange ?? undefined,
+                gender: validatedData.targetAudience.demographics?.gender ?? undefined,
+                location: validatedData.targetAudience.demographics?.location ?? undefined,
+                income: validatedData.targetAudience.demographics?.income ?? undefined,
+                education: validatedData.targetAudience.demographics?.education ?? undefined
+              },
               psychographics: {
                 interests: validatedData.targetAudience.psychographics?.interests || [],
                 values: validatedData.targetAudience.psychographics?.values || [],
@@ -113,8 +125,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 painPoints: validatedData.targetAudience.psychographics?.painPoints || []
               },
               behavior: {
-                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory,
-                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel,
+                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory ?? undefined,
+                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel ?? undefined,
                 preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
                 deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
               }

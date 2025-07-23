@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       figmaUrl,
       outputDirectory,
       targetPageId,
-      context
+      _context: context
     });
 
     if (!result.success) {
@@ -53,12 +53,12 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('✅ Обработка страницы завершена успешно');
-    console.log(`📊 Результат: ${result.data.processedAssets} ассетов`);
+    console.log(`📊 Результат: ${result._data.processedAssets} ассетов`);
 
     return NextResponse.json({
       success: true,
-      _data: result.data,
-      message: `Успешно обработана страница с ${result.data.processedAssets} ассетами`
+      _data: result._data,
+      message: `Успешно обработана страница с ${result._data.processedAssets} ассетами`
     });
 
   } catch (error) {

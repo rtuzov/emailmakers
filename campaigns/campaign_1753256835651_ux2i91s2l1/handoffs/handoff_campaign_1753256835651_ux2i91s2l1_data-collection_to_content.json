@@ -1,0 +1,45 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753256835651_ux2i91s2l1",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753256835651_ux2i91s2l1",
+  "specialist_data": {
+    "destination_analysis": null,
+    "market_intelligence": null,
+    "emotional_profile": null,
+    "trend_analysis": null,
+    "consolidated_insights": null,
+    "travel_intelligence": null,
+    "collection_metadata": null
+  },
+  "handoff_context": {
+    "summary": "Completed analysis for a promotional email campaign targeting fall travel to Guatemala from Moscow.",
+    "context_for_next": "The next specialist should focus on crafting engaging content for the email, utilizing the insights and travel details provided.",
+    "recommendations": [
+      "Incorporate the highlighted cultural festivals in the email content.",
+      "Emphasize the unique travel experiences during autumn.",
+      "Position the campaign to attract eco-conscious travelers."
+    ],
+    "priority_items": [
+      "Key insights about traveler motivations and seasonal advantages.",
+      "Details about cultural events and local attractions."
+    ],
+    "potential_issues": null,
+    "success_criteria": null
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": []
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 500
+  },
+  "trace_id": "",
+  "validate_context": true,
+  "created_at": "2025-07-23T07:48:00.735Z"
+}

@@ -217,7 +217,7 @@ export class Screenshot {
   get darkMode(): boolean { return this.data.darkMode; }
   get status(): ScreenshotStatusType { return this.data.status; }
   get imageMetadata(): ImageMetadata | undefined { return this.data.imageMetadata ?? undefined; }
-  get storageInfo(): StorageInfo | undefined { return this.data.storageInfo; }
+  get storageInfo(): StorageInfo | undefined { return this.data.storageInfo ?? undefined; }
   get captureConfig(): ScreenshotData['captureConfig'] { return this.data.captureConfig; }
   get comparisonResults(): ComparisonResult[] { return this.data.comparisonResults; }
   get processingTime(): number | undefined { return this.data.processingTime ?? undefined; }

@@ -69,7 +69,11 @@ export async function figmaFolders(params: FigmaFoldersParams): Promise<FigmaFol
     }
 
     // Transform and filter folders
-    let folders = Object.entries((result.data && 'folders' in result.data && result.data.folders) ? result.data.folders : {}).map(([name, folder]: [string, any]) => ({
+    let folders = Object.entries(
+      (result.data && typeof result.data === 'object' && result.data !== null && 'folders' in result.data) 
+        ? (result.data as any).folders || {} 
+        : {}
+    ).map(([name, folder]: [string, any]) => ({
       name: name,
       priority: folder.priority,
       description: folder.description,

@@ -421,7 +421,8 @@ export class HTMLValidationService {
       const properties = style.split(';').filter(prop => prop.trim());
       
       properties.forEach(property => {
-        const [prop] = property.split(':').map(p => p.trim());
+        const parts = property.split(':').map(p => p.trim());
+        const prop = parts[0];
         if (!prop) return; // Skip if property name is empty
         
         totalProperties++;

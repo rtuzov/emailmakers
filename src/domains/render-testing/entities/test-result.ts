@@ -298,7 +298,7 @@ export class TestResult {
   get overallStatus(): TestStatusType { return this.data.overallStatus; }
   get overallScore(): number { return this.data.overallScore; }
   get clientResults(): ClientTestResult[] { return this.data.clientResults; }
-  get accessibilityResult(): AccessibilityResult | undefined { return this.data.accessibilityResult; }
+  get accessibilityResult(): AccessibilityResult | undefined { return this.data.accessibilityResult ?? undefined; }
   get performanceResult(): PerformanceResult | undefined { return this.data.performanceResult ?? undefined; }
   get spamResult(): SpamResult | undefined { return this.data.spamResult ?? undefined; }
   get summary(): TestResultData['summary'] { return this.data.summary; }

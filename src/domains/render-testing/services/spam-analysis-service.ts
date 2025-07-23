@@ -214,7 +214,7 @@ export class SpamAnalysisService {
     const imageMatches = htmlContent.match(/src\s*=\s*["']([^"']+)["']/gi) || [];
     const images = imageMatches.map(match => {
       const srcMatch = match.match(/src\s*=\s*["']([^"']+)["']/i);
-      return srcMatch ? srcMatch[1] : '';
+      return srcMatch?.[1] ?? '';
     }).filter((src): src is string => Boolean(src) && typeof src === 'string' && (src.includes('.jpg') || src.includes('.png') || src.includes('.gif') || src.includes('.webp')));
 
     return {

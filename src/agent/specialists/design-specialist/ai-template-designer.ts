@@ -58,6 +58,16 @@ const templateDesignAgent = new Agent({
 - template_id, template_name, description
 - target_audience, visual_concept
 - layout (type, max_width, sections_count, visual_hierarchy, spacing_system)
+
+КРИТИЧНО - spacing_system ОБЯЗАТЕЛЕН:
+{
+  "spacing_system": {
+    "section_padding": "20px",
+    "element_margin": "10px",
+    "text_line_height": "1.5",
+    "button_padding": "12px 24px"
+  }
+}
 - sections (массив с header, hero, gallery, content, cta, footer)
 - components (кнопки, карточки, галерея)
 - responsive (breakpoints с adjustments)
@@ -394,6 +404,19 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
       responsive_breakpoints: ['600px', '480px']
     };
     console.log('⚠️ Layout was null, using fallback: single-column');
+  }
+
+  // CRITICAL FIX: Ensure spacing_system is always present
+  if (!templateDesign.layout.spacing_system) {
+    templateDesign.layout.spacing_system = {
+      "xs": "4px",
+      "sm": "8px", 
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "40px"
+    };
+    console.log('⚠️ Spacing system was missing, using fallback spacing system');
   }
 
   if (!templateDesign.sections || templateDesign.sections.length === 0) {

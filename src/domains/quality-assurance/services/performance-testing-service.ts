@@ -667,7 +667,7 @@ export class PerformanceTestingService {
       const style = $el.attr('style') || '';
       const fontSizeMatch = style.match(/font-size:\s*(\d+)px/);
       
-      if (fontSizeMatch && fontSizeMatch[1]) {
+      if (fontSizeMatch?.[1]) {
         const fontSize = parseInt(fontSizeMatch[1]);
         if (fontSize < 14) {
           readableTextSize = false;

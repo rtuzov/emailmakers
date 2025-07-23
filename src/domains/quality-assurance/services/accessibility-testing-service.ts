@@ -763,7 +763,7 @@ export class AccessibilityTestingService {
     while (parent.length > 0) {
       const parentStyle = parent.attr('style') || '';
       const parentBgMatch = parentStyle.match(/background(?:-color)?:\s*([^;]+)/i);
-      if (parentBgMatch && parentBgMatch[1]) {
+      if (parentBgMatch?.[1]) {
         return parentBgMatch[1].trim();
       }
       parent = parent.parent();
@@ -781,7 +781,7 @@ export class AccessibilityTestingService {
   private getFontWeight($el: cheerio.Cheerio): string {
     const style = $el.attr('style') || '';
     const weightMatch = style.match(/font-weight:\s*([^;]+)/i);
-    return weightMatch && weightMatch[1] ? weightMatch[1].trim() : 'normal';
+    return weightMatch?.[1]?.trim() ?? 'normal';
   }
 
   private isLargeText(fontSize: number, fontWeight: string): boolean {

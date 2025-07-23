@@ -1,0 +1,58 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753257380201_r68hp3uls8l",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753257380201_r68hp3uls8l",
+  "specialist_data": {
+    "destination_analysis": null,
+    "market_intelligence": null,
+    "emotional_profile": null,
+    "trend_analysis": null,
+    "consolidated_insights": null,
+    "travel_intelligence": null,
+    "collection_metadata": null
+  },
+  "handoff_context": {
+    "summary": "Conducted comprehensive travel analysis for Thailand during winter from Moscow, focusing on flights, accommodations, and cultural experiences.",
+    "context_for_next": "The insights gathered will guide email content around winter promotions.",
+    "recommendations": [
+      "Use travel package highlights for email promotions",
+      "Include cultural attractions with suggested itineraries",
+      "Incorporate flight pricing data for transparency"
+    ],
+    "priority_items": [
+      "Determine appealing subject lines for emails",
+      "Finalize travel package descriptions",
+      "Align visual content with beach and cultural themes"
+    ],
+    "potential_issues": [
+      "Marketing materials must address winter weather contrasts",
+      "Ensure pricing accuracy with up-to-date flight costs"
+    ],
+    "success_criteria": [
+      "Attract bookings during peak travel season",
+      "Achieve higher engagement through tailored content",
+      "Increase overall brand visibility for Thailand packages"
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "market_intelligence",
+      "emotional_profile",
+      "trend_analysis"
+    ]
+  },
+  "quality_metadata": {
+    "data_quality_score": 0.85,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 200
+  },
+  "trace_id": "",
+  "validate_context": true,
+  "created_at": "2025-07-23T07:56:49.597Z"
+}

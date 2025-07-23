@@ -205,7 +205,7 @@ async function getCampaignInfo(campaignId: string): Promise<NextResponse> {
     
     // Load handoff files
     if (info.directories.handoffs.exists) {
-      const handoffFiles = info.directories.handoffs.files.filter(f => f.endsWith('.json'));
+      const handoffFiles = info.directories.handoffs.files.filter((f: string) => f.endsWith('.json'));
       for (const handoffFile of handoffFiles) {
         try {
           const handoffPath = path.join(campaignPath, 'handoffs', handoffFile);
@@ -314,7 +314,9 @@ async function loadSpecialistContext(campaignId: string, specialist: string): Pr
             delete actualHandoffData.request;
           }
           
-          context.previous_data[fromSpecialist] = actualHandoffData;
+          if (fromSpecialist) {
+            context.previous_data[fromSpecialist] = actualHandoffData;
+          }
           context.handoff_chain.push({
             from: handoffData.from_specialist || handoffData.metadata?.fromAgent || fromSpecialist,
             to: handoffData.to_specialist || handoffData.metadata?.toAgent || toSpecialist,
