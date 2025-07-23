@@ -219,7 +219,7 @@ export const generatePreviewFiles = tool({
       const errorStack = error instanceof Error ? error.stack : 'No stack trace';
       console.error('❌ Preview generation failed:', errorMessage);
       console.error('❌ Error stack:', errorStack);
-      console.error('❌ Preview generation error:', error?.message || error?.toString() || 'Unknown error');
+      console.error('❌ Preview generation error:', errorMessage);
       throw new Error(`Preview generation failed: ${errorMessage}`);
     }
   }

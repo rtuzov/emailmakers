@@ -998,7 +998,7 @@ export const generateMjmlTemplate = tool({
       const errorStack = error instanceof Error ? error.stack : 'No stack trace';
       console.error('❌ MJML Template generation failed:', errorMessage);
       console.error('❌ Error stack:', errorStack);
-      console.error('❌ MJML generation error:', error?.message || error?.toString() || 'Unknown error');
+      console.error('❌ MJML generation error:', errorMessage);
       throw new Error(`MJML Template generation failed: ${errorMessage}`);
     }
   }
