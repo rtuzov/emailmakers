@@ -401,13 +401,14 @@ export class MJMLProcessorService {
   ): Promise<string> {
     // Extract embedded CSS
     const cssMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-    const css = cssMatch ? cssMatch[1] : '';
+    const css = cssMatch && cssMatch[1] ? cssMatch[1] : '';
 
     // Apply client-specific CSS rules
-    let clientOptimizedCSS = css;
+    let clientOptimizedCSS: string = css;
     for (const client of targetClients) {
-      if (client && typeof client === 'string') {
-        clientOptimizedCSS = await this.optimizeCSSForClient(clientOptimizedCSS, client);
+      if (client && typeof client === 'string' && this.isValidEmailClient(client)) {
+        const emailClient = client as EmailClient;
+        clientOptimizedCSS = await this.optimizeCSSForClient(clientOptimizedCSS, emailClient);
       }
     }
 
@@ -557,6 +558,14 @@ export class MJMLProcessorService {
   }
 
   // Client-specific optimization methods
+  private isValidEmailClient(client: string): client is EmailClient {
+    const validClients: EmailClient[] = [
+      'gmail', 'outlook', 'outlook-web', 'apple-mail', 'yahoo-mail',
+      'thunderbird', 'samsung-mail', 'android-mail', 'ios-mail'
+    ];
+    return validClients.includes(client as EmailClient);
+  }
+
   private async optimizeCSSForClient(css: string, client: EmailClient): Promise<string> {
     const rules = this.compatibilityRules.get(client);
     if (!rules) return css;

@@ -1,0 +1,95 @@
+{
+  "date_analysis_source": {
+    "total_optimal_dates": 5,
+    "optimal_dates": [
+      "2025-12-01",
+      "2025-12-15",
+      "2026-01-10",
+      "2026-01-20",
+      "2026-02-05"
+    ],
+    "pricing_windows": [
+      "период с 2025-11-15 по 2025-12-15 - низкие цены на авиабилеты",
+      "период с 2026-01-05 по 2026-02-15 - средние цены, но высокая загрузка"
+    ],
+    "booking_recommendation": "рекомендуется бронировать билеты за 2-3 месяца до поездки для получения лучших цен",
+    "seasonal_factors": "зима в Алтае характеризуется снежными пейзажами и возможностью зимних видов спорта, что привлекает туристов, особенно в новогодние праздники"
+  },
+  "optimal_dates_pricing": {
+    "total_offers": 5,
+    "cheapest_on_optimal": 6256,
+    "most_expensive_on_optimal": 12204,
+    "average_on_optimal": 8374,
+    "optimal_date_prices": [
+      {
+        "date": "2025-12-01",
+        "price": 8641,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-12-15",
+        "price": 12204,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2026-01-10",
+        "price": 7354,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2026-01-20",
+        "price": 6256,
+        "airline": "Unknown",
+        "is_optimal": true
+      },
+      {
+        "date": "2026-02-05",
+        "price": 7417,
+        "airline": "Unknown",
+        "is_optimal": true
+      }
+    ]
+  },
+  "comprehensive_pricing": {
+    "total_dates_analyzed": 23,
+    "total_offers_found": 107,
+    "date_range_analyzed": "2025-11-08 to 2026-02-22",
+    "best_price_overall": 5804,
+    "worst_price_overall": 19352,
+    "average_price_overall": 8574,
+    "currency": "RUB",
+    "route": "MOW → BAX"
+  },
+  "price_insights": {
+    "optimal_vs_average_savings": 2,
+    "cheapest_optimal_date": "2026-01-20",
+    "price_volatility": 233
+  },
+  "enhanced_features": {
+    "date_analysis_integration": true,
+    "comprehensive_date_coverage": true,
+    "optimal_date_focus": true,
+    "airport_conversion": {
+      "originInfo": null,
+      "destinationInfo": {
+        "originalCode": "BAX",
+        "finalCode": "BAX",
+        "countryCode": "RU",
+        "isInternational": false,
+        "wasConverted": false
+      }
+    },
+    "csv_integration": "enabled",
+    "api_source": "kupibilet_api_v2"
+  },
+  "analysis_metadata": {
+    "analyzed_at": "2025-07-23T08:09:53.353Z",
+    "analysis_duration_ms": 222,
+    "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753258129758_w3020nvmt5h/content/date-analysis.json",
+    "route_analyzed": "MOW-BAX",
+    "trace_id": ""
+  }
+}

@@ -1,0 +1,114 @@
+<mjml>
+  <mj-head>
+    <mj-title>Алтай от 6,256₽! Успейте до 15 декабря!</mj-title>
+    <mj-preview>Экономьте до 2,118₽ на авиабилетах в Алтай! Спешите, количество мест ограничено.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="1.5" />
+    </mj-attributes>
+    <mj-style>
+      .highlight { background-color: #FF6240; color: #FFFFFF; padding: 10px; text-align: center; }
+      .button { background-color: #4BFF7E; color: #2C3959; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+      .gallery img { transition: transform 0.3s; }
+      .gallery img:hover { transform: scale(1.05); }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#FFFFFF">
+      <mj-column>
+        <mj-text font-size="24px" font-weight="bold" color="#2C3959">🏔️ Алтай от 6,256₽! Успейте до 15 декабря!</mj-text>
+        <mj-text color="#2C3959">Экономьте до 2,118₽ на авиабилетах в Алтай! Спешите, количество мест ограничено.</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1701808545414-524ee5151550?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHx0cmF2ZWwlMjBkZXN0aW5hdGlvbnMlMjBzY2VuaWMlMjB2aWV3c3xlbnwwfDB8fHwxNzUzMjY3MjI2fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Алтай" />
+        <mj-text font-size="18px">Представьте, как свежий зимний воздух наполняет ваши легкие, а вокруг белоснежные пейзажи Алтая. Пора отправиться в зимнее путешествие вашей мечты!</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="18px">Мы предлагаем вам уникальную возможность забронировать авиабилеты в Алтай по специальной цене: всего от 6,256₽! Доступные даты для вашего приключения: 1 декабря, 15 декабря и 10 января. Не упустите шанс насладиться термальными источниками и попробовать уникальные блюда национальной кухни!</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold" color="#2C3959">Преимущества:</mj-text>
+        <mj-text>
+          <ul>
+            <li>💰 Экономия до 2,118₽ на билетах!</li>
+            <li>✈️ Прямые рейсы без пересадок из Москвы</li>
+            <li>🏨 Бесплатное бронирование отелей через наш сервис</li>
+            <li>📞 Поддержка 24/7 на русском языке</li>
+            <li>🔒 Гарантия лучшей цены - вернем разницу</li>
+            <li>🆓 Бесплатная отмена бронирования до 24 часов</li>
+          </ul>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold" color="#2C3959">Социальное доказательство:</mj-text>
+        <mj-text color="#2C3959">"★★★★★ 'Полетели в Алтай в декабре и сэкономили 15,000₽ на всей поездке!' - Анна М., Москва. 🎯 За последний месяц 1,247 россиян купили билеты в Алтай!"</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="highlight">⏰ Осталось всего 12 мест по цене 6,256₽! Бронируйте до 15 декабря!</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text css-class="highlight">Представьте себя на величественных склонах Алтая, наслаждаясь зимними видами спорта.</mj-text>
+        <mj-text css-class="highlight">Места по этой цене быстро заканчиваются - не упустите шанс!</mj-text>
+        <mj-text css-class="highlight">Осуществите мечту о зимнем отдыхе в прекрасном Алтае с максимальной выгодой!</mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-button href="/booking/алтай?utm_source=email&utm_campaign=winter" css-class="button">Купить билеты за 6,256₽ ✈️</mj-button>
+        <mj-button href="/destinations/алтай?promo=winter_special" css-class="button">Посмотреть все рейсы 🔍</mj-button>
+        <mj-button href="/deals/special-offers?destination=алтай" css-class="button">⚡ Успейте забронировать до 15 декабря!</mj-button>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold" color="#2C3959">Галерея направления</mj-text>
+        <mj-group>
+          <mj-column width="33%">
+            <mj-image src="https://images.unsplash.com/photo-1632301387009-ef882af483f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHRyYXZlbGVycyUyMGV4cGxvcmluZ3xlbnwwfDB8fHwxNzUzMjYyNDI1fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Мост" />
+            <mj-text>Мост в Алтае</mj-text>
+          </mj-column>
+          <mj-column width="33%">
+            <mj-image src="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGV4cGVyaWVuY2VzJTIwdHJhdmVsfGVufDB8MHx8fDE3NTMyNjcyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Камера и паспорт" />
+            <mj-text>Камера и паспорт</mj-text>
+          </mj-column>
+          <mj-column width="33%">
+            <mj-image src="https://images.unsplash.com/photo-1726499219666-d3f18b37c473?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjB0cmF2ZWxlMjBhY3Rpdml0aWVzfGVufDB8MHx8fDE3NTMxOTg4Njd8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Женщина на скале" />
+            <mj-text>Женщина на скале</mj-text>
+          </mj-column>
+        </mj-group>
+        <mj-group>
+          <mj-column width="50%">
+            <mj-image src="https://images.unsplash.com/photo-1569880348140-72c5469d3be8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxyZWxheGluZyUyMGJlYWNoJTIwdmFjYXRpb25zfGVufDB8MHx8fDE3NTMyNjI0MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Женщина на кровати" />
+            <mj-text>Женщина на кровати</mj-text>
+          </mj-column>
+        </mj-group>
+      </mj-column>
+    </mj-section>
+    
+    <mj-section>
+      <mj-column>
+        <mj-text color="#2C3959">Контактная информация: info@kupibilet.ru | +7 (800) 555-35-35</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

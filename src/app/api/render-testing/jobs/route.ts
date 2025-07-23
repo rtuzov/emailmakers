@@ -79,7 +79,7 @@ const renderOrchestrationService = {
 export async function POST(___request: NextRequest) {
   try {
     // Get user ID from session/auth
-    const userId = await getUserIdFromRequest(__request);
+    const userId = await getUserIdFromRequest(___request);
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -87,21 +87,21 @@ export async function POST(___request: NextRequest) {
       );
     }
 
-    // Parse and validate __request body
-    const body = await __request.json();
+    // Parse and validate ___request body
+    const body = await ___request.json();
     const validatedData = CreateRenderJobSchema.parse(body);
 
     // Create render job
     const job = await renderOrchestrationService.createRenderJob({
       userId,
       htmlContent: validatedData.htmlContent || '<html><body>Test</body></html>',
-      _config: validatedData.config || {
+      config: validatedData._config || {
         clients: ['gmail', 'outlook'],
         viewports: [{ width: 600, height: 800, devicePixelRatio: 1, name: 'desktop' }],
         darkModeEnabled: false,
         screenshotQuality: 80
       },
-      ...validatedData
+      ...(validatedData.templateId && { templateId: validatedData.templateId })
     });
 
     // Return job details
@@ -159,7 +159,7 @@ export async function POST(___request: NextRequest) {
 export async function GET(___request: NextRequest) {
   try {
     // Get user ID from session/auth
-    const userId = await getUserIdFromRequest(__request);
+    const userId = await getUserIdFromRequest(___request);
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -168,7 +168,7 @@ export async function GET(___request: NextRequest) {
     }
 
     // Parse query parameters
-    const { searchParams } = new URL(__request.url);
+    const { searchParams } = new URL(___request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
     const validatedQuery = ListJobsQuerySchema.parse(queryParams);
 
@@ -239,7 +239,7 @@ export async function GET(___request: NextRequest) {
 async function getUserIdFromRequest(___request: NextRequest): Promise<string | null> {
   // Placeholder implementation
   // In real app, this would validate JWT token or session
-  const authHeader = __request.headers.get('authorization');
+  const authHeader = ___request.headers.get('authorization');
   if (!authHeader?.startsWith('Bearer ')) {
     return null;
   }

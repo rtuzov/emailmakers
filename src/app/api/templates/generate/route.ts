@@ -137,7 +137,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
        tone: agentRequest.tone,
        language: agentRequest.language,
        brand: agentRequest.brand,
-       figma_url: agentRequest.figma_url
+       ...(agentRequest.figma_url && { figma_url: agentRequest.figma_url })
      };
     
     const agentResult = await agent.generateEmail(emailRequest);

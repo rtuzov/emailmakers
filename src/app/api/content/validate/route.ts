@@ -59,34 +59,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           validatedData.title || undefined,
           validatedData.description || undefined,
           {
-            brandGuidelines: validatedData.brandGuidelines ? {
-              tone: validatedData.brandGuidelines.tone || 'professional',
-              voice: validatedData.brandGuidelines.voice || 'conversational',
-              values: validatedData.brandGuidelines.values || [],
-              prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
-              preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
-            } : undefined,
-            targetAudience: validatedData.targetAudience ? {
-              demographics: {
-                ageRange: validatedData.targetAudience.demographics?.ageRange ?? undefined,
-                gender: validatedData.targetAudience.demographics?.gender ?? undefined,
-                location: validatedData.targetAudience.demographics?.location ?? undefined,
-                income: validatedData.targetAudience.demographics?.income ?? undefined,
-                education: validatedData.targetAudience.demographics?.education ?? undefined
-              },
-              psychographics: {
-                interests: validatedData.targetAudience.psychographics?.interests || [],
-                values: validatedData.targetAudience.psychographics?.values || [],
-                lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
-                painPoints: validatedData.targetAudience.psychographics?.painPoints || []
-              },
-              behavior: {
-                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory ?? undefined,
-                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel ?? undefined,
-                preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
-                deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+            ...(validatedData.brandGuidelines && {
+              brandGuidelines: {
+                tone: validatedData.brandGuidelines.tone || 'professional',
+                voice: validatedData.brandGuidelines.voice || 'conversational',
+                values: validatedData.brandGuidelines.values || [],
+                prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
+                preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
               }
-            } : undefined
+            }),
+            ...(validatedData.targetAudience && {
+              targetAudience: {
+                demographics: {
+                  ...(validatedData.targetAudience.demographics?.ageRange !== undefined && validatedData.targetAudience.demographics?.ageRange !== null && { ageRange: validatedData.targetAudience.demographics.ageRange }),
+                  ...(validatedData.targetAudience.demographics?.gender !== undefined && validatedData.targetAudience.demographics?.gender !== null && { gender: validatedData.targetAudience.demographics.gender }),
+                  ...(validatedData.targetAudience.demographics?.location !== undefined && validatedData.targetAudience.demographics?.location !== null && { location: validatedData.targetAudience.demographics.location }),
+                  ...(validatedData.targetAudience.demographics?.income !== undefined && validatedData.targetAudience.demographics?.income !== null && { income: validatedData.targetAudience.demographics.income }),
+                  ...(validatedData.targetAudience.demographics?.education !== undefined && validatedData.targetAudience.demographics?.education !== null && { education: validatedData.targetAudience.demographics.education })
+                },
+                psychographics: {
+                  interests: validatedData.targetAudience.psychographics?.interests || [],
+                  values: validatedData.targetAudience.psychographics?.values || [],
+                  lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
+                  painPoints: validatedData.targetAudience.psychographics?.painPoints || []
+                },
+                behavior: {
+                  ...(validatedData.targetAudience.behavior?.purchaseHistory !== undefined && validatedData.targetAudience.behavior?.purchaseHistory !== null && { purchaseHistory: validatedData.targetAudience.behavior.purchaseHistory }),
+                  ...(validatedData.targetAudience.behavior?.engagementLevel !== undefined && validatedData.targetAudience.behavior?.engagementLevel !== null && { engagementLevel: validatedData.targetAudience.behavior.engagementLevel }),
+                  preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
+                  deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+                }
+              }
+            })
           }
         );
         break;
@@ -103,34 +107,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           validatedData.title || undefined,
           validatedData.description || undefined,
           {
-            brandGuidelines: validatedData.brandGuidelines ? {
-              tone: validatedData.brandGuidelines.tone || 'professional',
-              voice: validatedData.brandGuidelines.voice || 'conversational',
-              values: validatedData.brandGuidelines.values || [],
-              prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
-              preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
-            } : undefined,
-            targetAudience: validatedData.targetAudience ? {
-              demographics: {
-                ageRange: validatedData.targetAudience.demographics?.ageRange ?? undefined,
-                gender: validatedData.targetAudience.demographics?.gender ?? undefined,
-                location: validatedData.targetAudience.demographics?.location ?? undefined,
-                income: validatedData.targetAudience.demographics?.income ?? undefined,
-                education: validatedData.targetAudience.demographics?.education ?? undefined
-              },
-              psychographics: {
-                interests: validatedData.targetAudience.psychographics?.interests || [],
-                values: validatedData.targetAudience.psychographics?.values || [],
-                lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
-                painPoints: validatedData.targetAudience.psychographics?.painPoints || []
-              },
-              behavior: {
-                purchaseHistory: validatedData.targetAudience.behavior?.purchaseHistory ?? undefined,
-                engagementLevel: validatedData.targetAudience.behavior?.engagementLevel ?? undefined,
-                preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
-                deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+            ...(validatedData.brandGuidelines && {
+              brandGuidelines: {
+                tone: validatedData.brandGuidelines.tone || 'professional',
+                voice: validatedData.brandGuidelines.voice || 'conversational',
+                values: validatedData.brandGuidelines.values || [],
+                prohibitedWords: validatedData.brandGuidelines.prohibitedWords || [],
+                preferredLanguage: validatedData.brandGuidelines.preferredLanguage || 'en'
               }
-            } : undefined
+            }),
+            ...(validatedData.targetAudience && {
+              targetAudience: {
+                demographics: {
+                  ...(validatedData.targetAudience.demographics?.ageRange !== undefined && validatedData.targetAudience.demographics?.ageRange !== null && { ageRange: validatedData.targetAudience.demographics.ageRange }),
+                  ...(validatedData.targetAudience.demographics?.gender !== undefined && validatedData.targetAudience.demographics?.gender !== null && { gender: validatedData.targetAudience.demographics.gender }),
+                  ...(validatedData.targetAudience.demographics?.location !== undefined && validatedData.targetAudience.demographics?.location !== null && { location: validatedData.targetAudience.demographics.location }),
+                  ...(validatedData.targetAudience.demographics?.income !== undefined && validatedData.targetAudience.demographics?.income !== null && { income: validatedData.targetAudience.demographics.income }),
+                  ...(validatedData.targetAudience.demographics?.education !== undefined && validatedData.targetAudience.demographics?.education !== null && { education: validatedData.targetAudience.demographics.education })
+                },
+                psychographics: {
+                  interests: validatedData.targetAudience.psychographics?.interests || [],
+                  values: validatedData.targetAudience.psychographics?.values || [],
+                  lifestyle: validatedData.targetAudience.psychographics?.lifestyle || [],
+                  painPoints: validatedData.targetAudience.psychographics?.painPoints || []
+                },
+                behavior: {
+                  ...(validatedData.targetAudience.behavior?.purchaseHistory !== undefined && validatedData.targetAudience.behavior?.purchaseHistory !== null && { purchaseHistory: validatedData.targetAudience.behavior.purchaseHistory }),
+                  ...(validatedData.targetAudience.behavior?.engagementLevel !== undefined && validatedData.targetAudience.behavior?.engagementLevel !== null && { engagementLevel: validatedData.targetAudience.behavior.engagementLevel }),
+                  preferredChannels: validatedData.targetAudience.behavior?.preferredChannels || [],
+                  deviceUsage: validatedData.targetAudience.behavior?.deviceUsage || 'both'
+                }
+              }
+            })
           }
         );
         break;

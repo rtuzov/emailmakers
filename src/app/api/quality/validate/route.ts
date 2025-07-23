@@ -40,7 +40,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         includeAccessibility: !validatedData.options?.skipAccessibilityTest,
         includePerformance: !validatedData.options?.skipPerformanceTest,
         strictMode: true,
-        targetClients: validatedData.options?.targetClients
+        ...(validatedData.options?.targetClients && { targetClients: validatedData.options.targetClients })
       }
     );
     

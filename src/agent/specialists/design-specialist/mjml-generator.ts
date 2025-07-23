@@ -274,6 +274,7 @@ async function generateDynamicMjmlTemplate(params: {
   
   const pricing = contentContext.pricing || contentContext.pricing_analysis || contentContext.generated_content?.pricing;
   const cta = contentContext.cta || contentContext.call_to_action || contentContext.generated_content?.cta;
+  const destination = contentContext.destination || contentContext.location || contentContext.travel_destination || 'Не указано';
   
   if (!subject || !preheader || !bodyText || !cta) {
     console.error('Missing content fields diagnostic:', {
@@ -512,6 +513,12 @@ ${processedImages.map((img: any, index: number) =>
   `${index + 1}. ${img.url} - ${img.alt_text} (${img.description})`
 ).join('\n')}
 
+🎯 ТЕМАТИЧЕСКИЙ АНАЛИЗ ДЛЯ НАПРАВЛЕНИЯ: ${destination}
+- Используй изображения, подходящие для темы "${destination}"
+- Проверь что alt тексты соответствуют теме направления
+- Для горных регионов - горные пейзажи, для тропических - тропические виды
+- Избегай generic туристические картинки, предпочитай специфичные для региона
+
 🖼️ ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (НОВОЕ УЛУЧШЕНИЕ):
 - Создай отдельную секцию "gallery" после hero
 - Используй <mj-group> для создания сетки изображений (2-3 колонки)
@@ -607,11 +614,12 @@ ${processedImages.map((img: any, index: number) =>
 5. 📸 ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (если >2 изображений):
    - Создай секцию после hero с заголовком "Галерея направления"
    - Используй <mj-group> с <mj-column> для каждого изображения
-   - Ширина колонок: 33% для 3 изображений, 50% для 2 изображений
+   - КРИТИЧНО: Ширина изображений МИНИМУМ 150px! НЕ используй width="16px" или width="50px"
+   - Для 3 изображений: width="33%" но минимум 150px
+   - Для 2 изображений: width="50%" но минимум 200px  
    - Добавь подписи под каждым изображением через <mj-text>
-   - Emotional hooks как highlighted блоки
-   - Multiple CTA секции (primary, secondary, urgency)
-   - Footer с compliance информацией
+   - Используй <mj-image width="150px" /> с фиксированной шириной для галереи
+   - Для hero изображения используй полную ширину: <mj-image width="550px" />
 
 5. СОЗДАЙ ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ:
    - CTA кнопки: используй РЕАЛЬНЫЕ URLs из section "ПРИЗЫВЫ К ДЕЙСТВИЮ" (НЕ href="#")
@@ -644,11 +652,12 @@ ${processedImages.map((img: any, index: number) =>
 4. КАЖДАЯ <mj-section> должна содержать <mj-column>
 5. Используй ВСЕ ${processedImages.length} изображений через <mj-image>
 6. Включи ВЕСЬ текст из body (не сокращай!)
-7. Создай кнопки CTA через <mj-button> с РЕАЛЬНЫМИ URLs:
+7. ⚠️ КРИТИЧНО ДЛЯ ГАЛЕРЕИ: Используй width="150px" для изображений, НЕ width="16px"!
+8. Создай кнопки CTA через <mj-button> с РЕАЛЬНЫМИ URLs:
    - Основная кнопка: используй URL из "Основной" CTA
    - Дополнительная кнопка: используй URL из "Дополнительный" CTA  
    - Срочная кнопка: используй URL из "Срочный" CTA
-8. Добавь футер с контактной информацией
+9. Добавь футер с контактной информацией
 
 ВАЖНО: 
 - Анализируй каждый случай индивидуально
@@ -794,6 +803,48 @@ ${validationErrors.join('\n')}
   
   if (!mjmlCode || mjmlCode.length < 100) {
     throw new Error(`Failed to generate valid MJML after ${maxAttempts} attempts. Last attempt produced: ${mjmlCode.substring(0, 200)}...`);
+  }
+
+  // 🔍 ВАЛИДАЦИЯ MJML ПЕРЕД ПЕРЕДАЧЕЙ В HTML КОМПИЛЯТОР
+  console.log('🔍 Validating generated MJML before compilation...');
+  
+  const mjmlValidationErrors: string[] = [];
+  
+  // Проверяем основную структуру
+  if (!mjmlCode.includes('<mjml>') || !mjmlCode.includes('</mjml>')) {
+    mjmlValidationErrors.push('Missing MJML root tags');
+  }
+  
+  if (!mjmlCode.includes('<mj-head>') || !mjmlCode.includes('</mj-head>')) {
+    mjmlValidationErrors.push('Missing MJML head section');
+  }
+  
+  if (!mjmlCode.includes('<mj-body>') || !mjmlCode.includes('</mj-body>')) {
+    mjmlValidationErrors.push('Missing MJML body section');
+  }
+  
+  // Проверяем что все изображения используются
+  const mjmlImageCount = (mjmlCode.match(/<mj-image[^>]*src=/g) || []).length;
+  if (mjmlImageCount < processedImages.length) {
+    mjmlValidationErrors.push(`Only ${mjmlImageCount}/${processedImages.length} images used in MJML`);
+  }
+  
+  // Проверяем наличие галереи если есть >2 изображений
+  if (processedImages.length > 2 && !mjmlCode.includes('галерея')) {
+    mjmlValidationErrors.push('Gallery section missing for multiple images');
+  }
+  
+  // Проверяем что есть CTA кнопки
+  const ctaButtonCount = (mjmlCode.match(/<mj-button[^>]*href=/g) || []).length;
+  if (ctaButtonCount === 0) {
+    mjmlValidationErrors.push('No CTA buttons found in MJML');
+  }
+  
+  if (mjmlValidationErrors.length > 0) {
+    console.warn('⚠️ MJML validation warnings:', mjmlValidationErrors);
+    console.warn('⚠️ Proceeding with compilation, HTML validator will fix issues');
+  } else {
+    console.log('✅ MJML validation passed');
   }
 
   try {

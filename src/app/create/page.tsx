@@ -237,10 +237,10 @@ export default function Create() {
         
       } catch (error) {
         clearTimeout(timeoutId);
-        handleError(error, 'progress tracking');
+        handleError(error as Error, 'progress tracking');
         
         // Don't stop tracking immediately on network errors - retry a few times
-        if (retryCount < maxRetries && error.name !== 'AbortError') {
+        if (retryCount < maxRetries && (error instanceof Error && error.name !== 'AbortError')) {
           setRetryCount(prev => prev + 1);
           return;
         }

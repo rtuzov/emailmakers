@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753259130503_nfhmh3aarua",
+  "name": "Зимний отдых в Карелии",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители зимнего отдыха",
+  "user_request": "Создай email кампанию для зимнего отдыха в Карелии. Включи зимние виды спорта, русскую баню и традиционную кухню.",
+  "created_at": "2025-07-23T08:25:30.505Z",
+  "status": "completed",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-23T08:26:01.223Z",
+  "notes": "Comprehensive data analysis for winter travel in Karelia completed.",
+  "data": ""
+}

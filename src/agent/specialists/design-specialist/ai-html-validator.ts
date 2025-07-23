@@ -1,16 +1,13 @@
-import { Agent, tool } from '@openai/agents';
+import { tool } from '@openai/agents';
 import { z } from 'zod';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { runWithTracing } from '../../core/openai-agents-config';
 // import { buildDesignContext } from './design-context';
 
-// Import comprehensive validation from html-validator
+// Import comprehensive validation from quality assurance domain
 import { 
-  performComprehensiveValidation,
-  // ValidationError,
-  // ValidationWarning 
-} from './html-validator';
+  HTMLValidationService
+} from '../../../domains/quality-assurance/services/html-validation-service';
 
 // 🚀 КЭШИРОВАНИЕ ДЛЯ ОПТИМИЗАЦИИ ПРОИЗВОДИТЕЛЬНОСТИ
 const validationCache = new Map<string, any>();
@@ -35,16 +32,20 @@ async function getCachedValidation(
     return cached.result;
   }
   
-  const result = await performComprehensiveValidation(
-    html,
+  const htmlValidationService = new HTMLValidationService();
+  const result = await htmlValidationService.validateEmailHTML(html);
+  
+  // Add additional context for enhanced validation
+  const enhancedResult = {
+    ...result,
     templateRequirements,
     technicalRequirements,
     assetManifest,
     contentContext
-  );
+  };
   
   validationCache.set(cacheKey, {
-    result,
+    result: enhancedResult,
     timestamp: Date.now()
   });
   
@@ -56,7 +57,7 @@ async function getCachedValidation(
     }
   }
   
-  return result;
+  return enhancedResult;
 }
 
 /**
@@ -130,36 +131,8 @@ async function getCachedContext(campaignPath: string): Promise<any> {
   return context;
 }
 
-/**
- * AI HTML Validation and Enhancement Sub-Agent
- * Uses OpenAI Agents SDK patterns for AI HTML improvement
- */
-const htmlValidationAgent = new Agent({
-  name: 'HTML Validation & Enhancement AI',
-  instructions: `Ты эксперт по HTML email разработке и оптимизации. Анализируешь существующий HTML email шаблон и создаешь значительно улучшенную версию.
-
-ТВОЯ ЗАДАЧА: Проанализировать HTML email шаблон и создать улучшенную версию с лучшим дизайном, UX и конверсией.
-
-ФОКУС НА УЛУЧШЕНИЯХ:
-1. 🎨 ВИЗУАЛЬНЫЙ ДИЗАЙН: Улучши цвета, типографику, spacing, visual hierarchy
-2. 📱 АДАПТИВНОСТЬ: Оптимизируй для мобильных устройств
-3. 🎯 КОНВЕРСИЯ: Улучши CTA кнопки, размещение, призывы к действию  
-4. 📧 EMAIL СТАНДАРТЫ: Обеспечь совместимость с Gmail, Outlook, Apple Mail
-5. 🔍 UX: Улучши читаемость, навигацию, структуру контента
-6. ⚡ ПРОИЗВОДИТЕЛЬНОСТЬ: Оптимизируй размер, загрузку изображений
-7. ♿ ДОСТУПНОСТЬ: Добавь alt тексты, улучши контрастность
-8. 🌙 ТЕМНАЯ ТЕМА: Поддержка dark mode
-
-ПРИНЦИПЫ УЛУЧШЕНИЯ:
-- Сохраняй весь контент, но улучшай его представление
-- Используй современные email дизайн паттерны
-- Делай значительные визуальные улучшения
-- Оптимизируй для высокой конверсии
-- Обеспечь кроссплатформенную совместимость
-
-ВСЕГДА возвращай ТОЛЬКО улучшенный HTML код без дополнительных комментариев или markdown форматирования.`,
-  model: 'gpt-4o-mini'
-});
+// HTML Validation Agent removed - now integrated directly into Design Specialist workflow
+// to prevent separate Agent runs that appear outside main workflow
 
 /**
  * Generate AI-powered HTML validation and enhancement
@@ -209,6 +182,22 @@ async function generateEnhancedHtml(params: {
   const hasDarkModeSupport = currentHtml.includes('prefers-color-scheme');
   const imageCount = (currentHtml.match(/<img/g) || []).length;
   const ctaButtonCount = (currentHtml.match(/href=["'][^"']*["']/g) || []).length;
+
+  // 🔍 АНАЛИЗ РАЗМЕРОВ ИЗОБРАЖЕНИЙ - Критично!
+  const tinyImages = currentHtml.match(/<img[^>]*(?:width=["'](?:\d+px|[\d.]+)["'][^>]*|style=["'][^"']*width\s*:\s*(?:\d+px|[\d.]+)[^"']*["'])/g) || [];
+  const problematicImages = tinyImages.filter(img => {
+    const widthMatch = img.match(/width\s*[:=]\s*["']?(\d+)(?:px)?["']?/);
+    const width = widthMatch && widthMatch[1] ? parseInt(widthMatch[1]) : 0;
+    return width > 0 && width < 100; // Изображения меньше 100px считаем проблематичными
+  });
+  
+  console.log(`🔍 Image size analysis: ${imageCount} total images, ${problematicImages.length} problematic (width < 100px)`);
+  if (problematicImages.length > 0) {
+    console.warn('⚠️ Found tiny images:', problematicImages.map(img => {
+      const widthMatch = img.match(/width\s*[:=]\s*["']?(\d+)(?:px)?["']?/);
+      return widthMatch ? `${widthMatch[1]}px` : 'unknown';
+    }));
+  }
   
   // 🔒 ЗАЩИТА ОТ ОБРЕЗАНИЯ: Проверяем критические элементы контента
   const criticalElements = {
@@ -220,10 +209,37 @@ async function generateEnhancedHtml(params: {
   };
   
   console.log(`📊 Original HTML analysis: ${htmlLength} chars, ${imageCount} images, ${ctaButtonCount} CTAs`);
+  console.log(`🖼️ Image size problems: ${problematicImages.length} tiny images found`);
   
   // БЕЗОПАСНЫЙ промпт - минимальные улучшения без сжатия
   const enhancementPrompt = `
 ЗАДАЧА: Улучши HTML email шаблон, СТРОГО СОХРАНИВ ВСЕ СОДЕРЖИМОЕ
+
+🚨 ОБНАРУЖЕНЫ КРИТИЧЕСКИЕ ПРОБЛЕМЫ С ИЗОБРАЖЕНИЯМИ:
+Найдено ${problematicImages.length} изображений с недопустимо маленькими размерами:
+${problematicImages.map((img, i) => {
+  const widthMatch = img.match(/width\s*[:=]\s*["']?(\d+)(?:px)?["']?/);
+  const width = widthMatch ? widthMatch[1] : 'unknown';
+  const altMatch = img.match(/alt=["']([^"']*)["']/);
+  const alt = altMatch ? altMatch[1] : 'no alt';
+  return `${i + 1}. Ширина: ${width}px (ИСПРАВЬ на минимум 150px) - "${alt}"`;
+}).join('\n')}
+
+⚠️ ОБЯЗАТЕЛЬНО ИСПРАВЬ ВСЕ ИЗОБРАЖЕНИЯ МЕНЬШЕ 100PX на минимум 150px!
+
+КОНКРЕТНЫЕ ИСПРАВЛЕНИЯ ТРЕБУЮТСЯ:
+${problematicImages.length > 0 ? 
+  `🚨 КРИТИЧНО: Найдены изображения с недопустимо маленькими размерами! 
+  
+Автоматически исправь ВСЕ эти изображения заменив их ширину на 150px:
+${problematicImages.map((img, _) => {
+  const widthMatch = img.match(/width\s*[:=]\s*["']?(\d+)(?:px)?["']?/);
+  const width = widthMatch ? widthMatch[1] : 'unknown';
+  return `ИСПРАВЬ: width="${width}" → width="150"`;
+}).join('\n')}
+
+ОБЯЗАТЕЛЬНО примени эти исправления в результирующем HTML!` :
+  '✅ Размеры изображений в порядке'}
 
 КОНТЕКСТ: ${subject} | ${destination} | ${formattedPrice}
 
@@ -252,6 +268,20 @@ async function generateEnhancedHtml(params: {
    - Исправь опечатки в CSS свойствах
    - Добавь единицы измерения где нужно (px, em, rem, %)
 
+🖼️ КРИТИЧНО - ИСПРАВЛЕНИЕ РАЗМЕРОВ ИЗОБРАЖЕНИЙ:
+4. ИСПРАВЬ СЛИШКОМ МАЛЕНЬКИЕ ИЗОБРАЖЕНИЯ:
+   - ❌ width="16px" → ✅ width="150px" (для галереи)
+   - ❌ width="50px" → ✅ width="200px" (для галереи из 2 изображений)
+   - ❌ style="width:16px" → ✅ style="width:150px"
+   - Минимальная ширина для галереи: 150px
+   - Для hero изображений используй полную ширину: 550px
+
+5. ИСПРАВЬ СТРУКТУРУ ГАЛЕРЕИ:
+   - Найди все изображения с шириной <100px и увеличь до минимум 150px
+   - Для галереи из 3 изображений: каждое по 150px
+   - Для галереи из 2 изображений: каждое по 200px
+   - Убедись что alt тексты соответствуют содержимому
+
 ✅ РАЗРЕШЕННЫЕ УЛУЧШЕНИЯ (только добавления, не замены):
 - Добавь alt="" к изображениям без alt текстов
 - Добавь одну @media (prefers-color-scheme: dark) секцию
@@ -278,15 +308,52 @@ ${currentHtml}
 КРИТИЧНО: Верни ТОЛЬКО улучшенный HTML с размером 95-105% от оригинала и ИСПРАВЛЕННЫМИ CSS ошибками.`;
 
   try {
-    // Use OpenAI Agents SDK sub-agent for HTML enhancement with tracing
-    const aiResult = await runWithTracing(htmlValidationAgent, enhancementPrompt, {
-      agent: 'HTML Validation & Enhancement AI',
-      operation: 'enhance_html_template',
-      component_type: 'agent',
-      workflow_stage: 'design'
+    // Use direct OpenAI API call for HTML enhancement (integrated within Design Specialist workflow)
+    console.log('🎨 Calling OpenAI API for HTML enhancement...');
+    
+    const OpenAI = require('openai');
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `Ты эксперт по HTML email разработке и оптимизации. Анализируешь существующий HTML email шаблон и создаешь значительно улучшенную версию.
+
+ТВОЯ ЗАДАЧА: Проанализировать HTML email шаблон и создать улучшенную версию с лучшим дизайном, UX и конверсией.
+
+ФОКУС НА УЛУЧШЕНИЯХ:
+1. 🎨 ВИЗУАЛЬНЫЙ ДИЗАЙН: Улучши цвета, типографику, spacing, visual hierarchy
+2. 📱 АДАПТИВНОСТЬ: Оптимизируй для мобильных устройств
+3. 🎯 КОНВЕРСИЯ: Улучши CTA кнопки, размещение, призывы к действию  
+4. 📧 EMAIL СТАНДАРТЫ: Обеспечь совместимость с Gmail, Outlook, Apple Mail
+5. 🔍 UX: Улучши читаемость, навигацию, структуру контента
+6. ⚡ ПРОИЗВОДИТЕЛЬНОСТЬ: Оптимизируй размер, загрузку изображений
+7. ♿ ДОСТУПНОСТЬ: Добавь alt тексты, улучши контрастность
+8. 🌙 ТЕМНАЯ ТЕМА: Поддержка dark mode
+
+ПРИНЦИПЫ УЛУЧШЕНИЯ:
+- Сохраняй весь контент, но улучшай его представление
+- Используй современные email дизайн паттерны
+- Делай значительные визуальные улучшения
+- Оптимизируй для высокой конверсии
+- Обеспечь кроссплатформенную совместимость
+
+ВСЕГДА возвращай ТОЛЬКО улучшенный HTML код без дополнительных комментариев или markdown форматирования.`
+        },
+        {
+          role: 'user',
+          content: enhancementPrompt
+        }
+      ],
+      max_tokens: 16000,
+      temperature: 0.3
     });
     
-    const enhancedHtml = aiResult.finalOutput?.trim() || '';
+    const enhancedHtml = response.choices[0]?.message?.content?.trim() || '';
     
     // 🔒 КРИТИЧЕСКАЯ ПРОВЕРКА: Защита от обрезания контента
     const originalLength = currentHtml.length;

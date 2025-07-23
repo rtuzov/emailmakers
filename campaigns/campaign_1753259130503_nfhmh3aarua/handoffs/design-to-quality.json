@@ -1,0 +1,33 @@
+{
+  "request": "Создай email кампанию для зимнего отдыха в Карелии. Включи зимние виды спорта, русскую баню и традиционную кухню.",
+  "metadata": {
+    "handoffId": "handoff_1753259665012_g7v90s462uw",
+    "timestamp": "2025-07-23T08:34:25.012Z",
+    "fromAgent": "design",
+    "toAgent": "quality",
+    "dataVersion": "1.0",
+    "traceId": "finalize-trace",
+    "executionTime": null
+  },
+  "content_context": {},
+  "design_context": {
+    "content_context": {},
+    "asset_manifest": {
+      "images": [],
+      "icons": [],
+      "fonts": []
+    },
+    "mjml_template": {
+      "validation_status": "valid",
+      "validation_messages": [],
+      "responsive_breakpoints": []
+    },
+    "design_decisions": {
+      "asset_optimization": [],
+      "accessibility_features": [],
+      "email_client_adaptations": {}
+    },
+    "preview_files": [],
+    "performance_metrics": {}
+  }
+}

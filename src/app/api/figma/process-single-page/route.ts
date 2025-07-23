@@ -53,12 +53,12 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('✅ Обработка страницы завершена успешно');
-    console.log(`📊 Результат: ${result._data.processedAssets} ассетов`);
+    console.log(`📊 Результат: ${result._data?.processedAssets || 0} ассетов`);
 
     return NextResponse.json({
       success: true,
       _data: result._data,
-      message: `Успешно обработана страница с ${result._data.processedAssets} ассетами`
+      message: `Успешно обработана страница с ${result._data?.processedAssets || 0} ассетами`
     });
 
   } catch (error) {
@@ -325,7 +325,7 @@ async function processComponent(
   if (tagOptimizer) {
     // Проверяем, есть ли заяц на изображении
     const hasRabbit = component.name.toLowerCase().includes('заяц') || 
-                     aiAnalysis.suggestedTags.some(tag => tag.toLowerCase().includes('заяц')) ||
+                     aiAnalysis.suggestedTags.some((tag: string) => tag.toLowerCase().includes('заяц')) ||
                      aiAnalysis.contentDescription.toLowerCase().includes('заяц');
     
     const optimizationResult = tagOptimizer.optimizeTags(aiAnalysis.suggestedTags, hasRabbit);

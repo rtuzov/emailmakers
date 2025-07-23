@@ -49,6 +49,7 @@ export default function FigmaProcessorPage() {
       const interval = setInterval(() => checkJobStatus(currentJobId), 1000);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [currentJobId]);
 
   const loadJobs = async () => {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/shared/infrastructure/database/connection';
 import { email_templates } from '@/shared/infrastructure/database/schema';
-import { eq, and, desc, asc, count, or, ilike, sql } from 'drizzle-orm';
+import { eq, and, desc, asc, count, or, ilike, sql, gte, lte } from 'drizzle-orm';
 
 /**
  * GET /api/templates

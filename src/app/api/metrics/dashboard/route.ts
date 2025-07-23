@@ -510,7 +510,9 @@ export async function GET(request: NextRequest) {
     }
 
     if (includeEmailStats) {
-      response.emailGeneration = metrics.emailGeneration;
+      if (metrics.emailGeneration) {
+        response.emailGeneration = metrics.emailGeneration;
+      }
     }
 
     if (includeUserAnalytics) {

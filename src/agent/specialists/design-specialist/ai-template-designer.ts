@@ -16,6 +16,11 @@ import { TemplateDesign } from './types';
  */
 const templateDesignAgent = new Agent({
   name: 'Template Design AI',
+  model: 'gpt-4o-mini', // Faster model for JSON generation
+  modelSettings: {
+    temperature: 0.3, // Lower temperature for more consistent JSON
+    maxTokens: 8000 // Reasonable limit for JSON response
+  },
   instructions: `Ты эксперт по email дизайну и верстке. Создавай профессиональные email шаблоны с учетом всех технических требований.
 
 ТВОЯ ЗАДАЧА: Создать детальный дизайн email шаблона в формате JSON с АВТОМАТИЧЕСКИМ ВНЕДРЕНИЕМ ЛУЧШИХ ПРАКТИК.
@@ -76,8 +81,7 @@ const templateDesignAgent = new Agent({
 - performance (size targets, optimization)
 - improvements_applied (список автоматически внедренных улучшений)
 
-Используй предоставленный контекст для создания уникального и продуманного дизайна.`,
-  model: 'gpt-4o-mini'
+Используй предоставленный контекст для создания уникального и продуманного дизайна.`
 });
 
 /**
@@ -362,9 +366,9 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
   console.log('🎨 Calling AI to generate detailed template design...');
   console.log('📏 Template prompt length:', templateDesignPrompt.length, 'characters');
   
-  // Add timeout to prevent hanging
+  // Add timeout to prevent hanging (increased to 3 minutes for complex prompts)
   const timeoutPromise = new Promise((_, reject) => {
-    setTimeout(() => reject(new Error('AI Template Design generation timed out after 60 seconds')), 60000);
+    setTimeout(() => reject(new Error('AI Template Design generation timed out after 180 seconds')), 180000);
   });
   
   const result = await Promise.race([

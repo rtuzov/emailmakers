@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         results.figma_test = {
           success: false,
-          error: 'Figma tool implementation error: ' + error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error),
+          error: 'Figma tool implementation error: ' + (error instanceof Error ? error.message : String(error)),
           data: { paths: [], assets: [] }
         };
       }
@@ -171,10 +171,10 @@ export async function POST(request: NextRequest) {
           }
         };
         results.upload_test = uploadResult;
-      } catch (error) {
+      } catch (error: unknown) {
         results.upload_test = {
           success: false,
-          error: 'Upload tool implementation not available: ' + error instanceof Error ? error instanceof Error ? error.message : String(error) : String(error),
+          error: 'Upload tool implementation not available: ' + (error instanceof Error ? error.message : String(error)),
           data: { html_url: null, mjml_url: null }
         };
       }

@@ -236,11 +236,19 @@ export default function DashboardContentV2() {
     }
 
     // Combine metrics, health data, and user analytics
-    return {
-      ...metricsData.metrics,
-      systemHealth: healthData,
-      userAnalytics: userAnalyticsData
+    const result: DashboardMetrics = {
+      ...metricsData.metrics
     };
+    
+    if (healthData !== undefined) {
+      result.systemHealth = healthData;
+    }
+    
+    if (userAnalyticsData !== undefined) {
+      result.userAnalytics = userAnalyticsData;
+    }
+    
+    return result;
   };
 
   // Используем новый hook для безопасной загрузки данных
