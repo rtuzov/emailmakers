@@ -1,0 +1,78 @@
+{
+  "requestId": "req_1753482538997_pcrf989vj6g",
+  "traceId": "api-1753482538997",
+  "timestamp": "2025-07-25T22:28:58.997Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753482538997",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753482538997_v5o4f3253yj",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Create an email campaign for Guatemala autumn travel - highlighting beautiful fall colors, cultural experiences, and adventure activities",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "email_campaign_creation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753482538997",
+      "metadata": {
+        "taskType": "email_campaign_creation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

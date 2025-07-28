@@ -6,6 +6,7 @@
  */
 
 import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../../config/env';
 import { 
   QualityAnalysisResult, 
   AIConsultantRequest, 
@@ -20,7 +21,7 @@ export class SmartEmailAnalyzer {
   private config: AIConsultantConfig;
 
   constructor(config: AIConsultantConfig) {
-    this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    this.openai = new OpenAI({ apiKey: ENV_CONFIG.OPENAI_API_KEY });
     this.config = config;
   }
 

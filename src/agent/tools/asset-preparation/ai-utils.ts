@@ -2,6 +2,7 @@
  * AI utilities for asset manifest generation
  */
 
+import { ENV_CONFIG } from '../../../config/env';
 import { 
   AIRequestConfig, 
   DEFAULT_AI_CONFIG,
@@ -38,14 +39,14 @@ export async function makeAIRequest(
 ): Promise<string> {
   const finalConfig = { ...DEFAULT_AI_CONFIG, ...config };
   
-  if (!process.env.OPENAI_API_KEY) {
+  if (!ENV_CONFIG.OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY environment variable is required');
   }
   
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${ENV_CONFIG.OPENAI_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

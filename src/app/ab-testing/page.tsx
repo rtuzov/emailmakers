@@ -175,53 +175,9 @@ export default function ABTestingPage() {
           setError(null);
         }
       } else {
-        // Handle other API errors - still show mock data for interface testing
-        const mockData: ABTestingData = {
-          tests: [
-            {
-              id: 'demo-test',
-              name: 'Demo A/B Test',
-              description: 'Example test for interface demonstration',
-              status: 'active',
-              variants: [
-                {
-                  id: 'variant-a',
-                  name: 'Variant A',
-                  weight: 0.5,
-                  config: { type: 'demo' },
-                  metrics: { impressions: 1000, conversions: 100, conversionRate: 10.0 }
-                }
-              ],
-              metrics: {
-                impressions: 1000,
-                conversions: 100,
-                conversionRate: 10.0,
-                clickThroughRate: 15.0,
-                openRate: 25.0
-              },
-              startDate: '2025-07-01T10:00:00Z',
-              confidenceLevel: 85
-            }
-          ],
-          summary: {
-            totalTests: 1,
-            activeTests: 1,
-            totalImpressions: 1000,
-            totalConversions: 100,
-            averageConversionRate: 10.0
-          },
-          recommendations: [
-            {
-              id: 'demo-rec',
-              title: 'Demo Recommendation',
-              description: 'This is a demonstration of the A/B testing interface',
-              priority: 'medium',
-              category: 'demo'
-            }
-          ]
-        };
-        setAbTestingData(mockData);
-        setError('A/B testing framework is currently disabled');
+        // ✅ FAIL FAST: No mock data allowed per project rules
+        console.error('❌ FALLBACK POLICY VIOLATION: Cannot show mock A/B testing data');
+        setError('A/B testing API failed and fallback data is prohibited');
       }
     } catch (err) {
       console.error('Failed to fetch A/B testing data:', err);

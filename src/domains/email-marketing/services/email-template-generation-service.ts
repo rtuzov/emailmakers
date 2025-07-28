@@ -574,8 +574,11 @@ export class ContentGenerationPipeline {
       this.generatePreheader(validatedBrief, brandContext, options)
     ]);
     
-    // Ensure content is never empty
-    const finalContent = body || 'Default email content';
+    // ✅ FAIL FAST: Content must be generated, no hardcoded fallbacks allowed
+    if (!body) {
+      throw new Error('Email body content generation failed. Unable to create content from provided brief.');
+    }
+    const finalContent = body;
     
     return {
       id: crypto.randomUUID(),

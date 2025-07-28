@@ -3,7 +3,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { initializeCampaignLogging, logToFile } from './campaign-logger';
+import { logToFile } from './campaign-logger';
 // import { finalizeCampaignLogging } from './campaign-logger'; // Currently unused
 
 /**
@@ -90,9 +90,14 @@ export function extractCampaignInfo(body: any): {
 
 /**
  * Initialize logging if campaign path is available in response
+ * ✅ ОТКЛЮЧЕНО: Автоматическая инициализация конфликтует с Orchestrator
  */
 export async function initializeLoggingFromResponse(result: any): Promise<void> {
   try {
+    // ✅ ИСПРАВЛЕНО: Отключаем автоматическую инициализацию
+    // Оркестратор уже инициализирует логирование правильно
+    console.log('🔍 Logger Middleware: Skipping auto-initialization (handled by Orchestrator)');
+    
     // Look for campaign path in various possible locations in the response
     let campaignPath: string | undefined;
     let campaignId: string | undefined;
@@ -110,21 +115,24 @@ export async function initializeLoggingFromResponse(result: any): Promise<void> 
                   result.data?.campaign?.id;
     }
     
-    // If we have campaign path, initialize logging
+    // ✅ ИСПРАВЛЕНО: Только логируем информацию, не инициализируем повторно
     if (campaignPath && campaignId) {
-      await initializeCampaignLogging(campaignPath, campaignId);
-      console.log(`📋 Campaign logging auto-initialized for ${campaignId}`);
+      console.log(`📋 Campaign found: ${campaignId} (path: ${campaignPath}) - logging already initialized by Orchestrator`);
+    } else {
+      console.log('📋 No campaign info found in response - logging managed by Orchestrator');
     }
     
   } catch (error) {
-    console.warn('Failed to auto-initialize campaign logging:', error);
+    console.warn('Failed to check campaign info:', error);
     // Don't throw - this is optional
   }
 }
 
-export default {
+const LoggerMiddleware = {
   withCampaignLogging,
   createCampaignResponse,
   extractCampaignInfo,
   initializeLoggingFromResponse
-}; 
+};
+
+export default LoggerMiddleware; 

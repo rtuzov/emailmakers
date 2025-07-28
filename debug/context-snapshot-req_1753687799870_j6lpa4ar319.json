@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753687799870_j6lpa4ar319",
+  "traceId": "api-1753687799870",
+  "timestamp": "2025-07-28T07:29:59.870Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753687799870",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "travel_promotion",
+      "destination": "Norway",
+      "language": "ru"
+    },
+    "correlationId": "corr_1753687799870_me787gl92fd",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Тест исправлений статусов - Норвегия осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "travel_promotion",
+    "destination": "Norway",
+    "originalOptions": {
+      "traceId": "api-1753687799870",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "travel_promotion",
+        "destination": "Norway"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "travel_promotion",
+        "destination": "Norway",
+        "language": "ru"
+      }
+    }
+  }
+}

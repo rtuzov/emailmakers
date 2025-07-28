@@ -1,9 +1,7 @@
 import { OpenAI } from 'openai';
 import { Agent, run } from '@openai/agents';
 import { logger } from './logger';
-import { getConfig } from './config';
-
-const cfg = getConfig();
+import { ENV_CONFIG, validateEnvironment } from '../../config/env';
 
 export class OpenAIClient {
   private static instance: OpenAIClient;
@@ -11,10 +9,9 @@ export class OpenAIClient {
   private defaultAgent: Agent;
 
   private constructor() {
-    if (!cfg.openaiApiKey) {
-      throw new Error('OPENAI_API_KEY is not set');
-    }
-    this.openai = new OpenAI({ apiKey: cfg.openaiApiKey });
+    // ✅ Validate environment first
+    validateEnvironment();
+    this.openai = new OpenAI({ apiKey: ENV_CONFIG.OPENAI_API_KEY });
     
     // Создаем агента по умолчанию для обратной совместимости
     this.defaultAgent = new Agent({

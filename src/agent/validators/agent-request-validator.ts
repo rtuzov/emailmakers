@@ -297,8 +297,10 @@ function validateTemplateDeploymentInput(input: any): ValidationResult {
   }
 }
 
-export default {
+const AgentValidator = {
   validateAgentRequest,
   validateTaskInput,
   AgentRequestSchema
-}; 
+};
+
+export default AgentValidator; 

@@ -6,6 +6,7 @@
  */
 
 import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../../config/env';
 import { 
   QualityAnalysisResult,
   QualityRecommendation,
@@ -23,7 +24,7 @@ export class RecommendationEngine {
   constructor(config: AIConsultantConfig) {
     this.config = config;
     this._openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: ENV_CONFIG.OPENAI_API_KEY,
     });
     
     // _openai will be used for future AI-powered recommendation enhancement

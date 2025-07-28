@@ -1,0 +1,256 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_UAF6H9R_SH8.jpg",
+        "path": "https://images.unsplash.com/photo-1704729961085-317a1c3921de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxub3J0aGVybiUyMGxpZ2h0cyUyMG92ZXIlMjBpY2VsYW5kfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1704729961085-317a1c3921de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxub3J0aGVybiUyMGxpZ2h0cyUyMG92ZXIlMjBpY2VsYW5kfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_UAF6H9R_SH8",
+        "created": "2025-07-28T13:11:08.201Z",
+        "modified": "2025-07-28T13:11:08.201Z",
+        "tags": [],
+        "description": "a large green and yellow aurora bore in the sky",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1704729961085-317a1c3921de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxub3J0aGVybiUyMGxpZ2h0cyUyMG92ZXIlMjBpY2VsYW5kfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-28T13:12:52.728Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_4oYfMQQbU_w.jpg",
+        "path": "https://images.unsplash.com/photo-1676492784669-9cfd92a952c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwc25vd21vYmlsaW5nJTIwYWR2ZW50dXJlfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1676492784669-9cfd92a952c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwc25vd21vYmlsaW5nJTIwYWR2ZW50dXJlfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_4oYfMQQbU-w",
+        "created": "2025-07-28T13:11:08.201Z",
+        "modified": "2025-07-28T13:11:08.201Z",
+        "tags": [],
+        "description": "a group of people riding four wheelers on a dirt road",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1676492784669-9cfd92a952c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwc25vd21vYmlsaW5nJTIwYWR2ZW50dXJlfGVufDB8MHx8fDE3NTM3MTcyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-28T13:12:52.728Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_8xJbOvvw5pg.jpg",
+        "path": "https://images.unsplash.com/photo-1733324893895-ebe7905d662f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBob3QlMjBzcHJpbmdzfGVufDB8MHx8fDE3NTM3MTcyNjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1733324893895-ebe7905d662f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBob3QlMjBzcHJpbmdzfGVufDB8MHx8fDE3NTM3MTcyNjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_8xJbOvvw5pg",
+        "created": "2025-07-28T13:11:08.201Z",
+        "modified": "2025-07-28T13:11:08.201Z",
+        "tags": [],
+        "description": "A hot tub with steam coming out of it",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1733324893895-ebe7905d662f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBob3QlMjBzcHJpbmdzfGVufDB8MHx8fDE3NTM3MTcyNjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-28T13:12:52.728Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_g277lEksVqc.jpg",
+        "path": "https://images.unsplash.com/photo-1701539614353-df4a64960692?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBjdWx0dXJlJTIwYW5kJTIwZm9sa2xvcmV8ZW58MHwwfHx8MTc1MzcxNzI2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1701539614353-df4a64960692?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBjdWx0dXJlJTIwYW5kJTIwZm9sa2xvcmV8ZW58MHwwfHx8MTc1MzcxNzI2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_g277lEksVqc",
+        "created": "2025-07-28T13:11:08.201Z",
+        "modified": "2025-07-28T13:11:08.201Z",
+        "tags": [],
+        "description": "a building with a grass roof and a flag on top of it",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1701539614353-df4a64960692?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kaWMlMjBjdWx0dXJlJTIwYW5kJTIwZm9sa2xvcmV8ZW58MHwwfHx8MTc1MzcxNzI2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-28T13:12:52.728Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_aCdFopajrrs.jpg",
+        "path": "https://images.unsplash.com/photo-1635415198500-62ef074e2180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwd2ludGVyJTIwbGFuZHNjYXBlc3xlbnwwfDB8fHwxNzUzNzE3MjY1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1635415198500-62ef074e2180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwd2ludGVyJTIwbGFuZHNjYXBlc3xlbnwwfDB8fHwxNzUzNzE3MjY1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_aCdFopajrrs",
+        "created": "2025-07-28T13:11:08.201Z",
+        "modified": "2025-07-28T13:11:08.201Z",
+        "tags": [],
+        "description": "a mountain range with a house in the foreground",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1635415198500-62ef074e2180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxpY2VsYW5kJTIwd2ludGVyJTIwbGFuZHNjYXBlc3xlbnwwfDB8fHwxNzUzNzE3MjY1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-28T13:12:52.728Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 0,
+    "optimization_level": "aggressive",
+    "processed_at": "2025-07-28T13:12:52.728Z"
+  }
+}

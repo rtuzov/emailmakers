@@ -1,0 +1,118 @@
+{
+  "requestId": "req_1753686813595_zucmaw21od",
+  "traceId": "api-1753686813594",
+  "timestamp": "2025-07-28T07:13:33.595Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753686813594",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "travel_promotion",
+      "season": "autumn",
+      "destination": "Guatemala",
+      "language": "ru",
+      "tone": "professional_inspiring",
+      "target_audience": "russian_travelers",
+      "include_practical_tips": true,
+      "include_cultural_info": true,
+      "include_safety_info": true,
+      "validationLevel": "standard",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1753686813594_egw1zzcjjkc",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию на тему \"Путешествие в Гватемалу осенью\". Включить информацию о климате в октябре-ноябре, достопримечательностях (руины майя, вулканы, озеро Атитлан), местной культуре, практических советах для туристов, рекомендациях по безопасности. Тон профессиональный и вдохновляющий.",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "travel_promotion",
+    "season": "autumn",
+    "destination": "Guatemala",
+    "tone": "professional_inspiring",
+    "target_audience": "russian_travelers",
+    "include_practical_tips": true,
+    "include_cultural_info": true,
+    "include_safety_info": true,
+    "originalOptions": {
+      "traceId": "api-1753686813594",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "travel_promotion",
+        "season": "autumn",
+        "destination": "Guatemala",
+        "tone": "professional_inspiring",
+        "target_audience": "russian_travelers",
+        "include_practical_tips": true,
+        "include_cultural_info": true,
+        "include_safety_info": true
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "travel_promotion",
+        "season": "autumn",
+        "destination": "Guatemala",
+        "language": "ru",
+        "tone": "professional_inspiring",
+        "target_audience": "russian_travelers",
+        "include_practical_tips": true,
+        "include_cultural_info": true,
+        "include_safety_info": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

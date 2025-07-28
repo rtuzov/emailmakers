@@ -198,7 +198,7 @@ export default function FigmaProcessorPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
       <div className="container mx-auto py-8 max-w-6xl">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4 text-white">🐰 Обработка Figma компонентов "Зайцы Новости"</h1>
+          <h1 className="text-4xl font-bold mb-4 text-white">🐰 Обработка Figma компонентов &quot;Зайцы Новости&quot;</h1>
           <p className="text-white/80 text-lg">
             Автоматическая обработка компонентов зайцев с генерацией тегов через GPT-4
           </p>

@@ -9,6 +9,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { loadDesignContextFromHandoffDirectory } from './design-context';
 import { calculateTechnicalCompliance, calculateAssetOptimization, calculateAccessibilityScore, calculateEmailClientCompatibility } from './design-helpers';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 /**
  * Generate Comprehensive Design Package Tool
@@ -46,6 +47,22 @@ export const generateComprehensiveDesignPackage = tool({
     }).describe('Performance analysis metrics')
   }),
   execute: async (params, context) => {
+    // ✅ ЗАЩИТА ОТ ДУБЛИРОВАНИЯ: Проверяем что пакет не был уже создан
+    const campaignPath = (context?.context as any)?.designContext?.campaign_path;
+    if (campaignPath) {
+      const packagePath = path.join(campaignPath, 'docs', 'design-package.json');
+      try {
+        await fs.access(packagePath);
+        console.log('⚠️ Design package already exists, skipping generation');
+        logToFile('info', 'Design package already exists, skipping duplicate generation', 'DesignSpecialist-Package', undefined);
+        return 'Design package already generated and available.';
+      } catch {
+        // File doesn't exist, proceed with generation
+      }
+    }
+    
+    logToFile('info', 'Design package generation started', 'DesignSpecialist-Package', undefined);
+    
     try {
       // ✅ ИСПРАВЛЕНО: Получаем правильный путь кампании из context
       let handoffDirectory = params.handoff_directory;
@@ -87,10 +104,23 @@ export const generateComprehensiveDesignPackage = tool({
       if (!mjmlTemplate || !mjmlTemplate.mjml_code) {
         console.log('⚠️ MJML template not provided in params, attempting to load from campaign...');
         
-        // Get campaign path from handoffDirectory
-        const campaignPath = handoffDirectory.includes('/handoffs/') 
-          ? handoffDirectory.split('/handoffs/')[0]
-          : path.dirname(handoffDirectory);
+        // ✅ ИСПРАВЛЕНО: Правильное извлечение campaign path из context
+        let campaignPath: string;
+        
+        // Сначала пробуем получить путь из контекста
+        if (context?.context && (context.context as any)?.designContext?.campaign_path) {
+          campaignPath = (context.context as any).designContext.campaign_path;
+        } else if (handoffDirectory.includes('/handoffs')) {
+          // Если в контексте нет пути, извлекаем из handoffDirectory
+          const parts = handoffDirectory.split('/handoffs');
+          campaignPath = parts[0] || path.dirname(handoffDirectory);
+        } else {
+          // Последний способ - dirname от handoffDirectory
+          campaignPath = path.dirname(handoffDirectory);
+        }
+        
+        console.log(`🔍 DEBUG: handoffDirectory = ${handoffDirectory}`);
+        console.log(`🔍 DEBUG: extracted campaignPath = ${campaignPath}`);
         
         try {
           // Try to load MJML from templates directory
@@ -222,6 +252,10 @@ export const generateComprehensiveDesignPackage = tool({
       console.log(`🚀 Asset optimization: ${assetOptimization}%`);
       console.log(`♿ Accessibility score: ${accessibilityScore}%`);
       console.log(`📧 Email client compatibility: ${emailClientCompatibility}%`);
+      
+      logToFile('info', `Design package generated successfully: Overall quality ${designPackage.quality_metrics.overall_quality_score}%`, 'DesignSpecialist-Package', undefined);
+      logToFile('info', `Quality metrics: Technical ${technicalCompliance}%, Asset optimization ${assetOptimization}%, Accessibility ${accessibilityScore}%, Email compatibility ${emailClientCompatibility}%`, 'DesignSpecialist-Package', undefined);
+      logToFile('info', `Package saved to: ${packagePath}`, 'DesignSpecialist-Package', undefined);
       
       return `Comprehensive design package generated successfully! Package includes template specifications, asset summary with ${params.asset_manifest.images.length} images and ${params.asset_manifest.icons.length} icons, quality metrics with ${designPackage.quality_metrics.overall_quality_score}% overall score, preview files for desktop and mobile, performance analysis, and QA checklist. Technical compliance: ${technicalCompliance}%. Asset optimization: ${assetOptimization}%. Accessibility score: ${accessibilityScore}%. Email client compatibility: ${emailClientCompatibility}%. Package saved to ${packagePath}. Ready for Quality Assurance Specialist review.`;
       

@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753680370751_p5q40twkh8",
+  "traceId": "api-1753680370751",
+  "timestamp": "2025-07-28T05:26:10.751Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753680370751",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "test_deduplication",
+      "destination": "Guatemala",
+      "language": "ru"
+    },
+    "correlationId": "corr_1753680370751_jd0l79fqhfe",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию \"Гватемала - финальный тест исправлений логирования\"",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "test_deduplication",
+    "destination": "Guatemala",
+    "originalOptions": {
+      "traceId": "api-1753680370751",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "test_deduplication",
+        "destination": "Guatemala"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "test_deduplication",
+        "destination": "Guatemala",
+        "language": "ru"
+      }
+    }
+  }
+}

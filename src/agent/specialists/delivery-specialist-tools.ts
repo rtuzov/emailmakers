@@ -11,7 +11,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-
+import { autoRestoreCampaignLogging } from '../../shared/utils/campaign-logger';
 // Import finalization tool for final delivery
 import { createFinalDeliveryPackage } from '../core/delivery-finalization-tool';
 
@@ -82,6 +82,8 @@ export const packageCampaignFiles = tool({
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'DELIVERY_TOOL');
     console.log('\n📦 === CAMPAIGN FILES PACKAGING ===');
     console.log(`📋 Campaign: ${(params.quality_context?.contentContext as any)?.campaign?.id || 'unknown'}`);
     console.log(`📁 Format: ${params.package_format}`);
@@ -191,6 +193,8 @@ export const generateExportFormats = tool({
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'DELIVERY_TOOL');
     console.log('\n📤 === EXPORT FORMATS GENERATION ===');
     console.log(`📋 Campaign: ${(params.quality_context?.contentContext as any)?.campaign?.id || 'unknown'}`);
     console.log(`📄 HTML: ${params.export_options.include_html}`);
@@ -293,6 +297,8 @@ export const deliverCampaignFinal = tool({
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'DELIVERY_TOOL');
     console.log('\n🚀 === FINAL CAMPAIGN DELIVERY ===');
     console.log(`📋 Campaign: ${(params.quality_context?.contentContext as any)?.campaign?.id || 'unknown'}`);
     console.log(`📦 Create ZIP: ${params.delivery_options.create_zip}`);

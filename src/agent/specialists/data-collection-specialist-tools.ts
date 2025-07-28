@@ -11,6 +11,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { autoRestoreCampaignLogging } from '../../shared/utils/campaign-logger';
 
 // ============================================================================
 // SIMPLE DATA ACTION TOOLS (No LLM calls)
@@ -36,7 +37,10 @@ export const saveAnalysisResult = tool({
     }).strict(),
     campaign_path: z.string().describe('Campaign folder path for saving data')
   }),
-  execute: async ({ analysis_type, result_data, campaign_path }) => {
+  execute: async ({ analysis_type, result_data, campaign_path }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'save_analysis_result');
+    
     try {
       console.log(`💾 Saving ${analysis_type} analysis to: ${campaign_path}`);
       console.log(`🔍 DEBUG: Full campaign_path value:`, JSON.stringify(campaign_path));
@@ -182,9 +186,9 @@ export const saveAnalysisResult = tool({
           console.log(`❌ JSON Parse Error for ${fieldName}:`, errorMessage);
           
           // ✅ IMPROVED ERROR RECOVERY: Try to fix common JSON issues
+          let fixedJson = cleanText;
           try {
             // Try to fix truncated JSON by finding the last valid closing brace
-            let fixedJson = cleanText;
             
             // Count opening and closing braces
             let openBraces = 0;
@@ -219,41 +223,13 @@ export const saveAnalysisResult = tool({
             return parsed;
             
           } catch (recoveryError) {
-            console.log(`❌ RECOVERY FAILED for ${fieldName}:`, recoveryError);
+            console.error(`❌ RECOVERY FAILED for ${fieldName}:`, recoveryError);
+            console.error(`❌ FALLBACK POLICY VIOLATION: Unable to parse JSON for field "${fieldName}"`);
+            console.error(`❌ Original text:`, text);
+            console.error(`❌ Fixed attempt:`, fixedJson);
             
-            // ✅ FINAL FALLBACK: Create minimal valid JSON structure
-            console.log(`🔧 CREATING MINIMAL FALLBACK for ${fieldName}`);
-            
-            const fallbackStructures = {
-              destination_analysis: {
-                route_analysis: "Transportation options available",
-                seasonal_patterns: "Standard seasonal travel patterns apply",
-                attractions: "Popular destinations and attractions"
-              },
-              market_intelligence: {
-                competitive_landscape: "Market analysis data",
-                pricing_trends: "Current pricing information",
-                demand_patterns: "Travel demand insights"
-              },
-              emotional_profile: {
-                motivations: ["adventure", "relaxation", "culture"],
-                pain_points: ["cost", "time", "planning"],
-                decision_factors: ["price", "convenience", "experience"]
-              },
-              trend_analysis: {
-                current_trends: "Latest travel trends",
-                seasonal_factors: "Seasonal considerations",
-                emerging_patterns: "New market developments"
-              }
-            };
-            
-            const fallback = fallbackStructures[fieldName as keyof typeof fallbackStructures] || {
-              status: "fallback_data",
-              message: "Minimal data structure due to parsing error"
-            };
-            
-            console.log(`✅ FALLBACK CREATED for ${fieldName}:`, fallback);
-            return fallback;
+            // ✅ FAIL FAST: No fallback allowed per project rules
+            throw new Error(`JSON parsing failed for field "${fieldName}". Fallback data is prohibited. Agent must provide valid JSON data.`);
           }
         }
       }
@@ -391,7 +367,10 @@ export const fetchCachedData = tool({
     max_age_hours: z.number().default(24).describe('Maximum age of cached data in hours before considered stale'),
     campaign_path: z.string().nullable().describe('Campaign folder path for local cache lookup')
   }),
-  execute: async ({ cache_key, data_type, max_age_hours, campaign_path }) => {
+  execute: async ({ cache_key, data_type, max_age_hours, campaign_path }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'fetch_cached_data');
+    
     console.log(`🔍 Fetching cached ${data_type} data: ${cache_key} (max age: ${max_age_hours}h)`);
     
     try {
@@ -421,7 +400,7 @@ export const fetchCachedData = tool({
       }
       
       // No cached data found
-      console.log(`❌ No cached ${data_type} data found for key: ${cache_key}`);
+      console.log(`📋 No cached ${data_type} data found for key: ${cache_key} - will generate fresh data`);
       return {
         found: false,
         data: null,
@@ -582,7 +561,10 @@ export const saveCachedData = tool({
     expires_in_hours: z.number().default(48).describe('How long to keep cached data in hours'),
     campaign_path: z.string().nullable().describe('Campaign folder path for local cache storage')
   }),
-  execute: async ({ cache_key, data_type, data, expires_in_hours, campaign_path }) => {
+  execute: async ({ cache_key, data_type, data, expires_in_hours, campaign_path }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'save_cached_data');
+    
     console.log(`💾 Saving ${data_type} data to cache: ${cache_key} (expires in ${expires_in_hours}h)`);
     
     try {
@@ -674,7 +656,10 @@ export const updateContextInsights = tool({
     insights: z.array(z.string()).describe('Array of key insights'),
     campaign_path: z.string().describe('Campaign folder path for saving insights')
   }),
-  execute: async ({ insight_type, insights, campaign_path }) => {
+  execute: async ({ insight_type, insights, campaign_path }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'update_context_insights');
+    
     try {
       console.log(`📝 Updating context with ${insights.length} ${insight_type} insights`);
       
@@ -728,7 +713,10 @@ export const logAnalysisMetrics = tool({
       confidence_average: z.number().min(0).max(1)
     })
   }),
-  execute: async ({ analysis_session, metrics }) => {
+  execute: async ({ analysis_session, metrics }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'log_analysis_metrics');
+    
     console.log(`📊 Logging metrics for session: ${analysis_session}`);
     
     // Simple metrics logging - no LLM calls
@@ -793,7 +781,10 @@ export const createHandoffFile = tool({
     trace_id: z.string().nullable().describe('Trace ID'),
     validate_context: z.boolean().default(true).describe('Perform context validation before creating handoff')
   }),
-  execute: async (params) => {
+  execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'create_handoff_file');
+    
     try {
       // 🛡️ PROTECTION: Check if handoff already exists to prevent duplicates
       const handoffId = `${params.campaign_id}_${params.from_specialist}_to_${params.to_specialist}`;
@@ -882,7 +873,10 @@ export const updateCampaignMetadata = tool({
       data: z.string().nullable()
     }).nullable().describe('Additional metadata to update')
   }),
-  execute: async ({ campaign_path, specialist_name, workflow_phase, additional_data }) => {
+  execute: async ({ campaign_path, specialist_name, workflow_phase, additional_data }, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'update_campaign_metadata');
+    
     try {
       // 🛡️ PROTECTION: Check if metadata already updated to prevent duplicates
       const metadataPath = path.join(campaign_path, 'campaign-metadata.json');
@@ -920,9 +914,56 @@ export const updateCampaignMetadata = tool({
       metadata.workflow_phase = workflow_phase;
       metadata.last_updated = new Date().toISOString();
       
-      // Add any additional data
+      // ✅ AUTO-SYNC: Determine campaign status based on completed specialists
+      
+      // ✅ CLEANUP: Remove duplicate specialist keys with different formats
+      // Normalize all keys to underscore format and remove duplicates
+      const normalizedSpecialists: Record<string, any> = {};
+      Object.keys(metadata.specialists_completed).forEach(key => {
+        const normalizedKey = key.replace(/-/g, '_');
+        // Keep the TRUE value if either format exists
+        if (metadata.specialists_completed[key] === true || normalizedSpecialists[normalizedKey] === true) {
+          normalizedSpecialists[normalizedKey] = true;
+        } else {
+          normalizedSpecialists[normalizedKey] = metadata.specialists_completed[key];
+        }
+      });
+  
+  // Update metadata with normalized keys only
+  metadata.specialists_completed = normalizedSpecialists;
+  
+  // Count unique completed specialists
+  const completedSpecialistsList = Object.keys(normalizedSpecialists).filter(
+    key => normalizedSpecialists[key] === true
+  );
+  const uniqueCount = completedSpecialistsList.length;
+      
+        // Check if data collection is done (now normalized to underscore format)
+  const dataCollectionDone = normalizedSpecialists['data_collection'] === true;
+      
+      // Determine overall campaign status based on progress
+      if (uniqueCount === 0) {
+        metadata.status = 'initializing';
+      } else if (dataCollectionDone && uniqueCount === 1) {
+        metadata.status = 'active'; // Data collection done, others in progress
+      } else if (uniqueCount >= 2 && uniqueCount < 5) {
+        metadata.status = 'active'; // Multiple specialists done, still in progress
+      } else if (uniqueCount >= 5) {
+        metadata.status = 'completed'; // All specialists completed
+      } else {
+        metadata.status = 'active'; // Default to active during processing
+      }
+      
+      console.log(`📊 Campaign status auto-updated: ${metadata.status} (${uniqueCount}/5 specialists completed)`);
+      
+      // Add any additional data (but PROTECT status from being overwritten)
       if (additional_data) {
-        Object.assign(metadata, additional_data);
+        const { status: additionalStatus, ...safeAdditionalData } = additional_data;
+        Object.assign(metadata, safeAdditionalData);
+        // Log if status was blocked from being overwritten
+        if (additionalStatus && additionalStatus !== metadata.status) {
+          console.log(`🛡️ Protected campaign status: blocked "${additionalStatus}" from overwriting "${metadata.status}"`);
+        }
       }
       
       // Write updated metadata

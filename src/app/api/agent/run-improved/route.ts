@@ -107,9 +107,13 @@ export async function POST(request: NextRequest) {
     
     console.log('\n🏁 === AGENT EXECUTION COMPLETED ===\n');
 
+    // Safe JSON serialization to prevent circular references
+    const safeResult = safeStringify(result);
+    const parsedResult = safeResult ? JSON.parse(safeResult) : result;
+
     return NextResponse.json({
       success: true,
-      result: result,
+      result: parsedResult,
       system: 'EmailMakersAgent',
       architecture: 'OpenAI SDK Handoffs with Fixed JSON Parsing',
       taskType: task_type,
@@ -182,5 +186,26 @@ export async function GET(_request: NextRequest) {
       },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Safe JSON stringify to handle circular references
+ */
+function safeStringify(obj: any, space?: number): string | null {
+  try {
+    const seen = new WeakSet();
+    return JSON.stringify(obj, (_key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return '[Circular Reference]';
+        }
+        seen.add(value);
+      }
+      return value;
+    }, space);
+  } catch (error) {
+    console.error('❌ Safe stringify failed:', error);
+    return null;
   }
 }

@@ -2,6 +2,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+// import { ENV_CONFIG } from '../../../config/env';
 // import { buildDesignContext } from './design-context';
 
 // Import comprehensive validation from quality assurance domain
@@ -306,14 +307,19 @@ ${currentHtml}
     // Use direct OpenAI API call for HTML enhancement (integrated within Design Specialist workflow)
     console.log('🎨 Calling OpenAI API for HTML enhancement...');
     
+    const { ENV_CONFIG, validateEnvironment } = await import('../../../config/env');
+    
+    // ✅ FAIL FAST: Validate environment before making request
+    validateEnvironment();
+    
     const OpenAI = require('openai');
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: ENV_CONFIG.OPENAI_API_KEY
     });
 
-    // Add timeout to prevent hanging
+    // Add timeout to prevent hanging - increased to 300 seconds for complex HTML
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('AI HTML validation timeout after 30 seconds')), 30000);
+      setTimeout(() => reject(new Error('AI HTML validation timeout after 300 seconds')), 300000);
     });
     
     const completionPromise = openai.chat.completions.create({
@@ -552,12 +558,11 @@ ${currentHtml}
 
   } catch (error) {
     console.error('❌ AI HTML Enhancement generation failed:', error);
-    console.error('❌ Returning original HTML as fallback');
+    console.error('❌ FALLBACK POLICY VIOLATION: Cannot use fallback HTML enhancement');
     
-    return {
-      enhancedHtml: currentHtml,
-      enhancementsMade: ['Ошибка генерации - оставлен оригинальный HTML']
-    };
+    // ✅ FAIL FAST: No fallback enhancement allowed per project rules
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`AI HTML enhancement failed: ${errorMessage}. Fallback enhancement is prohibited.`);
   }
 }
 

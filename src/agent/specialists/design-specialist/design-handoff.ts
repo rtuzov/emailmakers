@@ -7,6 +7,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 /**
  * Create design handoff for Quality Assurance Specialist
@@ -21,17 +22,21 @@ export const createDesignHandoff = tool({
   }),
   execute: async (params, context) => {
     console.log('\n🤝 === DESIGN HANDOFF ===');
+    logToFile('info', 'Design handoff creation started', 'DesignSpecialist-Handoff', params.trace_id || undefined);
     
     try {
       const contentContext = params.content_context;
       const designPackage = params.design_package;
       
-      // Try to get campaign path from context
+      // Enhanced campaign path extraction with multiple fallback strategies
       let campaignPath = (context?.context as any)?.campaignContext?.campaignPath;
       
       if (!campaignPath) {
-        // Try multiple ways to get campaign path from parameters
-        campaignPath = (contentContext as any).campaign?.campaignPath || 
+        // Strategy 1: Try multiple context paths
+        campaignPath = (context?.context as any)?.designContext?.campaign_path ||
+                      (context?.context as any)?.campaign?.campaignPath || 
+                      (context?.context as any)?.campaign?.path ||
+                      (contentContext as any).campaign?.campaignPath ||
                       (contentContext as any).campaign?.path ||
                       (contentContext as any).campaignPath ||
                       (contentContext as any).campaign_path ||
@@ -39,35 +44,88 @@ export const createDesignHandoff = tool({
                       (designPackage as any).campaignPath;
       }
       
-      // If still no path, try to extract from any file paths in the context
+      // Strategy 2: Extract from file paths in design package
       if (!campaignPath) {
-        // Look for campaign path in design package deliverables
-        const mjmlPath = (designPackage as any).deliverables?.mjml_template?.source_file;
-        const htmlPath = (designPackage as any).deliverables?.mjml_template?.compiled_html;
-        const previewPath = (designPackage as any).deliverables?.preview_files?.desktop_preview;
+        const mjmlPath = (designPackage as any).deliverables?.mjml_template?.source_file ||
+                        (designPackage as any).template_specifications?.mjml_file_path ||
+                        (designPackage as any).mjml_file_path;
+        const htmlPath = (designPackage as any).deliverables?.mjml_template?.compiled_html ||
+                        (designPackage as any).preview_files?.desktop_preview ||
+                        (designPackage as any).preview_files?.mobile_preview;
+        const previewPath = (designPackage as any).preview_files?.desktop_preview ||
+                           (designPackage as any).preview_files?.mobile_preview;
         
         for (const filePath of [mjmlPath, htmlPath, previewPath]) {
           if (filePath && filePath.includes('/campaigns/')) {
             const match = filePath.match(/^(.*\/campaigns\/[^\/]+)/);
             if (match) {
               campaignPath = match[1];
+              console.log(`✅ Extracted campaign path from file path: ${campaignPath}`);
               break;
             }
           }
         }
       }
       
-      // If still no path, try to construct from campaign ID
-      if (!campaignPath && (contentContext as any).campaign?.id) {
-        campaignPath = path.join(process.cwd(), 'campaigns', (contentContext as any).campaign.id);
+      // Strategy 3: Try to construct from campaign ID
+      if (!campaignPath) {
+        const campaignId = (contentContext as any).campaign?.id ||
+                          (context?.context as any)?.campaign?.id ||
+                          (context?.context as any)?.campaignContext?.campaignId;
+        if (campaignId) {
+          campaignPath = path.join(process.cwd(), 'campaigns', campaignId);
+          console.log(`✅ Constructed campaign path from campaign ID: ${campaignPath}`);
+        }
+      }
+      
+      // Strategy 4: Auto-detect latest campaign as last resort
+      if (!campaignPath) {
+        console.log('⚠️ Campaign path not found in any context, attempting auto-detection...');
+        try {
+          const campaignsDir = path.join(process.cwd(), 'campaigns');
+          const folders = await fs.readdir(campaignsDir);
+          
+          const latestCampaign = folders
+            .filter(folder => folder.startsWith('campaign_'))
+            .sort()
+            .pop();
+            
+          if (latestCampaign) {
+            campaignPath = path.join(campaignsDir, latestCampaign);
+            console.log(`✅ Auto-detected latest campaign: ${campaignPath}`);
+          }
+        } catch (autoDetectError) {
+          console.error('❌ Auto-detection failed:', autoDetectError);
+        }
       }
       
       if (!campaignPath) {
         console.error('❌ Campaign path not found in context. Available keys:', Object.keys(contentContext));
         console.error('❌ Design package keys:', Object.keys(designPackage));
         console.error('❌ SDK context keys:', context ? Object.keys(context) : 'No context');
-        console.error('❌ SDK context keys:', context?.context ? Object.keys(context.context) : 'No context');
-        throw new Error(`Campaign path is missing from content context. Available context keys: ${Object.keys(contentContext).join(', ')}`);
+        console.error('❌ SDK context.context keys:', context?.context ? Object.keys(context.context) : 'No context.context');
+        
+        // Provide detailed diagnostic information
+        const diagnosticInfo = {
+          contentContext: {
+            keys: Object.keys(contentContext),
+            hasCampaign: !!(contentContext as any).campaign,
+            campaignKeys: (contentContext as any).campaign ? Object.keys((contentContext as any).campaign) : 'none'
+          },
+          designPackage: {
+            keys: Object.keys(designPackage),
+            hasDeliverables: !!(designPackage as any).deliverables,
+            deliverableKeys: (designPackage as any).deliverables ? Object.keys((designPackage as any).deliverables) : 'none'
+          },
+          sdkContext: {
+            keys: context ? Object.keys(context) : 'none',
+            contextKeys: context?.context ? Object.keys(context.context) : 'none',
+            hasCampaignContext: !!(context?.context as any)?.campaignContext,
+            hasDesignContext: !!(context?.context as any)?.designContext
+          }
+        };
+        
+        throw new Error(`Campaign path is missing from all context sources. Diagnostic info: ${JSON.stringify(diagnosticInfo, null, 2)}`);
       }
       
       console.log(`📁 Using campaign path: ${campaignPath}`);
@@ -168,6 +226,10 @@ export const createDesignHandoff = tool({
       console.log(`🤝 Handoff file: ${handoffPath}`);
       console.log(`📋 Validation checklist: ${handoffData.validation_checklist.length} items`);
       console.log(`🎯 Success criteria: ${Object.keys(handoffData.success_criteria).length} metrics`);
+      
+      logToFile('info', `Design handoff created successfully`, 'DesignSpecialist-Handoff', params.trace_id || undefined);
+      logToFile('info', `Handoff file: ${handoffPath}`, 'DesignSpecialist-Handoff', params.trace_id || undefined);
+      logToFile('info', `Validation checklist: ${handoffData.validation_checklist.length} items, Success criteria: ${Object.keys(handoffData.success_criteria).length} metrics`, 'DesignSpecialist-Handoff', params.trace_id || undefined);
       
       return `Design handoff created successfully! Handoff file: ${handoffPath}. Quality targets: Technical compliance ${handoffData.design_context.quality_targets.technical_compliance}%, Accessibility ${handoffData.design_context.quality_targets.accessibility_score}%, Performance ${handoffData.design_context.quality_targets.performance_score}%. Validation checklist: ${handoffData.validation_checklist.length} items. Ready for Quality Assurance Specialist review.`;
       

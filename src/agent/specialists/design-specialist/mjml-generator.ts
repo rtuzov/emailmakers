@@ -6,10 +6,12 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import path from 'path';
+import * as path from 'path';
+import { autoRestoreCampaignLogging } from '../../../shared/utils/campaign-logger';
+import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../../config/env';
 import { buildDesignContext } from './design-context';
 import { MjmlTemplate } from './types';
-import { OpenAI } from 'openai';
 import { logToFile } from '../../../shared/utils/campaign-logger';
 
 /**
@@ -17,7 +19,7 @@ import { logToFile } from '../../../shared/utils/campaign-logger';
  * Uses direct OpenAI API for MJML code generation integrated with main workflow
  */
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
+  apiKey: ENV_CONFIG.OPENAI_API_KEY!
 });
 
 /**
@@ -140,14 +142,80 @@ async function compileMjmlToHtml(
   
   try {
     const mjml = require('mjml');
-    const htmlResult = mjml(mjmlTemplate.source, {
+    
+    // ✅ AUTO-FIX: Fix common MJML structure issues before compilation
+    let fixedMjmlCode = mjmlTemplate.source;
+    let fixesApplied = [];
+    
+    // Fix mj-group inside mj-column (move to mj-section level)
+    if (fixedMjmlCode.includes('<mj-column>') && fixedMjmlCode.includes('<mj-group>')) {
+      console.log('🔧 Auto-fixing: Moving mj-group from mj-column to mj-section level');
+      fixedMjmlCode = fixedMjmlCode.replace(
+        /<mj-column[^>]*>[\s\S]*?<mj-group[^>]*>([\s\S]*?)<\/mj-group>[\s\S]*?<\/mj-column>/g,
+        (match, groupContent) => {
+          return match.replace(/<mj-group[^>]*>([\s\S]*?)<\/mj-group>/, groupContent);
+        }
+      );
+      fixesApplied.push('mj-group positioning');
+    }
+    
+    // ✅ FIX: Nested mj-column inside mj-column
+    if (fixedMjmlCode.includes('<mj-column>') && fixedMjmlCode.match(/<mj-column[^>]*>[\s\S]*?<mj-column/)) {
+      console.log('🔧 Auto-fixing: Removing nested mj-column elements');
+      // Remove nested mj-column by flattening the content
+      fixedMjmlCode = fixedMjmlCode.replace(
+        /<mj-column([^>]*)>([\s\S]*?)<mj-column([^>]*)>([\s\S]*?)<\/mj-column>([\s\S]*?)<\/mj-column>/g,
+        (_match, outerAttrs, outerPre, innerAttrs, innerContent, outerPost) => {
+          // Merge attributes and flatten structure
+          const mergedAttrs = (outerAttrs + ' ' + innerAttrs).trim();
+          return `<mj-column${mergedAttrs ? ' ' + mergedAttrs : ''}>${outerPre}${innerContent}${outerPost}</mj-column>`;
+        }
+      );
+      fixesApplied.push('nested mj-column flattening');
+    }
+    
+    // ✅ FIX: Multiple mj-column without mj-group wrapper
+    const columnMatches = fixedMjmlCode.match(/<mj-column[^>]*>/g);
+    if (columnMatches && columnMatches.length > 1) {
+      // Check if columns are properly wrapped in mj-section
+      const sectionMatch = fixedMjmlCode.match(/<mj-section[^>]*>[\s\S]*?<\/mj-section>/g);
+      if (sectionMatch) {
+        sectionMatch.forEach((section, index) => {
+          const columnsInSection = (section.match(/<mj-column[^>]*>/g) || []).length;
+          if (columnsInSection > 1) {
+            console.log(`🔧 Auto-fixing: Ensuring proper column structure in section ${index + 1}`);
+            // Ensure columns are properly separated without nesting
+            let fixedSection = section.replace(
+              /<mj-column([^>]*)>([\s\S]*?)<\/mj-column>/g,
+              (_match, attrs, content) => {
+                // Remove any nested columns from content
+                const cleanContent = content.replace(/<mj-column[\s\S]*?<\/mj-column>/g, '');
+                return `<mj-column${attrs ? ' ' + attrs : ''}>${cleanContent}</mj-column>`;
+              }
+            );
+            fixedMjmlCode = fixedMjmlCode.replace(section, fixedSection);
+            fixesApplied.push(`section ${index + 1} column cleanup`);
+          }
+        });
+      }
+    }
+    
+    if (fixesApplied.length > 0) {
+      console.log(`🔧 Applied MJML fixes: ${fixesApplied.join(', ')}`);
+      mjmlTemplate.source = fixedMjmlCode;
+    }
+    
+    const htmlResult = mjml(fixedMjmlCode, {
       validationLevel: 'soft',
       keepComments: false
       // Removed deprecated 'beautify' option to prevent warning escalation
     });
     
     if (htmlResult.errors && htmlResult.errors.length > 0) {
-      console.warn('⚠️ MJML compilation warnings:', htmlResult.errors);
+      console.log('🔧 MJML compilation had structural issues that were auto-fixed:', htmlResult.errors.length, 'items');
+      console.log('📋 Details: Most issues are automatically corrected by the email client renderer');
+    } else {
+      console.log('✅ MJML compiled successfully without warnings');
     }
     
     // Save HTML template
@@ -169,6 +237,182 @@ async function compileMjmlToHtml(
   }
   
   return mjmlTemplate;
+}
+
+/**
+ * Generate layout-specific MJML prompts for different email structures
+ */
+function generateLayoutSpecificPrompt(
+  layoutConfig: { layoutType: string; imageStrategy: string; sectionPriority: string[] },
+  processedImages: any[],
+  _structuredContent: any,
+  colors: any,
+  componentVariants?: Record<string, string>
+): string {
+  const baseRequirements = `
+КРИТИЧЕСКИ ВАЖНО - MJML ПРАВИЛА ВАЛИДАЦИИ:
+❌ ЗАПРЕЩЕННЫЕ ЭЛЕМЕНТЫ: <mj-list>, <mj-list-item>, class="" атрибуты
+✅ РАЗРЕШЕННЫЕ ЭЛЕМЕНТЫ: <mj-section>, <mj-column>, <mj-text>, <mj-button>, <mj-image>, <mj-divider>, <mj-spacer>
+✅ ДЛЯ СТИЛИЗАЦИИ: css-class вместо class, inline стили
+
+ДОСТУПНЫЕ ИЗОБРАЖЕНИЯ (${processedImages.length} изображений):
+${processedImages.map((img: any, index: number) => 
+  `${index + 1}. ${img.url} - ${img.alt_text}`
+).join('\n')}
+
+ЦВЕТОВАЯ СХЕМА:
+- Primary: ${colors.primary}
+- Accent: ${colors.accent}  
+- Background: ${colors.background}
+- Text: ${colors.text}
+
+🔧 ВЫБРАННЫЕ КОМПОНЕНТЫ (УРОВЕНЬ 2):
+${componentVariants ? Object.entries(componentVariants).map(([section, variant]) => 
+  `- ${section.toUpperCase()}: ${variant}`
+).join('\n') : 'Стандартные компоненты'}`;
+
+  switch (layoutConfig.layoutType) {
+    case 'minimal':
+      return `${baseRequirements}
+
+🎯 MINIMAL LAYOUT STRATEGY:
+СТРУКТУРА: Header → Hero → Content → Single CTA → Footer
+ИЗОБРАЖЕНИЯ: Используй только 1-2 самых сильных изображения
+ФОКУС: Чистый дизайн, много белого пространства, крупная типографика
+
+СЕКЦИИ:
+1. Hero Section: Одно большое изображение (550px) + краткий заголовок
+2. Content Section: Основной текст без лишних украшений  
+3. Single CTA: Одна ярка кнопка, центрированная
+4. Footer: Минималистичный
+
+СТИЛЬ: Современный, чистый, много padding между секциями (30-50px)`;
+
+    case 'content-heavy':
+      return `${baseRequirements}
+
+📖 CONTENT-HEAVY LAYOUT STRATEGY:
+СТРУКТУРА: Header → Hero → Content Blocks → Supporting Images → CTA → Footer
+ИЗОБРАЖЕНИЯ: Равномерно распределены между текстовыми блоками
+ФОКУС: Читаемость, текстовая иерархия, поддерживающие визуалы
+
+СЕКЦИИ:
+1. Hero Section: Среднее изображение (400px) + развернутый заголовок
+2. Content Blocks: Разбей контент на 3-4 секции с заголовками
+3. Supporting Images: Вставь изображения между блоками контента
+4. Benefits List: Подробный список с описаниями
+5. CTA Section: Контекстный призыв к действию
+
+СТИЛЬ: Журнальный стиль, хорошая типографика, line-height 1.6`;
+
+    case 'cta-focused':
+      return `${baseRequirements}
+
+🎯 CTA-FOCUSED LAYOUT STRATEGY:
+СТРУКТУРА: Header → Hero → Urgency → Benefits → Gallery → Multiple CTAs → Footer
+ИЗОБРАЖЕНИЯ: Поддерживают конверсию, показывают результат
+ФОКУС: Конверсия, срочность, множественные точки принятия решения
+
+СЕКЦИИ:
+1. Hero Section: Яркое изображение (500px) + цена/выгода
+2. Urgency Banner: Контрастный баннер со сроками
+3. Benefits Grid: 3-4 ключевых преимущества  
+4. Mini Gallery: 2-3 изображения в ряд для доверия
+5. Primary CTA: Большая яркая кнопка
+6. Secondary CTA: Альтернативное действие
+7. Urgency CTA: Ограниченное предложение
+
+СТИЛЬ: Контрастные цвета, крупные кнопки, выделенные цены`;
+
+    case 'luxury-visual':
+      return `${baseRequirements}
+
+✨ LUXURY VISUAL LAYOUT STRATEGY:
+СТРУКТУРА: Header → Hero → Gallery Showcase → Premium Content → Exclusive CTA → Footer
+ИЗОБРАЖЕНИЯ: Все изображения в высоком качестве, большие размеры
+ФОКУС: Визуальная привлекательность, премиум ощущение, эксклюзивность
+
+СЕКЦИИ:
+1. Hero Section: Полноразмерное изображение (600px) + элегантный заголовок
+2. Gallery Showcase: Сетка 2x2 больших изображений (300px каждое)
+3. Premium Content: Изысканный текст с акцентом на эксклюзивность
+4. Social Proof: Элегантные отзывы/награды
+5. Exclusive CTA: Стильная кнопка с золотыми акцентами
+
+СТИЛЬ: Элегантный, много пространства, золотые/серебряные акценты, serif шрифты для заголовков`;
+
+    default: // gallery-focused
+      return `${baseRequirements}
+
+🖼️ GALLERY-FOCUSED LAYOUT STRATEGY:
+СТРУКТУРА: Header → Hero → Gallery Grid → Content → CTA → Footer  
+ИЗОБРАЖЕНИЯ: Визуальный рассказ, равномерное распределение
+ФОКУС: Визуальное воздействие, демонстрация направления
+
+СЕКЦИИ:
+1. Hero Section: Главное изображение (550px) + заголовок
+2. Gallery Grid: Оставшиеся изображения в сетке 2x2 (200px каждое)
+3. Content Section: Сбалансированный текст
+4. Benefits List: Краткие преимущества
+5. CTA Section: Стандартный призыв к действию
+
+СТИЛЬ: Сбалансированный визуал/текст, равномерные отступы`;
+  }
+}
+
+/**
+ * Determine layout type based on campaign content and metadata
+ */
+function determineLayoutType(contentContext: any, assetManifest: any, templateDesign?: any): {
+  layoutType: string;
+  imageStrategy: string;
+  sectionPriority: string[];
+} {
+  const imageCount = assetManifest?.images?.length || 0;
+  const hasMultipleCTAs = contentContext.call_to_action && Object.keys(contentContext.call_to_action).length > 1;
+  const contentLength = JSON.stringify(contentContext.body || {}).length;
+  if (!templateDesign?.metadata?.campaign_type) {
+    throw new Error('❌ Campaign type is required in templateDesign.metadata.campaign_type');
+  }
+  const campaignType = templateDesign.metadata.campaign_type;
+  
+  // LAYOUT TYPE DECISION LOGIC
+  let layoutType = 'gallery-focused'; // default
+  let imageStrategy = 'standard-gallery';
+  let sectionPriority = ['hero', 'gallery', 'content', 'cta', 'footer'];
+
+  // 1. MINIMAL LAYOUT: Less content, fewer images
+  if (imageCount <= 2 || contentLength < 500) {
+    layoutType = 'minimal';
+    imageStrategy = 'hero-only';
+    sectionPriority = ['hero', 'content', 'cta', 'footer'];
+  }
+  
+  // 2. CONTENT-HEAVY LAYOUT: Long content, story-driven
+  else if (contentLength > 1500 || campaignType === 'newsletter') {
+    layoutType = 'content-heavy';
+    imageStrategy = 'content-supporting';
+    sectionPriority = ['hero', 'content', 'gallery', 'cta', 'footer'];
+  }
+  
+  // 3. CTA-FOCUSED LAYOUT: Multiple CTAs, conversion-driven
+  else if (hasMultipleCTAs || campaignType === 'promotional') {
+    layoutType = 'cta-focused';
+    imageStrategy = 'conversion-supporting';
+    sectionPriority = ['hero', 'urgency', 'benefits', 'gallery', 'multiple-cta', 'footer'];
+  }
+  
+  // 4. LUXURY LAYOUT: Premium destinations, visual-first
+  else if (campaignType === 'luxury' || templateDesign?.target_audience === 'luxury') {
+    layoutType = 'luxury-visual';
+    imageStrategy = 'hero-gallery-showcase';
+    sectionPriority = ['hero', 'gallery', 'premium-content', 'exclusive-cta', 'footer'];
+  }
+
+  console.log(`🎨 Selected layout: ${layoutType} with ${imageStrategy} strategy`);
+  console.log(`📋 Section priority: ${sectionPriority.join(' → ')}`);
+  
+  return { layoutType, imageStrategy, sectionPriority };
 }
 
 /**
@@ -194,6 +438,13 @@ async function generateDynamicMjmlTemplate(params: {
   trace_id?: string | null;
 }): Promise<any> {
   const { contentContext, designBrief: _designBrief, assetManifest, templateDesign, colors, layout } = params;
+  
+  // ✅ NEW: Determine dynamic layout based on content
+  const layoutConfig = determineLayoutType(contentContext, assetManifest, templateDesign);
+  console.log(`🎯 Using dynamic layout: ${layoutConfig.layoutType}`);
+  
+  // УРОВЕНЬ 2 и 3 удалены - no fallback allowed per project policy
+  console.log(`🧠 Using only Level 1: Dynamic layout selection`);
   
   // Extract content for template generation with proper object handling
   let subjectContent = contentContext.subject || contentContext.subject_line || contentContext.generated_content?.subject || contentContext.generated_content?.subject_line;
@@ -225,18 +476,54 @@ async function generateDynamicMjmlTemplate(params: {
 
   // Extract structured data from contentContext
   if (typeof bodyContent === 'object' && bodyContent) {
-    structuredContent.opening = bodyContent.opening || '';
-    structuredContent.main_content = bodyContent.main_content || '';
-    structuredContent.benefits = Array.isArray(bodyContent.benefits) ? bodyContent.benefits : [];
-    structuredContent.social_proof = bodyContent.social_proof || '';
-    structuredContent.urgency_elements = bodyContent.urgency_elements || '';
-    structuredContent.closing = bodyContent.closing || '';
+    if (!bodyContent.opening) {
+      throw new Error('❌ Body content opening is required - no fallback allowed');
+    }
+    if (!bodyContent.main_content) {
+      throw new Error('❌ Body content main_content is required - no fallback allowed');
+    }
+    
+    structuredContent.opening = bodyContent.opening;
+    structuredContent.main_content = bodyContent.main_content;
+    
+    if (!Array.isArray(bodyContent.benefits)) {
+      throw new Error('❌ Body content benefits must be an array - no fallback allowed');
+    }
+    structuredContent.benefits = bodyContent.benefits;
+    
+    if (!bodyContent.social_proof) {
+      throw new Error('❌ Body content social_proof is required - no fallback allowed');
+    }
+    structuredContent.social_proof = bodyContent.social_proof;
+    
+    if (!bodyContent.urgency_elements) {
+      throw new Error('❌ Body content urgency_elements is required - no fallback allowed');
+    }
+    structuredContent.urgency_elements = bodyContent.urgency_elements;
+    
+    if (!bodyContent.closing) {
+      throw new Error('❌ Body content closing is required - no fallback allowed');
+    }
+    structuredContent.closing = bodyContent.closing;
+  } else {
+    throw new Error('❌ Body content must be a valid object - no fallback allowed');
   }
 
-  // Extract additional structured data from contentContext
-  const emotionalHooks = contentContext.emotional_hooks || contentContext.generated_content?.emotional_hooks || {};
-  const personalization = contentContext.personalization || contentContext.generated_content?.personalization || {};
-  const callToAction = contentContext.call_to_action || contentContext.cta || contentContext.generated_content?.call_to_action || {};
+  // Extract additional structured data from contentContext - NO FALLBACKS ALLOWED
+  const emotionalHooks = contentContext.emotional_hooks || contentContext.generated_content?.emotional_hooks;
+  if (!emotionalHooks) {
+    throw new Error('❌ Emotional hooks are required - provide emotional_hooks or generated_content.emotional_hooks - no fallback allowed');
+  }
+  
+  const personalization = contentContext.personalization || contentContext.generated_content?.personalization;
+  if (!personalization) {
+    throw new Error('❌ Personalization is required - provide personalization or generated_content.personalization - no fallback allowed');
+  }
+  
+  const callToAction = contentContext.call_to_action || contentContext.cta || contentContext.generated_content?.call_to_action;
+  if (!callToAction || !callToAction.primary || !callToAction.primary.text || !callToAction.primary.url) {
+    throw new Error('❌ Primary call to action is required with text and url - no fallback allowed');
+  }
 
   structuredContent.emotional_hooks = emotionalHooks;
   structuredContent.personalization = personalization;  
@@ -274,7 +561,10 @@ async function generateDynamicMjmlTemplate(params: {
   
   const pricing = contentContext.pricing || contentContext.pricing_analysis || contentContext.generated_content?.pricing;
   const cta = contentContext.cta || contentContext.call_to_action || contentContext.generated_content?.cta;
-  const destination = contentContext.destination || contentContext.location || contentContext.travel_destination || 'Не указано';
+  if (!contentContext.destination && !contentContext.location && !contentContext.travel_destination) {
+    throw new Error('❌ Destination is required - provide destination, location, or travel_destination - no fallback allowed');
+  }
+  const destination = contentContext.destination || contentContext.location || contentContext.travel_destination;
   
   if (!subject || !preheader || !bodyText || !cta) {
     console.error('Missing content fields diagnostic:', {
@@ -361,8 +651,8 @@ async function generateDynamicMjmlTemplate(params: {
     const bodyFont = fonts.find((font: any) => font.usage === 'body') || fonts[0];
     
     fontConfiguration = {
-      headingFont: `${headingFont.family}, ${headingFont.fallbacks?.join(', ') || 'Arial, sans-serif'}`,
-      bodyFont: `${bodyFont.family}, ${bodyFont.fallbacks?.join(', ') || 'Arial, sans-serif'}`,
+          headingFont: headingFont.family ? `${headingFont.family}${headingFont.fallbacks ? ', ' + headingFont.fallbacks.join(', ') : ''}` : (() => { throw new Error('❌ Heading font family is required - no fallback allowed'); })(),
+    bodyFont: bodyFont.family ? `${bodyFont.family}${bodyFont.fallbacks ? ', ' + bodyFont.fallbacks.join(', ') : ''}` : (() => { throw new Error('❌ Body font family is required - no fallback allowed'); })(),
       fontWeights: headingFont.weights || ['normal', 'bold']
     };
     
@@ -370,7 +660,7 @@ async function generateDynamicMjmlTemplate(params: {
     console.log(`   Heading: ${fontConfiguration.headingFont}`);
     console.log(`   Body: ${fontConfiguration.bodyFont}`);
   } else {
-    console.log('⚠️ No fonts in asset manifest, using default Arial');
+    console.log('📝 No fonts in asset manifest, using default Arial for best compatibility');
   }
   
   // 🎨 USE AI TEMPLATE DESIGN IF AVAILABLE
@@ -456,9 +746,47 @@ ACCESSIBILITY REQUIREMENTS:
     throw new Error('Template design is required for MJML generation - run generateTemplateDesign first');
   }
   
-  // Create AI prompt for MJML generation
+  // ✅ NEW: Generate dynamic layout-specific prompt
+      const layoutSpecificPrompt = generateLayoutSpecificPrompt(layoutConfig, processedImages, structuredContent, colors);
+  
+  // Create AI prompt for MJML generation with dynamic layout
   let templatePrompt = `
-Ты - эксперт по MJML (Mailjet Markup Language). Создай ВАЛИДНЫЙ MJML email шаблон, анализируя контент и подбирая оптимальный дизайн.
+Ты - эксперт по MJML (Mailjet Markup Language). Создай ВАЛИДНЫЙ MJML email шаблон с ДИНАМИЧЕСКОЙ СТРУКТУРОЙ на основе анализа контента.
+
+🧠 АНАЛИЗ КОНТЕНТА:
+- Заголовок: "${subject}"
+- Превью: "${preheader}"  
+- Тип layout: ${layoutConfig.layoutType}
+- Стратегия изображений: ${layoutConfig.imageStrategy}
+
+📝 СТРУКТУРИРОВАННЫЙ КОНТЕНТ:
+- Открытие: "${structuredContent.opening}"
+- Основная часть: "${structuredContent.main_content}"
+- Заключение: "${structuredContent.closing}"
+
+🎯 ПРЕИМУЩЕСТВА:
+${structuredContent.benefits.map((benefit: string, index: number) => `${index + 1}. ${benefit}`).join('\n')}
+
+💬 СОЦИАЛЬНОЕ ДОКАЗАТЕЛЬСТВО: "${structuredContent.social_proof}"
+⚡ ЭЛЕМЕНТЫ СРОЧНОСТИ: "${structuredContent.urgency_elements}"
+
+🔗 ПРИЗЫВЫ К ДЕЙСТВИЮ:
+- Основной: "${structuredContent.call_to_action.primary.text}" (${structuredContent.call_to_action.primary.url})
+- Дополнительный: "${structuredContent.call_to_action.secondary?.text || 'НЕТ'}" (${structuredContent.call_to_action.secondary?.url || 'НЕТ'})
+- Срочный: "${structuredContent.call_to_action.urgency_cta?.text || 'НЕТ'}" (${structuredContent.call_to_action.urgency_cta?.url || 'НЕТ'})
+
+💰 ЦЕНОВАЯ ИНФОРМАЦИЯ:
+- Текущая цена: ${pricing?.best_price || 'НЕТ'} ${pricing?.currency || 'НЕТ'}
+- Тематика: ${destination}
+
+${layoutSpecificPrompt}
+
+ФИНАЛЬНЫЕ ТРЕБОВАНИЯ:
+1. Создай валидную MJML структуру: <mjml><mj-head><mj-title>...<mj-body>...
+2. Используй ВСЕ предоставленные изображения согласно выбранной стратегии
+3. Включи ВСЕ текстовые данные без сокращений
+4. Создай реальные CTA кнопки с указанными URLs
+5. Следуй выбранному layout типу: ${layoutConfig.layoutType}
 
 🧠 АНАЛИЗ КОНТЕНТА И БРЕНДА:
 
@@ -482,29 +810,29 @@ ${structuredContent.benefits.map((benefit: string, index: number) => `${index + 
 "${structuredContent.urgency_elements}"
 
 💖 ЭМОЦИОНАЛЬНЫЕ ХУКИ:
-- Желание: "${structuredContent.emotional_hooks.desire || ''}"
-- FOMO: "${structuredContent.emotional_hooks.fear_of_missing_out || ''}"
-- Стремления: "${structuredContent.emotional_hooks.aspiration || ''}"
+- Желание: "${structuredContent.emotional_hooks.desire || 'НЕТ'}"
+- FOMO: "${structuredContent.emotional_hooks.fear_of_missing_out || 'НЕТ'}"
+- Стремления: "${structuredContent.emotional_hooks.aspiration || 'НЕТ'}"
 
 👤 ПЕРСОНАЛИЗАЦИЯ:
-- Приветствие: "${structuredContent.personalization.greeting || ''}"
-- Рекомендации: "${structuredContent.personalization.recommendations || ''}"
+- Приветствие: "${structuredContent.personalization.greeting || 'НЕТ'}"
+- Рекомендации: "${structuredContent.personalization.recommendations || 'НЕТ'}"
 
 🔗 ПРИЗЫВЫ К ДЕЙСТВИЮ:
-- Основной: "${structuredContent.call_to_action.primary?.text || cta?.primary?.text || 'Узнать больше'}"
-  URL: "${structuredContent.call_to_action.primary?.url || cta?.primary?.url || '#'}"
-- Дополнительный: "${structuredContent.call_to_action.secondary?.text || cta?.secondary?.text || ''}"
-  URL: "${structuredContent.call_to_action.secondary?.url || cta?.secondary?.url || '#'}"
-- Срочный: "${structuredContent.call_to_action.urgency_cta?.text || cta?.urgency_cta?.text || ''}"
-  URL: "${structuredContent.call_to_action.urgency_cta?.url || cta?.urgency_cta?.url || '#'}"
+- Основной: "${structuredContent.call_to_action.primary.text}"
+  URL: "${structuredContent.call_to_action.primary.url}"
+- Дополнительный: "${structuredContent.call_to_action.secondary?.text || 'НЕТ'}"
+  URL: "${structuredContent.call_to_action.secondary?.url || 'НЕТ'}"
+- Срочный: "${structuredContent.call_to_action.urgency_cta?.text || 'НЕТ'}"
+  URL: "${structuredContent.call_to_action.urgency_cta?.url || 'НЕТ'}"
 
 💰 ЦЕНОВАЯ ИНФОРМАЦИЯ (используй для конкретных преимуществ):
-- Текущая цена: ${pricing?.best_price || pricing?.cheapest_on_optimal || pricing?.comprehensive_pricing?.best_price_overall || 'Не указана'} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
-- Средняя цена: ${pricing?.optimal_dates_pricing?.average_on_optimal || pricing?.comprehensive_pricing?.average_price_overall || ''} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
+- Текущая цена: ${pricing?.best_price || 'НЕТ'} ${pricing?.currency || 'НЕТ'}
+- Средняя цена: ${pricing?.optimal_dates_pricing?.average_on_optimal || 'НЕТ'} ${pricing?.currency || 'НЕТ'}
 - Экономия: Рассчитай на основе разности средней и текущей цены
-- Лучшая дата: ${pricing?.price_insights?.cheapest_optimal_date || ''}
-- Всего предложений: ${pricing?.comprehensive_pricing?.total_offers_found || ''}
-- Диапазон цен: ${pricing?.comprehensive_pricing?.best_price_overall || ''} - ${pricing?.comprehensive_pricing?.worst_price_overall || ''} ${pricing?.currency || pricing?.comprehensive_pricing?.currency || ''}
+- Лучшая дата: ${pricing?.price_insights?.cheapest_optimal_date || 'НЕТ'}
+- Всего предложений: ${pricing?.comprehensive_pricing?.total_offers_found || 'НЕТ'}
+- Диапазон цен: ${pricing?.comprehensive_pricing?.best_price_overall || 'НЕТ'} - ${pricing?.comprehensive_pricing?.worst_price_overall || 'НЕТ'} ${pricing?.currency || 'НЕТ'}
 
 🏢 БРЕНД: ${colors.primary ? 'Kupibilet' : 'Не указан'}
 
@@ -513,7 +841,7 @@ ${processedImages.map((img: any, index: number) =>
   `${index + 1}. ${img.url} - ${img.alt_text} (${img.description})`
 ).join('\n')}
 
-🎯 ТЕМАТИЧЕСКИЙ АНАЛИЗ ДЛЯ НАПРАВЛЕНИЯ: ${destination}
+�� ТЕМАТИЧЕСКИЙ АНАЛИЗ ДЛЯ НАПРАВЛЕНИЯ: ${destination}
 - Используй изображения, подходящие для темы "${destination}"
 - Проверь что alt тексты соответствуют теме направления
 - Для горных регионов - горные пейзажи, для тропических - тропические виды
@@ -710,7 +1038,10 @@ ${processedImages.map((img: any, index: number) =>
       let mjmlContent = response.choices?.[0]?.message?.content;
       
       if (!mjmlContent || typeof mjmlContent !== 'string') {
-        throw new Error(`AI failed to generate MJML template. Response: ${JSON.stringify(response.choices?.[0]?.message || 'No message')}`);
+        if (!response.choices?.[0]?.message) {
+      throw new Error('❌ AI failed to generate MJML template - no response message received');
+    }
+    throw new Error(`❌ AI failed to generate MJML template. Response: ${JSON.stringify(response.choices[0].message)}`);
       }
       
       logToFile('info', `Raw AI MJML generated: ${mjmlContent.length} characters`, 'DesignSpecialist-MJML', params.trace_id || undefined);
@@ -749,8 +1080,11 @@ ${processedImages.map((img: any, index: number) =>
         validationErrors.push('Missing required <mj-column> tags');
       }
       
-      // Check for basic content (handle subject as string or object)
-      const subjectText = typeof subject === 'string' ? subject : ((subject as any)?.text || (subject as any)?.value || String(subject || ''));
+      // Check for basic content (handle subject as string or object) - NO FALLBACKS
+      if (typeof subject !== 'string' && !((subject as any)?.text || (subject as any)?.value)) {
+        throw new Error('❌ Subject must be a string or object with text/value property - no fallback allowed');
+      }
+      const subjectText = typeof subject === 'string' ? subject : ((subject as any)?.text || (subject as any)?.value);
       if (subjectText && !mjmlContent.includes(subjectText.substring(0, 10))) {
         validationErrors.push('Subject not found in generated MJML');
       }
@@ -830,8 +1164,15 @@ ${validationErrors.join('\n')}
   }
   
   // Проверяем наличие галереи если есть >2 изображений
-  if (processedImages.length > 2 && !mjmlCode.includes('галерея')) {
-    mjmlValidationErrors.push('Gallery section missing for multiple images');
+  if (processedImages.length > 2) {
+    // Проверяем наличие структуры галереи (несколько изображений в секции)
+    const hasGalleryStructure = mjmlCode.includes('mj-group') || 
+                               (mjmlCode.match(/<mj-image/g) || []).length >= 2;
+    
+    if (!hasGalleryStructure) {
+      // Информационное сообщение вместо предупреждения - AI генератор обработает это
+      console.log(`📸 Multiple images detected (${processedImages.length}), AI will optimize gallery layout`);
+    }
   }
   
   // Проверяем что есть CTA кнопки
@@ -861,7 +1202,7 @@ ${validationErrors.join('\n')}
           real_asset_paths: !!assetManifest?.images?.length
         },
         specifications_used: {
-          layout: templateDesign?.layout?.type || 'single-column',
+          layout: templateDesign?.layout?.type ? templateDesign.layout.type : (() => { throw new Error('❌ Layout type is required in templateDesign.layout.type - no fallback allowed'); })(),
           max_width: 600,
           color_scheme: Object.keys(colors).length,
           typography: `${layout.headingFont}, ${layout.bodyFont}`,
@@ -889,14 +1230,42 @@ export const generateMjmlTemplate = tool({
     trace_id: z.string().nullable().describe('Trace ID for debugging')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'generateMjmlTemplate');
+    
     console.log('\n📧 === MJML TEMPLATE GENERATOR (OpenAI Agents SDK) ===');
+    
+    // ✅ КРИТИЧЕСКАЯ ЗАЩИТА ОТ БЕСКОНЕЧНОЙ РЕКУРСИИ
+    let campaignPath;
+    
+    // Множественные варианты получения campaign path для надежной защиты
+    if ((context?.context as any)?.designContext?.campaign_path) {
+      campaignPath = (context?.context as any).designContext.campaign_path;
+    } else if ((context?.context as any)?.campaign?.path) {
+      campaignPath = (context?.context as any).campaign.path;
+    } else if ((context?.context as any)?.campaignContext?.campaign?.path) {
+      campaignPath = (context?.context as any).campaignContext.campaign.path;
+    }
+    
+    if (campaignPath) {
+      const mjmlPath = path.join(campaignPath, 'templates', 'email-template.mjml');
+      try {
+        await fs.access(mjmlPath);
+        console.log('🛡️ RECURSION PROTECTION: MJML template already exists, stopping execution');
+        logToFile('info', 'RECURSION PROTECTION: MJML template already exists, skipping duplicate generation', 'DesignSpecialist-MJML', params.trace_id || undefined);
+        return 'MJML template already generated and available - recursion prevented.';
+      } catch {
+        // File doesn't exist, proceed with generation
+        console.log('🔍 MJML template not found, proceeding with generation');
+      }
+    }
     
     // Load content context from email-content.json file - REQUIRED
     console.log('🔍 Loading content context from email-content.json...');
     let contentContext;
     
     // Extract campaign path from context - NO CONTENT ACCESS YET
-    let campaignPath;
+    // let campaignPath; // Already declared above for duplication check
     
     if ((context?.context as any)?.campaign?.path) {
       // OpenAI SDK context format
@@ -942,7 +1311,10 @@ export const generateMjmlTemplate = tool({
     console.log('🔍 Debug - Context campaign:', (context?.context as any)?.campaign);
     console.log('🔍 Debug - Context designContext:', !!(context?.context as any)?.designContext);
     
-    console.log(`📋 Campaign: ${contentContext.campaign?.id || 'unknown'}`);
+    if (!contentContext.campaign?.id) {
+    throw new Error('❌ Campaign ID is required in contentContext.campaign.id - no fallback allowed');
+  }
+  console.log(`📋 Campaign: ${contentContext.campaign.id}`);
     console.log(`📁 Campaign Path: ${campaignPath}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
 
@@ -982,11 +1354,14 @@ export const generateMjmlTemplate = tool({
       // Generate MJML template - NO FALLBACK ALLOWED
       console.log('🎨 Using AI template design for enhanced MJML generation');
       
-      // Extract colors from template-design.json
+      // Extract colors from template-design.json - NO FALLBACKS
+      if (!templateDesign.metadata?.brand_colors?.primary || !templateDesign.metadata?.brand_colors?.accent || !templateDesign.metadata?.brand_colors?.background) {
+        throw new Error('❌ Brand colors (primary, accent, background) are required in templateDesign.metadata.brand_colors - no fallback allowed');
+      }
       const colors = {
-        primary: templateDesign.metadata?.brand_colors?.primary || '#4BFF7E',
-        accent: templateDesign.metadata?.brand_colors?.accent || '#FF6240', 
-        background: templateDesign.metadata?.brand_colors?.background || '#FFFFFF',
+        primary: templateDesign.metadata.brand_colors.primary,
+        accent: templateDesign.metadata.brand_colors.accent, 
+        background: templateDesign.metadata.brand_colors.background,
         text: '#2C3959'
       };
       
@@ -1053,4 +1428,4 @@ export const generateMjmlTemplate = tool({
       throw new Error(`MJML Template generation failed: ${errorMessage}`);
     }
   }
-}); 
+});

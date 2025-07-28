@@ -8,7 +8,8 @@
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
-import path from 'path';
+import * as path from 'path';
+import { autoRestoreCampaignLogging } from '../../../shared/utils/campaign-logger';
 
 // ============================================================================
 // CONTEXT-AWARE CAMPAIGN STATE MANAGEMENT
@@ -127,6 +128,9 @@ This tool MUST be called first to:
       .describe('Trace ID for context tracking')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'loadDesignContext');
+    
     console.log('📁 === LOADING DESIGN CONTEXT ===');
     console.log('🔍 DEBUG: Received parameters:', { campaign_path: params.campaign_path, trace_id: params.trace_id });
     
@@ -231,36 +235,36 @@ This tool MUST be called first to:
 // ============================================================================
 
 /**
- * Safe clone function to prevent circular JSON structures
+ * Create safe clone without circular references
  */
-function createSafeClone(obj: any, visited = new WeakSet()): any {
+function createSafeClone(obj: any, seen = new WeakSet()): any {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
   
-  if (visited.has(obj)) {
+  if (seen.has(obj)) {
     return '[Circular Reference]';
   }
   
-  visited.add(obj);
+  seen.add(obj);
   
   if (Array.isArray(obj)) {
-    return obj.map(item => createSafeClone(item, visited));
+    return obj.map(item => createSafeClone(item, seen));
   }
   
-  const cloned: any = {};
+  const clone: any = {};
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
-      // Skip context references to prevent circular dependencies
-      if (key === 'context' || key === 'designContext') {
-        continue;
+      try {
+        clone[key] = createSafeClone(obj[key], seen);
+      } catch (error) {
+        clone[key] = '[Error: Unable to clone]';
       }
-      cloned[key] = createSafeClone(obj[key], visited);
     }
   }
   
-  visited.delete(obj);
-  return cloned;
+  seen.delete(obj);
+  return clone;
 }
 
 /**
@@ -392,7 +396,17 @@ export async function loadDesignContextFromHandoffDirectory(handoff_directory: s
   console.log('🔍 Loading design context from handoff directory:', handoff_directory);
   
   try {
-    const loadedContext = await loadContextFromHandoffFiles(handoff_directory);
+    // ✅ FIX: Resolve campaign path from handoff directory
+    let campaignPath = handoff_directory;
+    
+    // If handoff_directory is inside a campaign, get the campaign path
+    if (handoff_directory.includes('/handoffs')) {
+      campaignPath = handoff_directory.replace('/handoffs', '');
+    }
+    
+    console.log('🔍 Resolved campaign path:', campaignPath);
+    
+    const loadedContext = await loadContextFromHandoffFiles(campaignPath);
     console.log('✅ Design context loaded from handoff directory');
     return loadedContext;
   } catch (error) {

@@ -45,8 +45,10 @@ import { getDestinationInfo } from './airports-loader';
 interface FlightPricesParams {
   origin: string;
   destination: string;
+  departure_date?: { from: string; to: string } | null;
   date_range?: string | null; // Опциональный, можно использовать умные даты
   cabin_class?: 'economy' | 'business' | 'first' | null;
+  currency?: string;
   filters?: {
     is_direct?: boolean | null;
     with_baggage?: boolean | null;
@@ -99,6 +101,7 @@ interface KupibiletApiRequest {
 // }
 
 interface FlightPricesResult {
+  success?: boolean;
   prices: PriceInfo[];
   currency: string;
   cheapest: number;
@@ -414,10 +417,10 @@ async function fetchFromKupibiletV2(request: KupibiletApiRequest): Promise<Fligh
     throw new Error(`Kupibilet API v2 error: ${response.status} ${response.statusText}`);
   }
 
-  // Обрабатываем случай 204 No Content
+  // Обрабатываем случай 204 No Content - требует fallback поиск
   if (response.status === 204) {
-    console.log('📭 API returned 204 No Content - no flights available for this route/dates');
-    throw new Error('No flights available for the specified route and dates');
+    console.log('📋 No direct flights found for this route - triggering intelligent fallback search');
+    throw new Error('NO_FLIGHTS_DIRECT');
   }
 
   // Получаем сырой текст для анализа

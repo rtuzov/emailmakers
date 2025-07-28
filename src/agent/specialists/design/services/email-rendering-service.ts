@@ -283,16 +283,32 @@ export class EmailRenderingService {
 
   /**
    * Generate MJML template based on rendering parameters
+   * ⚠️ DEPRECATED: This service should not be used for production email generation.
+   * Use AI-powered MJML generation through generateMjmlTemplate tool instead.
    */
   private generateMjmlTemplate(params: RenderingParams): string {
     const { content, assets, template_type = 'promotional' } = params;
     
-    // Generate basic MJML structure
+    // ✅ DYNAMIC: No hardcoded defaults - require all content to be provided
+    if (!content.title && !content.brief_text && !content.content) {
+      throw new Error('EmailRenderingService: Content is required. Use AI-powered MJML generation for dynamic templates.');
+    }
+    
+    // ✅ FAIL FAST: Don't use hardcoded fallbacks
+    const title = content.title || '';
+    const preview = content.description || content.brief_text?.slice(0, 150) || '';
+    const mainContent = content.brief_text || content.content || '';
+    
+    if (!title || !mainContent) {
+      throw new Error('EmailRenderingService: Title and content are required. This service should not be used for production - use AI-powered MJML generation instead.');
+    }
+    
+    // ✅ DYNAMIC: Generate template based on actual content
     const mjmlTemplate = `
 <mjml>
   <mj-head>
-    <mj-title>${content.title || 'Email Campaign'}</mj-title>
-    <mj-preview>${content.description || 'Email preview text'}</mj-preview>
+    <mj-title>${title}</mj-title>
+    <mj-preview>${preview}</mj-preview>
     <mj-attributes>
       <mj-all font-family="Arial, sans-serif" />
       <mj-text font-size="16px" color="#333333" line-height="1.6" />
@@ -305,23 +321,23 @@ export class EmailRenderingService {
         ${assets.length > 0 ? `
         <mj-image 
           src="${assets[0]?.filePath || ''}" 
-          alt="${assets[0]?.fileName || 'Email image'}"
+          alt="${assets[0]?.fileName || 'Campaign image'}"
           width="600px"
           padding="0 0 20px 0"
         />
         ` : ''}
         
         <mj-text font-size="24px" font-weight="bold" align="center">
-          ${content.title || 'Welcome to our Newsletter'}
+          ${title}
         </mj-text>
         
         <mj-text>
-          ${content.brief_text || content.content || 'Thank you for subscribing to our newsletter.'}
+          ${mainContent}
         </mj-text>
         
         ${template_type === 'promotional' ? `
         <mj-button href="#" align="center" background-color="#4BFF7E" color="#ffffff">
-          Learn More
+          Узнать больше
         </mj-button>
         ` : ''}
       </mj-column>
@@ -330,7 +346,7 @@ export class EmailRenderingService {
     <mj-section background-color="#f8f8f8" padding="20px">
       <mj-column>
         <mj-text font-size="14px" color="#666666" align="center">
-          © 2024 Email Campaign. All rights reserved.
+          © ${new Date().getFullYear()} ${title}. Все права защищены.
         </mj-text>
       </mj-column>
     </mj-section>

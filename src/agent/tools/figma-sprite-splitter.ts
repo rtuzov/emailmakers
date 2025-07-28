@@ -2,10 +2,11 @@ import sharp from 'sharp';
 import { Sharp } from 'sharp';
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { OpenAI } from 'openai';
-import { ensureDirectoryExists } from '../utils/file-system';
 import { tmpdir } from 'os';
 import { performance } from 'perf_hooks';
+import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../config/env';
+import { ensureDirectoryExists } from '../utils/file-system';
 import EmailFolderManager, { EmailFolder } from './email-folder-manager';
 import { getUsageModel } from '../../shared/utils/model-config';
 
@@ -725,7 +726,7 @@ export async function splitFigmaSprite(params: SplitParams): Promise<{
     console.log(`🔧 T10: Config - H Gap: ${config.horizontalGap}, V Gap: ${config.verticalGap}, Min Area: ${config.minSegmentArea}`);
     
     // Initialize OpenAI client
-    const openaiApiKey = process.env.OPENAI_API_KEY;
+    const openaiApiKey = ENV_CONFIG.OPENAI_API_KEY;
     if (!openaiApiKey) {
       throw new Error('OPENAI_API_KEY is required for image classification');
     }

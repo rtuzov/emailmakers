@@ -1,0 +1,86 @@
+{
+  "requestId": "req_1753707778145_e41dyylymoa",
+  "traceId": "api-1753707778145",
+  "timestamp": "2025-07-28T13:02:58.145Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753707778145",
+    "name": "guatemala_autumn_travel_monitoring",
+    "path": "",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753707778145_jhr9bpj07vk",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Путешествие в Гватемалу осенью - откройте для себя удивительную страну майя",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "guatemala_autumn_travel_monitoring",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753707778145",
+      "metadata": {
+        "campaignName": "guatemala_autumn_travel_monitoring",
+        "brand": "TravelDreams",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

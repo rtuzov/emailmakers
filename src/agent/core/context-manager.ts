@@ -38,7 +38,7 @@ export const AgentRunContextSchema = z.object({
     path: z.string().describe('Campaign folder path'),
     brand: z.string().describe('Brand name'),
     language: z.string().default('ru').describe('Campaign language'),
-    type: z.enum(['promotional', 'transactional', 'newsletter', 'announcement']).describe('Campaign type')
+    type: z.enum(['promotional', 'transactional', 'newsletter', 'announcement', 'travel', 'cultural', 'seasonal', 'marketing']).describe('Campaign type')
   }).describe('Campaign information'),
   
   // Execution context

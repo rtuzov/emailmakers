@@ -1,13 +1,14 @@
 // Load environment variables
 import { config } from 'dotenv';
 import path from 'path';
+import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../config/env';
+import { handleToolErrorUnified } from '../core/error-handler';
+import { logger } from '../core/logger';
+import { getUsageModel } from '../../shared/utils/model-config';
 
 // Load .env.local file
 config({ path: path.resolve(process.cwd(), '.env.local') });
-
-// Import only what we need to break circular dependency
-import { handleToolErrorUnified } from '../core/error-handler';
-import { logger } from '../core/logger';
 
 // Define ToolResult locally to avoid circular import
 interface ToolResult {
@@ -22,8 +23,6 @@ function handleToolError(toolName: string, error: any): ToolResult {
   logger.error(`Tool ${toolName} failed`, { error });
   return handleToolErrorUnified(toolName, error);
 }
-import { OpenAI } from 'openai';
-import { getUsageModel } from '../../shared/utils/model-config';
 
 interface PatchParams {
   html: string;
@@ -78,7 +77,7 @@ async function performHtmlPatching(
   patchType: string
 ): Promise<PatchResult> {
   
-  const openaiApiKey = process.env.OPENAI_API_KEY;
+  const openaiApiKey = ENV_CONFIG.OPENAI_API_KEY;
   
   if (!openaiApiKey) {
     console.warn('OpenAI API key not available, using basic patching');

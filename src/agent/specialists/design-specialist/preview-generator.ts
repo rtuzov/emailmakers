@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { buildDesignContext, loadContextFromHandoffFiles } from './design-context';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 /**
  * Generate preview files for email template
@@ -22,6 +23,7 @@ export const generatePreviewFiles = tool({
   }),
   execute: async (params, context) => {
     console.log('\n👁️ === PREVIEW GENERATION ===');
+    logToFile('info', 'Preview generation started', 'DesignSpecialist-Preview', params.trace_id || undefined);
     
     try {
       // Load content context from OpenAI SDK context parameter - prioritize loaded context
@@ -95,23 +97,38 @@ export const generatePreviewFiles = tool({
         mjmlTemplate = (context?.context as any)?.designContext?.mjml_template;
         console.log('✅ Using MJML template from design context');
       } else {
-        console.warn('⚠️ MJML template not found in design context, attempting to load from file...');
+        console.log('⚠️ MJML template not found in design context, attempting to load from file...');
         // Fallback: try to load from file
         if (campaignPath) {
           const mjmlPath = path.join(campaignPath, 'templates', 'email-template.mjml');
           const htmlPath = path.join(campaignPath, 'templates', 'email-template.html');
-          try {
-            const mjmlSource = await fs.readFile(mjmlPath, 'utf8');
-            const htmlContent = await fs.readFile(htmlPath, 'utf8');
-            mjmlTemplate = {
-              source: mjmlSource,
-              html_content: htmlContent,
-              mjml_path: mjmlPath,
-              html_path: htmlPath
-            };
-            console.log('✅ MJML template loaded from file');
-          } catch (error) {
-            throw new Error('MJML template not found in design context or file system. generateMjmlTemplate must be completed first.');
+          
+          // ✅ FIX: Check if files exist before reading
+          const mjmlExists = await fs.access(mjmlPath).then(() => true).catch(() => false);
+          const htmlExists = await fs.access(htmlPath).then(() => true).catch(() => false);
+          
+          if (mjmlExists && htmlExists) {
+            try {
+              const mjmlSource = await fs.readFile(mjmlPath, 'utf8');
+              const htmlContent = await fs.readFile(htmlPath, 'utf8');
+              mjmlTemplate = {
+                source: mjmlSource,
+                html_content: htmlContent,
+                mjml_path: mjmlPath,
+                html_path: htmlPath
+              };
+              console.log('✅ MJML template loaded from file');
+            } catch (error) {
+              throw new Error(`Failed to read MJML template files: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+          } else {
+            console.log('📁 Available template files:', {
+              mjmlExists,
+              htmlExists,
+              mjmlPath,
+              htmlPath
+            });
+            throw new Error('MJML template files not found in templates directory. generateMjmlTemplate must be completed first.');
           }
         } else {
           throw new Error('Campaign path not available. MJML template cannot be loaded.');
@@ -251,6 +268,10 @@ export const generatePreviewFiles = tool({
       console.log('✅ Preview files generated');
       console.log(`🖥️ Desktop preview: ${desktopPreviewPath}`);
       console.log(`📱 Mobile preview: ${mobilePreviewPath}`);
+      
+      logToFile('info', `Preview files generated successfully: Desktop and Mobile previews created`, 'DesignSpecialist-Preview', params.trace_id || undefined);
+      logToFile('info', `Desktop preview: ${desktopPreviewPath}`, 'DesignSpecialist-Preview', params.trace_id || undefined);
+      logToFile('info', `Mobile preview: ${mobilePreviewPath}`, 'DesignSpecialist-Preview', params.trace_id || undefined);
       
       return `Preview files generated successfully! Desktop preview: ${desktopPreviewPath}. Mobile preview: ${mobilePreviewPath}. Previews ready for review and testing.`;
       

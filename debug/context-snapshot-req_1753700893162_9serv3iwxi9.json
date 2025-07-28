@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753700893162_9serv3iwxi9",
+  "traceId": "api-1753700893161",
+  "timestamp": "2025-07-28T11:08:13.162Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753700893161",
+    "name": "Guatemala Autumn Travel Campaign",
+    "path": "",
+    "brand": "TravelMakers",
+    "language": "ru",
+    "type": "newsletter"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 80
+    },
+    "correlationId": "corr_1753700893162_ii9n5x16m5i",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 80,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Организуйте рекламную кампанию для путешествий в Гватемалу осенью. Включите информацию о лучших местах для посещения, культурных достопримечательностях, природных красотах и практической информации для туристов. Сосредоточьтесь на уникальных осенних преимуществах поездки.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Guatemala Autumn Travel Campaign",
+    "brand": "TravelMakers",
+    "language": "ru",
+    "campaignType": "newsletter",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 80,
+    "originalOptions": {
+      "traceId": "api-1753700893161",
+      "metadata": {
+        "campaignName": "Guatemala Autumn Travel Campaign",
+        "brand": "TravelMakers",
+        "language": "ru",
+        "campaignType": "newsletter",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 80
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 80
+      }
+    }
+  }
+}

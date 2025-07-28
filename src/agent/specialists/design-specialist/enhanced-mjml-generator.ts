@@ -7,6 +7,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { ContentAnalysis, DesignPersonality } from './content-intelligence-analyzer';
 import { AdaptiveDesign } from './adaptive-design-engine';
+import { logToFile } from '../../../shared/utils/campaign-logger';
 
 export class VisualComponentLibrary {
   
@@ -798,14 +799,15 @@ export class EnhancedMjmlGenerator {
 /**
  * OpenAI Agent SDK Tool для улучшенной генерации MJML
  */
-export const generateEnhancedMjmlTemplate = tool({
-  name: 'generateEnhancedMjmlTemplate',
+export const generateAdvancedMjmlTemplate = tool({
+  name: 'generateAdvancedMjmlTemplate',
   description: 'Генерирует современный MJML email шаблон с использованием анализа контента и адаптивного дизайна',
   parameters: z.object({
     trace_id: z.string().describe('ID трассировки для отладки').default('mjml-trace')
   }),
   execute: async (_params, context) => {
     console.log('\n📧 === ENHANCED MJML GENERATOR ===');
+    logToFile('info', 'Enhanced MJML generation started', 'DesignSpecialist-EnhancedMJML', _params.trace_id || undefined);
     
     try {
       // Проверяем наличие всех необходимых данных
@@ -856,6 +858,9 @@ export const generateEnhancedMjmlTemplate = tool({
           }
         };
       }
+      
+      logToFile('info', `Enhanced MJML template generated: ${mjmlCode.length} characters`, 'DesignSpecialist-EnhancedMJML', _params.trace_id || undefined);
+      logToFile('info', `Sections: ${(mjmlCode.match(/<mj-section/g) || []).length} dynamic sections, Animations: ${adaptiveDesign.animations.level}`, 'DesignSpecialist-EnhancedMJML', _params.trace_id || undefined);
       
       return `Enhanced MJML template generated successfully!
 Features: ✅ Content-aware design ✅ Adaptive colors ✅ Modern components

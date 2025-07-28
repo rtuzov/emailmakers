@@ -842,7 +842,7 @@ async function processAssetManifest(
       }
     ];
     
-    console.log('⚠️ No fonts in asset manifest, using default Arial font');
+    console.log('📝 No fonts in asset manifest, using default Arial for email compatibility');
   }
   
   // Generate asset requirements based on content

@@ -208,7 +208,7 @@ export default function Dashboard() {
               Welcome back! 👋
             </h1>
             <p className="text-white/70">
-              Here's what's happening with your email campaigns today.
+              Here&apos;s what&apos;s happening with your email campaigns today.
             </p>
           </div>
           <div className="mt-4 md:mt-0">

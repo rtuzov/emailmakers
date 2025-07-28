@@ -58,39 +58,27 @@ export type ImagePlanningRequestType = z.infer<typeof ImagePlanningRequestSchema
 /**
  * Main image planning function
  */
-export async function planImageAssets(request: ImagePlanningRequest): Promise<ImagePlanningResponse> {
+export async function planImageAssets(_request: ImagePlanningRequest): Promise<ImagePlanningResponse> {
   try {
-    // Mock implementation for now
-    const mockAssets: ImageAsset[] = [
-      {
-        id: 'hero-image-001',
-        filename: 'hero-travel-spring.png',
-        path: '/assets/images/hero-travel-spring.png',
-        type: 'hero',
-        emotional_tone: 'happy',
-        suggested_placement: 'Email header section',
-        alt_text: 'Spring travel destination with cherry blossoms',
-        dimensions: { width: 600, height: 300 }
-      },
-      {
-        id: 'accent-icon-001',
-        filename: 'plane-icon.png',
-        path: '/assets/images/plane-icon.png',
-        type: 'icon',
-        emotional_tone: 'neutral',
-        suggested_placement: 'Content section as accent',
-        alt_text: 'Airplane travel icon',
-        dimensions: { width: 32, height: 32 }
-      }
-    ];
-
+    // ✅ REMOVED: No hardcoded mock assets - this should use dynamic image generation
+    // This function should integrate with AI-powered asset generation systems
+    
+    throw new Error('Dynamic image planning not implemented. Please use AI-powered asset generation through generateAISelectedExternalImages() or Unsplash API integration instead of hardcoded mock assets.');
+    
+    // Future implementation should:
+    // 1. Analyze campaign content and type
+    // 2. Generate appropriate search terms based on content  
+    // 3. Use Unsplash API or AI image generation
+    // 4. Return contextually relevant images
+    
     return {
-      success: true,
-      selected_images: mockAssets.slice(0, request.required_images),
-      planning_rationale: `Selected ${mockAssets.length} images based on ${request.campaign_type} campaign type and ${request.emotional_tone} emotional tone`,
-      emotional_alignment: 85,
-      brand_consistency: 90,
-      total_images: mockAssets.length
+      success: false,
+      selected_images: [],
+      planning_rationale: 'This legacy function should not be used. Use dynamic AI-powered image generation instead.',
+      emotional_alignment: 0,
+      brand_consistency: 0,
+      total_images: 0,
+      error: 'Hardcoded image planning deprecated. Use dynamic generation.'
     };
   } catch (error) {
     return {

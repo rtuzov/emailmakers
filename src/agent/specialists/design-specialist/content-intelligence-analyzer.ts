@@ -5,6 +5,7 @@
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
+import { autoRestoreCampaignLogging } from '../../../shared/utils/campaign-logger';
 
 // Типы для анализа контента
 export interface ContentAnalysis {
@@ -333,6 +334,9 @@ export const analyzeContentForDesign = tool({
     trace_id: z.string().describe('ID трассировки для отладки').default('content-trace')
   }),
   execute: async (_params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'analyzeContentForDesign');
+    
     console.log('\n🧠 === CONTENT INTELLIGENCE ANALYZER ===');
     
     try {

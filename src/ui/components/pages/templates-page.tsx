@@ -450,7 +450,7 @@ export function TemplatesPage() {
             <div className="text-white/40 text-8xl mb-6">📧</div>
             <h2 className="text-2xl font-bold text-white mb-4">No Templates Found</h2>
             <p className="text-white/70 mb-8">
-              You haven't created any email templates yet. Start by creating your first template.
+              You haven&apos;t created any email templates yet. Start by creating your first template.
             </p>
             <Link href="/create">
               <GlassButton variant="primary" size="lg" glow>

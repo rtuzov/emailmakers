@@ -1,0 +1,84 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753708163611_h5owu7jrs3v",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v",
+  "specialist_data": {
+    "destination_analysis": null,
+    "market_intelligence": null,
+    "emotional_profile": null,
+    "trend_analysis": null,
+    "consolidated_insights": null,
+    "travel_intelligence": null,
+    "collection_metadata": null
+  },
+  "handoff_context": {
+    "summary": "Comprehensive analysis of the Iceland winter tour with a focus on Northern Lights was completed, covering destination insights, market trends, emotional profiles, and actionable insights.",
+    "context_for_next": "The focus is on creating engaging campaigns that highlight the unique experiences and natural beauty of Iceland during winter.",
+    "recommendations": [
+      "Create content targeting the Northern Lights experiences and related activities.",
+      "Utilize insights generated for seasonal targeting in marketing campaigns.",
+      "Consider collaborations with local operators to enhance service offerings."
+    ],
+    "priority_items": [
+      "Validate attractiveness of winter tours through compelling storytelling and visuals.",
+      "Monitor market trends and adapt marketing strategies accordingly."
+    ],
+    "potential_issues": [
+      "Weather conditions may vary significantly; ensure that marketing materials reflect possible challenges to avoid traveler disappointment."
+    ],
+    "success_criteria": [
+      "Increased booking rates during winter months for Northern Lights tours.",
+      "Positive feedback on campaign engagement and content."
+    ]
+  },
+  "deliverables": {
+    "created_files": [
+      {
+        "file_name": "destination-analysis.json",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v/data/destination-analysis.json",
+        "file_type": "data",
+        "description": "Detailed analysis of the destination focusing on travel logistics, attractions and seasonality.",
+        "is_primary": true
+      },
+      {
+        "file_name": "market-intelligence.json",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v/data/market-intelligence.json",
+        "file_type": "data",
+        "description": "Insight into current market conditions and pricing trends.",
+        "is_primary": false
+      },
+      {
+        "file_name": "emotional-profile.json",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v/data/emotional-profile.json",
+        "file_type": "data",
+        "description": "Profile of traveler motivations and desires for visiting Iceland in winter.",
+        "is_primary": false
+      },
+      {
+        "file_name": "trend-analysis.json",
+        "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v/data/trend-analysis.json",
+        "file_type": "data",
+        "description": "Analysis of current travel market trends related to Iceland.",
+        "is_primary": false
+      }
+    ],
+    "key_outputs": [
+      "destination-analysis.json",
+      "market-intelligence.json",
+      "emotional-profile.json",
+      "trend-analysis.json"
+    ]
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 5000
+  },
+  "trace_id": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753708163611_h5owu7jrs3v",
+  "validate_context": true,
+  "created_at": "2025-07-28T13:10:24.112Z"
+}

@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { OpenAI } from 'openai';
+import { ENV_CONFIG } from '../../../../config/env';
 import { log } from '../../../core/agent-logger';
 import { getErrorMessage } from '../utils/error-handling';
 
@@ -59,7 +60,7 @@ async function generateDynamicContextAnalysis(
 ): Promise<any> {
   try {
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: ENV_CONFIG.OPENAI_API_KEY
     });
 
     const prompt = `Проанализируй контекст для туристического направления "${destination}" по типу "${contextType}".
@@ -245,7 +246,7 @@ async function generateDynamicDateAnalysis(
 ): Promise<any> {
   try {
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: ENV_CONFIG.OPENAI_API_KEY
     });
 
     // Get current date for more accurate analysis

@@ -258,50 +258,13 @@ export async function generateAssetManifest(
     });
     
   } catch (error) {
-    console.error('❌ Simplified asset manifest generation failed:', error);
+    console.error('❌ Asset manifest generation failed:', error);
+    console.error(`❌ FALLBACK POLICY VIOLATION: Cannot create fallback manifest`);
+    console.error(`❌ Campaign ID: ${campaignId}, Trace ID: ${trace_id}`);
     
-    // Even if everything fails, create a minimal manifest
-    try {
-      const manifestsDir = path.join(campaignPath, 'assets', 'manifests');
-      await fs.mkdir(manifestsDir, { recursive: true });
-      
-      const minimalManifest = {
-        version: '1.0',
-        created_at: new Date().toISOString(),
-        campaign_id: campaignId,
-        total_assets: 0,
-        images: [],
-        icons: [],
-        data_files: [],
-        meta: {
-          status: 'fallback_manifest',
-          error: error instanceof Error ? error.message : 'Unknown error',
-          trace_id: trace_id
-        }
-      };
-      
-      const manifestPath = path.join(manifestsDir, 'asset-manifest.json');
-      await fs.writeFile(manifestPath, JSON.stringify(minimalManifest, null, 2));
-      
-      console.log(`✅ Fallback manifest created: ${manifestPath}`);
-      
-      return JSON.stringify({
-        success: true,
-        manifest: minimalManifest,
-        manifest_path: manifestPath,
-        total_assets: 0,
-        processing_time_ms: 50,
-        fallback: true
-      });
-      
-    } catch (fallbackError) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return JSON.stringify({
-        success: false,
-        error: errorMessage,
-        manifest: null
-      });
-    }
+    // ✅ FAIL FAST: No fallback manifest allowed per project rules
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Asset manifest generation failed: ${errorMessage}. Fallback manifests are prohibited.`);
   }
 }
 

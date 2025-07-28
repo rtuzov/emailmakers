@@ -503,7 +503,8 @@ export class OptimizationService {
       return `<html><body><h1>${params.content_data.subject}</h1><p>${params.content_data.body}</p></body></html>`;
     }
     
-    return '<html><body><p>Default content</p></body></html>';
+    // ✅ FAIL FAST: No default content fallbacks allowed
+    throw new Error('EmailRenderer: No content provided. Either mjml_content or content_data is required.');
   }
   
   /*

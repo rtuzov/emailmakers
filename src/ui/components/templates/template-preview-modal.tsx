@@ -179,7 +179,7 @@ export function TemplatePreviewModal({ templateId, isOpen, onClose }: TemplatePr
                     <div className="text-6xl mb-4">📧</div>
                     <p className="text-white/70">No content available</p>
                     <p className="text-white/50 text-sm mt-2">
-                      This template doesn't have HTML or MJML content yet
+                      This template doesn&apos;t have HTML or MJML content yet
                     </p>
                   </div>
                 </div>

@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753701396027_gg6n8i974d",
+  "traceId": "api-1753701396027",
+  "timestamp": "2025-07-28T11:16:36.027Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753701396027",
+    "name": "Murmansk Winter Aurora Campaign",
+    "path": "",
+    "brand": "NorthTravelRU",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 75
+    },
+    "correlationId": "corr_1753701396027_ik0e41stfz",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 75,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создайте email кампанию для зимнего отдыха в Мурманске и северном сиянии. Подчеркните уникальность зимних развлечений, охоты за полярным сиянием, и местных достопримечательностей.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Murmansk Winter Aurora Campaign",
+    "brand": "NorthTravelRU",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 75,
+    "originalOptions": {
+      "traceId": "api-1753701396027",
+      "metadata": {
+        "campaignName": "Murmansk Winter Aurora Campaign",
+        "brand": "NorthTravelRU",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 75
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 75
+      }
+    }
+  }
+}

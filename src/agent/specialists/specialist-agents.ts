@@ -18,7 +18,7 @@ import {
   getRegistryStatistics
 } from '../core/tool-registry';
 import { promises as fs } from 'fs';
-import { initializeCampaignLogging, logToFile } from '../../shared/utils/campaign-logger';
+import { initializeCampaignLogging, logToFile, runInCampaignContext } from '../../shared/utils/campaign-logger';
 import path from 'path';
 // Transfer tools no longer needed - using automatic handoffs via OpenAI SDK
 import { tool } from '@openai/agents';
@@ -191,15 +191,19 @@ ${params.user_request}
       console.log(`📂 Path: ${campaignPath}`);
       console.log(`📋 Subdirectories: ${subdirs.join(', ')}`);
       
-      // ✅ INITIALIZE CAMPAIGN LOGGING
+      // ✅ INITIALIZE CAMPAIGN LOGGING WITH CONTEXT
       try {
         await initializeCampaignLogging(campaignPath, campaignId);
-        logToFile('info', `Campaign ${campaignId} initialized successfully`, 'Orchestrator', params.trace_id || undefined);
-        logToFile('info', `Campaign name: ${correctedCampaignName}`, 'Orchestrator', params.trace_id || undefined);
-        logToFile('info', `Brand: ${params.brand_name}`, 'Orchestrator', params.trace_id || undefined);
-        logToFile('info', `Target audience: ${params.target_audience}`, 'Orchestrator', params.trace_id || undefined);
-        logToFile('info', `User request: ${params.user_request}`, 'Orchestrator', params.trace_id || undefined);
-        console.log('📋 Campaign logging initialized successfully');
+        
+        // ✅ КРИТИЧЕСКИ ВАЖНО: Установить контекст кампании для всех последующих операций
+        await runInCampaignContext(campaignId, campaignPath, async () => {
+          logToFile('info', `Campaign ${campaignId} initialized successfully`, 'Orchestrator', params.trace_id || undefined);
+          logToFile('info', `Campaign name: ${correctedCampaignName}`, 'Orchestrator', params.trace_id || undefined);
+          logToFile('info', `Brand: ${params.brand_name}`, 'Orchestrator', params.trace_id || undefined);
+          logToFile('info', `Target audience: ${params.target_audience}`, 'Orchestrator', params.trace_id || undefined);
+          logToFile('info', `User request: ${params.user_request}`, 'Orchestrator', params.trace_id || undefined);
+          console.log('📋 Campaign logging initialized successfully');
+        });
       } catch (loggingError) {
         console.error('⚠️ Failed to initialize campaign logging:', loggingError);
         // Don't fail the whole process if logging fails

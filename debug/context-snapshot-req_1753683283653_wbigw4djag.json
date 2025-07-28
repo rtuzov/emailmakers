@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753683283653_wbigw4djag",
+  "traceId": "api-1753683283653",
+  "timestamp": "2025-07-28T06:14:43.653Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753683283653",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "campaign_type": "seasonal_travel",
+      "destination": "Guatemala",
+      "season": "autumn",
+      "language": "ru"
+    },
+    "correlationId": "corr_1753683283653_z0w3u0mw3x9",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создать email кампанию: Путешествие в Гватемала осенью - откройте для себя магию древних майя, вулканы и колониальную архитектуру",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "campaign_type": "seasonal_travel",
+    "destination": "Guatemala",
+    "season": "autumn",
+    "originalOptions": {
+      "traceId": "api-1753683283653",
+      "metadata": {
+        "language": "ru",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "campaign_type": "seasonal_travel",
+        "destination": "Guatemala",
+        "season": "autumn"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "campaign_type": "seasonal_travel",
+        "destination": "Guatemala",
+        "season": "autumn",
+        "language": "ru"
+      }
+    }
+  }
+}

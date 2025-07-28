@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753701794158_ia0clliru3k",
+  "traceId": "api-1753701794158",
+  "timestamp": "2025-07-28T11:23:14.158Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753701794158",
+    "name": "Peru Autumn Travel Campaign",
+    "path": "",
+    "brand": "TravelExperts",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 75
+    },
+    "correlationId": "corr_1753701794158_zoa68fl8fp7",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 75,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создайте email кампанию для осенних путешествий в Перу. Сосредоточьтесь на Мачу-Пикчу, Куско, и перуанской культуре. Подчеркните уникальность андских гор и древней цивилизации инков.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Peru Autumn Travel Campaign",
+    "brand": "TravelExperts",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "create_email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 75,
+    "originalOptions": {
+      "traceId": "api-1753701794158",
+      "metadata": {
+        "campaignName": "Peru Autumn Travel Campaign",
+        "brand": "TravelExperts",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "create_email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 75
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 75
+      }
+    }
+  }
+}

@@ -995,7 +995,16 @@ export async function saveDesignContext(
   designContext: DesignContext,
   campaignPath: string
 ): Promise<string> {
-  const contextPath = path.join(campaignPath, 'docs', 'design-context.json');
+  // 🛡️ КРИТИЧЕСКАЯ ЗАЩИТА: Создаем папку docs если она не существует
+  const docsDir = path.join(campaignPath, 'docs');
+  try {
+    await fs.access(docsDir);
+  } catch {
+    console.log('📁 Creating missing docs directory:', docsDir);
+    await fs.mkdir(docsDir, { recursive: true });
+  }
+  
+  const contextPath = path.join(docsDir, 'design-context.json');
   await fs.writeFile(contextPath, JSON.stringify(designContext, null, 2));
   console.log(`🎨 Design context saved to: ${contextPath}`);
   return contextPath;
@@ -2016,8 +2025,7 @@ export function extractWithLogging(
   fieldPath: string,
   extractFunction: () => any,
   sourceType: DataSource['source_type'],
-  sourceLocation: string,
-  fallbackValue?: any
+  sourceLocation: string
 ): any {
   try {
     const extracted = extractFunction();
@@ -2025,24 +2033,18 @@ export function extractWithLogging(
     if (extracted !== undefined && extracted !== null && extracted !== '') {
       logDataSource(campaignId, fieldPath, sourceType, sourceLocation, extracted, 95, 'valid');
       return extracted;
-    } else if (fallbackValue !== undefined) {
-      logDataSource(campaignId, fieldPath, 'fallback', 'system_default', fallbackValue, 60, 'warning');
-      return fallbackValue;
     } else {
-      logDataSource(campaignId, fieldPath, 'fallback', 'empty_value', null, 0, 'error');
-      return null;
+      console.error(`❌ FALLBACK POLICY VIOLATION: Empty value for field "${fieldPath}" from ${sourceLocation}`);
+      logDataSource(campaignId, fieldPath, 'generated', 'empty_value_error', null, 0, 'error');
+      throw new Error(`Required field "${fieldPath}" is empty. Fallback values are prohibited.`);
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.warn(`⚠️ Extraction failed for ${fieldPath}:`, errorMessage);
+    console.error(`❌ Extraction failed for ${fieldPath}:`, errorMessage);
+    console.error(`❌ FALLBACK POLICY VIOLATION: No fallback allowed for extraction errors`);
     
-    if (fallbackValue !== undefined) {
-      logDataSource(campaignId, fieldPath, 'fallback', 'extraction_error', fallbackValue, 30, 'error');
-      return fallbackValue;
-    } else {
-      logDataSource(campaignId, fieldPath, 'fallback', 'extraction_error', null, 0, 'error');
-      return null;
-    }
+    logDataSource(campaignId, fieldPath, 'generated', 'extraction_error', null, 0, 'error');
+    throw new Error(`Extraction failed for field "${fieldPath}": ${errorMessage}. Fallback values are prohibited.`);
   }
 }
 

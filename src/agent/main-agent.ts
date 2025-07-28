@@ -42,6 +42,7 @@ import { finalizeCampaignLogging, logToFile } from '../shared/utils/campaign-log
 export class EmailMakersAgent {
   private entryAgent: Agent | null = null;
   private orchestrator: any = null;
+  private activeRequests: Map<string, { request: string; startTime: string; options: string }> = new Map();
   
   getOrchestrator() {
     return this.orchestrator;
@@ -50,6 +51,34 @@ export class EmailMakersAgent {
   constructor() {
     // Entry agent will be set during initialization
     console.log('🔧 Email-Makers Agent initializing...');
+  }
+
+  /**
+   * ✅ НОВОЕ: Извлечь campaign_id из результата выполнения
+   */
+  private extractCampaignIdFromResult(result: any): string | null {
+    try {
+      // Поиск campaign_id в различных возможных местах результата
+      if (result?.campaign_id) return result.campaign_id;
+      if (result?.campaign?.id) return result.campaign.id;
+      if (result?.metadata?.campaign_id) return result.metadata.campaign_id;
+      if (result?.context?.campaign?.id) return result.context.campaign.id;
+      
+      // Поиск в messages, если это OpenAI response
+      if (result?.messages) {
+        for (const message of result.messages) {
+          if (message.content) {
+            const campaignMatch = message.content.match(/campaign_\d+_[a-z0-9]+/);
+            if (campaignMatch) return campaignMatch[0];
+          }
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('❌ Failed to extract campaign_id from result:', error);
+      return null;
+    }
   }
 
   /**
@@ -81,6 +110,24 @@ export class EmailMakersAgent {
     campaignPath?: string;
     // useOrchestrator removed - Orchestrator is now MANDATORY entry point
   }): Promise<any> {
+    // 🛡️ ГЛОБАЛЬНАЯ ЗАЩИТА ОТ ДУБЛИРОВАНИЯ
+    const requestHash = Buffer.from(request).toString('base64').slice(0, 32);
+    if (this.activeRequests.has(requestHash)) {
+      const existingRequest = this.activeRequests.get(requestHash);
+      console.log(`🛡️ DUPLICATE REQUEST DETECTED: Request "${request.slice(0, 50)}..." is already being processed`);
+      if (existingRequest) {
+        console.log(`🔄 Existing request started at: ${existingRequest.startTime}`);
+      }
+      throw new Error(`Duplicate request detected. The same request is already being processed. Request hash: ${requestHash}`);
+    }
+    
+    // Регистрируем активный запрос
+    this.activeRequests.set(requestHash, {
+      request: request.slice(0, 100) + '...',
+      startTime: new Date().toISOString(),
+      options: JSON.stringify(options)
+    });
+    
     try {
       // Ensure system is initialized
       if (!this.entryAgent) {
@@ -108,7 +155,7 @@ export class EmailMakersAgent {
           mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
           apiRequest: options?.metadata?.apiRequest || false,
           directSpecialistRun: !!options?.specialist,
-          maxTurns: options?.specialist ? 8 : 35, // ✅ УВЕЛИЧЕНО: с 25 до 35 для сложных workflow
+          maxTurns: options?.specialist ? 8 : 50, // ✅ УВЕЛИЧЕНО: с 35 до 50 для исправлений и AI генерации
           timeout: null,
           retryAttempt: 0
         },
@@ -181,10 +228,17 @@ export class EmailMakersAgent {
 
       console.log(`✅ Full workflow completed via ${workflowType}`);
       
-      // ✅ FINALIZE CAMPAIGN LOGGING
+      // ✅ FINALIZE CAMPAIGN LOGGING WITH CAMPAIGN_ID
       try {
-        await finalizeCampaignLogging();
-        console.log('📋 Campaign logging finalized successfully');
+        const campaignId = this.extractCampaignIdFromResult(result);
+        if (campaignId) {
+          console.log(`📋 Finalizing campaign logging for: ${campaignId}`);
+          await finalizeCampaignLogging(campaignId);
+          console.log('📋 Campaign logging finalized successfully');
+        } else {
+          console.log('⚠️ No campaign_id found in result, finalizing all active campaigns');
+          await finalizeCampaignLogging(); // Fallback to finalize all
+        }
       } catch (loggingError) {
         console.error('⚠️ Failed to finalize campaign logging:', loggingError);
         // Don't fail the whole process if logging fails
@@ -198,12 +252,17 @@ export class EmailMakersAgent {
       // ✅ FINALIZE LOGGING EVEN ON ERROR
       try {
         logToFile('error', `Agent processing failed: ${error instanceof Error ? error.message : String(error)}`, 'MainAgent');
-        await finalizeCampaignLogging();
+        console.log('⚠️ Finalizing all active campaigns due to error');
+        await finalizeCampaignLogging(); // Finalize all on error since we don't have result
       } catch (loggingError) {
         console.error('⚠️ Failed to finalize campaign logging on error:', loggingError);
       }
       
       throw error;
+    } finally {
+      // 🧹 ОЧИСТКА: Удаляем запрос из активных
+      this.activeRequests.delete(requestHash);
+      console.log(`🧹 Request ${requestHash} removed from active requests`);
     }
   }
 

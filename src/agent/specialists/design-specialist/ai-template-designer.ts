@@ -7,6 +7,8 @@ import { tool, Agent, run } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import { autoRestoreCampaignLogging } from '../../../shared/utils/campaign-logger';
+import { ENV_CONFIG } from '../../../config/env';
 import { buildDesignContext as _buildDesignContext } from './design-context';
 import { TemplateDesign } from './types';
 
@@ -23,65 +25,58 @@ const templateDesignAgent = new Agent({
   },
   instructions: `Ты эксперт по email дизайну и верстке. Создавай профессиональные email шаблоны с учетом всех технических требований.
 
-ТВОЯ ЗАДАЧА: Создать детальный дизайн email шаблона в формате JSON с АВТОМАТИЧЕСКИМ ВНЕДРЕНИЕМ ЛУЧШИХ ПРАКТИК.
+ТВОЯ ЗАДАЧА: Создать ПОЛНОСТЬЮ УНИКАЛЬНЫЙ дизайн email шаблона в формате JSON без использования готовых шаблонов.
 
-🚀 АВТОМАТИЧЕСКИЕ УЛУЧШЕНИЯ ДЛЯ ВНЕДРЕНИЯ:
+🎨 ТВОРЧЕСКИЕ ТРЕБОВАНИЯ:
 
-1. 📸 ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ:
-   - Создавай секцию gallery с grid-layout для множественных изображений
-   - Используй ВСЕ доступные изображения (5+), не только 1-2
-   - Добавляй hover-эффекты и подписи к изображениям
+1. 📐 УНИКАЛЬНАЯ СТРУКТУРА:
+   - Создавай РАЗНЫЕ layout типы: single-column, multi-column, grid, asymmetric, magazine-style
+   - Варьируй количество секций: от 5 до 12 в зависимости от контента
+   - Экспериментируй с порядком секций (не всегда header→hero→content→footer)
+   - Создавай неожиданные комбинации (например, gallery→cta→content)
 
-2. 📐 ОПТИМИЗАЦИЯ СТРУКТУРЫ:
-   - Уменьшай количество вложенных элементов (цель: <600 строк HTML)
-   - Объединяй секции с похожим контентом
-   - Используй компактные блоки benefits вместо длинных списков
+2. 🎯 АДАПТИВНАЯ ШИРИНА:
+   - НЕ ИСПОЛЬЗУЙ стандартные 600px
+   - Варьируй: 580px, 620px, 640px, 700px в зависимости от контента и цели
+   - Подбирай ширину под тип кампании (промо - шире, минимализм - уже)
 
-3. 🎨 УЛУЧШЕННАЯ ТИПОГРАФИКА:
-   - Добавляй visual hierarchy с 4-5 уровнями размеров шрифтов
-   - Используй gradient backgrounds для важных секций
-   - Добавляй text shadows и современные эффекты
+3. 🖼️ ТВОРЧЕСКИЕ ИЗОБРАЖЕНИЯ:
+   - Создавай РАЗНЫЕ структуры галереи: grid 2x2, horizontal scroll, zigzag layout
+   - Варьируй размеры изображений: hero (full-width), gallery (thumbnails), inline (text-wrapped)
+   - Используй изображения креативно: как фон для текста, в форме карточек, с overlay
 
-4. 📱 АДАПТИВНОСТЬ:
-   - Создавай 3+ breakpoints (mobile/tablet/desktop)
-   - Добавляй touch-friendly кнопки (min 44px)
-   - Responsive images с srcset
+4. 🌈 ДИНАМИЧЕСКИЕ ЦВЕТА:
+   - Анализируй тематику кампании и создавай соответствующую палитру
+   - Путешествия: яркие, природные тона
+   - Бизнес: строгие, профессиональные
+   - Сезонные: соответствующие времени года
+   - НЕ ИСПОЛЬЗУЙ стандартные #4BFF7E, #FF6240
 
-5. 🎯 CTA ОПТИМИЗАЦИЯ:
-   - Размещай primary CTA в fold (верхняя часть)
-   - Добавляй multiple CTA с разными стилями
-   - Включай urgency indicators рядом с кнопками
+5. 📱 ИННОВАЦИОННЫЕ BREAKPOINTS:
+   - Создавай УНИКАЛЬНЫЕ точки перелома: 480px, 520px, 768px, 1024px
+   - Добавляй tablet-specific адаптации
+   - Учитывай различные устройства и их особенности
 
-6. 💎 МИКРОИНТЕРАКЦИИ:
-   - Добавляй hover states для всех кнопок
-   - Transition effects для плавности
-   - Loading states для кнопок
+6. 🎨 ЭКСПЕРИМЕНТАЛЬНАЯ ТИПОГРАФИКА:
+   - Варьируй размеры от 12px до 36px
+   - Создавай контрастную иерархию с 5-6 уровнями
+   - Используй разные веса: light, regular, medium, bold, black
+   - Экспериментируй с line-height: от 1.2 до 2.0
 
 ВСЕГДА возвращай ТОЛЬКО валидный JSON без дополнительных комментариев или markdown форматирования.
 
 Структура JSON должна включать:
-- template_id, template_name, description
-- target_audience, visual_concept
-- layout (type, max_width, sections_count, visual_hierarchy, spacing_system)
+- template_name (УНИКАЛЬНОЕ имя на основе кампании)
+- layout (УНИКАЛЬНЫЙ тип, ширина, секции, spacing)
+- sections (МИНИМУМ 7 секций с УНИКАЛЬНОЙ структурой)
+- components (МИНИМУМ 5 компонентов)
+- visual_concept (УНИКАЛЬНАЯ тема, стиль, настроение)
+- target_audience (КОНКРЕТНАЯ аудитория под кампанию)
+- improvements_applied (список примененных инноваций)
 
-КРИТИЧНО - spacing_system ОБЯЗАТЕЛЕН:
-{
-  "spacing_system": {
-    "section_padding": "20px",
-    "element_margin": "10px",
-    "text_line_height": "1.5",
-    "button_padding": "12px 24px"
-  }
-}
-- sections (массив с header, hero, gallery, content, cta, footer)
-- components (кнопки, карточки, галерея)
-- responsive (breakpoints с adjustments)
-- accessibility (alt_texts, color_contrast, font_sizes)
-- email_client_optimizations (outlook, gmail, apple_mail)
-- performance (size targets, optimization)
-- improvements_applied (список автоматически внедренных улучшений)
+КРИТИЧНО: НЕ ИСПОЛЬЗУЙ ГОТОВЫЕ ШАБЛОНЫ! Каждый дизайн должен быть УНИКАЛЬНЫМ!
 
-Используй предоставленный контекст для создания уникального и продуманного дизайна.`
+Анализируй предоставленный контекст и создавай дизайн СПЕЦИАЛЬНО под эту кампанию, тематику и аудиторию.`
 });
 
 /**
@@ -397,17 +392,11 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
 
   // 🚨 CRITICAL VALIDATION: Check required fields
   if (!templateDesign.template_name || templateDesign.template_name === null) {
-    templateDesign.template_name = `guatemala_template_${Date.now()}`;
-    console.log('⚠️ Template name was null, using fallback:', templateDesign.template_name);
+    throw new Error('AI Template Design failed: template_name is missing or null. AI must provide a unique name.');
   }
 
   if (!templateDesign.layout || !templateDesign.layout.type || templateDesign.layout.type === null) {
-    templateDesign.layout = {
-      type: 'single-column',
-      max_width: 600,
-      responsive_breakpoints: ['600px', '480px']
-    };
-    console.log('⚠️ Layout was null, using fallback: single-column');
+    throw new Error('AI Template Design failed: layout.type is missing or null. AI must provide a layout type.');
   }
 
   // CRITICAL FIX: Generate spacing_system with AI if missing
@@ -426,17 +415,11 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
   }
 
   if (!templateDesign.visual_concept || !templateDesign.visual_concept.theme) {
-    templateDesign.visual_concept = {
-      theme: 'travel_adventure',
-      style: 'modern_clean',
-      mood: 'exciting_trustworthy'
-    };
-    console.log('⚠️ Visual concept was null, using fallback');
+    throw new Error('AI Template Design failed: visual_concept.theme is missing or null. AI must provide a visual concept.');
   }
 
   if (!templateDesign.target_audience || templateDesign.target_audience === null) {
-    templateDesign.target_audience = 'travelers_families';
-    console.log('⚠️ Target audience was null, using fallback');
+    throw new Error('AI Template Design failed: target_audience is missing or null. AI must provide a target audience.');
   }
 
   // Add metadata to AI generated design
@@ -456,8 +439,9 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
  */
 async function generateSpacingSystemWithAI(templateDesign: any, contentContext: any): Promise<any> {
   try {
+    const { default: OpenAI } = await import('openai');
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: ENV_CONFIG.OPENAI_API_KEY
     });
 
     const prompt = `Generate a spacing system for email template design based on the content context and visual style.
@@ -527,6 +511,9 @@ export const generateTemplateDesign = tool({
     trace_id: z.string().nullable().describe('Trace ID for debugging')
   }),
   execute: async (params, context) => {
+    // ✅ Восстанавливаем campaign context для логирования
+    autoRestoreCampaignLogging(context, 'generateTemplateDesign');
+    
     console.log('\n🎨 === AI TEMPLATE DESIGNER (OpenAI Agents SDK) ===');
     
     // Load content context from OpenAI SDK context parameter
@@ -647,7 +634,7 @@ export const generateTemplateDesign = tool({
           techSpec = JSON.parse(techSpecData);
           console.log('✅ Loaded technical specification');
         } else {
-          console.log('⚠️ Technical specification not found');
+          console.log('📋 Technical specification not provided - using AI-generated design parameters');
       }
       } catch (error) {
         console.error('⚠️ Error loading technical specification:', error);

@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753426752236_vi9qahxxf7c",
+  "traceId": "api-1753426752236",
+  "timestamp": "2025-07-25T06:59:12.236Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753426752236",
+    "name": "Гималаи Осень 2025",
+    "path": "",
+    "brand": "Adventure Tours",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "standard",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1753426752236_649gll8id9",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Путешествие в Гималаи осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Гималаи Осень 2025",
+    "brand": "Adventure Tours",
+    "language": "ru",
+    "campaignType": "promotional",
+    "taskType": "email_campaign_creation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753426752236",
+      "metadata": {
+        "campaignName": "Гималаи Осень 2025",
+        "brand": "Adventure Tours",
+        "language": "ru",
+        "campaignType": "promotional",
+        "taskType": "email_campaign_creation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

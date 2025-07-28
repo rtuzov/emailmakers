@@ -1,0 +1,78 @@
+{
+  "requestId": "req_1753447484979_py0pjerln5t",
+  "traceId": "api-1753447484979",
+  "timestamp": "2025-07-25T12:44:44.979Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753447484979",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753447484979_k9ing7fjq8",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "{\"brief\":\"Создай email-кампанию для путешествия в Исландию зимой. Акцент на северное сияние, горячие источники, ледяные пещеры и уникальную природу. Сезон: декабрь-март 2025, цена от 55000 рублей.\",\"language\":\"ru\",\"campaign_type\":\"promotional\",\"target_audience\":\"nature_lovers\"}",
+    "userAgent": "EmailMakers/3.1.0",
+    "taskType": "email_campaign_creation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753447484979",
+      "metadata": {
+        "taskType": "email_campaign_creation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

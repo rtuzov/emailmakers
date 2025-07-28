@@ -11,6 +11,7 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { logToFile } from '../../shared/utils/campaign-logger';
 
 // Import enhanced file operations and error handling
 // import {
@@ -434,6 +435,9 @@ export const finalizeDesignAndTransferToQuality = tool({
     console.log(`🎨 MJML Status: ${(params.mjml_template as any)?.validation_status || 'unknown'}`);
     console.log(`📊 Performance Score: ${(params.performance_metrics as any)?.optimization_score || 'unknown'}`);
     console.log(`🔍 Trace ID: ${params.trace_id || 'none'}`);
+    
+    logToFile('info', 'Design specialist finalization started', 'DesignSpecialist-Finalization', params.trace_id || undefined);
+    logToFile('info', `Request: ${params.request.substring(0, 100)}...`, 'DesignSpecialist-Finalization', params.trace_id || undefined);
 
     try {
       // Build comprehensive design context
@@ -540,15 +544,23 @@ export const finalizeDesignAndTransferToQuality = tool({
       // ✅ CORRECT: Return result and let OpenAI SDK handle handoff automatically
       console.log('🔄 Design finalization complete - OpenAI SDK will handle handoff to Quality Specialist');
       
+      const templateSizeKB = ((designContext.mjml_template?.file_size || 0) / 1024).toFixed(2);
+      const assetsCount = (designContext.asset_manifest?.images?.length || 0) + (designContext.asset_manifest?.icons?.length || 0);
+      const performanceScore = designContext.performance_metrics?.optimization_score || 'N/A';
+      
+      logToFile('info', `Design specialist finalization completed successfully`, 'DesignSpecialist-Finalization', params.trace_id || undefined);
+      logToFile('info', `Template size: ${templateSizeKB} KB, Assets: ${assetsCount}, Performance score: ${performanceScore}`, 'DesignSpecialist-Finalization', params.trace_id || undefined);
+      logToFile('info', `Handoff prepared for Quality Specialist`, 'DesignSpecialist-Finalization', params.trace_id || undefined);
+      
       return {
         status: 'design_finalized_ready_for_quality',
         design_context: designContext,
         handoff_data: handoffData,
-        template_size: `${((designContext.mjml_template?.file_size || 0) / 1024).toFixed(2)} KB`,
-        assets_count: (designContext.asset_manifest?.images?.length || 0) + (designContext.asset_manifest?.icons?.length || 0),
-        performance_score: designContext.performance_metrics.optimization_score,
+        template_size: `${templateSizeKB} KB`,
+        assets_count: assetsCount,
+        performance_score: performanceScore,
         next_specialist: 'quality',
-        message: `Design work finalized and ready for Quality Specialist handoff. Template size: ${((designContext.mjml_template?.file_size || 0) / 1024).toFixed(2)} KB. Assets: ${(designContext.asset_manifest?.images?.length || 0) + (designContext.asset_manifest?.icons?.length || 0)}. Performance score: ${designContext.performance_metrics?.optimization_score || 'N/A'}. Handoff data prepared for automatic SDK transfer.`
+        message: `Design work finalized and ready for Quality Specialist handoff. Template size: ${templateSizeKB} KB. Assets: ${assetsCount}. Performance score: ${performanceScore}. Handoff data prepared for automatic SDK transfer.`
       };
 
     } catch (error) {
