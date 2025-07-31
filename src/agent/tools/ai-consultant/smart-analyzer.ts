@@ -214,8 +214,23 @@ IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks
         insights: result.insights || []
       };
     } catch (error) {
-      console.error('Content analysis failed:', error);
-      throw new Error(`Content analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error('❌ Content analysis failed:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack?.slice(0, 500) : undefined,
+        errorType: typeof error,
+        errorData: error
+      });
+      console.error('🔍 Debug info:', {
+        errorType: typeof error,
+        hasContent: !!context?.html_content,
+        contentLength: context?.html_content?.length || 0,
+        hasTopic: !!context?.topic,
+        hasTargetAudience: !!context?.target_audience,
+        hasCampaignType: !!context?.campaign_type
+      });
+      
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred during content analysis';
+      throw new Error(`AI Content analysis failed: ${errorMessage}. Check if content specialist completed successfully.`);
     }
   }
 

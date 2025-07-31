@@ -1,0 +1,69 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753937022748_xth6qnf615p",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753937022748_xth6qnf615p",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Autumn provides a quieter experience for travelers.",
+        "Mild weather is ideal for exploration.",
+        "Cultural richness can be a major draw for travelers."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-31T04:44:10.291Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753937022748_xth6qnf615p/data/key_insights_insights.json"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-31T04:44:10.299Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive analysis of Guatemala in autumn completed.",
+    "context_for_next": "Cultural and natural attractions are primary focuses for email content.",
+    "recommendations": [
+      "Emphasize on the natural beauty and cultural diversity.",
+      "Utilize autumn festivals as key marketing points."
+    ],
+    "priority_items": [
+      "Create engaging visuals of cultural festivals.",
+      "Include testimonials or quotes from travelers."
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Engaging and informative email content that attracts interest.",
+      "Clear visuals that showcase Guatemala's beauty."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 2,
+      "completion_rate": 25,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753937050299_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-31T04:44:10.299Z"
+}

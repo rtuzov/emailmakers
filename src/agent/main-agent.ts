@@ -43,14 +43,57 @@ export class EmailMakersAgent {
   private entryAgent: Agent | null = null;
   private orchestrator: any = null;
   private activeRequests: Map<string, { request: string; startTime: string; options: string }> = new Map();
+  private activeMjmlGenerations: Map<string, { attempts: number; startTime: string }> = new Map();
   
   getOrchestrator() {
     return this.orchestrator;
   }
 
+  /**
+   * 🛡️ ГЛОБАЛЬНАЯ ЗАЩИТА ОТ MJML РЕКУРСИИ
+   */
+  static checkMjmlGeneration(campaignId: string): { allowed: boolean; reason?: string; attempts: number } {
+    const instance = globalEmailMakersAgent;
+    if (!instance) {
+      return { allowed: true, attempts: 0 };
+    }
+
+    const existing = instance.activeMjmlGenerations.get(campaignId);
+    if (!existing) {
+      // Первая попытка - разрешаем
+      instance.activeMjmlGenerations.set(campaignId, {
+        attempts: 1,
+        startTime: new Date().toISOString()
+      });
+      return { allowed: true, attempts: 1 };
+    }
+
+    existing.attempts++;
+    
+    if (existing.attempts > 3) {
+      return { 
+        allowed: false, 
+        reason: `MJML generation blocked: ${existing.attempts} attempts for campaign ${campaignId}`,
+        attempts: existing.attempts
+      };
+    }
+
+    return { allowed: true, attempts: existing.attempts };
+  }
+
+  static clearMjmlGeneration(campaignId: string): void {
+    const instance = globalEmailMakersAgent;
+    if (instance) {
+      instance.activeMjmlGenerations.delete(campaignId);
+      console.log(`🧹 MJML generation cleared for campaign: ${campaignId}`);
+    }
+  }
+
   constructor() {
     // Entry agent will be set during initialization
     console.log('🔧 Email-Makers Agent initializing...');
+    // Устанавливаем глобальную ссылку для защиты от рекурсии
+    globalEmailMakersAgent = this;
   }
 
   /**
@@ -509,6 +552,9 @@ process.once('SIGTERM', () => {
     process.exit(1);
   });
 });
+
+// 🌍 ГЛОБАЛЬНАЯ ПЕРЕМЕННАЯ ДЛЯ ЗАЩИТЫ ОТ РЕКУРСИИ
+let globalEmailMakersAgent: EmailMakersAgent | null = null;
 
 console.log('🔧 Email-Makers Main Agent loaded with OpenAI SDK handoffs');
 console.log('📊 System Info:', getSystemInfo()); 

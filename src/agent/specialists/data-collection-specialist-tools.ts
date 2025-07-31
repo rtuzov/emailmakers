@@ -169,13 +169,40 @@ export const saveAnalysisResult = tool({
           cleanText = cleanText.replace(/\\"/g, '"');
         }
         
-        // ✅ ДОПОЛНИТЕЛЬНАЯ ОЧИСТКА: Исправляем частые проблемы JSON
+        // ✅ КРИТИЧЕСКАЯ ОЧИСТКА: Исправляем все проблемы JSON
         cleanText = cleanText
           .replace(/[\n\r\t]/g, ' ')  // Заменяем переносы строк и табы на пробелы
           .replace(/\s+/g, ' ')       // Схлопываем множественные пробелы
           .replace(/,\s*}/g, '}')     // Убираем trailing запятые
           .replace(/,\s*]/g, ']')     // Убираем trailing запятые в массивах
+          .replace(/}\s*}+/g, '}')    // ✅ НОВОЕ: Убираем повторяющиеся закрывающие скобки
+          .replace(/]\s*]+/g, ']')    // ✅ НОВОЕ: Убираем повторяющиеся закрывающие квадратные скобки
           .trim();
+        
+        // ✅ НОВАЯ ЗАЩИТА: Извлекаем только первый валидный JSON объект
+        const firstBraceIndex = cleanText.indexOf('{');
+        if (firstBraceIndex !== -1) {
+          // Ищем соответствующую закрывающую скобку
+          let braceCount = 0;
+          let endIndex = -1;
+          
+          for (let i = firstBraceIndex; i < cleanText.length; i++) {
+            if (cleanText[i] === '{') {
+              braceCount++;
+            } else if (cleanText[i] === '}') {
+              braceCount--;
+              if (braceCount === 0) {
+                endIndex = i;
+                break;
+              }
+            }
+          }
+          
+          if (endIndex !== -1) {
+            cleanText = cleanText.substring(firstBraceIndex, endIndex + 1);
+            console.log(`🔧 EXTRACTED: First complete JSON object (${cleanText.length} chars)`);
+          }
+        }
         
         console.log(`🔧 DEBUG: After basic cleanup for ${fieldName}:`, cleanText.substring(0, 200) + '...');
         
@@ -189,6 +216,32 @@ export const saveAnalysisResult = tool({
           let fixedJson = cleanText;
           try {
             // Try to fix truncated JSON by finding the last valid closing brace
+            
+            // ✅ КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Обработка незакрытых строк
+            // First, fix unterminated strings which cause "Unterminated string" errors
+            let inString = false;
+            let lastQuoteIndex = -1;
+            let cleanedFixedJson = '';
+            
+            for (let i = 0; i < fixedJson.length; i++) {
+              const char = fixedJson[i];
+              const prevChar = i > 0 ? fixedJson[i - 1] : '';
+              
+              if (char === '"' && prevChar !== '\\') {
+                inString = !inString;
+                lastQuoteIndex = i;
+              }
+              
+              cleanedFixedJson += char;
+            }
+            
+            // If we're still in a string at the end, close it
+            if (inString && lastQuoteIndex !== -1) {
+              cleanedFixedJson += '"';
+              console.log(`🔧 RECOVERY: Fixed unterminated string by adding closing quote`);
+            }
+            
+            fixedJson = cleanedFixedJson;
             
             // Count opening and closing braces
             let openBraces = 0;
@@ -206,7 +259,7 @@ export const saveAnalysisResult = tool({
               }
             }
             
-            // If JSON is truncated, cut at last valid position and add closing braces
+            // 🔧 КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Обрабатываем ЛИШНИЕ и НЕДОСТАЮЩИЕ скобки
             if (openBraces > closeBraces && lastValidPosition > 0) {
               fixedJson = fixedJson.substring(0, lastValidPosition + 1);
               console.log(`🔧 RECOVERY: Truncated JSON fixed by cutting at position ${lastValidPosition + 1}`);
@@ -215,6 +268,19 @@ export const saveAnalysisResult = tool({
               const missingBraces = openBraces - closeBraces;
               fixedJson = fixedJson + '}'.repeat(missingBraces);
               console.log(`🔧 RECOVERY: Added ${missingBraces} missing closing braces`);
+            } else if (closeBraces > openBraces) {
+              // ✅ НОВОЕ: Удаляем лишние закрывающие скобки
+              const excessBraces = closeBraces - openBraces;
+              console.log(`🔧 RECOVERY: Found ${excessBraces} excess closing braces, removing...`);
+              
+              // Удаляем лишние скобки с конца
+              for (let i = 0; i < excessBraces; i++) {
+                const lastBraceIndex = fixedJson.lastIndexOf('}');
+                if (lastBraceIndex !== -1) {
+                  fixedJson = fixedJson.slice(0, lastBraceIndex) + fixedJson.slice(lastBraceIndex + 1);
+                }
+              }
+              console.log(`🔧 RECOVERY: Removed ${excessBraces} excess closing braces`);
             }
             
             // Try parsing the fixed JSON
@@ -731,6 +797,138 @@ export const logAnalysisMetrics = tool({
 
 // Import standardized handoff tool and context validation
 import { validateHandoffContext, quickValidateHandoff, quickValidateHandoffDirect } from '../core/context-validation-tool';
+// Import universal handoff auto-enrichment utilities
+import { enrichHandoffData } from '../core/handoff-auto-enrichment';
+
+/**
+ * Принудительно загружает данные specialist_data из файлов кампании
+ * Используется когда агент передает пустые данные в specialist_data
+ */
+async function forceLoadSpecialistDataFromCampaign(campaignPath: string): Promise<any> {
+  console.log('🔄 Принудительная загрузка specialist_data из файлов кампании...');
+  
+  const dataPath = path.join(campaignPath, 'data');
+  const loadedData: any = {};
+
+  try {
+    // Получаем все JSON файлы в папке data
+    const files = await fs.readdir(dataPath);
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    
+    console.log(`📂 Найдено ${jsonFiles.length} JSON файлов в папке data для specialist_data`);
+
+    // Загружаем все найденные JSON файлы
+    for (const fileName of jsonFiles) {
+      try {
+        const filePath = path.join(dataPath, fileName);
+        const fileContent = await fs.readFile(filePath, 'utf8');
+        const data = JSON.parse(fileContent);
+        
+        // Создаем ключ из имени файла, обрабатывая различные форматы
+        let key = fileName.replace('.json', '');
+        
+        // Обрабатываем различные паттерны именования файлов
+        if (key.includes('_insights_')) {
+          // key_insights_insights.json -> key_insights
+          key = key.replace('_insights_insights', '_insights');
+        } else if (key.endsWith('-insights')) {
+          // travel_intelligence-insights.json -> travel_intelligence
+          key = key.replace('-insights', '');
+        }
+        
+        // Заменяем дефисы на подчеркивания для консистентности
+        key = key.replace(/-/g, '_');
+        
+        loadedData[key] = data;
+        
+        console.log(`✅ Принудительно загружен ${fileName} как '${key}' для specialist_data`);
+      } catch (fileError) {
+        console.log(`⚠️ Не удалось принудительно загрузить ${fileName}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+      }
+    }
+
+    // Генерируем метаданные коллекции
+    loadedData.collection_metadata = {
+      files_created: jsonFiles.map(file => `data/${file}`),
+      total_analyses: jsonFiles.length,
+      data_quality_score: 100,
+      processing_completed_at: new Date().toISOString(),
+      data_types: jsonFiles.map(file => {
+        let type = file.replace('.json', '');
+        if (type.includes('_insights_')) {
+          type = type.replace('_insights_insights', '_insights');
+        } else if (type.endsWith('-insights')) {
+          type = type.replace('-insights', '');
+        }
+        return type.replace(/-/g, '_');
+      })
+    };
+
+    console.log(`📊 Принудительно загружено ${Object.keys(loadedData).filter(key => 
+      loadedData[key] && typeof loadedData[key] === 'object' && Object.keys(loadedData[key]).length > 0
+    ).length} валидных файлов данных`);
+    
+    return loadedData;
+  } catch (error) {
+    console.log(`⚠️ Ошибка при принудительной загрузке данных: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return {};
+  }
+}
+
+/**
+ * Load data from campaign /data folder to populate specialist_data (unused)
+ */
+/*
+async function loadDataFromCampaignFolder(campaignPath: string): Promise<any> {
+  const dataPath = path.join(campaignPath, 'data');
+  const loadedData: any = {};
+
+  try {
+    // Try to load each data file that should exist
+    const dataFiles = [
+      'consolidated-insights.json',
+      'destination-analysis.json', 
+      'emotional-profile.json',
+      'market-intelligence.json',
+      'travel_intelligence-insights.json',
+      'trend-analysis.json'
+    ];
+
+    for (const fileName of dataFiles) {
+      try {
+        const filePath = path.join(dataPath, fileName);
+        const fileContent = await fs.readFile(filePath, 'utf8');
+        const data = JSON.parse(fileContent);
+        
+        // Extract key from filename (remove -insights.json and .json)
+        const key = fileName.replace('-insights.json', '').replace('.json', '').replace('-', '_');
+        loadedData[key] = data;
+        
+        console.log(`✅ Loaded ${fileName} for specialist_data`);
+      } catch (fileError) {
+        console.log(`⚠️ Could not load ${fileName}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        // Set to null for missing files instead of breaking
+        const key = fileName.replace('-insights.json', '').replace('.json', '').replace('-', '_');
+        loadedData[key] = null;
+      }
+    }
+
+    console.log(`📊 Total data files processed: ${Object.keys(loadedData).length}`);
+    return loadedData;
+  } catch (error) {
+    console.log(`⚠️ Failed to access data folder ${dataPath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return {
+      destination_analysis: null,
+      market_intelligence: null,
+      emotional_profile: null,
+      trend_analysis: null,
+      consolidated_insights: null,
+      travel_intelligence: null,
+      collection_metadata: null
+    };
+  }
+}
+*/
 
 /**
  * Create standardized handoff file for next specialist with context validation
@@ -786,18 +984,85 @@ export const createHandoffFile = tool({
     autoRestoreCampaignLogging(context, 'create_handoff_file');
     
     try {
-      // 🛡️ PROTECTION: Check if handoff already exists to prevent duplicates
+      // 🛡️ PROTECTION: Check if handoff already exists and has valid data
       const handoffId = `${params.campaign_id}_${params.from_specialist}_to_${params.to_specialist}`;
       const existingHandoffPath = path.join(params.campaign_path, 'handoffs', `handoff_${handoffId}.json`);
       
       try {
         await fs.access(existingHandoffPath);
-        console.log(`⚠️ Handoff already exists: ${handoffId}, skipping duplicate creation`);
-        return `✅ Handoff already exists from ${params.from_specialist} to ${params.to_specialist}. Skipping duplicate creation.`;
+        
+        // Проверяем качество существующих данных
+        try {
+          const existingContent = await fs.readFile(existingHandoffPath, 'utf8');
+          const existingData = JSON.parse(existingContent);
+          
+          // Проверяем, содержит ли handoff валидные данные
+          const hasValidSpecialistData = existingData.specialist_data && 
+            Object.keys(existingData.specialist_data).some(key => 
+              existingData.specialist_data[key] && 
+              typeof existingData.specialist_data[key] === 'object' && 
+              Object.keys(existingData.specialist_data[key]).length > 0 &&
+              !Array.isArray(existingData.specialist_data[key])
+            );
+          
+          if (hasValidSpecialistData && !existingData.fix_applied) {
+            console.log(`⚠️ Handoff already exists with valid data: ${handoffId}, skipping duplicate creation`);
+            return `✅ Handoff already exists from ${params.from_specialist} to ${params.to_specialist} with valid data. Skipping duplicate creation.`;
+          } else {
+            console.log(`🔄 Existing handoff has empty/invalid data, recreating with enriched data`);
+          }
+        } catch (parseError) {
+          console.log(`⚠️ Could not parse existing handoff, recreating: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+        }
       } catch {
         // File doesn't exist, continue with creation
         console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
       }
+      
+      // 🔍 ПРОВЕРКА КАЧЕСТВА ДАННЫХ: Проверяем есть ли валидные данные в specialist_data
+      const hasValidSpecialistData = params.specialist_data && 
+        Object.keys(params.specialist_data).some((key: string) => {
+          const value = (params.specialist_data as any)[key];
+          return value && 
+            typeof value === 'object' && 
+            Object.keys(value).length > 0 &&
+            !Array.isArray(value);
+        });
+      
+      let finalSpecialistData = params.specialist_data;
+      
+      if (!hasValidSpecialistData) {
+        console.log('⚠️ Агент передал пустые данные в specialist_data, принудительно загружаем из файлов кампании...');
+        console.log('🔍 Debug specialist_data:', {
+          hasSpecialistData: !!params.specialist_data,
+          specialistDataKeys: params.specialist_data ? Object.keys(params.specialist_data) : [],
+          fromSpecialist: params.from_specialist,
+          toSpecialist: params.to_specialist,
+          campaignPath: params.campaign_path
+        });
+        
+        finalSpecialistData = await forceLoadSpecialistDataFromCampaign(params.campaign_path);
+        
+        if (Object.keys(finalSpecialistData).length === 0) {
+          console.error('❌ Не удалось загрузить данные из файлов кампании');
+          console.error('🔍 This indicates previous specialists may not have completed successfully');
+          throw new Error(`No specialist data available for handoff from ${params.from_specialist} to ${params.to_specialist}. Previous specialist must complete successfully first.`);
+        } else {
+          console.log(`✅ Принудительно загружено ${Object.keys(finalSpecialistData).length} типов данных`);
+        }
+      } else {
+        console.log('✅ Агент передал валидные данные в specialist_data');
+      }
+      
+      // 🎯 UNIVERSAL AUTO-ENRICHMENT: Use new universal handoff enrichment system
+      console.log('📂 Auto-enriching handoff data using universal enrichment system...');
+      
+      const { enrichedData: enrichedSpecialistData, enrichedDeliverables, autoTraceId } = await enrichHandoffData(
+        finalSpecialistData,
+        params.from_specialist,
+        params.campaign_path,
+        params.trace_id ?? undefined
+      );
       
       // Pre-validation using quick validation if enabled
       if (params.validate_context) {
@@ -805,7 +1070,7 @@ export const createHandoffFile = tool({
         const quickValidationResult = await quickValidateHandoffDirect({
           from_specialist: params.from_specialist,
           to_specialist: params.to_specialist,
-          specialist_data: params.specialist_data,
+          specialist_data: enrichedSpecialistData, // Use enriched data for validation
           quality_metadata: params.quality_metadata
         });
         
@@ -816,21 +1081,17 @@ export const createHandoffFile = tool({
         }
       }
       
-      // ✅ CORRECT: Use createStandardizedHandoff as a tool directly, not calling .execute()
-      // The OpenAI SDK will handle this tool call automatically
-      console.log('📝 Creating standardized handoff file...');
-      
-      // Create handoff data structure
+      // Create handoff data structure with enriched specialist data
       const handoffResult = {
         from_specialist: params.from_specialist,
         to_specialist: params.to_specialist,
         campaign_id: params.campaign_id,
         campaign_path: params.campaign_path,
-        specialist_data: params.specialist_data,
+        specialist_data: enrichedSpecialistData, // Use enriched data instead of null values
         handoff_context: params.handoff_context,
-        deliverables: params.deliverables,
+        deliverables: enrichedDeliverables, // Use enriched deliverables
         quality_metadata: params.quality_metadata,
-        trace_id: params.trace_id,
+        trace_id: autoTraceId, // Use auto-generated trace_id if needed
         validate_context: params.validate_context,
         created_at: new Date().toISOString()
       };
@@ -840,14 +1101,15 @@ export const createHandoffFile = tool({
       
       await fs.writeFile(handoffFilePath, JSON.stringify(handoffResult, null, 2), 'utf-8');
       
-      console.log(`✅ Handoff data prepared successfully`);
+      console.log(`✅ Handoff data prepared successfully with enriched specialist data`);
       console.log(`📋 From ${params.from_specialist} to ${params.to_specialist}`);
       console.log(`📊 Data quality: ${params.quality_metadata.data_quality_score}/100`);
       console.log(`📁 Files created: ${params.deliverables.created_files.length}`);
       console.log(`✅ Validation: ${params.quality_metadata.validation_status}`);
       console.log(`💾 Handoff saved to: ${handoffFilePath}`);
+      console.log(`🧠 Specialist data enriched with ${Object.keys(enrichedSpecialistData).length} data files`);
       
-      return `✅ Standardized handoff prepared successfully! From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Data quality: ${params.quality_metadata.data_quality_score}/100. Files created: ${params.deliverables.created_files.length}. Validation: ${params.quality_metadata.validation_status}. Context validation: ${params.validate_context ? 'enabled' : 'disabled'}. Timestamp: ${handoffResult.created_at}`;
+      return `✅ Standardized handoff prepared successfully! From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Data quality: ${params.quality_metadata.data_quality_score}/100. Files created: ${params.deliverables.created_files.length}. Validation: ${params.quality_metadata.validation_status}. Context validation: ${params.validate_context ? 'enabled' : 'disabled'}. Specialist data enriched with ${Object.keys(enrichedSpecialistData).length} data files. Timestamp: ${handoffResult.created_at}`;
       
     } catch (error) {
       console.error('❌ Failed to create standardized handoff:', error);

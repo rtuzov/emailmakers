@@ -9,10 +9,15 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { OpenAI } from 'openai';
-import { ENV_CONFIG } from '../../../../config/env';
+// Unused imports - using enhancedOpenAICall instead
+// import { OpenAI } from 'openai';
+// import { ENV_CONFIG } from '../../../../config/env';
 import { log } from '../../../core/agent-logger';
 import { getErrorMessage } from '../utils/error-handling';
+import { 
+  enhancedOpenAICall, 
+  parseJSONWithRetry
+} from '../../../../shared/utils/ai-retry-mechanism';
 
 // Campaign context types 
 interface CampaignWorkflowContext {
@@ -52,16 +57,16 @@ function extractCampaignContext(context?: any): CampaignWorkflowContext {
 }
 
 /**
- * Generate dynamic context analysis using OpenAI
+ * Generate dynamic context analysis using OpenAI with retry support
  */
 async function generateDynamicContextAnalysis(
   destination: string,
-  contextType: string
+  contextType: string,
+  error_feedback?: string,
+  retry_attempt?: number
 ): Promise<any> {
   try {
-    const openai = new OpenAI({
-      apiKey: ENV_CONFIG.OPENAI_API_KEY
-    });
+    // OpenAI not needed - using enhancedOpenAICall
 
     const prompt = `Проанализируй контекст для туристического направления "${destination}" по типу "${contextType}".
 
@@ -101,50 +106,20 @@ async function generateDynamicContextAnalysis(
 
 Используй знания о туризме, культуре и маркетинге для создания точного анализа.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
+    // Use enhanced OpenAI call with retry support
+    const response = await enhancedOpenAICall({
+      prompt,
+      ...(error_feedback && { error_feedback }),
+      ...(retry_attempt && { retry_attempt }),
+      specialist_name: 'Content Specialist',
+      task_description: `Context Analysis for ${destination}`,
       temperature: 0.7,
-      max_tokens: 1500
+      max_tokens: 1500,
+      model: 'gpt-4o-mini'
     });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      throw new Error('No content generated from OpenAI');
-    }
-
-    // Enhanced JSON parsing with markdown cleanup
-    try {
-      let jsonString = content.trim();
-      
-      // Remove markdown code blocks if present
-      if (jsonString.startsWith('```json')) {
-        jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      } else if (jsonString.startsWith('```')) {
-        jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-      }
-      
-      // Remove any leading/trailing text that's not JSON
-      const jsonStart = jsonString.indexOf('{');
-      const jsonEnd = jsonString.lastIndexOf('}');
-      
-      if (jsonStart !== -1 && jsonEnd !== -1) {
-        jsonString = jsonString.substring(jsonStart, jsonEnd + 1);
-      }
-      
-      return JSON.parse(jsonString.trim());
-    } catch (parseError) {
-      // Log the actual response for debugging
-      log.error('ContentSpecialist', 'JSON parsing failed for context analysis', {
-        destination,
-        context_type: contextType,
-        raw_response: content.substring(0, 500) + '...',
-        parse_error: parseError instanceof Error ? parseError.message : String(parseError)
-      });
-      
-      // NO FALLBACK POLICY: Fail fast with clear error
-      throw new Error(`Failed to parse OpenAI response as JSON for ${destination} context analysis. Response was not valid JSON format. Parse error: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
-    }
+    // Parse JSON with retry support
+    return parseJSONWithRetry(response, 'Content Specialist');
 
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error);
@@ -237,17 +212,17 @@ export const contextProvider = tool({
 });
 
 /**
- * Generate dynamic date analysis using OpenAI
+ * Generate dynamic date analysis using OpenAI with retry support
  */
 async function generateDynamicDateAnalysis(
   destination: string,
   season: string,
-  flexibility: string
+  flexibility: string,
+  error_feedback?: string,
+  retry_attempt?: number
 ): Promise<any> {
   try {
-    const openai = new OpenAI({
-      apiKey: ENV_CONFIG.OPENAI_API_KEY
-    });
+    // OpenAI not needed - using enhancedOpenAICall
 
     // Get current date for more accurate analysis
     const now = new Date();
@@ -303,108 +278,67 @@ async function generateDynamicDateAnalysis(
 - Ответ должен быть на русском языке
 - НЕ ИСПОЛЬЗУЙ MARKDOWN БЛОКИ (\`\`\`json), только чистый JSON`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию СТРОГО в запрашиваемом JSON формате без дополнительного текста или markdown блоков.'
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      temperature: 0.3, // Lower temperature for more consistent JSON structure
-      max_tokens: 1500
+    // Use enhanced OpenAI call with retry support
+    const response = await enhancedOpenAICall({
+      prompt,
+      ...(error_feedback && { error_feedback }),
+      ...(retry_attempt && { retry_attempt }),
+      specialist_name: 'Content Specialist',
+      task_description: `Date Analysis for ${destination}`,
+      temperature: 0.3,
+      max_tokens: 1500,
+      model: 'gpt-4o-mini'
     });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      throw new Error('No content generated from OpenAI');
-    }
-
-    // Enhanced JSON parsing with markdown cleanup
-    let jsonString = content.trim();
-    
-    // Remove markdown code blocks if present
-    if (jsonString.startsWith('```json')) {
-      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (jsonString.startsWith('```')) {
-      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
-    
-    // Remove any leading/trailing text that's not JSON
-    const jsonStart = jsonString.indexOf('{');
-    const jsonEnd = jsonString.lastIndexOf('}');
-    
-    if (jsonStart !== -1 && jsonEnd !== -1) {
-      jsonString = jsonString.substring(jsonStart, jsonEnd + 1);
-    }
-    
-    try {
-      const parsedResult = JSON.parse(jsonString.trim());
+    // Parse JSON with retry support
+    const parsedResult = parseJSONWithRetry(response, 'Content Specialist');
       
-      // 🔥 КРИТИЧЕСКАЯ ВАЛИДАЦИЯ ДАТ - ПРОГРАММНАЯ ПРОВЕРКА 
-      const currentDate = new Date();
-      const today = currentDate.toISOString().split('T')[0];
-      
-      console.log(`🔍 DEBUG: Date validation - Current date: ${today}`);
-      console.log(`🔍 DEBUG: Received optimal_dates from AI:`, parsedResult.optimal_dates);
-      
-      // Фильтруем только будущие даты
-      if (parsedResult.optimal_dates && Array.isArray(parsedResult.optimal_dates)) {
-        const futureDates = parsedResult.optimal_dates.filter((date: string) => {
-          const dateObj = new Date(date);
-          const isValid = dateObj > currentDate;
-          console.log(`🔍 DEBUG: Date ${date} - Valid future date: ${isValid}`);
-          return isValid;
-        });
-        
-        console.log(`🔍 DEBUG: Filtered future dates:`, futureDates);
-        
-        // Если нет будущих дат или их слишком мало, генерируем новые
-        if (futureDates.length < 3) {
-          console.log(`⚠️ WARNING: Too few future dates (${futureDates.length}), generating new ones...`);
-          
-          const newOptimalDates = [];
-          const baseDate = new Date(currentDate);
-          baseDate.setDate(baseDate.getDate() + 7); // Начинаем через неделю
-          
-          // Генерируем 5 дат с интервалом 2-3 недели
-          for (let i = 0; i < 5; i++) {
-            const newDate = new Date(baseDate);
-            newDate.setDate(newDate.getDate() + (i * 17)); // ~2.5 недели интервал
-            newOptimalDates.push(newDate.toISOString().split('T')[0]);
-          }
-          
-          console.log(`✅ Generated new future dates:`, newOptimalDates);
-          parsedResult.optimal_dates = newOptimalDates;
-          parsedResult.current_date = today;
-          parsedResult.date_validation_applied = true;
-        } else {
-          // Используем только будущие даты
-          parsedResult.optimal_dates = futureDates;
-          parsedResult.current_date = today;
-          parsedResult.date_validation_applied = true;
-        }
-      }
-      
-      return parsedResult;
-    } catch (parseError) {
-      // Log the actual response for debugging
-      log.error('ContentSpecialist', 'JSON parsing failed for date analysis', {
-        destination,
-        season,
-        flexibility,
-        raw_response: content.substring(0, 500) + '...',
-        cleaned_json: jsonString.substring(0, 500) + '...',
-        parse_error: parseError instanceof Error ? parseError.message : String(parseError)
+    // 🔥 КРИТИЧЕСКАЯ ВАЛИДАЦИЯ ДАТ - ПРОГРАММНАЯ ПРОВЕРКА 
+    const currentDate = new Date();
+    const today = currentDate.toISOString().split('T')[0];
+    
+    console.log(`🔍 DEBUG: Date validation - Current date: ${today}`);
+    console.log(`🔍 DEBUG: Received optimal_dates from AI:`, parsedResult.optimal_dates);
+    
+    // Фильтруем только будущие даты
+    if (parsedResult.optimal_dates && Array.isArray(parsedResult.optimal_dates)) {
+      const futureDates = parsedResult.optimal_dates.filter((date: string) => {
+        const dateObj = new Date(date);
+        const isValid = dateObj > currentDate;
+        console.log(`🔍 DEBUG: Date ${date} - Valid future date: ${isValid}`);
+        return isValid;
       });
       
-      // NO FALLBACK POLICY: Fail fast with clear error
-      throw new Error(`Failed to parse OpenAI response as JSON for ${destination} date analysis. Response was not valid JSON format. Parse error: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
+      console.log(`🔍 DEBUG: Filtered future dates:`, futureDates);
+      
+      // Если нет будущих дат или их слишком мало, генерируем новые
+      if (futureDates.length < 3) {
+        console.log(`⚠️ WARNING: Too few future dates (${futureDates.length}), generating new ones...`);
+        
+        const newOptimalDates = [];
+        const baseDate = new Date(currentDate);
+        baseDate.setDate(baseDate.getDate() + 7); // Начинаем через неделю
+        
+        // Генерируем 5 дат с интервалом 2-3 недели
+        for (let i = 0; i < 5; i++) {
+          const newDate = new Date(baseDate);
+          newDate.setDate(newDate.getDate() + (i * 17)); // ~2.5 недели интервал
+          newOptimalDates.push(newDate.toISOString().split('T')[0]);
+        }
+        
+        console.log(`✅ Generated new future dates:`, newOptimalDates);
+        parsedResult.optimal_dates = newOptimalDates;
+        parsedResult.current_date = today;
+        parsedResult.date_validation_applied = true;
+      } else {
+        // Используем только будущие даты
+        parsedResult.optimal_dates = futureDates;
+        parsedResult.current_date = today;
+        parsedResult.date_validation_applied = true;
+      }
     }
+    
+    return parsedResult;
 
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error);

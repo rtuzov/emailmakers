@@ -1,0 +1,139 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753875774806_xu3007rx1lj",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753875774806_xu3007rx1lj",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Increase marketing efforts during the high season to boost bookings.",
+        "Leverage social media influencers to target younger travelers interested in cultural experiences.",
+        "Highlight unique local food experiences in promotional material."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T11:43:32.133Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753875774806_xu3007rx1lj/data/key_insights_insights.json"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Various routes are available to enter Guatemala, with major airports in Guatemala City. Buses and rental cars are common for domestic travel.",
+        "seasonal_patterns": "High season: December to March. Low season: May to October. Popular time for cultural festivals is in early June.",
+        "climate": "Tropical in lowlands; cooler in highlands. Recommended months for travel are November to April for dry weather.",
+        "culture": "Rich Mayan heritage, colorful markets, and traditional festivals. Key events include the Day of the Dead celebrations and Holy Week. ",
+        "attractions": "Must-visit places include Antigua Guatemala, Lake Atitlán, Tikal, and Semuc Champey."
+      },
+      "saved_at": "2025-07-30T11:43:32.135Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers seek adventure, cultural experiences, and eco-tourism. Many are motivated by the natural beauty and rich history of Guatemala.",
+        "triggers": "Promotions and travel packages often trigger decision making, along with recommendations from friends and family.",
+        "desires": "Tourists desire authentic experiences, local cuisine, and opportunities to engage with local communities."
+      },
+      "saved_at": "2025-07-30T11:43:32.135Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Airfare generally peaks during winter holidays and summer vacations. Domestic travel rates are variable based on tourist season.",
+        "booking_windows": "Recommended to book 1-3 months in advance for the best rates, especially for the high season.",
+        "demand": "There is consistent interest in eco-tourism and cultural experiences, leading to increased flight bookings for Guatemala.",
+        "competition": "Competing with countries like Costa Rica and Mexico for eco-adventures and cultural tourism."
+      },
+      "saved_at": "2025-07-30T11:43:32.135Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Various routes are available to enter Guatemala, with major airports in Guatemala City. Buses and rental cars are common for domestic travel.",
+        "pricing_trends": "Airfare generally peaks during winter holidays and summer vacations. Domestic travel rates are variable based on tourist season.",
+        "seasonal_patterns": "High season: December to March. Low season: May to October. Popular time for cultural festivals is in early June.",
+        "booking_windows": "Recommended to book 1-3 months in advance for the best rates, especially for the high season.",
+        "destination_insights": {
+          "route_analysis": "Various routes are available to enter Guatemala, with major airports in Guatemala City. Buses and rental cars are common for domestic travel.",
+          "seasonal_patterns": "High season: December to March. Low season: May to October. Popular time for cultural festivals is in early June.",
+          "climate": "Tropical in lowlands; cooler in highlands. Recommended months for travel are November to April for dry weather.",
+          "culture": "Rich Mayan heritage, colorful markets, and traditional festivals. Key events include the Day of the Dead celebrations and Holy Week. ",
+          "attractions": "Must-visit places include Antigua Guatemala, Lake Atitlán, Tikal, and Semuc Champey."
+        },
+        "market_insights": {
+          "pricing_trends": "Airfare generally peaks during winter holidays and summer vacations. Domestic travel rates are variable based on tourist season.",
+          "booking_windows": "Recommended to book 1-3 months in advance for the best rates, especially for the high season.",
+          "demand": "There is consistent interest in eco-tourism and cultural experiences, leading to increased flight bookings for Guatemala.",
+          "competition": "Competing with countries like Costa Rica and Mexico for eco-adventures and cultural tourism."
+        },
+        "trend_insights": {
+          "market_trends": "Growing interest in sustainable travel options and unique local experiences. Increasing number of flights connecting to major cities across the globe.",
+          "consumer_behavior": "Travelers tend to research online extensively before planning their trips, often using social media for inspiration.",
+          "competitive_landscape": "Guatemala is positioning itself as a cultural and adventure destination, competing strongly against neighboring countries.",
+          "seasonal_factors": "Peak travel times are directly affected by weather conditions and school holidays in North America and Europe."
+        }
+      },
+      "saved_at": "2025-07-30T11:43:32.135Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Growing interest in sustainable travel options and unique local experiences. Increasing number of flights connecting to major cities across the globe.",
+        "consumer_behavior": "Travelers tend to research online extensively before planning their trips, often using social media for inspiration.",
+        "competitive_landscape": "Guatemala is positioning itself as a cultural and adventure destination, competing strongly against neighboring countries.",
+        "seasonal_factors": "Peak travel times are directly affected by weather conditions and school holidays in North America and Europe."
+      },
+      "saved_at": "2025-07-30T11:43:32.135Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T11:43:32.138Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Summary of completed work",
+    "context_for_next": "Important context for Content Specialist",
+    "recommendations": [
+      "Increase marketing efforts during the high season to boost bookings.",
+      "Leverage social media influencers to target younger travelers interested in cultural experiences."
+    ],
+    "priority_items": [],
+    "potential_issues": [],
+    "success_criteria": [
+      "Successful engagement of target audience through increased bookings."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753875812138_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T11:43:32.138Z"
+}

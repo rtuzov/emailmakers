@@ -1,0 +1,149 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753866712388_nilwf3j6nwn",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753866712388_nilwf3j6nwn",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Guatemala has various options for transportation including buses and shuttles. Fly into Guatemala City for broader access. Popular routes include Antigua and Tikal.",
+      "seasonal_patterns": "Optimal months are from September to November, with lesser crowd and milder weather.",
+      "climate": "Expect mild temperatures with occasional rain. Ideal for exploring ruins and nature. Dress in layers and carry a light rain jacket.",
+      "culture": "Explore the colorful markets, traditional dance events, and rich Mayan traditions. The Day of the Dead celebrations in November are a highlight.",
+      "attractions": [
+        "Tikal National Park",
+        "Antigua Guatemala",
+        "Lake Atitlán",
+        "Chichicastenango Market"
+      ]
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Promote eco-friendly tours emphasizing the natural beauty of Guatemala.",
+        "Highlight cultural festivals to attract cultural tourists.",
+        "Create early bird packages to leverage booking windows."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T09:12:12.699Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753866712388_nilwf3j6nwn/data/key_insights_insights.json"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Cultural immersion, adventure, and exploration of ancient civilizations are key motivators for travelers to Guatemala.",
+        "triggers": "Experiencing rich traditions and natural beauty trigger emotional connections by creating unforgettable memories.",
+        "desires": "Tourists seek authentic experiences, picturesque landscapes, and unique cultural encounters."
+      },
+      "saved_at": "2025-07-30T09:12:12.701Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Average package prices range from $700 to $1200 inclusive of flights and accommodation during peak season.",
+        "booking_windows": "Optimal booking time is 2-3 months ahead for the best rates.",
+        "demand": "Increased interest in eco-tourism and cultural experiences is driving demand to Guatemala.",
+        "competition": "Destinations like Mexico and Costa Rica also attract similar tourist demographics, making direct comparisons important."
+      },
+      "saved_at": "2025-07-30T09:12:12.701Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala has various options for transportation including buses and shuttles. Fly into Guatemala City for broader access. Popular routes include Antigua and Tikal.",
+        "pricing_trends": "Average package prices range from $700 to $1200 inclusive of flights and accommodation during peak season.",
+        "seasonal_patterns": "Optimal months are from September to November, with lesser crowd and milder weather.",
+        "booking_windows": "Optimal booking time is 2-3 months ahead for the best rates.",
+        "destination_insights": {
+          "route_analysis": "Guatemala has various options for transportation including buses and shuttles. Fly into Guatemala City for broader access. Popular routes include Antigua and Tikal.",
+          "seasonal_patterns": "Optimal months are from September to November, with lesser crowd and milder weather.",
+          "climate": "Expect mild temperatures with occasional rain. Ideal for exploring ruins and nature. Dress in layers and carry a light rain jacket.",
+          "culture": "Explore the colorful markets, traditional dance events, and rich Mayan traditions. The Day of the Dead celebrations in November are a highlight.",
+          "attractions": [
+            "Tikal National Park",
+            "Antigua Guatemala",
+            "Lake Atitlán",
+            "Chichicastenango Market"
+          ]
+        },
+        "market_insights": {
+          "pricing_trends": "Average package prices range from $700 to $1200 inclusive of flights and accommodation during peak season.",
+          "booking_windows": "Optimal booking time is 2-3 months ahead for the best rates.",
+          "demand": "Increased interest in eco-tourism and cultural experiences is driving demand to Guatemala.",
+          "competition": "Destinations like Mexico and Costa Rica also attract similar tourist demographics, making direct comparisons important."
+        },
+        "trend_insights": {
+          "market_trends": "There is a growing trend towards sustainable travel, particularly among younger demographics causing an upsurge in eco-friendly travel packages.",
+          "consumer_behavior": "Travelers prefer personalized experiences over cookie-cutter tours, influencing the types of offerings that agencies should promote.",
+          "competitive_landscape": "Guatemala is carving out a niche against more heavily marketed destinations by promoting lesser-known attractions and local experiences.",
+          "seasonal_factors": "Travel peaks during the dry season from November to February, influencing pricing and availability."
+        }
+      },
+      "saved_at": "2025-07-30T09:12:12.701Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "There is a growing trend towards sustainable travel, particularly among younger demographics causing an upsurge in eco-friendly travel packages.",
+        "consumer_behavior": "Travelers prefer personalized experiences over cookie-cutter tours, influencing the types of offerings that agencies should promote.",
+        "competitive_landscape": "Guatemala is carving out a niche against more heavily marketed destinations by promoting lesser-known attractions and local experiences.",
+        "seasonal_factors": "Travel peaks during the dry season from November to February, influencing pricing and availability."
+      },
+      "saved_at": "2025-07-30T09:12:12.701Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 2,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T09:12:12.707Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive travel intelligence analysis for Guatemala focusing on cultural attractions, nature, and market insights.",
+    "context_for_next": "Leverage the findings about key attractions and trends to create engaging content for targeted campaigns.",
+    "recommendations": [
+      "Utilize cultural insights and festival dates in promotional content.",
+      "Focus on eco-tourism messages to attract responsible travelers."
+    ],
+    "priority_items": null,
+    "potential_issues": [
+      "Ensure to validate the accuracy of cultural event dates."
+    ],
+    "success_criteria": [
+      "Deliver compelling email content based on analysis findings."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753866732707_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T09:12:12.707Z"
+}

@@ -1,0 +1,33 @@
+{
+  "request": "Создать высококачественный email дизайн для Гватемалы.",
+  "metadata": {
+    "handoffId": "handoff_1753866354392_q1l05su48zj",
+    "timestamp": "2025-07-30T09:05:54.392Z",
+    "fromAgent": "design",
+    "toAgent": "quality",
+    "dataVersion": "1.0",
+    "traceId": "finalize-and-transfer-trace",
+    "executionTime": null
+  },
+  "content_context": {},
+  "design_context": {
+    "content_context": {},
+    "asset_manifest": {
+      "images": [],
+      "icons": [],
+      "fonts": []
+    },
+    "mjml_template": {
+      "validation_status": "valid",
+      "validation_messages": [],
+      "responsive_breakpoints": []
+    },
+    "design_decisions": {
+      "asset_optimization": [],
+      "accessibility_features": [],
+      "email_client_adaptations": {}
+    },
+    "preview_files": [],
+    "performance_metrics": {}
+  }
+}

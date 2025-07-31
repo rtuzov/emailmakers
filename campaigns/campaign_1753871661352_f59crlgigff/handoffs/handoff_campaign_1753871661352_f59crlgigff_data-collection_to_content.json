@@ -1,0 +1,139 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753871661352_f59crlgigff",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753871661352_f59crlgigff",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Guatemala has a well-connected system of buses, shuttles, and taxis for easy travel between cities and attractions.",
+      "seasonal_patterns": "Optimal travel months are December to February for dry weather, while May to October offers more rain but lush landscapes.",
+      "climate": "Tropical climate with warm temperatures year-round. Dry season from November to April; a light jacket is recommended for cooler evenings in highlands.",
+      "culture": "Rich indigenous culture with vibrant markets, traditional festivals, and Mayan ruins."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Guatemala is booming in eco-tourism.",
+        "Cultural experiences are a major draw.",
+        "Peak travel times coincide with local festivals."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T10:34:44.384Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753871661352_f59crlgigff/data/key_insights_insights.json"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by cultural exploration, natural beauty, and adventure.",
+        "triggers": "Emotional factors include the allure of ancient history, unique landscapes, and the desire to experience diverse cultures.",
+        "desires": "Tourists seek authenticity, adventure, and relaxation in a vibrant cultural setting."
+      },
+      "saved_at": "2025-07-30T10:34:44.385Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Prices peak during holiday seasons and dry months, with lower rates during the rainy season.",
+        "booking_windows": "Optimal booking time is 2-3 months in advance, especially during peak travel times.",
+        "demand": "High demand for cultural tours, eco-tourism, and adventure activities.",
+        "competition": "Popular alternative destinations include Costa Rica and Mexico."
+      },
+      "saved_at": "2025-07-30T10:34:44.385Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala has a well-connected system of buses, shuttles, and taxis for easy travel between cities and attractions.",
+        "pricing_trends": "Prices peak during holiday seasons and dry months, with lower rates during the rainy season.",
+        "seasonal_patterns": "Optimal travel months are December to February for dry weather, while May to October offers more rain but lush landscapes.",
+        "booking_windows": "Optimal booking time is 2-3 months in advance, especially during peak travel times.",
+        "destination_insights": {
+          "route_analysis": "Guatemala has a well-connected system of buses, shuttles, and taxis for easy travel between cities and attractions.",
+          "seasonal_patterns": "Optimal travel months are December to February for dry weather, while May to October offers more rain but lush landscapes.",
+          "climate": "Tropical climate with warm temperatures year-round. Dry season from November to April; a light jacket is recommended for cooler evenings in highlands.",
+          "culture": "Rich indigenous culture with vibrant markets, traditional festivals, and Mayan ruins."
+        },
+        "market_insights": {
+          "pricing_trends": "Prices peak during holiday seasons and dry months, with lower rates during the rainy season.",
+          "booking_windows": "Optimal booking time is 2-3 months in advance, especially during peak travel times.",
+          "demand": "High demand for cultural tours, eco-tourism, and adventure activities.",
+          "competition": "Popular alternative destinations include Costa Rica and Mexico."
+        },
+        "trend_insights": {
+          "market_trends": "Increased interest in sustainable travel and eco-tourism; travelers prioritize experiences over amenities.",
+          "consumer_behavior": "Travelers often rely on online reviews and social media to inform their decisions.",
+          "competitive_landscape": "Competition is growing with neighboring countries offering similar attractions.",
+          "seasonal_factors": "Travel decisions are influenced by the local festival calendar and climate patterns."
+        }
+      },
+      "saved_at": "2025-07-30T10:34:44.385Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Increased interest in sustainable travel and eco-tourism; travelers prioritize experiences over amenities.",
+        "consumer_behavior": "Travelers often rely on online reviews and social media to inform their decisions.",
+        "competitive_landscape": "Competition is growing with neighboring countries offering similar attractions.",
+        "seasonal_factors": "Travel decisions are influenced by the local festival calendar and climate patterns."
+      },
+      "saved_at": "2025-07-30T10:34:44.385Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 2,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T10:34:44.389Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive travel analysis for Guatemala.",
+    "context_for_next": "Focus on eco-tourism and cultural experiences in content creation.",
+    "recommendations": [
+      "Emphasize local culture in promotions",
+      "Showcase festival dates in marketing"
+    ],
+    "priority_items": [
+      "Create content around local festivals",
+      "Highlight eco-tourism opportunities"
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Engagement of targeted demographic",
+      "Increased bookings for cultural tours"
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753871684389_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T10:34:44.390Z"
+}

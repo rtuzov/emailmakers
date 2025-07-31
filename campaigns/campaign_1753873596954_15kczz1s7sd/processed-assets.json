@@ -1,0 +1,256 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_aVpCEGVJK0w.jpg",
+        "path": "https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4MDE3NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4MDE3NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_aVpCEGVJK0w",
+        "created": "2025-07-30T11:08:27.403Z",
+        "modified": "2025-07-30T11:08:27.403Z",
+        "tags": [],
+        "description": "green and red jalapenos on plates",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4MDE3NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:10:16.310Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_kf089lAIXpo.jpg",
+        "path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBzdW5zZXQlMjBzaWxob3VldHRlfGVufDB8MHx8fDE3NTM4ODI3MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBzdW5zZXQlMjBzaWxob3VldHRlfGVufDB8MHx8fDE3NTM4ODI3MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_kf089lAIXpo",
+        "created": "2025-07-30T11:08:27.403Z",
+        "modified": "2025-07-30T11:08:27.403Z",
+        "tags": [],
+        "description": "the sun is setting over the mountains in the distance",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBzdW5zZXQlMjBzaWxob3VldHRlfGVufDB8MHx8fDE3NTM4ODI3MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:10:16.310Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_Pn8T_kC9A0E.jpg",
+        "path": "https://images.unsplash.com/photo-1501327825011-e83b7080b0f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODgyNzAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1501327825011-e83b7080b0f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODgyNzAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_Pn8T-kC9A0E",
+        "created": "2025-07-30T11:08:27.403Z",
+        "modified": "2025-07-30T11:08:27.403Z",
+        "tags": [],
+        "description": "silhouette of mountain during sunrise",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1501327825011-e83b7080b0f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODgyNzAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:10:16.310Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_VxNb5NGrQCY.jpg",
+        "path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwY29sb3JmdWwlMjBmZXN0aXZhbHxlbnwwfDB8fHwxNzUzODgyNzA0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwY29sb3JmdWwlMjBmZXN0aXZhbHxlbnwwfDB8fHwxNzUzODgyNzA0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_VxNb5NGrQCY",
+        "created": "2025-07-30T11:08:27.403Z",
+        "modified": "2025-07-30T11:08:27.403Z",
+        "tags": [],
+        "description": "man standing behind dancers",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwY29sb3JmdWwlMjBmZXN0aXZhbHxlbnwwfDB8fHwxNzUzODgyNzA0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:10:16.310Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_Fjy7lavh46o.jpg",
+        "path": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBoaWdobGFuZCUyMGxhbmRzY2FwZSUyMG1vcm5pbmclMjBmb2d8ZW58MHwwfHx8MTc1Mzg4MjcwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBoaWdobGFuZCUyMGxhbmRzY2FwZSUyMG1vcm5pbmclMjBmb2d8ZW58MHwwfHx8MTc1Mzg4MjcwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_Fjy7lavh46o",
+        "created": "2025-07-30T11:08:27.403Z",
+        "modified": "2025-07-30T11:08:27.403Z",
+        "tags": [],
+        "description": "green leaf tree lot under clear sky",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBoaWdobGFuZCUyMGxhbmRzY2FwZSUyMG1vcm5pbmclMjBmb2d8ZW58MHwwfHx8MTc1Mzg4MjcwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:10:16.310Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 0,
+    "optimization_level": "standard",
+    "processed_at": "2025-07-30T11:10:16.310Z"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753861693072_5ucevtzwg8t",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753861693072_5ucevtzwg8t",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Explore ancient Maya ruins, including Tikal, located in the northern jungle. Direct flights available to Guatemala City, with tours to key locations. Local guides available for cultural insights.",
+      "seasonal_patterns": "Best months to visit are from November to April when the climate is dry and cooler.",
+      "climate": "Expect comfortable temperatures ranging from 20-25°C (68-77°F) during the day. Light clothing is suggested, with a warm layer for cooler evenings.",
+      "culture": "Experience vibrant Mayan traditions, local festivals, and rich culinary experiences in cities like Antigua and Quetzaltenango.",
+      "attractions": "Key attractions include Tikal National Park, Lake Atitlán, and the colorful markets in Chichicastenango."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Cultural tourism is on the rise post-pandemic.",
+        "Sixty percent of travelers are willing to spend more for unique experiences.",
+        "Competition remains significant, but Guatemala's engagement in sustainable tourism sets it apart."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T07:48:44.282Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753861693072_5ucevtzwg8t/data/key_insights_insights.json"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by the desire to explore ancient cultures and experience breathtaking natural landscapes.",
+        "triggers": "The decision is often driven by word-of-mouth from friends, social media inspiration, and availability of unique experiences.",
+        "desires": "Tourists seek authentic experiences, connections with local communities, and engagement with history and nature."
+      },
+      "saved_at": "2025-07-30T07:48:44.283Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Prices for flights and accommodations are moderately priced; expect peak booking around December for holidays.",
+        "booking_windows": "Optimal booking should occur 2-3 months prior for best deals.",
+        "demand": "There is increasing interest in cultural and nature-based travel experiences to Guatemala among European and North American travelers.",
+        "competition": "Other Central American destinations like Costa Rica and Belize hold competitive advantages with beaches but Guatemala offers unique cultural experiences."
+      },
+      "saved_at": "2025-07-30T07:48:44.283Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Explore ancient Maya ruins, including Tikal, located in the northern jungle. Direct flights available to Guatemala City, with tours to key locations. Local guides available for cultural insights.",
+        "pricing_trends": "Prices for flights and accommodations are moderately priced; expect peak booking around December for holidays.",
+        "seasonal_patterns": "Best months to visit are from November to April when the climate is dry and cooler.",
+        "booking_windows": "Optimal booking should occur 2-3 months prior for best deals.",
+        "destination_insights": {
+          "route_analysis": "Explore ancient Maya ruins, including Tikal, located in the northern jungle. Direct flights available to Guatemala City, with tours to key locations. Local guides available for cultural insights.",
+          "seasonal_patterns": "Best months to visit are from November to April when the climate is dry and cooler.",
+          "climate": "Expect comfortable temperatures ranging from 20-25°C (68-77°F) during the day. Light clothing is suggested, with a warm layer for cooler evenings.",
+          "culture": "Experience vibrant Mayan traditions, local festivals, and rich culinary experiences in cities like Antigua and Quetzaltenango.",
+          "attractions": "Key attractions include Tikal National Park, Lake Atitlán, and the colorful markets in Chichicastenango."
+        },
+        "market_insights": {
+          "pricing_trends": "Prices for flights and accommodations are moderately priced; expect peak booking around December for holidays.",
+          "booking_windows": "Optimal booking should occur 2-3 months prior for best deals.",
+          "demand": "There is increasing interest in cultural and nature-based travel experiences to Guatemala among European and North American travelers.",
+          "competition": "Other Central American destinations like Costa Rica and Belize hold competitive advantages with beaches but Guatemala offers unique cultural experiences."
+        },
+        "trend_insights": {
+          "market_trends": "Post-pandemic travel has shown a significant shift toward immersive cultural experiences, especially in remote locations.",
+          "consumer_behavior": "Travelers are increasingly researching destinations online and booking based on online reviews and recommendations.",
+          "competitive_landscape": "While neighboring countries offer beach resorts, Guatemala’s cultural heritage and landscape attract a niche audience, establishing a unique position in the market.",
+          "seasonal_factors": "The rainy season from May to October sees lower tourist numbers; autumn invites hikers and culture enthusiasts to explore the landscape."
+        }
+      },
+      "saved_at": "2025-07-30T07:48:44.283Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Post-pandemic travel has shown a significant shift toward immersive cultural experiences, especially in remote locations.",
+        "consumer_behavior": "Travelers are increasingly researching destinations online and booking based on online reviews and recommendations.",
+        "competitive_landscape": "While neighboring countries offer beach resorts, Guatemala’s cultural heritage and landscape attract a niche audience, establishing a unique position in the market.",
+        "seasonal_factors": "The rainy season from May to October sees lower tourist numbers; autumn invites hikers and culture enthusiasts to explore the landscape."
+      },
+      "saved_at": "2025-07-30T07:48:44.283Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 2,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T07:48:44.293Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive analysis of travel opportunities in Guatemala focusing on cultural and natural attractions, pricing trends, and emotional triggers for travelers.",
+    "context_for_next": "The focus is on marketing cultural and outdoor experiences that resonate with travelers being motivated by unique experiences.",
+    "recommendations": [
+      "Develop email content highlighting cultural events and unique experiences in Guatemala.",
+      "Include testimonials from travelers who have recently visited Guatemala.",
+      "Create a sense of urgency to book tours as the fall season approaches."
+    ],
+    "priority_items": null,
+    "potential_issues": null,
+    "success_criteria": [
+      "Increase in bookings for cultural tours to Guatemala after email campaign launch."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753861724293_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T07:48:44.294Z"
+}

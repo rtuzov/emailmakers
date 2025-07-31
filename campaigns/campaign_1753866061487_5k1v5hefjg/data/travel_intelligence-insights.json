@@ -1,0 +1,28 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Various transportation options available including flights, trains, and buses with associated costs and travel times.",
+    "pricing_trends": "Prices generally rise in peak seasons, dipping slightly in off-seasons.",
+    "seasonal_patterns": "Peak travel months are June to August, with a decline in December and February.",
+    "booking_windows": "Optimal booking recommended 2-3 months in advance for better rates.",
+    "destination_insights": {
+      "route_analysis": "Various transportation options available including flights, trains, and buses with associated costs and travel times.",
+      "seasonal_patterns": "Peak travel months are June to August, with a decline in December and February.",
+      "climate": "Hot summers with average temperatures ranging from 25-35°C, mild winters with temperatures around 5-15°C.",
+      "culture": "Rich in traditions, vibrant festivals celebrated, local cuisine is diverse and unique to the region."
+    },
+    "market_insights": {
+      "pricing_trends": "Prices generally rise in peak seasons, dipping slightly in off-seasons.",
+      "booking_windows": "Optimal booking recommended 2-3 months in advance for better rates.",
+      "demand": "Very popular travel destination with increasing international tourist numbers.",
+      "competition": "Competes with several other nearby tourist spots, drawing significant interest from travelers."
+    },
+    "trend_insights": {
+      "market_trends": "Eco-tourism and sustainable travel are becoming prominent trends among travelers.",
+      "consumer_behavior": "Increasing preference for personalized travel experiences over packaged tours.",
+      "competitive_landscape": "Emerging local businesses competing against established players, focusing on niche markets.",
+      "seasonal_factors": "Travel decisions are greatly influenced by local festivals and climate conditions."
+    }
+  },
+  "saved_at": "2025-07-30T09:01:29.681Z"
+}

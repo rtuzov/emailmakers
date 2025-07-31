@@ -1,0 +1,142 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753859614977_cuexvq0m2hl",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753859614977_cuexvq0m2hl",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Direct flights to Guatemala from major cities, bus services to nearby attractions.",
+      "seasonal_patterns": "Best months for travel are September to November due to pleasant weather.",
+      "climate": "Tropical climate with warm temperatures and occasional rain in the fall. Recommended to pack light layers and a raincoat.",
+      "culture": "Rich Mayan heritage, vibrant local festivals, traditional handicrafts and cuisine.",
+      "attractions": "Key attractions include Tikal National Park, Antigua Guatemala, Lake Atitlán, and the colorful markets of Chichicastenango."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Cultural richness is a key selling point.",
+        "Best travel time in the fall attracts adventurous travelers.",
+        "Tikal and Antigua are must-sell attractions."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T07:13:53.640Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753859614977_cuexvq0m2hl/data/key_insights_insights.json"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by the desire for adventure, cultural enrichment, and unique experiences.",
+        "triggers": "Curiosity about ancient ruins, vibrant culture, and stunning landscapes are key decision factors.",
+        "desires": "Travelers seek authenticity, immersion in local culture, and opportunities for adventure in nature."
+      },
+      "saved_at": "2025-07-30T07:13:53.642Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Average price for a week-long trip in the fall ranges from $800 to $1500 depending on accommodations and activities.",
+        "booking_windows": "Best to book 2-3 months in advance for optimal prices and availability.",
+        "demand": "Growing interest in cultural and adventure travel in Guatemala, particularly in the fall season.",
+        "competition": "Other Central American destinations like Costa Rica and Belize but Guatemala offers unique cultural experiences."
+      },
+      "saved_at": "2025-07-30T07:13:53.642Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Direct flights to Guatemala from major cities, bus services to nearby attractions.",
+        "pricing_trends": "Average price for a week-long trip in the fall ranges from $800 to $1500 depending on accommodations and activities.",
+        "seasonal_patterns": "Best months for travel are September to November due to pleasant weather.",
+        "booking_windows": "Best to book 2-3 months in advance for optimal prices and availability.",
+        "destination_insights": {
+          "route_analysis": "Direct flights to Guatemala from major cities, bus services to nearby attractions.",
+          "seasonal_patterns": "Best months for travel are September to November due to pleasant weather.",
+          "climate": "Tropical climate with warm temperatures and occasional rain in the fall. Recommended to pack light layers and a raincoat.",
+          "culture": "Rich Mayan heritage, vibrant local festivals, traditional handicrafts and cuisine.",
+          "attractions": "Key attractions include Tikal National Park, Antigua Guatemala, Lake Atitlán, and the colorful markets of Chichicastenango."
+        },
+        "market_insights": {
+          "pricing_trends": "Average price for a week-long trip in the fall ranges from $800 to $1500 depending on accommodations and activities.",
+          "booking_windows": "Best to book 2-3 months in advance for optimal prices and availability.",
+          "demand": "Growing interest in cultural and adventure travel in Guatemala, particularly in the fall season.",
+          "competition": "Other Central American destinations like Costa Rica and Belize but Guatemala offers unique cultural experiences."
+        },
+        "trend_insights": {
+          "market_trends": "Increase in eco-tourism and cultural trips among millennials and Gen Z travelers.",
+          "consumer_behavior": "Travelers are looking for personalized experiences and sustainable travel options.",
+          "competitive_landscape": "Guatemala is positioning itself as a top cultural and adventure destination compared to nearby countries.",
+          "seasonal_factors": "Fall brings fewer crowds and ideal weather for exploration."
+        }
+      },
+      "saved_at": "2025-07-30T07:13:53.642Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Increase in eco-tourism and cultural trips among millennials and Gen Z travelers.",
+        "consumer_behavior": "Travelers are looking for personalized experiences and sustainable travel options.",
+        "competitive_landscape": "Guatemala is positioning itself as a top cultural and adventure destination compared to nearby countries.",
+        "seasonal_factors": "Fall brings fewer crowds and ideal weather for exploration."
+      },
+      "saved_at": "2025-07-30T07:13:53.642Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 2,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T07:13:53.652Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive analysis for Guatemala travel completed.",
+    "context_for_next": "Focus on enhancing cultural, adventure, and eco-tourism elements in content.",
+    "recommendations": [
+      "Highlight key attractions: Tikal and Antigua.",
+      "Use pricing insights for competitive positioning."
+    ],
+    "priority_items": [
+      "Draft creative content for autumn promotion.",
+      "Develop social media engagement strategies."
+    ],
+    "potential_issues": [
+      "Assess market competitiveness against other Central American destinations."
+    ],
+    "success_criteria": [
+      "Increase in bookings and inquiries for Guatemala tours."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 500
+  },
+  "trace_id": "handoff_1753859633652_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T07:13:53.652Z"
+}

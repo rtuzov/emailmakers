@@ -314,6 +314,8 @@ export async function loadContextFromHandoffFiles(campaignPath: string): Promise
     try {
       const emailContent = JSON.parse(await fs.readFile(emailContentPath, 'utf-8'));
       contentContext = {
+        // CRITICAL: Direct access to email content fields for Content Intelligence Analyzer
+        ...emailContent,
         generated_content: emailContent,
         sections: emailContent.sections || [],
         subject_line: emailContent.subject_line,
@@ -353,8 +355,10 @@ export async function loadContextFromHandoffFiles(campaignPath: string): Promise
       console.log('✅ Asset manifest loaded successfully from:', assetManifestPath);
       console.log(`📊 Asset manifest contains: ${assetManifest?.images?.length || 0} images, ${assetManifest?.icons?.length || 0} icons`);
     } catch (error) {
-      console.log(`⚠️ Asset manifest file not found at: ${assetManifestPath}`);
-      console.log('⚠️ Asset manifest will not be available for asset processing');
+      // Asset manifest may not exist if Content Specialist hasn't completed yet - this is normal
+      if (error instanceof Error && !error.message.includes('ENOENT')) {
+        console.log(`⚠️ Asset manifest load error: ${error.message}`);
+      }
     }
     
     // Load campaign metadata

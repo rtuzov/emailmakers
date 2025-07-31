@@ -1,0 +1,246 @@
+{
+  "template_name": "Гватемала_Специальное_Предложение_1753871814941",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 610,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "48px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "375px",
+      "768px",
+      "1024px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "header",
+      "width": "100%",
+      "height": "60px",
+      "background": "#FFFFFF",
+      "content": "🌴 Откройте для себя Гватемалу этой осенью!",
+      "typography": {
+        "font_size": "24px",
+        "font_weight": "bold",
+        "color": "#4CAF50"
+      },
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "hero",
+      "width": "100%",
+      "height": "400px",
+      "background": "url(https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjB0ZW1wbGVzJTIwanVuZ2xlJTIwc3VucmlzZXxlbnwwfDB8fHwxNzUzODgwNzUyfDA&ixlib=rb-4.1.0&q=80&w=1080)",
+      "content": "",
+      "padding": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      }
+    },
+    {
+      "position": "content1",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": "Вы мечтали о приключениях в экзотической Гватемале? 🏞️ Ваше время пришло! Насладитесь культурой, природой и историей этой удивительной страны.",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "benefits",
+      "width": "100%",
+      "height": "auto",
+      "background": "#F9F9F9",
+      "content": [
+        "💰 Экономия до 14,922₽ на билетах!",
+        "✈️ Прямые рейсы без пересадок из Москвы",
+        "🏨 Бесплатное бронирование отелей через наш сервис",
+        "📞 Поддержка 24/7 на русском языке",
+        "🔒 Гарантия лучшей цены — вернем разницу",
+        "🆓 Бесплатная отмена бронирования до 24 часов"
+      ],
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "social_proof",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": "★★★★★ 'Билеты в Гватемалу купили за 60,000₽ и остались очень довольны! Спасибо, Kupibilet!' - Сергей П., Москва.",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "urgency",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FF9800",
+      "content": "⏰ Ограниченное предложение: действуйте до 15 августа — осталось всего 10 мест по этой цене!",
+      "typography": {
+        "font_size": "18px",
+        "font_weight": "bold",
+        "color": "#FFFFFF"
+      },
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "cta",
+      "width": "100%",
+      "height": "80px",
+      "background": "#4CAF50",
+      "content": [
+        {
+          "text": "Купить билеты за 57,894₽ ✈️",
+          "link": "#",
+          "typography": {
+            "font_size": "20px",
+            "font_weight": "bold",
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "text": "Посмотреть все рейсы 🔍",
+          "link": "#",
+          "typography": {
+            "font_size": "16px",
+            "font_weight": "normal",
+            "color": "#FFFFFF"
+          }
+        }
+      ],
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    },
+    {
+      "position": "gallery",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": [
+        {
+          "image": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldCUyMHZpYnJhbnQlMjB0ZXh0aWxlcyUyMGZvb2QlMjBzdGFsbHN8ZW58MHwwfHx8MTc1Mzg4MDc1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "old woman sitting and selling food in the market"
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZlc3RpdmFsJTIwdHJhZGl0aW9uYWwlMjBkYW5jZSUyMGNvbG9yZnVsJTIwY29zdHVtZXN8ZW58MHwwfHx8MTc1Mzg4MDc1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "man standing behind dancers"
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMG1vdW50YWlucyUyMG1vcm5pbmclMjBtaXN0fGVufDB8MHx8fDE3NTM4ODA3NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "green leaf tree lot under clear sky"
+        }
+      ],
+      "padding": {
+        "top": "20px",
+        "bottom": "20px",
+        "left": "20px",
+        "right": "20px"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "cta_button",
+      "text": "Купить билеты за 57,894₽ ✈️",
+      "link": "#",
+      "style": {
+        "width": "100%",
+        "background_color": "#4CAF50",
+        "font_size": "20px",
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "cta_button",
+      "text": "Посмотреть все рейсы 🔍",
+      "link": "#",
+      "style": {
+        "width": "100%",
+        "background_color": "#009688",
+        "font_size": "16px",
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "image_gallery",
+      "images": [
+        "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldCUyMHZpYnJhbnQlMjB0ZXh0aWxlcyUyMGZvb2QlMjBzdGFsbHN8ZW58MHwwfHx8MTc1Mzg4MDc1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZlc3RpdmFsJTIwdHJhZGl0aW9uYWwlMjBkYW5jZSUyMGNvbG9yZnVsJTIwY29zdHVtZXN8ZW58MHwwfHx8MTc1Mzg4MDc1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMG1vdW50YWlucyUyMG1vcm5pbmclMjBtaXN0fGVufDB8MHx8fDE3NTM4ODA3NTR8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      ]
+    }
+  ],
+  "visual_concept": {
+    "theme": "Культурное_разнообразие_Гватемалы",
+    "style": "Экологический_туризм",
+    "mood": "Оптимистичный_и_вдохновляющий"
+  },
+  "target_audience": "Россияне, заинтересованные в культурных и экотуристических поездках",
+  "improvements_applied": [
+    "Оптимизирована структура с мульти-колоночным дизайном",
+    "Добавлены все предлагаемые изображения в галерею",
+    "Упрощенное представление преимуществ с компактным форматом",
+    "Созданы четкие CTA кнопки для повышения вовлеченности"
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T10:37:50.736Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-trace",
+    "brand_colors": {
+      "primary": "#4CAF50",
+      "accent": "#FF9800",
+      "background": "#FFFFFF"
+    },
+    "campaign_type": "promotional"
+  }
+}

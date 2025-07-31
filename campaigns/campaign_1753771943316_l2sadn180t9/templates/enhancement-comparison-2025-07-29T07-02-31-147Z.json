@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-07-29T07:02:31.151Z",
+  "files": {
+    "original_file": "email-template.html",
+    "enhanced_file": "email-template-enhanced-2025-07-29T07-02-31-147Z.html",
+    "latest_enhanced_file": "email-template-enhanced-latest.html",
+    "optimized_file": "email-template-optimized-2025-07-29T07-02-31-147Z.html"
+  },
+  "versions": {
+    "preferred": "original",
+    "original_size": 28416,
+    "optimized_size": 26840,
+    "preferred_size": 28416,
+    "size_change": {
+      "bytes": -1576,
+      "percent": -5.546171171171172
+    }
+  },
+  "enhancements": {
+    "made": [
+      "Оригинальный HTML сохранён из-за проблем с оптимизацией",
+      "Проблемы целостности: Image sources changed: 0/4 preserved"
+    ],
+    "protection_triggered": true,
+    "warning_reasons": [
+      "Проблемы целостности: Image sources changed: 0/4 preserved"
+    ],
+    "has_warnings": true
+  },
+  "validation_status": {
+    "original_errors": 97,
+    "enhanced_errors": 97,
+    "improvement": 0,
+    "original_warnings": 0,
+    "enhanced_warnings": 0,
+    "integrity_check": {
+      "isValid": false,
+      "issues": [
+        "Image sources changed: 0/4 preserved"
+      ],
+      "details": {
+        "titleMatch": true,
+        "mainTextMatch": true,
+        "imageCountMatch": true,
+        "linkCountMatch": true,
+        "ctaButtonsMatch": true,
+        "structureValid": true,
+        "metaTagsMatch": true,
+        "cssIntegrityMatch": true
+      }
+    }
+  },
+  "technical": {
+    "ai_agent_used": "OpenAI Agents SDK - HTML Validation & Enhancement AI",
+    "both_versions_saved": true,
+    "main_template_updated": false,
+    "processing_timestamp": "2025-07-29T07-02-31-147Z"
+  },
+  "summary": {
+    "status": "PROTECTED",
+    "preferred_version": "original",
+    "total_files_saved": 4,
+    "size_change_description": "Уменьшился на 5.5%",
+    "validation_improvement": 0
+  }
+}

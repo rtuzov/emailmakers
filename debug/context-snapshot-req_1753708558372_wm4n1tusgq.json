@@ -1,0 +1,86 @@
+{
+  "requestId": "req_1753708558372_wm4n1tusgq",
+  "traceId": "api-1753708558372",
+  "timestamp": "2025-07-28T13:15:58.372Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753708558372",
+    "name": "guatemala_fixes_test",
+    "path": "",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753708558372_zwa90iqiaoe",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Краткий тест исправлений агента - Гватемала осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "guatemala_fixes_test",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753708558372",
+      "metadata": {
+        "campaignName": "guatemala_fixes_test",
+        "brand": "TravelDreams",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

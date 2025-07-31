@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-29T06:53:56.290Z",
+  "campaign_id": "campaign_1753771943316_l2sadn180t9",
+  "total_assets": 6,
+  "images": [
+    {
+      "filename": "external_LxM540pjmZM.jpg",
+      "path": "https://images.unsplash.com/photo-1709094979090-bc35418ab53b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwdHJhZGl0aW9uYWwlMjBkYW5jZSUyMHBlcmZvcm1hbmNlJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM3ODEwMzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1709094979090-bc35418ab53b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwdHJhZGl0aW9uYWwlMjBkYW5jZSUyMHBlcmZvcm1hbmNlJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM3ODEwMzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_LxM540pjmZM",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "a woman in a costume on a stage",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_VPDQfwc_qns.jpg",
+      "path": "https://images.unsplash.com/photo-1667526273488-378aa6f5f113?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBldmVuaW5nJTIwd2luZSUyMHRhc3RpbmclMjB3aXRoJTIwdmlld3N8ZW58MHwwfHx8MTc1Mzc4MTAzMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1667526273488-378aa6f5f113?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBldmVuaW5nJTIwd2luZSUyMHRhc3RpbmclMjB3aXRoJTIwdmlld3N8ZW58MHwwfHx8MTc1Mzc4MTAzMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VPDQfwc-qns",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "a glass of wine on a table",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_74uHDyCz1RE.jpg",
+      "path": "https://images.unsplash.com/photo-1637469720517-09be902db781?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMHRlbXBsZSUyMHRvdXIlMjBhdXR1bW4lMjBsZWF2ZXMlMjByZWZsZWN0aW9ufGVufDB8MHx8fDE3NTM3ODEwMzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1637469720517-09be902db781?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMHRlbXBsZSUyMHRvdXIlMjBhdXR1bW4lMjBsZWF2ZXMlMjByZWZsZWN0aW9ufGVufDB8MHx8fDE3NTM3ODEwMzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_74uHDyCz1RE",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "a house in the middle of a forest surrounded by trees",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_Fz2_prCNN84.jpg",
+      "path": "https://images.unsplash.com/photo-1724568834710-d5db3faab7e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwY29hc3RhbCUyMHJvdXRlJTIwaGlkZGVuJTIwYmVhY2glMjBleHBsb3JhdGlvbnxlbnwwfDB8fHwxNzUzNzgxMDMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1724568834710-d5db3faab7e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwY29hc3RhbCUyMHJvdXRlJTIwaGlkZGVuJTIwYmVhY2glMjBleHBsb3JhdGlvbnxlbnwwfDB8fHwxNzUzNzgxMDMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_Fz2-prCNN84",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "A group of people standing on top of a cliff next to the ocean",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_JocAk0b017Q.jpg",
+      "path": "https://images.unsplash.com/photo-1598779371302-b6974a3b585d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBjdWx0dXJhbCUyMGZlc3RpdmFsJTIwbG9jYWwlMjBjcmFmdHMlMjBtYXJrZXR8ZW58MHwwfHx8MTc1Mzc4MTAzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1598779371302-b6974a3b585d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBjdWx0dXJhbCUyMGZlc3RpdmFsJTIwbG9jYWwlMjBjcmFmdHMlMjBtYXJrZXR8ZW58MHwwfHx8MTc1Mzc4MTAzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_JocAk0b017Q",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "blue and yellow floral tote bag on blue plastic table",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_AHIsL24zwwQ.jpg",
+      "path": "https://images.unsplash.com/photo-1732807346036-2fa234dc6e31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjBjb2xvcnMlMjBpbiUyMGt5b3RvJTIwdHJhZGl0aW9uYWwlMjB3b29kZW4lMjBob3VzZXN8ZW58MHwwfHx8MTc1Mzc4MTAzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1732807346036-2fa234dc6e31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhdXR1bW4lMjBjb2xvcnMlMjBpbiUyMGt5b3RvJTIwdHJhZGl0aW9uYWwlMjB3b29kZW4lMjBob3VzZXN8ZW58MHwwfHx8MTc1Mzc4MTAzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_AHIsL24zwwQ",
+      "created": "2025-07-29T06:53:56.291Z",
+      "modified": "2025-07-29T06:53:56.291Z",
+      "tags": [],
+      "description": "A building with a tree in front of it",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753772036288",
+    "status": "assets_collected"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753873596954_15kczz1s7sd",
+  "name": "Гватемала осенью",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "любители путешествий",
+  "user_request": "путешествие в Гватемала осенью",
+  "created_at": "2025-07-30T11:06:36.958Z",
+  "status": "active",
+  "workflow_phase": "quality",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": true,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-30T11:10:47.713Z",
+  "notes": "Comprehensive analysis completed for Guatemala travel in autumn.",
+  "data": "All required analysis files saved."
+}

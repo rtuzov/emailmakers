@@ -1,0 +1,114 @@
+{
+  "requestId": "req_1753937708754_no0l26816o9",
+  "traceId": "api-1753937708754",
+  "timestamp": "2025-07-31T04:55:08.754Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753937708754",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "topic": "путешествие в Гватемала осенью",
+      "content_brief": "Создать email рассылку о путешествии в Гватемалу осенью с акцентом на культурные достопримечательности и природные красоты",
+      "origin": "Москва",
+      "destination": "Гватемала",
+      "target_audience": "любители приключений и культурного туризма",
+      "campaign_type": "promotional",
+      "tone": "вдохновляющий",
+      "language": "ru",
+      "brand": "Kupibilet"
+    },
+    "correlationId": "corr_1753937708754_s6nkknrw39g",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "путешествие в Гватемала осенью - создать email рассылку о культурных достопримечательностях и природных красотах",
+    "userAgent": "EmailMakers/3.1.0",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "taskType": "email_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "topic": "путешествие в Гватемала осенью",
+    "content_brief": "Создать email рассылку о путешествии в Гватемалу осенью с акцентом на культурные достопримечательности и природные красоты",
+    "origin": "Москва",
+    "destination": "Гватемала",
+    "target_audience": "любители приключений и культурного туризма",
+    "campaign_type": "promotional",
+    "tone": "вдохновляющий",
+    "originalOptions": {
+      "traceId": "api-1753937708754",
+      "metadata": {
+        "brand": "Kupibilet",
+        "language": "ru",
+        "taskType": "email_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "topic": "путешествие в Гватемала осенью",
+        "content_brief": "Создать email рассылку о путешествии в Гватемалу осенью с акцентом на культурные достопримечательности и природные красоты",
+        "origin": "Москва",
+        "destination": "Гватемала",
+        "target_audience": "любители приключений и культурного туризма",
+        "campaign_type": "promotional",
+        "tone": "вдохновляющий"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "topic": "путешествие в Гватемала осенью",
+        "content_brief": "Создать email рассылку о путешествии в Гватемалу осенью с акцентом на культурные достопримечательности и природные красоты",
+        "origin": "Москва",
+        "destination": "Гватемала",
+        "target_audience": "любители приключений и культурного туризма",
+        "campaign_type": "promotional",
+        "tone": "вдохновляющий",
+        "language": "ru",
+        "brand": "Kupibilet"
+      }
+    }
+  }
+}

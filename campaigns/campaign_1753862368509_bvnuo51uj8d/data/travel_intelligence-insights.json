@@ -1,0 +1,34 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Guatemala is accessible by flights to Guatemala City, with local transportation options including buses and shuttles.",
+    "pricing_trends": "Prices generally rise in peak seasons, with popular packages averaging $1,200 for a week-long trip, including flights and accommodations.",
+    "seasonal_patterns": "Best months for visiting are from November to April, during the dry season.",
+    "booking_windows": "Optimal booking time is 3 to 6 months in advance for better deals.",
+    "destination_insights": {
+      "route_analysis": "Guatemala is accessible by flights to Guatemala City, with local transportation options including buses and shuttles.",
+      "seasonal_patterns": "Best months for visiting are from November to April, during the dry season.",
+      "climate": "Expect warm days and cooler nights; bring light clothing and a jacket for evenings.",
+      "culture": "Experience rich Mayan heritage, colorful festivals, and local markets.",
+      "attractions": "Key sites include Tikal, the ancient Mayan city, Lake Atitlán, and the colonial city of Antigua.",
+      "key_places": [
+        "Tikal National Park",
+        "Lake Atitlán",
+        "Antigua"
+      ]
+    },
+    "market_insights": {
+      "pricing_trends": "Prices generally rise in peak seasons, with popular packages averaging $1,200 for a week-long trip, including flights and accommodations.",
+      "booking_windows": "Optimal booking time is 3 to 6 months in advance for better deals.",
+      "demand": "In recent years, Guatemala has seen an increase in eco-tourism and cultural tours.",
+      "competition": "Competitors include Costa Rica and Belize, but Guatemala offers a unique Mayan experience not found in these countries."
+    },
+    "trend_insights": {
+      "market_trends": "Increasing interest in eco-friendly travel and cultural experiences in 2025.",
+      "consumer_behavior": "Travelers are making more informed decisions, often seeking unique experiences over traditional vacation spots.",
+      "competitive_landscape": "Guatemala is positioning itself as a top destination for cultural immersion and sustainability in travel.",
+      "seasonal_factors": "Travel patterns suggest a rise in bookings during holidays and school vacation periods."
+    }
+  },
+  "saved_at": "2025-07-30T07:59:49.776Z"
+}

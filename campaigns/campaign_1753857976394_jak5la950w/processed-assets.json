@@ -1,0 +1,304 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_2ge3I_ocis4.jpg",
+        "path": "https://images.unsplash.com/photo-1504712375254-d54f14d89508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdGl0bGFuJTIwbGFrZSUyMHN1bnJpc2UlMjByZWZsZWN0aW9uc3xlbnwwfDB8fHwxNzUzODY3MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1504712375254-d54f14d89508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdGl0bGFuJTIwbGFrZSUyMHN1bnJpc2UlMjByZWZsZWN0aW9uc3xlbnwwfDB8fHwxNzUzODY3MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_2ge3I_ocis4",
+        "created": "2025-07-30T06:48:04.926Z",
+        "modified": "2025-07-30T06:48:04.926Z",
+        "tags": [],
+        "description": "landscape photography of island surrounded by fog during golden hour",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1504712375254-d54f14d89508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdGl0bGFuJTIwbGFrZSUyMHN1bnJpc2UlMjByZWZsZWN0aW9uc3xlbnwwfDB8fHwxNzUzODY3MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_vBMZnC2xnoc.jpg",
+        "path": "https://images.unsplash.com/photo-1530119855670-1947b96fb328?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHRlbXBsZSUyMHRpa2FsJTIwc3Vuc2V0JTIwc2lsaG91ZXR0ZXxlbnwwfDB8fHwxNzUzODY3MDc5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1530119855670-1947b96fb328?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHRlbXBsZSUyMHRpa2FsJTIwc3Vuc2V0JTIwc2lsaG91ZXR0ZXxlbnwwfDB8fHwxNzUzODY3MDc5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_vBMZnC2xnoc",
+        "created": "2025-07-30T06:48:04.926Z",
+        "modified": "2025-07-30T06:48:04.926Z",
+        "tags": [],
+        "description": "silhouette of clouds during sunset",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1530119855670-1947b96fb328?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHRlbXBsZSUyMHRpa2FsJTIwc3Vuc2V0JTIwc2lsaG91ZXR0ZXxlbnwwfDB8fHwxNzUzODY3MDc5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_8XzQVywnm5U.jpg",
+        "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjBjb2xvcmZ1bCUyMHRyYWRpdGlvbmFsJTIwY2xvdGhpbmd8ZW58MHwwfHx8MTc1Mzg2NzA3OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjBjb2xvcmZ1bCUyMHRyYWRpdGlvbmFsJTIwY2xvdGhpbmd8ZW58MHwwfHx8MTc1Mzg2NzA3OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_8XzQVywnm5U",
+        "created": "2025-07-30T06:48:04.926Z",
+        "modified": "2025-07-30T06:48:04.926Z",
+        "tags": [],
+        "description": "women holding green leaves",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjBjb2xvcmZ1bCUyMHRyYWRpdGlvbmFsJTIwY2xvdGhpbmd8ZW58MHwwfHx8MTc1Mzg2NzA3OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_8XzQVywnm5U.jpg",
+        "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdXR1bW4lMjBoYXJ2ZXN0JTIwZmVzdGl2YWwlMjB2aWJyYW50JTIwZmVzdGl2aXRpZXN8ZW58MHwwfHx8MTc1Mzg2NzA4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdXR1bW4lMjBoYXJ2ZXN0JTIwZmVzdGl2YWwlMjB2aWJyYW50JTIwZmVzdGl2aXRpZXN8ZW58MHwwfHx8MTc1Mzg2NzA4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_8XzQVywnm5U",
+        "created": "2025-07-30T06:48:04.926Z",
+        "modified": "2025-07-30T06:48:04.926Z",
+        "tags": [],
+        "description": "women holding green leaves",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhdXR1bW4lMjBoYXJ2ZXN0JTIwZmVzdGl2YWwlMjB2aWJyYW50JTIwZmVzdGl2aXRpZXN8ZW58MHwwfHx8MTc1Mzg2NzA4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_d3wg8iDx_jU.jpg",
+        "path": "https://images.unsplash.com/photo-1590221237024-9e3eade918e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdHJlZXQlMjBmb29kJTIwY3VsaW5hcnklMjBleHBlcmllbmNlcyUyMGV2ZW5pbmd8ZW58MHwwfHx8MTc1Mzg2NzA4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1590221237024-9e3eade918e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdHJlZXQlMjBmb29kJTIwY3VsaW5hcnklMjBleHBlcmllbmNlcyUyMGV2ZW5pbmd8ZW58MHwwfHx8MTc1Mzg2NzA4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_d3wg8iDx_jU",
+        "created": "2025-07-30T06:48:04.927Z",
+        "modified": "2025-07-30T06:48:04.927Z",
+        "tags": [],
+        "description": "woman in white tank top sitting on chair",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1590221237024-9e3eade918e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdHJlZXQlMjBmb29kJTIwY3VsaW5hcnklMjBleHBlcmllbmNlcyUyMGV2ZW5pbmd8ZW58MHwwfHx8MTc1Mzg2NzA4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_V8yZ7Oa9fZE.jpg",
+        "path": "https://images.unsplash.com/uploads/1412408477419aff085fb/6e3ceebe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc2VyZW5lJTIwbGFuZHNjYXBlcyUyMG1vcm5pbmclMjBsaWdodHxlbnwwfDB8fHwxNzUzODY3MDgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/uploads/1412408477419aff085fb/6e3ceebe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc2VyZW5lJTIwbGFuZHNjYXBlcyUyMG1vcm5pbmclMjBsaWdodHxlbnwwfDB8fHwxNzUzODY3MDgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_V8yZ7Oa9fZE",
+        "created": "2025-07-30T06:48:04.927Z",
+        "modified": "2025-07-30T06:48:04.927Z",
+        "tags": [],
+        "description": "mountain view with fog under clear blue sky at daytime",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/uploads/1412408477419aff085fb/6e3ceebe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc2VyZW5lJTIwbGFuZHNjYXBlcyUyMG1vcm5pbmclMjBsaWdodHxlbnwwfDB8fHwxNzUzODY3MDgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T06:49:01.056Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "aggressive",
+    "processed_at": "2025-07-30T06:49:01.057Z"
+  }
+}

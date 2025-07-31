@@ -1,0 +1,238 @@
+{
+  "template_name": "Guatemala_Adventure_Special_Offer_2025",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 680,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "48px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "375px",
+      "768px",
+      "1024px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "hero",
+      "dimensions": {
+        "width": "100%",
+        "height": "500px",
+        "padding": "0"
+      },
+      "background": {
+        "color": "#F5FFFA"
+      },
+      "content": {
+        "text": "🌴 Откройте для себя Гватемалу этим летом!",
+        "typography": {
+          "font_size": "36px",
+          "font_weight": "bold",
+          "color": "#FF8C00"
+        }
+      }
+    },
+    {
+      "position": "content1",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Путешествуйте по доступным ценам от 57,894₽!",
+        "typography": {
+          "font_size": "24px",
+          "font_weight": "regular",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "content2",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Представьте, как вы наслаждаетесь теплом солнечного Гватемала, душистыми тропическими лесами и прозрачными озерами! Это не просто мечта, это реальность, и она доступна вам уже сейчас!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "regular",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "gallery",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#F5FFFA"
+      },
+      "images": [
+        {
+          "path": "https://images.unsplash.com/photo-1472982728022-601a8d99e9af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnNsJTIwdGlrYWwlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfHx8fDE3NTM4NzI2MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "landscape photography of mountain"
+        },
+        {
+          "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1hcmtldCUyMHZpYnJhbnQlMjBsb2NhbCUyMGN1bHR1cmV8ZW58MHwwfHx8MTc1Mzg3MjYwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "old woman sitting and selling food in the market"
+        },
+        {
+          "path": "https://images.unsplash.com/photo-1501327825011-e83b7080b0f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBwYWNheWElMjB2b2xjYW5vJTIwc3Vuc2V0JTIwaGlraW5nJTIwc2NlbmV8ZW58MHwwfHx8MTc1Mzg3MjYwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "silhouette of mountain during sunrise"
+        },
+        {
+          "path": "https://images.unsplash.com/photo-1494444753080-e0d457fa3563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2xvbmlhbCUyMGFyY2hpdGVjdHVyZSUyMGFudGlndWElMjBjb2xvcmZ1bCUyMHN0cmVldHN8ZW58MHwwfHx8MTc1Mzg3MjYwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "description": "pathway of houses under blue clouds during daytime"
+        }
+      ]
+    },
+    {
+      "position": "benefits",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "💰 Экономия до 14,922₽ на билетах! ✈️ Прямые рейсы без пересадок из Москвы. 🏨 Бесплатное бронирование отелей через наш сервис. 📞 Поддержка 24/7 на русском языке. 🔒 Гарантия лучшей цены - вернем разницу. 🆓 Бесплатная отмена бронирования до 24 часов.",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "regular",
+          "color": "#333333"
+        }
+      }
+    },
+    {
+      "position": "urgency",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FF8C00"
+      },
+      "content": {
+        "text": "⏰ Успейте! Оставшиеся места по этой цене заканчиваются быстро - на сегодня осталось только 12 мест!",
+        "typography": {
+          "font_size": "20px",
+          "font_weight": "bold",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    {
+      "position": "cta",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFD700"
+      },
+      "content": {
+        "buttons": [
+          {
+            "text": "Купить билеты за 57,894₽ ✈️",
+            "link": "#",
+            "typography": {
+              "font_size": "18px",
+              "font_weight": "bold",
+              "color": "#000000"
+            }
+          },
+          {
+            "text": "Посмотреть все рейсы 🔍",
+            "link": "#",
+            "typography": {
+              "font_size": "18px",
+              "font_weight": "regular",
+              "color": "#000000"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "position": "footer",
+      "dimensions": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#F5FFFA"
+      },
+      "content": {
+        "text": "Не упустите возможность попробовать новые впечатления и погрузиться в культуру Гватемалы. Бронируйте сейчас и откройте для себя мир приключений!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "regular",
+          "color": "#333333"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "image",
+      "path": "https://images.unsplash.com/photo-1472982728022-601a8d99e9af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnNsJTIwdGlrYWwlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfHx8fDE3NTM4NzI2MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "landscape photography of mountain"
+    },
+    {
+      "type": "video",
+      "path": "https://example.com/video.mp4",
+      "description": "Video showcasing Guatemala's attractions"
+    },
+    {
+      "type": "icon",
+      "path": "https://example.com/icon.png",
+      "description": "Travel icon"
+    }
+  ],
+  "visual_concept": {
+    "theme": "Tropical_Adventure",
+    "style": "Vibrant_Cultural_Exploration",
+    "mood": "Inspiring_Adventurous_Joyful"
+  },
+  "target_audience": "Young explorers interested in cultural adventures and tropical landscapes.",
+  "improvements_applied": [
+    "Integrated all available images in a compelling gallery.",
+    "Used dynamic content structure to enhance engagement.",
+    "Optimized call-to-action buttons for clarity and visibility."
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T08:24:17.164Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-trace",
+    "brand_colors": {
+      "primary": "#FF8C00",
+      "accent": "#FFD700",
+      "background": "#F5FFFA"
+    },
+    "campaign_type": "promotional"
+  }
+}

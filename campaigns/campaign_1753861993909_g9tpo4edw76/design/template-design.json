@@ -1,0 +1,252 @@
+{
+  "template_name": "Гватемала_предложение_2025_001",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 680,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "48px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "375px",
+      "768px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "header",
+      "width": 680,
+      "height": 100,
+      "background": "#FFFFFF",
+      "content": {
+        "text": "🌍 Путешествуйте в Гватемалу - откройте мир майя!",
+        "typography": {
+          "font_size": "24px",
+          "font_weight": "bold",
+          "color": "#FF5722"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    },
+    {
+      "position": "hero",
+      "width": 680,
+      "height": 300,
+      "background": {
+        "type": "image",
+        "path": "https://images.unsplash.com/photo-1472982728022-601a8d99e9af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YSUyMHJ1aW5zJTIwYWZ0ZXJub29uJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MTA3OHww&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      "padding": {
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "right": "0"
+      }
+    },
+    {
+      "position": "content1",
+      "width": 680,
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": {
+        "text": "Лучшие предложения от 69,474₽ и экономия до 14,843₽! Вы мечтаете об уникальных приключениях и погружении в культуру?",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "normal",
+          "color": "#000000"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    },
+    {
+      "position": "benefits",
+      "width": 680,
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": {
+        "text": "💰 Экономия до 14,843₽ на билетах! ✈️ Прямые рейсы без пересадок из Москвы 📞 Поддержка 24/7 на русском языке 🔒 Гарантия лучшей цены - вернем разницу 🆓 Бесплатная отмена бронирования до 24 часов",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#4CAF50"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    },
+    {
+      "position": "social_proof",
+      "width": 680,
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": {
+        "text": "★★★★★ 'Купили билеты в Гватемалу через Kupibilet - сэкономили 12,000₽, все прошло отлично!' - Ирина К., Санкт-Петербург.",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "italic",
+          "color": "#000000"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    },
+    {
+      "position": "urgency",
+      "width": 680,
+      "height": "auto",
+      "background": "#FF5722",
+      "content": {
+        "text": "⏰ Остались лимитированные места по этим ценам, торопитесь! Бронирование доступно только до 30 ноября!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "bold",
+          "color": "#FFFFFF"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    },
+    {
+      "position": "cta",
+      "width": 680,
+      "height": 100,
+      "background": "#4CAF50",
+      "content": {
+        "text": "Купить билеты за 69,474₽ ✈️",
+        "typography": {
+          "font_size": "24px",
+          "font_weight": "bold",
+          "color": "#FFFFFF"
+        },
+        "padding": {
+          "top": "20px",
+          "bottom": "20px",
+          "left": "20px",
+          "right": "20px"
+        },
+        "button": {
+          "url": "https://example.com/buy-tickets",
+          "style": {
+            "border": "none",
+            "border_radius": "5px",
+            "padding": "10px"
+          }
+        }
+      }
+    },
+    {
+      "position": "gallery",
+      "width": 680,
+      "height": "auto",
+      "background": "#FFFFFF",
+      "content": {
+        "images": [
+          {
+            "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwdHJhZGl0aW9uYWwlMjBjbG90aGluZ3xlbnwwfDB8fHwxNzUzODcxMDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "women holding green leaves"
+          },
+          {
+            "path": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBoaWdobGFuZCUyMHZpbGxhZ2VzJTIwZm9nZ3klMjBtb3JuaW5nJTIwbGFuZHNjYXBlc3xlbnwwfDB8fHwxNzUzODcxMDc5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "green leaf tree lot under clear sky"
+          },
+          {
+            "path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBjb29raW5nJTIwZmVzdGl2YWxzJTIwYXRtb3NwaGVyZXxlbnwwfDB8fHwxNzUzODcxMDgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "man wearing blue polo shirt near firepit"
+          }
+        ]
+      }
+    },
+    {
+      "position": "footer",
+      "width": 680,
+      "height": 60,
+      "background": "#FFFFFF",
+      "content": {
+        "text": "Не упустите шанс исследовать Гватемалу по удивительным ценам. Забронируйте уже сегодня!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#000000"
+        },
+        "padding": {
+          "top": "10px",
+          "bottom": "10px",
+          "left": "20px",
+          "right": "20px"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "style": {
+        "text": "Купить билеты за 69,474₽ ✈️",
+        "url": "https://example.com/buy-tickets",
+        "color": "#FFFFFF",
+        "background_color": "#4CAF50",
+        "padding": "10px 20px",
+        "border_radius": "5px"
+      }
+    },
+    {
+      "type": "text",
+      "content": "Остались лимитированные места по этим ценам, торопитесь!",
+      "style": {
+        "font_size": "18px",
+        "font_weight": "bold",
+        "color": "#FF5722"
+      }
+    }
+  ],
+  "visual_concept": {
+    "theme": "Mayan_Adventure",
+    "style": "Vibrant_Nature",
+    "mood": "Exploration_Inviting"
+  },
+  "target_audience": "Путешественники, ищущие уникальные культурные и природные приключения в Гватемале, жители России.",
+  "improvements_applied": [
+    "Использованы все доступные изображения в галерее.",
+    "Оптимизированы CTA кнопки для ясности и привлекательности.",
+    "Добавлены элементы социального доказательства для увеличения доверия.",
+    "Визуальные акценты на срочности для стимулирования быстрого реагирования."
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T07:57:41.376Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "template-design-trace",
+    "brand_colors": {
+      "primary": "#FF5722",
+      "accent": "#4CAF50",
+      "background": "#FFFFFF"
+    },
+    "campaign_type": "promotional"
+  }
+}

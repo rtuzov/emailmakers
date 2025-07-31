@@ -1,0 +1,29 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Direct flights to Guatemala from major cities, bus services to nearby attractions.",
+    "pricing_trends": "Average price for a week-long trip in the fall ranges from $800 to $1500 depending on accommodations and activities.",
+    "seasonal_patterns": "Best months for travel are September to November due to pleasant weather.",
+    "booking_windows": "Best to book 2-3 months in advance for optimal prices and availability.",
+    "destination_insights": {
+      "route_analysis": "Direct flights to Guatemala from major cities, bus services to nearby attractions.",
+      "seasonal_patterns": "Best months for travel are September to November due to pleasant weather.",
+      "climate": "Tropical climate with warm temperatures and occasional rain in the fall. Recommended to pack light layers and a raincoat.",
+      "culture": "Rich Mayan heritage, vibrant local festivals, traditional handicrafts and cuisine.",
+      "attractions": "Key attractions include Tikal National Park, Antigua Guatemala, Lake Atitlán, and the colorful markets of Chichicastenango."
+    },
+    "market_insights": {
+      "pricing_trends": "Average price for a week-long trip in the fall ranges from $800 to $1500 depending on accommodations and activities.",
+      "booking_windows": "Best to book 2-3 months in advance for optimal prices and availability.",
+      "demand": "Growing interest in cultural and adventure travel in Guatemala, particularly in the fall season.",
+      "competition": "Other Central American destinations like Costa Rica and Belize but Guatemala offers unique cultural experiences."
+    },
+    "trend_insights": {
+      "market_trends": "Increase in eco-tourism and cultural trips among millennials and Gen Z travelers.",
+      "consumer_behavior": "Travelers are looking for personalized experiences and sustainable travel options.",
+      "competitive_landscape": "Guatemala is positioning itself as a top cultural and adventure destination compared to nearby countries.",
+      "seasonal_factors": "Fall brings fewer crowds and ideal weather for exploration."
+    }
+  },
+  "saved_at": "2025-07-30T07:13:53.642Z"
+}

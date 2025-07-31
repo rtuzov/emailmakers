@@ -1,0 +1,94 @@
+{
+  "requestId": "req_1753850709702_2q7w1onr9px",
+  "traceId": "api-1753850709702",
+  "timestamp": "2025-07-30T04:45:09.702Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753850709702",
+    "name": "Guatemala Autumn Campaign",
+    "path": "",
+    "brand": "Kupibilet",
+    "language": "ru",
+    "type": "promotional"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+      "clientIp": "::1",
+      "destination": "Париж",
+      "origin": "Москва",
+      "tone": "professional",
+      "language": "ru"
+    },
+    "correlationId": "corr_1753850709702_9ssmq49pdrt",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "ТЕСТ ИСПРАВЛЕННОЙ АРХИТЕКТУРЫ: Создайте email-шаблон для путешествия в Париж с фокусом на Эйфелеву башню и французскую кухню. Добавьте призыв к действию \"Забронировать тур\".",
+    "userAgent": "EmailMakers/3.1.0",
+    "language": "ru",
+    "taskType": "generate_content",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "destination": "Париж",
+    "origin": "Москва",
+    "tone": "professional",
+    "originalOptions": {
+      "traceId": "api-1753850709702",
+      "metadata": {
+        "language": "ru",
+        "taskType": "generate_content",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85,
+        "destination": "Париж",
+        "origin": "Москва",
+        "tone": "professional"
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+        "clientIp": "::1",
+        "destination": "Париж",
+        "origin": "Москва",
+        "tone": "professional",
+        "language": "ru"
+      }
+    }
+  }
+}

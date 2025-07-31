@@ -86,10 +86,39 @@ save_analysis_result({
 
 4. **Update context** with key insights for next specialists
 
-5. **Create handoff file** for Content Specialist with:
-   - Summary of completed work
-   - Key data files
-   - Recommendations for content strategy
+5. **Create handoff file** for Content Specialist with specialist_data:
+```javascript
+create_handoff_file({
+  from_specialist: "data-collection",
+  to_specialist: "content", 
+  campaign_id: campaign_id_from_context,
+  campaign_path: campaign_path_from_context,
+  specialist_data: {
+    destination_analysis: destination_analysis_data,
+    market_intelligence: market_intelligence_data,
+    emotional_profile: emotional_profile_data,
+    trend_analysis: trend_analysis_data,
+    consolidated_insights: consolidated_insights_data,
+    travel_intelligence: travel_intelligence_data,
+    collection_metadata: collection_metadata
+  },
+  handoff_context: {
+    summary: "Summary of completed work",
+    context_for_next: "Important context for Content Specialist", 
+    recommendations: ["recommendation1", "recommendation2"],
+    success_criteria: ["criteria1", "criteria2"]
+  },
+  deliverables: { created_files: [], key_outputs: [] },
+  quality_metadata: { 
+    data_quality_score: 100,
+    completeness_score: 100,
+    validation_status: "passed",
+    error_count: 0,
+    warning_count: 0,
+    processing_time: 1000
+  }
+})
+```
 
 ## 📋 RESULT FORMAT
 
@@ -130,5 +159,19 @@ Each analysis must contain:
 - **ENSURE ALL OUTPUT IS IN ENGLISH ONLY**
 - **ENSURE ALL JSON IS PROPERLY FORMATTED**
 - **ENSURE ALL REQUIRED FIELDS ARE PROVIDED**
+
+## 🔗 SPECIALIST DATA COLLECTION
+
+**CRITICAL:** When creating handoff file, specialist_data should contain the actual analysis results:
+
+- **destination_analysis**: Complete destination analysis object with route_analysis, seasonal_patterns, climate, culture
+- **market_intelligence**: Market analysis object with pricing_trends, booking_windows, demand, competition
+- **emotional_profile**: Emotional profile object with motivations, triggers, desires
+- **trend_analysis**: Trend analysis object with market_trends, consumer_behavior, competitive_landscape, seasonal_factors
+- **consolidated_insights**: Combined insights from all analyses 
+- **travel_intelligence**: Comprehensive travel intelligence data
+- **collection_metadata**: Metadata about the data collection process
+
+**NOTE:** If you cannot access saved analysis results, the system will automatically load them from campaign files, but it's better to provide them directly in specialist_data.
 
 **START WITH FIRST TOOL IMMEDIATELY!**

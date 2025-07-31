@@ -8,6 +8,7 @@
 // import { z } from 'zod';
 import { cleanAIJsonResponse } from './ai-utils';
 import { ENV_CONFIG, validateEnvironment } from '../../../config/env';
+import { parseJSONWithRetry } from '../../../shared/utils/ai-retry-mechanism';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -34,7 +35,19 @@ export interface ValidationWarning {
 /**
  * AI-powered content analysis for dynamic asset requirements
  */
-export async function analyzeContentWithAI(contentContext: any, _campaignContext?: any): Promise<any> {
+export async function analyzeContentWithAI(
+  contentContext: any, 
+  // campaignContext not used in current implementation
+  _campaignContext?: any,
+  dataInsights?: {
+    consolidated_insights?: any;
+    destination_analysis?: any;
+    emotional_profile?: any;
+    market_intelligence?: any;
+    travel_intelligence?: any;
+    trend_analysis?: any;
+  }
+): Promise<any> {
   console.log('🤖 Using AI to analyze content for asset requirements...');
   
   // ✅ FAIL FAST: Validate environment before making request
@@ -42,104 +55,85 @@ export async function analyzeContentWithAI(contentContext: any, _campaignContext
   
   // ✅ DEBUG: Log actual contentContext structure
   console.log('🔍 DEBUG: ContentContext structure:', JSON.stringify(contentContext, null, 2));
+  console.log('🔍 DEBUG: DataInsights available:', dataInsights ? Object.keys(dataInsights) : 'None');
   
   const analysisPrompt = `
 CAMPAIGN UNIQUENESS ID: ${Date.now()}_${Math.random().toString(36).substring(2, 8)}
 ANALYSIS TIMESTAMP: ${new Date().toISOString()}
+CREATIVITY MODE: MAXIMUM DIVERSITY - каждый анализ должен быть уникальным!
 
-Analyze this email campaign content and determine the optimal asset requirements. Be completely dynamic - extract ANY destinations, seasons, and emotional triggers from the content:
+Анализируй этот email контент и определи оптимальные требования к ресурсам. КРИТИЧЕСКИ ВАЖНО - будь полностью динамичным и извлекай ЛЮБЫЕ направления, сезоны, эмоциональные триггеры из контента:
 
-Campaign Content:
-- Subject: ${contentContext.generated_content?.subject_line?.primary || contentContext.generated_content?.subject || 'N/A'}
-- Preheader: ${contentContext.generated_content?.preheader || 'N/A'}
-- Body Text: ${contentContext.generated_content?.body?.main_content || contentContext.generated_content?.body?.opening || contentContext.generated_content?.body || 'N/A'}
-- Benefits: ${Array.isArray(contentContext.generated_content?.body?.benefits) ? contentContext.generated_content.body.benefits.join(', ') : 'N/A'}
-- CTA: ${JSON.stringify(contentContext.generated_content?.call_to_action || contentContext.generated_content?.cta || {})}
-- Campaign Type: ${contentContext.campaign_type || 'N/A'}
-- Target Audience: ${contentContext.target_audience || 'N/A'}
-- Language: ${contentContext.language || 'N/A'}
+КОНТЕКСТ КАМПАНИИ:
+- Тема: ${contentContext.generated_content?.subject_line?.primary || contentContext.generated_content?.subject || 'N/A'}
+- Прехедер: ${contentContext.generated_content?.preheader || 'N/A'}
+- Основной текст: ${contentContext.generated_content?.body?.main_content || contentContext.generated_content?.body?.opening || contentContext.generated_content?.body || 'N/A'}
+- Преимущества: ${Array.isArray(contentContext.generated_content?.benefits) ? contentContext.generated_content.benefits.join(', ') : 'N/A'}
+- CTA: ${contentContext.generated_content?.cta_buttons?.primary || contentContext.generated_content?.cta || 'N/A'}
+- Тип кампании: ${contentContext.campaign_type || 'N/A'}
+- Целевая аудитория: ${contentContext.target_audience || 'N/A'}
 
-Travel Context:
-- Destination: ${contentContext.generated_content?.destination || contentContext.generated_content?.dates?.destination || contentContext.generated_content?.context?.destination || 'N/A'}
-- Season: ${contentContext.generated_content?.dates?.season || 'N/A'}
-- Seasonal Factors: ${contentContext.generated_content?.dates?.seasonal_factors || 'N/A'}
+🧠 УГЛУБЛЕННЫЕ INSIGHTS ИЗ АНАЛИЗА ДАННЫХ:
+${dataInsights?.consolidated_insights ? `
+✨ КЛЮЧЕВЫЕ INSIGHTS:
+${JSON.stringify(dataInsights.consolidated_insights, null, 2)}
+` : ''}
 
-Pricing Context:
-- Best Price: ${contentContext.generated_content?.pricing?.best_price || 'N/A'} ${contentContext.generated_content?.pricing?.currency || ''}
-- Route: ${contentContext.generated_content?.pricing?.route || 'N/A'}
+${dataInsights?.destination_analysis ? `
+🌍 АНАЛИЗ НАПРАВЛЕНИЯ:
+${JSON.stringify(dataInsights.destination_analysis, null, 2)}
+` : ''}
 
-FULL CONTEXT DEBUG:
-${JSON.stringify(contentContext.generated_content, null, 2)}
+${dataInsights?.emotional_profile ? `
+💭 ЭМОЦИОНАЛЬНЫЙ ПРОФИЛЬ:
+${JSON.stringify(dataInsights.emotional_profile, null, 2)}
+` : ''}
 
-🎯 CREATIVE ANALYSIS REQUIREMENTS:
-1. Extract SPECIFIC destinations mentioned from the actual content (e.g., "Guatemala", "Maya temples", "Antigua")
-2. Detect SPECIFIC season/weather references from the actual content
-3. Identify SPECIFIC emotional triggers and activities from the actual content
-4. Generate DESTINATION-SPECIFIC search keywords focusing on UNIQUE aspects
-5. Think creatively about visual storytelling for THIS specific campaign
-6. Consider UNIQUE angles that would make this campaign visually distinct
+${dataInsights?.market_intelligence ? `
+📊 РЫНОЧНАЯ АНАЛИТИКА:
+${JSON.stringify(dataInsights.market_intelligence, null, 2)}
+` : ''}
 
-🔍 VISUAL DIFFERENTIATION STRATEGY:
-- Focus on SPECIFIC time periods, lighting conditions, or seasonal elements
-- Identify UNIQUE cultural elements, festivals, or local traditions
-- Consider SPECIFIC architectural styles, landscapes, or activities
-- Think about EMOTIONAL visual narratives unique to this campaign
-- Avoid generic travel photography - aim for authentic, specific moments
+${dataInsights?.travel_intelligence ? `
+✈️ TRAVEL INTELLIGENCE:
+${JSON.stringify(dataInsights.travel_intelligence, null, 2)}
+` : ''}
 
-EXAMPLE ANALYSIS DEPTH:
-Instead of "Guatemala travel" → "Guatemala: Focus on ancient Maya civilization (Tikal), colonial architecture (Antigua cobblestones), volcanic landscapes (Fuego volcano), indigenous markets (Chichicastenango textiles), authentic cultural experiences during autumn season"
+${dataInsights?.trend_analysis ? `
+📈 АНАЛИЗ ТРЕНДОВ:
+${JSON.stringify(dataInsights.trend_analysis, null, 2)}
+` : ''}
 
-Be highly specific - use actual destination names, landmarks, and cultural elements mentioned in the content.
+ТВОРЧЕСКИЙ АНАЛИЗ ТРЕБОВАНИЙ С УЧЕТОМ ВСЕХ ДАННЫХ:
 
-Format as JSON:
-{
-  "image_requirements": [
-    {
-      "type": "hero|destination|promotional|seasonal",
-      "purpose": "detailed purpose based on actual content analysis",
-      "dimensions": {"width": number, "height": number},
-      "priority": "required|recommended|optional",
-      "emotional_tone": "based on detected content mood",
-      "visual_style": "based on destination and content type",
-      "content_context": "specific description based on detected themes",
-      "uniqueness_approach": "what makes this visual requirement unique for this campaign"
-    }
-  ],
-  "destinations": [
-    {
-      "name": "actual destination name from content",
-      "search_keywords": ["highly", "specific", "cultural", "elements"],
-      "visual_focus": "unique aspect to emphasize for this destination",
-      "seasonal_context": "specific seasonal elements to highlight"
-    }
-  ],
-  "icons_needed": [
-    {
-      "type": "promotional|navigation|social|booking",
-      "purpose": "based on content needs",
-      "size": 24,
-      "style": "filled|outlined|minimal"
-    }
-  ],
-  "brand_elements": [
-    {
-      "type": "logo|pattern|decoration",
-      "placement": "header|footer|background",
-      "size": {"width": number, "height": number}
-    }
-  ],
-  "creative_direction": {
-    "visual_narrative": "unique story this campaign should tell visually",
-    "emotional_journey": "specific emotional progression through images",
-    "differentiation_strategy": "how this campaign's visuals differ from typical travel campaigns"
-  },
-  "figma_search_strategy": {
-    "primary_folders": ["folders", "based", "on", "content"],
-    "search_tags": ["tags", "from", "content", "analysis"],
-    "emotional_keywords": ["emotions", "from", "content"],
-    "avoid_tags": ["opposite", "themes", "to", "avoid"]
-  }
-}`;
+1. 🎭 ИЗВЛЕКИ УНИКАЛЬНУЮ ТЕМАТИКУ ИЗ INSIGHTS:
+   - Используй данные destination_analysis для специфичных локаций
+   - Примени emotional_profile для определения настроения
+   - Учти seasonal_patterns и cultural особенности из travel_intelligence
+   - Определи уникальные аспекты из market_intelligence
+
+2. 🌍 ДЕТАЛЬНЫЙ АНАЛИЗ НАПРАВЛЕНИЯ ИЗ DATA:
+   - География: используй route_analysis и attractions из destination_analysis
+   - Климат: применяй climate и seasonal_patterns данные
+   - Культура: используй culture insights и local traditions
+   - Активности: извлекай из motivations и desires в emotional_profile
+
+3. 🎨 ВИЗУАЛЬНЫЕ ТРЕБОВАНИЯ НА ОСНОВЕ INSIGHTS:
+   - Цветовая палитра: адаптируй под seasonal_factors и cultural context
+   - Стиль изображений: согласуй с target audience motivations
+   - Композиция: учти competitive_landscape и market_trends
+   - Настроение фото: отрази emotional triggers и desires
+
+4. 📸 СПЕЦИФИЧНЫЕ ТИПЫ ИЗОБРАЖЕНИЙ ИЗ АНАЛИЗА:
+   - Hero: главное изображение отражающее key attractions и emotional desires
+   - Gallery: дополнительные изображения под cultural experiences
+   - Background: текстуры согласованные с seasonal_patterns
+   - Icons: тематические под booking_windows и market_conditions
+
+ИНСТРУКЦИЯ: Используй ВСЕ доступные insights для создания максимально контекстуального и уникального анализа. Каждая кампания должна отличаться благодаря богатству исходных данных.
+
+ВЕРНИ детальный JSON с полным анализом, основанным на insights:
+`;
 
   try {
     // Call OpenAI API for dynamic analysis
@@ -161,7 +155,7 @@ Format as JSON:
             content: analysisPrompt
           }
         ],
-        temperature: 0.8, // Higher temperature for creative diversity
+        temperature: 0.9, // Maximum creativity for unique analysis
         max_tokens: 3000 // More tokens for detailed analysis
       })
     });
@@ -172,7 +166,18 @@ Format as JSON:
 
     const data = await response.json();
     const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
-    const aiAnalysis = JSON.parse(aiContent);
+    
+    // Use robust JSON parsing with AI self-correction on failure
+    let aiAnalysis;
+    try {
+      // Try enhanced JSON parsing
+      aiAnalysis = parseJSONWithRetry(aiContent, 'AI Analysis');
+    } catch (parseError) {
+      console.warn('⚠️ AI Analysis JSON parse failed - throwing error for AI self-correction...');
+      // ✅ NO FALLBACK: Let error bubble up for AI self-correction
+      // The calling function should retry with error feedback to fix JSON issues
+      throw new Error(`AI Analysis JSON parsing failed: ${parseError instanceof Error ? parseError.message : 'Unknown JSON error'}. AI must generate valid JSON format. Original content length: ${aiContent.length}`);
+    }
     
     console.log('✅ AI analysis completed');
     console.log(`📊 Found ${aiAnalysis.image_requirements?.length || 0} image requirements`);
@@ -182,7 +187,11 @@ Format as JSON:
     
   } catch (error) {
     console.error('❌ AI analysis failed:', error);
-    throw new Error(`AI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.log('🚫 No hardcoded fallback - AI analysis must succeed with self-correction');
+    
+    // ✅ NO FALLBACK: Let caller handle retry with AI self-correction
+    // The calling functions should use aiSelfCorrectionRetry for automatic error correction
+    throw new Error(`AI analysis failed completely: ${error instanceof Error ? error.message : 'Unknown error'}. No fallback allowed per project rules - AI retry mechanism should handle self-correction.`);
   }
 }
 
@@ -370,43 +379,70 @@ FULL CONTENT DEBUG:
 ${JSON.stringify(contentContext.generated_content, null, 2)}
 
 🎯 UNIQUENESS REQUIREMENTS:
-- Generate COMPLETELY DIFFERENT search terms than any previous campaign
-- Focus on SPECIFIC landmarks, architecture, activities unique to the destination
-- Avoid common tourist photos - find unique angles and cultural elements
-- Consider time of day, weather, seasonal activities specific to this campaign
-- Think like a travel photographer looking for unique, authentic moments
+- Генерируй ПОЛНОСТЬЮ РАЗНЫЕ поисковые запросы от любой предыдущей кампании
+- Фокусируйся на СПЕЦИФИЧНЫХ достопримечательностях, архитектуре, активностях уникальных для направления
+- Избегай стандартных туристических фото - ищи уникальные ракурсы и культурные элементы
+- Учитывай время дня, погоду, сезонные активности специфичные для этой кампании
+- Думай как travel фотограф ищущий уникальные, аутентичные моменты
 
-🔍 CREATIVE DIRECTIONS:
-- Look for SPECIFIC cultural festivals, local food, traditional clothing
-- Focus on UNIQUE architecture, hidden gems, local life scenes  
-- Consider SPECIFIC activities mentioned in the campaign content
-- Think about UNIQUE seasonal elements (winter activities, autumn colors, etc.)
-- Use SPECIFIC location names, districts, neighborhoods when possible
+🔍 КРЕАТИВНЫЕ НАПРАВЛЕНИЯ (МАКСИМАЛЬНАЯ СПЕЦИФИЧНОСТЬ):
 
-Analyze the content and suggest 4-6 HIGHLY SPECIFIC search terms for finding unique images.
+1. 🏛️ АРХИТЕКТУРА И КУЛЬТУРА:
+   - Ищи СПЕЦИФИЧНЫЕ культурные фестивали, местную еду, традиционную одежду
+   - Фокусируйся на УНИКАЛЬНОЙ архитектуре, скрытых жемчужинах, сценах местной жизни
+   - Используй КОНКРЕТНЫЕ названия мест, районов, кварталов когда возможно
 
-CRITICAL: Be extremely specific to avoid duplicate results across campaigns!
+2. 🌅 АТМОСФЕРА И НАСТРОЕНИЕ:
+   - Учитывай СПЕЦИФИЧНЫЕ активности упомянутые в контенте кампании
+   - Думай о УНИКАЛЬНЫХ сезонных элементах (зимние активности, осенние цвета)
+   - Фокусируйся на эмоциональном воздействии и аутентичности
 
-EXAMPLES OF SPECIFICITY:
-- Generic BAD: "iceland winter", "northern lights"
-- Specific GOOD: "iceland jokulsarlon ice caves winter", "iceland reykjavik northern lights february", "iceland geysir strokkur winter steam", "iceland blue lagoon aurora reflection"
+3. 🎯 ВРЕМЕННОЙ И КУЛЬТУРНЫЙ КОНТЕКСТ:
+   - Добавляй время дня: рассвет, золотой час, ночь, туман утром
+   - Включай погодные условия: дождь, снег, туман, солнце
+   - Специфичные сезонные моменты: цветение сакуры, осенние листья, зимний иней
 
-For Guatemala: "guatemala antigua cobblestone streets", "tikal pyramid jungle mist", "guatemala lake atitlan maya textiles", "chichicastenango market guatemala"
-For Thailand: "thailand chiang mai lantern festival", "thai long tail boat phi phi", "thailand bangkok floating market dawn", "thai elephant blessing ceremony"
+4. 🔍 ФОТОГРАФИЧЕСКИЙ ПОДХОД:
+   - Конкретные ракурсы: с высоты птичьего полета, уличная фотография, портрет, детали
+   - Композиционные техники: отражения, симметрия, контраст, силуэты
+   - Световые эффекты: контровое освещение, драматические тени, мягкий свет
 
-Return JSON format:
+АНАЛИЗИРУЙ контент и предложи 5-7 ВЫСОКО СПЕЦИФИЧНЫХ поисковых запросов для уникальных изображений.
+
+КРИТИЧЕСКИ ВАЖНО: Будь экстремально специфичным чтобы избежать дублирования результатов между кампаниями!
+
+ПРИМЕРЫ СПЕЦИФИЧНОСТИ:
+❌ Generic BAD: "iceland winter", "northern lights", "mountains snow"
+✅ Specific GOOD: "iceland jokulsarlon ice caves winter morning light", "iceland reykjavik northern lights purple sky february", "iceland landmannalaugar rhyolite mountains snow rainbow", "iceland seljalandsfoss waterfall winter icicles sunset"
+
+Для Японии: "japan kyoto bamboo grove morning mist golden light", "japan yoshino cherry blossoms pink petals spring wind", "japan arashiyama togetsu bridge cherry reflection", "japan philosopher path stone lanterns sakura tunnel"
+
+Для Марокко: "morocco sahara desert camel caravan sunset dunes", "morocco marrakech jemaa el-fnaa night lights performers", "morocco ait benhaddou kasbah golden hour mud brick", "morocco chefchaouen blue streets cat doorway morning"
+
+🚨 КРИТИЧЕСКИ ВАЖНО: Возвращай ТОЛЬКО валидный JSON в ТОЧНОМ формате:
+
 {
   "search_terms": [
     {
-      "query": "extremely specific english search term with location + activity + context",
-      "purpose": "hero|support|decoration|branding",
-      "description": "Detailed description of why this specific scene fits the campaign"
+      "query": "КОНКРЕТНЫЙ_ПОИСКОВЫЙ_ЗАПРОС_НА_АНГЛИЙСКОМ",
+      "purpose": "hero|destination|support|decoration|branding",
+      "description": "Детальное описание зачем нужно это изображение"
     }
   ],
-  "campaign_theme": "Detailed, specific destination and cultural theme",
-  "emotional_tone": "Specific emotional response targeted by this campaign",
-  "uniqueness_factor": "What makes this campaign's visual approach different from others"
-}`;
+  "campaign_theme": "Краткое описание темы кампании",
+  "emotional_tone": "Эмоциональный тон для подбора изображений",
+  "uniqueness_factor": "Что делает эту кампанию уникальной визуально"
+}
+
+Каждый query ДОЛЖЕН быть:
+- На английском языке
+- Длиной минимум 4 слова  
+- Конкретным и уникальным
+- НЕ содержать undefined, null или пустые строки
+- Реально существующим поисковым запросом
+
+ОБЯЗАТЕЛЬНО: Сгенерируй минимум 5 search_terms!
+`;
 
   // ✅ FAIL FAST: Check API key before making request
   if (!ENV_CONFIG.OPENAI_API_KEY) {
@@ -426,15 +462,15 @@ Return JSON format:
         messages: [
           {
             role: 'system',
-            content: 'You are an expert at analyzing campaign content and determining appropriate visual themes. Provide search terms in English for international image databases. BE CREATIVE AND UNIQUE - avoid generic terms and create specific, diverse search queries.'
+            content: 'You are an expert at analyzing campaign content and determining appropriate visual themes. Provide search terms in English for international image databases. BE CREATIVE AND UNIQUE - avoid generic terms and create specific, diverse search queries. CRITICAL: Return ONLY valid JSON in the exact format specified. Each query must be at least 4 words long, specific, and NOT contain undefined, null, or empty strings. Generate minimum 5 search_terms.'
           },
           {
             role: 'user',
             content: imageAnalysisPrompt
           }
         ],
-        temperature: 0.8, // Higher temperature for more creative diversity
-        max_tokens: 2000 // More tokens for detailed analysis
+        temperature: 0.9, // Maximum creativity for diverse image searches
+        max_tokens: 3000 // More tokens for detailed analysis
       })
     });
 
@@ -448,37 +484,88 @@ Return JSON format:
     const aiContent = cleanAIJsonResponse(data.choices[0].message.content);
     console.log(`🤖 DEBUG: Cleaned AI content: ${aiContent}`);
     
-    const searchAnalysis = JSON.parse(aiContent);
-    console.log(`🤖 DEBUG: Parsed search analysis: ${JSON.stringify(searchAnalysis, null, 2)}`);
+    let searchAnalysis;
+    try {
+      searchAnalysis = JSON.parse(aiContent);
+      console.log(`🤖 DEBUG: Parsed search analysis: ${JSON.stringify(searchAnalysis, null, 2)}`);
+    } catch (parseError) {
+      console.error('❌ AI JSON parsing failed!');
+      console.error('🔍 Raw AI content:', data.choices[0].message.content);
+      console.error('🔍 Cleaned content:', aiContent);
+      console.error('📋 Parse error:', parseError);
+      throw new Error(`AI returned invalid JSON for image search. AI must return valid JSON format. Parse error: ${parseError instanceof Error ? parseError.message : 'Unknown'}`);
+    }
     
-    console.log(`🔍 AI suggested search terms: ${searchAnalysis.search_terms.map((t: any) => t.query).join(', ')}`);
+    // ✅ КРИТИЧЕСКАЯ ВАЛИДАЦИЯ: Проверяем базовую структуру ответа AI
+    if (!searchAnalysis || typeof searchAnalysis !== 'object') {
+      throw new Error('AI response is not a valid object');
+    }
+    
+    if (!searchAnalysis.search_terms || !Array.isArray(searchAnalysis.search_terms)) {
+      console.log('❌ AI did not provide search_terms array, response:', searchAnalysis);
+      throw new Error('AI response missing search_terms array. AI must provide search terms for image search.');
+    }
+    
+    if (searchAnalysis.search_terms.length === 0) {
+      throw new Error('AI provided empty search_terms array. AI must generate at least one search term.');
+    }
+    
+    // ✅ КРИТИЧЕСКАЯ ВАЛИДАЦИЯ: Фильтруем пустые и некорректные search terms
+    const validSearchTerms = searchAnalysis.search_terms.filter((term: any) => {
+      if (!term || typeof term !== 'object') {
+        console.log('🚫 Skipping invalid search term (not object):', term);
+        return false;
+      }
+      if (!term.query || typeof term.query !== 'string' || term.query.trim().length === 0) {
+        console.log('🚫 Skipping search term with empty/invalid query:', term);
+        return false;
+      }
+      if (term.query.trim() === 'undefined' || term.query.trim() === 'null') {
+        console.log('🚫 Skipping search term with undefined/null query:', term);
+        return false;
+      }
+      return true;
+    });
+
+    console.log(`🔍 AI suggested search terms: ${validSearchTerms.map((t: any) => t.query).join(', ')}`);
+    console.log(`✅ Valid search terms count: ${validSearchTerms.length} (filtered from ${searchAnalysis.search_terms.length})`);
+    
+    if (validSearchTerms.length === 0) {
+      console.log('❌ No valid search terms available for image search');
+      throw new Error('No valid search terms generated by AI for image search');
+    }
     
     // Step 2: Search real images using Unsplash API
     const assets: any[] = [];
     
-    for (let i = 0; i < searchAnalysis.search_terms.length; i++) {
-      const searchTerm = searchAnalysis.search_terms[i];
+    for (let i = 0; i < validSearchTerms.length; i++) {
+      const searchTerm = validSearchTerms[i];
       
       try {
+        console.log(`🔍 Searching Unsplash for "${searchTerm.query}"...`);
         const unsplashImages = await searchUnsplashImages(searchTerm.query, 1); // Get 1 image per search term
         
         if (unsplashImages.length > 0) {
           const img = unsplashImages[0];
           
+          // ✅ БЕЗОПАСНАЯ ОБРАБОТКА: searchTerm.query уже валидирован выше
+          const safeQuery = searchTerm.query.trim();
+          const safeTags = safeQuery.split(' ').filter((tag: string) => tag.length > 0);
+          
           assets.push({
-            filename: `${searchTerm.query.replace(/\s+/g, '-')}-${img.id}.jpg`,
+            filename: `${safeQuery.replace(/\s+/g, '-')}-${img.id}.jpg`,
             path: img.urls.regular,
             size: 0, // External URL, size unknown
             format: 'jpg',
             hash: `unsplash_${img.id}_${Date.now()}`,
             created: new Date().toISOString(),
             modified: new Date().toISOString(),
-            tags: searchTerm.query.split(' '),
-            description: img.alt_description || searchTerm.description,
+            tags: safeTags,
+            description: img.alt_description || searchTerm.description || 'Unsplash image',
             isExternal: true,
             purpose: searchTerm.purpose || 'support',
-            emotionalMatch: searchAnalysis.emotional_tone,
-            aiReasoning: `Real Unsplash image for: ${searchTerm.description}`,
+            emotionalMatch: searchAnalysis.emotional_tone || 'neutral',
+            aiReasoning: `Real Unsplash image for: ${searchTerm.description || safeQuery}`,
             unsplash_metadata: {
               id: img.id,
               author: img.user.name,
@@ -713,7 +800,9 @@ export async function generateExternalImageLinks(
   
   try {
     // Step 1: Use AI to analyze content and determine what images are needed
-    const aiAnalysis = await analyzeContentWithAI(contentContext, campaignContext);
+    // Note: dataInsights will be null here since campaignContext typically doesn't have campaignPath
+    // This is acceptable as this function is called when the campaign folder structure may not be ready yet
+    const aiAnalysis = await analyzeContentWithAI(contentContext, campaignContext, undefined);
     console.log('🔍 AI analysis completed for external image selection');
     
     // Step 2: Use AI to generate real external images

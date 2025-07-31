@@ -1,0 +1,29 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Accessible through major airports, local transportation options include buses and shuttles.",
+    "pricing_trends": "Prices for accommodation and activities can increase during peak tourist season but vary widely based on location and availability.",
+    "seasonal_patterns": "Best time from November to April; ideal for mild temperatures and festivals.",
+    "booking_windows": "Optimal to book 3-6 months in advance for better rates and availability.",
+    "destination_insights": {
+      "route_analysis": "Accessible through major airports, local transportation options include buses and shuttles.",
+      "seasonal_patterns": "Best time from November to April; ideal for mild temperatures and festivals.",
+      "climate": "Tropical climate with rainy season from May to October. Comfortably cool evenings during fall.",
+      "culture": "Rich Mayan heritage with vibrant festivals, handicrafts, and traditions.",
+      "attractions": "Mayan ruins of Tikal, Lake Atitlán, Chichicastenango market, and lush rainforests."
+    },
+    "market_insights": {
+      "pricing_trends": "Prices for accommodation and activities can increase during peak tourist season but vary widely based on location and availability.",
+      "booking_windows": "Optimal to book 3-6 months in advance for better rates and availability.",
+      "demand": "Growing interest in cultural and ecotourism driven by travelers seeking unique experiences.",
+      "competition": "Popular alternatives are Costa Rica and Mexico, but Guatemala offers more authentic cultural experiences."
+    },
+    "trend_insights": {
+      "market_trends": "Increasing demand for sustainable and cultural travel post-pandemic.",
+      "consumer_behavior": "Travelers are prioritizing destinations that offer both adventure and cultural heritage.",
+      "competitive_landscape": "Guatemala is competing with Caribbean destinations and other Central American countries for eco-conscious travelers.",
+      "seasonal_factors": "Peak season coincides with the dry season, influencing travel patterns significantly."
+    }
+  },
+  "saved_at": "2025-07-30T08:37:10.459Z"
+}

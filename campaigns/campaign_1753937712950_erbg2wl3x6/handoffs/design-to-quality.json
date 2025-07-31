@@ -1,0 +1,33 @@
+{
+  "request": "Создать email рассылку о культурных достопримечательностях и природных красотах Гватемалы осенью.",
+  "metadata": {
+    "handoffId": "handoff_1753937951470_i44pg96d9z8",
+    "timestamp": "2025-07-31T04:59:11.470Z",
+    "fromAgent": "design",
+    "toAgent": "quality",
+    "dataVersion": "1.0",
+    "traceId": "finalize-design",
+    "executionTime": null
+  },
+  "content_context": {},
+  "design_context": {
+    "content_context": {},
+    "asset_manifest": {
+      "images": [],
+      "icons": [],
+      "fonts": []
+    },
+    "mjml_template": {
+      "validation_status": "valid",
+      "validation_messages": [],
+      "responsive_breakpoints": []
+    },
+    "design_decisions": {
+      "asset_optimization": [],
+      "accessibility_features": [],
+      "email_client_adaptations": {}
+    },
+    "preview_files": [],
+    "performance_metrics": {}
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753866061487_5k1v5hefjg",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753866061487_5k1v5hefjg",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Various transportation options available including flights, trains, and buses with associated costs and travel times.",
+      "seasonal_patterns": "Peak travel months are June to August, with a decline in December and February.",
+      "climate": "Hot summers with average temperatures ranging from 25-35°C, mild winters with temperatures around 5-15°C.",
+      "culture": "Rich in traditions, vibrant festivals celebrated, local cuisine is diverse and unique to the region."
+    },
+    "emotional_profile": {
+      "motivations": "Travelers motivated by cultural experiences, adventure, and relaxation.",
+      "triggers": "Emotional triggers include recommendations from peers, social media influences, and promotional offers.",
+      "desires": "Travelers seek unique experiences, authentic interactions with locals, and natural beauty."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Leverage social media for targeted advertising campaigns.",
+        "Highlight unique cultural experiences to attract travelers.",
+        "Develop partnerships with local businesses for exclusive deals."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T09:01:29.678Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753866061487_5k1v5hefjg/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Prices generally rise in peak seasons, dipping slightly in off-seasons.",
+      "booking_windows": "Optimal booking recommended 2-3 months in advance for better rates.",
+      "demand": "Very popular travel destination with increasing international tourist numbers.",
+      "competition": "Competes with several other nearby tourist spots, drawing significant interest from travelers."
+    },
+    "travel_intelligence": {
+      "route_analysis": "Various transportation options available including flights, trains, and buses with associated costs and travel times.",
+      "pricing_trends": "Prices generally rise in peak seasons, dipping slightly in off-seasons.",
+      "seasonal_patterns": "Peak travel months are June to August, with a decline in December and February.",
+      "booking_windows": "Optimal booking recommended 2-3 months in advance for better rates.",
+      "destination_insights": {
+        "route_analysis": "Various transportation options available including flights, trains, and buses with associated costs and travel times.",
+        "seasonal_patterns": "Peak travel months are June to August, with a decline in December and February.",
+        "climate": "Hot summers with average temperatures ranging from 25-35°C, mild winters with temperatures around 5-15°C.",
+        "culture": "Rich in traditions, vibrant festivals celebrated, local cuisine is diverse and unique to the region."
+      },
+      "market_insights": {
+        "pricing_trends": "Prices generally rise in peak seasons, dipping slightly in off-seasons.",
+        "booking_windows": "Optimal booking recommended 2-3 months in advance for better rates.",
+        "demand": "Very popular travel destination with increasing international tourist numbers.",
+        "competition": "Competes with several other nearby tourist spots, drawing significant interest from travelers."
+      },
+      "trend_insights": {
+        "market_trends": "Eco-tourism and sustainable travel are becoming prominent trends among travelers.",
+        "consumer_behavior": "Increasing preference for personalized travel experiences over packaged tours.",
+        "competitive_landscape": "Emerging local businesses competing against established players, focusing on niche markets.",
+        "seasonal_factors": "Travel decisions are greatly influenced by local festivals and climate conditions."
+      }
+    },
+    "trend_analysis": {
+      "market_trends": "Eco-tourism and sustainable travel are becoming prominent trends among travelers.",
+      "consumer_behavior": "Increasing preference for personalized travel experiences over packaged tours.",
+      "competitive_landscape": "Emerging local businesses competing against established players, focusing on niche markets.",
+      "seasonal_factors": "Travel decisions are greatly influenced by local festivals and climate conditions."
+    },
+    "consolidated": {
+      "actionable_insights": [
+        "Leverage social media for targeted advertising campaigns.",
+        "Highlight unique cultural experiences to attract travelers.",
+        "Develop partnerships with local businesses for exclusive deals."
+      ],
+      "key_insights": [
+        "Strong demand for cultural tourism highlights the need for experiential marketing.",
+        "Booking trends suggest early advertising campaigns are beneficial for sales improvements.",
+        "Seasonal promotions can help maintain interest during off-peak periods."
+      ],
+      "confidence_score": 0.9,
+      "analysis_timestamp": "2025-07-30T09:01:04.684Z",
+      "saved_at": "2025-07-30T09:01:29.686Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 6,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T09:01:29.688Z",
+      "data_types": [
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "travel_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive data collected and analyzed for travel destination.",
+    "context_for_next": "Focus on marketing campaigns utilizing highlighted insights.",
+    "recommendations": [],
+    "priority_items": [
+      "Execute social media campaigns immediately.",
+      "Plan for early ad releases based on booking trends."
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Capture peak travel audience effectively through ads.",
+      "Engagement metrics should show improvement over previous campaigns."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis",
+      "consolidated"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753866089688_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T09:01:29.688Z"
+}

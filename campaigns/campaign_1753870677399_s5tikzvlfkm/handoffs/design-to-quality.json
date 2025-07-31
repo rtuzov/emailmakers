@@ -1,0 +1,33 @@
+{
+  "request": "Дизайн-кампания для Гватемалы.",
+  "metadata": {
+    "handoffId": "handoff_1753870958770_k6ojdhqagp",
+    "timestamp": "2025-07-30T10:22:38.770Z",
+    "fromAgent": "design",
+    "toAgent": "quality",
+    "dataVersion": "1.0",
+    "traceId": "finalize-design",
+    "executionTime": null
+  },
+  "content_context": {},
+  "design_context": {
+    "content_context": {},
+    "asset_manifest": {
+      "images": [],
+      "icons": [],
+      "fonts": []
+    },
+    "mjml_template": {
+      "validation_status": "valid",
+      "validation_messages": [],
+      "responsive_breakpoints": []
+    },
+    "design_decisions": {
+      "asset_optimization": [],
+      "accessibility_features": [],
+      "email_client_adaptations": {}
+    },
+    "preview_files": [],
+    "performance_metrics": {}
+  }
+}

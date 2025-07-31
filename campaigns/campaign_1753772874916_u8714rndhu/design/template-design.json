@@ -1,0 +1,90 @@
+{
+  "template_name": "ocean_explorer_adventure",
+  "layout": {
+    "type": "masonry",
+    "max_width": "800px",
+    "sections": [
+      "benefits",
+      "video",
+      "social_proof",
+      "gallery",
+      "testimonials",
+      "pricing",
+      "cta",
+      "newsletter"
+    ],
+    "spacing": {
+      "xs": "4px",
+      "sm": "9px",
+      "md": "15px",
+      "lg": "25px",
+      "xl": "35px",
+      "2xl": "50px"
+    }
+  },
+  "sections": [
+    {
+      "type": "benefits",
+      "content": "<h2>Discover the Benefits of Ocean Exploration</h2><p>Dive into a world of adventure and knowledge with our exclusive packages.</p>"
+    },
+    {
+      "type": "video",
+      "content": "<video controls width='100%'><source src='video/ocean_adventure.mp4' type='video/mp4'>Your browser does not support the video tag.</video>"
+    },
+    {
+      "type": "social_proof",
+      "content": "<h3>What Our Adventurers Are Saying</h3><p>\"An unforgettable experience!\" - Jamie</p><p>\"Truly a journey of a lifetime!\" - Alex</p>"
+    },
+    {
+      "type": "gallery",
+      "content": "<img src='images/ocean1.jpg' alt='Ocean Adventure 1'><img src='images/ocean2.jpg' alt='Ocean Adventure 2'><img src='images/ocean3.jpg' alt='Ocean Adventure 3'>"
+    },
+    {
+      "type": "testimonials",
+      "content": "<h3>Client Testimonials</h3><blockquote>\"The ocean is calling, and I must go!\" - Emily</blockquote><blockquote>\"Best trip ever!\" - Chris</blockquote>"
+    },
+    {
+      "type": "pricing",
+      "content": "<h3>Our Pricing Plans</h3><p>Join our expedition starting at just $299!</p>"
+    },
+    {
+      "type": "cta",
+      "content": "<a href='signup.html' style='background-color:#0077cc;color:white;padding:15px;text-decoration:none;'>Join the Adventure Now!</a>"
+    },
+    {
+      "type": "newsletter",
+      "content": "<h3>Stay Updated</h3><p>Subscribe to our newsletter for exclusive offers and updates!</p><input type='email' placeholder='Your email'><button type='submit'>Subscribe</button>"
+    }
+  ],
+  "components": [
+    "responsive video player",
+    "interactive gallery",
+    "dynamic pricing table",
+    "testimonial slider",
+    "email subscription form"
+  ],
+  "visual_concept": {
+    "theme": "ocean_explorer",
+    "style": "adventurous_minimalistic",
+    "mood": "exciting_inspiring"
+  },
+  "target_audience": "Adventure seekers and ocean lovers aged 18-45",
+  "improvements_applied": [
+    "masonry layout for dynamic content spacing",
+    "integration of interactive video for engagement",
+    "customized testimonial section for enhanced social proof",
+    "responsive design for mobile optimization",
+    "unique color scheme to reflect oceanic themes"
+  ],
+  "metadata": {
+    "generated_at": "2025-07-29T07:12:27.890Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "campaign_type": "promotional",
+    "trace_id": "design-trace-unique",
+    "brand_colors": {
+      "primary": "#4169E1",
+      "accent": "#FF4500",
+      "background": "#FFF8DC"
+    }
+  }
+}

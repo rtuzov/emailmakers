@@ -1,0 +1,327 @@
+{
+  "from_specialist": "content",
+  "to_specialist": "delivery",
+  "campaign_id": "campaign_1753772874916_u8714rndhu",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753772874916_u8714rndhu",
+  "specialist_data": {
+    "context_analysis": {},
+    "date_analysis": {
+      "destination": "Гватемала",
+      "season": "осень",
+      "flexibility": "flexible",
+      "optimal_dates": [
+        "2025-09-15",
+        "2025-09-22",
+        "2025-10-05",
+        "2025-10-12",
+        "2025-11-01"
+      ],
+      "pricing_windows": [
+        "период с 2025-09-01 по 2025-09-30 - низкие цены на авиабилеты",
+        "период с 2025-10-01 по 2025-11-15 - средние цены"
+      ],
+      "booking_recommendation": "рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен",
+      "seasonal_factors": "осень в Гватемале характеризуется умеренными температурами и меньшим количеством туристов, что делает поездку более комфортной",
+      "current_date": "2025-07-29",
+      "weather_forecast": {
+        "temperature_range": "20-28°C",
+        "precipitation": "medium",
+        "weather_description": "влажный тропический климат с возможными дождями"
+      },
+      "recommendations": [
+        "изучите местные праздники и фестивали для более насыщенной программы",
+        "планируйте поездки по стране заранее, чтобы избежать проблем с транспортом"
+      ],
+      "date_validation_applied": true,
+      "booking_trends": "рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен",
+      "saved_at": "2025-07-29T07:08:33.589Z",
+      "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753772874916_u8714rndhu"
+    },
+    "pricing_analysis": {
+      "date_analysis_source": {
+        "total_optimal_dates": 5,
+        "optimal_dates": [
+          "2025-09-15",
+          "2025-09-22",
+          "2025-10-05",
+          "2025-10-12",
+          "2025-11-01"
+        ],
+        "pricing_windows": [
+          "период с 2025-09-01 по 2025-09-30 - низкие цены на авиабилеты",
+          "период с 2025-10-01 по 2025-11-15 - средние цены"
+        ],
+        "booking_recommendation": "рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен",
+        "seasonal_factors": "осень в Гватемале характеризуется умеренными температурами и меньшим количеством туристов, что делает поездку более комфортной"
+      },
+      "optimal_dates_pricing": {
+        "total_offers": 5,
+        "cheapest_on_optimal": 60258,
+        "most_expensive_on_optimal": 121368,
+        "average_on_optimal": 79558,
+        "optimal_date_prices": [
+          {
+            "date": "2025-09-15",
+            "price": 121368,
+            "airline": "Различные авиакомпании",
+            "is_optimal": true
+          },
+          {
+            "date": "2025-09-22",
+            "price": 60258,
+            "airline": "Различные авиакомпании",
+            "is_optimal": true
+          },
+          {
+            "date": "2025-10-05",
+            "price": 67684,
+            "airline": "Различные авиакомпании",
+            "is_optimal": true
+          },
+          {
+            "date": "2025-10-12",
+            "price": 69229,
+            "airline": "Различные авиакомпании",
+            "is_optimal": true
+          },
+          {
+            "date": "2025-11-01",
+            "price": 79252,
+            "airline": "Различные авиакомпании",
+            "is_optimal": true
+          }
+        ]
+      },
+      "comprehensive_pricing": {
+        "total_dates_analyzed": 21,
+        "total_offers_found": 90,
+        "date_range_analyzed": "2025-08-25 to 2025-11-22",
+        "best_price_overall": 57061,
+        "worst_price_overall": 123672,
+        "average_price_overall": 76158,
+        "currency": "RUB",
+        "route": "MOW → GUA"
+      },
+      "price_insights": {
+        "optimal_vs_average_savings": -4,
+        "cheapest_optimal_date": "2025-09-22",
+        "price_volatility": 117
+      },
+      "enhanced_features": {
+        "date_analysis_integration": true,
+        "comprehensive_date_coverage": true,
+        "optimal_date_focus": true,
+        "airport_conversion": {
+          "originInfo": null,
+          "destinationInfo": {
+            "originalCode": "GUA",
+            "finalCode": "GUA",
+            "countryCode": "GT",
+            "isInternational": true,
+            "wasConverted": false
+          }
+        },
+        "csv_integration": "enabled",
+        "api_source": "kupibilet_api_v2"
+      },
+      "analysis_metadata": {
+        "analyzed_at": "2025-07-29T07:08:37.581Z",
+        "analysis_duration_ms": 758,
+        "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753772874916_u8714rndhu/content/date-analysis.json",
+        "route_analyzed": "MOW-GUA",
+        "trace_id": ""
+      }
+    },
+    "asset_strategy": {
+      "visual_direction": {
+        "primary_style": "Теплый и уютный, отражающий атмосферу осени в Гватемале с элементами культуры и традиций.",
+        "color_palette": {
+          "primary": "#C89C6B",
+          "secondary": "#A76D3B",
+          "accent": "#F2A900",
+          "background": "#FFE7B2"
+        },
+        "imagery_style": "Фотографии с высоким разрешением, передающие яркие осенние пейзажи, местные фестивали и гастрономию.",
+        "mood": "Теплое, вдохновляющее и атмосферное, создающее ощущение уюта и путешествия.",
+        "visual_hierarchy": "Яркие изображения как центральный элемент, с текстовым содержимым, сопровождающим и усиливающим визуализацию."
+      },
+      "asset_types": [
+        {
+          "type": "hero-image",
+          "description": "Крупное изображение прекрасного осеннего пейзажа Гватемалы с известными достопримечательностями.",
+          "requirements": "Минимум 1200x600 пикселей, формат JPG или PNG.",
+          "emotional_impact": "Вызывает желание исследовать новый мир и погружает в атмосферу приключения."
+        },
+        {
+          "type": "destination-showcase",
+          "description": "Галерея изображений с местами для посещения: древние руины, природные красоты, культурные события.",
+          "requirements": "Минимум 5 изображений, с описанием каждого места.",
+          "emotional_impact": "Создает чувство удивления и желания посетить эти места."
+        },
+        {
+          "type": "price-highlight",
+          "description": "Визуализация привлекательных цен на авиабилеты с ярким акцентом на скидки.",
+          "requirements": "Четкий текст, явно выделяющий цену, с использованием акцентного цвета.",
+          "emotional_impact": "Создает ощущение выгоды и срочности в покупке."
+        },
+        {
+          "type": "cta-buttons",
+          "description": "Простые и ясные кнопки с призывом к действию: 'Купить билет', 'Узнать больше'.",
+          "requirements": "Контрастные цвета, четкие шрифты, оптимизированные для мобильных устройств.",
+          "emotional_impact": "Мотивирует к действию, снижая барьеры для клика."
+        },
+        {
+          "type": "supporting-visuals",
+          "description": "Иконки с описаниями традиционных фестивалей, местной кухни и практических советов.",
+          "requirements": "Минимум 10 иконок в едином стиле.",
+          "emotional_impact": "Углубляет интерес к культуре и традициям Гватемалы."
+        }
+      ],
+      "content_strategy": {
+        "tone": "Дружелюбный, вдохновляющий и информативный.",
+        "approach": "Комбинация информативного контента с эмоциональными историями о путешествиях.",
+        "structure": "Введение с ярким описанием Гватемалы, далее разделы о культуре, местах и практических советах.",
+        "key_messages": [
+          "Откройте для себя Гватемалу этой осенью!",
+          "Погрузитесь в уникальную культуру и традиции.",
+          "Забронируйте билеты по лучшим ценам!"
+        ],
+        "emotional_triggers": [
+          "Ностальгия по незабываемым путешествиям.",
+          "Стремление к новым открытиям и культурным впечатлениям.",
+          "Чувство срочности от ограниченных предложений."
+        ],
+        "call_to_action": {
+          "primary": "Купить билет сейчас!",
+          "secondary": "Узнать больше о Гватемале.",
+          "urgency": "Только до конца месяца!"
+        }
+      },
+      "targeting_insights": {
+        "audience_motivations": [
+          "Искать приключения и новые впечатления.",
+          "Узнать о других культурах и традициях.",
+          "Отдыхать от повседневной рутины."
+        ],
+        "pain_points": [
+          "Высокие цены на поездки.",
+          "Неопределенность в выборе места.",
+          "Отсутствие информации о местной культуре."
+        ],
+        "decision_factors": [
+          "Цена на авиабилеты.",
+          "Качество и количество информации о поездке.",
+          "Доступность интересных мероприятий."
+        ],
+        "seasonal_considerations": "Осенний сезон предоставляет уникальные возможности для знакомства с культурными событиями и природой."
+      },
+      "technical_requirements": {
+        "image_formats": [
+          "JPG",
+          "PNG"
+        ],
+        "dimensions": "Оптимальные размеры для веба, минимально 600x600 пикселей.",
+        "file_size_limits": "Не более 1MB на изображение.",
+        "accessibility": "Все изображения должны иметь альтернативный текст."
+      },
+      "success_metrics": {
+        "primary_kpi": "Количество проданных билетов.",
+        "engagement_metrics": [
+          "Открываемость email-кампании",
+          "Клики по CTA"
+        ],
+        "conversion_indicators": [
+          "Количество регистраций",
+          "Просмотр страниц о Гватемале"
+        ]
+      }
+    },
+    "generated_content": {},
+    "technical_requirements": {},
+    "design_brief": {},
+    "content_metadata": {
+      "files_created": [
+        "content/asset-strategy.json",
+        "content/date-analysis.json",
+        "content/design-brief-from-context.json",
+        "content/email-content.json",
+        "content/pricing-analysis.json"
+      ],
+      "total_files": 5,
+      "content_quality_score": 43,
+      "processing_completed_at": "2025-07-29T07:10:07.638Z"
+    }
+  },
+  "handoff_context": {
+    "summary": "Сгенерирован контент для email кампании на тему 'Путешествие в Гватемалу осенью'.",
+    "context_for_next": "Передать для финального контроля и подготовки к доставке.",
+    "recommendations": [
+      "Убедитесь, что все элементы контента включены в финальный вариант.",
+      "Проверьте ссылки и изображения на предмет корректности."
+    ],
+    "priority_items": [
+      "Проверка сроков действия предложения.",
+      "Подготовка к тестовой рассылке."
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Письмо привлечет внимание и будет отправлено в срок."
+    ]
+  },
+  "deliverables": {
+    "created_files": [
+      {
+        "file_name": "asset-strategy.json",
+        "file_path": "content/asset-strategy.json",
+        "file_type": "content",
+        "description": "Auto-generated content file: content/asset-strategy.json",
+        "is_primary": false
+      },
+      {
+        "file_name": "date-analysis.json",
+        "file_path": "content/date-analysis.json",
+        "file_type": "content",
+        "description": "Auto-generated content file: content/date-analysis.json",
+        "is_primary": false
+      },
+      {
+        "file_name": "design-brief-from-context.json",
+        "file_path": "content/design-brief-from-context.json",
+        "file_type": "content",
+        "description": "Auto-generated content file: content/design-brief-from-context.json",
+        "is_primary": false
+      },
+      {
+        "file_name": "email-content.json",
+        "file_path": "content/email-content.json",
+        "file_type": "content",
+        "description": "Auto-generated content file: content/email-content.json",
+        "is_primary": false
+      },
+      {
+        "file_name": "pricing-analysis.json",
+        "file_path": "content/pricing-analysis.json",
+        "file_type": "content",
+        "description": "Auto-generated content file: content/pricing-analysis.json",
+        "is_primary": false
+      }
+    ],
+    "key_outputs": [],
+    "data_quality_metrics": {
+      "total_analyses": 5,
+      "completion_rate": 57,
+      "quality_score": 43
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 90,
+    "completeness_score": 95,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 300
+  },
+  "trace_id": "handoff_1753773007638_content",
+  "validate_context": true,
+  "created_at": "2025-07-29T07:10:07.638Z"
+}

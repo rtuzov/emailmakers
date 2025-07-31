@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T08:10:27.611Z",
+  "campaign_id": "campaign_1753862934175_9aaleb920pr",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_VyvqDCUhdgk.jpg",
+      "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwbG9jYWwlMjBmb29kJTIwbWFya2V0JTIwYWZ0ZXJub29uJTIwc3VufGVufDB8MHx8fDE3NTM4NzIwMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwbG9jYWwlMjBmb29kJTIwbWFya2V0JTIwYWZ0ZXJub29uJTIwc3VufGVufDB8MHx8fDE3NTM4NzIwMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VyvqDCUhdgk",
+      "created": "2025-07-30T08:10:27.612Z",
+      "modified": "2025-07-30T08:10:27.612Z",
+      "tags": [],
+      "description": "old woman sitting and selling food in the market",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_2vNC1J_TafQ.jpg",
+      "path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0aWthbCUyMG1heWFuJTIwcnVpbnMlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0aWthbCUyMG1heWFuJTIwcnVpbnMlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_2vNC1J_TafQ",
+      "created": "2025-07-30T08:10:27.612Z",
+      "modified": "2025-07-30T08:10:27.612Z",
+      "tags": [],
+      "description": "an aerial view of a building in the middle of a forest",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_bPB7QU5PquY.jpg",
+      "path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW4lMjB3ZWF2aW5nJTIwdHJhZGl0aW9uYWwlMjBnYXJtZW50c3xlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW4lMjB3ZWF2aW5nJTIwdHJhZGl0aW9uYWwlMjBnYXJtZW50c3xlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_bPB7QU5PquY",
+      "created": "2025-07-30T08:10:27.612Z",
+      "modified": "2025-07-30T08:10:27.612Z",
+      "tags": [],
+      "description": "man wearing blue polo shirt near firepit",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_SV3V_D1G2q4.jpg",
+      "path": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_SV3V-D1G2q4",
+      "created": "2025-07-30T08:10:27.613Z",
+      "modified": "2025-07-30T08:10:27.613Z",
+      "tags": [],
+      "description": "body of water near mountain during blue hour",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_8XzQVywnm5U.jpg",
+      "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZlc3RpdmFsJTIwdmlicmFudCUyMHRyYWRpdGlvbmFsJTIwY29zdHVtZXN8ZW58MHwwfHx8MTc1Mzg3MjAyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZlc3RpdmFsJTIwdmlicmFudCUyMHRyYWRpdGlvbmFsJTIwY29zdHVtZXN8ZW58MHwwfHx8MTc1Mzg3MjAyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_8XzQVywnm5U",
+      "created": "2025-07-30T08:10:27.613Z",
+      "modified": "2025-07-30T08:10:27.613Z",
+      "tags": [],
+      "description": "women holding green leaves",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753863027610",
+    "status": "assets_collected"
+  }
+}

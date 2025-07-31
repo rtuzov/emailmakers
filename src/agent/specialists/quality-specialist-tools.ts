@@ -15,6 +15,8 @@ import { autoRestoreCampaignLogging } from '../../shared/utils/campaign-logger';
 
 // Import finalization tool for handoff
 import { finalizeQualityAndTransferToDelivery } from '../core/specialist-finalization-tools';
+// Import universal handoff auto-enrichment utilities
+import { enrichHandoffData } from '../core/handoff-auto-enrichment';
 
 // Import structured logging system
 import { log } from '../core/agent-logger';
@@ -79,14 +81,11 @@ async function _loadContextFromHandoffFiles(campaignPath?: string): Promise<any>
           handoff_summary: handoffData.handoff_data?.summary || 'Design completed successfully'
         };
       } else {
-        console.log('⚠️ QUALITY: No design_context in handoff, using fallback structure');
-        return {
-          campaign: {
-            id: 'unknown',
-            campaignPath: campaignPath
-          },
-          handoff_summary: handoffData.handoff_data?.summary || 'Design completed successfully'
-        };
+        console.error('❌ QUALITY: No design_context in handoff - design generation must be completed first');
+        console.log('🚫 No hardcoded fallback - Quality Specialist requires real design context');
+        
+        // ✅ NO FALLBACK: Design context is required for proper quality validation
+        throw new Error('Design context not found in handoff data. Design Specialist must complete template design before quality validation. No fallback allowed per project rules.');
       }
     }
     
@@ -1852,30 +1851,59 @@ export const createHandoffFile = tool({
     try {
       console.log(`🤝 Creating standardized handoff from ${params.from_specialist} to ${params.to_specialist}`);
       
-      // Prepare standardized handoff parameters
-      /*
-      const _handoffParams = {
+      // 🎯 UNIVERSAL AUTO-ENRICHMENT: Use new universal handoff enrichment system
+      console.log('📂 Auto-enriching quality handoff data using universal enrichment system...');
+      
+      const { enrichedData: enrichedQualityData, enrichedDeliverables, autoTraceId } = await enrichHandoffData(
+        params.specialist_data,
+        params.from_specialist,
+        params.campaign_path,
+        params.trace_id || undefined
+      );
+      
+      // Merge provided deliverables with auto-generated ones, respecting the complex structure
+      const finalDeliverables = {
+        ...enrichedDeliverables,
+        ...params.deliverables,
+        created_files: params.deliverables?.created_files?.length > 0 
+          ? params.deliverables.created_files 
+          : enrichedDeliverables.created_files?.map((file: string) => ({
+              file_name: file.split('/').pop() || file,
+              file_path: file,
+              file_type: 'report' as const,
+              description: `Auto-generated quality file: ${file}`,
+              is_primary: false
+            })) || []
+      };
+      
+      // Create actual handoff file (not just prepare for SDK)
+      const handoffId = `handoff_${params.campaign_id}_${params.from_specialist}_to_${params.to_specialist}`;
+      const handoffFilePath = path.join(params.campaign_path, 'handoffs', `${handoffId}.json`);
+      
+      const handoffData = {
         from_specialist: params.from_specialist,
         to_specialist: params.to_specialist,
         campaign_id: params.campaign_id,
         campaign_path: params.campaign_path,
-        specialist_data: params.specialist_data,
+        specialist_data: enrichedQualityData,
         handoff_context: params.handoff_context,
-        deliverables: params.deliverables,
+        deliverables: finalDeliverables,
         quality_metadata: params.quality_metadata,
-        trace_id: params.trace_id || 'unknown',
-        execution_time: null
-      }; // Currently unused
-      */
+        trace_id: autoTraceId,
+        created_at: new Date().toISOString()
+      };
       
-      // Note: OpenAI Agents SDK will handle handoff creation automatically
-      // The createStandardizedHandoff tool is available to the agent and will be called by the LLM
-      console.log('✅ Handoff parameters prepared for automatic SDK handoff');
+      // Ensure handoffs directory exists
+      const handoffsDir = path.join(params.campaign_path, 'handoffs');
+      await fs.mkdir(handoffsDir, { recursive: true });
       
-      const handoffId = `handoff_${Date.now()}_${params.from_specialist}_to_${params.to_specialist}`;
+      // Write handoff file
+      await fs.writeFile(handoffFilePath, JSON.stringify(handoffData, null, 2), 'utf-8');
+      
+      console.log('✅ Quality handoff file created with enriched data:', handoffFilePath);
       console.log(`✅ Quality standardized handoff prepared: ${handoffId}`);
       
-      return `✅ Standardized quality handoff prepared successfully! Handoff ID: ${handoffId}. From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Quality report: ${!!params.specialist_data.quality_report}. Test artifacts: ${!!params.specialist_data.test_artifacts}. Compliance status: ${!!params.specialist_data.compliance_status}. Ready for delivery specialist. OpenAI SDK will handle automatic handoff. Timestamp: ${new Date().toISOString()}`;
+      return `✅ Standardized quality handoff prepared successfully! Handoff ID: ${handoffId}. From ${params.from_specialist} to ${params.to_specialist}. Campaign: ${params.campaign_id}. Quality report: ${!!enrichedQualityData.quality_report}. Test artifacts: ${!!enrichedQualityData.test_artifacts}. Compliance status: ${!!enrichedQualityData.compliance_status}. Ready for delivery specialist. Auto-enriched data included. Timestamp: ${new Date().toISOString()}`;
       
     } catch (error) {
       console.error('❌ Failed to create standardized quality handoff:', error);

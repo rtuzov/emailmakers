@@ -1,0 +1,28 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Air travel via Guatemala City; bus services to key destinations; rental cars for flexibility.",
+    "pricing_trends": "Average cost of travel has increased by 10% over the last year; peak season rates significantly higher.",
+    "seasonal_patterns": "Optimal months: December to April; peak holiday season December; rainy season May to October.",
+    "booking_windows": "Optimal time to book: 2-3 months in advance; last-minute deals less common.",
+    "destination_insights": {
+      "route_analysis": "Air travel via Guatemala City; bus services to key destinations; rental cars for flexibility.",
+      "seasonal_patterns": "Optimal months: December to April; peak holiday season December; rainy season May to October.",
+      "climate": "Tropical climate; warm, with some rainfall during the wet season; best to visit in the dry season.",
+      "culture": "Rich Mayan heritage; vibrant markets; annual festivals like Semana Santa."
+    },
+    "market_insights": {
+      "pricing_trends": "Average cost of travel has increased by 10% over the last year; peak season rates significantly higher.",
+      "booking_windows": "Optimal time to book: 2-3 months in advance; last-minute deals less common.",
+      "demand": "Growing interest in eco-tourism and cultural experiences; Guatemala rising in travel searches.",
+      "competition": "Key competitors: Costa Rica, Belize, and Mexico; differentiating factors include unique culture."
+    },
+    "trend_insights": {
+      "market_trends": "Increase in sustainable travel; preference for off-the-beaten-path destinations.",
+      "consumer_behavior": "More travelers seeking personalized experiences; use of mobile apps for bookings growing.",
+      "competitive_landscape": "Increased flight options and hotels; aggressive marketing by competing destinations.",
+      "seasonal_factors": "Travel peaks during dry months; festivals drive interest in certain weeks."
+    }
+  },
+  "saved_at": "2025-07-30T09:56:22.366Z"
+}

@@ -1,0 +1,304 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_VyvqDCUhdgk.jpg",
+        "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMHN0cmVldCUyMGZvb2QlMjBtYXJrZXQlMjBidXN0bGV8ZW58MHwwfHx8MTc1Mzg4NDg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMHN0cmVldCUyMGZvb2QlMjBtYXJrZXQlMjBidXN0bGV8ZW58MHwwfHx8MTc1Mzg4NDg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_VyvqDCUhdgk",
+        "created": "2025-07-30T11:45:02.537Z",
+        "modified": "2025-07-30T11:45:02.537Z",
+        "tags": [],
+        "description": "old woman sitting and selling food in the market",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMHN0cmVldCUyMGZvb2QlMjBtYXJrZXQlMjBidXN0bGV8ZW58MHwwfHx8MTc1Mzg4NDg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external__knI9nM5VvA.jpg",
+        "path": "https://images.unsplash.com/photo-1640864668751-5d18462c0fc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzgwMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1640864668751-5d18462c0fc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzgwMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_-knI9nM5VvA",
+        "created": "2025-07-30T11:45:02.538Z",
+        "modified": "2025-07-30T11:45:02.538Z",
+        "tags": [],
+        "description": "a man standing in front of a yellow wall",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1640864668751-5d18462c0fc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzgwMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_h7FysA92Jww.jpg",
+        "path": "https://images.unsplash.com/photo-1504768698754-83a2eef21732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwdm9sY2FuaWMlMjBsYW5kc2NhcGVzJTIwbW9ybmluZyUyMGZvZ3xlbnwwfDB8fHwxNzUzODg0ODk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1504768698754-83a2eef21732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwdm9sY2FuaWMlMjBsYW5kc2NhcGVzJTIwbW9ybmluZyUyMGZvZ3xlbnwwfDB8fHwxNzUzODg0ODk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_h7FysA92Jww",
+        "created": "2025-07-30T11:45:02.538Z",
+        "modified": "2025-07-30T11:45:02.538Z",
+        "tags": [],
+        "description": "black mountain under blue sky at daytime",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1504768698754-83a2eef21732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwdm9sY2FuaWMlMjBsYW5kc2NhcGVzJTIwbW9ybmluZyUyMGZvZ3xlbnwwfDB8fHwxNzUzODg0ODk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_VxNb5NGrQCY.jpg",
+        "path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1heWFuJTIwZGFuY2UlMjBmZXN0aXZhbCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg4NDg5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1heWFuJTIwZGFuY2UlMjBmZXN0aXZhbCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg4NDg5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_VxNb5NGrQCY",
+        "created": "2025-07-30T11:45:02.538Z",
+        "modified": "2025-07-30T11:45:02.538Z",
+        "tags": [],
+        "description": "man standing behind dancers",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1heWFuJTIwZGFuY2UlMjBmZXN0aXZhbCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg4NDg5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_SkIy9L2LjnI.jpg",
+        "path": "https://images.unsplash.com/photo-1457414254764-c87b209f5249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwdG91ciUyMHNjZW5pYyUyMHZpZXdzfGVufDB8MHx8fDE3NTM4ODQ4OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1457414254764-c87b209f5249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwdG91ciUyMHNjZW5pYyUyMHZpZXdzfGVufDB8MHx8fDE3NTM4ODQ4OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_SkIy9L2LjnI",
+        "created": "2025-07-30T11:45:02.538Z",
+        "modified": "2025-07-30T11:45:02.538Z",
+        "tags": [],
+        "description": "cloudy sky over mountain",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1457414254764-c87b209f5249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwdG91ciUyMHNjZW5pYyUyMHZpZXdzfGVufDB8MHx8fDE3NTM4ODQ4OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_kf089lAIXpo.jpg",
+        "path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdW5yaXNlJTIwb3ZlciUyMGxha2UlMjBhdGl0bGFuJTIwcmVmbGVjdGlvbnN8ZW58MHwwfHx8MTc1Mzg4NDkwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdW5yaXNlJTIwb3ZlciUyMGxha2UlMjBhdGl0bGFuJTIwcmVmbGVjdGlvbnN8ZW58MHwwfHx8MTc1Mzg4NDkwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_kf089lAIXpo",
+        "created": "2025-07-30T11:45:02.538Z",
+        "modified": "2025-07-30T11:45:02.538Z",
+        "tags": [],
+        "description": "the sun is setting over the mountains in the distance",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdW5yaXNlJTIwb3ZlciUyMGxha2UlMjBhdGl0bGFuJTIwcmVmbGVjdGlvbnN8ZW58MHwwfHx8MTc1Mzg4NDkwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T11:47:22.454Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "aggressive",
+    "processed_at": "2025-07-30T11:47:22.455Z"
+  }
+}

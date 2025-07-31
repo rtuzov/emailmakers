@@ -7,8 +7,8 @@
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
-// import { promises as fs } from 'fs';
-// import path from 'path';
+import { promises as fs } from 'fs';
+import path from 'path';
 import { log } from '../../../core/agent-logger';
 import { getErrorMessage } from '../utils/error-handling';
 
@@ -42,6 +42,8 @@ function extractCampaignContext(context?: any): CampaignWorkflowContext {
 // Import standardized handoff tool and context validation
 // Removed: createStandardizedHandoff - OpenAI SDK handles handoffs automatically
 import { /* validateHandoffContext, quickValidateHandoff, */ quickValidateHandoffDirect } from '../../../core/context-validation-tool';
+// Import universal handoff auto-enrichment utilities
+import { enrichHandoffData } from '../../../core/handoff-auto-enrichment';
 
 /**
  * Create standardized handoff file tool with context validation
@@ -130,34 +132,64 @@ export const createHandoffFile = tool({
         }
       }
       
-      // Prepare standardized handoff parameters (commented out - unused)
-      /*
-      const _handoffParams = {
+      // 🎯 UNIVERSAL AUTO-ENRICHMENT: Use new universal handoff enrichment system
+      console.log('📂 Auto-enriching content handoff data using universal enrichment system...');
+      
+      const { enrichedData: enrichedContentData, enrichedDeliverables, autoTraceId } = await enrichHandoffData(
+        params.contentContext,
+        params.fromSpecialist,
+        params.campaignPath,
+        params.trace_id ?? undefined
+      );
+      
+      // Merge provided deliverables with auto-generated ones, respecting the complex structure
+      const finalDeliverables = {
+        ...enrichedDeliverables,
+        ...params.deliverables,
+        created_files: params.deliverables?.created_files?.length > 0 
+          ? params.deliverables.created_files 
+          : enrichedDeliverables.created_files?.map((file: string) => ({
+              file_name: file.split('/').pop() || file,
+              file_path: file,
+              file_type: 'content' as const,
+              description: `Auto-generated content file: ${file}`,
+              is_primary: false
+            })) || []
+      };
+      
+      // Create actual handoff file (not just prepare for SDK)
+      const handoffId = `handoff_${params.campaignId}_${params.fromSpecialist}_to_${params.toSpecialist}`;
+      const handoffFilePath = path.join(params.campaignPath, 'handoffs', `${handoffId}.json`);
+      
+      const handoffData = {
         from_specialist: params.fromSpecialist,
         to_specialist: params.toSpecialist,
         campaign_id: params.campaignId,
         campaign_path: params.campaignPath,
-        specialist_data: params.contentContext,
+        specialist_data: enrichedContentData,
         handoff_context: params.handoff_context,
-        deliverables: params.deliverables,
+        deliverables: finalDeliverables,
         quality_metadata: params.quality_metadata,
-        trace_id: params.trace_id,
-        execution_time: Date.now() - startTime,
-        validate_context: params.validate_context
+        trace_id: autoTraceId,
+        validate_context: params.validate_context,
+        created_at: new Date().toISOString()
       };
-      */
       
-      // Use standardized handoff tool with context validation
-      // Note: OpenAI Agents SDK will handle handoff creation automatically
-      // The createStandardizedHandoff tool is available to the agent and will be called by the LLM
-      console.log('✅ Handoff parameters prepared for automatic SDK handoff');
+      // Ensure handoffs directory exists
+      const handoffsDir = path.join(params.campaignPath, 'handoffs');
+      await fs.mkdir(handoffsDir, { recursive: true });
+      
+      // Write handoff file
+      await fs.writeFile(handoffFilePath, JSON.stringify(handoffData, null, 2), 'utf-8');
+      
+      console.log('✅ Content handoff file created with enriched data:', handoffFilePath);
       
       // Update campaign context with handoff info
-      const handoffId = `handoff_${Date.now()}_${params.fromSpecialist}_to_${params.toSpecialist}`;
+      const contextHandoffId = `handoff_${Date.now()}_${params.fromSpecialist}_to_${params.toSpecialist}`;
       const updatedCampaignContext = {
         ...campaignContext,
         latest_handoff: {
-          handoff_id: handoffId,
+          handoff_id: contextHandoffId,
           file: `${params.fromSpecialist}-to-${params.toSpecialist}.json`,
           to_specialist: params.toSpecialist,
           created_at: new Date().toISOString(),
@@ -174,7 +206,7 @@ export const createHandoffFile = tool({
         campaign_id: params.campaignId,
         from_specialist: params.fromSpecialist,
         to_specialist: params.toSpecialist,
-        handoff_id: handoffId,
+        handoff_id: contextHandoffId,
         context_validation_enabled: params.validate_context,
         duration,
         trace_id: params.trace_id
@@ -187,11 +219,11 @@ export const createHandoffFile = tool({
         contentSize: JSON.stringify(params.contentContext).length,
         contextValidation: params.validate_context
       }, {
-        handoffId: handoffId,
+        handoffId: contextHandoffId,
         sdk_handled: true
       }, duration, true);
       
-      return `Стандартизированный файл передачи подготовлен для OpenAI SDK! Handoff ID: ${handoffId}. От ${params.fromSpecialist} к ${params.toSpecialist}. Кампания: ${params.campaignId}. Валидация контекста: ${params.validate_context ? 'включена' : 'отключена'}. SDK автоматически обработает передачу следующему специалисту.`;
+      return `Стандартизированный файл передачи подготовлен для OpenAI SDK! Handoff ID: ${contextHandoffId}. От ${params.fromSpecialist} к ${params.toSpecialist}. Кампания: ${params.campaignId}. Валидация контекста: ${params.validate_context ? 'включена' : 'отключена'}. SDK автоматически обработает передачу следующему специалисту.`;
       
     } catch (error: unknown) {
       const duration = Date.now() - startTime;

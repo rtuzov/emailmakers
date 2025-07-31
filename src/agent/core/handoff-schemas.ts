@@ -233,10 +233,10 @@ export const ContentContextSchema = z.object({
   asset_strategy: AssetStrategySchema.optional().describe('Visual asset strategy'),
   generated_content: GeneratedContentSchema.optional().describe('Generated email content'),
   technical_requirements: z.object({
-    max_width: z.string().default('600px').describe('Maximum email width'),
-    email_clients: z.array(z.string()).default(['gmail', 'outlook', 'apple_mail']).describe('Target email clients'),
-    dark_mode_support: z.boolean().default(true).describe('Dark mode compatibility requirement'),
-    accessibility_level: z.enum(['AA', 'AAA']).default('AA').describe('WCAG accessibility level')
+    max_width: z.string().describe('Maximum email width - MUST be specified, no fallback'),
+    email_clients: z.array(z.string()).describe('Target email clients - MUST be specified'),
+    dark_mode_support: z.boolean().describe('Dark mode compatibility requirement - MUST be specified'),
+    accessibility_level: z.enum(['AA', 'AAA']).describe('WCAG accessibility level - MUST be specified')
   }).optional().describe('Technical constraints and requirements')
 });
 

@@ -8,12 +8,79 @@
  * - Campaign folder structures
  * 
  * Integrates with OpenAI Agents SDK context parameter system.
+ * Enhanced with AI-powered asset selection and data insights integration.
  */
 
 import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import * as path from 'path';
+
+// Import AI analysis functions from asset-collection.ts logic
+import {
+  analyzeContentWithAI,
+  selectFigmaAssetsWithAI,
+  finalFileSelectionWithAI,
+  generateExternalImageLinks
+} from './ai-analysis';
+import { ContentContext, CampaignContext } from './types';
+
+// ============================================================================
+// DATA INSIGHTS INTEGRATION
+// ============================================================================
+
+/**
+ * Load data insights from campaign /data folder
+ */
+async function loadDataInsights(campaignPath?: string): Promise<any> {
+  if (!campaignPath) {
+    console.log('⚠️ No campaign path provided, skipping data insights');
+    return null;
+  }
+
+  const dataPath = path.join(campaignPath, 'data');
+  const insights: any = {};
+
+  try {
+    // Try to load each data file
+    const dataFiles = [
+      'consolidated-insights.json',
+      'destination-analysis.json', 
+      'emotional-profile.json',
+      'market-intelligence.json',
+      'travel_intelligence-insights.json',
+      'trend-analysis.json'
+    ];
+
+    for (const fileName of dataFiles) {
+      try {
+        const filePath = path.join(dataPath, fileName);
+        const fileContent = await fs.readFile(filePath, 'utf8');
+        const data = JSON.parse(fileContent);
+        
+        // Extract key from filename (remove -insights.json and .json)
+        const key = fileName.replace('-insights.json', '').replace('.json', '').replace('-', '_');
+        insights[key] = data;
+        
+        console.log(`✅ Loaded ${fileName} with ${Object.keys(data).length} keys`);
+      } catch (fileError) {
+        console.log(`⚠️ Could not load ${fileName}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+      }
+    }
+
+    const insightKeys = Object.keys(insights);
+    if (insightKeys.length > 0) {
+      console.log(`🧠 Loaded data insights: ${insightKeys.join(', ')}`);
+      return insights;
+    } else {
+      console.log('⚠️ No data insights could be loaded');
+      return null;
+    }
+  } catch (error) {
+    console.log(`⚠️ Failed to access data folder ${dataPath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return null;
+  }
+}
 
 // ============================================================================
 // ASSET COLLECTION SCHEMAS
@@ -46,6 +113,7 @@ const CollectionOptionsSchema = z.object({
 interface AssetMetadata {
   filename: string;
   path: string;
+  file_path?: string;
   size: number;
   format: string;
   dimensions?: { width: number; height: number };
@@ -54,6 +122,10 @@ interface AssetMetadata {
   modified: string;
   tags: string[];
   description?: string;
+  isExternal?: boolean;
+  purpose?: string;
+  priority?: string;
+  aiReasoning?: string;
 }
 
 interface CollectionResult {
@@ -116,16 +188,25 @@ export const collectAssets = tool({
       // Ensure destination directory exists
       await fs.mkdir(destination, { recursive: true });
       
+      // 🧠 Load data insights for AI-powered asset selection
+      const dataInsights = await loadDataInsights(context?.campaignPath || undefined);
+      
       const collectedAssets: AssetMetadata[] = [];
       const errors: string[] = [];
       const sourceCounts: Record<string, number> = {};
       
-      // Process each source
+      // Process each source with AI enhancement
       for (const source of sources) {
         console.log(`🔍 Processing ${source.type} source: ${source.path}`);
         
         try {
-          const sourceAssets = await collectFromSource(source, destination, collectionOptions);
+          const sourceAssets = await collectFromSourceWithAI(
+            source, 
+            destination, 
+            collectionOptions,
+            context,
+            dataInsights
+          );
           collectedAssets.push(...sourceAssets);
           sourceCounts[source.type] = (sourceCounts[source.type] || 0) + sourceAssets.length;
           
@@ -352,25 +433,291 @@ export const validateAssets = tool({
 // HELPER FUNCTIONS
 // ============================================================================
 
-async function collectFromSource(
+async function collectFromSourceWithAI(
   source: any,
   destination: string,
-  options: any
+  options: any,
+  context: any,
+  dataInsights: any
 ): Promise<AssetMetadata[]> {
-  // const _assets: AssetMetadata[] = []; // Currently unused
   
   switch (source.type) {
     case 'local':
-      return await collectFromLocalPath(source.path, destination, options);
     case 'figma':
-      return await collectFromFigma(source.path, destination, options);
+      // Use AI-powered selection for Figma and local assets
+      return await collectFromLocalPathWithAI(source.path, destination, options, context, dataInsights);
     case 'url':
-      return await collectFromUrl(source.path, destination, options);
+    case 'external':
+      // Use AI-powered external image selection
+      return await collectFromExternalWithAI(source.path, destination, options, context, dataInsights);
     case 'campaign':
       return await collectFromCampaign(source.path, destination, options);
     default:
       throw new Error(`Unsupported source type: ${source.type}`);
   }
+}
+
+/**
+ * AI-powered collection from local/Figma sources
+ */
+async function collectFromLocalPathWithAI(
+  sourcePath: string,
+  destination: string,
+  _options: any,
+  context: any,
+  dataInsights: any
+): Promise<AssetMetadata[]> {
+  console.log('🎨 Using AI to select optimal assets from source...');
+  
+  try {
+    // Create content context for AI analysis
+    const contentContext: ContentContext = {
+      campaign_type: context?.campaign_type || 'email campaign',
+      language: context?.language || 'en',
+      target_audience: context?.target_audience || 'travelers'
+    };
+    
+    const campaignContext: CampaignContext = {
+      campaignId: context?.campaignId || '',
+      campaignPath: context?.campaignPath || '',
+      language: context?.language || 'en',
+      industry: context?.industry || 'travel'
+    };
+
+    // Get AI analysis with data insights
+    const aiAnalysis = await analyzeContentWithAI(contentContext, campaignContext, dataInsights);
+    
+    // Check if sourcePath is a file or directory
+    let figmaTagsPath: string;
+    
+    try {
+      const sourceStats = await fs.stat(sourcePath);
+      if (sourceStats.isFile()) {
+        console.log(`⚠️ Source path is a file: ${sourcePath}, using basic collection`);
+        return await collectFromLocalPath(sourcePath, destination, _options);
+      }
+      // If it's a directory, proceed with AI selection
+      figmaTagsPath = path.join(sourcePath, 'ai-optimized-tags.json');
+    } catch (error) {
+      console.error(`❌ Could not access source path ${sourcePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`❌ Invalid asset source path: ${sourcePath}`);
+    }
+    
+    // Load Figma tags for AI selection
+    let figmaTags: any = {};
+    
+    try {
+      const figmaTagsContent = await fs.readFile(figmaTagsPath, 'utf8');
+      figmaTags = JSON.parse(figmaTagsContent);
+    } catch (error) {
+      console.warn(`⚠️ Could not load Figma tags from ${figmaTagsPath}, using basic selection`);
+      return await collectFromLocalPath(sourcePath, destination, _options);
+    }
+    
+    // Get AI-powered tag selection
+    const tagSelections = await selectFigmaAssetsWithAI(aiAnalysis, figmaTags, contentContext);
+    const assets: AssetMetadata[] = [];
+    
+    // Process each tag selection
+    for (const selection of tagSelections) {
+      console.log(`🎯 Processing selection: ${selection.reasoning}`);
+      
+      // Find actual files by tags
+      const foundFiles = await findActualFilesByTags(
+        selection.tags,
+        selection.folders,
+        figmaTags,
+        sourcePath,
+        selection.max_files || 10
+      );
+      
+      if (foundFiles.length === 0) {
+        console.warn(`⚠️ No files found for tags: ${selection.tags.join(', ')}`);
+        continue;
+      }
+      
+      // AI makes final selection (максимум 2 файла)
+      const finalSelection = await finalFileSelectionWithAI(
+        foundFiles,
+        campaignContext,
+        contentContext,
+        2
+      );
+      
+      // Copy selected files
+      for (const selected of finalSelection) {
+        const filePath = path.join(sourcePath, selected.folder, selected.filename);
+        const destPath = path.join(destination, selected.filename);
+        
+        try {
+          const stats = await fs.stat(filePath);
+          await fs.copyFile(filePath, destPath);
+          
+          // Calculate relative path
+          const campaignPath = context?.campaignPath || path.dirname(path.dirname(destination));
+          const relativePath = path.relative(campaignPath, destPath);
+          
+          assets.push({
+            filename: selected.filename,
+            path: destPath,
+            file_path: relativePath,
+            size: stats.size,
+            format: path.extname(selected.filename).toLowerCase().substring(1),
+            hash: `ai_final_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+            created: stats.birthtime.toISOString(),
+            modified: stats.mtime.toISOString(),
+            tags: selection.tags,
+            description: `AI final selection: ${selected.reasoning}`,
+            purpose: 'visual',
+            priority: 'high',
+            aiReasoning: selected.reasoning,
+            isExternal: false
+          });
+          
+          console.log(`✅ Added AI-selected asset: ${selected.filename}`);
+          
+        } catch (fileError) {
+          throw new Error(`❌ Could not process AI-selected file ${selected.filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        }
+      }
+    }
+    
+    console.log(`🎯 AI selection result: ${assets.length} carefully selected assets`);
+    return assets;
+    
+  } catch (error) {
+    console.error('❌ AI-powered asset collection failed:', error);
+    throw new Error(`AI asset collection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+/**
+ * AI-powered external image collection
+ */
+async function collectFromExternalWithAI(
+  _sourcePath: string,
+  _destination: string,
+  _options: any,
+  context: any,
+  dataInsights: any
+): Promise<AssetMetadata[]> {
+  console.log('🌐 Using AI to select external images...');
+  
+  try {
+    // Create content context for AI analysis
+    const contentContext: ContentContext = {
+      campaign_type: context?.campaign_type || 'email campaign',
+      language: context?.language || 'en',
+      target_audience: context?.target_audience || 'travelers'
+    };
+    
+    const campaignContext: CampaignContext = {
+      campaignId: context?.campaignId || '',
+      campaignPath: context?.campaignPath || '',
+      language: context?.language || 'en',
+      industry: context?.industry || 'travel'
+    };
+
+    // Get AI analysis with data insights
+    const aiAnalysis = await analyzeContentWithAI(contentContext, campaignContext, dataInsights);
+    
+    // Use AI to generate appropriate external image URLs
+    const aiSelectedImages = await generateExternalImageLinks(aiAnalysis, contentContext);
+    
+    console.log(`✅ AI selected ${aiSelectedImages.length} external images`);
+    return aiSelectedImages.map(img => ({
+      filename: img.filename,
+      path: img.path,
+      file_path: img.file_path,
+      size: img.size || 150000,
+      format: img.format,
+      hash: img.hash,
+      created: img.created,
+      modified: img.modified,
+      tags: img.tags || [],
+      description: img.description,
+      isExternal: img.isExternal,
+      purpose: img.purpose,
+      aiReasoning: img.aiReasoning
+    }));
+    
+  } catch (error) {
+    console.error('❌ AI external image selection failed:', error);
+    throw new Error(`Failed to select external images: ${error instanceof Error ? error.message : 'AI selection unavailable'}`);
+  }
+}
+
+/**
+ * Find actual files by tags from the file system
+ */
+async function findActualFilesByTags(
+  selectedTags: string[],
+  priorityFolders: string[],
+  figmaTags: any,
+  sourcePath: string,
+  maxFiles: number = 5
+): Promise<{ filename: string; folder: string; score: number; matchedTags: string[]; size?: number }[]> {
+  console.log(`🔍 Finding actual files by tags: ${selectedTags.join(', ')}`);
+  console.log(`📁 Priority folders: ${priorityFolders.join(', ')}`);
+  
+  const foundFiles: { filename: string; folder: string; score: number; matchedTags: string[]; size?: number }[] = [];
+  
+  // Search in each priority folder
+  for (const folderName of priorityFolders) {
+    const folderPath = path.join(sourcePath, folderName);
+    
+    try {
+      // Check if folder exists
+      await fs.access(folderPath);
+      
+      // Get all files in folder
+      const files = await fs.readdir(folderPath);
+      const folderData = figmaTags.folders[folderName];
+      
+      if (!folderData) {
+        console.warn(`⚠️ No tag data found for folder: ${folderName}`);
+        continue;
+      }
+      
+      const folderTags = folderData.tags || [];
+      
+      // Calculate relevance score for each tag match
+      const tagMatches = selectedTags.filter(tag => folderTags.includes(tag));
+      const score = tagMatches.length;
+      
+      if (score > 0) {
+        // Process each file in the folder
+        for (const filename of files.slice(0, maxFiles)) {
+          try {
+            const filePath = path.join(folderPath, filename);
+            const stats = await fs.stat(filePath);
+            
+            if (stats.isFile()) {
+              foundFiles.push({
+                filename,
+                folder: folderName,
+                score,
+                matchedTags: tagMatches,
+                size: stats.size
+              });
+            }
+          } catch (fileError) {
+            console.warn(`⚠️ Could not access file ${filename}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+          }
+        }
+      }
+    } catch (folderError) {
+      console.warn(`⚠️ Could not access folder ${folderPath}: ${folderError instanceof Error ? folderError.message : 'Unknown error'}`);
+    }
+  }
+  
+  // Sort by score and return top files
+  foundFiles.sort((a, b) => b.score - a.score);
+  const selectedFiles = foundFiles.slice(0, maxFiles);
+  
+  console.log(`✅ Found ${selectedFiles.length} files by tags: ${selectedFiles.map(f => f.filename).join(', ')}`);
+  
+  return selectedFiles;
 }
 
 async function collectFromLocalPath(
@@ -416,6 +763,8 @@ async function collectFromLocalPath(
   }
 }
 
+// Unused function - keeping for future Figma integration
+/*
 async function collectFromFigma(
   _figmaPath: string,
   _destination: string,
@@ -426,7 +775,10 @@ async function collectFromFigma(
   console.log('📋 Figma asset collection not yet implemented');
   return [];
 }
+*/
 
+// Unused function - keeping for future URL collection
+/*
 async function collectFromUrl(
   _url: string,
   _destination: string,
@@ -436,6 +788,7 @@ async function collectFromUrl(
   console.log('🌐 URL asset collection not yet implemented');
   return [];
 }
+*/
 
 async function collectFromCampaign(
   campaignPath: string,

@@ -906,12 +906,9 @@ export async function buildContentContextFromOutputs(
       urgency_level: generatedContentData?.urgency_level === 'high' ? 'medium' : 
                     (generatedContentData?.urgency_level as any) || 'medium'
     },
-    technical_requirements: technicalRequirements || {
-      max_width: '600px',
-      email_clients: ['gmail', 'outlook', 'apple_mail'],
-      dark_mode_support: true,
-      accessibility_level: 'AA' as const
-    }
+    technical_requirements: technicalRequirements || (() => {
+      throw new Error('Technical requirements must be specified - no fallback allowed per project rules');
+    })()
   };
 
   return contentContext;

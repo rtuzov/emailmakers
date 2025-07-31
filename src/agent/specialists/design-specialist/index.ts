@@ -36,6 +36,7 @@ import { finalizeDesignAndTransferToQuality } from '../../core/specialist-finali
 // Import ENHANCED V3 tools with AI agents
 import { analyzeContentForDesign } from './content-intelligence-analyzer';
 import { generateTemplateDesign as generateAdaptiveDesign } from './ai-template-designer';
+// ✅ REFACTORED: Use MJML generation tool that internally uses new template-processing domain
 import { generateMjmlTemplate } from './mjml-generator';
 
 /**

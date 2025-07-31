@@ -1,0 +1,188 @@
+{
+  "template_name": "Гватемала_осенние_приключения_1748573916731",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 650,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "40px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "375px",
+      "768px",
+      "1024px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "header",
+      "width": "100%",
+      "height": "80px",
+      "background": "#F0E68C",
+      "content": "✈️ Откройте для себя Гватемалу этой осенью! 🍂",
+      "typography": {
+        "font_size": "24px",
+        "font_weight": "bold",
+        "color": "#A52A2A"
+      },
+      "padding": "10px"
+    },
+    {
+      "position": "hero",
+      "width": "100%",
+      "height": "400px",
+      "background": "url('https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4MDE3NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080')",
+      "content": "",
+      "typography": {},
+      "padding": "0px"
+    },
+    {
+      "position": "content1",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FFDEAD",
+      "content": "Представьте себе: несметные красоты древних храмов, аромат свежезаваренного кофе и атмосферные рынки Гватемалы ждут вас! Откройте для себя это удивительное направление, пока действуют наши акционные предложения!",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#A52A2A"
+      },
+      "padding": "20px"
+    },
+    {
+      "position": "benefits",
+      "width": "100%",
+      "height": "auto",
+      "background": "#F0E68C",
+      "content": [
+        "💰 Экономия до 19,595₽ на билетах!",
+        "✈️ Прямые рейсы без пересадок из Москвы!",
+        "🏨 Бесплатное бронирование отелей через наш сервис!",
+        "📞 Поддержка 24/7 на русском языке!",
+        "🔒 Гарантия лучшей цены — вернем разницу!",
+        "🆓 Бесплатная отмена бронирования до 24 часов!"
+      ],
+      "typography": {
+        "font_size": "14px",
+        "font_weight": "normal",
+        "color": "#A52A2A"
+      },
+      "padding": "20px"
+    },
+    {
+      "position": "social_proof",
+      "width": "100%",
+      "height": "auto",
+      "background": "#FFDEAD",
+      "content": "★★★★★ 'Купила билеты через Kupibilet и сэкономила 12,000₽! Рекомендую!' - Анна М., Москва. 🎯 За последний месяц 1,247 россиян купили билеты в Гватемалу!",
+      "typography": {
+        "font_size": "14px",
+        "font_weight": "italic",
+        "color": "#A52A2A"
+      },
+      "padding": "20px"
+    },
+    {
+      "position": "urgency",
+      "width": "100%",
+      "height": "auto",
+      "background": "#A52A2A",
+      "content": "⏰ Осталось всего 12 мест по этой цене! Бронируйте до 15 сентября!",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "bold",
+        "color": "#FFDEAD"
+      },
+      "padding": "20px"
+    },
+    {
+      "position": "cta",
+      "width": "100%",
+      "height": "auto",
+      "background": "#F0E68C",
+      "content": [
+        "<a href='#' style='padding: 15px; background: #A52A2A; color: #FFDEAD; text-decoration: none; font-weight: bold;'>Купить билеты за 60,258₽ ✈️</a>",
+        "<a href='#' style='padding: 15px; background: #FFDEAD; color: #A52A2A; text-decoration: none; font-weight: normal;'>Посмотреть все рейсы 🔍</a>"
+      ],
+      "typography": {},
+      "padding": "20px"
+    },
+    {
+      "position": "footer",
+      "width": "100%",
+      "height": "60px",
+      "background": "#A52A2A",
+      "content": "© 2025 Kupibilet. Все права защищены.",
+      "typography": {
+        "font_size": "12px",
+        "font_weight": "normal",
+        "color": "#FFDEAD"
+      },
+      "padding": "10px"
+    },
+    {
+      "position": "gallery",
+      "width": "100%",
+      "height": "auto",
+      "background": "#F0E68C",
+      "content": [
+        "url('https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBzdW5zZXQlMjBzaWxob3VldHRlfGVufDB8MHx8fDE3NTM4ODI3MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080')",
+        "url('https://images.unsplash.com/photo-1501327825011-e83b7080b0f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODgyNzAzfDA&ixlib=rb-4.1.0&q=80&w=1080')",
+        "url('https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwY29sb3JmdWwlMjBmZXN0aXZhbHxlbnwwfDB8fHwxNzUzODgyNzA0fDA&ixlib=rb-4.1.0&q=80&w=1080')"
+      ],
+      "typography": {},
+      "padding": "20px"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "style": {
+        "padding": "10px",
+        "background": "#A52A2A",
+        "color": "#FFDEAD",
+        "text-decoration": "none",
+        "font-weight": "bold"
+      },
+      "text": "Купить билеты за 60,258₽ ✈️"
+    },
+    {
+      "type": "button",
+      "style": {
+        "padding": "10px",
+        "background": "#FFDEAD",
+        "color": "#A52A2A",
+        "text-decoration": "none",
+        "font-weight": "normal"
+      },
+      "text": "Посмотреть все рейсы 🔍"
+    }
+  ],
+  "visual_concept": {
+    "theme": "Гармония природы и культуры",
+    "style": "Экзотичный и теплый",
+    "mood": "Вдохновляющий и утешительный"
+  },
+  "target_audience": "Путешественники, ищущие культурные и природные впечатления в экзотических направлениях, уделяющие внимание ценам и эксклюзивным предложениям.",
+  "improvements_applied": [
+    "Оптимизация структуры для компактности и читабельности",
+    "Визуальные элементы со встроенными ссылками для улучшения CTA",
+    "Использование всех доступных изображений для создания gallery"
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T11:10:09.958Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-trace",
+    "brand_colors": {
+      "primary": "#A52A2A",
+      "accent": "#FFDEAD",
+      "background": "#F0E68C"
+    },
+    "campaign_type": "promotional"
+  }
+}

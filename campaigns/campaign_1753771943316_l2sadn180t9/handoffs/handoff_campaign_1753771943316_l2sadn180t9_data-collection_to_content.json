@@ -1,0 +1,65 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753771943316_l2sadn180t9",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753771943316_l2sadn180t9",
+  "specialist_data": {
+    "consolidated": null,
+    "destination_analysis": null,
+    "emotional_profile": null,
+    "market_intelligence": null,
+    "travel_intelligence": null,
+    "trend_analysis": null,
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json"
+      ],
+      "total_analyses": 3,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-29T06:52:49.433Z",
+      "data_types": [
+        "destination-analysis",
+        "key_insights_insights",
+        "market-intelligence"
+      ]
+    },
+    "consolidated_insights": null
+  },
+  "handoff_context": {
+    "summary": "Completed data collection and analysis for spring travel to Denmark.",
+    "context_for_next": "Focus on spring festivals, eco-friendly travel options, and unique cultural experiences when creating content.",
+    "recommendations": [
+      "Create engaging email campaigns targeting spring travel enthusiasts.",
+      "Highlight spring events and unique travel experiences in Denmark.",
+      "Include tips for booking in advance to secure better prices."
+    ],
+    "priority_items": [],
+    "potential_issues": [],
+    "success_criteria": [
+      "Content must emphasize springtime cultural events and eco-friendly options.",
+      "Design should appeal to travelers looking for unique experiences."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [],
+    "data_quality_metrics": {
+      "total_analyses": 1,
+      "completion_rate": 14,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 95,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 200
+  },
+  "trace_id": "handoff_1753771969433_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-29T06:52:49.433Z"
+}

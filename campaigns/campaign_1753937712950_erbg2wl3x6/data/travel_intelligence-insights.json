@@ -1,0 +1,29 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Direct flights available from major cities. Local transportation includes shuttles and taxis. Road trips are popular for exploring regions.",
+    "pricing_trends": "Average cost of flights in September ranges from $400 to $600. Hotels vary from budget hostels to luxury accommodations averaging $100 per night.",
+    "seasonal_patterns": "Best months are September to November, optimal for avoiding the rainy season while experiencing cultural festivals.",
+    "booking_windows": "Ideal booking is 1 to 3 months ahead of travel dates, especially for popular attractions. Early reservations recommended during festival seasons.",
+    "destination_insights": {
+      "route_analysis": "Direct flights available from major cities. Local transportation includes shuttles and taxis. Road trips are popular for exploring regions.",
+      "seasonal_patterns": "Best months are September to November, optimal for avoiding the rainy season while experiencing cultural festivals.",
+      "climate": "Temperatures range from 18°C to 25°C. Light clothing is recommended, with rain gear for occasional showers.",
+      "culture": "Home to the Maya civilization ruins, including Tikal and Antigua's colonial architecture. Notable festivals include Independence Day in September.",
+      "attractions": "Highlights include Lake Atitlán, Semuc Champey, and the ancient Mayan ruins of Tikal."
+    },
+    "market_insights": {
+      "pricing_trends": "Average cost of flights in September ranges from $400 to $600. Hotels vary from budget hostels to luxury accommodations averaging $100 per night.",
+      "booking_windows": "Ideal booking is 1 to 3 months ahead of travel dates, especially for popular attractions. Early reservations recommended during festival seasons.",
+      "demand": "Increased interest during fall for cultural experiences, especially for heritage tourism.",
+      "competition": "Costa Rica and Belize are alternative destinations with similar offerings but different cultural experiences."
+    },
+    "trend_insights": {
+      "market_trends": "Significant rise in interest for eco-tourism and cultural experiences. Social media influences younger demographics.",
+      "consumer_behavior": "Travelers are increasingly looking for authentic experiences and local tours that highlight culture and nature.",
+      "competitive_landscape": "Destinations like Costa Rica focusing on eco-tours offer competition, but Guatemala's unique Mayan heritage sets it apart.",
+      "seasonal_factors": "Seasonal festivals attract tourists, driving travel during specific months like September."
+    }
+  },
+  "saved_at": "2025-07-31T04:55:31.514Z"
+}

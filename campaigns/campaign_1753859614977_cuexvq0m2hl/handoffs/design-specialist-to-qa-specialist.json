@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "handoff_type": "design-to-qa",
+    "created_at": "2025-07-30T07:17:48.464Z",
+    "source_specialist": "Design Specialist",
+    "target_specialist": "Quality Assurance Specialist",
+    "trace_id": "handoff-trace",
+    "enriched_data_available": true,
+    "data_quality_score": 85
+  },
+  "request": {
+    "action": "quality_assurance_review",
+    "priority": "high",
+    "requirements": [
+      "Email client compatibility verification",
+      "Accessibility compliance validation",
+      "Performance optimization review",
+      "Cross-client compatibility verification",
+      "Mobile responsiveness verification"
+    ]
+  },
+  "design_context": {
+    "design_package": {},
+    "enriched_data": {
+      "design_package": {},
+      "mjml_template": null,
+      "asset_manifest": null,
+      "technical_specification": null,
+      "design_metadata": {
+        "files_created": [
+          "design/template-design.json"
+        ],
+        "total_files": 1,
+        "design_quality_score": 0,
+        "processing_completed_at": "2025-07-30T07:17:48.464Z"
+      },
+      "content_context": {}
+    },
+    "deliverables": {
+      "created_files": [
+        "design/template-design.json"
+      ],
+      "key_outputs": [],
+      "data_quality_metrics": {
+        "total_analyses": 1,
+        "completion_rate": 25,
+        "quality_score": 0
+      }
+    },
+    "template_files": {},
+    "quality_targets": {},
+    "technical_requirements": {},
+    "assets": {}
+  },
+  "validation_checklist": [
+    "Email renders correctly in Gmail",
+    "Email renders correctly in Outlook",
+    "Email renders correctly in Apple Mail",
+    "Email renders correctly in Yahoo Mail",
+    "Mobile responsiveness works properly",
+    "All images load correctly",
+    "All links are functional",
+    "Accessibility standards are met",
+    "Performance targets are achieved",
+    "Dark mode support works (if applicable)"
+  ],
+  "success_criteria": {
+    "email_client_compatibility": ">= 95%",
+    "accessibility_score": ">= 80%",
+    "performance_score": ">= 85%",
+    "technical_compliance": ">= 90%",
+    "load_time": "<= 3 seconds"
+  }
+}

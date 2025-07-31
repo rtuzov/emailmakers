@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753937022748_xth6qnf615p",
+  "name": "Гватемала осенью",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "путешественники",
+  "user_request": "путешествие в Гватемала осенью - создать email рассылку о культурных достопримечательностях и природных красотах",
+  "created_at": "2025-07-31T04:43:42.751Z",
+  "status": "active",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-31T04:44:10.298Z",
+  "notes": ".",
+  "data": "comprehensive travel analysis completed"
+}

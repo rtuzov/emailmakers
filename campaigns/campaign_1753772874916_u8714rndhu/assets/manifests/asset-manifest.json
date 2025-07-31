@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-29T07:09:35.753Z",
+  "campaign_id": "campaign_1753772874916_u8714rndhu",
+  "total_assets": 5,
+  "images": [
+    {
+      "filename": "external_wrNZEeMo2sY.jpg",
+      "path": "https://images.unsplash.com/photo-1609922565823-82bd31c72720?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2xvcmZ1bCUyMHRyYWRpdGlvbmFsJTIwZmVzdGl2YWxzJTIwdmlicmFudCUyMGF0bW9zcGhlcmV8ZW58MHwwfHx8MTc1Mzc4MTk3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1609922565823-82bd31c72720?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2xvcmZ1bCUyMHRyYWRpdGlvbmFsJTIwZmVzdGl2YWxzJTIwdmlicmFudCUyMGF0bW9zcGhlcmV8ZW58MHwwfHx8MTc1Mzc4MTk3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_wrNZEeMo2sY",
+      "created": "2025-07-29T07:09:35.754Z",
+      "modified": "2025-07-29T07:09:35.754Z",
+      "tags": [],
+      "description": "girl in pink and white floral dress wearing brown woven hat",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_jEZa0PeJabw.jpg",
+      "path": "https://images.unsplash.com/photo-1509195005404-0debf3ac10ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBwaWN0dXJlc3F1ZSUyMGFuY2llbnQlMjBydWlucyUyMHVuZGVyJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM3ODE5NzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1509195005404-0debf3ac10ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBwaWN0dXJlc3F1ZSUyMGFuY2llbnQlMjBydWlucyUyMHVuZGVyJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM3ODE5NzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_jEZa0PeJabw",
+      "created": "2025-07-29T07:09:35.755Z",
+      "modified": "2025-07-29T07:09:35.755Z",
+      "tags": [],
+      "description": "landscape photography of towers",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_g7AkYOvcofc.jpg",
+      "path": "https://images.unsplash.com/photo-1703836567326-f5a588ceaaf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGN1aXNpbmUlMjBzdHJlZXQlMjBmb29kJTIwbWFya2V0JTIwc2NlbmV8ZW58MHwwfHx8MTc1Mzc4MTk3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1703836567326-f5a588ceaaf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGN1aXNpbmUlMjBzdHJlZXQlMjBmb29kJTIwbWFya2V0JTIwc2NlbmV8ZW58MHwwfHx8MTc1Mzc4MTk3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_g7AkYOvcofc",
+      "created": "2025-07-29T07:09:35.755Z",
+      "modified": "2025-07-29T07:09:35.755Z",
+      "tags": [],
+      "description": "a bunch of food that is on a table",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_GxXyt_nZ9cg.jpg",
+      "path": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwbmF0dXJhbCUyMGxhbmRzY2FwZXMlMjB3aXRoJTIwYXV0dW1uJTIwY29sb3JzfGVufDB8MHx8fDE3NTM3ODE5NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1618946506952-a93a84299d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwbmF0dXJhbCUyMGxhbmRzY2FwZXMlMjB3aXRoJTIwYXV0dW1uJTIwY29sb3JzfGVufDB8MHx8fDE3NTM3ODE5NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_GxXyt-nZ9cg",
+      "created": "2025-07-29T07:09:35.755Z",
+      "modified": "2025-07-29T07:09:35.755Z",
+      "tags": [],
+      "description": "white and gray concrete building surrounded by flowers under white clouds and blue sky during daytime",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_nZYafL6FCrk.jpg",
+      "path": "https://images.unsplash.com/photo-1508278579464-6532e89f884a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB1bmlxdWUlMjBjdWx0dXJhbCUyMGVsZW1lbnRzJTIwYXJ0aXNhbnMlMjBhdCUyMHdvcmt8ZW58MHwwfHx8MTc1Mzc4MTk3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1508278579464-6532e89f884a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB1bmlxdWUlMjBjdWx0dXJhbCUyMGVsZW1lbnRzJTIwYXJ0aXNhbnMlMjBhdCUyMHdvcmt8ZW58MHwwfHx8MTc1Mzc4MTk3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_nZYafL6FCrk",
+      "created": "2025-07-29T07:09:35.755Z",
+      "modified": "2025-07-29T07:09:35.755Z",
+      "tags": [],
+      "description": "man wearing Mexican costume",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753772975752",
+    "status": "assets_collected"
+  }
+}

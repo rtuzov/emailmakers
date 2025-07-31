@@ -1,0 +1,164 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753777423145_3dnsrr0148c",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753777423145_3dnsrr0148c",
+  "specialist_data": {
+    "consolidated": {
+      "actionable_insights": [
+        "Promote eco-tourism activities to attract more travelers.",
+        "Highlight unique cultural festivals in marketing materials.",
+        "Encourage early bookings for the holiday season to boost revenue."
+      ],
+      "key_insights": [
+        "Guatemala's rich Mayan history attracts cultural explorers.",
+        "The best travel time is during the dry season from November to April.",
+        "Adventure tourism is on the rise, especially among younger travelers."
+      ],
+      "confidence_score": 0.88,
+      "analysis_timestamp": "2025-07-29T08:23:46.203Z",
+      "saved_at": "2025-07-29T08:24:05.038Z"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Guatemala offers various transport options including buses, shuttles, and domestic flights connecting cities and attractions.",
+        "seasonal_patterns": "The best time to visit Guatemala is from November to April, avoiding the rainy season in October, making it ideal for outdoor activities.",
+        "climate": "During fall, temperatures are mild averaging 20-25°C; pack lightweight clothing and a light jacket for cooler evenings.",
+        "culture": "Experience rich Mayan heritage through festivals and local cuisine, particularly during Day of the Dead celebrations and Independence Day events.",
+        "attractions": "Must-see places include Tikal, Antigua, Lake Atitlán, and Semuc Champey."
+      },
+      "saved_at": "2025-07-29T08:24:05.035Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are drawn to Guatemala for its rich history, vibrant culture, and stunning landscapes.",
+        "triggers": "Emotional triggers include a desire for adventure, cultural immersion, and relaxation in nature.",
+        "desires": "Tourists seek authentic experiences, connections with the local culture, and opportunities for outdoor activities like hiking and exploring ancient ruins."
+      },
+      "saved_at": "2025-07-29T08:24:05.035Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Travel costs are moderate with varying prices based on location with Guatemala City and Lake Atitlán being more expensive. Expect $40-$100 for mid-range accommodations.",
+        "booking_windows": "Optimal booking should be done 2-3 months ahead for the best deals. Early booking for the peak season in December is recommended.",
+        "demand": "Guatemala is gaining popularity among eco-tourists and cultural travelers, with increased interest in adventure travel.",
+        "competition": "Competing destinations include Costa Rica and Mexico, both known for similar attractions like wildlife and culture."
+      },
+      "saved_at": "2025-07-29T08:24:05.035Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala offers various transport options including buses, shuttles, and domestic flights connecting cities and attractions.",
+        "pricing_trends": "Travel costs are moderate with varying prices based on location with Guatemala City and Lake Atitlán being more expensive. Expect $40-$100 for mid-range accommodations.",
+        "seasonal_patterns": "The best time to visit Guatemala is from November to April, avoiding the rainy season in October, making it ideal for outdoor activities.",
+        "booking_windows": "Optimal booking should be done 2-3 months ahead for the best deals. Early booking for the peak season in December is recommended.",
+        "destination_insights": {
+          "route_analysis": "Guatemala offers various transport options including buses, shuttles, and domestic flights connecting cities and attractions.",
+          "seasonal_patterns": "The best time to visit Guatemala is from November to April, avoiding the rainy season in October, making it ideal for outdoor activities.",
+          "climate": "During fall, temperatures are mild averaging 20-25°C; pack lightweight clothing and a light jacket for cooler evenings.",
+          "culture": "Experience rich Mayan heritage through festivals and local cuisine, particularly during Day of the Dead celebrations and Independence Day events.",
+          "attractions": "Must-see places include Tikal, Antigua, Lake Atitlán, and Semuc Champey."
+        },
+        "market_insights": {
+          "pricing_trends": "Travel costs are moderate with varying prices based on location with Guatemala City and Lake Atitlán being more expensive. Expect $40-$100 for mid-range accommodations.",
+          "booking_windows": "Optimal booking should be done 2-3 months ahead for the best deals. Early booking for the peak season in December is recommended.",
+          "demand": "Guatemala is gaining popularity among eco-tourists and cultural travelers, with increased interest in adventure travel.",
+          "competition": "Competing destinations include Costa Rica and Mexico, both known for similar attractions like wildlife and culture."
+        },
+        "trend_insights": {
+          "market_trends": "Post-pandemic recovery in travel has seen an increase in interest for outdoor adventures and cultural experiences.",
+          "consumer_behavior": "Travelers today prefer immersive experiences rather than traditional sightseeing, prioritizing local interactions.",
+          "competitive_landscape": "Despite competition, Guatemala's unique cultural heritage and diverse landscapes set it apart from other Central American destinations.",
+          "seasonal_factors": "Travel interest peaks during the dry season, correlating with local holidays and festivals."
+        }
+      },
+      "saved_at": "2025-07-29T08:24:05.035Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Post-pandemic recovery in travel has seen an increase in interest for outdoor adventures and cultural experiences.",
+        "consumer_behavior": "Travelers today prefer immersive experiences rather than traditional sightseeing, prioritizing local interactions.",
+        "competitive_landscape": "Despite competition, Guatemala's unique cultural heritage and diverse landscapes set it apart from other Central American destinations.",
+        "seasonal_factors": "Travel interest peaks during the dry season, correlating with local holidays and festivals."
+      },
+      "saved_at": "2025-07-29T08:24:05.035Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/consolidated-insights.json",
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 7,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-29T08:24:16.600Z",
+      "data_types": [
+        "consolidated",
+        "destination-analysis",
+        "emotional-profile",
+        "key_insights_insights",
+        "market-intelligence",
+        "travel_intelligence",
+        "trend-analysis"
+      ]
+    },
+    "consolidated_insights": null
+  },
+  "handoff_context": {
+    "summary": "Conducted comprehensive travel intelligence analysis for Guatemala, focusing on destination details, market intelligence, emotional profiles, and trend analysis.",
+    "context_for_next": "Content Specialist to create engaging email content based on insights gained from the analysis.",
+    "recommendations": [
+      "Focus on cultural highlights in Guatemala.",
+      "Include practical travel tips and climate details.",
+      "Emphasize adventure tourism opportunities."
+    ],
+    "priority_items": [
+      "Highlight local festivals and events.",
+      "Promote eco-tourism activities."
+    ],
+    "potential_issues": [
+      "Competition from other Central American destinations may impact interest.",
+      "Variable weather patterns could affect travel plans."
+    ],
+    "success_criteria": [
+      "Increase in engagement rates for the email campaign.",
+      "Higher click-through rates during the campaign period."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "consolidated",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 500
+  },
+  "trace_id": "handoff_1753777456601_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-29T08:24:16.601Z"
+}

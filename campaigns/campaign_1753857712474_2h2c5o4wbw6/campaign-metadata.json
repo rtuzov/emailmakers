@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753857712474_2h2c5o4wbw6",
+  "name": "Осеннее путешествие в Гватемалу",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "путешественники, интересующиеся культурными достопримечательностями",
+  "user_request": "Создайте промо-email для осеннего путешествия в Гватемалу с акцентом на культурные достопримечательности, древние руины майя и уникальную природу. Призыв к действию: Забронировать тур в Гватемалу",
+  "created_at": "2025-07-30T06:41:52.478Z",
+  "status": "active",
+  "workflow_phase": "data_collection",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-30T06:42:32.420Z",
+  "notes": "Data analysis completed, ready for handoff to content specialist.",
+  "data": ""
+}

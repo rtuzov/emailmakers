@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T09:27:14.396Z",
+  "campaign_id": "campaign_1753867536046_jyj17m6dqoi",
+  "total_assets": 6,
+  "images": [
+    {
+      "filename": "external_PdU_hDS7ugk.jpg",
+      "path": "https://images.unsplash.com/photo-1617289445306-46912970c4fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3Vuc2V0JTIwc2lsaG91ZXR0ZXxlbnwwfDB8fHwxNzUzODc2NjI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1617289445306-46912970c4fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3Vuc2V0JTIwc2lsaG91ZXR0ZXxlbnwwfDB8fHwxNzUzODc2NjI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_PdU_hDS7ugk",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "sun covered by clouds during sunset",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_aVpCEGVJK0w.jpg",
+      "path": "https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4NzY2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1455114043983-850c8a283975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBtYXJrZXQlMjB2aWJyYW50JTIwY29sb3JzfGVufDB8MHx8fDE3NTM4NzY2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_aVpCEGVJK0w",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "green and red jalapenos on plates",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_Ye9MgFlD10E.jpg",
+      "path": "https://images.unsplash.com/photo-1494444753080-e0d457fa3563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhbnRpZ3VhJTIwZ3VhdGVtYWxhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBjb2JibGVzdG9uZSUyMHN0cmVldHN8ZW58MHwwfHx8MTc1Mzg3NjYzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1494444753080-e0d457fa3563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxhbnRpZ3VhJTIwZ3VhdGVtYWxhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBjb2JibGVzdG9uZSUyMHN0cmVldHN8ZW58MHwwfHx8MTc1Mzg3NjYzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_Ye9MgFlD10E",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "pathway of houses under blue clouds during daytime",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_F0f6CNjVn_o.jpg",
+      "path": "https://images.unsplash.com/photo-1591192626617-f9c691fa8df4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5pYyUyMGxhbmRzY2FwZSUyMGdyZWVuJTIwdmFsbGV5cyUyMG1vcm5pbmclMjBsaWdodHxlbnwwfDB8fHwxNzUzODc2NjMwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1591192626617-f9c691fa8df4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5pYyUyMGxhbmRzY2FwZSUyMGdyZWVuJTIwdmFsbGV5cyUyMG1vcm5pbmclMjBsaWdodHxlbnwwfDB8fHwxNzUzODc2NjMwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_F0f6CNjVn_o",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "green grass field near green trees during daytime",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_x3CNmk_STLM.jpg",
+      "path": "https://images.unsplash.com/photo-1650709245083-6f68ba0c1e17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW5zJTIwaGFuZG1hZGUlMjBjcmFmdHMlMjBjb2xvcmZ1bCUyMHRleHRpbGVzfGVufDB8MHx8fDE3NTM4NzY2MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1650709245083-6f68ba0c1e17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW5zJTIwaGFuZG1hZGUlMjBjcmFmdHMlMjBjb2xvcmZ1bCUyMHRleHRpbGVzfGVufDB8MHx8fDE3NTM4NzY2MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_x3CNmk_STLM",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "a person wearing a colorful mask",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_wM1EMSkgu7U.jpg",
+      "path": "https://images.unsplash.com/photo-1460078370929-3b28ad7313f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnJpc2UlMjBtaXN0eSUyMG1vdW50YWluc3xlbnwwfDB8fHwxNzUzODc2NjMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1460078370929-3b28ad7313f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnJpc2UlMjBtaXN0eSUyMG1vdW50YWluc3xlbnwwfDB8fHwxNzUzODc2NjMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_wM1EMSkgu7U",
+      "created": "2025-07-30T09:27:14.398Z",
+      "modified": "2025-07-30T09:27:14.398Z",
+      "tags": [],
+      "description": "fog covered forest at sunrise",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753867634394",
+    "status": "assets_collected"
+  }
+}

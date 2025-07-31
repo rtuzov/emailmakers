@@ -1,0 +1,109 @@
+{
+  "date_analysis_source": {
+    "total_optimal_dates": 5,
+    "optimal_dates": [
+      "2025-08-15",
+      "2025-09-01",
+      "2025-09-10",
+      "2025-09-20",
+      "2025-09-30"
+    ],
+    "pricing_windows": [
+      "период с 2025-08-01 по 2025-08-31 - высокий спрос из-за отпусков",
+      "период с 2025-09-01 по 2025-09-30 - снижение цен и меньший поток туристов"
+    ],
+    "booking_recommendation": "рекомендуется бронировать за 2-3 месяца до поездки для получения лучших цен",
+    "seasonal_factors": "летом в Москве много мероприятий, фестивалей и хорошая погода, что привлекает туристов. Сентябрь менее загружен, но погода все еще приятная."
+  },
+  "optimal_dates_pricing": {
+    "total_offers": 5,
+    "cheapest_on_optimal": 1016,
+    "most_expensive_on_optimal": 2644,
+    "average_on_optimal": 1552,
+    "optimal_date_prices": [
+      {
+        "date": "2025-08-15",
+        "price": 2644,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-01",
+        "price": 1491,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-10",
+        "price": 1437,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-20",
+        "price": 1172,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-30",
+        "price": 1016,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      }
+    ]
+  },
+  "comprehensive_pricing": {
+    "total_dates_analyzed": 20,
+    "total_offers_found": 70,
+    "date_range_analyzed": "2025-07-25 to 2025-10-07",
+    "best_price_overall": 1016,
+    "worst_price_overall": 2938,
+    "average_price_overall": 1699,
+    "currency": "RUB",
+    "route": "MOW → LED"
+  },
+  "price_insights": {
+    "optimal_vs_average_savings": 9,
+    "cheapest_optimal_date": "2025-09-30",
+    "price_volatility": 189
+  },
+  "enhanced_features": {
+    "date_analysis_integration": true,
+    "comprehensive_date_coverage": true,
+    "optimal_date_focus": true,
+    "airport_conversion": {
+      "originInfo": null,
+      "destinationInfo": {
+        "originalCode": "LED",
+        "finalCode": "LED",
+        "countryCode": "RU",
+        "isInternational": false,
+        "wasConverted": false
+      }
+    },
+    "csv_integration": "enabled",
+    "api_source": "kupibilet_api_v2"
+  },
+  "analysis_metadata": {
+    "analyzed_at": "2025-07-30T08:44:57.098Z",
+    "analysis_duration_ms": 714,
+    "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753865019995_j5r5yxo56sp/content/date-analysis.json",
+    "route_analyzed": "MOW-LED",
+    "trace_id": ""
+  },
+  "overall_analysis": {
+    "best_offer": {
+      "price": 1016,
+      "date": null
+    },
+    "price_range": {
+      "min": 1016,
+      "max": 2938
+    },
+    "currency": "RUB",
+    "total_offers": 70,
+    "route": "Москва → Санкт-Петербург",
+    "analysis_timestamp": "2025-07-30T08:44:57.098Z"
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "template_name": "DenmarkSpringDeal_1753772226699",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 580,
+    "responsive_breakpoints": [
+      "320px",
+      "480px",
+      "768px",
+      "1024px"
+    ],
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "48px"
+    }
+  },
+  "sections": [
+    {
+      "position": "header",
+      "dimensions": {
+        "width": 580,
+        "height": 80,
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "🌷 Откройте Данию этой весной!",
+      "typography": {
+        "font_size": "24px",
+        "font_weight": "bold",
+        "color": "#3A8EBA"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "hero",
+      "dimensions": {
+        "width": 580,
+        "height": 300,
+        "padding": "0"
+      },
+      "background": {
+        "image": "https://images.unsplash.com/photo-1709094979090-bc35418ab53b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwdHJhZGl0aW9uYWwlMjBkYW5jZSUyMHBlcmZvcm1hbmNlJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM3ODEwMzB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      "content": "",
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "content1",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "Весна в Дании – это не только цветение природы, но и время незабываемых приключений! Представьте себя гуляющим по уютным улочкам Копенгагена или наслаждающимся видами на побережье. И это всё может стать вашей реальностью уже через несколько недель!",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "content2",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "Мы подготовили для вас специальные предложения на рейсы в Данию: всего от 17,175₽. Оптимальные даты для путешествия: 5 и 22 августа, 8 и 25 сентября, 12 октября. Прямые рейсы без пересадок, которые позволяют легко добраться до места назначения.",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "benefits",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#B3E5FC",
+      "content": "💰 Экономия до 7,545₽ на билетах!\n✈️ Прямые рейсы без пересадок из Москвы\n🏨 Бесплатное бронирование отелей через наш сервис\n📞 Поддержка 24/7 на русском языке\n🔒 Гарантия лучшей цены - вернем разницу\n🆓 Бесплатная отмена бронирования до 24 часов",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "bold",
+        "color": "#3A8EBA"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "social_proof",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "★★★★★ 'Купила билеты через Kupibilet и сэкономила 12,000₽! В Копенгагене было потрясающе!' - Анна М., Москва.\nЗа последний месяц 1,247 россиян купили билеты в Данию.",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "urgency",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#FFEB3B",
+      "content": "⏰ Осталось всего 5 мест по этой цене! Забронируйте до 30 апреля, чтобы успеть поехать весной.",
+      "typography": {
+        "font_size": "18px",
+        "font_weight": "bold",
+        "color": "#D32F2F"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "cta",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#3A8EBA",
+      "content": "<a href='#' style='color: #FFFFFF; text-decoration: none; font-weight: bold;'>Купить билеты за 17,175₽ ✈️</a>",
+      "typography": {
+        "font_size": "20px",
+        "font_weight": "bold",
+        "color": "#FFFFFF"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    },
+    {
+      "position": "footer",
+      "dimensions": {
+        "width": 580,
+        "height": 80,
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "Не упустите возможность открыть для себя Данию с максимальной выгодой! Нажмите на кнопку ниже и начните свою приключенческую поездку уже сегодня!",
+      "typography": {
+        "font_size": "16px",
+        "font_weight": "normal",
+        "color": "#333333"
+      },
+      "spacing": {
+        "margin_bottom": "0"
+      }
+    },
+    {
+      "position": "gallery",
+      "dimensions": {
+        "width": 580,
+        "height": "auto",
+        "padding": "10px 20px"
+      },
+      "background": "#FFFFFF",
+      "content": "<img src='https://images.unsplash.com/photo-1667526273488-378aa6f5f113?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBldmVuaW5nJTIwd2luZSUyMHRhc3RpbmclMjB3aXRoJTIwdmlld3N8ZW58MHwwfHx8MTc1Mzc4MTAzMXww&ixlib=rb-4.1.0&q=80&w=1080' style='width: 100%; height: auto;' alt='wine'><img src='https://images.unsplash.com/photo-1637469720517-09be902db781?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMHRlbXBsZSUyMHRvdXIlMjBhdXR1bW4lMjBsZWF2ZXMlMjByZWZsZWN0aW9ufGVufDB8MHx8fDE3NTM3ODEwMzF8MA&ixlib=rb-4.1.0&q=80&w=1080' style='width: 100%; height: auto;' alt='house'><img src='https://images.unsplash.com/photo-1724568834710-d5db3faab7e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxiYWxpJTIwY29hc3RhbCUyMHJvdXRlJTIwaGlkZGVuJTIwYmVhY2glMjBleHBsb3JhdGlvbnxlbnwwfDB8fHwxNzUzNzgxMDMyfDA&ixlib=rb-4.1.0&q=80&w=1080' style='width: 100%; height: auto;' alt='cliff'>",
+      "typography": {
+        "font_size": "0px",
+        "font_weight": "normal",
+        "color": "#FFFFFF"
+      },
+      "spacing": {
+        "margin_bottom": "20px"
+      }
+    }
+  ],
+  "components": [
+    "hero-image",
+    "destination-showcase",
+    "price-highlight",
+    "cta-buttons",
+    "supporting-visuals"
+  ],
+  "visual_concept": {
+    "theme": "ScandinavianElegance",
+    "style": "MinimalisticFresh",
+    "mood": "InvitingSunny"
+  },
+  "target_audience": "Российские туристы, желающие путешествовать в Данию весной 2025 года",
+  "improvements_applied": [
+    "Добавлены все доступные изображения в галерею.",
+    "Оптимизирована структура для компактности.",
+    "Использованы привлекательные кнопки CTA."
+  ],
+  "metadata": {
+    "generated_at": "2025-07-29T06:57:52.216Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "campaign_type": "promotional",
+    "trace_id": "unique-redesign-trace",
+    "brand_colors": {
+      "primary": "#8B008B",
+      "accent": "#20B2AA",
+      "background": "#F8F9FA"
+    }
+  }
+}

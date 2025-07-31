@@ -1,0 +1,28 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "International flights available through major airports; local transport includes buses and taxis.",
+    "pricing_trends": "Pricing has been increasing annually by 5-10% due to demand; budget travelers can find deals in off-peak periods.",
+    "seasonal_patterns": "Peak season from June to September; off-peak from October to May.",
+    "booking_windows": "Optimal booking times are 3-6 months in advance for better deals.",
+    "destination_insights": {
+      "route_analysis": "International flights available through major airports; local transport includes buses and taxis.",
+      "seasonal_patterns": "Peak season from June to September; off-peak from October to May.",
+      "climate": "Warm summers average 25-30°C; mild winters average 5-10°C.",
+      "culture": "Rich in traditions; festivals celebrated widely throughout the year; gastronomy emphasizes local cuisine."
+    },
+    "market_insights": {
+      "pricing_trends": "Pricing has been increasing annually by 5-10% due to demand; budget travelers can find deals in off-peak periods.",
+      "booking_windows": "Optimal booking times are 3-6 months in advance for better deals.",
+      "demand": "Growing interest in ecotourism and cultural experiences.",
+      "competition": "Mid-tier destinations are seeing a rise; key competitors include Thailand and Mexico for similar cultural experiences."
+    },
+    "trend_insights": {
+      "market_trends": "Increased demand for sustainable travel options; travelers favor remote areas due to Covid-19.",
+      "consumer_behavior": "Travelers are researching extensively online prior to booking; emphasis on reviews and testimonials.",
+      "competitive_landscape": "Domestic travel is increasing; eco-friendly accommodations are a significant selling point.",
+      "seasonal_factors": "Summer attracts more families; winter sees increased travel for winter sports."
+    }
+  },
+  "saved_at": "2025-07-30T08:14:06.977Z"
+}

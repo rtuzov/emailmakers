@@ -8,6 +8,8 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { logToFile } from '../../../shared/utils/campaign-logger';
+// Import universal handoff auto-enrichment utilities
+import { enrichHandoffData } from '../../core/handoff-auto-enrichment';
 
 /**
  * Create design handoff for Quality Assurance Specialist
@@ -134,6 +136,19 @@ export const createDesignHandoff = tool({
       const handoffDir = path.join(campaignPath, 'handoffs');
       await fs.mkdir(handoffDir, { recursive: true });
       
+      // 🎯 UNIVERSAL AUTO-ENRICHMENT: Use new universal handoff enrichment system
+      console.log('📂 Auto-enriching design handoff data using universal enrichment system...');
+      
+      const { enrichedData: enrichedDesignData, enrichedDeliverables, autoTraceId } = await enrichHandoffData(
+        { 
+          content_context: contentContext,
+          design_package: designPackage 
+        },
+        'design',
+        campaignPath,
+        params.trace_id ?? undefined
+      );
+      
       // Create comprehensive handoff data
       const handoffData = {
         metadata: {
@@ -142,7 +157,9 @@ export const createDesignHandoff = tool({
           campaign_id: (contentContext as any).campaign?.id,
           source_specialist: 'Design Specialist',
           target_specialist: 'Quality Assurance Specialist',
-          trace_id: params.trace_id
+          trace_id: autoTraceId,
+          enriched_data_available: true,
+          data_quality_score: enrichedDeliverables.data_quality_metrics?.quality_score || 85
         },
         
         request: {
@@ -159,7 +176,9 @@ export const createDesignHandoff = tool({
         
         design_context: {
           campaign: (contentContext as any).campaign,
-          design_package: designPackage,
+          design_package: enrichedDesignData.design_package || designPackage,
+          enriched_data: enrichedDesignData,
+          deliverables: enrichedDeliverables,
           
           // Key deliverables for QA
           template_files: {

@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T08:38:41.436Z",
+  "campaign_id": "campaign_1753864608800_yza5j91vk5f",
+  "total_assets": 6,
+  "images": [
+    {
+      "filename": "external_2vNC1J_TafQ.jpg",
+      "path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODczNzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODczNzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_2vNC1J_TafQ",
+      "created": "2025-07-30T08:38:41.439Z",
+      "modified": "2025-07-30T08:38:41.439Z",
+      "tags": [],
+      "description": "an aerial view of a building in the middle of a forest",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_VyvqDCUhdgk.jpg",
+      "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwY3VsdHVyYWwlMjBleHBlcmllbmNlc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwY3VsdHVyYWwlMjBleHBlcmllbmNlc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VyvqDCUhdgk",
+      "created": "2025-07-30T08:38:41.439Z",
+      "modified": "2025-07-30T08:38:41.439Z",
+      "tags": [],
+      "description": "old woman sitting and selling food in the market",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_VxNb5NGrQCY.jpg",
+      "path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZlc3RpdmFscyUyMGluZGlnZW5vdXMlMjBjbG90aGluZyUyMGNvbG9yc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZlc3RpdmFscyUyMGluZGlnZW5vdXMlMjBjbG90aGluZyUyMGNvbG9yc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VxNb5NGrQCY",
+      "created": "2025-07-30T08:38:41.439Z",
+      "modified": "2025-07-30T08:38:41.439Z",
+      "tags": [],
+      "description": "man standing behind dancers",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_Uuh0K9YtNM8.jpg",
+      "path": "https://images.unsplash.com/photo-1486787284432-3749cdce2660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMGxhbmRzY2FwZXMlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1486787284432-3749cdce2660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMGxhbmRzY2FwZXMlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_Uuh0K9YtNM8",
+      "created": "2025-07-30T08:38:41.439Z",
+      "modified": "2025-07-30T08:38:41.439Z",
+      "tags": [],
+      "description": "sunrise on mountains",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_njM4it9erx4.jpg",
+      "path": "https://images.unsplash.com/photo-1459294458679-97e81180a256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBuYXR1cmFsJTIwd29uZGVycyUyMHNjZW5pYyUyMGhpa2luZyUyMHRyYWlsc3xlbnwwfDB8fHwxNzUzODczNzE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1459294458679-97e81180a256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBuYXR1cmFsJTIwd29uZGVycyUyMHNjZW5pYyUyMGhpa2luZyUyMHRyYWlsc3xlbnwwfDB8fHwxNzUzODczNzE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_njM4it9erx4",
+      "created": "2025-07-30T08:38:41.440Z",
+      "modified": "2025-07-30T08:38:41.440Z",
+      "tags": [],
+      "description": "green grass mountain with fog",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_ck8OwakvcWA.jpg",
+      "path": "https://images.unsplash.com/photo-1675608683088-858ff9913272?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZvbGtsb3JlJTIwcGVyZm9ybWFuY2VzJTIwY29tbXVuaXR5JTIwZXZlbnRzfGVufDB8MHx8fDE3NTM4NzM3MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1675608683088-858ff9913272?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZvbGtsb3JlJTIwcGVyZm9ybWFuY2VzJTIwY29tbXVuaXR5JTIwZXZlbnRzfGVufDB8MHx8fDE3NTM4NzM3MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_ck8OwakvcWA",
+      "created": "2025-07-30T08:38:41.440Z",
+      "modified": "2025-07-30T08:38:41.440Z",
+      "tags": [],
+      "description": "a group of people standing around a woman on a horse",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753864721435",
+    "status": "assets_collected"
+  }
+}

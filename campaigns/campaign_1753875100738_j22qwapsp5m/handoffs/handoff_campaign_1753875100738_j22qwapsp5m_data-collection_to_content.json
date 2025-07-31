@@ -1,0 +1,110 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753875100738_j22qwapsp5m",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753875100738_j22qwapsp5m",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Guatemala is increasingly popular for eco-tourism",
+        "December to February is peak season",
+        "Authentic cultural experiences are highly sought after"
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T11:32:06.364Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753875100738_j22qwapsp5m/data/key_insights_insights.json"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Guatemala has well-connected roads, with major routes leading to key cities and natural attractions. Public transport includes buses and shuttles.",
+        "seasonal_patterns": "The optimal months to visit Guatemala are from November to April, avoiding the rainy season (May to October).",
+        "climate": "The climate is tropical; expect warm temperatures during the day (20-30°C) and cooler nights, especially in highland areas. Rain is common in the wet season.",
+        "culture": "Guatemala is rich in Mayan history, with vibrant traditions, colorful festivals, and local markets. Highlights include Semana Santa (Holy Week) and Día de los Muertos (Day of the Dead).",
+        "attractions": "Key places to visit include Antigua, Lake Atitlan, Tikal National Park, and Semuc Champey."
+      },
+      "saved_at": "2025-07-30T11:32:06.365Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by cultural exploration, adventure activities, and natural beauty.",
+        "triggers": "Emotional factors include the desire for authentic experiences and a connection to nature.",
+        "desires": "Tourists seek unique cultural encounters, scenic landscapes, and relaxation opportunities."
+      },
+      "saved_at": "2025-07-30T11:32:06.365Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Prices for flights tend to rise during the peak tourist season (December to February).",
+        "booking_windows": "The best time to book flights is 3 to 6 months in advance, especially for holiday periods.",
+        "demand": "Guatemala remains a growing travel destination, especially for eco and adventure tourism.",
+        "competition": "Alternative destinations include Costa Rica and Belize, offering similar attractions but different travel experiences."
+      },
+      "saved_at": "2025-07-30T11:32:06.365Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "There is an increasing trend towards sustainable tourism and local adventure experiences in Guatemala.",
+        "consumer_behavior": "Travelers prefer immersive experiences that connect them to local communities and environments.",
+        "competitive_landscape": "Competitors focus on promoting eco-friendly travel packages, adventure tours, and cultural experiences.",
+        "seasonal_factors": "Travel demand peaks during the dry season, especially around holidays and festivals."
+      },
+      "saved_at": "2025-07-30T11:32:06.365Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T11:32:06.368Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive travel analysis for Guatemala in fall completed, including destination analysis, market intelligence, emotional profile, and trend analysis.",
+    "context_for_next": "Focus on highlighting eco-tourism and cultural experiences in marketing content.",
+    "recommendations": [
+      "Integrate key seasonal insights into content",
+      "Utilize actionable insights for promotions"
+    ],
+    "priority_items": null,
+    "potential_issues": null,
+    "success_criteria": [
+      "Engaging content that attracts target audience",
+      "Clear messaging around unique experiences"
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 6,
+      "completion_rate": 75,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753875126368_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T11:32:06.368Z"
+}

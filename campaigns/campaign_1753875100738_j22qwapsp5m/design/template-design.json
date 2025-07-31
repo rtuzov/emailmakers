@@ -1,0 +1,235 @@
+{
+  "template_name": "Гватемала_Специальное_Предложение_1753875296298",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 580,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "20px",
+      "xl": "30px",
+      "2xl": "40px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "768px",
+      "1024px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "hero",
+      "size": {
+        "width": "100%",
+        "height": "500px",
+        "padding": "0"
+      },
+      "background": {
+        "color": "#FFFFFF",
+        "image": "https://images.unsplash.com/photo-1446822775955-c34f483b410b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBzdW5zZXQlMjB3aW5lJTIwdGFzdGluZyUyMGZlc3RpdmFsfGVufDB8MHx8fDE3NTM4ODQyMTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      "content": {
+        "text": "🌴 Откройте для себя Гватемалу этим осенним сезоном!",
+        "typography": {
+          "font_size": "36px",
+          "font_weight": "bold",
+          "color": "#4A7C2A"
+        }
+      }
+    },
+    {
+      "position": "content1",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Летите с нами всего за 69,474₽ и сэкономьте до 14,843₽!",
+        "typography": {
+          "font_size": "24px",
+          "font_weight": "normal",
+          "color": "#4A7C2A"
+        }
+      }
+    },
+    {
+      "position": "content2",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Представьте себя, гуляющим по экзотическим улицам Гватемалы. Этот осенний сезон — идеальное время для новых приключений!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "normal",
+          "color": "#000000"
+        }
+      }
+    },
+    {
+      "position": "benefits",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#E3B04B"
+      },
+      "content": {
+        "text": "💰 Экономия до 14,843₽ на билетах! ✈️ Прямые рейсы без пересадок из Москвы 🏨 Бесплатное бронирование отелей через наш сервис 📞 Поддержка 24/7 на русском языке 🔒 Гарантия лучшей цены - если найдете дешевле, вернем разницу 🆓 Бесплатная отмена до 24 часов",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    {
+      "position": "social_proof",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "★★★★★ 'Купил билеты через Kupibilet - сэкономил 12,000₽!' - Дмитрий С., Москва. 📊 Более 1,247 россиян выбрали Гватемалу за последний месяц!",
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "normal",
+          "color": "#000000"
+        }
+      }
+    },
+    {
+      "position": "urgency",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#E3B04B"
+      },
+      "content": {
+        "text": "⏰ Остались только 12 мест по этой цене! Бронируйте до конца недели, чтобы успеть!",
+        "typography": {
+          "font_size": "20px",
+          "font_weight": "bold",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    {
+      "position": "cta",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#E3B04B"
+      },
+      "content": {
+        "primary_cta": {
+          "text": "Купить билеты за 69,474₽ ✈️",
+          "action": "link_to_booking_page",
+          "typography": {
+            "font_size": "18px",
+            "font_weight": "bold",
+            "color": "#FFFFFF"
+          }
+        },
+        "secondary_cta": {
+          "text": "Посмотреть все рейсы 🔍",
+          "action": "link_to_all_flights",
+          "typography": {
+            "font_size": "16px",
+            "font_weight": "normal",
+            "color": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "position": "gallery",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "20px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "images": [
+          {
+            "path": "https://images.unsplash.com/photo-1503332771034-6cb2342dee87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxreW90byUyMGdpb24lMjBtYXRzdXJpJTIwc3RyZWV0JTIwcGVyZm9ybWVycyUyMG5pZ2h0fGVufDB8MHx8fDE3NTM4ODQyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "time lapse photography of people walking on street"
+          },
+          {
+            "path": "https://images.unsplash.com/reserve/deWsjFWeRomZBJAagqa3_2014-06-28%2015.08.47-1.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxjYXBlJTIwdG93biUyMGNvYXN0YWwlMjBoaWtpbmclMjB0cmFpbHMlMjBzcHJpbmclMjBibG9vbXN8ZW58MHwwfHx8MTc1Mzg4NDIyMHww&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "person sitting on cliff near body of water"
+          },
+          {
+            "path": "https://images.unsplash.com/photo-1540425497584-cc47e6d9ae56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBjYWxkZXJhJTIwdmlldyUyMHRyYXZlbGVycyUyMGVuam95aW5nJTIwc3Vuc2V0fGVufDB8MHx8fDE3NTM4ODQyMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+            "description": "silhouette photo of mountains during golden hour"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "image",
+      "size": {
+        "width": "100%",
+        "height": "auto"
+      },
+      "path": "https://images.unsplash.com/photo-1446822775955-c34f483b410b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxzYW50b3JpbmklMjBzdW5zZXQlMjB3aW5lJTIwdGFzdGluZyUyMGZlc3RpdmFsfGVufDB8MHx8fDE3NTM4ODQyMTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      "type": "text",
+      "size": {
+        "width": "100%",
+        "height": "auto"
+      },
+      "content": "Забронируйте ваши билеты на оптимальные даты: 15 сентября, 1 и 15 октября, 1 и 15 ноября."
+    }
+  ],
+  "visual_concept": {
+    "theme": "Гватемальская_Идиллия",
+    "style": "Современный_Минимализм",
+    "mood": "Вдохновляющий_и_Приглашающий"
+  },
+  "target_audience": "Путешественники, ищущие экзотические приключения и культурные впечатления.",
+  "improvements_applied": [
+    "Оптимизация структуры под HTML меньше 600 строк",
+    "Создание компактных блоков преимуществ",
+    "Использование всех доступных изображений в галерее"
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T11:35:52.635Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-trace",
+    "brand_colors": {
+      "primary": "#E3B04B",
+      "accent": "#4A7C2A",
+      "background": "#FFFFFF"
+    },
+    "campaign_type": "promotional"
+  }
+}

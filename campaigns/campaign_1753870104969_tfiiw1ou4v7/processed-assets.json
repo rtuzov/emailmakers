@@ -1,0 +1,256 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_oDZyswNe6jg.jpg",
+        "path": "https://images.unsplash.com/photo-1476846097969-46bc4cd7da07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMGZvZ2d5JTIwbW9ybmluZ3xlbnwwfDB8fHwxNzUzODc5MjE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1476846097969-46bc4cd7da07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMGZvZ2d5JTIwbW9ybmluZ3xlbnwwfDB8fHwxNzUzODc5MjE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_oDZyswNe6jg",
+        "created": "2025-07-30T10:10:21.952Z",
+        "modified": "2025-07-30T10:10:21.952Z",
+        "tags": [],
+        "description": "fog-covered mountain scenery",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1476846097969-46bc4cd7da07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMGZvZ2d5JTIwbW9ybmluZ3xlbnwwfDB8fHwxNzUzODc5MjE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T10:12:43.554Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_Bjaib80qDlo.jpg",
+        "path": "https://images.unsplash.com/photo-1591453022135-9ea84127b8ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwdGV4dGlsZXMlMjBjb21tdW5pdHl8ZW58MHwwfHx8MTc1Mzg3OTIxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1591453022135-9ea84127b8ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwdGV4dGlsZXMlMjBjb21tdW5pdHl8ZW58MHwwfHx8MTc1Mzg3OTIxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_Bjaib80qDlo",
+        "created": "2025-07-30T10:10:21.952Z",
+        "modified": "2025-07-30T10:10:21.952Z",
+        "tags": [],
+        "description": "woman in white t-shirt holding blue and yellow wicker basket",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1591453022135-9ea84127b8ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwdGV4dGlsZXMlMjBjb21tdW5pdHl8ZW58MHwwfHx8MTc1Mzg3OTIxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T10:12:43.554Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_bPB7QU5PquY.jpg",
+        "path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBjb29raW5nJTIwY2xhc3MlMjBsb2NhbCUyMGNoZWZzfGVufDB8MHx8fDE3NTM4NzkyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBjb29raW5nJTIwY2xhc3MlMjBsb2NhbCUyMGNoZWZzfGVufDB8MHx8fDE3NTM4NzkyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_bPB7QU5PquY",
+        "created": "2025-07-30T10:10:21.952Z",
+        "modified": "2025-07-30T10:10:21.952Z",
+        "tags": [],
+        "description": "man wearing blue polo shirt near firepit",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBjb29raW5nJTIwY2xhc3MlMjBsb2NhbCUyMGNoZWZzfGVufDB8MHx8fDE3NTM4NzkyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T10:12:43.554Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_SV3V_D1G2q4.jpg",
+        "path": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_SV3V-D1G2q4",
+        "created": "2025-07-30T10:10:21.952Z",
+        "modified": "2025-07-30T10:10:21.952Z",
+        "tags": [],
+        "description": "body of water near mountain during blue hour",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T10:12:43.554Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_HkrirTHELjE.jpg",
+        "path": "https://images.unsplash.com/photo-1519074598089-6436475c7f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBpbmRpZ2Vub3VzJTIwZmVzdGl2YWxzJTIwZm9sayUyMGRhbmNlcyUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg3OTIxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1519074598089-6436475c7f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBpbmRpZ2Vub3VzJTIwZmVzdGl2YWxzJTIwZm9sayUyMGRhbmNlcyUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg3OTIxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_HkrirTHELjE",
+        "created": "2025-07-30T10:10:21.952Z",
+        "modified": "2025-07-30T10:10:21.952Z",
+        "tags": [],
+        "description": "boy in traditional costume in shallow focus photography",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1519074598089-6436475c7f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBpbmRpZ2Vub3VzJTIwZmVzdGl2YWxzJTIwZm9sayUyMGRhbmNlcyUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg3OTIxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T10:12:43.554Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 0,
+    "optimization_level": "aggressive",
+    "processed_at": "2025-07-30T10:12:43.554Z"
+  }
+}

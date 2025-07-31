@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T11:45:02.537Z",
+  "campaign_id": "campaign_1753875774806_xu3007rx1lj",
+  "total_assets": 6,
+  "images": [
+    {
+      "filename": "external_VyvqDCUhdgk.jpg",
+      "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMHN0cmVldCUyMGZvb2QlMjBtYXJrZXQlMjBidXN0bGV8ZW58MHwwfHx8MTc1Mzg4NDg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMHN0cmVldCUyMGZvb2QlMjBtYXJrZXQlMjBidXN0bGV8ZW58MHwwfHx8MTc1Mzg4NDg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VyvqDCUhdgk",
+      "created": "2025-07-30T11:45:02.537Z",
+      "modified": "2025-07-30T11:45:02.537Z",
+      "tags": [],
+      "description": "old woman sitting and selling food in the market",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external__knI9nM5VvA.jpg",
+      "path": "https://images.unsplash.com/photo-1640864668751-5d18462c0fc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzgwMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1640864668751-5d18462c0fc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwY29sb25pYWwlMjBhcmNoaXRlY3R1cmUlMjBzdW5zZXR8ZW58MHwwfHx8MTc1MzgwMTc1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_-knI9nM5VvA",
+      "created": "2025-07-30T11:45:02.538Z",
+      "modified": "2025-07-30T11:45:02.538Z",
+      "tags": [],
+      "description": "a man standing in front of a yellow wall",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_h7FysA92Jww.jpg",
+      "path": "https://images.unsplash.com/photo-1504768698754-83a2eef21732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwdm9sY2FuaWMlMjBsYW5kc2NhcGVzJTIwbW9ybmluZyUyMGZvZ3xlbnwwfDB8fHwxNzUzODg0ODk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1504768698754-83a2eef21732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwdm9sY2FuaWMlMjBsYW5kc2NhcGVzJTIwbW9ybmluZyUyMGZvZ3xlbnwwfDB8fHwxNzUzODg0ODk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_h7FysA92Jww",
+      "created": "2025-07-30T11:45:02.538Z",
+      "modified": "2025-07-30T11:45:02.538Z",
+      "tags": [],
+      "description": "black mountain under blue sky at daytime",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_VxNb5NGrQCY.jpg",
+      "path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1heWFuJTIwZGFuY2UlMjBmZXN0aXZhbCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg4NDg5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMG1heWFuJTIwZGFuY2UlMjBmZXN0aXZhbCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1Mzg4NDg5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_VxNb5NGrQCY",
+      "created": "2025-07-30T11:45:02.538Z",
+      "modified": "2025-07-30T11:45:02.538Z",
+      "tags": [],
+      "description": "man standing behind dancers",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_SkIy9L2LjnI.jpg",
+      "path": "https://images.unsplash.com/photo-1457414254764-c87b209f5249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwdG91ciUyMHNjZW5pYyUyMHZpZXdzfGVufDB8MHx8fDE3NTM4ODQ4OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1457414254764-c87b209f5249?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwdG91ciUyMHNjZW5pYyUyMHZpZXdzfGVufDB8MHx8fDE3NTM4ODQ4OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_SkIy9L2LjnI",
+      "created": "2025-07-30T11:45:02.538Z",
+      "modified": "2025-07-30T11:45:02.538Z",
+      "tags": [],
+      "description": "cloudy sky over mountain",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_kf089lAIXpo.jpg",
+      "path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdW5yaXNlJTIwb3ZlciUyMGxha2UlMjBhdGl0bGFuJTIwcmVmbGVjdGlvbnN8ZW58MHwwfHx8MTc1Mzg4NDkwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1678338711156-b97e6857e17b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBzdW5yaXNlJTIwb3ZlciUyMGxha2UlMjBhdGl0bGFuJTIwcmVmbGVjdGlvbnN8ZW58MHwwfHx8MTc1Mzg4NDkwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_kf089lAIXpo",
+      "created": "2025-07-30T11:45:02.538Z",
+      "modified": "2025-07-30T11:45:02.538Z",
+      "tags": [],
+      "description": "the sun is setting over the mountains in the distance",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753875902536",
+    "status": "assets_collected"
+  }
+}

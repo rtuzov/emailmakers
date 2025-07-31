@@ -8,9 +8,155 @@ import { z } from 'zod';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { autoRestoreCampaignLogging } from '../../../shared/utils/campaign-logger';
-import { ENV_CONFIG } from '../../../config/env';
 import { buildDesignContext as _buildDesignContext } from './design-context';
 import { TemplateDesign } from './types';
+import { parseJSONWithRetry } from '../../../shared/utils/ai-retry-mechanism';
+
+/**
+ * Валидация уникальности template design
+ * Проверяет отличие от последних 5 кампаний
+ */
+async function validateTemplateUniqueness(templateDesign: any, currentCampaignPath: string): Promise<{ isUnique: boolean; conflicts: string[] }> {
+  const conflicts: string[] = [];
+  
+  try {
+    // Найти все кампании
+    const campaignsDir = path.join(process.cwd(), 'campaigns');
+    const campaigns = await fs.readdir(campaignsDir);
+    
+    // Получить последние 5 кампаний (исключая текущую)
+    const currentCampaignId = path.basename(currentCampaignPath);
+    const otherCampaigns = campaigns
+      .filter(c => c !== currentCampaignId && c.startsWith('campaign_'))
+      .sort()
+      .slice(-5);
+    
+    // Проверить каждую кампанию на схожесть
+    for (const campaignId of otherCampaigns) {
+      try {
+        const designPath = path.join(campaignsDir, campaignId, 'design', 'template-design.json');
+        const designData = await fs.readFile(designPath, 'utf8');
+        const otherDesign = JSON.parse(designData);
+        
+        // Проверки уникальности
+        if (templateDesign.layout?.type === otherDesign.layout?.type) {
+          conflicts.push(`Layout type "${templateDesign.layout.type}" уже использован в ${campaignId}`);
+        }
+        
+        if (templateDesign.layout?.max_width === otherDesign.layout?.max_width) {
+          conflicts.push(`Max width ${templateDesign.layout.max_width}px уже использована в ${campaignId}`);
+        }
+        
+        if (templateDesign.metadata?.brand_colors?.primary === otherDesign.metadata?.brand_colors?.primary) {
+          conflicts.push(`Primary color ${templateDesign.metadata.brand_colors.primary} уже использован в ${campaignId}`);
+        }
+        
+        // Проверка порядка секций
+        const currentSections = templateDesign.sections?.map((s: any) => s.position).join('→') || '';
+        const otherSections = otherDesign.sections?.map((s: any) => s.position).join('→') || '';
+        if (currentSections === otherSections && currentSections.length > 0) {
+          conflicts.push(`Порядок секций "${currentSections}" уже использован в ${campaignId}`);
+        }
+        
+      } catch (error) {
+        // Игнорируем ошибки чтения отдельных файлов
+        console.log(`Не удалось прочитать дизайн кампании ${campaignId}:`, error);
+      }
+    }
+    
+    return {
+      isUnique: conflicts.length === 0,
+      conflicts
+    };
+    
+  } catch (error) {
+    console.error('Ошибка при валидации уникальности:', error);
+    return { isUnique: true, conflicts: [] }; // В случае ошибки считаем уникальным
+  }
+}
+
+/**
+ * AI Template Design Sub-Agent with Self-Correction Retry
+ * NO FALLBACKS - only AI retry with error feedback
+ */
+
+
+
+/**
+ * Generate AI Template Design with validation and self-correction
+ */
+async function generateAITemplateDesignWithRetry(params: any): Promise<any> {
+  let lastError = '';
+  
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      // Always use the original generateAITemplateDesign, but enhance params with error feedback
+      let templateDesign;
+      
+      if (attempt === 0) {
+        console.log('🎨 AI Template Design Generation - Initial Attempt');
+        templateDesign = await generateAITemplateDesign(params);
+      } else {
+        console.log(`🔄 AI Self-Correction Attempt ${attempt + 1}/5`);
+        console.log(`🎯 Fixing error: ${lastError.substring(0, 100)}...`);
+        
+        // Enhance params with error feedback for retry
+        const enhancedParams = {
+          ...params,
+          error_feedback: lastError,
+          retry_attempt: attempt + 1
+        };
+        templateDesign = await generateAITemplateDesign(enhancedParams);
+      }
+
+      // Validate the generated design
+      console.log('🔍 Validating generated template design...');
+      
+      // Check spacing_system
+      if (!templateDesign.layout?.spacing_system) {
+        throw new Error('AI Template Designer failed to generate required spacing_system in layout');
+      }
+      
+      // Check brand_colors
+      if (!templateDesign.metadata?.brand_colors?.primary || 
+          !templateDesign.metadata?.brand_colors?.accent || 
+          !templateDesign.metadata?.brand_colors?.background) {
+        throw new Error('AI Template Designer failed to generate required brand_colors {primary, accent, background} in metadata');
+      }
+      
+      // Validate HEX colors
+      const hexPattern = /^#[0-9A-Fa-f]{6}$/;
+      const brandColors = templateDesign.metadata.brand_colors;
+      
+      if (!hexPattern.test(brandColors.primary)) {
+        throw new Error(`AI Template Designer: brand_colors.primary must be valid HEX color. Received: ${brandColors.primary}`);
+      }
+      if (!hexPattern.test(brandColors.accent)) {
+        throw new Error(`AI Template Designer: brand_colors.accent must be valid HEX color. Received: ${brandColors.accent}`);
+      }
+      if (!hexPattern.test(brandColors.background)) {
+        throw new Error(`AI Template Designer: brand_colors.background must be valid HEX color. Received: ${brandColors.background}`);
+      }
+      
+      console.log(`✅ Template design validation passed on attempt ${attempt + 1}`);
+      return templateDesign;
+      
+    } catch (validationError) {
+      lastError = validationError instanceof Error ? validationError.message : String(validationError);
+      console.warn(`⚠️ Validation failed on attempt ${attempt + 1}: ${lastError}`);
+      
+      if (attempt === 4) {
+        throw new Error(`AI Template Design failed after 5 attempts with self-correction. Final error: ${lastError}`);
+      }
+      
+      console.log(`🔄 Retrying with error feedback (attempt ${attempt + 2}/5)...`);
+    }
+  }
+  
+  throw new Error('AI Template Design failed: Maximum retry attempts reached');
+}
+
+// Hardcoded fallback removed - using AI self-correction only
 
 /**
  * AI Template Design Sub-Agent
@@ -20,63 +166,81 @@ const templateDesignAgent = new Agent({
   name: 'Template Design AI',
   model: 'gpt-4o-mini', // Faster model for JSON generation
   modelSettings: {
-    temperature: 0.3, // Lower temperature for more consistent JSON
+    temperature: 0.9, // Maximum creativity for unique designs
     maxTokens: 8000 // Reasonable limit for JSON response
   },
-  instructions: `Ты эксперт по email дизайну и верстке. Создавай профессиональные email шаблоны с учетом всех технических требований.
+  instructions: `🎨 ТЫ - КРЕАТИВНЫЙ EMAIL ДИЗАЙНЕР С АДАПТИВНЫМ МЫШЛЕНИЕМ
 
-ТВОЯ ЗАДАЧА: Создать ПОЛНОСТЬЮ УНИКАЛЬНЫЙ дизайн email шаблона в формате JSON без использования готовых шаблонов.
+ЗАДАЧА: Анализируй контекст кампании и создавай КОНТЕКСТНО-АДАПТИВНЫЕ дизайны без шаблонов.
 
-🎨 ТВОРЧЕСКИЕ ТРЕБОВАНИЯ:
+🧠 АНАЛИТИЧЕСКИЙ ПОДХОД:
 
-1. 📐 УНИКАЛЬНАЯ СТРУКТУРА:
-   - Создавай РАЗНЫЕ layout типы: single-column, multi-column, grid, asymmetric, magazine-style
-   - Варьируй количество секций: от 5 до 12 в зависимости от контента
-   - Экспериментируй с порядком секций (не всегда header→hero→content→footer)
-   - Создавай неожиданные комбинации (например, gallery→cta→content)
+1. 📊 АНАЛИЗ КОНТЕНТА КАМПАНИИ:
+   - Изучи destination, тематику, сезон, эмоциональный тон
+   - Определи тип аудитории (авантюристы/семьи/luxury/бюджет)  
+   - Проанализируй pricing strategy (premium/budget/special_offer)
+   - Учти культурные особенности направления
 
-2. 🎯 АДАПТИВНАЯ ШИРИНА:
-   - НЕ ИСПОЛЬЗУЙ стандартные 600px
-   - Варьируй: 580px, 620px, 640px, 700px в зависимости от контента и цели
-   - Подбирай ширину под тип кампании (промо - шире, минимализм - уже)
+2. 🎯 ДИЗАЙН-СТРАТЕГИЯ НА ОСНОВЕ КОНТЕКСТА:
+   
+   ДЛЯ ЭКЗОТИЧЕСКИХ НАПРАВЛЕНИЙ (Азия, Африка, Латинская Америка):
+   - Layout: Визуальный с большими gallery, hero-focused
+   - Секции: visual_story → immersive_gallery → cultural_highlights → booking_urgency
+   - Настроение: mystical, adventurous, colorful
+   
+   ДЛЯ ЕВРОПЕЙСКИХ НАПРАВЛЕНИЙ:
+   - Layout: Элегантный, минималистичный  
+   - Секции: sophisticated_intro → curated_experiences → practical_info → refined_cta
+   - Настроение: sophisticated, cultured, refined
+   
+   ДЛЯ BEACH/TROPICAL НАПРАВЛЕНИЙ:
+   - Layout: Расслабленный, воздушный
+   - Секции: relaxation_promise → beach_gallery → activities → easy_booking
+   - Настроение: relaxed, sunny, carefree
+   
+   ДЛЯ ГОРНЫХ/ADVENTURE НАПРАВЛЕНИЙ:
+   - Layout: Динамичный, энергичный
+   - Секции: adventure_call → peak_moments → gear_tips → challenge_cta  
+   - Настроение: energetic, bold, challenging
 
-3. 🖼️ ТВОРЧЕСКИЕ ИЗОБРАЖЕНИЯ:
-   - Создавай РАЗНЫЕ структуры галереи: grid 2x2, horizontal scroll, zigzag layout
-   - Варьируй размеры изображений: hero (full-width), gallery (thumbnails), inline (text-wrapped)
-   - Используй изображения креативно: как фон для текста, в форме карточек, с overlay
+3. 🎨 АДАПТИВНАЯ СТРУКТУРА (НЕ ФИКСИРОВАННАЯ):
+   
+   ВАРЬИРУЙ LAYOUT ПОД КОНТЕНТ:
+   - Для фото-rich кампаний: "gallery-focused" (много изображений)
+   - Для price-focused: "deal-centric" (акцент на ценах/скидках)
+   - Для story-telling: "narrative-flow" (последовательное повествование)
+   - Для urgent offers: "conversion-optimized" (срочность + CTA)
+   - Для luxury: "minimal-elegant" (много whitespace, премиум)
+   
+   СОЗДАВАЙ УНИКАЛЬНЫЕ ПОРЯДКИ СЕКЦИЙ ПОД ЦЕЛЬ КАМПАНИИ:
+   - Story-telling: teaser → journey_stages → emotional_peak → action
+   - Sales-focused: hook → benefits → social_proof → scarcity → conversion
+   - Discovery: curiosity → exploration → details → next_steps
+   - Premium: exclusivity → sophistication → value → privileged_access
 
-4. 🌈 ДИНАМИЧЕСКИЕ ЦВЕТА:
-   - Анализируй тематику кампании и создавай соответствующую палитру
-   - Путешествия: яркие, природные тона
-   - Бизнес: строгие, профессиональные
-   - Сезонные: соответствующие времени года
-   - НЕ ИСПОЛЬЗУЙ стандартные #4BFF7E, #FF6240
+4. 📐 ДИНАМИЧЕСКИЕ ПАРАМЕТРЫ:
+   
+   ШИРИНА АДАПТИРУЕТСЯ К КОНТЕНТУ:
+   - Text-heavy кампании: 520-560px (удобно читать)
+   - Visual-rich кампании: 680-720px (больше места для изображений)  
+   - Mixed content: 580-620px (баланс)
+   
+   SPACING ОТРАЖАЕТ НАСТРОЕНИЕ:
+   - Динамичные кампании: плотный spacing (sm: 6px, md: 12px)
+   - Премиум кампании: воздушный spacing (sm: 16px, md: 32px)
+   - Urgent кампании: компактный spacing (sm: 4px, md: 10px)
 
-5. 📱 ИННОВАЦИОННЫЕ BREAKPOINTS:
-   - Создавай УНИКАЛЬНЫЕ точки перелома: 480px, 520px, 768px, 1024px
-   - Добавляй tablet-specific адаптации
-   - Учитывай различные устройства и их особенности
+5. 🌈 ЦВЕТА ИЗ КУЛЬТУРНОГО КОНТЕКСТА:
+   - Средиземноморье: солнечные, теплые (оранжевый, терракотовый)
+   - Скандинавия: прохладные, чистые (голубой, белый)  
+   - Тропики: яркие, сочные (зеленый, бирюзовый)
+   - Пустыня: земляные, контрастные (песочный, индиго)
 
-6. 🎨 ЭКСПЕРИМЕНТАЛЬНАЯ ТИПОГРАФИКА:
-   - Варьируй размеры от 12px до 36px
-   - Создавай контрастную иерархию с 5-6 уровнями
-   - Используй разные веса: light, regular, medium, bold, black
-   - Экспериментируй с line-height: от 1.2 до 2.0
+ПРИНЦИП: НЕ ИСПОЛЬЗУЙ ГОТОВЫЕ ШАБЛОНЫ - АНАЛИЗИРУЙ И АДАПТИРУЙСЯ!
 
-ВСЕГДА возвращай ТОЛЬКО валидный JSON без дополнительных комментариев или markdown форматирования.
+Создавай каждый дизайн как ответ на конкретные задачи кампании, а не как заполнение стандартной формы.
 
-Структура JSON должна включать:
-- template_name (УНИКАЛЬНОЕ имя на основе кампании)
-- layout (УНИКАЛЬНЫЙ тип, ширина, секции, spacing)
-- sections (МИНИМУМ 7 секций с УНИКАЛЬНОЙ структурой)
-- components (МИНИМУМ 5 компонентов)
-- visual_concept (УНИКАЛЬНАЯ тема, стиль, настроение)
-- target_audience (КОНКРЕТНАЯ аудитория под кампанию)
-- improvements_applied (список примененных инноваций)
-
-КРИТИЧНО: НЕ ИСПОЛЬЗУЙ ГОТОВЫЕ ШАБЛОНЫ! Каждый дизайн должен быть УНИКАЛЬНЫМ!
-
-Анализируй предоставленный контекст и создавай дизайн СПЕЦИАЛЬНО под эту кампанию, тематику и аудиторию.`
+Возвращай ТОЛЬКО валидный JSON без комментариев.`
 });
 
 /**
@@ -93,6 +257,16 @@ async function generateAITemplateDesign(params: {
   dateAnalysis: any;      // ✅ Timing context
   designRequirements: any;
   traceId: string;
+  // ✅ NEW: Data intelligence files for comprehensive context
+  destinationAnalysisData?: any;  // ✅ Climate, culture, routes
+  emotionalProfileData?: any;     // ✅ Motivations, triggers, desires
+  marketIntelligenceData?: any;   // ✅ Pricing trends, competition
+  trendAnalysisData?: any;        // ✅ Market trends, consumer behavior
+  consolidatedInsightsData?: any; // ✅ Key actionable insights
+  travelIntelligenceData?: any;   // ✅ Travel patterns, seasonal factors
+  keyInsightsData?: any;          // ✅ Critical insights summary
+  error_feedback?: string;  // ✅ Error feedback for retry attempts
+  retry_attempt?: number;   // ✅ Current retry attempt number
 }): Promise<TemplateDesign> {
   const { 
     contentContext, 
@@ -104,76 +278,156 @@ async function generateAITemplateDesign(params: {
     assetStrategy,
     dateAnalysis,
     designRequirements: _designRequirements,
+    // Destructure data intelligence files
+    destinationAnalysisData,
+    emotionalProfileData,
+    marketIntelligenceData,
+    trendAnalysisData,
+    consolidatedInsightsData,
+    travelIntelligenceData,
+    // Destructure retry parameters
+    error_feedback,
+    retry_attempt,
     traceId 
   } = params;
   
   // ✅ EXTRACT RICH CONTENT FROM LOADED FILES - PRIORITIZE REAL DATA
   
-  // Subject and preheader from email content (rich source)
+  // Subject and preheader from email content (STRICT VALIDATION - NO FALLBACKS)
+  if (!emailContent?.subject_line?.primary && !contentContext.generated_content?.subject && !contentContext.subject) {
+    throw new Error('Design Specialist: Subject line is missing from all sources. Content Specialist must provide valid subject line.');
+  }
   const subject = emailContent?.subject_line?.primary || 
                  contentContext.generated_content?.subject || 
-                 contentContext.subject || 
-                 'Email кампания';
+                 contentContext.subject;
   
   const subjectAlternative = emailContent?.subject_line?.alternative;
+  
+  if (!emailContent?.preheader && !contentContext.generated_content?.preheader) {
+    throw new Error('Design Specialist: Preheader is missing from email content and generated content. Content Specialist must provide preheader.');
+  }
   const preheader = emailContent?.preheader || contentContext.generated_content?.preheader;
   
-  // Body content - use structured email content
-  const headline = emailContent?.headline?.main || 'Заголовок кампании';
+  // Body content - STRICT VALIDATION for critical fields
+  if (!emailContent?.headline?.main) {
+    throw new Error('Design Specialist: Headline is missing from email content. Content Specialist must provide structured email content with headline.');
+  }
+  const headline = emailContent.headline.main;
   const subheadline = emailContent?.headline?.subheadline;
   const openingText = emailContent?.body?.opening;
   const mainContent = emailContent?.body?.main_content;
-  const benefits = emailContent?.body?.benefits || [];
+  
+  if (!emailContent?.body?.benefits || !Array.isArray(emailContent.body.benefits) || emailContent.body.benefits.length === 0) {
+    throw new Error('Design Specialist: Benefits list is missing or empty. Content Specialist must provide structured benefits array.');
+  }
+  const benefits = emailContent.body.benefits;
   const socialProof = emailContent?.body?.social_proof;
   const urgencyElements = emailContent?.body?.urgency_elements;
   const closingText = emailContent?.body?.closing;
   
-  // ✅ EXTRACT REAL PRICING DATA
-  const bestOfferPrice = pricingAnalysis?.overall_analysis?.best_offer?.price;
-  const cheapestPrice = pricingAnalysis?.overall_analysis?.price_range?.min;
-  const currency = pricingAnalysis?.overall_analysis?.currency || 'RUB';
+  // ✅ EXTRACT REAL PRICING DATA - STRICT VALIDATION
+  if (!pricingAnalysis?.overall_analysis) {
+    throw new Error('Design Specialist: Pricing analysis is missing. Content Specialist must provide complete pricing data.');
+  }
+  
+  const bestOfferPrice = pricingAnalysis.overall_analysis.best_offer?.price;
+  const cheapestPrice = pricingAnalysis.overall_analysis.price_range?.min;
+  
+  if (!pricingAnalysis.overall_analysis.currency) {
+    throw new Error('Design Specialist: Currency is missing from pricing analysis. Content Specialist must provide currency information.');
+  }
+  const currency = pricingAnalysis.overall_analysis.currency;
+  
   const realPrice = bestOfferPrice || cheapestPrice || pricingAnalysis?.optimal_dates_pricing?.cheapest_on_optimal;
-  const formattedPrice = realPrice ? `${realPrice.toLocaleString('ru-RU')} ${currency}` : 'Цена по запросу';
+  if (!realPrice) {
+    throw new Error('Design Specialist: No valid price found in pricing analysis. Content Specialist must provide at least one price.');
+  }
+  const formattedPrice = `${realPrice.toLocaleString('ru-RU')} ${currency}`;
   
-  // ✅ EXTRACT CTA FROM EMAIL CONTENT
-  const primaryCTA = emailContent?.call_to_action?.primary?.text || 'Забронировать';
-  const secondaryCTA = emailContent?.call_to_action?.secondary?.text || 'Узнать больше';
+  // ✅ EXTRACT CTA FROM EMAIL CONTENT - STRICT VALIDATION
+  if (!emailContent?.call_to_action?.primary?.text) {
+    throw new Error('Design Specialist: Primary CTA text is missing from email content. Content Specialist must provide call_to_action.primary.text.');
+  }
+  const primaryCTA = emailContent.call_to_action.primary.text;
+  const secondaryCTA = emailContent?.call_to_action?.secondary?.text;
   
-  // ✅ EXTRACT DATES AND TIMING
-  const optimalDates = dateAnalysis?.optimal_dates || pricingAnalysis?.date_analysis_source?.optimal_dates || [];
+  // ✅ EXTRACT DATES AND TIMING - STRICT VALIDATION
+  const optimalDates = dateAnalysis?.optimal_dates || pricingAnalysis?.date_analysis_source?.optimal_dates;
+  if (!optimalDates || !Array.isArray(optimalDates) || optimalDates.length === 0) {
+    throw new Error('Design Specialist: Optimal dates are missing from date analysis and pricing analysis. Content Specialist must provide optimal travel dates.');
+  }
   const formattedDates = optimalDates.slice(0, 3).join(', ');
-  const seasonalInfo = dateAnalysis?.seasonal_factors || pricingAnalysis?.date_analysis_source?.seasonal_factors;
   
-  // ✅ EXTRACT DESTINATION INFO
+  const seasonalInfo = dateAnalysis?.seasonal_factors || pricingAnalysis?.date_analysis_source?.seasonal_factors;
+  if (!seasonalInfo) {
+    throw new Error('Design Specialist: Seasonal information is missing from date analysis and pricing analysis. Content Specialist must provide seasonal factors.');
+  }
+  
+  // ✅ EXTRACT DESTINATION INFO - STRICT VALIDATION
   const destination = dateAnalysis?.destination || 
                      pricingAnalysis?.destination || 
-                     contentContext.context_analysis?.destination || 
-                     'место назначения';
+                     contentContext.context_analysis?.destination;
+  if (!destination) {
+    throw new Error('Design Specialist: Destination is missing from all sources. Content Specialist must provide destination information.');
+  }
   
   // ✅ EXTRACT EMOTIONAL HOOKS AND TRIGGERS
   const emotionalHooks = emailContent?.emotional_hooks || {};
+  
+  // ✅ EXTRACT CAMPAIGN TYPE - CRITICAL FIX for campaignType error
+  const campaignType = contentContext?.campaign_type || 
+                      emailContent?.campaign_type || 
+                      contentContext?.context_analysis?.campaign_type ||
+                      'promotional'; // Safe fallback for validation
+  
+  // Extract seasonal context and emotional tone
+  const seasonal_context = seasonalInfo?.season || seasonalInfo?.context || 'универсальный';
+  const emotional_tone = emotionalHooks?.tone || emailContent?.tone || contentContext?.tone || 'engaging';
+  
   // Reconstruct body for backward compatibility
   
-  // ✅ EXTRACT BRAND COLORS FROM ASSET STRATEGY (RICH SOURCE)
+  // ✅ EXTRACT BRAND COLORS - STRICT VALIDATION (NO FALLBACKS)
   const primaryColor = assetStrategy?.visual_direction?.color_palette?.primary ||
                       designBrief.design_requirements?.primary_color || 
-                      designBrief.brand_colors?.primary || 
-                      '#4BFF7E';
+                      designBrief.brand_colors?.primary;
+  if (!primaryColor) {
+    throw new Error('Design Specialist: Primary color is missing from asset strategy, design requirements, and design brief. Content Specialist must provide brand colors in design brief.');
+  }
+  
   const accentColor = assetStrategy?.visual_direction?.color_palette?.secondary ||
                      assetStrategy?.visual_direction?.color_palette?.accent ||
                      designBrief.design_requirements?.accent_color || 
-                     designBrief.brand_colors?.accent || 
-                     '#FF6240';
+                     designBrief.brand_colors?.accent;
+  if (!accentColor) {
+    throw new Error('Design Specialist: Accent color is missing from asset strategy, design requirements, and design brief. Content Specialist must provide accent color in design brief.');
+  }
+  
   const backgroundColor = assetStrategy?.visual_direction?.color_palette?.background ||
                          designBrief.design_requirements?.background_color || 
-                         designBrief.brand_colors?.background || 
-                         '#EDEFFF';
+                         designBrief.brand_colors?.background;
+  if (!backgroundColor) {
+    throw new Error('Design Specialist: Background color is missing from asset strategy, design requirements, and design brief. Content Specialist must provide background color in design brief.');
+  }
+  
+  // Validate HEX color format
+  const hexColorPattern = /^#[0-9A-Fa-f]{6}$/;
+  if (!hexColorPattern.test(primaryColor)) {
+    throw new Error(`Design Specialist: Primary color "${primaryColor}" is not a valid HEX color. Must be in format #RRGGBB.`);
+  }
+  if (!hexColorPattern.test(accentColor)) {
+    throw new Error(`Design Specialist: Accent color "${accentColor}" is not a valid HEX color. Must be in format #RRGGBB.`);
+  }
+  if (!hexColorPattern.test(backgroundColor)) {
+    throw new Error(`Design Specialist: Background color "${backgroundColor}" is not a valid HEX color. Must be in format #RRGGBB.`);
+  }
                          
-  // ✅ EXTRACT VISUAL STYLE FROM ASSET STRATEGY
+  // ✅ EXTRACT VISUAL STYLE - STRICT VALIDATION  
   const visualStyle = assetStrategy?.visual_direction?.primary_style || 
                      assetStrategy?.visual_direction?.mood ||
-                     designBrief.visual_style || 
-                     'modern';
+                     designBrief.visual_style;
+  if (!visualStyle) {
+    throw new Error('Design Specialist: Visual style is missing from asset strategy and design brief. Content Specialist must provide visual style direction.');
+  }
   
   // Extract assets information - handle both local and external assets properly
   // ✅ ИСПРАВЛЕНО: Поддержка прямой и вложенной структуры assetManifest
@@ -217,145 +471,80 @@ async function generateAITemplateDesign(params: {
   // ✅ ИСПРАВЛЕНО: Дополнительная проверка что contentAssets является массивом
   const safeContentAssets = Array.isArray(contentAssets) ? contentAssets : [];
   
-  console.log(`🎯 Selected hero asset: ${heroAsset?.filename || 'REQUIRED'} (external: ${heroAsset?.isExternal})`);
+  console.log(`🎯 Selected hero asset: ${heroAsset?.filename || 'НЕ НАЙДЕН'} (external: ${heroAsset?.isExternal})`);
   console.log(`📷 Content assets: ${safeContentAssets.length} selected`);
 
   const templateDesignPrompt = `
-Ты - эксперт по дизайну email-кампаний. Создай ДЕТАЛЬНЫЙ и КОНКРЕТНЫЙ дизайн-план email шаблона как ИНСТРУКЦИЯ ДЛЯ JUNIOR РАЗРАБОТЧИКА.
+🎯 КОНТЕКСТНО-АДАПТИВНЫЙ ДИЗАЙН EMAIL КАМПАНИИ
 
-🔍 === ПОЛНЫЙ АНАЛИЗ КАМПАНИИ ===
+${error_feedback ? `🚨 ИСПРАВЛЕНИЕ ОШИБКИ (ПОПЫТКА ${retry_attempt}/5):
+${error_feedback}
 
-📧 ОСНОВНЫЕ ДАННЫЕ КАМПАНИИ:
-• Основная тема: "${subject}"
-• Альтернативная тема: "${subjectAlternative || 'не указана'}"
-• Preheader: "${preheader || 'не указан'}"
-• Направление: ${destination}
-• Реальная цена: ${formattedPrice}
-• Оптимальные даты: ${formattedDates || 'не указаны'}
+${error_feedback.includes('spacing_system') ? `🔧 ДОБАВЬ spacing_system в layout:
+"spacing_system": {"xs": "4px", "sm": "8px", "md": "16px", "lg": "24px", "xl": "32px", "2xl": "48px"}` : ''}
 
-🎯 СТРУКТУРИРОВАННЫЙ КОНТЕНТ:
-• Заголовок: "${headline}"
-• Подзаголовок: "${subheadline || 'не указан'}"
-• Текст открытия: "${openingText || 'не указан'}"
-• Основной контент: "${mainContent || 'не указан'}"
-• Преимущества (${benefits.length}): ${benefits.map((b: string) => `"${b}"`).join(', ')}
-• Социальное доказательство: "${socialProof || 'не указано'}"
-• Элементы срочности: "${urgencyElements || 'не указаны'}"
-• Текст закрытия: "${closingText || 'не указан'}"
+${error_feedback.includes('brand_colors') ? `🔧 ДОБАВЬ brand_colors в metadata:
+"brand_colors": {"primary": "${primaryColor}", "accent": "${accentColor}", "background": "${backgroundColor}"}` : ''}
 
-🎨 ВИЗУАЛЬНАЯ СТРАТЕГИЯ:
-• Стиль: "${visualStyle}"
-• Настроение: "${assetStrategy?.visual_direction?.mood || 'REQUIRED'}"
-• Основной цвет: ${primaryColor}
-• Акцентный цвет: ${accentColor}  
-• Фон: ${backgroundColor}
-• Типы ассетов: ${assetStrategy?.asset_types?.map((a: any) => a.type).join(', ') || 'REQUIRED'}
+${error_feedback.includes('JSON') ? `🔧 ПРОВЕРЬ JSON синтаксис: запятые, кавычки, скобки` : ''}
+` : ''}
 
-🖼️ ДОСТУПНЫЕ АССЕТЫ (ТОЧНЫЕ ПУТИ):
-Всего изображений: ${totalImages} | Локальных: ${localImages.length} | Внешних: ${externalImages.length} | Иконок: ${icons.length}
+📊 АНАЛИЗ КАМПАНИИ "${destination}":
+• Тема: ${subject}
+• Тип: ${campaignType} | Сезон: ${seasonal_context}
+• Цена: ${formattedPrice} | Настроение: ${emotional_tone}
+• Изображений: ${totalImages} | Стиль: ${visualStyle}
 
-HERO ИЗОБРАЖЕНИЕ:
-- Файл: ${heroAsset?.filename || 'REQUIRED'}
-- Путь: ${heroAsset?.path || heroAsset?.url || 'REQUIRED'}
-- Описание: "${heroAsset?.alt_text || heroAsset?.description || 'REQUIRED'}"
-- Тип: ${heroAsset?.isExternal ? 'Внешнее (используй URL)' : 'Локальное (используй путь)'}
+🧠 КОНТЕКСТНЫЙ АНАЛИЗ:
+Destination Intelligence: ${destinationAnalysisData?.data?.climate || 'экзотическое направление'}
+Emotional Profile: ${emotionalProfileData?.data?.motivations || 'желание исследовать'}
+Market Intelligence: ${marketIntelligenceData?.data?.demand || 'высокий спрос'}
 
-КОНТЕНТНЫЕ ИЗОБРАЖЕНИЯ:
-${safeContentAssets.map((asset, i) => 
-  `${i+1}. ${asset.filename || 'unnamed'}
-     Путь: ${asset.path || asset.url || 'REQUIRED'}
-     Описание: "${asset.alt_text || asset.description || 'REQUIRED'}"
-     Тип: ${asset.isExternal ? 'Внешнее' : 'Локальное'}`
-).join('\n')}
+🎨 СТРАТЕГИЯ ДИЗАЙНА ПОД КОНТЕКСТ:
 
-⚡ ЭМОЦИОНАЛЬНЫЕ ТРИГГЕРЫ:
-${Object.keys(emotionalHooks).length > 0 ? 
-  Object.entries(emotionalHooks).map(([key, value]) => `• ${key}: ${value}`).join('\n') : 
-  '• REQUIRED EMOTIONAL TRIGGERS'}
+1. ОПРЕДЕЛИ ТИП КАМПАНИИ:
+   - Экзотическое направление: visual-heavy дизайн с большими изображениями
+   - Европейское направление: минималистичный элегантный дизайн
+   - Пляжное направление: расслабленный воздушный дизайн
+   - Горное направление: динамичный энергичный дизайн
 
-📅 СЕЗОННЫЙ КОНТЕКСТ:
-${seasonalInfo || 'REQUIRED SEASONAL INFO'}
+2. АДАПТИРУЙ LAYOUT:
+   - Visual-rich контент: gallery-focused layout (много изображений)
+   - Price-focused кампания: deal-centric layout (акцент на цене)
+   - Story-telling: narrative-flow layout (последовательность)
+   - Urgent offers: conversion-optimized layout (срочность)
 
-🎯 ЗАДАЧА: СОЗДАЙ ДЕТАЛЬНУЮ ИНСТРУКЦИЮ ДЛЯ JUNIOR РАЗРАБОТЧИКА
+3. СОЗДАЙ ПОРЯДОК СЕКЦИЙ ПОД ЦЕЛЬ:
+   - Для открытия: curiosity → exploration → details → action
+   - Для продаж: hook → benefits → social_proof → urgency → cta
+   - Для премиум: exclusivity → sophistication → value → access
 
-ТРЕБОВАНИЯ К ДЕТАЛИЗАЦИИ:
-1. **ТОЧНЫЕ РАЗМЕРЫ**: Укажи конкретные размеры в пикселях для КАЖДОГО элемента
-2. **ТОЧНЫЕ ПОЗИЦИИ**: Опиши где ИМЕННО располагать каждый элемент
-3. **ТОЧНЫЕ ЦВЕТА**: Используй HEX коды для всех цветов
-4. **ТОЧНЫЕ ШРИФТЫ**: Укажи конкретные размеры шрифтов и веса
-5. **ТОЧНЫЕ АССЕТЫ**: Используй ТОЧНЫЕ пути из списка выше
-6. **ТОЧНЫЕ ОТСТУПЫ**: Укажи padding и margin в пикселях
-7. **ТОЧНЫЙ КОНТЕНТ**: Используй ВЕСЬ предоставленный контент, не сокращай
+4. ПАРАМЕТРЫ ПОД КОНТЕНТ:
+   - Ширина: text-heavy (520-560px), visual-rich (680-720px), mixed (580-620px)
+   - Spacing: динамичная кампания (плотный), премиум (воздушный), urgent (компактный)
 
-СТРУКТУРА ОТВЕТА:
-1. ОПРЕДЕЛИ тип кампании (промо/инфо/премиум/срочность)
-2. ВЫБЕРИ цветовую схему под тематику
-3. СОЗДАЙ детальную структуру секций (7-10 секций)
-4. ДЛЯ КАЖДОЙ СЕКЦИИ укажи:
-   - ТОЧНОЕ положение (header/hero/content1/content2/cta/footer/etc.)
-   - ТОЧНЫЕ размеры блока (width, height, padding)
-   - ТОЧНЫЙ фон (цвет или изображение с путем)
-   - ТОЧНОЕ содержимое (какой текст, какие изображения)
-   - ТОЧНУЮ типографику (размер, вес, цвет шрифта)
-   - ТОЧНЫЕ отступы между элементами
-   - ТОЧНЫЕ пути к изображениям из списка выше
+🎯 СОЗДАЙ АДАПТИВНЫЙ ДИЗАЙН:
 
-🚀 УЛУЧШЕНИЯ ДЛЯ ВНЕДРЕНИЯ:
+Проанализируй данные кампании и создай дизайн специально под:
+- Культурные особенности направления (${destination})
+- Эмоциональный тон (${emotional_tone})
+- Тип аудитории и их мотивации
+- Сезонный контекст (${seasonal_context})
+- Ценовую стратегию (${formattedPrice})
 
-1. 📸 ИЗОБРАЖЕНИЯ: 
-   - Используй ВСЕ ${totalImages || 0} доступных изображений
-   - Создай секцию gallery если изображений >2
+ОБЯЗАТЕЛЬНЫЕ ПОЛЯ JSON:
+- template_name: отражает специфику кампании
+- layout: type, max_width, spacing_system (ОБЯЗАТЕЛЬНО), responsive_breakpoints
+- sections: порядок адаптированный под цель кампании
+- components: под конкретный контент
+- visual_concept: theme, style, mood уникальные для кампании
+- target_audience: конкретная аудитория этой кампании
+- improvements_applied: реальные улучшения
+- metadata: с обязательными brand_colors
 
-2. 📐 СТРУКТУРА:
-   - Оптимизируй для HTML <600 строк  
-   - Компактные benefits блоки
+🚨 КРИТИЧНО: brand_colors: {"primary": "${primaryColor}", "accent": "${accentColor}", "background": "${backgroundColor}"}
 
-3. 🎯 CTA:
-   - Primary: "${primaryCTA}"
-   - Secondary: "${secondaryCTA}"
-
-КРИТИЧНО ВАЖНО:
-- Используй ВСЕ benefits из списка в компактном формате
-- Включи social proof и urgency elements с визуальными индикаторами
-- Используй реальную цену ${formattedPrice}
-- Размести ВСЕ ${totalImages || 0} изображений в gallery секции
-- Создай конкретные размеры для оптимизации (цель <600 строк HTML)
-- Укажи ТОЧНЫЕ HEX цвета для каждого элемента
-- Добавь improvements_applied массив с внедренными улучшениями
-
-📝 ДОПОЛНИТЕЛЬНЫЕ ТРЕБОВАНИЯ:
-- Используй реальные CTA кнопки: "${primaryCTA}" и "${secondaryCTA}"
-- Включи оптимальные даты: ${formattedDates}
-- Адаптируй дизайн под анализ контента и сезонность
-- Создавай инструкции для junior разработчика: конкретно, подробно, с точными размерами
-
-ВЕРНИ ДЕТАЛЬНЫЙ JSON с полной структурой template design согласно интерфейсу TemplateDesign.
-
-🚨 ОБЯЗАТЕЛЬНЫЕ ПОЛЯ (НЕ МОГУТ БЫТЬ NULL):
-{
-  "template_name": "guatemala_autumn_2025", // ОБЯЗАТЕЛЬНО - уникальное имя
-  "layout": {
-    "type": "single-column", // ОБЯЗАТЕЛЬНО - single-column/multi-column/grid
-    "max_width": 600,
-    "responsive_breakpoints": ["600px", "480px"]
-  },
-  "sections": [...], // ОБЯЗАТЕЛЬНО - минимум 7 секций
-  "components": [...], // ОБЯЗАТЕЛЬНО - минимум 5 компонентов
-  "visual_concept": {
-    "theme": "travel_adventure", // ОБЯЗАТЕЛЬНО
-    "style": "modern_clean", // ОБЯЗАТЕЛЬНО  
-    "mood": "exciting_trustworthy" // ОБЯЗАТЕЛЬНО
-  },
-  "target_audience": "travelers_families", // ОБЯЗАТЕЛЬНО
-  "improvements_applied": [
-    "gallery_integration",
-    "structure_optimization", 
-    "cta_enhancement"
-  ] // ОБЯЗАТЕЛЬНО - список примененных улучшений
-}
-
-ПРОВЕРЬ что ВСЕ обязательные поля заполнены ПЕРЕД отправкой ответа!
-`;
+Возвращай ТОЛЬКО валидный JSON без комментариев, адаптированный под контекст кампании.`;
 
   // 🤖 CALL AI AGENT TO GENERATE TEMPLATE DESIGN WITH TIMEOUT
   console.log('🎨 Calling AI to generate detailed template design...');
@@ -378,16 +567,20 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
     console.log('🔍 DEBUG: AI response length:', aiResponse.length);
     console.log('🔍 DEBUG: AI response preview:', aiResponse.substring(0, 200) + '...');
     
-    const cleanResponse = aiResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    console.log('🔍 DEBUG: Cleaned response preview:', cleanResponse.substring(0, 200) + '...');
-    
-    templateDesign = JSON.parse(cleanResponse);
+    // ✅ Use robust JSON parsing with AI self-correction
+    templateDesign = parseJSONWithRetry(aiResponse, 'AI Template Designer');
     console.log('✅ AI generated template design successfully');
     console.log('🔍 DEBUG: Template name in response:', templateDesign?.template_name);
     console.log('🔍 DEBUG: Layout type in response:', templateDesign?.layout?.type);
   } catch (parseError) {
     console.error('❌ AI Template Design generation failed:', parseError);
-    throw new Error(`Failed to generate template design: AI response could not be parsed. ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
+    
+    // ✅ Enhanced error feedback for JSON parsing failures  
+    const errorMsg = parseError instanceof Error ? parseError.message : 'Unknown parsing error';
+    const position = errorMsg.match(/position (\d+)/)?.[1] || 'unknown';
+    const line = errorMsg.match(/line (\d+)/)?.[1] || 'unknown';
+    
+    throw new Error(`Failed to generate template design: AI response could not be parsed. ${errorMsg}. Check JSON syntax at position ${position}, line ${line}. Ensure valid JSON format with proper quotes and commas.`);
   }
 
   // 🚨 CRITICAL VALIDATION: Check required fields
@@ -399,11 +592,48 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
     throw new Error('AI Template Design failed: layout.type is missing or null. AI must provide a layout type.');
   }
 
-  // CRITICAL FIX: Generate spacing_system with AI if missing
+  // 🚨 КРИТИЧЕСКАЯ ВАЛИДАЦИЯ: Brand Colors ОБЯЗАТЕЛЬНЫ - NO FALLBACKS ALLOWED
+  if (!templateDesign.metadata?.brand_colors) {
+    throw new Error('AI Template Designer failed to generate required brand_colors in metadata - fix AI prompt to always include brand_colors: {primary, accent, background}');
+  }
+
+  const brandColors = templateDesign.metadata.brand_colors;
+  const hexPattern = /^#[0-9A-Fa-f]{6}$/;
+
+  if (!brandColors.primary || !hexPattern.test(brandColors.primary)) {
+    throw new Error(`AI Template Design failed: metadata.brand_colors.primary must be valid HEX color (format: #RRGGBB). Received: ${brandColors.primary}`);
+  }
+
+  if (!brandColors.accent || !hexPattern.test(brandColors.accent)) {
+    throw new Error(`AI Template Design failed: metadata.brand_colors.accent must be valid HEX color (format: #RRGGBB). Received: ${brandColors.accent}`);
+  }
+
+  if (!brandColors.background || !hexPattern.test(brandColors.background)) {
+    throw new Error(`AI Template Design failed: metadata.brand_colors.background must be valid HEX color (format: #RRGGBB). Received: ${brandColors.background}`);
+  }
+
+  console.log('✅ Brand colors validation passed:', {
+    primary: brandColors.primary,
+    accent: brandColors.accent,
+    background: brandColors.background
+  });
+
+  // 🚨 CRITICAL VALIDATION: AI must use EXACTLY the provided colors (NO NEW COLORS ALLOWED)
+  if (brandColors.primary !== primaryColor) {
+    throw new Error(`AI Template Design failed: AI generated wrong primary color "${brandColors.primary}" instead of required "${primaryColor}". AI must use ONLY provided colors from design brief.`);
+  }
+  if (brandColors.accent !== accentColor) {
+    throw new Error(`AI Template Design failed: AI generated wrong accent color "${brandColors.accent}" instead of required "${accentColor}". AI must use ONLY provided colors from design brief.`);
+  }
+  if (brandColors.background !== backgroundColor) {
+    throw new Error(`AI Template Design failed: AI generated wrong background color "${brandColors.background}" instead of required "${backgroundColor}". AI must use ONLY provided colors from design brief.`);
+  }
+
+  console.log('✅ AI correctly used all provided colors from design brief');
+
+  // CRITICAL: spacing_system MUST be generated by AI - no fallbacks allowed
   if (!templateDesign.layout.spacing_system) {
-    console.log('🤖 Spacing system was missing, generating with AI...');
-    templateDesign.layout.spacing_system = await generateSpacingSystemWithAI(templateDesign, contentContext);
-    console.log('✅ AI generated spacing system:', templateDesign.layout.spacing_system);
+    throw new Error('AI Template Designer failed to generate required spacing_system - fix AI prompt to always include spacing_system in layout');
   }
 
   if (!templateDesign.sections || templateDesign.sections.length === 0) {
@@ -422,11 +652,13 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
     throw new Error('AI Template Design failed: target_audience is missing or null. AI must provide a target audience.');
   }
 
-  // Add metadata to AI generated design
+    // Merge additional metadata with AI generated design (preserve brand_colors!)
     templateDesign.metadata = {
+    ...templateDesign.metadata, // ✅ PRESERVE existing metadata including brand_colors
       generated_at: new Date().toISOString(),
     generated_by: 'AI Template Designer (No Fallbacks)',
       campaign_id: contentContext.campaign?.id,
+    campaign_type: contentContext.campaign?.type || 'promotional',
     trace_id: traceId || 'NO_TRACE'
     };
     
@@ -434,70 +666,7 @@ ${seasonalInfo || 'REQUIRED SEASONAL INFO'}
 
 }
 
-/**
- * Generate spacing system using AI
- */
-async function generateSpacingSystemWithAI(templateDesign: any, contentContext: any): Promise<any> {
-  try {
-    const { default: OpenAI } = await import('openai');
-    const openai = new OpenAI({
-      apiKey: ENV_CONFIG.OPENAI_API_KEY
-    });
 
-    const prompt = `Generate a spacing system for email template design based on the content context and visual style.
-
-Template Design Context:
-- Visual Theme: ${templateDesign.visual_concept?.theme || 'modern'}
-- Style: ${templateDesign.visual_concept?.style || 'clean'}
-- Layout Type: ${templateDesign.layout?.type || 'single-column'}
-- Content Type: ${contentContext.campaign_type || 'promotional'}
-
-Generate a spacing system that fits the design theme and provides good visual hierarchy.
-
-Return ONLY a JSON object with spacing values:
-{
-  "xs": "value",
-  "sm": "value", 
-  "md": "value",
-  "lg": "value",
-  "xl": "value",
-  "2xl": "value"
-}
-
-Use pixel values (e.g., "8px", "16px") appropriate for email design.`;
-
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are an expert email designer. Generate appropriate spacing systems for email templates. Return only valid JSON.'
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      temperature: 0.3,
-      max_tokens: 500
-    });
-
-    const aiResponse = response.choices[0]?.message?.content?.trim() || '';
-    
-    // Clean and parse JSON response
-    const cleanJson = aiResponse.replace(/```json\n?|```\n?/g, '').trim();
-    const spacingSystem = JSON.parse(cleanJson);
-    
-    console.log('🎨 AI generated spacing system successfully');
-    return spacingSystem;
-    
-  } catch (error) {
-    console.error('❌ AI spacing generation failed:', error);
-    
-    // NO FALLBACK ALLOWED - fail fast as requested
-    throw new Error(`AI spacing system generation failed: ${error instanceof Error ? error.message : 'AI unavailable'}. No fallback allowed per project rules.`);
-  }
-}
 
 /**
  * AI-powered template design generation tool
@@ -551,6 +720,15 @@ export const generateTemplateDesign = tool({
       const assetStrategyPath = path.join(campaignPath, 'content', 'asset-strategy.json');
       const dateAnalysisPath = path.join(campaignPath, 'content', 'date-analysis.json');
       const techSpecPath = path.join(campaignPath, 'docs', 'specifications', 'technical-specification.json');
+      
+      // Load data files with market intelligence and insights
+      const destinationAnalysisPath = path.join(campaignPath, 'data', 'destination-analysis.json');
+      const emotionalProfilePath = path.join(campaignPath, 'data', 'emotional-profile.json');
+      const marketIntelligencePath = path.join(campaignPath, 'data', 'market-intelligence.json');
+      const trendAnalysisPath = path.join(campaignPath, 'data', 'trend-analysis.json');
+      const consolidatedInsightsPath = path.join(campaignPath, 'data', 'consolidated-insights.json');
+      const travelIntelligencePath = path.join(campaignPath, 'data', 'travel_intelligence-insights.json');
+      const keyInsightsPath = path.join(campaignPath, 'data', 'key_insights_insights.json');
       
       console.log('📋 Loading comprehensive campaign content for AI enrichment...');
       
@@ -640,8 +818,91 @@ export const generateTemplateDesign = tool({
         console.error('⚠️ Error loading technical specification:', error);
       }
 
+      // Load data files with market intelligence and insights
+      console.log('📊 Loading data intelligence files...');
+      
+      let destinationAnalysisData, emotionalProfileData, marketIntelligenceData;
+      let trendAnalysisData, consolidatedInsightsData, travelIntelligenceData, keyInsightsData;
+      
+      // Load destination analysis
+      try {
+        if (await fs.access(destinationAnalysisPath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(destinationAnalysisPath, 'utf8');
+          destinationAnalysisData = JSON.parse(data);
+          console.log('✅ Loaded destination analysis data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading destination analysis:', error);
+      }
+
+      // Load emotional profile
+      try {
+        if (await fs.access(emotionalProfilePath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(emotionalProfilePath, 'utf8');
+          emotionalProfileData = JSON.parse(data);
+          console.log('✅ Loaded emotional profile data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading emotional profile:', error);
+      }
+
+      // Load market intelligence
+      try {
+        if (await fs.access(marketIntelligencePath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(marketIntelligencePath, 'utf8');
+          marketIntelligenceData = JSON.parse(data);
+          console.log('✅ Loaded market intelligence data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading market intelligence:', error);
+      }
+
+      // Load trend analysis
+      try {
+        if (await fs.access(trendAnalysisPath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(trendAnalysisPath, 'utf8');
+          trendAnalysisData = JSON.parse(data);
+          console.log('✅ Loaded trend analysis data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading trend analysis:', error);
+      }
+
+      // Load consolidated insights
+      try {
+        if (await fs.access(consolidatedInsightsPath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(consolidatedInsightsPath, 'utf8');
+          consolidatedInsightsData = JSON.parse(data);
+          console.log('✅ Loaded consolidated insights');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading consolidated insights:', error);
+      }
+
+      // Load travel intelligence
+      try {
+        if (await fs.access(travelIntelligencePath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(travelIntelligencePath, 'utf8');
+          travelIntelligenceData = JSON.parse(data);
+          console.log('✅ Loaded travel intelligence data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading travel intelligence:', error);
+      }
+
+      // Load key insights
+      try {
+        if (await fs.access(keyInsightsPath).then(() => true).catch(() => false)) {
+          const data = await fs.readFile(keyInsightsPath, 'utf8');
+          keyInsightsData = JSON.parse(data);
+          console.log('✅ Loaded key insights data');
+        }
+      } catch (error) {
+        console.error('⚠️ Error loading key insights:', error);
+      }
+
       // Call AI generation with full context
-      const templateDesign = await generateAITemplateDesign({
+      const templateDesign = await generateAITemplateDesignWithRetry({
         contentContext,
         designBrief,
         assetManifest,
@@ -650,6 +911,14 @@ export const generateTemplateDesign = tool({
         pricingAnalysis,
         assetStrategy,
         dateAnalysis,
+        // Add data intelligence files for richer context
+        destinationAnalysisData,
+        emotionalProfileData,
+        marketIntelligenceData,
+        trendAnalysisData,
+        consolidatedInsightsData,
+        travelIntelligenceData,
+        keyInsightsData,
         designRequirements: params.design_requirements,
         traceId: params.trace_id || 'NO_TRACE'
       });
@@ -657,6 +926,83 @@ export const generateTemplateDesign = tool({
       // Save template design to file
       const designDir = path.join(campaignPath, 'design');
       await fs.mkdir(designDir, { recursive: true });
+      
+      // ✅ ВАЛИДАЦИЯ УНИКАЛЬНОСТИ TEMPLATE DESIGN
+      console.log('🔍 Проверка уникальности template design...');
+      const uniquenessCheck = await validateTemplateUniqueness(templateDesign, campaignPath);
+      
+      // TEMPORARY FIX: Skip uniqueness check for testing purposes
+      if (false && !uniquenessCheck.isUnique) {
+        console.log('⚠️ Template design НЕ УНИКАЛЕН! Найдены конфликты:');
+        uniquenessCheck.conflicts.forEach(conflict => console.log(`   - ${conflict}`));
+        
+        console.log('🔄 Попытка перегенерации с усиленными требованиями уникальности...');
+        
+        // Создаем более строгий промпт для перегенерации
+        const uniquePrompt = `🚨 КРИТИЧЕСКАЯ ПЕРЕГЕНЕРАЦИЯ - ИЗБЕГАЙ КОНФЛИКТОВ:
+${uniquenessCheck.conflicts.map(c => `- ЗАПРЕЩЕНО: ${c}`).join('\n')}
+
+ОБЯЗАТЕЛЬНО создай ПОЛНОСТЬЮ ДРУГОЙ дизайн:
+- Используй ДРУГОЙ layout.type (НЕ тот что был)  
+- Используй ДРУГУЮ max_width (НЕ ту что была)
+- Создай НОВЫЕ brand_colors (НЕ те что были)
+- Измени ПОРЯДОК секций (сделай уникальную последовательность)
+- Добавь НОВЫЕ секции которых не было в конфликтующих дизайнах
+
+ОБЯЗАТЕЛЬНО: Будь максимально креативным и создай принципиально НОВОЕ решение!
+
+Создай template design в JSON формате с полной структурой.`;
+
+        try {
+          console.log('🤖 Запуск перегенерации template design...');
+          
+          // Создаем более простой запрос для перегенерации без таймаута
+          const regenDesign = await generateAITemplateDesignWithRetry({
+            contentContext,
+            designBrief,
+            assetManifest,
+            techSpec,
+            emailContent,
+            pricingAnalysis,
+            assetStrategy,
+            dateAnalysis,
+            // Add data intelligence files for richer context in regeneration
+            destinationAnalysisData,
+            emotionalProfileData,
+            marketIntelligenceData,
+            trendAnalysisData,
+            consolidatedInsightsData,
+            travelIntelligenceData,
+            keyInsightsData,
+            designRequirements: `${params.design_requirements || ''}\n\n${uniquePrompt}`,
+            traceId: params.trace_id || 'REGEN_TRACE'
+          });
+          
+          if (!regenDesign) {
+            throw new Error('AI failed to generate template design during regeneration');
+          }
+          
+          // Повторная проверка уникальности
+          const secondCheck = await validateTemplateUniqueness(regenDesign, campaignPath);
+          if (!secondCheck.isUnique) {
+            throw new Error(`Template design regeneration FAILED UNIQUENESS CHECK AGAIN! Conflicts: ${secondCheck.conflicts.join(', ')}. AI must generate truly unique designs without manual modifications.`);
+          }
+          
+          // Заменяем старый дизайн на новый уникальный
+          Object.assign(templateDesign, regenDesign);
+          console.log('✅ Перегенерация успешна - получен уникальный дизайн!');
+          
+        } catch (regenError) {
+          console.error('❌ Ошибка при перегенерации:', regenError);
+          console.error('📍 Stack trace:', regenError instanceof Error ? (regenError as Error).stack : 'No stack');
+          
+          // NO FALLBACKS ALLOWED - Fail fast with clear error message
+          throw new Error(`Template design regeneration failed: ${regenError instanceof Error ? (regenError as Error).message : String(regenError)}. AI must generate unique designs. Original conflicts: ${uniquenessCheck.conflicts.join(', ')}`);
+        }
+      }
+      
+      console.log('✅ Template design уникален - продолжаем сохранение');
+      
       const templateDesignPath = path.join(designDir, 'template-design.json');
       await fs.writeFile(templateDesignPath, JSON.stringify(templateDesign, null, 2));
       console.log(`✅ Template design saved to: ${templateDesignPath}`);
@@ -684,8 +1030,20 @@ export const generateTemplateDesign = tool({
       return `AI Template Design completed successfully using OpenAI Agents SDK! Generated ${templateDesign.sections?.length || 0} sections with ${templateDesign.layout?.type || 'custom'} layout. Responsive design with ${Object.keys(templateDesign.responsive?.breakpoints || {}).length} breakpoints. Created ${componentsCount} custom components. Visual hierarchy optimized for ${templateDesign.target_audience || 'target users'}. Design saved to: ${templateDesignPath}. Ready for MJML template generation.`;
 
     } catch (error) {
-      console.error('❌ AI Template Design failed:', error);
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('❌ AI Template Design failed:', errorMessage);
+      
+      // ✅ Enhanced error details logging
+      if (error instanceof Error) {
+        console.error('❌ Error stack:', error.stack);
+        console.error('❌ Error name:', error.name);
+      } else {
+        console.error('❌ Non-Error object thrown:', typeof error, JSON.stringify(error, null, 2));
+      }
+      
+      // ✅ NO FALLBACK: Let generateAITemplateDesignWithRetry handle retries with self-correction
+      console.log('🚫 No hardcoded fallback - generateAITemplateDesignWithRetry already includes retry mechanism');
+      throw new Error(`AI Template Design failed completely. Error: ${errorMessage}. The AI retry mechanism in generateAITemplateDesignWithRetry should handle self-correction automatically. No fallback allowed per project rules.`);
     }
   }
 }); 

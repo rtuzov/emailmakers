@@ -1,0 +1,137 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753873523931_fa7hw07afb",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753873523931_fa7hw07afb",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Guatemala is accessible via La Aurora International Airport, with options for domestic flights to popular cities like Antigua and Flores. Public transportation is available but renting a car or taking shuttles is recommended for flexibility.",
+      "seasonal_patterns": "Best months to visit Guatemala are from November to April, avoiding the rainy season from May to October.",
+      "climate": "Temperatures in Guatemala are generally mild due to altitude; average temperatures range from 60°F (15°C) to 75°F (24°C) during the fall. Visitors should prepare for occasional rain, especially in higher altitudes.",
+      "culture": "Guatemala features rich Maya heritage, colorful markets, and various festivals such as the Day of the Dead celebrations in early November."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Guatemala offers rich cultural experiences that attract a diverse range of tourists.",
+        "Booking in advance remains essential due to seasonal demand peaks.",
+        "Cultural events and festivals provide strong marketing opportunities."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T11:06:02.894Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753873523931_fa7hw07afb/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Average daily costs range from $30 to $80 depending on accommodation and activities. Prices may rise in peak travel seasons.",
+      "booking_windows": "Travelers should book at least 2-3 months in advance for the best deals, especially during holidays and festivals.",
+      "demand": "Increasing interest in eco-tourism and cultural experiences has led to higher visits during the winter months.",
+      "competition": "Alternative destinations include Costa Rica and Belize, but Guatemala offers unique cultural and historical experiences."
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers often seek adventure, cultural immersion, or relaxation. The rich history and beautiful landscapes motivate visits.",
+        "triggers": "Particular events, favorable reviews, and affordable travel options trigger decision-making for potential visitors.",
+        "desires": "Tourists seek authentic experiences, such as local cuisine, historical tours, and natural beauty."
+      },
+      "saved_at": "2025-07-30T11:06:02.896Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala is accessible via La Aurora International Airport, with options for domestic flights to popular cities like Antigua and Flores. Public transportation is available but renting a car or taking shuttles is recommended for flexibility.",
+        "pricing_trends": "Average daily costs range from $30 to $80 depending on accommodation and activities. Prices may rise in peak travel seasons.",
+        "seasonal_patterns": "Best months to visit Guatemala are from November to April, avoiding the rainy season from May to October.",
+        "booking_windows": "Travelers should book at least 2-3 months in advance for the best deals, especially during holidays and festivals.",
+        "destination_insights": {
+          "route_analysis": "Guatemala is accessible via La Aurora International Airport, with options for domestic flights to popular cities like Antigua and Flores. Public transportation is available but renting a car or taking shuttles is recommended for flexibility.",
+          "seasonal_patterns": "Best months to visit Guatemala are from November to April, avoiding the rainy season from May to October.",
+          "climate": "Temperatures in Guatemala are generally mild due to altitude; average temperatures range from 60°F (15°C) to 75°F (24°C) during the fall. Visitors should prepare for occasional rain, especially in higher altitudes.",
+          "culture": "Guatemala features rich Maya heritage, colorful markets, and various festivals such as the Day of the Dead celebrations in early November."
+        },
+        "market_insights": {
+          "pricing_trends": "Average daily costs range from $30 to $80 depending on accommodation and activities. Prices may rise in peak travel seasons.",
+          "booking_windows": "Travelers should book at least 2-3 months in advance for the best deals, especially during holidays and festivals.",
+          "demand": "Increasing interest in eco-tourism and cultural experiences has led to higher visits during the winter months.",
+          "competition": "Alternative destinations include Costa Rica and Belize, but Guatemala offers unique cultural and historical experiences."
+        },
+        "trend_insights": {
+          "market_trends": "Eco-tourism is on the rise, with more travelers focusing on sustainable experiences in rural areas.",
+          "consumer_behavior": "Travelers are increasingly utilizing online resources and travel apps to plan their trips.",
+          "competitive_landscape": "Competitors include Central American countries focusing on eco-friendly tourism and luxury vacations.",
+          "seasonal_factors": "Seasonal shifts affect the number of visitors, with peaks during holidays and lower numbers during the rainy season."
+        }
+      },
+      "saved_at": "2025-07-30T11:06:02.896Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Eco-tourism is on the rise, with more travelers focusing on sustainable experiences in rural areas.",
+        "consumer_behavior": "Travelers are increasingly utilizing online resources and travel apps to plan their trips.",
+        "competitive_landscape": "Competitors include Central American countries focusing on eco-friendly tourism and luxury vacations.",
+        "seasonal_factors": "Seasonal shifts affect the number of visitors, with peaks during holidays and lower numbers during the rainy season."
+      },
+      "saved_at": "2025-07-30T11:06:02.896Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json"
+      ],
+      "total_analyses": 3,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T11:06:02.902Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights",
+        "market_intelligence"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive analysis on Guatemala for fall travel.",
+    "context_for_next": "Focus on creating engaging marketing content based on cultural insights and trends.",
+    "recommendations": [
+      "Highlight local festivals in content.",
+      "Emphasize eco-tourism aspects in campaigns."
+    ],
+    "priority_items": [
+      "Ensure content aligns with target audiences' desires for authentic experiences."
+    ],
+    "potential_issues": [
+      "Understanding the evolving market trends may require further research."
+    ],
+    "success_criteria": [
+      "Content must resonate with travelers looking for unique cultural experiences."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "market_intelligence",
+      "emotional_profile",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753873562902_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T11:06:02.902Z"
+}

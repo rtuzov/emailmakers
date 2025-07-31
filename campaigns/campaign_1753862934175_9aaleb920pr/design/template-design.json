@@ -1,0 +1,252 @@
+{
+  "template_name": "Гватемала_специальное_предложение_1753863079932",
+  "layout": {
+    "type": "multi-column",
+    "max_width": 680,
+    "spacing_system": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "2xl": "48px"
+    },
+    "responsive_breakpoints": [
+      "320px",
+      "375px",
+      "768px",
+      "1024px"
+    ]
+  },
+  "sections": [
+    {
+      "position": "hero",
+      "size": {
+        "width": "100%",
+        "height": "400px",
+        "padding": "0"
+      },
+      "background": {
+        "color": "#FFFFFF",
+        "image": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwbG9jYWwlMjBmb29kJTIwbWFya2V0JTIwYWZ0ZXJub29uJTIwc3VufGVufDB8MHx8fDE3NTM4NzIwMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      },
+      "content": {
+        "text": "✈️ Откройте для себя магию Гватемалы!",
+        "typography": {
+          "font_size": "36px",
+          "font_weight": "bold",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "content1",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Представьте, как вы шагаете по древним руинам майя, окружённые яркими красками природы и уникальными памятниками культуры. Гватемала ждёт вас с открытыми объятиями!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "normal",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "benefits",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#F2C94C"
+      },
+      "content": {
+        "items": [
+          "💰 Экономия до 14,811₽ на билетах!",
+          "✈️ Прямые рейсы без пересадок из Москвы",
+          "🏨 Бесплатное бронирование отелей через наш сервис",
+          "📞 Поддержка 24/7 на русском языке",
+          "🔒 Гарантия лучшей цены - вернём разницу",
+          "🆓 Бесплатная отмена бронирования до 24 часов"
+        ],
+        "typography": {
+          "font_size": "16px",
+          "font_weight": "bold",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "gallery",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "images": [
+          "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0aWthbCUyMG1heWFuJTIwcnVpbnMlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW4lMjB3ZWF2aW5nJTIwdHJhZGl0aW9uYWwlMjBnYXJtZW50c3xlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080"
+        ],
+        "typography": {
+          "font_size": "14px",
+          "font_weight": "normal",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "urgency",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#F2C94C"
+      },
+      "content": {
+        "text": "⏰ Успейте забронировать до 10 сентября! Осталось всего 15 мест по этой цене!",
+        "typography": {
+          "font_size": "20px",
+          "font_weight": "bold",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "closing",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Не упустите шанс исследовать секретные уголки природы Гватемалы и запечатлеть незабываемые моменты. Забронируйте своё приключение уже сегодня!",
+        "typography": {
+          "font_size": "18px",
+          "font_weight": "normal",
+          "color": "#3A5B29"
+        }
+      }
+    },
+    {
+      "position": "cta",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#F2C94C"
+      },
+      "content": {
+        "buttons": [
+          {
+            "text": "Купить билеты за 54,629₽ ✈️",
+            "link": "#",
+            "style": {
+              "font_size": "18px",
+              "font_weight": "bold",
+              "color": "#FFFFFF",
+              "background_color": "#3A5B29",
+              "padding": "12px 20px",
+              "border_radius": "5px"
+            }
+          },
+          {
+            "text": "Посмотреть все рейсы 🔍",
+            "link": "#",
+            "style": {
+              "font_size": "16px",
+              "font_weight": "normal",
+              "color": "#3A5B29",
+              "background_color": "#F2C94C",
+              "padding": "10px 15px",
+              "border_radius": "5px"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "position": "footer",
+      "size": {
+        "width": "100%",
+        "height": "auto",
+        "padding": "16px"
+      },
+      "background": {
+        "color": "#FFFFFF"
+      },
+      "content": {
+        "text": "Оптимальные даты: 2025-09-15, 2025-10-05, 2025-10-20",
+        "typography": {
+          "font_size": "14px",
+          "font_weight": "normal",
+          "color": "#3A5B29"
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbnRpZ3VhJTIwbG9jYWwlMjBmb29kJTIwbWFya2V0JTIwYWZ0ZXJub29uJTIwc3VufGVufDB8MHx8fDE3NTM4NzIwMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Hero image"
+    },
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0aWthbCUyMG1heWFuJTIwcnVpbnMlMjBzdW5yaXNlJTIwbWlzdHxlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Aerial view of a building in the forest"
+    },
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMGFydGlzYW4lMjB3ZWF2aW5nJTIwdHJhZGl0aW9uYWwlMjBnYXJtZW50c3xlbnwwfDB8fHwxNzUzODcyMDIzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Man near firepit"
+    },
+    {
+      "type": "image",
+      "src": "https://images.unsplash.com/flagged/photo-1554443883-83db889b4007?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnNldCUyMGNvbG9yZnVsJTIwYm9hdHN8ZW58MHwwfHx8MTc1Mzg3MjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Water body near mountain"
+    }
+  ],
+  "visual_concept": {
+    "theme": "Cultural_Adventure_Experience",
+    "style": "Vibrant_Maya_Modern",
+    "mood": "Inspiring_Exploration"
+  },
+  "target_audience": "Путешествующие, ищущие уникальные культурные и природные впечатления, в основном россияне от 25 до 45 лет.",
+  "improvements_applied": [
+    "Оптимизированный дизайн для мобильных устройств.",
+    "Проведена компактная группировка преимуществ.",
+    "Использование всех доступных изображений в галерее.",
+    "Добавлены четкие призывы к действию с кнопками."
+  ],
+  "metadata": {
+    "generated_at": "2025-07-30T08:12:04.572Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "trace_id": "design-trace",
+    "brand_colors": {
+      "primary": "#3A5B29",
+      "accent": "#F2C94C",
+      "background": "#FFFFFF"
+    },
+    "campaign_type": "promotional"
+  }
+}

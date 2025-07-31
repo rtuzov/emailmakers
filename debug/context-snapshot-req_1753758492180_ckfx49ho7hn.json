@@ -1,0 +1,86 @@
+{
+  "requestId": "req_1753758492180_ckfx49ho7hn",
+  "traceId": "api-1753758492180",
+  "timestamp": "2025-07-29T03:08:12.180Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753758492180",
+    "name": "amsterdam_final_test",
+    "path": "",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753758492180_0eepu2lehmv",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "ИТОГОВЫЙ ТЕСТ - Амстердам весна",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "amsterdam_final_test",
+    "brand": "TravelDreams",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "object",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753758492180",
+      "metadata": {
+        "campaignName": "amsterdam_final_test",
+        "brand": "TravelDreams",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "object",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

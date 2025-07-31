@@ -1,0 +1,149 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753862368509_bvnuo51uj8d",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753862368509_bvnuo51uj8d",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Highlight ancient Mayan ruins in marketing efforts to attract history enthusiasts.",
+        "Promote eco-tourism options to tap into the rising trend of sustainable travel.",
+        "Leverage the unique cultural experiences available in Guatemala to differentiate from competitors."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T07:59:49.773Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753862368509_bvnuo51uj8d/data/key_insights_insights.json"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Guatemala is accessible by flights to Guatemala City, with local transportation options including buses and shuttles.",
+        "seasonal_patterns": "Best months for visiting are from November to April, during the dry season.",
+        "climate": "Expect warm days and cooler nights; bring light clothing and a jacket for evenings.",
+        "culture": "Experience rich Mayan heritage, colorful festivals, and local markets.",
+        "attractions": "Key sites include Tikal, the ancient Mayan city, Lake Atitlán, and the colonial city of Antigua.",
+        "key_places": [
+          "Tikal National Park",
+          "Lake Atitlán",
+          "Antigua"
+        ]
+      },
+      "saved_at": "2025-07-30T07:59:49.776Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by a desire for adventure, cultural immersion, and exploring ancient civilizations.",
+        "triggers": "Emotional decision factors include the allure of ancient ruins and breathtaking landscapes.",
+        "desires": "Tourists seek authentic experiences, connection with local cultures, and spiritual rejuvenation."
+      },
+      "saved_at": "2025-07-30T07:59:49.776Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Prices generally rise in peak seasons, with popular packages averaging $1,200 for a week-long trip, including flights and accommodations.",
+        "booking_windows": "Optimal booking time is 3 to 6 months in advance for better deals.",
+        "demand": "In recent years, Guatemala has seen an increase in eco-tourism and cultural tours.",
+        "competition": "Competitors include Costa Rica and Belize, but Guatemala offers a unique Mayan experience not found in these countries."
+      },
+      "saved_at": "2025-07-30T07:59:49.776Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala is accessible by flights to Guatemala City, with local transportation options including buses and shuttles.",
+        "pricing_trends": "Prices generally rise in peak seasons, with popular packages averaging $1,200 for a week-long trip, including flights and accommodations.",
+        "seasonal_patterns": "Best months for visiting are from November to April, during the dry season.",
+        "booking_windows": "Optimal booking time is 3 to 6 months in advance for better deals.",
+        "destination_insights": {
+          "route_analysis": "Guatemala is accessible by flights to Guatemala City, with local transportation options including buses and shuttles.",
+          "seasonal_patterns": "Best months for visiting are from November to April, during the dry season.",
+          "climate": "Expect warm days and cooler nights; bring light clothing and a jacket for evenings.",
+          "culture": "Experience rich Mayan heritage, colorful festivals, and local markets.",
+          "attractions": "Key sites include Tikal, the ancient Mayan city, Lake Atitlán, and the colonial city of Antigua.",
+          "key_places": [
+            "Tikal National Park",
+            "Lake Atitlán",
+            "Antigua"
+          ]
+        },
+        "market_insights": {
+          "pricing_trends": "Prices generally rise in peak seasons, with popular packages averaging $1,200 for a week-long trip, including flights and accommodations.",
+          "booking_windows": "Optimal booking time is 3 to 6 months in advance for better deals.",
+          "demand": "In recent years, Guatemala has seen an increase in eco-tourism and cultural tours.",
+          "competition": "Competitors include Costa Rica and Belize, but Guatemala offers a unique Mayan experience not found in these countries."
+        },
+        "trend_insights": {
+          "market_trends": "Increasing interest in eco-friendly travel and cultural experiences in 2025.",
+          "consumer_behavior": "Travelers are making more informed decisions, often seeking unique experiences over traditional vacation spots.",
+          "competitive_landscape": "Guatemala is positioning itself as a top destination for cultural immersion and sustainability in travel.",
+          "seasonal_factors": "Travel patterns suggest a rise in bookings during holidays and school vacation periods."
+        }
+      },
+      "saved_at": "2025-07-30T07:59:49.776Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Increasing interest in eco-friendly travel and cultural experiences in 2025.",
+        "consumer_behavior": "Travelers are making more informed decisions, often seeking unique experiences over traditional vacation spots.",
+        "competitive_landscape": "Guatemala is positioning itself as a top destination for cultural immersion and sustainability in travel.",
+        "seasonal_factors": "Travel patterns suggest a rise in bookings during holidays and school vacation periods."
+      },
+      "saved_at": "2025-07-30T07:59:49.776Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T07:59:49.782Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive analysis of Guatemala as a travel destination has been completed.",
+    "context_for_next": "Focus on integrating cultural attractions and eco-tourism in the content",
+    "recommendations": [
+      "Include vivid descriptions of Mayan ruins and unique nature.",
+      "Highlight seasonal travel advice and culture-driven itineraries."
+    ],
+    "priority_items": null,
+    "potential_issues": null,
+    "success_criteria": [
+      "Email content effectively promotes cultural destinations and nature experiences."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753862389783_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T07:59:49.783Z"
+}

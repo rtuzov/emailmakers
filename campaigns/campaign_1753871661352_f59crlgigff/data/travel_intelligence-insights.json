@@ -1,0 +1,28 @@
+{
+  "analysis_type": "travel_intelligence",
+  "data": {
+    "route_analysis": "Guatemala has a well-connected system of buses, shuttles, and taxis for easy travel between cities and attractions.",
+    "pricing_trends": "Prices peak during holiday seasons and dry months, with lower rates during the rainy season.",
+    "seasonal_patterns": "Optimal travel months are December to February for dry weather, while May to October offers more rain but lush landscapes.",
+    "booking_windows": "Optimal booking time is 2-3 months in advance, especially during peak travel times.",
+    "destination_insights": {
+      "route_analysis": "Guatemala has a well-connected system of buses, shuttles, and taxis for easy travel between cities and attractions.",
+      "seasonal_patterns": "Optimal travel months are December to February for dry weather, while May to October offers more rain but lush landscapes.",
+      "climate": "Tropical climate with warm temperatures year-round. Dry season from November to April; a light jacket is recommended for cooler evenings in highlands.",
+      "culture": "Rich indigenous culture with vibrant markets, traditional festivals, and Mayan ruins."
+    },
+    "market_insights": {
+      "pricing_trends": "Prices peak during holiday seasons and dry months, with lower rates during the rainy season.",
+      "booking_windows": "Optimal booking time is 2-3 months in advance, especially during peak travel times.",
+      "demand": "High demand for cultural tours, eco-tourism, and adventure activities.",
+      "competition": "Popular alternative destinations include Costa Rica and Mexico."
+    },
+    "trend_insights": {
+      "market_trends": "Increased interest in sustainable travel and eco-tourism; travelers prioritize experiences over amenities.",
+      "consumer_behavior": "Travelers often rely on online reviews and social media to inform their decisions.",
+      "competitive_landscape": "Competition is growing with neighboring countries offering similar attractions.",
+      "seasonal_factors": "Travel decisions are influenced by the local festival calendar and climate patterns."
+    }
+  },
+  "saved_at": "2025-07-30T10:34:44.385Z"
+}

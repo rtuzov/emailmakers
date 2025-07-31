@@ -1,0 +1,139 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753863226504_9ukzae3gpib",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753863226504_9ukzae3gpib",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "International flights available through major airports; local transport includes buses and taxis.",
+      "seasonal_patterns": "Peak season from June to September; off-peak from October to May.",
+      "climate": "Warm summers average 25-30°C; mild winters average 5-10°C.",
+      "culture": "Rich in traditions; festivals celebrated widely throughout the year; gastronomy emphasizes local cuisine."
+    },
+    "key_insights": {
+      "insight_type": "key insights",
+      "insights": [
+        "Sustainability is increasingly important to travelers.",
+        "Cultural authenticity is a strong motivator for visits.",
+        "Travel seasons are shifting with changing consumer preferences."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T08:14:06.974Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753863226504_9ukzae3gpib/data/key_insights_insights.json"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Seeking adventure and unique cultural experiences; relaxation; family bonding.",
+        "triggers": "Limited-time offers create urgency; social media influence through popular travel bloggers; word of mouth.",
+        "desires": "Travelers wish for authenticity and personal connections; memorable experiences over luxury."
+      },
+      "saved_at": "2025-07-30T08:14:06.977Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Pricing has been increasing annually by 5-10% due to demand; budget travelers can find deals in off-peak periods.",
+        "booking_windows": "Optimal booking times are 3-6 months in advance for better deals.",
+        "demand": "Growing interest in ecotourism and cultural experiences.",
+        "competition": "Mid-tier destinations are seeing a rise; key competitors include Thailand and Mexico for similar cultural experiences."
+      },
+      "saved_at": "2025-07-30T08:14:06.977Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "International flights available through major airports; local transport includes buses and taxis.",
+        "pricing_trends": "Pricing has been increasing annually by 5-10% due to demand; budget travelers can find deals in off-peak periods.",
+        "seasonal_patterns": "Peak season from June to September; off-peak from October to May.",
+        "booking_windows": "Optimal booking times are 3-6 months in advance for better deals.",
+        "destination_insights": {
+          "route_analysis": "International flights available through major airports; local transport includes buses and taxis.",
+          "seasonal_patterns": "Peak season from June to September; off-peak from October to May.",
+          "climate": "Warm summers average 25-30°C; mild winters average 5-10°C.",
+          "culture": "Rich in traditions; festivals celebrated widely throughout the year; gastronomy emphasizes local cuisine."
+        },
+        "market_insights": {
+          "pricing_trends": "Pricing has been increasing annually by 5-10% due to demand; budget travelers can find deals in off-peak periods.",
+          "booking_windows": "Optimal booking times are 3-6 months in advance for better deals.",
+          "demand": "Growing interest in ecotourism and cultural experiences.",
+          "competition": "Mid-tier destinations are seeing a rise; key competitors include Thailand and Mexico for similar cultural experiences."
+        },
+        "trend_insights": {
+          "market_trends": "Increased demand for sustainable travel options; travelers favor remote areas due to Covid-19.",
+          "consumer_behavior": "Travelers are researching extensively online prior to booking; emphasis on reviews and testimonials.",
+          "competitive_landscape": "Domestic travel is increasing; eco-friendly accommodations are a significant selling point.",
+          "seasonal_factors": "Summer attracts more families; winter sees increased travel for winter sports."
+        }
+      },
+      "saved_at": "2025-07-30T08:14:06.977Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Increased demand for sustainable travel options; travelers favor remote areas due to Covid-19.",
+        "consumer_behavior": "Travelers are researching extensively online prior to booking; emphasis on reviews and testimonials.",
+        "competitive_landscape": "Domestic travel is increasing; eco-friendly accommodations are a significant selling point.",
+        "seasonal_factors": "Summer attracts more families; winter sees increased travel for winter sports."
+      },
+      "saved_at": "2025-07-30T08:14:06.977Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 2,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T08:14:06.987Z",
+      "data_types": [
+        "destination_analysis",
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive travel analysis completed including destination, market intelligence, emotional profiling, and trend analysis.",
+    "context_for_next": "Detailed insights for marketing and content creation.",
+    "recommendations": [
+      "Leverage sustainability trends in campaigns.",
+      "Emphasize cultural experiences in marketing materials."
+    ],
+    "priority_items": [
+      "Create content focusing on sustainability and cultural authenticity."
+    ],
+    "potential_issues": [
+      "Ensuring correct data presentation in upcoming campaigns."
+    ],
+    "success_criteria": [
+      "Engagement metrics to be tracked from new campaigns."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "key_insights",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 2000
+  },
+  "trace_id": "handoff_1753863246988_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T08:14:06.988Z"
+}

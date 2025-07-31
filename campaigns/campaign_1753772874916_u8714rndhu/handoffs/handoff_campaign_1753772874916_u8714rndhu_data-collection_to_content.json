@@ -1,0 +1,68 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753772874916_u8714rndhu",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753772874916_u8714rndhu",
+  "specialist_data": {
+    "consolidated": null,
+    "destination_analysis": {},
+    "emotional_profile": {},
+    "market_intelligence": {},
+    "travel_intelligence": {},
+    "trend_analysis": {},
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json"
+      ],
+      "total_analyses": 3,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-29T07:08:21.253Z",
+      "data_types": [
+        "destination-analysis",
+        "key_insights_insights",
+        "market-intelligence"
+      ]
+    },
+    "consolidated_insights": {}
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive travel intelligence analysis for Guatemala in autumn.",
+    "context_for_next": "Focus on incorporating cultural insights, local festivals, and travel tips into email content.",
+    "recommendations": [
+      "Use friendly and inspiring tone targeting Russian-speaking travelers.",
+      "Highlight unique culinary experiences of Guatemala.",
+      "Detail local festivals and cultural practices."
+    ],
+    "priority_items": [
+      "Craft engaging content around the Day of the Dead festival.",
+      "Emphasize comfortable travel during the autumn climate."
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Email engages target audience effectively.",
+      "Increase in bookings and interest in autumn travel to Guatemala."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [],
+    "data_quality_metrics": {
+      "total_analyses": 1,
+      "completion_rate": 14,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 90,
+    "completeness_score": 95,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 300
+  },
+  "trace_id": "handoff_1753772901253_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-29T07:08:21.254Z"
+}

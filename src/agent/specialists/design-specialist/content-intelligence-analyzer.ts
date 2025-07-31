@@ -103,7 +103,14 @@ export class ContentIntelligenceAnalyzer {
    * Определяет тип кампании
    */
   detectCampaignType(content: any): ContentAnalysis['campaignType'] {
-    const textContent = typeof content === 'string' ? content : content.body || '';
+    let textContent: string;
+    if (typeof content === 'string') {
+      textContent = content;
+    } else if (content.body) {
+      textContent = content.body;
+    } else {
+      throw new Error('Content Intelligence Analyzer: Content body is missing. Content must have body property for campaign type detection.');
+    }
     const pricing = content.pricing;
 
     // Если есть цены и призывы к действию - скорее всего промо
@@ -182,7 +189,14 @@ export class ContentIntelligenceAnalyzer {
    * Основной метод анализа контента
    */
   analyzeContent(content: any): ContentAnalysis {
-    const textContent = typeof content === 'string' ? content : content.body || '';
+    let textContent: string;
+    if (typeof content === 'string') {
+      textContent = content;
+    } else if (content.body) {
+      textContent = content.body;
+    } else {
+      throw new Error('Content Intelligence Analyzer: Content body is missing. Content must have body property for content analysis.');
+    }
     
     return {
       theme: this.detectTheme(textContent),
@@ -386,8 +400,13 @@ Color Palette: Primary(${designPersonality.colorPalette.primary}) CTA(${designPe
 Ready for adaptive design generation.`;
 
     } catch (error) {
-      console.error('❌ Content analysis failed:', error);
-      throw error;
+      console.error('❌ Content analysis failed:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        errorType: typeof error,
+        errorData: error
+      });
+      throw new Error(`Content analysis failed: ${error instanceof Error ? error.message : 'Unknown analysis error'}`);
     }
   }
 }); 

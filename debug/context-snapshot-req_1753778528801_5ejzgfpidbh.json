@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753778528801_5ejzgfpidbh",
+  "traceId": "api-1753778528801",
+  "timestamp": "2025-07-29T08:42:08.801Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753778528801",
+    "name": "Turkey_Test_Campaign",
+    "path": "",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "strict",
+      "qualityThreshold": 85
+    },
+    "correlationId": "corr_1753778528801_esbyu1apf",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "strict",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создай короткий email о путешествии в Турцию весной с ценами от 25,000 рублей",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Turkey_Test_Campaign",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "strict",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753778528801",
+      "metadata": {
+        "campaignName": "Turkey_Test_Campaign",
+        "brand": "Travel Agency",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "strict",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "strict",
+        "qualityThreshold": 85
+      }
+    }
+  }
+}

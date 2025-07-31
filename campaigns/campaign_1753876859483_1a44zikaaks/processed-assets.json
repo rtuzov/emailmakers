@@ -1,0 +1,256 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_Y9J9rjkuJ_s.jpg",
+        "path": "https://images.unsplash.com/photo-1612637452488-8ce371acd3fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwZ2VvdGhlcm1hbCUyMGhvdCUyMHNwcmluZ3MlMjB3aW50ZXIlMjBzdW5zZXR8ZW58MHwwfHx8MTc1Mzg4NTk2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1612637452488-8ce371acd3fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwZ2VvdGhlcm1hbCUyMGhvdCUyMHNwcmluZ3MlMjB3aW50ZXIlMjBzdW5zZXR8ZW58MHwwfHx8MTc1Mzg4NTk2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_Y9J9rjkuJ_s",
+        "created": "2025-07-30T12:02:52.371Z",
+        "modified": "2025-07-30T12:02:52.371Z",
+        "tags": [],
+        "description": "brown field under blue sky during daytime",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1612637452488-8ce371acd3fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwZ2VvdGhlcm1hbCUyMGhvdCUyMHNwcmluZ3MlMjB3aW50ZXIlMjBzdW5zZXR8ZW58MHwwfHx8MTc1Mzg4NTk2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T12:04:05.521Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_tfCteNBlnGA.jpg",
+        "path": "https://images.unsplash.com/photo-1623534597923-1cae9cf2af25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxSZXlramF2aWslMjBjb2xvcmZ1bCUyMGhvdXNlcyUyMHN1bW1lciUyMGZlc3RpdmFsJTIwbGlnaHRzfGVufDB8MHx8fDE3NTM4ODU5NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1623534597923-1cae9cf2af25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxSZXlramF2aWslMjBjb2xvcmZ1bCUyMGhvdXNlcyUyMHN1bW1lciUyMGZlc3RpdmFsJTIwbGlnaHRzfGVufDB8MHx8fDE3NTM4ODU5NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_tfCteNBlnGA",
+        "created": "2025-07-30T12:02:52.371Z",
+        "modified": "2025-07-30T12:02:52.371Z",
+        "tags": [],
+        "description": "an aerial view of a multi - colored building in a city",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1623534597923-1cae9cf2af25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxSZXlramF2aWslMjBjb2xvcmZ1bCUyMGhvdXNlcyUyMHN1bW1lciUyMGZlc3RpdmFsJTIwbGlnaHRzfGVufDB8MHx8fDE3NTM4ODU5NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T12:04:05.521Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_OWehd8BbSbw.jpg",
+        "path": "https://images.unsplash.com/photo-1567876934409-f9bb76f51af3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwc25vdy1jb3ZlcmVkJTIwbGFuZHNjYXBlcyUyMG5vcnRoZXJuJTIwbGlnaHRzJTIwbmlnaHR8ZW58MHwwfHx8MTc1Mzg4NTk2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1567876934409-f9bb76f51af3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwc25vdy1jb3ZlcmVkJTIwbGFuZHNjYXBlcyUyMG5vcnRoZXJuJTIwbGlnaHRzJTIwbmlnaHR8ZW58MHwwfHx8MTc1Mzg4NTk2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_OWehd8BbSbw",
+        "created": "2025-07-30T12:02:52.371Z",
+        "modified": "2025-07-30T12:02:52.371Z",
+        "tags": [],
+        "description": "field and mountain covered with snow",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1567876934409-f9bb76f51af3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxJY2VsYW5kJTIwc25vdy1jb3ZlcmVkJTIwbGFuZHNjYXBlcyUyMG5vcnRoZXJuJTIwbGlnaHRzJTIwbmlnaHR8ZW58MHwwfHx8MTc1Mzg4NTk2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T12:04:05.521Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_3BxzctP7Stc.jpg",
+        "path": "https://images.unsplash.com/photo-1544126663-f0925dfd3087?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTa2FmdGFmZWxsJTIwTmF0aW9uYWwlMjBQYXJrJTIwZ2xhY2llciUyMGhpa2luZyUyMHN1bW1lcnxlbnwwfDB8fHwxNzUzODg1OTY4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1544126663-f0925dfd3087?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTa2FmdGFmZWxsJTIwTmF0aW9uYWwlMjBQYXJrJTIwZ2xhY2llciUyMGhpa2luZyUyMHN1bW1lcnxlbnwwfDB8fHwxNzUzODg1OTY4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_3BxzctP7Stc",
+        "created": "2025-07-30T12:02:52.371Z",
+        "modified": "2025-07-30T12:02:52.371Z",
+        "tags": [],
+        "description": "gray rock formation near river",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1544126663-f0925dfd3087?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxTa2FmdGFmZWxsJTIwTmF0aW9uYWwlMjBQYXJrJTIwZ2xhY2llciUyMGhpa2luZyUyMHN1bW1lcnxlbnwwfDB8fHwxNzUzODg1OTY4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T12:04:05.521Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_PGExULGintM.jpg",
+        "path": "https://images.unsplash.com/photo-1488215545351-57e673dc3789?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHb2xkZW4lMjBob3VyJTIwb3ZlciUyMEljZWxhbmRpYyUyMHdhdGVyZmFsbHMlMjBzdW1tZXJ8ZW58MHwwfHx8MTc1Mzg4NTk2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1488215545351-57e673dc3789?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHb2xkZW4lMjBob3VyJTIwb3ZlciUyMEljZWxhbmRpYyUyMHdhdGVyZmFsbHMlMjBzdW1tZXJ8ZW58MHwwfHx8MTc1Mzg4NTk2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_PGExULGintM",
+        "created": "2025-07-30T12:02:52.371Z",
+        "modified": "2025-07-30T12:02:52.371Z",
+        "tags": [],
+        "description": "waterfalls under blue skies",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1488215545351-57e673dc3789?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxHb2xkZW4lMjBob3VyJTIwb3ZlciUyMEljZWxhbmRpYyUyMHdhdGVyZmFsbHMlMjBzdW1tZXJ8ZW58MHwwfHx8MTc1Mzg4NTk2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T12:04:05.521Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 5,
+    "total_icons": 0,
+    "optimization_level": "standard",
+    "processed_at": "2025-07-30T12:04:05.522Z"
+  }
+}

@@ -2,7 +2,6 @@ import { tool } from '@openai/agents';
 import { z } from 'zod';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { OpenAI } from 'openai';
 import { ENV_CONFIG } from '../../config/env';
 import { logToFile, autoRestoreCampaignLogging } from '../../shared/utils/campaign-logger';
 import { 
@@ -14,6 +13,12 @@ import {
 } from './content/tools';
 import { getPrices } from '../tools/prices';
 import { getErrorMessage } from './content/utils/error-handling';
+import { 
+  aiSelfCorrectionRetry, 
+  enhancedOpenAICall,
+  parseJSONWithRetry,
+  commonValidations
+} from '../../shared/utils/ai-retry-mechanism';
 // Removed: finalizeContentAndTransferToDesign - OpenAI SDK handles handoffs automatically
 // import { generateTechnicalSpecification } from '../tools/technical-specification/technical-spec-generator';
 
@@ -25,128 +30,90 @@ import { getErrorMessage } from './content/utils/error-handling';
 //   CampaignContext 
 // } from '../tools/asset-preparation/types';
 
-// Helper function to make OpenAI API calls
+// Helper function to make OpenAI API calls with Self-Correction Retry
 async function generateWithOpenAI(params: {
   prompt: string;
   temperature?: number;
   max_tokens?: number;
-}) {
-  const { prompt, temperature = 0.7, max_tokens = 1000 } = params;
+  error_feedback?: string;
+  retry_attempt?: number;
+  specialist_name?: string;
+  task_description?: string;
+}): Promise<string> {
+  const { 
+    prompt, 
+    temperature = 0.7, 
+    max_tokens = 1000,
+    error_feedback,
+    retry_attempt = 0,
+    specialist_name = 'Content Specialist',
+    task_description = 'Content Generation'
+  } = params;
   
   try {
-    // Use the OpenAI client from the project's configuration
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ENV_CONFIG.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini', // Use GPT-4o mini as specified in project rules
-        messages: [
-          {
-            role: 'system',
-            content: 'Ты эксперт по маркетингу авиабилетов. Предоставляй точную, актуальную информацию в запрашиваемом формате. КРИТИЧЕСКИ ВАЖНО: Всегда возвращай валидный JSON без дополнительных комментариев.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature,
-        max_tokens
-      })
+    // Use enhanced OpenAI call with retry support
+    const aiResponse = await enhancedOpenAICall({
+      prompt,
+      ...(error_feedback && { error_feedback }),
+      retry_attempt,
+      specialist_name,
+      task_description,
+      temperature,
+      max_tokens,
+      model: 'gpt-4o-mini'
     });
 
-    if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid response structure from OpenAI API');
-    }
-
-    return data.choices[0].message.content;
+    return aiResponse;
 
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error);
     console.error('ContentSpecialist OpenAI API call failed:', {
       error: errorMessage,
-      prompt: prompt.substring(0, 100) + '...'
+      prompt: prompt.substring(0, 100) + '...',
+      retry_attempt
     });
     throw error;
   }
 }
 
-// Helper function to safely parse JSON from AI response
-function parseAIJsonResponse(jsonString: string, context: string = 'AI response'): any {
-  try {
-    // Clean the JSON string
-    let cleanedJson = jsonString.trim();
-    
-    // Remove markdown code blocks if present
-    if (cleanedJson.startsWith('```json')) {
-      cleanedJson = cleanedJson.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (cleanedJson.startsWith('```')) {
-      cleanedJson = cleanedJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
-    
-    // Remove any leading/trailing text that's not JSON
-    const firstBrace = cleanedJson.indexOf('{');
-    const lastBrace = cleanedJson.lastIndexOf('}');
-    
-    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-      cleanedJson = cleanedJson.substring(firstBrace, lastBrace + 1);
-    }
-    
-    // Fix common JSON issues
-    cleanedJson = cleanedJson
-      // Fix trailing commas
-      .replace(/,(\s*[}\]])/g, '$1')
-      // Fix unescaped quotes in strings (basic fix)
-      .replace(/: "([^"]*)"([^",\]\}]*)",/g, ': "$1$2",')
-      // Fix missing commas between objects
-      .replace(/}(\s*){/g, '},\n{')
-      // Fix missing commas between array elements
-      .replace(/](\s*)\[/g, '],\n[')
-      // Fix missing commas after string values (like preheader/headline issue)
-      .replace(/"(\s*\n\s*)"([a-zA-Z_])/g, '",\n  "$2')
-      // Fix missing commas after property values before next property
-      .replace(/"\s*\n\s*"([a-zA-Z_])/g, '",\n  "$1')
-      // Fix specific case where comma is missing after quoted value before property name
-      .replace(/: "([^"]*)"(\s*\n\s*)"([a-zA-Z_]+)":/g, ': "$1",\n  "$3":');
-    
-    console.log(`🔧 Parsing JSON for ${context}:`, cleanedJson.substring(0, 200) + '...');
-    
-    const parsed = JSON.parse(cleanedJson);
-    console.log(`✅ Successfully parsed JSON for ${context}`);
-    return parsed;
-    
-  } catch (error) {
-    console.error(`❌ JSON parsing failed for ${context}:`, {
-      error: error instanceof Error ? error.message : String(error),
-      originalLength: jsonString.length,
-      position: error instanceof SyntaxError ? error.message.match(/position (\d+)/) : null,
-      preview: jsonString.substring(0, 500) + '...'
-    });
-    
-    // Try to provide more specific error information
-    if (error instanceof SyntaxError && error.message.includes('position')) {
-      const match = error.message.match(/position (\d+)/);
-      if (match && match[1]) {
-        const position = parseInt(match[1]);
-        const start = Math.max(0, position - 50);
-        const end = Math.min(jsonString.length, position + 50);
-        const problemArea = jsonString.substring(start, end);
-        console.error(`❌ Problem area around position ${position}:`, problemArea);
-      }
-    }
-    
-    throw new Error(`Failed to parse AI JSON response for ${context}: ${error instanceof Error ? error.message : String(error)}`);
+// Enhanced generateWithOpenAI with Self-Correction Retry wrapper
+async function generateWithOpenAIRetry(params: {
+  prompt: string;
+  temperature?: number;
+  max_tokens?: number;
+  task_description?: string;
+  validation_function?: (result: string) => void;
+}): Promise<string> {
+  const { prompt, temperature, max_tokens, task_description, validation_function } = params;
+
+  const retryParams: any = {
+    specialist_name: 'Content Specialist',
+    task_description: task_description || 'Content Generation',
+    original_prompt: prompt,
+    ai_function: generateWithOpenAI,
+    function_params: {
+      prompt,
+      temperature,
+      max_tokens,
+      specialist_name: 'Content Specialist',
+      task_description: task_description || 'Content Generation'
+    },
+    max_attempts: 5
+  };
+  
+  if (validation_function) {
+    retryParams.validation_function = validation_function;
   }
+  if (temperature !== undefined) {
+    retryParams.temperature = temperature;
+  }
+  if (max_tokens !== undefined) {
+    retryParams.max_tokens = max_tokens;
+  }
+  
+  return aiSelfCorrectionRetry(retryParams);
 }
+
 
 // Campaign context types 
 interface CampaignWorkflowContext {
@@ -514,6 +481,22 @@ const pricingIntelligence = tool({
           date_analysis_file: dateAnalysisPath,
           route_analyzed: `${params.route.from_code}-${params.route.to_code}`,
           trace_id: params.trace_id
+        },
+
+        // ✅ CRITICAL: Add overall_analysis for Design Specialist compatibility
+        overall_analysis: {
+          best_offer: {
+            price: pricingData.cheapest,
+            date: pricingData.prices.find((p: any) => p.price === pricingData.cheapest)?.departure_date || null
+          },
+          price_range: {
+            min: pricingData.cheapest,
+            max: Math.max(...pricingData.prices.map((p: any) => p.price))
+          },
+          currency: pricingData.currency,
+          total_offers: pricingData.search_metadata.total_found,
+          route: `${params.route.from} → ${params.route.to}`,
+          analysis_timestamp: new Date().toISOString()
         }
       };
 
@@ -608,9 +591,7 @@ export const assetStrategy = tool({
     console.log('🎨 Developing AI-powered asset strategy...');
     
     try {
-      const openai = new OpenAI({
-        apiKey: ENV_CONFIG.OPENAI_API_KEY
-      });
+      // OpenAI not needed - using generateWithOpenAI helper
 
       const prompt = `Разработай комплексную стратегию ассетов для email-кампании по продаже авиабилетов.
 
@@ -705,41 +686,35 @@ export const assetStrategy = tool({
     "primary_kpi": "основной показатель",
     "engagement_metrics": ["метрика1", "метрика2"],
     "conversion_indicators": ["индикатор1", "индикатор2"]
+  },
+  "asset_requirements": {
+    "primary_assets": ["ассет1", "ассет2", "ассет3"],
+    "image_count": "количество изображений",
+    "quality_standards": "стандарты качества",
+    "brand_compliance": "соответствие бренду",
+    "localization_needs": "потребности локализации"
   }
 }
 
 Создай стратегию, которая максимизирует желание путешествовать и мотивирует к покупке билетов.`;
 
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: 'Ты эксперт по визуальному маркетингу в сфере путешествий. Создавай стратегии ассетов, которые максимизируют конверсию и эмоциональное воздействие. Отвечай ТОЛЬКО в JSON формате.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 2500
+      // Generate asset strategy with Self-Correction Retry
+      const strategyResponse = await generateWithOpenAIRetry({
+        prompt: prompt,
+        temperature: 0.9,
+        max_tokens: 3000,
+        task_description: `Asset Strategy Generation for ${params.destination}`,
+        validation_function: (result: string) => {
+          // Basic JSON validation for asset strategy
+          const parsed = parseJSONWithRetry(result, 'Content Specialist');
+          commonValidations.required(parsed.content_strategy, 'content_strategy', 'Content Specialist');
+          commonValidations.required(parsed.visual_direction, 'visual_direction', 'Content Specialist');
+          commonValidations.required(parsed.asset_requirements, 'asset_requirements', 'Content Specialist');
+        }
       });
 
-      const content = response.choices[0]?.message?.content;
-      if (!content) {
-        throw new Error('No content generated from OpenAI');
-      }
-
-      // ✅ FIX: Use parseAIJsonResponse instead of basic JSON.parse
-      console.log('🔧 Parsing AI response using parseAIJsonResponse...');
-      let strategy;
-      try {
-        strategy = parseAIJsonResponse(content, 'asset strategy generation');
-      } catch (parseError) {
-        console.error('❌ AI asset strategy generation failed:', parseError instanceof Error ? parseError.message : 'Unknown error');
-        throw new Error(`Failed to parse AI response as JSON: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
-      }
+      // Parse strategy with retry support
+      const strategy = parseJSONWithRetry(strategyResponse, 'Content Specialist');
 
       // Get campaign context
       const campaignContext = extractCampaignContext(context);
@@ -995,7 +970,12 @@ async function generateSimpleAssetManifest(campaignPath: string, _strategy: any,
     
   } catch (error) {
     console.error('❌ AI asset manifest generation failed:', error instanceof Error ? error.message : error);
-    throw new Error(`AI asset manifest generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.log('🚫 No hardcoded fallback - letting AI retry mechanism handle error correction');
+    
+    // ✅ NO FALLBACK: Let AI retry mechanism handle self-correction
+    // The generateAssetManifest function already includes proper error handling
+    // and the calling functions use aiSelfCorrectionRetry for automatic retries
+    throw new Error(`Asset manifest generation failed: ${error instanceof Error ? error.message : 'Unknown error'}. No fallback allowed per project rules - AI retry mechanism should handle self-correction.`);
   }
 }
 
@@ -1023,9 +1003,7 @@ export const contentGenerator = tool({
     console.log('✍️ Generating AI-powered email content...');
     
     try {
-      const openai = new OpenAI({
-        apiKey: ENV_CONFIG.OPENAI_API_KEY
-      });
+      // OpenAI not needed - using generateWithOpenAI helper
 
       // Get campaign context for additional data
       const campaignContext = extractCampaignContext(context);
@@ -1198,29 +1176,25 @@ ${assetStrategy?.targeting_insights?.decision_factors ? `- Факторы реш
 
 Создай контент, который максимизирует конверсию через КОНКРЕТНЫЕ преимущества, СИЛЬНЫЙ social proof и РАБОЧИЕ CTA ссылки!`;
 
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: 'Ты эксперт по email-маркетингу в сфере путешествий. Создавай высококонвертирующий контент, который вызывает эмоции и мотивирует к покупке. КРИТИЧЕСКИ ВАЖНО: Отвечай ТОЛЬКО в JSON формате без дополнительного текста или markdown блоков.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.8,
-        max_tokens: 3000
+      // Generate email content with Self-Correction Retry
+      const emailContentResponse = await generateWithOpenAIRetry({
+        prompt: prompt,
+        temperature: 0.9,
+        max_tokens: 3000,
+        task_description: `Email Content Generation for ${params.destination}`,
+        validation_function: (result: string) => {
+          // Basic JSON validation
+          const parsed = parseJSONWithRetry(result, 'Content Specialist');
+          commonValidations.required(parsed.subject_line, 'subject_line', 'Content Specialist');
+          commonValidations.required(parsed.preheader, 'preheader', 'Content Specialist');
+          commonValidations.required(parsed.headline, 'headline', 'Content Specialist');
+          commonValidations.required(parsed.body, 'body', 'Content Specialist');
+          commonValidations.required(parsed.call_to_action, 'call_to_action', 'Content Specialist');
+        }
       });
 
-      const aiResponse = response.choices[0]?.message?.content;
-      if (!aiResponse) {
-        throw new Error('No content generated from OpenAI API');
-      }
-
-      // Use robust JSON parsing
-      const emailContent = parseAIJsonResponse(aiResponse, 'email content generation');
+      // Use robust JSON parsing with retry support
+      const emailContent = parseJSONWithRetry(emailContentResponse, 'Content Specialist');
 
       // ✅ CRITICAL: Create design-brief-from-context.json for finalization tool
       if (campaignContext.campaignPath) {
@@ -1229,9 +1203,9 @@ ${assetStrategy?.targeting_insights?.decision_factors ? `- Факторы реш
           design_requirements: {
             visual_style: emailContent.style_guide?.visual_style || 'modern and clean',
             color_palette: emailContent.style_guide?.color_palette || {
-              primary: '#007bff',
-              secondary: '#6c757d',
-              accent: '#28a745'
+              primary_color: '#007bff',
+              accent_color: '#28a745',
+              background_color: '#ffffff'
             },
             imagery_direction: emailContent.style_guide?.imagery_direction || 'high-quality travel photography',
             layout_approach: emailContent.style_guide?.layout_approach || 'responsive email template'
@@ -1344,8 +1318,10 @@ async function generateAIDesignBrief(params: {
   campaign_theme: string;
   visual_style?: string;
   target_emotion?: string;
+  error_feedback?: string;
+  retry_attempt?: number;
 }) {
-  const { destination, campaign_theme, visual_style, target_emotion } = params;
+  const { destination, campaign_theme, visual_style, target_emotion, error_feedback, retry_attempt } = params;
   
   const designBriefPrompt = `
 Создай ПРОФЕССИОНАЛЬНОЕ техническое задание для дизайна email-рассылки авиабилетов.
@@ -1374,10 +1350,13 @@ async function generateAIDesignBrief(params: {
   },
   "design_requirements": {
     "visual_style": "Конкретный визуальный стиль для ${destination}",
-    "color_palette": "Детальное описание цветовой палитры из фирменных цветов Kupibilet",
-    "primary_color": "Основной цвет из палитры Kupibilet (например, #4BFF7E)",
-    "accent_color": "Акцентный цвет из палитры Kupibilet (например, #FF6240)",
-    "background_color": "Цвет фона из вспомогательных цветов (например, #EDEFFF)",
+    "color_palette": {
+      "description": "Детальное описание цветовой палитры из фирменных цветов Kupibilet",
+      "brand_alignment": "Соответствие фирменным цветам"
+    },
+    "primary_color": "#4BFF7E",
+    "accent_color": "#FF6240", 
+    "background_color": "#EDEFFF",
     "text_color": "#2C3959",
     "imagery_direction": "Направление изображений для ${destination}",
     "typography_mood": "Типографическое настроение"
@@ -1409,14 +1388,25 @@ async function generateAIDesignBrief(params: {
 `;
 
   try {
-    const response = await generateWithOpenAI({
+    const callParams: any = {
       prompt: designBriefPrompt,
       temperature: 0.3, // Lower temperature for more consistent technical specs
-      max_tokens: 1200
-    });
+      max_tokens: 1200,
+      specialist_name: 'Content Specialist',
+      task_description: `Design Brief Generation for ${destination}`
+    };
+    
+    if (error_feedback) {
+      callParams.error_feedback = error_feedback;
+    }
+    if (retry_attempt !== undefined) {
+      callParams.retry_attempt = retry_attempt;
+    }
+    
+    const response = await generateWithOpenAI(callParams);
 
-    // Parse JSON response using robust parser
-    const designBriefData = parseAIJsonResponse(response, 'design brief generation');
+    // Parse JSON response using robust parser with retry support
+    const designBriefData = parseJSONWithRetry(response, 'Content Specialist');
     
     // Add creation metadata
     designBriefData.created_at = new Date().toISOString();
@@ -1432,6 +1422,49 @@ async function generateAIDesignBrief(params: {
     // Fallback error - no static fallback allowed per project rules
     throw new Error(`Не удалось сгенерировать техническое задание для дизайна ${destination}: ${errorMessage}`);
   }
+}
+
+// Enhanced generateAIDesignBrief with Self-Correction Retry wrapper
+async function generateAIDesignBriefRetry(params: {
+  destination: string;
+  campaign_theme: string;
+  visual_style?: string;
+  target_emotion?: string;
+}): Promise<any> {
+  const { destination, campaign_theme, visual_style, target_emotion } = params;
+
+  // Custom validation for design brief
+  const validateDesignBrief = (result: any) => {
+    commonValidations.required(result.destination_context, 'destination_context', 'Content Specialist');
+    commonValidations.required(result.design_requirements, 'design_requirements', 'Content Specialist');
+    commonValidations.required(result.design_requirements.primary_color, 'primary_color', 'Content Specialist');
+    commonValidations.required(result.design_requirements.accent_color, 'accent_color', 'Content Specialist');
+    commonValidations.required(result.design_requirements.background_color, 'background_color', 'Content Specialist');
+    
+    // Validate color formats
+    commonValidations.hexColor(result.design_requirements.primary_color, 'primary_color', 'Content Specialist');
+    commonValidations.hexColor(result.design_requirements.accent_color, 'accent_color', 'Content Specialist');
+    commonValidations.hexColor(result.design_requirements.background_color, 'background_color', 'Content Specialist');
+    
+    commonValidations.nonEmpty(result.content_priorities?.key_messages, 'key_messages', 'Content Specialist');
+  };
+
+  return aiSelfCorrectionRetry({
+    specialist_name: 'Content Specialist',
+    task_description: `Design Brief Generation for ${destination}`,
+    original_prompt: `Design brief for ${destination} campaign: ${campaign_theme}`,
+    ai_function: generateAIDesignBrief,
+    function_params: {
+      destination,
+      campaign_theme,
+      visual_style,
+      target_emotion
+    },
+    validation_function: validateDesignBrief,
+    max_attempts: 5,
+    temperature: 0.3,
+    max_tokens: 1200
+  });
 }
 
 export const createDesignBrief = tool({
@@ -1463,8 +1496,8 @@ export const createDesignBrief = tool({
         throw new Error('Campaign path not found. Campaign must be created first.');
       }
       
-      // Generate AI-powered design brief
-      const designBrief = await generateAIDesignBrief({
+      // Generate AI-powered design brief with Self-Correction Retry
+      const designBrief = await generateAIDesignBriefRetry({
         destination: params.destination,
         campaign_theme: params.campaign_theme,
         visual_style: params.visual_style,
@@ -1479,9 +1512,9 @@ export const createDesignBrief = tool({
       await fs.writeFile(designBriefFile, JSON.stringify(designBrief, null, 2));
       
       console.log(`✅ AI Design brief saved to: ${designBriefFile}`);
-      console.log(`🎨 Primary color: ${designBrief.design_requirements?.color_palette?.primary_color}`);
-      console.log(`🔥 Accent color: ${designBrief.design_requirements?.color_palette?.accent_color}`);
-      console.log(`📄 Background color: ${designBrief.design_requirements?.color_palette?.background_color}`);
+      console.log(`🎨 Primary color: ${designBrief.design_requirements?.primary_color}`);
+      console.log(`🔥 Accent color: ${designBrief.design_requirements?.accent_color}`);
+      console.log(`📄 Background color: ${designBrief.design_requirements?.background_color}`);
       
       // Update campaign context
       const updatedContext = buildCampaignContext(context, {

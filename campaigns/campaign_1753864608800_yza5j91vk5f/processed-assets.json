@@ -1,0 +1,304 @@
+{
+  "manifest": {
+    "images": [
+      {
+        "filename": "external_2vNC1J_TafQ.jpg",
+        "path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODczNzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODczNzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_2vNC1J_TafQ",
+        "created": "2025-07-30T08:38:41.439Z",
+        "modified": "2025-07-30T08:38:41.439Z",
+        "tags": [],
+        "description": "an aerial view of a building in the middle of a forest",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBtYXlhbiUyMHJ1aW5zJTIwc3VucmlzZSUyMGFkdmVudHVyZXxlbnwwfDB8fHwxNzUzODczNzE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_VyvqDCUhdgk.jpg",
+        "path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwY3VsdHVyYWwlMjBleHBlcmllbmNlc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwY3VsdHVyYWwlMjBleHBlcmllbmNlc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_VyvqDCUhdgk",
+        "created": "2025-07-30T08:38:41.439Z",
+        "modified": "2025-07-30T08:38:41.439Z",
+        "tags": [],
+        "description": "old woman sitting and selling food in the market",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1561600030-ace0acae7686?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldHMlMjB2aWJyYW50JTIwY3VsdHVyYWwlMjBleHBlcmllbmNlc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_VxNb5NGrQCY.jpg",
+        "path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZlc3RpdmFscyUyMGluZGlnZW5vdXMlMjBjbG90aGluZyUyMGNvbG9yc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZlc3RpdmFscyUyMGluZGlnZW5vdXMlMjBjbG90aGluZyUyMGNvbG9yc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_VxNb5NGrQCY",
+        "created": "2025-07-30T08:38:41.439Z",
+        "modified": "2025-07-30T08:38:41.439Z",
+        "tags": [],
+        "description": "man standing behind dancers",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1508642054-5e6cade8ff13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZlc3RpdmFscyUyMGluZGlnZW5vdXMlMjBjbG90aGluZyUyMGNvbG9yc3xlbnwwfDB8fHwxNzUzODczNzE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_Uuh0K9YtNM8.jpg",
+        "path": "https://images.unsplash.com/photo-1486787284432-3749cdce2660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMGxhbmRzY2FwZXMlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1486787284432-3749cdce2660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMGxhbmRzY2FwZXMlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_Uuh0K9YtNM8",
+        "created": "2025-07-30T08:38:41.439Z",
+        "modified": "2025-07-30T08:38:41.439Z",
+        "tags": [],
+        "description": "sunrise on mountains",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1486787284432-3749cdce2660?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2ZmZWUlMjBwbGFudGF0aW9uJTIwbHVzaCUyMGxhbmRzY2FwZXMlMjBtb3JuaW5nJTIwbGlnaHR8ZW58MHwwfHx8MTc1Mzg3MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_njM4it9erx4.jpg",
+        "path": "https://images.unsplash.com/photo-1459294458679-97e81180a256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBuYXR1cmFsJTIwd29uZGVycyUyMHNjZW5pYyUyMGhpa2luZyUyMHRyYWlsc3xlbnwwfDB8fHwxNzUzODczNzE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1459294458679-97e81180a256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBuYXR1cmFsJTIwd29uZGVycyUyMHNjZW5pYyUyMGhpa2luZyUyMHRyYWlsc3xlbnwwfDB8fHwxNzUzODczNzE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_njM4it9erx4",
+        "created": "2025-07-30T08:38:41.440Z",
+        "modified": "2025-07-30T08:38:41.440Z",
+        "tags": [],
+        "description": "green grass mountain with fog",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1459294458679-97e81180a256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBuYXR1cmFsJTIwd29uZGVycyUyMHNjZW5pYyUyMGhpa2luZyUyMHRyYWlsc3xlbnwwfDB8fHwxNzUzODczNzE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      },
+      {
+        "filename": "external_ck8OwakvcWA.jpg",
+        "path": "https://images.unsplash.com/photo-1675608683088-858ff9913272?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZvbGtsb3JlJTIwcGVyZm9ybWFuY2VzJTIwY29tbXVuaXR5JTIwZXZlbnRzfGVufDB8MHx8fDE3NTM4NzM3MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "file_path": "https://images.unsplash.com/photo-1675608683088-858ff9913272?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZvbGtsb3JlJTIwcGVyZm9ybWFuY2VzJTIwY29tbXVuaXR5JTIwZXZlbnRzfGVufDB8MHx8fDE3NTM4NzM3MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "size": 150000,
+        "format": "jpg",
+        "hash": "external_ck8OwakvcWA",
+        "created": "2025-07-30T08:38:41.440Z",
+        "modified": "2025-07-30T08:38:41.440Z",
+        "tags": [],
+        "description": "a group of people standing around a woman on a horse",
+        "purpose": "external_image",
+        "url": "https://images.unsplash.com/photo-1675608683088-858ff9913272?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjdWx0dXJhbCUyMGZvbGtsb3JlJTIwcGVyZm9ybWFuY2VzJTIwY29tbXVuaXR5JTIwZXZlbnRzfGVufDB8MHx8fDE3NTM4NzM3MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "processed": true,
+        "optimized": false,
+        "optimization_applied": "external_url_validation",
+        "processing_timestamp": "2025-07-30T08:40:46.939Z",
+        "external_validation": "url_accessible",
+        "dimensions": {
+          "width": 600,
+          "height": 360
+        },
+        "email_client_support": {
+          "gmail": true,
+          "outlook": true,
+          "apple-mail": true
+        },
+        "technical_compliance": {
+          "max_width_respected": true,
+          "format_supported": true,
+          "size_optimized": true
+        }
+      }
+    ],
+    "icons": [],
+    "fonts": []
+  },
+  "usage_instructions": [
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    },
+    {
+      "asset_type": "image",
+      "usage_context": "general",
+      "placement_instructions": "Place according to design specifications and content context",
+      "responsive_behavior": "Scale proportionally for mobile devices, maintain aspect ratio",
+      "accessibility_requirements": {
+        "alt_text": "Image description required",
+        "wcag_compliant": true
+      },
+      "email_client_notes": [],
+      "performance_considerations": {
+        "load_time_estimate": "N/A",
+        "optimization_applied": false
+      }
+    }
+  ],
+  "processing_summary": {
+    "total_images": 6,
+    "total_icons": 0,
+    "optimization_level": "aggressive",
+    "processed_at": "2025-07-30T08:40:46.940Z"
+  }
+}

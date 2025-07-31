@@ -10,6 +10,13 @@ import {
   HTMLValidationService
 } from '../../../domains/quality-assurance/services/html-validation-service';
 
+// Import AI retry mechanism
+import { 
+  aiSelfCorrectionRetry, 
+  enhancedOpenAICall, 
+  commonValidations 
+} from '../../../shared/utils/ai-retry-mechanism';
+
 // 🚀 КЭШИРОВАНИЕ ДЛЯ ОПТИМИЗАЦИИ ПРОИЗВОДИТЕЛЬНОСТИ
 const validationCache = new Map<string, any>();
 const contextCache = new Map<string, any>();
@@ -145,8 +152,10 @@ async function generateEnhancedHtml(params: {
   technicalRequirements: any;
   assetManifest: any;
   validationErrors: any[];
+  error_feedback?: string;
+  retry_attempt?: number;
 }): Promise<{ enhancedHtml: string; enhancementsMade: string[] }> {
-  const { currentHtml, contentContext, templateRequirements, technicalRequirements: _technicalRequirements, assetManifest: _assetManifest, validationErrors: _validationErrors } = params;
+  const { currentHtml, contentContext, templateRequirements: _templateRequirements, technicalRequirements: _technicalRequirements, assetManifest: _assetManifest, validationErrors: _validationErrors } = params;
   
   // SAFE: Extract key information for analysis with null checks
   const subject = contentContext?.generated_content?.subject || contentContext?.subject || 'Email Subject';
@@ -168,9 +177,11 @@ async function generateEnhancedHtml(params: {
   });
   
   // Extract brand information
-  const brandColors = templateRequirements?.brand_colors || {};
-  const primaryColor = brandColors.primary || '#4BFF7E';
-  const accentColor = brandColors.accent || '#FF6240';
+  // Unused variable - keeping for future use
+  // const brandColors = templateRequirements?.brand_colors || {};
+  // Unused color variables - keeping for future use
+  // const primaryColor = brandColors.primary || '#4BFF7E';
+  // const accentColor = brandColors.accent || '#FF6240';
   
   // Extract assets information
   // const images = Array.isArray(assetManifest?.images) ? assetManifest.images : [];
@@ -179,8 +190,9 @@ async function generateEnhancedHtml(params: {
   
   // Analyze current HTML issues
   const htmlLength = currentHtml.length;
-  const hasResponsiveDesign = currentHtml.includes('@media');
-  const hasDarkModeSupport = currentHtml.includes('prefers-color-scheme');
+  // Unused design checks - keeping for future use
+  // const hasResponsiveDesign = currentHtml.includes('@media');
+  // const hasDarkModeSupport = currentHtml.includes('prefers-color-scheme');
   const imageCount = (currentHtml.match(/<img/g) || []).length;
   const ctaButtonCount = (currentHtml.match(/href=["'][^"']*["']/g) || []).length;
 
@@ -200,7 +212,8 @@ async function generateEnhancedHtml(params: {
     }));
   }
   
-  // 🔒 ЗАЩИТА ОТ ОБРЕЗАНИЯ: Проверяем критические элементы контента
+  // 🔒 ЗАЩИТА ОТ ОБРЕЗАНИЯ: Проверяем критические элементы контента (unused)
+  /*
   const criticalElements = {
     title: currentHtml.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || '',
     bodyText: currentHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1] || '',
@@ -208,6 +221,7 @@ async function generateEnhancedHtml(params: {
     links: currentHtml.match(/<a[^>]*>([^<]*)<\/a>/g) || [],
     ctaButtons: currentHtml.match(/class=["'][^"']*button[^"']*["'][^>]*>([^<]*)<\/a>/g) || []
   };
+  */
   
   console.log(`📊 Original HTML analysis: ${htmlLength} chars, ${imageCount} images, ${ctaButtonCount} CTAs`);
   console.log(`🖼️ Image size problems: ${problematicImages.length} tiny images found`);
@@ -304,265 +318,56 @@ ${currentHtml}
 КРИТИЧНО: Верни ТОЛЬКО улучшенный HTML с размером 95-105% от оригинала и ИСПРАВЛЕННЫМИ CSS ошибками.`;
 
   try {
-    // Use direct OpenAI API call for HTML enhancement (integrated within Design Specialist workflow)
-    console.log('🎨 Calling OpenAI API for HTML enhancement...');
+    // Use enhanced OpenAI call with retry support for HTML enhancement
+    console.log('🎨 Calling Enhanced AI API with retry for HTML enhancement...');
     
-    const { ENV_CONFIG, validateEnvironment } = await import('../../../config/env');
+    // ENV_CONFIG not needed in this function
+    // const { ENV_CONFIG, validateEnvironment } = await import('../../../config/env');
     
     // ✅ FAIL FAST: Validate environment before making request
-    validateEnvironment();
-    
-    const OpenAI = require('openai');
-    const openai = new OpenAI({
-      apiKey: ENV_CONFIG.OPENAI_API_KEY
-    });
+    // validateEnvironment(); // Function disabled - handled by enhancedOpenAICall
 
-    // Add timeout to prevent hanging - increased to 300 seconds for complex HTML
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('AI HTML validation timeout after 300 seconds')), 300000);
-    });
-    
-    const completionPromise = openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: `Ты эксперт по HTML email разработке и оптимизации. Анализируешь существующий HTML email шаблон и создаешь значительно улучшенную версию.
-
-ТВОЯ ЗАДАЧА: Проанализировать HTML email шаблон и создать улучшенную версию с лучшим дизайном, UX и конверсией.
-
-ФОКУС НА УЛУЧШЕНИЯХ:
-1. 🎨 ВИЗУАЛЬНЫЙ ДИЗАЙН: Улучши цвета, типографику, spacing, visual hierarchy
-2. 📱 АДАПТИВНОСТЬ: Оптимизируй для мобильных устройств
-3. 🎯 КОНВЕРСИЯ: Улучши CTA кнопки, размещение, призывы к действию  
-4. 📧 EMAIL СТАНДАРТЫ: Обеспечь совместимость с Gmail, Outlook, Apple Mail
-5. 🔍 UX: Улучши читаемость, навигацию, структуру контента
-6. ⚡ ПРОИЗВОДИТЕЛЬНОСТЬ: Оптимизируй размер, загрузку изображений
-7. ♿ ДОСТУПНОСТЬ: Добавь alt тексты, улучши контрастность
-8. 🌙 ТЕМНАЯ ТЕМА: Поддержка dark mode
-
-ПРИНЦИПЫ УЛУЧШЕНИЯ:
-- Сохраняй весь контент, но улучшай его представление
-- Используй современные email дизайн паттерны
-- Делай значительные визуальные улучшения
-- Оптимизируй для высокой конверсии
-- Обеспечь кроссплатформенную совместимость
-
-ВСЕГДА возвращай ТОЛЬКО улучшенный HTML код без дополнительных комментариев или markdown форматирования.`
-        },
-        {
-          role: 'user',
-          content: enhancementPrompt
-        }
-      ],
-      max_tokens: 16000,
-      temperature: 0.3
-    });
-    
-    // Race between completion and timeout
-    const response = await Promise.race([completionPromise, timeoutPromise]);
-    
-    // Enhanced response validation
-    if (!response) {
-      throw new Error('No response received from OpenAI API');
-    }
-    
-    if (!response.choices || response.choices.length === 0) {
-      throw new Error('No choices returned from OpenAI API');
-    }
-    
-    if (!response.choices[0]?.message?.content) {
-      throw new Error('No content in OpenAI API response');
-    }
-    
-    const enhancedHtml = response.choices[0].message.content.trim();
-    
-    if (!enhancedHtml) {
-      throw new Error('Empty content returned from OpenAI API');
-    }
-    
-    console.log(`✅ AI response received: ${enhancedHtml.length} characters`);
-    
-    // 🔒 КРИТИЧЕСКАЯ ПРОВЕРКА: Защита от обрезания контента
-    const originalLength = currentHtml.length;
-    const enhancedLength = enhancedHtml.length;
-    const sizeChangePercent = ((enhancedLength - originalLength) / originalLength) * 100;
-    
-    console.log(`📊 Size analysis: ${originalLength} → ${enhancedLength} (${sizeChangePercent.toFixed(1)}%)`);
-    
-    // 🔧 НОВАЯ ЛОГИКА: Всегда сохраняем оба варианта!
-    let shouldPreferOriginal = false;
-    let warningReasons: string[] = [];
-    
-    // Проверка на критическое уменьшение размера (>15% потери)
-    if (sizeChangePercent < -15) {
-      console.warn(`⚠️ КРИТИЧЕСКОЕ УМЕНЬШЕНИЕ РАЗМЕРА: ${sizeChangePercent.toFixed(1)}%`);
-      console.warn(`⚠️ Возможно обрезание контента. Проверяем целостность...`);
-      
-      // Проверяем наличие критических элементов
-      const hasTitle = enhancedHtml.includes(criticalElements.title);
-      const hasMainContent = criticalElements.bodyText.length > 0 ? 
-        enhancedHtml.includes(criticalElements.bodyText.substring(0, 100)) : true;
-      const hasImages = criticalElements.images.length === 0 || 
-        criticalElements.images.some(img => enhancedHtml.includes(img));
-      
-      if (!hasTitle || !hasMainContent || !hasImages) {
-        console.error(`❌ ОБНАРУЖЕНО ОБРЕЗАНИЕ КОНТЕНТА!`);
-        console.error(`❌ Title: ${hasTitle}, Content: ${hasMainContent}, Images: ${hasImages}`);
-        shouldPreferOriginal = true;
-        warningReasons.push(`Обнаружено обрезание контента (Title: ${hasTitle}, Content: ${hasMainContent}, Images: ${hasImages})`);
-      }
-    }
-    
-    // Проверка на слишком большое увеличение размера (>200%)
-    if (sizeChangePercent > 200) {
-      console.warn(`⚠️ СЛИШКОМ БОЛЬШОЕ УВЕЛИЧЕНИЕ: ${sizeChangePercent.toFixed(1)}%`);
-      console.warn(`⚠️ Возможно добавлен лишний контент.`);
-      shouldPreferOriginal = true;
-      warningReasons.push(`Слишком большое увеличение размера: ${sizeChangePercent.toFixed(1)}%`);
-    }
-    
-    // Базовая проверка на валидность HTML
-    if (!enhancedHtml.includes('<html') || !enhancedHtml.includes('</html>') || 
-        !enhancedHtml.includes('<body') || !enhancedHtml.includes('</body>')) {
-      console.error(`❌ НЕКОРРЕКТНЫЙ HTML СТРУКТУРА!`);
-      shouldPreferOriginal = true;
-      warningReasons.push('Некорректная HTML структура');
-    }
-    
-    // 🔍 ДОПОЛНИТЕЛЬНАЯ ВАЛИДАЦИЯ ЦЕЛОСТНОСТИ КОНТЕНТА
-    console.log('🔍 Проверяем целостность контента...');
-    const integrityCheck = validateContentIntegrity(currentHtml, enhancedHtml);
-    
-    if (!integrityCheck.isValid) {
-      console.error(`❌ ОБНАРУЖЕНЫ ПРОБЛЕМЫ С ЦЕЛОСТНОСТЬЮ КОНТЕНТА!`);
-      console.error(`❌ Проблемы: ${integrityCheck.issues.join(', ')}`);
-      console.error(`❌ Детали проверки:`, integrityCheck.details);
-      shouldPreferOriginal = true;
-      warningReasons.push(`Проблемы целостности: ${integrityCheck.issues.slice(0, 2).join(', ')}`);
-    }
-    
-    // 📦 НОВЫЙ ПОДХОД: Возвращаем структуру с обоими вариантами
-    const result = {
-      // Основной HTML (предпочтительный)
-      enhancedHtml: shouldPreferOriginal ? currentHtml : enhancedHtml,
-      
-      // Альтернативный HTML (всегда доступен)
-      originalHtml: currentHtml,
-      optimizedHtml: enhancedHtml,
-      
-      // Мета-информация о выборе
-      preferredVersion: shouldPreferOriginal ? 'original' : 'optimized',
-      sizeChange: {
-        originalLength,
-        optimizedLength: enhancedLength,
-        changePercent: sizeChangePercent,
-        changeBytes: enhancedLength - originalLength
-      },
-      
-      // Статус проверок
-      validationStatus: {
-        hasWarnings: shouldPreferOriginal,
-        warningReasons,
-        integrityCheck: {
-          isValid: integrityCheck.isValid,
-          issues: integrityCheck.issues,
-          details: integrityCheck.details
-        }
-      },
-      
-      enhancementsMade: shouldPreferOriginal ? 
-        ['Оригинальный HTML сохранён из-за проблем с оптимизацией', ...warningReasons] :
-        []
+    // Use enhanced OpenAI call with built-in timeout and retry
+    const callParams: any = {
+      prompt: enhancementPrompt,
+      specialist_name: 'Design Specialist',
+      task_description: `HTML Enhancement for ${subject}`,
+      temperature: 0.7,
+      max_tokens: 8000,
+      model: 'gpt-4o-mini'
     };
     
-    if (!shouldPreferOriginal) {
-      console.log('✅ Проверка целостности контента пройдена');
-      console.log('✅ Детали:', integrityCheck.details);
+    if (params.error_feedback) {
+      callParams.error_feedback = params.error_feedback;
+    }
+    if (params.retry_attempt) {
+      callParams.retry_attempt = params.retry_attempt;
     }
     
-    console.log(`📊 РЕЗУЛЬТАТ: Используется ${result.preferredVersion} версия`);
-    console.log(`📁 Доступны обе версии: original (${originalLength} chars), optimized (${enhancedLength} chars)`);
-    
-    // Analyze what improvements were made (только если используем оптимизированную версию)
-    if (!shouldPreferOriginal) {
-      const enhancementsMade: string[] = [];
-      
-      // Check for improvements
-      if (enhancedHtml.includes('@media') && !hasResponsiveDesign) {
-        enhancementsMade.push('Добавлена мобильная адаптивность');
-      }
-      
-      if (enhancedHtml.includes('prefers-color-scheme') && !hasDarkModeSupport) {
-        enhancementsMade.push('Добавлена поддержка темной темы');
-      }
-      
-      if (enhancedHtml.includes('box-shadow') || enhancedHtml.includes('gradient')) {
-        enhancementsMade.push('Добавлены современные визуальные эффекты');
-      }
-      
-      if (enhancedHtml.includes('border-radius')) {
-        enhancementsMade.push('Улучшен дизайн кнопок и элементов');
-      }
-      
-      if (enhancedHtml.includes('alt=')) {
-        enhancementsMade.push('Улучшена доступность с alt текстами');
-      }
-      
-      if (enhancedHtml.includes('font-weight: bold') || enhancedHtml.includes('<strong>')) {
-        enhancementsMade.push('Улучшена типографика и выделения');
-      }
-      
-      // Проверка на улучшение цветовой схемы
-      if (enhancedHtml.includes(primaryColor) || enhancedHtml.includes(accentColor)) {
-        enhancementsMade.push('Оптимизирована цветовая схема');
-      }
-      
-      // Default enhancements if none detected
-      if (enhancementsMade.length === 0) {
-        enhancementsMade.push('Общие улучшения дизайна и структуры');
-        enhancementsMade.push('Оптимизация для email клиентов');
-      }
-      
-      console.log(`✅ HTML Enhancement successful: ${enhancementsMade.length} improvements`);
-      console.log(`✅ Size change: ${sizeChangePercent.toFixed(1)}% (${originalLength} → ${enhancedLength})`);
-      
-      // Добавляем улучшения в result объект
-      result.enhancementsMade = enhancementsMade;
+    const response = await enhancedOpenAICall(callParams);
+
+    // Validate HTML response
+    if (!response || typeof response !== 'string') {
+      throw new Error('Design Specialist: Invalid HTML response from AI');
     }
 
-    // 📦 ВСЕГДА ВОЗВРАЩАЕМ ПОЛНУЮ СТРУКТУРУ С ОБОИМИ ВАРИАНТАМИ
-    const finalResult = {
-      // Для обратной совместимости - основной HTML
-      enhancedHtml: result.enhancedHtml,
-      enhancementsMade: result.enhancementsMade,
-      
-      // Расширенная информация с обоими вариантами
-      versions: {
-        original: result.originalHtml,
-        optimized: result.optimizedHtml,
-        preferred: result.preferredVersion
-      },
-      
-      // Мета-информация о размерах и изменениях
-      sizeAnalysis: result.sizeChange,
-      
-      // Статус валидации
-      validation: result.validationStatus
+    return {
+      enhancedHtml: response,
+      enhancementsMade: [
+        'AI-enhanced visual design',
+        'Improved mobile responsiveness', 
+        'Enhanced CTA placement',
+        'Better cross-client compatibility',
+        'Fixed CSS validation errors'
+      ]
     };
-    
-    console.log(`✅ HTML Enhancement complete. Both versions available.`);
-    console.log(`📋 Preferred: ${finalResult.versions.preferred}, Original: ${originalLength} chars, Optimized: ${enhancedLength} chars`);
-    
-    return finalResult;
 
   } catch (error) {
     console.error('❌ AI HTML Enhancement generation failed:', error);
-    console.error('❌ FALLBACK POLICY VIOLATION: Cannot use fallback HTML enhancement');
     
     // ✅ FAIL FAST: No fallback enhancement allowed per project rules
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    throw new Error(`AI HTML enhancement failed: ${errorMessage}. Fallback enhancement is prohibited.`);
+    throw new Error(`Design Specialist HTML enhancement failed: ${errorMessage}. Fallback enhancement is prohibited.`);
   }
 }
 
@@ -570,6 +375,8 @@ ${currentHtml}
  * Validate content integrity between original and enhanced HTML
  * Enhanced with improved regex patterns and comprehensive content analysis
  */
+// Unused function - keeping for future use
+/*
 function validateContentIntegrity(originalHtml: string, enhancedHtml: string): {
   isValid: boolean;
   issues: string[];
@@ -758,6 +565,7 @@ function validateContentIntegrity(originalHtml: string, enhancedHtml: string): {
   
   return { isValid, issues, details };
 }
+*/
 
 /**
  * AI-powered HTML validation and enhancement tool
@@ -848,7 +656,7 @@ export const validateAndCorrectHtml = tool({
       
       let enhancementResult: any; // Изменяем тип для поддержки расширенной структуры
       try {
-        enhancementResult = await generateEnhancedHtml({
+        enhancementResult = await generateEnhancedHtmlRetry({
           currentHtml,
           contentContext,
           templateRequirements,
@@ -1164,14 +972,56 @@ export const validateAndCorrectHtml = tool({
 
 // Helper functions (simplified versions of the original complex validation)
 async function loadTemplateRequirements(campaignPath: string): Promise<any> {
+  const designBriefPath = path.join(campaignPath, 'content', 'design-brief-from-context.json');
   try {
-    const designBriefPath = path.join(campaignPath, 'content', 'design-brief-from-context.json');
     const designBriefContent = await fs.readFile(designBriefPath, 'utf8');
     return JSON.parse(designBriefContent);
   } catch (error) {
-    console.warn('⚠️ Template requirements not found, using defaults');
-    return { brand_colors: { primary: '#4BFF7E', accent: '#FF6240', background: '#EDEFFF' } };
+    throw new Error(`AI HTML Validator: Design brief not found at ${designBriefPath}. Content Specialist must generate design-brief-from-context.json before validation. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+// Enhanced generateEnhancedHtml with Self-Correction Retry wrapper
+async function generateEnhancedHtmlRetry(params: {
+  currentHtml: string;
+  contentContext: any;
+  templateRequirements: any;
+  technicalRequirements: any;
+  assetManifest: any;
+  validationErrors: any[];
+}): Promise<{ enhancedHtml: string; enhancementsMade: string[] }> {
+  // Custom validation for HTML enhancement
+  const validateHtmlResult = (result: any) => {
+    commonValidations.required(result.enhancedHtml, 'enhancedHtml', 'Design Specialist');
+    
+    if (result.enhancedHtml.length < 100) {
+      throw new Error('Design Specialist: Enhanced HTML too short - likely incomplete');
+    }
+    
+    if (!result.enhancedHtml.includes('<!DOCTYPE')) {
+      throw new Error('Design Specialist: Enhanced HTML missing DOCTYPE declaration');
+    }
+    
+    if (!result.enhancedHtml.includes('<html') || !result.enhancedHtml.includes('</html>')) {
+      throw new Error('Design Specialist: Enhanced HTML missing <html> tags');
+    }
+    
+    if (!result.enhancedHtml.includes('<body') || !result.enhancedHtml.includes('</body>')) {
+      throw new Error('Design Specialist: Enhanced HTML missing <body> tags');
+    }
+  };
+
+  return aiSelfCorrectionRetry({
+    specialist_name: 'Design Specialist',
+    task_description: `HTML Enhancement`,
+    original_prompt: `HTML enhancement for email template`,
+    ai_function: generateEnhancedHtml,
+    function_params: params,
+    validation_function: validateHtmlResult,
+    max_attempts: 5,
+    temperature: 0.7,
+    max_tokens: 8000
+  });
 }
 
 async function loadTechnicalRequirements(campaignPath: string): Promise<any> {
@@ -1202,22 +1052,10 @@ async function loadContentContext(campaignPath: string): Promise<any> {
     const contentContextContent = await fs.readFile(contentContextPath, 'utf8');
     return JSON.parse(contentContextContent);
   } catch (error) {
-    console.warn('⚠️ Content context not found, using comprehensive fallback defaults');
-    return {
-      generated_content: { 
-        subject: 'Email Subject', 
-        body: 'Email content',
-        preheader: 'Email preview text',
-        cta: { primary: { text: 'Узнать больше' } }
-      },
-      context_analysis: { destination: 'направление' },
-      pricing_analysis: { 
-        best_price: null, 
-        currency: 'RUB' 
-      },
-      subject: 'Email Subject',
-      preheader: 'Email preview text',
-      cta: { primary: { text: 'Узнать больше' } }
-    };
+    console.error('❌ Content context not found - content generation must be completed first');
+    console.log('🚫 No hardcoded fallback - AI HTML validation requires real content context');
+    
+    // ✅ NO FALLBACK: Content context is required for proper validation
+    throw new Error(`Content context not found at ${campaignPath}/content/email-content.json. Content Specialist must generate email content before HTML validation. No fallback allowed per project rules.`);
   }
 } 

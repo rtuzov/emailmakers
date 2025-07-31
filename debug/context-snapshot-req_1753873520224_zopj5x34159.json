@@ -1,0 +1,86 @@
+{
+  "requestId": "req_1753873520224_zopj5x34159",
+  "traceId": "api-1753873520224",
+  "timestamp": "2025-07-30T11:05:20.224Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753873520224",
+    "name": "Guatemala Autumn Travel",
+    "path": "",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1"
+    },
+    "correlationId": "corr_1753873520224_3xwp9vct6um",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "standard",
+    "requiresApproval": true,
+    "qualityThreshold": 85,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "путешествие в Гватемала осенью",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Guatemala Autumn Travel",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign_generation",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "standard",
+    "qualityThreshold": 85,
+    "originalOptions": {
+      "traceId": "api-1753873520224",
+      "metadata": {
+        "campaignName": "Guatemala Autumn Travel",
+        "brand": "Travel Agency",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign_generation",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "standard",
+        "qualityThreshold": 85
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1"
+      }
+    }
+  }
+}

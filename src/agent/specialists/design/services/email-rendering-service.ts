@@ -223,7 +223,7 @@ export class EmailRenderingService {
         mjmlContent: this.generateMjmlTemplate(params)
       };
       
-      // Execute MJML rendering
+      // ✅ MIGRATED: Use new refactored MJML tool (now uses adapter internally)
       const mjmlResult = await renderMjml(mjmlParams);
       
       if (!mjmlResult.success) {

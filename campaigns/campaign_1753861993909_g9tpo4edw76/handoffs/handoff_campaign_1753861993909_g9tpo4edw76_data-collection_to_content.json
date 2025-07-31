@@ -1,0 +1,145 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753861993909_g9tpo4edw76",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753861993909_g9tpo4edw76",
+  "specialist_data": {
+    "consolidated": {
+      "actionable_insights": [
+        "Promote cultural festivals and unique heritage tours to attract interest.",
+        "Highlight eco-friendly travel options to cater to environmentally conscious travelers.",
+        "Consider partnership with local artisans for authentic experiences."
+      ],
+      "key_insights": [
+        "Increasing demand for off-the-beaten-path travel options.",
+        "Key cultural experiences drive tourist interest in Guatemala.",
+        "Seasonal travel patterns favor visits from late fall to early spring."
+      ],
+      "confidence_score": 0.85,
+      "analysis_timestamp": "2025-07-30T07:53:18.013Z",
+      "saved_at": "2025-07-30T07:53:34.702Z"
+    },
+    "destination_analysis": {
+      "route_analysis": "Greece is well connected by air and sea. Visitors can access major cities like Guatemala City easily through its international airport. Local transportation includes buses, shuttles, and car rentals for further exploration of attractions.",
+      "seasonal_patterns": "The optimal months to visit Guatemala are November through April, coinciding with the dry season. September to October tends to be rainy, affecting travel plans.",
+      "climate": "Guatemala has a tropical climate with warm temperatures year-round. Be prepared for rain if traveling during the wet season. Lightweight clothing and rain gear are recommended.",
+      "culture": "Guatemala boasts rich Mayan heritage, with numerous cultural festivals, local music, and vibrant artisanal markets."
+    },
+    "emotional_profile": {
+      "motivations": "Travelers are motivated by a desire for cultural immersion, historical exploration, and adventure. Many seek unique experiences away from typical tourist spots.",
+      "triggers": "Emotional decision factors include personal recommendations, social media content showcasing the beauty of Guatemala, and travel blogs detailing unique experiences.",
+      "desires": "Tourists seek authentic cultural experiences, connection with nature, and opportunities to learn about ancient civilizations, particularly Mayan ruins."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Increasing demand for off-the-beaten-path travel options.",
+        "Key cultural experiences drive tourist interest in Guatemala.",
+        "Seasonal travel patterns favor visits from late fall to early spring."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T07:53:34.697Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753861993909_g9tpo4edw76/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Prices for tours range from $500 to $1500 depending on inclusions and duration. During peak season (Q4), prices can increase by up to 20%. ",
+      "booking_windows": "Optimal booking window is 3 to 6 months before travel for the best deals, especially during the peak season. Early bird discounts are often available.",
+      "demand": "Travel demand to Guatemala is on the rise, especially among adventure travelers and history enthusiasts. Popularity of eco-tourism is also increasing.",
+      "competition": "Alternative destinations include Costa Rica and Belize, typically offering similar cultural and nature experiences but can be more expensive."
+    },
+    "travel_intelligence": {
+      "route_analysis": "Greece is well connected by air and sea. Visitors can access major cities like Guatemala City easily through its international airport. Local transportation includes buses, shuttles, and car rentals for further exploration of attractions.",
+      "pricing_trends": "Prices for tours range from $500 to $1500 depending on inclusions and duration. During peak season (Q4), prices can increase by up to 20%. ",
+      "seasonal_patterns": "The optimal months to visit Guatemala are November through April, coinciding with the dry season. September to October tends to be rainy, affecting travel plans.",
+      "booking_windows": "Optimal booking window is 3 to 6 months before travel for the best deals, especially during the peak season. Early bird discounts are often available.",
+      "destination_insights": {
+        "route_analysis": "Greece is well connected by air and sea. Visitors can access major cities like Guatemala City easily through its international airport. Local transportation includes buses, shuttles, and car rentals for further exploration of attractions.",
+        "seasonal_patterns": "The optimal months to visit Guatemala are November through April, coinciding with the dry season. September to October tends to be rainy, affecting travel plans.",
+        "climate": "Guatemala has a tropical climate with warm temperatures year-round. Be prepared for rain if traveling during the wet season. Lightweight clothing and rain gear are recommended.",
+        "culture": "Guatemala boasts rich Mayan heritage, with numerous cultural festivals, local music, and vibrant artisanal markets."
+      },
+      "market_insights": {
+        "pricing_trends": "Prices for tours range from $500 to $1500 depending on inclusions and duration. During peak season (Q4), prices can increase by up to 20%. ",
+        "booking_windows": "Optimal booking window is 3 to 6 months before travel for the best deals, especially during the peak season. Early bird discounts are often available.",
+        "demand": "Travel demand to Guatemala is on the rise, especially among adventure travelers and history enthusiasts. Popularity of eco-tourism is also increasing.",
+        "competition": "Alternative destinations include Costa Rica and Belize, typically offering similar cultural and nature experiences but can be more expensive."
+      },
+      "trend_insights": {
+        "market_trends": "Travel trends indicate an increase in sustainable tourism and a focus on responsible travel in culturally rich destinations. ",
+        "consumer_behavior": "Travelers are increasingly using online platforms for direct bookings and relying on user reviews for decision-making. Flexibility and cancellation policies are key influencing factors in bookings.",
+        "competitive_landscape": "Guatemala competes with surrounding Central American countries like Honduras and El Salvador, offering distinct cultural and historical experiences.",
+        "seasonal_factors": "Seasonal variations greatly influence traveler numbers, with peaks during December holidays and summer vacation months. "
+      }
+    },
+    "trend_analysis": {
+      "market_trends": "Travel trends indicate an increase in sustainable tourism and a focus on responsible travel in culturally rich destinations. ",
+      "consumer_behavior": "Travelers are increasingly using online platforms for direct bookings and relying on user reviews for decision-making. Flexibility and cancellation policies are key influencing factors in bookings.",
+      "competitive_landscape": "Guatemala competes with surrounding Central American countries like Honduras and El Salvador, offering distinct cultural and historical experiences.",
+      "seasonal_factors": "Seasonal variations greatly influence traveler numbers, with peaks during December holidays and summer vacation months. "
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/consolidated-insights.json",
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 7,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T07:53:41.402Z",
+      "data_types": [
+        "consolidated",
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "travel_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed collection of travel intelligence data focused on Guatemala for promotional email campaign.",
+    "context_for_next": "Important context for highlighting cultural attractions and unique nature experiences in Guatemala.",
+    "recommendations": [
+      "Focus on marketing key cultural events and festivals.",
+      "Incorporate testimonials and personal narratives to enhance emotional connection with potential travelers."
+    ],
+    "priority_items": [],
+    "potential_issues": [],
+    "success_criteria": [
+      "Email content effectively conveys the appeal of Guatemala's culture and nature. Better engagement leads to bookings."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "consolidated",
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 500
+  },
+  "trace_id": "handoff_1753862021402_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T07:53:41.403Z"
+}

@@ -1,0 +1,70 @@
+{
+  "template_name": "Guatemala_Adventure_Promo",
+  "layout": {
+    "type": "gallery-focused",
+    "max_width": 680,
+    "spacing_system": "dense",
+    "responsive_breakpoints": {
+      "mobile": "100%",
+      "tablet": "90%",
+      "desktop": "80%"
+    }
+  },
+  "sections": [
+    "hook",
+    "visual_story",
+    "cultural_highlights",
+    "booking_urgency",
+    "cta"
+  ],
+  "components": {
+    "hero_image": {
+      "src": "image1.jpg",
+      "alt": "Cultural Landscape of Guatemala"
+    },
+    "gallery_images": [
+      {
+        "src": "image2.jpg",
+        "alt": "Historical Site"
+      },
+      {
+        "src": "image3.jpg",
+        "alt": "Nature Adventure"
+      },
+      {
+        "src": "image4.jpg",
+        "alt": "Local Cuisine"
+      },
+      {
+        "src": "image5.jpg",
+        "alt": "Festivals and Celebrations"
+      }
+    ],
+    "price_section": {
+      "text": "Special offer starting from 54,629 RUB until November 10!",
+      "highlight": true
+    },
+    "urgency_section": {
+      "text": "Limited availability! Book now!",
+      "highlight": true
+    }
+  },
+  "visual_concept": {
+    "theme": "Cultural richness and natural beauty",
+    "style": "Modern and vibrant, reflecting Guatemala's culture",
+    "mood": "engaging and adventurous"
+  },
+  "target_audience": "Cultural adventurers and heritage tourists seeking unique experiences",
+  "improvements_applied": "Focused on visual storytelling, incorporated urgency elements to drive conversions",
+  "metadata": {
+    "brand_colors": {
+      "primary": "#FF5733",
+      "accent": "#4CAF50",
+      "background": "#F5F5F5"
+    },
+    "generated_at": "2025-07-31T04:58:51.828Z",
+    "generated_by": "AI Template Designer (No Fallbacks)",
+    "campaign_type": "promotional",
+    "trace_id": "design-final"
+  }
+}

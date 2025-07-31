@@ -691,13 +691,13 @@ export const createFinalDeliveryPackage = tool({
   description: 'Create final delivery package with all campaign materials, reports, and export files',
   parameters: z.object({
     request: z.string().describe('Original user request'),
-    content_context: z.any().nullable().describe('Content context from Content Specialist'),
-    design_context: z.any().nullable().describe('Design context from Design Specialist'),
-    quality_context: z.any().nullable().describe('Quality context from Quality Specialist'),
-    delivery_manifest: z.any().nullable().describe('Delivery manifest with package contents'),
-    export_format: z.any().nullable().describe('Export format configuration'),
-    delivery_report: z.any().nullable().describe('Final delivery report'),
-    deployment_artifacts: z.any().nullable().describe('Deployment artifacts organization'),
+    content_context: z.object({}).nullable().describe('Content context from Content Specialist'),
+    design_context: z.object({}).nullable().describe('Design context from Design Specialist'),
+    quality_context: z.object({}).nullable().describe('Quality context from Quality Specialist'),
+    delivery_manifest: z.object({}).nullable().describe('Delivery manifest with package contents'),
+    export_format: z.object({}).nullable().describe('Export format configuration'),
+    delivery_report: z.object({}).nullable().describe('Final delivery report'),
+    deployment_artifacts: z.object({}).nullable().describe('Deployment artifacts organization'),
     trace_id: z.string().nullable().describe('Trace ID for monitoring')
   }).strict(),
   execute: async (params, _context) => {

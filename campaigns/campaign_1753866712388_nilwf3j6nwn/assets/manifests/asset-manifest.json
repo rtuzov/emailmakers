@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T09:13:26.692Z",
+  "campaign_id": "campaign_1753866712388_nilwf3j6nwn",
+  "total_assets": 6,
+  "images": [
+    {
+      "filename": "external_2vNC1J_TafQ.jpg",
+      "path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMHN1bnNldHxlbnwwfDB8fHwxNzUzODAyMzgzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1711100360031-24aaccbcd408?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMHN1bnNldHxlbnwwfDB8fHwxNzUzODAyMzgzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_2vNC1J_TafQ",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "an aerial view of a building in the middle of a forest",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_uL2rnJIxZGo.jpg",
+      "path": "https://images.unsplash.com/photo-1600352672254-fc315e183422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1MzgwNTk1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1600352672254-fc315e183422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsb2NhbCUyMG1hcmtldCUyMHZpYnJhbnQlMjBjb2xvcnN8ZW58MHwwfHx8MTc1MzgwNTk1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_uL2rnJIxZGo",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "woman in white and green floral dress standing near fruit stand",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_2ge3I_ocis4.jpg",
+      "path": "https://images.unsplash.com/photo-1504712375254-d54f14d89508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnJpc2UlMjByZWZsZWN0aW9ufGVufDB8MHx8fDE3NTM4NzU4MDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1504712375254-d54f14d89508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsYWtlJTIwYXRpdGxhbiUyMHN1bnJpc2UlMjByZWZsZWN0aW9ufGVufDB8MHx8fDE3NTM4NzU4MDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_2ge3I_ocis4",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "landscape photography of island surrounded by fog during golden hour",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_8XzQVywnm5U.jpg",
+      "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwaW5kaWdlbm91cyUyMGZlc3RpdmFsfGVufDB8MHx8fDE3NTM4NzU4MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGNsb3RoaW5nJTIwaW5kaWdlbm91cyUyMGZlc3RpdmFsfGVufDB8MHx8fDE3NTM4NzU4MDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_8XzQVywnm5U",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "women holding green leaves",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_IE_AugDQfI4.jpg",
+      "path": "https://images.unsplash.com/photo-1667967951672-19627bcb1ee5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5vJTIwaGlraW5nJTIwYWR2ZW50dXJlJTIwbGFuZHNjYXBlfGVufDB8MHx8fDE3NTM4NzU4MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1667967951672-19627bcb1ee5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5vJTIwaGlraW5nJTIwYWR2ZW50dXJlJTIwbGFuZHNjYXBlfGVufDB8MHx8fDE3NTM4NzU4MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_IE_AugDQfI4",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "a person holding a light sword",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_oDZyswNe6jg.jpg",
+      "path": "https://images.unsplash.com/photo-1476846097969-46bc4cd7da07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBmb2dneSUyMG1vcm5pbmd8ZW58MHwwfHx8MTc1Mzg3NTgwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1476846097969-46bc4cd7da07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwcnVpbnMlMjBmb2dneSUyMG1vcm5pbmd8ZW58MHwwfHx8MTc1Mzg3NTgwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_oDZyswNe6jg",
+      "created": "2025-07-30T09:13:26.695Z",
+      "modified": "2025-07-30T09:13:26.695Z",
+      "tags": [],
+      "description": "fog-covered mountain scenery",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753866806691",
+    "status": "assets_collected"
+  }
+}

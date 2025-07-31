@@ -1,0 +1,90 @@
+{
+  "requestId": "req_1753777419195_amzqyr15d5w",
+  "traceId": "api-1753777419195",
+  "timestamp": "2025-07-29T08:23:39.195Z",
+  "workflowType": "full-campaign",
+  "currentPhase": "orchestration",
+  "totalPhases": 5,
+  "phaseIndex": 0,
+  "campaign": {
+    "id": "campaign_1753777419195",
+    "name": "Guatemala_Autumn_Travel",
+    "path": "",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "type": "travel"
+  },
+  "execution": {
+    "mode": "development",
+    "apiRequest": true,
+    "directSpecialistRun": false,
+    "timeout": null,
+    "maxTurns": 50,
+    "retryAttempt": 0
+  },
+  "dataFlow": {
+    "previousResults": {},
+    "handoffData": null,
+    "persistentState": {
+      "apiEndpoint": "/api/agent/run-improved",
+      "httpMethod": "POST",
+      "userAgent": "curl/8.7.1",
+      "clientIp": "::1",
+      "validationLevel": "strict",
+      "qualityThreshold": 90
+    },
+    "correlationId": "corr_1753777419195_oza7tx5qw1",
+    "handoffChain": []
+  },
+  "quality": {
+    "validationLevel": "strict",
+    "requiresApproval": true,
+    "qualityThreshold": 90,
+    "errorHandling": "fail-fast"
+  },
+  "monitoring": {
+    "enableDebugOutput": true,
+    "logLevel": "warn",
+    "performanceTracking": true,
+    "contextSnapshot": true,
+    "additionalMetrics": {}
+  },
+  "extensions": {},
+  "metadata": {
+    "originalRequest": "Создай email кампанию на тему: путешествие в Гватемала осенью. Включи информацию о лучших местах для посещения, особенностях климата осенью, культурных мероприятиях и практических советах для туристов.",
+    "userAgent": "EmailMakers/3.1.0",
+    "campaignName": "Guatemala_Autumn_Travel",
+    "brand": "Travel Agency",
+    "language": "ru",
+    "campaignType": "travel",
+    "taskType": "email_campaign",
+    "endpoint": "/api/agent/run-improved",
+    "inputType": "string",
+    "apiRequest": true,
+    "validationLevel": "strict",
+    "qualityThreshold": 90,
+    "originalOptions": {
+      "traceId": "api-1753777419195",
+      "metadata": {
+        "campaignName": "Guatemala_Autumn_Travel",
+        "brand": "Travel Agency",
+        "language": "ru",
+        "campaignType": "travel",
+        "taskType": "email_campaign",
+        "endpoint": "/api/agent/run-improved",
+        "inputType": "string",
+        "apiRequest": true,
+        "validationLevel": "strict",
+        "qualityThreshold": 90
+      },
+      "context": {
+        "apiEndpoint": "/api/agent/run-improved",
+        "httpMethod": "POST",
+        "userAgent": "curl/8.7.1",
+        "clientIp": "::1",
+        "validationLevel": "strict",
+        "qualityThreshold": 90
+      }
+    }
+  }
+}

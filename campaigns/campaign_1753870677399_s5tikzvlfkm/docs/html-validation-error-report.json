@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-30T10:22:26.280Z",
+  "error_type": "HTML_VALIDATION_FAILURE",
+  "error_message": "HTML template file not found: /Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753870677399_s5tikzvlfkm/templates/email-template.html",
+  "error_stack": "Error: HTML template file not found: /Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753870677399_s5tikzvlfkm/templates/email-template.html\n    at Object.execute (webpack-internal:///(rsc)/./src/agent/specialists/design-specialist/ai-html-validator.ts:555:27)\n    at async _invoke (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/tool.mjs:120:24)\n    at async data.name (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/runImplementation.mjs:493:32)\n    at async eval (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/tracing/createSpans.mjs:38:24)\n    at async Promise.all (index 0)\n    at async executeFunctionToolCalls (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/runImplementation.mjs:525:25)\n    at async Promise.all (index 0)\n    at async executeToolsAndSideEffects (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/runImplementation.mjs:312:48)\n    at async eval (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/run.mjs:194:44)\n    at async eval (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/tracing/context.mjs:59:24)\n    at async run (webpack-internal:///(rsc)/./node_modules/@openai/agents-core/dist/run.mjs:572:16)\n    at async EmailMakersAgent.processRequest (webpack-internal:///(rsc)/./src/agent/main-agent.ts:228:28)\n    at async POST (webpack-internal:///(rsc)/./src/app/api/agent/run-improved/route.ts:49:24)\n    at async /Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:55778\n    at async eO.execute (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46527)\n    at async eO.handle (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57112)\n    at async doRender (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:1352:42)\n    at async cacheEntry.responseCache.get.routeKind (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:1574:28)\n    at async DevServer.renderToResponseWithComponentsImpl (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:1482:28)\n    at async DevServer.renderPageComponent (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:1908:24)\n    at async DevServer.renderToResponseImpl (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:1946:32)\n    at async DevServer.pipeImpl (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:921:25)\n    at async NextNodeServer.handleCatchallRenderRequest (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/next-server.js:272:17)\n    at async DevServer.handleRequestImpl (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/base-server.js:817:17)\n    at async /Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n    at async Span.traceAsyncFn (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/trace/trace.js:154:20)\n    at async DevServer.handleRequest (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n    at async invokeRender (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/lib/router-server.js:173:21)\n    at async handleRequest (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/lib/router-server.js:350:24)\n    at async requestHandlerImpl (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/lib/router-server.js:374:13)\n    at async Server.requestListener (/Users/rtuzov/PycharmProjects/Email-Makers/node_modules/next/dist/server/lib/start-server.js:141:13)",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753870677399_s5tikzvlfkm",
+  "trace_id": "html-validation",
+  "system_info": {
+    "node_version": "v22.15.0",
+    "platform": "darwin",
+    "memory_usage": {
+      "rss": 556843008,
+      "heapTotal": 326647808,
+      "heapUsed": 315447256,
+      "external": 124890062,
+      "arrayBuffers": 120689630
+    }
+  },
+  "recovery_actions": [
+    "Check OpenAI API key availability and quota",
+    "Verify campaign directory structure and permissions",
+    "Check HTML template file existence and readability",
+    "Verify network connectivity for AI services",
+    "Check available disk space for file operations",
+    "Validate JSON files in campaign directory"
+  ],
+  "next_steps": [
+    "Review error details in this report",
+    "Check system logs for additional information",
+    "Verify all required files and directories exist",
+    "Test with a minimal HTML template",
+    "Retry operation after fixing identified issues",
+    "Contact support if error persists"
+  ]
+}

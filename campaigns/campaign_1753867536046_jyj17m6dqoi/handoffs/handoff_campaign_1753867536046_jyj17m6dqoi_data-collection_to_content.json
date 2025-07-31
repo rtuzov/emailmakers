@@ -1,0 +1,146 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753867536046_jyj17m6dqoi",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753867536046_jyj17m6dqoi",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "The peak travel time for cultural experiences is in October during local festivals.",
+        "Guatemala's rich Mayan heritage continues to be a strong pull for tourists.",
+        "Travelers prefer unique and immersive experiences over traditional tours."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T09:26:02.887Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753867536046_jyj17m6dqoi/data/key_insights_insights.json"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Guatemala has various transportation options including buses, shuttles, and domestic flights. Major routes connect tourist attractions throughout the country.",
+        "seasonal_patterns": "Travel patterns peak during October with festivities and are quieter in September leading to a gradual increase in November.",
+        "climate": "The climate during these months is comfortably warm, with occasional rain. Recommended attire includes light clothing and a waterproof jacket.",
+        "culture": "Guatemala is rich in cultural heritage with traditional festivals, vibrant marketplaces, and ancient Mayan ruins like Tikal and Quirigua that showcase its history.",
+        "attractions": "Notable attractions include the historic city of Antigua, Lake Atitlan, and colorful local markets."
+      },
+      "saved_at": "2025-07-30T09:26:02.893Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are motivated by a desire to explore ancient cultures, unique landscapes, and adventure activities such as hiking and cultural tours.",
+        "triggers": "Emotional decision factors include the appeal of experiencing vibrant traditions and the allure of exploring ancient ruins.",
+        "desires": "Tourists seek authentic cultural experiences, stunning nature views, and the chance to immerse themselves in local lifestyles."
+      },
+      "saved_at": "2025-07-30T09:26:02.893Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Travel costs are generally lower in September and early October, with moderate increases in late October as tourism picks up for the holiday season.",
+        "booking_windows": "The best time for booking is 2-3 months in advance to secure lower rates. Optimal bookings would begin in July for an autumn trip.",
+        "demand": "There is an increasing interest in eco-tourism and cultural experiences in Guatemala, especially during the autumn months.",
+        "competition": "Other Central American destinations such as Costa Rica and Belize present alternative options, but Guatemala's unique cultural offerings remain attractive."
+      },
+      "saved_at": "2025-07-30T09:26:02.893Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala has various transportation options including buses, shuttles, and domestic flights. Major routes connect tourist attractions throughout the country.",
+        "pricing_trends": "Travel costs are generally lower in September and early October, with moderate increases in late October as tourism picks up for the holiday season.",
+        "seasonal_patterns": "Travel patterns peak during October with festivities and are quieter in September leading to a gradual increase in November.",
+        "booking_windows": "The best time for booking is 2-3 months in advance to secure lower rates. Optimal bookings would begin in July for an autumn trip.",
+        "destination_insights": {
+          "route_analysis": "Guatemala has various transportation options including buses, shuttles, and domestic flights. Major routes connect tourist attractions throughout the country.",
+          "seasonal_patterns": "Travel patterns peak during October with festivities and are quieter in September leading to a gradual increase in November.",
+          "climate": "The climate during these months is comfortably warm, with occasional rain. Recommended attire includes light clothing and a waterproof jacket.",
+          "culture": "Guatemala is rich in cultural heritage with traditional festivals, vibrant marketplaces, and ancient Mayan ruins like Tikal and Quirigua that showcase its history.",
+          "attractions": "Notable attractions include the historic city of Antigua, Lake Atitlan, and colorful local markets."
+        },
+        "market_insights": {
+          "pricing_trends": "Travel costs are generally lower in September and early October, with moderate increases in late October as tourism picks up for the holiday season.",
+          "booking_windows": "The best time for booking is 2-3 months in advance to secure lower rates. Optimal bookings would begin in July for an autumn trip.",
+          "demand": "There is an increasing interest in eco-tourism and cultural experiences in Guatemala, especially during the autumn months.",
+          "competition": "Other Central American destinations such as Costa Rica and Belize present alternative options, but Guatemala's unique cultural offerings remain attractive."
+        },
+        "trend_insights": {
+          "market_trends": "Current trends show a rise in interest for sustainable travel and cultural immersion experiences among tourists.",
+          "consumer_behavior": "Travelers tend to prefer personalized tours, unique accommodations, and local experiences over standard package deals.",
+          "competitive_landscape": "Competitors highlight eco-friendly adventures and cultural tours, positioning themselves as sustainable alternatives to traditional tourism.",
+          "seasonal_factors": "Seasonal influences include regional festivals, which attract additional travelers and enhance the overall cultural experience during autumn."
+        }
+      },
+      "saved_at": "2025-07-30T09:26:02.893Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Current trends show a rise in interest for sustainable travel and cultural immersion experiences among tourists.",
+        "consumer_behavior": "Travelers tend to prefer personalized tours, unique accommodations, and local experiences over standard package deals.",
+        "competitive_landscape": "Competitors highlight eco-friendly adventures and cultural tours, positioning themselves as sustainable alternatives to traditional tourism.",
+        "seasonal_factors": "Seasonal influences include regional festivals, which attract additional travelers and enhance the overall cultural experience during autumn."
+      },
+      "saved_at": "2025-07-30T09:26:02.893Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T09:26:02.897Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Comprehensive travel analysis has been conducted focusing on Guatemala's cultural offerings, insights for the fall season, and emotional triggers for travel motivation.",
+    "context_for_next": "The Content Specialist should focus on crafting an email that highlights these cultural attractions and encourages bookings.",
+    "recommendations": [
+      "Focus on the unique aspects of Guatemalan culture and Mayan ruins.",
+      "Include compelling visuals of natural landscapes alongside cultural sites."
+    ],
+    "priority_items": [
+      "Incorporate key insights into the email content.",
+      "Use seasonal themes to create urgency for booking."
+    ],
+    "potential_issues": [
+      "Trend data may shift if regional security conditions change.",
+      "Monitoring demand through booking patterns for last-minute travel may be necessary."
+    ],
+    "success_criteria": [
+      "Increase in email engagement rates.",
+      "Achieving higher booking rates for the fall season."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753867562897_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T09:26:02.898Z"
+}

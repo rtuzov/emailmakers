@@ -1,0 +1,32 @@
+{
+  "id": "campaign_1753863226504_9ukzae3gpib",
+  "name": "Тест диагностики файлов",
+  "brand": "Kupibilet",
+  "type": "promotional",
+  "target_audience": "технологические энтузиасты",
+  "user_request": "Тест диагностики файлов",
+  "created_at": "2025-07-30T08:13:46.508Z",
+  "status": "active",
+  "workflow_phase": "content",
+  "specialists_completed": {
+    "data_collection": true,
+    "content": false,
+    "design": false,
+    "quality": false,
+    "delivery": false
+  },
+  "folder_structure": [
+    "content",
+    "data",
+    "assets",
+    "templates",
+    "docs",
+    "handoffs",
+    "exports",
+    "logs"
+  ],
+  "trace_id": "",
+  "last_updated": "2025-07-30T08:14:10.554Z",
+  "notes": "Comprehensive travel analysis completed; awaiting content development.",
+  "data": "Comprehensive travel analysis including destination, market, emotional, and trend insights saved."
+}

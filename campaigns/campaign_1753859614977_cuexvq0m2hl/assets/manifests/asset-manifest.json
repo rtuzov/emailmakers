@@ -1,0 +1,109 @@
+{
+  "version": "1.0",
+  "created_at": "2025-07-30T07:15:08.789Z",
+  "campaign_id": "campaign_1753859614977_cuexvq0m2hl",
+  "total_assets": 7,
+  "images": [
+    {
+      "filename": "external_EKNe678ktEY.jpg",
+      "path": "https://images.unsplash.com/photo-1472982728022-601a8d99e9af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMHN1bnJpc2UlMjBtaXN0fGVufDB8MHx8fDE3NTM4NjMwODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1472982728022-601a8d99e9af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwbWF5YW4lMjBydWlucyUyMHN1bnJpc2UlMjBtaXN0fGVufDB8MHx8fDE3NTM4NjMwODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_EKNe678ktEY",
+      "created": "2025-07-30T07:15:08.790Z",
+      "modified": "2025-07-30T07:15:08.790Z",
+      "tags": [],
+      "description": "landscape photography of mountain",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_8XzQVywnm5U.jpg",
+      "path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2xvcmZ1bCUyMGxvY2FsJTIwbWFya2V0cyUyMHZpYnJhbnQlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTM4Njg3MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1540858330636-53b36f6299cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBjb2xvcmZ1bCUyMGxvY2FsJTIwbWFya2V0cyUyMHZpYnJhbnQlMjBjdWx0dXJlfGVufDB8MHx8fDE3NTM4Njg3MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_8XzQVywnm5U",
+      "created": "2025-07-30T07:15:08.790Z",
+      "modified": "2025-07-30T07:15:08.790Z",
+      "tags": [],
+      "description": "women holding green leaves",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_T70MHMtE9ok.jpg",
+      "path": "https://images.unsplash.com/photo-1504194056878-2c97357912d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5pYyUyMGxhbmRzY2FwZXMlMjBtaXN0eSUyMG1vcm5pbmdzfGVufDB8MHx8fDE3NTM4Njg3MDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1504194056878-2c97357912d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB2b2xjYW5pYyUyMGxhbmRzY2FwZXMlMjBtaXN0eSUyMG1vcm5pbmdzfGVufDB8MHx8fDE3NTM4Njg3MDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_T70MHMtE9ok",
+      "created": "2025-07-30T07:15:08.791Z",
+      "modified": "2025-07-30T07:15:08.791Z",
+      "tags": [],
+      "description": "photography of person walking towards mountain",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_d3wg8iDx_jU.jpg",
+      "path": "https://images.unsplash.com/photo-1590221237024-9e3eade918e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBzdHJlZXQlMjB2ZW5kb3JzJTIwZXZlbmluZ3xlbnwwfDB8fHwxNzUzODY4NzAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1590221237024-9e3eade918e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjB0cmFkaXRpb25hbCUyMGZvb2QlMjBzdHJlZXQlMjB2ZW5kb3JzJTIwZXZlbmluZ3xlbnwwfDB8fHwxNzUzODY4NzAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_d3wg8iDx_jU",
+      "created": "2025-07-30T07:15:08.791Z",
+      "modified": "2025-07-30T07:15:08.791Z",
+      "tags": [],
+      "description": "woman in white tank top sitting on chair",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_F0f6CNjVn_o.jpg",
+      "path": "https://images.unsplash.com/photo-1591192626617-f9c691fa8df4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwdGVtcGxlcyUyMGp1bmdsZSUyMG92ZXJncm93dGglMjBzdW5zZXR8ZW58MHwwfHx8MTc1Mzg2ODcwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1591192626617-f9c691fa8df4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBhbmNpZW50JTIwdGVtcGxlcyUyMGp1bmdsZSUyMG92ZXJncm93dGglMjBzdW5zZXR8ZW58MHwwfHx8MTc1Mzg2ODcwNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_F0f6CNjVn_o",
+      "created": "2025-07-30T07:15:08.791Z",
+      "modified": "2025-07-30T07:15:08.791Z",
+      "tags": [],
+      "description": "green grass field near green trees during daytime",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_bPB7QU5PquY.jpg",
+      "path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBpbmRpZ2Vub3VzJTIwcGVvcGxlJTIwdHJhZGl0aW9uYWwlMjBjbG90aGluZyUyMHBvcnRyYWl0c3xlbnwwfDB8fHwxNzUzODY4NzA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1483134529756-b49663dd81cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBpbmRpZ2Vub3VzJTIwcGVvcGxlJTIwdHJhZGl0aW9uYWwlMjBjbG90aGluZyUyMHBvcnRyYWl0c3xlbnwwfDB8fHwxNzUzODY4NzA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_bPB7QU5PquY",
+      "created": "2025-07-30T07:15:08.791Z",
+      "modified": "2025-07-30T07:15:08.791Z",
+      "tags": [],
+      "description": "man wearing blue polo shirt near firepit",
+      "purpose": "external_image"
+    },
+    {
+      "filename": "external_Fjy7lavh46o.jpg",
+      "path": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwY29mZmVlJTIwcGxhbnRhdGlvbnMlMjB3aXRoJTIwZm9nfGVufDB8MHx8fDE3NTM4Njg3MDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "file_path": "https://images.unsplash.com/photo-1469366270158-2111de1a9b85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NzYyNDZ8MHwxfHNlYXJjaHwxfHxndWF0ZW1hbGElMjBsdXNoJTIwY29mZmVlJTIwcGxhbnRhdGlvbnMlMjB3aXRoJTIwZm9nfGVufDB8MHx8fDE3NTM4Njg3MDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "size": 150000,
+      "format": "jpg",
+      "hash": "external_Fjy7lavh46o",
+      "created": "2025-07-30T07:15:08.791Z",
+      "modified": "2025-07-30T07:15:08.791Z",
+      "tags": [],
+      "description": "green leaf tree lot under clear sky",
+      "purpose": "external_image"
+    }
+  ],
+  "icons": [],
+  "data_files": [],
+  "meta": {
+    "collection_time_ms": 0,
+    "source_count": 2,
+    "validation_passed": 7,
+    "validation_failed": 0,
+    "trace_id": "manifest_1753859708787",
+    "status": "assets_collected"
+  }
+}

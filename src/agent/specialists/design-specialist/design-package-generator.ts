@@ -113,10 +113,10 @@ export const generateComprehensiveDesignPackage = tool({
         } else if (handoffDirectory.includes('/handoffs')) {
           // Если в контексте нет пути, извлекаем из handoffDirectory
           const parts = handoffDirectory.split('/handoffs');
-          campaignPath = parts[0] || path.dirname(handoffDirectory);
+          campaignPath = parts[0] || handoffDirectory;
         } else {
-          // Последний способ - dirname от handoffDirectory
-          campaignPath = path.dirname(handoffDirectory);
+          // Если handoffDirectory это сам путь кампании, используем его напрямую
+          campaignPath = handoffDirectory;
         }
         
         console.log(`🔍 DEBUG: handoffDirectory = ${handoffDirectory}`);
@@ -160,13 +160,11 @@ export const generateComprehensiveDesignPackage = tool({
       }
       
       if (!mjmlTemplate.specifications_used || !mjmlTemplate.specifications_used.typography) {
-        console.log('⚠️ Typography specification missing, using fallback');
-        mjmlTemplate.specifications_used = mjmlTemplate.specifications_used || {};
-        mjmlTemplate.specifications_used.typography = {
-          heading_font: 'Arial',
-          body_font: 'Arial',
-          font_sizes: { h1: '24px', h2: '20px', body: '16px' }
-        };
+        console.error('❌ Typography specification missing - MJML generation must include typography specs');
+        console.log('🚫 No hardcoded fallback - Design package requires real typography specifications');
+        
+        // ✅ NO FALLBACK: Typography specs are required for proper design packages
+        throw new Error('Typography specification missing in MJML template. MJML Generator must provide complete specifications_used.typography data. No fallback allowed per project rules.');
       }
       
       // Validate asset manifest

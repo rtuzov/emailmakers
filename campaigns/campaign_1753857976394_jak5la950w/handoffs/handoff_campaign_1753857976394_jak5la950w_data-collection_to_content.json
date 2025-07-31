@@ -1,0 +1,141 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753857976394_jak5la950w",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753857976394_jak5la950w",
+  "specialist_data": {
+    "key_insights": {
+      "insight_type": "key insights",
+      "insights": [
+        "Guatemala's unique cultural heritage appeals to niche markets.",
+        "The tourism market is shifting towards experiential and sustainable travel.",
+        "Optimal travel windows can maximize bookings during the lean season."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T06:46:41.659Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753857976394_jak5la950w/data/key_insights_insights.json"
+    },
+    "destination_analysis": {
+      "analysis_type": "destination_analysis",
+      "data": {
+        "route_analysis": "Guatemala offers various transport options including buses, shuttles, and private tours to ancient ruins like Tikal. Seasonal patterns suggest peak visits in the dry season from November to April. Climate is tropical with a rainy season from May to October. Cultural insights include ancient Mayan festivals and local markets filled with handicrafts.",
+        "seasonal_patterns": "Optimal months for travel are November through April, with mid-December to February being particularly popular due to the dry climate during these months.",
+        "climate": "Expect tropical weather with average temperatures around 75-85°F (24-29°C). Cooler in highlands. Best to travel light with breathable clothing and a raincoat.",
+        "culture": "Rich Mayan heritage with festivals like Rabin Ajau in July and Dia de los Muertos in early November. Vibrant markets and local traditions define cultural experiences.",
+        "attractions": "Key places include Tikal National Park (Mayan ruins), Antigua Guatemala (colonial architecture), Lake Atitlan (stunning scenery), and Chichicastenango Market (cultural hub)."
+      },
+      "saved_at": "2025-07-30T06:46:41.661Z"
+    },
+    "emotional_profile": {
+      "analysis_type": "emotional_profile",
+      "data": {
+        "motivations": "Travelers are driven by a desire to explore ancient cultures, experience unique traditions, and engage with natural beauty.",
+        "triggers": "Emotional factors include the allure of ancient ruins, the appeal of vibrant local culture, and personal recommendations from friends and travel blogs.",
+        "desires": "Tourists seek immersive experiences, adventure in nature, and genuine cultural interactions."
+      },
+      "saved_at": "2025-07-30T06:46:41.661Z"
+    },
+    "market_intelligence": {
+      "analysis_type": "market_intelligence",
+      "data": {
+        "pricing_trends": "Prices tend to rise during holidays and special events; budget travelers should plan accordingly. Current averages are around $50-100 per day for accommodation and meals.",
+        "booking_windows": "Optimal booking is around 3 to 6 months in advance to secure lower rates and availability.",
+        "demand": "Increased interest in eco-tourism and cultural experiences, especially in the fall. Guatemala has gained popularity for unique travel experiences.",
+        "competition": "Competitors include nearby Costa Rica, which offers similar eco-tourism, and Belize for beach getaways."
+      },
+      "saved_at": "2025-07-30T06:46:41.661Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Guatemala offers various transport options including buses, shuttles, and private tours to ancient ruins like Tikal. Seasonal patterns suggest peak visits in the dry season from November to April. Climate is tropical with a rainy season from May to October. Cultural insights include ancient Mayan festivals and local markets filled with handicrafts.",
+        "pricing_trends": "Prices tend to rise during holidays and special events; budget travelers should plan accordingly. Current averages are around $50-100 per day for accommodation and meals.",
+        "seasonal_patterns": "Optimal months for travel are November through April, with mid-December to February being particularly popular due to the dry climate during these months.",
+        "booking_windows": "Optimal booking is around 3 to 6 months in advance to secure lower rates and availability.",
+        "destination_insights": {
+          "route_analysis": "Guatemala offers various transport options including buses, shuttles, and private tours to ancient ruins like Tikal. Seasonal patterns suggest peak visits in the dry season from November to April. Climate is tropical with a rainy season from May to October. Cultural insights include ancient Mayan festivals and local markets filled with handicrafts.",
+          "seasonal_patterns": "Optimal months for travel are November through April, with mid-December to February being particularly popular due to the dry climate during these months.",
+          "climate": "Expect tropical weather with average temperatures around 75-85°F (24-29°C). Cooler in highlands. Best to travel light with breathable clothing and a raincoat.",
+          "culture": "Rich Mayan heritage with festivals like Rabin Ajau in July and Dia de los Muertos in early November. Vibrant markets and local traditions define cultural experiences.",
+          "attractions": "Key places include Tikal National Park (Mayan ruins), Antigua Guatemala (colonial architecture), Lake Atitlan (stunning scenery), and Chichicastenango Market (cultural hub)."
+        },
+        "market_insights": {
+          "pricing_trends": "Prices tend to rise during holidays and special events; budget travelers should plan accordingly. Current averages are around $50-100 per day for accommodation and meals.",
+          "booking_windows": "Optimal booking is around 3 to 6 months in advance to secure lower rates and availability.",
+          "demand": "Increased interest in eco-tourism and cultural experiences, especially in the fall. Guatemala has gained popularity for unique travel experiences.",
+          "competition": "Competitors include nearby Costa Rica, which offers similar eco-tourism, and Belize for beach getaways."
+        },
+        "trend_insights": {
+          "market_trends": "Growing demand for sustainable travel, authentic local experiences, and multi-generational family trips.",
+          "consumer_behavior": "Travelers are increasingly looking for experiences over material goods, prioritizing cultural connections and environmental consciousness.",
+          "competitive_landscape": "Guatemala's competitors are focusing on luxury eco-lodges and unique cultural tourism experiences. Guatemala needs to position itself as an accessible destination with rich offerings.",
+          "seasonal_factors": "Peak seasons during holidays and dry months see a rush of tourists; awareness of local festivities can enhance travel experiences."
+        }
+      },
+      "saved_at": "2025-07-30T06:46:41.661Z"
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "data": {
+        "market_trends": "Growing demand for sustainable travel, authentic local experiences, and multi-generational family trips.",
+        "consumer_behavior": "Travelers are increasingly looking for experiences over material goods, prioritizing cultural connections and environmental consciousness.",
+        "competitive_landscape": "Guatemala's competitors are focusing on luxury eco-lodges and unique cultural tourism experiences. Guatemala needs to position itself as an accessible destination with rich offerings.",
+        "seasonal_factors": "Peak seasons during holidays and dry months see a rush of tourists; awareness of local festivities can enhance travel experiences."
+      },
+      "saved_at": "2025-07-30T06:46:41.661Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/key_insights_insights.json"
+      ],
+      "total_analyses": 1,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T06:46:41.667Z",
+      "data_types": [
+        "key_insights"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed analysis for the fall campaign focused on Guatemala's cultural and natural insights.",
+    "context_for_next": "Content Specialist will create an engaging email promoting tours to Guatemala.",
+    "recommendations": [
+      "Highlight ancient Mayan ruins and festivals in the email content.",
+      "Include stunning visuals of Guatemala's landscapes.",
+      "Encourage bookings with a clear call to action."
+    ],
+    "priority_items": null,
+    "potential_issues": null,
+    "success_criteria": [
+      "Content reflects the cultural richness of Guatemala.",
+      "Email is designed to maximize bookings."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "key_insights",
+      "destination_analysis",
+      "emotional_profile",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 7,
+      "completion_rate": 88,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 2000
+  },
+  "trace_id": "handoff_1753858001668_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T06:46:41.668Z"
+}

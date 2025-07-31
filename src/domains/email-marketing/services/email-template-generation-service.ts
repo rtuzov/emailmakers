@@ -7,7 +7,7 @@ import { QualityReport } from '../../quality-assurance/entities/quality-report';
 
 import { LLMOrchestratorService } from '../../content-generation/services/llm-orchestrator-service';
 import { FigmaService } from '../../design-system/services/figma-service';
-import { MJMLProcessorService } from '../../template-processing/services/mjml-processor-service';
+import { MjmlProcessorService } from '../../template-processing/services/mjml-processor-service';
 import { QualityAssuranceService } from '../../quality-assurance/services/quality-assurance-service';
 import { CacheService } from '../../../shared/infrastructure/cache/cache-service';
 import { MetricsService } from '../../../shared/infrastructure/monitoring/metrics-service';
@@ -42,7 +42,7 @@ export class EmailTemplateGenerationService {
   constructor(
     private contentPipeline: ContentGenerationPipeline,
     private figmaService: FigmaService,
-    private templateProcessor: MJMLProcessorService,
+    private templateProcessor: MjmlProcessorService,
     private qaService: QualityAssuranceService,
     private cacheService: CacheService,
     private metricsService: MetricsService,
@@ -262,17 +262,13 @@ export class EmailTemplateGenerationService {
 
       const template = await this.templateProcessor.processTemplate(
         emailTemplate,
-        {
-          priority: 'compatibility',
-          aggressiveness: 'moderate',
-          preserveFormatting: true
-        }
+        {}
       );
 
       await this.eventBus.emit('template.processed', { 
         jobId, 
-        templateSize: template.html.length,
-        mjmlSize: template.html.length, // Using HTML length as MJML equivalent
+        templateSize: template.template.mjmlContent.length,
+        mjmlSize: template.template.mjmlContent.length,
         hasDesignSystem: !!designSystem
       });
 
@@ -297,8 +293,8 @@ export class EmailTemplateGenerationService {
         generatedBy: 'ai-system',
         templateType: 'newsletter',
         size: {
-          html: template.html.length,
-          mjml: template.inlinedHtml.length,
+          html: template.htmlTemplate?.htmlContent.length || 0,
+          mjml: template.template.mjmlContent.length,
           css: 0
         },
         performance: {
@@ -313,15 +309,15 @@ export class EmailTemplateGenerationService {
       };
 
       return new EmailTemplate(
-        template.inlinedHtml, // mjml
-        template.html, // html
+        template.template.mjmlContent, // mjml
+        template.htmlTemplate?.htmlContent || '', // html
         templateContent, // content
         templateMetadata, // metadata
         undefined, // assets
         undefined, // variables
         undefined, // optimizations
         undefined, // rawCSS
-        template.inlinedHtml // inlineCSS
+        template.htmlTemplate?.htmlContent || '' // inlineCSS
       );
     } catch (error) {
       throw new TemplateProcessingError(

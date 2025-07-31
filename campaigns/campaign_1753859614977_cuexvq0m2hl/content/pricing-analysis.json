@@ -1,0 +1,109 @@
+{
+  "date_analysis_source": {
+    "total_optimal_dates": 5,
+    "optimal_dates": [
+      "2025-09-15",
+      "2025-09-22",
+      "2025-10-05",
+      "2025-10-12",
+      "2025-11-01"
+    ],
+    "pricing_windows": [
+      "период с начала сентября по середину октября - низкие цены на авиабилеты и отели",
+      "период с конца октября по ноябрь - средние цены, но возможны скидки на экскурсии"
+    ],
+    "booking_recommendation": "Рекомендуется бронировать за 2-3 месяца до поездки для оптимальных цен.",
+    "seasonal_factors": "Осень в Гватемале характеризуется умеренными температурами и меньшим количеством дождей по сравнению с летом, что делает это время идеальным для путешествий."
+  },
+  "optimal_dates_pricing": {
+    "total_offers": 5,
+    "cheapest_on_optimal": 60258,
+    "most_expensive_on_optimal": 121368,
+    "average_on_optimal": 79853,
+    "optimal_date_prices": [
+      {
+        "date": "2025-09-15",
+        "price": 121368,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-09-22",
+        "price": 60258,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-10-05",
+        "price": 69157,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-10-12",
+        "price": 69229,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      },
+      {
+        "date": "2025-11-01",
+        "price": 79252,
+        "airline": "Различные авиакомпании",
+        "is_optimal": true
+      }
+    ]
+  },
+  "comprehensive_pricing": {
+    "total_dates_analyzed": 11,
+    "total_offers_found": 62,
+    "date_range_analyzed": "2025-09-08 to 2025-11-08",
+    "best_price_overall": 54629,
+    "worst_price_overall": 123672,
+    "average_price_overall": 74968,
+    "currency": "RUB",
+    "route": "MOW → GUA"
+  },
+  "price_insights": {
+    "optimal_vs_average_savings": -7,
+    "cheapest_optimal_date": "2025-09-22",
+    "price_volatility": 126
+  },
+  "enhanced_features": {
+    "date_analysis_integration": true,
+    "comprehensive_date_coverage": true,
+    "optimal_date_focus": true,
+    "airport_conversion": {
+      "originInfo": null,
+      "destinationInfo": {
+        "originalCode": "GUA",
+        "finalCode": "GUA",
+        "countryCode": "GT",
+        "isInternational": true,
+        "wasConverted": false
+      }
+    },
+    "csv_integration": "enabled",
+    "api_source": "kupibilet_api_v2"
+  },
+  "analysis_metadata": {
+    "analyzed_at": "2025-07-30T07:14:10.421Z",
+    "analysis_duration_ms": 712,
+    "date_analysis_file": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753859614977_cuexvq0m2hl/content/date-analysis.json",
+    "route_analyzed": "MOW-GUA",
+    "trace_id": ""
+  },
+  "overall_analysis": {
+    "best_offer": {
+      "price": 54629,
+      "date": null
+    },
+    "price_range": {
+      "min": 54629,
+      "max": 123672
+    },
+    "currency": "RUB",
+    "total_offers": 62,
+    "route": "Москва → Гватемала",
+    "analysis_timestamp": "2025-07-30T07:14:10.421Z"
+  }
+}

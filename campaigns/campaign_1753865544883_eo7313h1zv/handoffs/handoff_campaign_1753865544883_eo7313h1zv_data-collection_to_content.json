@@ -1,0 +1,152 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753865544883_eo7313h1zv",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753865544883_eo7313h1zv",
+  "specialist_data": {
+    "consolidated": {
+      "actionable_insights": [
+        "Consider promoting eco-friendly tours and experiences to attract a market increasingly interested in sustainable travel.",
+        "Highlight off-peak season discounts to encourage travel during less busy times.",
+        "Leverage social media marketing to showcase authentic local experiences and engage with potential travelers."
+      ],
+      "key_insights": [
+        "Focus on family-oriented packages during peak seasons.",
+        "Utilize early-bird discounts to capture advanced bookings.",
+        "Create social media campaigns to highlight unique cultural events."
+      ],
+      "confidence_score": 0.88,
+      "analysis_timestamp": "2025-07-30T08:52:30.000Z",
+      "saved_at": "2025-07-30T08:52:44.089Z"
+    },
+    "destination_analysis": {
+      "route_analysis": "Major transport routes include international airports and high-speed rail. Consider direct flights for quick access.",
+      "seasonal_patterns": "January - February: Winter sports; March - May: Spring festivals; June - August: Beach tourism; September - November: Autumn leaf viewing.",
+      "climate": "Warm summers with average temperatures of 25°C - 30°C, and cold winters with snow. Ideal for beach and winter activities respectively.",
+      "culture": "Rich cultural heritage including festivals, local arts, and cuisine. Major events include summer beach festivals and winter fairs.",
+      "attractions": "Top attractions include historical sites, natural parks, and vibrant markets."
+    },
+    "emotional_profile": {
+      "motivations": "Travelers seek relaxation, adventure, and cultural enrichment. Popular motivations include family gatherings, escape from routine, and participation in local traditions.",
+      "triggers": "Emotional triggers include nostalgia, adventure seeking, and social media influences portraying dream destinations.",
+      "desires": "Tourists desire unique experiences, local cuisine, and interactive cultural exchanges."
+    },
+    "key_insights": {
+      "insight_type": "key insights",
+      "insights": [
+        "Focus on family-oriented packages during peak seasons.",
+        "Utilize early-bird discounts to capture advanced bookings.",
+        "Create social media campaigns to highlight unique cultural events."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T08:52:47.342Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753865544883_eo7313h1zv/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Pricing tends to spike during peak seasons by 20-30%. Off-peak seasons offer competitive rates ideal for budget-conscious travelers.",
+      "booking_windows": "Advance bookings (3-6 months prior) yield the best deals. Last-minute offers also available but less predictable.",
+      "demand": "High demand for summer and winter seasons, while spring and autumn see moderate travelers.",
+      "competition": "Destinations such as Destination X and Y attract similar traveler segments with competitive pricing and unique offerings."
+    },
+    "travel_intelligence": {
+      "route_analysis": "Major transport routes include international airports and high-speed rail. Consider direct flights for quick access.",
+      "pricing_trends": "Pricing tends to spike during peak seasons by 20-30%. Off-peak seasons offer competitive rates ideal for budget-conscious travelers.",
+      "seasonal_patterns": "January - February: Winter sports; March - May: Spring festivals; June - August: Beach tourism; September - November: Autumn leaf viewing.",
+      "booking_windows": "Advance bookings (3-6 months prior) yield the best deals. Last-minute offers also available but less predictable.",
+      "destination_insights": {
+        "route_analysis": "Major transport routes include international airports and high-speed rail. Consider direct flights for quick access.",
+        "seasonal_patterns": "January - February: Winter sports; March - May: Spring festivals; June - August: Beach tourism; September - November: Autumn leaf viewing.",
+        "climate": "Warm summers with average temperatures of 25°C - 30°C, and cold winters with snow. Ideal for beach and winter activities respectively.",
+        "culture": "Rich cultural heritage including festivals, local arts, and cuisine. Major events include summer beach festivals and winter fairs.",
+        "attractions": "Top attractions include historical sites, natural parks, and vibrant markets."
+      },
+      "market_insights": {
+        "pricing_trends": "Pricing tends to spike during peak seasons by 20-30%. Off-peak seasons offer competitive rates ideal for budget-conscious travelers.",
+        "booking_windows": "Advance bookings (3-6 months prior) yield the best deals. Last-minute offers also available but less predictable.",
+        "demand": "High demand for summer and winter seasons, while spring and autumn see moderate travelers.",
+        "competition": "Destinations such as Destination X and Y attract similar traveler segments with competitive pricing and unique offerings."
+      },
+      "trend_insights": {
+        "market_trends": "Sustainable travel and experiential stays are resurging trends. Eco-tours and cultural immersions are becoming more prevalent.",
+        "consumer_behavior": "Travelers increasingly prefer online bookings and are heavily influenced by user-generated content on social media.",
+        "competitive_landscape": "Competitors are investing in digital marketing and local partnerships to enhance visibility and attract tourists.",
+        "seasonal_factors": "Winter snowpack affects ski season, while summer temperatures influence beach tourism. Both are critical factors for planning."
+      }
+    },
+    "trend_analysis": {
+      "market_trends": "Sustainable travel and experiential stays are resurging trends. Eco-tours and cultural immersions are becoming more prevalent.",
+      "consumer_behavior": "Travelers increasingly prefer online bookings and are heavily influenced by user-generated content on social media.",
+      "competitive_landscape": "Competitors are investing in digital marketing and local partnerships to enhance visibility and attract tourists.",
+      "seasonal_factors": "Winter snowpack affects ski season, while summer temperatures influence beach tourism. Both are critical factors for planning."
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/consolidated-insights.json",
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 7,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T08:52:56.720Z",
+      "data_types": [
+        "consolidated",
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "travel_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive analysis focusing on destination, market intelligence, emotional profile, and trends.",
+    "context_for_next": "The insights provide actionable recommendations for content targeting and marketing strategies.",
+    "recommendations": [
+      "Focus on family-friendly packages.",
+      "Leverage social media for campaigns."
+    ],
+    "priority_items": [
+      "Review current branding strategies.",
+      "Explore eco-tourism options."
+    ],
+    "potential_issues": [
+      "Market might shift due to economic changes."
+    ],
+    "success_criteria": [
+      "Increase in bookings during off-peak periods."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "consolidated",
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753865576720_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T08:52:56.720Z"
+}

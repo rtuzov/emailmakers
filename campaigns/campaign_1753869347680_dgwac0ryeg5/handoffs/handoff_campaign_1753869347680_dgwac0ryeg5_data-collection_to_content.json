@@ -1,0 +1,144 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753869347680_dgwac0ryeg5",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753869347680_dgwac0ryeg5",
+  "specialist_data": {
+    "destination_analysis": {
+      "route_analysis": "Air travel via Guatemala City; bus services to key destinations; rental cars for flexibility.",
+      "seasonal_patterns": "Optimal months: December to April; peak holiday season December; rainy season May to October.",
+      "climate": "Tropical climate; warm, with some rainfall during the wet season; best to visit in the dry season.",
+      "culture": "Rich Mayan heritage; vibrant markets; annual festivals like Semana Santa."
+    },
+    "emotional_profile": {
+      "motivations": "Exploring ancient Mayan ruins; seeking adventure; cultural enrichment.",
+      "triggers": "Desire for unique experiences; Instagram posts influencing travel choices; recommendations from friends.",
+      "desires": "Authentic local experiences; stunning landscapes; historical insights."
+    },
+    "key_insights": {
+      "insight_type": "key insights",
+      "insights": [
+        "Promote eco-friendly tours; emphasize local culture and experiences; create packages for peak season."
+      ],
+      "insights_count": 1,
+      "saved_at": "2025-07-30T09:56:22.365Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753869347680_dgwac0ryeg5/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Average cost of travel has increased by 10% over the last year; peak season rates significantly higher.",
+      "booking_windows": "Optimal time to book: 2-3 months in advance; last-minute deals less common.",
+      "demand": "Growing interest in eco-tourism and cultural experiences; Guatemala rising in travel searches.",
+      "competition": "Key competitors: Costa Rica, Belize, and Mexico; differentiating factors include unique culture."
+    },
+    "trend_analysis": {
+      "market_trends": "Increase in sustainable travel; preference for off-the-beaten-path destinations.",
+      "consumer_behavior": "More travelers seeking personalized experiences; use of mobile apps for bookings growing.",
+      "competitive_landscape": "Increased flight options and hotels; aggressive marketing by competing destinations.",
+      "seasonal_factors": "Travel peaks during dry months; festivals drive interest in certain weeks."
+    },
+    "consolidated": {
+      "actionable_insights": [
+        "Promote eco-friendly tours; emphasize local culture and experiences; create packages for peak season."
+      ],
+      "key_insights": [
+        "Guatemala's cultural richness enhances allure; secure partnerships with local businesses for authentic offerings; market towards adventure seekers."
+      ],
+      "confidence_score": 0.9,
+      "analysis_timestamp": "2025-07-30T09:55:51.094Z",
+      "saved_at": "2025-07-30T09:56:22.370Z"
+    },
+    "travel_intelligence": {
+      "analysis_type": "travel_intelligence",
+      "data": {
+        "route_analysis": "Air travel via Guatemala City; bus services to key destinations; rental cars for flexibility.",
+        "pricing_trends": "Average cost of travel has increased by 10% over the last year; peak season rates significantly higher.",
+        "seasonal_patterns": "Optimal months: December to April; peak holiday season December; rainy season May to October.",
+        "booking_windows": "Optimal time to book: 2-3 months in advance; last-minute deals less common.",
+        "destination_insights": {
+          "route_analysis": "Air travel via Guatemala City; bus services to key destinations; rental cars for flexibility.",
+          "seasonal_patterns": "Optimal months: December to April; peak holiday season December; rainy season May to October.",
+          "climate": "Tropical climate; warm, with some rainfall during the wet season; best to visit in the dry season.",
+          "culture": "Rich Mayan heritage; vibrant markets; annual festivals like Semana Santa."
+        },
+        "market_insights": {
+          "pricing_trends": "Average cost of travel has increased by 10% over the last year; peak season rates significantly higher.",
+          "booking_windows": "Optimal time to book: 2-3 months in advance; last-minute deals less common.",
+          "demand": "Growing interest in eco-tourism and cultural experiences; Guatemala rising in travel searches.",
+          "competition": "Key competitors: Costa Rica, Belize, and Mexico; differentiating factors include unique culture."
+        },
+        "trend_insights": {
+          "market_trends": "Increase in sustainable travel; preference for off-the-beaten-path destinations.",
+          "consumer_behavior": "More travelers seeking personalized experiences; use of mobile apps for bookings growing.",
+          "competitive_landscape": "Increased flight options and hotels; aggressive marketing by competing destinations.",
+          "seasonal_factors": "Travel peaks during dry months; festivals drive interest in certain weeks."
+        }
+      },
+      "saved_at": "2025-07-30T09:56:22.366Z"
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 5,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T09:56:22.372Z",
+      "data_types": [
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Conducted comprehensive analysis on Guatemala.",
+    "context_for_next": "Focus on promoting unique cultural experiences and eco-tourism in content design.",
+    "recommendations": [
+      "Use vivid imagery representing Guatemala's landscapes and culture.",
+      "Highlight sustainable travel options."
+    ],
+    "priority_items": [
+      "Seasonal travel advisories.",
+      "Key attractions to feature."
+    ],
+    "potential_issues": [
+      "Fluctuating prices during peak season."
+    ],
+    "success_criteria": [
+      "Increased engagement in content marketing."
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "trend_analysis",
+      "consolidated",
+      "travel_intelligence"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753869382372_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T09:56:22.373Z"
+}

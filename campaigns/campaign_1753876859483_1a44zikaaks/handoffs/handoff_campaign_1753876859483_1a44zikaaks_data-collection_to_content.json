@@ -1,0 +1,151 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753876859483_1a44zikaaks",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753876859483_1a44zikaaks",
+  "specialist_data": {
+    "consolidated": {
+      "actionable_insights": [
+        "Offer winter-themed travel packages",
+        "Highlight unique winter activities such as ice cave tours",
+        "Emphasize the Northern Lights experience"
+      ],
+      "key_insights": [
+        "Tourists prefer bundled packages covering flights and accommodation",
+        "Unique natural beauty is the main draw for visiting during winter",
+        "Winter festivals boost interest in Iceland during off-peak months"
+      ],
+      "confidence_score": 0.87,
+      "analysis_timestamp": "2025-07-30T12:01:04.814Z",
+      "saved_at": "2025-07-30T12:01:25.246Z"
+    },
+    "destination_analysis": {
+      "route_analysis": "Easy access from Reykjavik using guided tours and rental cars. Popular routes include the Golden Circle and South Coast. Public transportation is limited, car rental preferred.",
+      "seasonal_patterns": "Peak tourist season is summer, but winter offers unique landscapes and activities such as Northern Lights and ice caves. Better to visit from November to March for winter activities.",
+      "climate": "Temperatures range from -1 to 5°C, snow and rain are frequent. Dress warmly in layers, waterproof gear is recommended.",
+      "culture": "Winter festivals, traditional Icelandic cuisine, and local art. Notable events include the Reykjavik Winter Lights Festival.",
+      "attractions": "Reykjavik, Blue Lagoon, Golden Circle, Glacier hiking, ice caves, and whale watching. Unique landscapes include geysers and waterfalls."
+    },
+    "emotional_profile": {
+      "motivations": "Travelers are drawn to Iceland for its unique natural beauty, adventure activities like snowmobiling and dog sledding, and the chance to see the Northern Lights.",
+      "triggers": "The desire for new experiences and adventure, visual inspirations from social media, and recommendations from friends and travel bloggers influence decisions.",
+      "desires": "Travelers seek both thrill and tranquility in nature, unique photographic opportunities, and cultural encounters. Many desire authentic local experiences."
+    },
+    "key_insights": {
+      "insight_type": "key.insights",
+      "insights": [
+        "Tourists prefer bundled packages covering flights and accommodation",
+        "Unique natural beauty is the main draw for visiting during winter",
+        "Winter festivals boost interest in Iceland during off-peak months"
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T12:01:25.236Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753876859483_1a44zikaaks/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Prices for flights and hotels generally rise during holiday seasons, with clear fluctuations based on booking windows. Average flight costs from Europe range from $200 to $500 round trip in winter.",
+      "booking_windows": "Optimal booking window is 2 to 4 months in advance for better deals. Last-minute bookings can be expensive due to high demand during holiday periods.",
+      "demand": "Visible increase in demand during winter holiday seasons, particularly around Christmas and New Year. Off-peak months show lower interest but unique offerings. ",
+      "competition": "Alternative destinations for winter travel include Norway and Finland, but Iceland's unique landscape remains a strong draw to tourists."
+    },
+    "travel_intelligence": {
+      "route_analysis": "Easy access from Reykjavik using guided tours and rental cars. Popular routes include the Golden Circle and South Coast. Public transportation is limited, car rental preferred.",
+      "pricing_trends": "Prices for flights and hotels generally rise during holiday seasons, with clear fluctuations based on booking windows. Average flight costs from Europe range from $200 to $500 round trip in winter.",
+      "seasonal_patterns": "Peak tourist season is summer, but winter offers unique landscapes and activities such as Northern Lights and ice caves. Better to visit from November to March for winter activities.",
+      "booking_windows": "Optimal booking window is 2 to 4 months in advance for better deals. Last-minute bookings can be expensive due to high demand during holiday periods.",
+      "destination_insights": {
+        "route_analysis": "Easy access from Reykjavik using guided tours and rental cars. Popular routes include the Golden Circle and South Coast. Public transportation is limited, car rental preferred.",
+        "seasonal_patterns": "Peak tourist season is summer, but winter offers unique landscapes and activities such as Northern Lights and ice caves. Better to visit from November to March for winter activities.",
+        "climate": "Temperatures range from -1 to 5°C, snow and rain are frequent. Dress warmly in layers, waterproof gear is recommended.",
+        "culture": "Winter festivals, traditional Icelandic cuisine, and local art. Notable events include the Reykjavik Winter Lights Festival.",
+        "attractions": "Reykjavik, Blue Lagoon, Golden Circle, Glacier hiking, ice caves, and whale watching. Unique landscapes include geysers and waterfalls."
+      },
+      "market_insights": {
+        "pricing_trends": "Prices for flights and hotels generally rise during holiday seasons, with clear fluctuations based on booking windows. Average flight costs from Europe range from $200 to $500 round trip in winter.",
+        "booking_windows": "Optimal booking window is 2 to 4 months in advance for better deals. Last-minute bookings can be expensive due to high demand during holiday periods.",
+        "demand": "Visible increase in demand during winter holiday seasons, particularly around Christmas and New Year. Off-peak months show lower interest but unique offerings. ",
+        "competition": "Alternative destinations for winter travel include Norway and Finland, but Iceland's unique landscape remains a strong draw to tourists."
+      },
+      "trend_insights": {
+        "market_trends": "Growing interest in sustainable travel and adventure tourism. Interest in off-the-beaten-path destinations also benefits Iceland's appeal in winter.",
+        "consumer_behavior": "Travelers prioritize unique experiences over lavish accommodations. Many now research extensively online before booking their trips.",
+        "competitive_landscape": "Iceland remains competitive due to its unique offerings. While nearby countries provide similar experiences, few can match Iceland's diverse landscapes and activities in wintertime.",
+        "seasonal_factors": "Winter influences include school holidays and popular holiday seasons driving trends. Demand peaks during these times due to family travel and vacation packages."
+      }
+    },
+    "trend_analysis": {
+      "market_trends": "Growing interest in sustainable travel and adventure tourism. Interest in off-the-beaten-path destinations also benefits Iceland's appeal in winter.",
+      "consumer_behavior": "Travelers prioritize unique experiences over lavish accommodations. Many now research extensively online before booking their trips.",
+      "competitive_landscape": "Iceland remains competitive due to its unique offerings. While nearby countries provide similar experiences, few can match Iceland's diverse landscapes and activities in wintertime.",
+      "seasonal_factors": "Winter influences include school holidays and popular holiday seasons driving trends. Demand peaks during these times due to family travel and vacation packages."
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/consolidated-insights.json",
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 7,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T12:01:32.568Z",
+      "data_types": [
+        "consolidated",
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "travel_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed analysis on Iceland winter travel, providing insights, trends, and recommendations.",
+    "context_for_next": "Focus on content creation relating to winter activities and unique features of Iceland.",
+    "recommendations": [
+      "Leverage insights in marketing materials",
+      "Create engaging content around Iceland's festivals and natural beauty"
+    ],
+    "priority_items": [
+      "Highlight Northern Lights",
+      "Promote tailored winter travel packages"
+    ],
+    "potential_issues": null,
+    "success_criteria": [
+      "Content is engaging and informative",
+      "Increased engagement with promotional materials"
+    ]
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "consolidated",
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753876892568_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T12:01:32.569Z"
+}

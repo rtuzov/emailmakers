@@ -1,0 +1,145 @@
+{
+  "from_specialist": "data-collection",
+  "to_specialist": "content",
+  "campaign_id": "campaign_1753864608800_yza5j91vk5f",
+  "campaign_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753864608800_yza5j91vk5f",
+  "specialist_data": {
+    "consolidated": {
+      "actionable_insights": [
+        "Highlight cultural festivals in marketing campaigns.",
+        "Leverage social media for showcasing traveler testimonials.",
+        "Promote eco-friendly travel options."
+      ],
+      "key_insights": [
+        "Cultural tourism is on the rise.",
+        "Travelers are looking for unique, immersive experiences.",
+        "Ensure a focus on sustainability in marketing efforts."
+      ],
+      "confidence_score": 0.9,
+      "analysis_timestamp": "2025-07-30T08:36:51.830Z",
+      "saved_at": "2025-07-30T08:37:10.462Z"
+    },
+    "destination_analysis": {
+      "route_analysis": "Accessible through major airports, local transportation options include buses and shuttles.",
+      "seasonal_patterns": "Best time from November to April; ideal for mild temperatures and festivals.",
+      "climate": "Tropical climate with rainy season from May to October. Comfortably cool evenings during fall.",
+      "culture": "Rich Mayan heritage with vibrant festivals, handicrafts, and traditions.",
+      "attractions": "Mayan ruins of Tikal, Lake Atitlán, Chichicastenango market, and lush rainforests."
+    },
+    "emotional_profile": {
+      "motivations": "Travelers are drawn by cultural exploration, adventure, and natural beauty.",
+      "triggers": "Curiosity about Mayan history and a desire for unique experiences drive travel decisions.",
+      "desires": "Tourists seek immersive experiences, showcasing local culture, nature, and adventure."
+    },
+    "key_insights": {
+      "insight_type": "key_insights",
+      "insights": [
+        "Cultural tourism is on the rise.",
+        "Travelers are looking for unique, immersive experiences.",
+        "Ensure a focus on sustainability in marketing efforts."
+      ],
+      "insights_count": 3,
+      "saved_at": "2025-07-30T08:37:13.739Z",
+      "file_path": "/Users/rtuzov/PycharmProjects/Email-Makers/campaigns/campaign_1753864608800_yza5j91vk5f/data/key_insights_insights.json"
+    },
+    "market_intelligence": {
+      "pricing_trends": "Prices for accommodation and activities can increase during peak tourist season but vary widely based on location and availability.",
+      "booking_windows": "Optimal to book 3-6 months in advance for better rates and availability.",
+      "demand": "Growing interest in cultural and ecotourism driven by travelers seeking unique experiences.",
+      "competition": "Popular alternatives are Costa Rica and Mexico, but Guatemala offers more authentic cultural experiences."
+    },
+    "travel_intelligence": {
+      "route_analysis": "Accessible through major airports, local transportation options include buses and shuttles.",
+      "pricing_trends": "Prices for accommodation and activities can increase during peak tourist season but vary widely based on location and availability.",
+      "seasonal_patterns": "Best time from November to April; ideal for mild temperatures and festivals.",
+      "booking_windows": "Optimal to book 3-6 months in advance for better rates and availability.",
+      "destination_insights": {
+        "route_analysis": "Accessible through major airports, local transportation options include buses and shuttles.",
+        "seasonal_patterns": "Best time from November to April; ideal for mild temperatures and festivals.",
+        "climate": "Tropical climate with rainy season from May to October. Comfortably cool evenings during fall.",
+        "culture": "Rich Mayan heritage with vibrant festivals, handicrafts, and traditions.",
+        "attractions": "Mayan ruins of Tikal, Lake Atitlán, Chichicastenango market, and lush rainforests."
+      },
+      "market_insights": {
+        "pricing_trends": "Prices for accommodation and activities can increase during peak tourist season but vary widely based on location and availability.",
+        "booking_windows": "Optimal to book 3-6 months in advance for better rates and availability.",
+        "demand": "Growing interest in cultural and ecotourism driven by travelers seeking unique experiences.",
+        "competition": "Popular alternatives are Costa Rica and Mexico, but Guatemala offers more authentic cultural experiences."
+      },
+      "trend_insights": {
+        "market_trends": "Increasing demand for sustainable and cultural travel post-pandemic.",
+        "consumer_behavior": "Travelers are prioritizing destinations that offer both adventure and cultural heritage.",
+        "competitive_landscape": "Guatemala is competing with Caribbean destinations and other Central American countries for eco-conscious travelers.",
+        "seasonal_factors": "Peak season coincides with the dry season, influencing travel patterns significantly."
+      }
+    },
+    "trend_analysis": {
+      "market_trends": "Increasing demand for sustainable and cultural travel post-pandemic.",
+      "consumer_behavior": "Travelers are prioritizing destinations that offer both adventure and cultural heritage.",
+      "competitive_landscape": "Guatemala is competing with Caribbean destinations and other Central American countries for eco-conscious travelers.",
+      "seasonal_factors": "Peak season coincides with the dry season, influencing travel patterns significantly."
+    },
+    "collection_metadata": {
+      "files_created": [
+        "data/consolidated-insights.json",
+        "data/destination-analysis.json",
+        "data/emotional-profile.json",
+        "data/key_insights_insights.json",
+        "data/market-intelligence.json",
+        "data/travel_intelligence-insights.json",
+        "data/trend-analysis.json"
+      ],
+      "total_analyses": 7,
+      "data_quality_score": 100,
+      "processing_completed_at": "2025-07-30T08:37:20.387Z",
+      "data_types": [
+        "consolidated",
+        "destination_analysis",
+        "emotional_profile",
+        "key_insights",
+        "market_intelligence",
+        "travel_intelligence",
+        "trend_analysis"
+      ]
+    }
+  },
+  "handoff_context": {
+    "summary": "Completed comprehensive analysis for Guatemala travel campaign.",
+    "context_for_next": "Context for Content Specialist includes highlights of cultural attractions and eco-tourism trends.",
+    "recommendations": [
+      "Focus on cultural and adventure experiences in email content.",
+      "Emphasize unique nature and historical insights."
+    ],
+    "priority_items": null,
+    "potential_issues": null,
+    "success_criteria": null
+  },
+  "deliverables": {
+    "created_files": [],
+    "key_outputs": [
+      "consolidated",
+      "destination_analysis",
+      "emotional_profile",
+      "key_insights",
+      "market_intelligence",
+      "travel_intelligence",
+      "trend_analysis"
+    ],
+    "data_quality_metrics": {
+      "total_analyses": 8,
+      "completion_rate": 100,
+      "quality_score": 0
+    }
+  },
+  "quality_metadata": {
+    "data_quality_score": 100,
+    "completeness_score": 100,
+    "validation_status": "passed",
+    "error_count": 0,
+    "warning_count": 0,
+    "processing_time": 1000
+  },
+  "trace_id": "handoff_1753864640387_data-collection",
+  "validate_context": true,
+  "created_at": "2025-07-30T08:37:20.388Z"
+}
